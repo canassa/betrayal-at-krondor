@@ -4,6 +4,7 @@ noinst_HEADERS = AnimationResource.h \
                  ChoiceWidget.h \
                  ContainerWidget.h \
                  DialogWindow.h \
+                 Event.h \
                  EventHandler.h \
                  EventTypes.h \
                  Exception.h \
@@ -61,6 +62,8 @@ libbak_a_SOURCES = AnimationResource.cc \
                    ContainerWidget.h \
                    DialogWindow.cc \
                    DialogWindow.h \
+                   Event.cc \
+                   Event.h \
                    EventHandler.h \
                    EventTypes.h \
                    Exception.cc \
