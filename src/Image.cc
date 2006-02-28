@@ -1,0 +1,161 @@
+/*
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
+ * NON INFRINGEMENT.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
+ */
+
+#include "Exception.h"
+#include "Image.h"
+
+static const unsigned int FLAG_XYSWAPPED  = 0x20;
+static const unsigned int FLAG_UNKNOWN    = 0x40;
+static const unsigned int FLAG_COMPRESSED = 0x80;
+
+Image::Image(const int w, const int h)
+: width(w)
+, height(h)
+{
+  if ((width > 0) && (height > 0)) {
+    pixel = new uint8_t[width * height];
+    memset(pixel, 0, width * height);
+  } else {
+    width = 0;
+    height = 0;
+    pixel = 0;
+  }
+}
+
+Image::~Image()
+{
+  if (pixel) {
+    delete [] pixel;
+  }
+}
+
+int
+Image::GetWidth() const
+{
+  return width;
+}
+
+int
+Image::GetHeight() const
+{
+  return height;
+}
+
+unsigned int
+Image::GetSize() const
+{
+  return (unsigned int)width * height;
+}
+
+uint8_t
+Image::GetPixel(const int x, const int y) const
+{
+  if ((pixel) && (x >= 0) && (x < width) && (y >= 0) && (y < height)) {
+    return pixel[x + width * y];
+  }
+  return 0;
+}
+
+uint8_t *
+Image::GetPixels() const
+{
+  return pixel;
+}
+
+void
+Image::SetPixel(const int x, const int y, const uint8_t color)
+{
+  if ((pixel) && (x >= 0) && (x < width) && (y >= 0) && (y < height)) {
+    pixel[x + width * y] = color;
+  }
+}
+
+void
+Image::SetPixels(uint8_t *data, unsigned int size)
+{
+  if ((pixel) && (data)) {
+    if (size == 0) {
+      size = (unsigned int)width * height;
+    }
+    memcpy(pixel, data, size);
+  }
+}
+
+void
+Image::Fill(const uint8_t color)
+{
+  if (pixel) {
+    memset(pixel, color, width * height);
+  }
+}
+
+void
+Image::Load(FileBuffer *buffer, const unsigned int flags)
+{
+  try {
+    if (pixel) {
+      FileBuffer *imgbuf;
+      if (flags & FLAG_COMPRESSED) {
+        imgbuf = new FileBuffer(width * height);
+        buffer->DecompressRLE(imgbuf);
+      } else {
+        imgbuf = buffer;
+      }
+      if (flags & FLAG_XYSWAPPED) {
+        for (int x = 0; x < width; x++) {
+          for (int y = 0; y < height; y++) {
+            SetPixel(x, y, imgbuf->GetUint8());
+          }
+        }
+      } else {
+        imgbuf->GetData(pixel, width * height);
+      }
+      if (flags & FLAG_COMPRESSED) {
+        delete imgbuf;
+      }
+    }
+  } catch (Exception &e) {
+    e.Print("Image::Load");
+  }
+}
+
+void
+Image::Read(Video *video, const int x, const int y)
+{
+  video->ReadImage(x, y, width, height, pixel);
+}
+
+void
+Image::Draw(Video *video, const int x, const int y)
+{
+  video->DrawImage(x, y, width, height, pixel);
+}
+
+void
+Image::Draw(Video *video, const int x, const int y, const int xoff, const int yoff, const int w, const int h)
+{
+  video->DrawImage(x, y, width, height, xoff, yoff, w, h, pixel);
+}
+
+void
+Image::Draw(Video *video, const int x, const int y, const uint8_t transparent)
+{
+  video->DrawImage(x, y, width, height, pixel, transparent);
+}
+

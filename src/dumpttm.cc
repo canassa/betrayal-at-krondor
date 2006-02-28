@@ -1,0 +1,185 @@
+/*
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
+ * NON INFRINGEMENT.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
+ */
+
+#include <iostream>
+
+#include "Exception.h"
+#include "MovieResource.h"
+#include "ResourceManager.h"
+#include "ResourcePath.h"
+
+int main(int argc, char *argv[]) {
+  try {
+    if (argc != 2) {
+      std::cerr << "Usage: " << argv[0] << " <TTM-file>" << std::endl;
+      return 1;
+    }
+    MovieResource *ttm = new MovieResource;
+    ResourceManager::GetInstance()->Load(ttm, argv[1]);
+    printf("%s %d\n", ttm->GetVersion().c_str(), ttm->GetPages());
+    std::vector<MovieTag *> mt = ttm->GetMovieTags();
+    for (unsigned int i = 0; i < mt.size(); i++) {
+      printf("%4d %04x %-39s: ", i, mt[i]->code, mt[i]->name.c_str());
+      for (unsigned int j = 0; j < mt[i]->data.size(); j++) {
+        printf(" %4d", mt[i]->data[j]);
+      }
+      for (unsigned int j = mt[i]->data.size(); j < 8; j++) {
+        printf("     ");
+      }
+      switch (mt[i]->code) {
+        case 0x0020:
+          printf(" save screen");
+          break;
+        case 0x0080:
+          printf(" draw saved screen");
+          break;
+        case 0x00c0:
+          break;
+        case 0x0110:
+          break;
+        case 0x0400:
+          break;
+        case 0x0500:
+          break;
+        case 0x0510:
+          break;
+        case 0x0ff0:
+          printf(" end of page");
+          break;
+        case 0x1020:
+          printf(" delay (delay)");
+          break;
+        case 0x1050:
+          printf(" select image (image)");
+          break;
+        case 0x1060:
+          printf(" select palette (palette)");
+          break;
+        case 0x1070:
+          break;
+        case 0x1100:
+          break;
+        case 0x1110:
+          printf(" set scene (scene)");
+          break;
+        case 0x1120:
+          break;
+        case 0x1200:
+          break;
+        case 0x2000:
+          printf(" set frame (image, frame)");
+          break;
+        case 0x2010:
+          printf(" set frame (image, frame)");
+          break;
+        case 0x2300:
+          break;
+        case 0x2310:
+          break;
+        case 0x2320:
+          break;
+        case 0x2400:
+          break;
+        case 0x4000:
+          printf(" set window (x, y, w, h)");
+          break;
+        case 0x4110:
+          printf(" fade out (first, n, steps, delay)");
+          break;
+        case 0x4120:
+          printf(" fade in (first, n, steps, delay)");
+          break;
+        case 0x4200:
+          break;
+        case 0x4210:
+          break;
+        case 0xa010:
+          break;
+        case 0xa030:
+          break;
+        case 0xa090:
+          break;
+        case 0xa0b0:
+          break;
+        case 0xa100:
+          printf(" draw window (x, y, w, h)");
+          break;
+        case 0xa500:
+          printf(" draw sprite (x, y, frame, image)");
+          break;
+        case 0xa510:
+          printf(" draw sprite (x, y, frame, image)");
+          break;
+        case 0xa520:
+          printf(" draw sprite (x, y, frame, image)");
+          break;
+        case 0xa530:
+          printf(" draw sprite (x, y, frame, image)");
+          break;
+        case 0xa5a0:
+          break;
+        case 0xa600:
+          break;
+        case 0xb600:
+          printf(" read image (x, y, w, h, ?, ?)");
+          break;
+        case 0xc020:
+          printf(" load sound resource");
+          break;
+        case 0xc030:
+          printf(" load sound (sound)");
+          break;
+        case 0xc040:
+          printf(" unload sound (sound)");
+          break;
+        case 0xc050:
+          printf(" play sound (sound)");
+          break;
+        case 0xc060:
+          printf(" stop sound (sound)");
+          break;
+        case 0xf010:
+          printf(" load screen resource");
+          break;
+        case 0xf020:
+          printf(" load image resource");
+          break;
+        case 0xf040:
+          break;
+        case 0xf050:
+          printf(" load palette resource");
+          break;
+        default:
+          printf(" unknown");
+          break;
+      }
+      printf("\n");
+    }
+    delete ttm;
+    delete ResourceManager::GetInstance();
+    delete ResourcePath::GetInstance();
+  } catch (Exception &e) {
+    e.Print("main");
+  } catch (...) {
+    /* every exception should have been handled before */
+    std::cerr << "Unhandled exception" << std::endl;
+  }
+  return 0;
+}
+

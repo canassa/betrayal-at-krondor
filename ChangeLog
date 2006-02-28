@@ -1,0 +1,34 @@
+2006-02-26, xbak-0.0.5:
+* LBL_*.DAT files and REQ_*.DAT files can be loaded.
+* Initial implementation of some GUI widgets is finished.
+* A few bug fixes.
+
+2006-01-22, xbak-0.0.4:
+* Event handling structure is done, keyboard and mouse are working.
+* Separate viewers are replaced by one single viewer application.
+* A few more resource files can be loaded.
+* Refactored several parts of the code.
+* Some bug fixes.
+
+2005-11-10, xbak-0.0.3:
+* Better interpretation of TTM files.
+* Viewers for BMX, FNT, SCX and TTM files are available.
+* Improved application framework.
+* Memory leakes are plugged.
+* Several bug fixes.
+
+2005-10-21, xbak-0.0.2:
+* ADS files can be loaded and partially interpreted.
+* TTM files can be loaded and partially interpreted.
+* Some more work on sound data.
+* Several bug fixes.
+
+2005-10-16, xbak-0.0.1:
+* Structure for reading the resource files is done.
+* Processing labeled resource files is done.
+* PAL palette definitions can be loaded.
+* BMX and SCX images can be loaded and displayed.
+* FNT font definitions can be loaded, text can be displayed.
+* WLD map tiles can be loaded, types of the items on the map are mostly unknow.
+* Sound data can be loaded, there is no sound yet though.
+

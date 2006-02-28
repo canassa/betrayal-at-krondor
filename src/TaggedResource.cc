@@ -1,0 +1,102 @@
+/*
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
+ * NON INFRINGEMENT.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
+ */
+
+#include "Exception.h"
+#include "TaggedResource.h"
+
+TaggedResource::TaggedResource()
+{
+}
+
+TaggedResource::~TaggedResource()
+{
+  for (std::map<const unsigned int, FileBuffer*>::iterator it = bufferMap.begin(); it != bufferMap.end(); it++) {
+    delete (*it).second;
+  }
+  bufferMap.clear();
+}
+
+void
+TaggedResource::Clear()
+{
+  for (std::map<const unsigned int, FileBuffer*>::iterator it = bufferMap.begin(); it != bufferMap.end(); it++) {
+    delete (*it).second;
+  }
+  bufferMap.clear();
+}
+
+void
+TaggedResource::Split(FileBuffer *buffer)
+{
+  while (!buffer->AtEnd()) {
+    unsigned int label = buffer->GetUint32();
+    switch (label) {
+      case TAG_ADS:
+      case TAG_APP:
+      case TAG_BIN:
+      case TAG_BMP:
+      case TAG_DAT:
+      case TAG_FNT:
+      case TAG_GID:
+      case TAG_INF:
+      case TAG_MAP:
+      case TAG_PAG:
+      case TAG_PAL:
+      case TAG_RES:
+      case TAG_SCR:
+      case TAG_SND:
+      case TAG_TAG:
+      case TAG_TT3:
+      case TAG_TTI:
+      case TAG_VER:
+      case TAG_VGA:
+        {
+          unsigned int size = buffer->GetUint32();
+          bufferMap.erase(label);
+          if (size & 0x80000000) {
+            FileBuffer *lblbuf = new FileBuffer(size & 0x7fffffff);
+            lblbuf->Fill(buffer);
+            bufferMap.insert(std::pair<const unsigned int, FileBuffer*>(label, 0));
+            Split(lblbuf);
+            delete lblbuf;
+          } else {
+            FileBuffer *lblbuf = new FileBuffer(size);
+            lblbuf->Fill(buffer);
+            bufferMap.insert(std::pair<const unsigned int, FileBuffer*>(label, lblbuf));
+          }
+        }
+        break;
+      default:
+        throw DataCorruption("TaggedResource::Split");
+        break;
+    }
+  }
+}
+
+bool
+TaggedResource::Find(const unsigned int label, FileBuffer* &buffer)
+{
+  try {
+    buffer = bufferMap[label];
+  } catch (...) {
+    return false;
+  }
+  return (buffer != 0);
+}
+
