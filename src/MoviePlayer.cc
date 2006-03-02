@@ -100,30 +100,32 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
   }
 }
 
-bool
+void
 MoviePlayer::HandleKeyboardEvent(int key, bool down) {
   key = 0;
-  return down;
+  if (down) {
+    media->TerminateEventLoop();
+  }
 }
 
-bool
+void
 MoviePlayer::HandleMouseButtonEvent(int button, int x, int y, bool down) {
   button = 0;
   x = 0;
   y = 0;
-  return down;
+  if (down) {
+    media->TerminateEventLoop();
+  }
 }
 
-bool
+void
 MoviePlayer::HandleMouseMotionEvent(int x, int y) {
   x = 0;
   y = 0;
-  return false;
 }
 
-bool
+void
 MoviePlayer::HandleUpdateEvent() {
-  bool result = false;
   try {
     MovieTag *mt = (*tagVec)[currTag];
     switch (mt->code) {
@@ -231,12 +233,11 @@ MoviePlayer::HandleUpdateEvent() {
       if (looped) {
         currTag = 0;
       } else {
-        result = true;
+        media->TerminateEventLoop();
       }
     }
   } catch (Exception &e) {
     e.Print("MoviePlayer::HandleUpdateEvent");
     throw;
   }
-  return result;
 }

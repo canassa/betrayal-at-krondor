@@ -189,12 +189,10 @@ class Event {
 class KeyboardEvent: public Event {
   private:
     Key key;
-    bool pressed;
   public:
-    KeyboardEvent(Key k, bool down);
+    KeyboardEvent(Key k);
     virtual ~KeyboardEvent();
     Key GetKey() const;
-    bool GetPressed() const;
 };
 
 class MouseButtonEvent: public Event {
@@ -221,10 +219,13 @@ class MouseMotionEvent: public Event {
     int GetYPos() const;
 };
 
-class QuitEvent: public Event {
+class ActionEvent: public Event {
+  private:
+    int action;
   public:
-    QuitEvent();
-    virtual ~QuitEvent();
+    ActionEvent(int a);
+    virtual ~ActionEvent();
+    int GetAction() const;
 };
 
 #endif

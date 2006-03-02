@@ -67,14 +67,13 @@ DialogWindow::Run(PaletteResource& pal)
   }
 }
 
-bool
+void
 DialogWindow::HandleKeyboardEvent(int key, bool down)
 {
-  bool done = false;
   if (down) {
     switch (key) {
       case KEY_ESCAPE:
-        done = true;
+        media->TerminateEventLoop();
         break;
       case KEY_TAB:
         panel->NextWidget(media->GetVideo());
@@ -96,10 +95,9 @@ DialogWindow::HandleKeyboardEvent(int key, bool down)
         break;
     }
   }
-  return done;
 }
 
-bool
+void
 DialogWindow::HandleMouseButtonEvent(int button, int x, int y, bool down)
 {
   panel->Draw(media->GetVideo());
@@ -123,21 +121,18 @@ DialogWindow::HandleMouseButtonEvent(int button, int x, int y, bool down)
         break;
     }
   }
-  return false;
 }
 
-bool
+void
 DialogWindow::HandleMouseMotionEvent(int x, int y)
 {
   MousePointerManager::GetInstance()->GetCurrentPointer()->SetPosition(x, y);
-  return false;
 }
 
-bool
+void
 DialogWindow::HandleUpdateEvent()
 {
   panel->Draw(media->GetVideo());
   MousePointerManager::GetInstance()->GetCurrentPointer()->Draw(media->GetVideo());
   media->GetVideo()->Refresh();
-  return false;
 }

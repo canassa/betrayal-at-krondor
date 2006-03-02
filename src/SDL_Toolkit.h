@@ -30,7 +30,7 @@
 class SDL_Toolkit: public MediaToolkit {
   private:
     static SDL_Toolkit *instance;
-    bool HandleEvent(SDL_Event& event);
+    void HandleEvent(SDL_Event& event);
   protected:
     SDL_Toolkit();
   public:

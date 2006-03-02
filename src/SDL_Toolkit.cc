@@ -50,47 +50,61 @@ SDL_Toolkit::GetInstance()
   return instance;
 }
 
-bool
+void
 SDL_Toolkit::HandleEvent(SDL_Event& event)
 {
-  bool result = false;
+  KeyboardEvent *kbe;
   if (eventHandler) {
     switch (event.type) {
       case SDL_KEYDOWN:
+        eventHandler->HandleKeyboardEvent(event.key.keysym.sym, true);
+        kbe = new KeyboardEvent((Key)event.key.keysym.sym);
+        for (unsigned int i = 0; i < keyboardListeners.size(); i++) {
+          keyboardListeners[i]->KeyPressed(*kbe);
+        }
+        delete kbe;
+        break;
       case SDL_KEYUP:
-        result = eventHandler->HandleKeyboardEvent(event.key.keysym.sym,
-                                                   event.type == SDL_KEYDOWN);
+        eventHandler->HandleKeyboardEvent(event.key.keysym.sym, false);
+        kbe = new KeyboardEvent((Key)event.key.keysym.sym);
+        for (unsigned int i = 0; i < keyboardListeners.size(); i++) {
+          keyboardListeners[i]->KeyReleased(*kbe);
+        }
+        delete kbe;
         break;
       case SDL_MOUSEBUTTONDOWN:
+        eventHandler->HandleMouseButtonEvent(event.button.button - 1,
+                                             event.button.x / video->GetScaling(),
+                                             event.button.y / video->GetScaling(),
+                                             true);
+        break;
       case SDL_MOUSEBUTTONUP:
-        result = eventHandler->HandleMouseButtonEvent(event.button.button,
-                                                      event.button.x / video->GetScaling(),
-                                                      event.button.y / video->GetScaling(),
-                                                      event.type == SDL_MOUSEBUTTONDOWN);
+        eventHandler->HandleMouseButtonEvent(event.button.button - 1,
+                                             event.button.x / video->GetScaling(),
+                                             event.button.y / video->GetScaling(),
+                                             false);
         break;
       case SDL_MOUSEMOTION:
-        result = eventHandler->HandleMouseMotionEvent(event.motion.x / video->GetScaling(),
-                                                      event.motion.y / video->GetScaling());
+        eventHandler->HandleMouseMotionEvent(event.motion.x / video->GetScaling(),
+                                             event.motion.y / video->GetScaling());
         break;
-      case SDL_QUIT:
-        result = true;
+      default:
         break;
     }
   }
-  return result;
 }
 
 void
 SDL_Toolkit::PollEventLoop()
 {
   if (eventHandler) {
-    bool done = false;
+    eventLoopRunning = true;
     SDL_Event event;
-    while (!done) {
+    while (eventLoopRunning) {
       while (SDL_PollEvent(&event)) {
-        done |= HandleEvent(event);
+        HandleEvent(event);
       }
-      done |= eventHandler->HandleUpdateEvent();
+      eventHandler->HandleUpdateEvent();
     }
   }
 }
@@ -99,11 +113,11 @@ void
 SDL_Toolkit::WaitEventLoop()
 {
   if (eventHandler) {
-    bool done = false;
+    eventLoopRunning = true;
     SDL_Event event;
-    while (!done) {
+    while (eventLoopRunning) {
       if (SDL_WaitEvent(&event)) {
-        done |= HandleEvent(event);
+        HandleEvent(event);
       }
     }
   }
@@ -123,4 +137,3 @@ SDL_Toolkit::GetMousePosition(int *x, int *y)
 {
   SDL_GetMouseState(x, y);
 }
-

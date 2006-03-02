@@ -54,10 +54,10 @@ class MoviePlayer: public EventHandler {
     MoviePlayer(MediaToolkit *mtk);
     ~MoviePlayer();
     void Play(std::vector<MovieTag *> *movie, const bool repeat);
-    bool HandleKeyboardEvent(int key, bool down);
-    bool HandleMouseButtonEvent(int button, int x, int y, bool down);
-    bool HandleMouseMotionEvent(int x, int y);
-    bool HandleUpdateEvent();
+    void HandleKeyboardEvent(int key, bool down);
+    void HandleMouseButtonEvent(int button, int x, int y, bool down);
+    void HandleMouseMotionEvent(int x, int y);
+    void HandleUpdateEvent();
 };
 
 #endif

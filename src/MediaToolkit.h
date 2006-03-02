@@ -24,8 +24,11 @@
 #include "config.h"
 #endif
 
+#include <vector>
+
 #include "Clock.h"
 #include "EventHandler.h"
+#include "EventListener.h"
 #include "Video.h"
 
 class MediaToolkit {
@@ -33,12 +36,20 @@ class MediaToolkit {
     Clock *clock;
     Video *video;
     EventHandler *eventHandler;
+    bool eventLoopRunning;
+    std::vector<KeyboardEventListener *> keyboardListeners;
+    std::vector<MouseButtonEventListener *> mouseButtonListeners;
+    std::vector<MouseMotionEventListener *> mouseMotionListeners;
   public:
     MediaToolkit();
     virtual ~MediaToolkit();
     Clock* GetClock() const;
     Video* GetVideo() const;
     void SetEventHandler(EventHandler *eh);
+    void AddKeyboardListener(KeyboardEventListener *kel);
+    void AddMouseButtonListener(MouseButtonEventListener *mbel);
+    void AddMouseMotionListener(MouseMotionEventListener *mmel);
+    void TerminateEventLoop();
     virtual void PollEventLoop() = 0;
     virtual void WaitEventLoop() = 0;
     virtual void ClearEvents() = 0;
@@ -46,4 +57,3 @@ class MediaToolkit {
 };
 
 #endif
-

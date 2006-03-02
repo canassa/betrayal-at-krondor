@@ -6,7 +6,7 @@ noinst_HEADERS = AnimationResource.h \
                  DialogWindow.h \
                  Event.h \
                  EventHandler.h \
-                 EventTypes.h \
+                 EventListener.h \
                  Exception.h \
                  FileBuffer.h \
                  FontResource.h \
@@ -33,7 +33,6 @@ noinst_HEADERS = AnimationResource.h \
                  ResourcePath.h \
                  ResourceTag.h \
                  SDL_Clock.h \
-                 SDL_EventTypes.h \
                  SDL_Toolkit.h \
                  SDL_Video.h \
                  ScreenResource.h \
@@ -49,102 +48,6 @@ noinst_HEADERS = AnimationResource.h \
                  WidgetCallBack.h \
                  WidgetFactory.h \
                  ZoneTableResource.h
-noinst_LIBRARIES = libbak.a \
-                   libsdlapp.a
-libbak_a_SOURCES = AnimationResource.cc \
-                   AnimationResource.h \
-                   ButtonWidget.cc \
-                   ButtonWidget.h \
-                   ChoiceWidget.cc \
-                   ChoiceWidget.h \
-                   Clock.h \
-                   ContainerWidget.cc \
-                   ContainerWidget.h \
-                   DialogWindow.cc \
-                   DialogWindow.h \
-                   Event.cc \
-                   Event.h \
-                   EventHandler.h \
-                   EventTypes.h \
-                   Exception.cc \
-                   Exception.h \
-                   FileBuffer.cc \
-                   FileBuffer.h \
-                   FontResource.cc \
-                   FontResource.h \
-                   GenericResourceFile.cc \
-                   GenericResourceFile.h \
-                   Image.cc \
-                   Image.h \
-                   ImageResource.cc \
-                   ImageResource.h \
-                   LabelResource.cc \
-                   LabelResource.h \
-                   LabelWidget.cc \
-                   LabelWidget.h \
-                   MediaToolkit.cc \
-                   MediaToolkit.h \
-                   MousePointer.cc \
-                   MousePointer.h \
-                   MousePointerManager.cc \
-                   MousePointerManager.h \
-                   MoviePlayer.cc \
-                   MoviePlayer.h \
-                   MovieResource.cc \
-                   MovieResource.h \
-                   NameResource.cc \
-                   NameResource.h \
-                   OptionsDialog.cc \
-                   OptionsDialog.h \
-                   PaletteResource.cc \
-                   PaletteResource.h \
-                   PanelWidget.cc \
-                   PanelWidget.h \
-                   RequestResource.cc \
-                   RequestResource.h \
-                   Resource.h \
-                   ResourceArchive.cc \
-                   ResourceArchive.h \
-                   ResourceIndex.cc \
-                   ResourceIndex.h \
-                   ResourceManager.cc \
-                   ResourceManager.h \
-                   ResourcePath.cc \
-                   ResourcePath.h \
-                   ResourceTag.cc \
-                   ResourceTag.h \
-                   ScreenResource.cc \
-                   ScreenResource.h \
-                   SoundResource.cc \
-                   SoundResource.h \
-                   TaggedResource.cc \
-                   TaggedResource.h \
-                   TextArea.cc \
-                   TextArea.h \
-                   TickboxWidget.cc \
-                   TickboxWidget.h \
-                   TileDataResource.cc \
-                   TileDataResource.h \
-                   TileWorldResource.cc \
-                   TileWorldResource.h \
-                   Video.h \
-                   Widget.cc \
-                   Widget.h \
-                   WidgetCallBack.h \
-                   WidgetFactory.cc \
-                   WidgetFactory.h \
-                   ZoneTableResource.cc \
-                   ZoneTableResource.h
-libsdlapp_a_SOURCES = Clock.h \
-                      SDL_Clock.cc \
-                      SDL_Clock.h \
-                      SDL_EventTypes.h \
-                      SDL_Toolkit.cc \
-                      SDL_Toolkit.h \
-                      SDL_Video.cc \
-                      SDL_Video.h \
-                      Video.cc \
-                      Video.h
 bin_PROGRAMS = dumpads \
                dumpbmx \
                dumpfnt \
@@ -158,35 +61,409 @@ bin_PROGRAMS = dumpads \
                dumpwld \
                viewres \
                xbak
-dumpads_SOURCES = dumpads.cc
-dumpads_LDADD = libbak.a
-dumpbmx_SOURCES = dumpbmx.cc
-dumpbmx_LDADD = libbak.a
-dumpfnt_SOURCES = dumpfnt.cc
-dumpfnt_LDADD = libbak.a
-dumplbl_SOURCES = dumplbl.cc
-dumplbl_LDADD = libbak.a
-dumppal_SOURCES = dumppal.cc
-dumppal_LDADD = libbak.a
-dumpreq_SOURCES = dumpreq.cc
-dumpreq_LDADD = libbak.a
-dumpscx_SOURCES = dumpscx.cc
-dumpscx_LDADD = libbak.a
-dumpsnd_SOURCES = dumpsnd.cc
-dumpsnd_LDADD = libbak.a
-dumptbl_SOURCES = dumptbl.cc
-dumptbl_LDADD = libbak.a
-dumpttm_SOURCES = dumpttm.cc
-dumpttm_LDADD = libbak.a
-dumpwld_SOURCES = dumpwld.cc
-dumpwld_LDADD = libbak.a
-viewres_SOURCES = TestApplication.cc \
+dumpads_SOURCES = AnimationResource.cc \
+                  AnimationResource.h \
+                  Exception.cc \
+                  Exception.h \
+                  FileBuffer.cc \
+                  FileBuffer.h \
+                  GenericResourceFile.cc \
+                  GenericResourceFile.h \
+                  Resource.h \
+                  ResourceArchive.cc \
+                  ResourceArchive.h \
+                  ResourceIndex.cc \
+                  ResourceIndex.h \
+                  ResourceManager.cc \
+                  ResourceManager.h \
+                  ResourcePath.cc \
+                  ResourcePath.h \
+                  ResourceTag.cc \
+                  ResourceTag.h \
+                  TaggedResource.cc \
+                  TaggedResource.h \
+                  dumpads.cc
+dumpbmx_SOURCES = Exception.cc \
+                  Exception.h \
+                  FileBuffer.cc \
+                  FileBuffer.h \
+                  GenericResourceFile.cc \
+                  GenericResourceFile.h \
+                  Image.cc \
+                  Image.h \
+                  ImageResource.cc \
+                  ImageResource.h \
+                  Resource.h \
+                  ResourceArchive.cc \
+                  ResourceArchive.h \
+                  ResourceIndex.cc \
+                  ResourceIndex.h \
+                  ResourceManager.cc \
+                  ResourceManager.h \
+                  ResourcePath.cc \
+                  ResourcePath.h \
+                  ResourceTag.cc \
+                  ResourceTag.h \
+                  dumpbmx.cc
+dumpfnt_SOURCES = Exception.cc \
+                  Exception.h \
+                  FileBuffer.cc \
+                  FileBuffer.h \
+                  FontResource.cc \
+                  FontResource.h \
+                  GenericResourceFile.cc \
+                  GenericResourceFile.h \
+                  Resource.h \
+                  ResourceArchive.cc \
+                  ResourceArchive.h \
+                  ResourceIndex.cc \
+                  ResourceIndex.h \
+                  ResourceManager.cc \
+                  ResourceManager.h \
+                  ResourcePath.cc \
+                  ResourcePath.h \
+                  ResourceTag.cc \
+                  ResourceTag.h \
+                  TaggedResource.cc \
+                  TaggedResource.h \
+                  dumpfnt.cc
+dumplbl_SOURCES = Exception.cc \
+                  Exception.h \
+                  FileBuffer.cc \
+                  FileBuffer.h \
+                  GenericResourceFile.cc \
+                  GenericResourceFile.h \
+                  LabelResource.cc \
+                  LabelResource.h \
+                  Resource.h \
+                  ResourceArchive.cc \
+                  ResourceArchive.h \
+                  ResourceIndex.cc \
+                  ResourceIndex.h \
+                  ResourceManager.cc \
+                  ResourceManager.h \
+                  ResourcePath.cc \
+                  ResourcePath.h \
+                  ResourceTag.cc \
+                  ResourceTag.h \
+                  dumplbl.cc
+dumppal_SOURCES = Exception.cc \
+                  Exception.h \
+                  FileBuffer.cc \
+                  FileBuffer.h \
+                  GenericResourceFile.cc \
+                  GenericResourceFile.h \
+                  PaletteResource.cc \
+                  PaletteResource.h \
+                  Resource.h \
+                  ResourceArchive.cc \
+                  ResourceArchive.h \
+                  ResourceIndex.cc \
+                  ResourceIndex.h \
+                  ResourceManager.cc \
+                  ResourceManager.h \
+                  ResourcePath.cc \
+                  ResourcePath.h \
+                  ResourceTag.cc \
+                  ResourceTag.h \
+                  TaggedResource.cc \
+                  TaggedResource.h \
+                  dumppal.cc
+dumpreq_SOURCES = Exception.cc \
+                  Exception.h \
+                  FileBuffer.cc \
+                  FileBuffer.h \
+                  GenericResourceFile.cc \
+                  GenericResourceFile.h \
+                  RequestResource.cc \
+                  RequestResource.h \
+                  Resource.h \
+                  ResourceArchive.cc \
+                  ResourceArchive.h \
+                  ResourceIndex.cc \
+                  ResourceIndex.h \
+                  ResourceManager.cc \
+                  ResourceManager.h \
+                  ResourcePath.cc \
+                  ResourcePath.h \
+                  ResourceTag.cc \
+                  ResourceTag.h \
+                  dumpreq.cc
+dumpscx_SOURCES = Exception.cc \
+                  Exception.h \
+                  FileBuffer.cc \
+                  FileBuffer.h \
+                  GenericResourceFile.cc \
+                  GenericResourceFile.h \
+                  Image.cc \
+                  Image.h \
+                  Resource.h \
+                  ResourceArchive.cc \
+                  ResourceArchive.h \
+                  ResourceIndex.cc \
+                  ResourceIndex.h \
+                  ResourceManager.cc \
+                  ResourceManager.h \
+                  ResourcePath.cc \
+                  ResourcePath.h \
+                  ResourceTag.cc \
+                  ResourceTag.h \
+                  ScreenResource.cc \
+                  ScreenResource.h \
+                  dumpscx.cc
+dumpsnd_SOURCES = Exception.cc \
+                  Exception.h \
+                  FileBuffer.cc \
+                  FileBuffer.h \
+                  GenericResourceFile.cc \
+                  GenericResourceFile.h \
+                  Resource.h \
+                  ResourceArchive.cc \
+                  ResourceArchive.h \
+                  ResourceIndex.cc \
+                  ResourceIndex.h \
+                  ResourceManager.cc \
+                  ResourceManager.h \
+                  ResourcePath.cc \
+                  ResourcePath.h \
+                  ResourceTag.cc \
+                  ResourceTag.h \
+                  SoundResource.cc \
+                  SoundResource.h \
+                  TaggedResource.cc \
+                  TaggedResource.h \
+                  dumpsnd.cc
+dumptbl_SOURCES = Exception.cc \
+                  Exception.h \
+                  FileBuffer.cc \
+                  FileBuffer.h \
+                  GenericResourceFile.cc \
+                  GenericResourceFile.h \
+                  Resource.h \
+                  ResourceArchive.cc \
+                  ResourceArchive.h \
+                  ResourceIndex.cc \
+                  ResourceIndex.h \
+                  ResourceManager.cc \
+                  ResourceManager.h \
+                  ResourcePath.cc \
+                  ResourcePath.h \
+                  ResourceTag.cc \
+                  ResourceTag.h \
+                  TaggedResource.cc \
+                  TaggedResource.h \
+                  ZoneTableResource.cc \
+                  ZoneTableResource.h \
+                  dumptbl.cc
+dumpttm_SOURCES = Exception.cc \
+                  Exception.h \
+                  FileBuffer.cc \
+                  FileBuffer.h \
+                  GenericResourceFile.cc \
+                  GenericResourceFile.h \
+                  MovieResource.cc \
+                  MovieResource.h \
+                  Resource.h \
+                  ResourceArchive.cc \
+                  ResourceArchive.h \
+                  ResourceIndex.cc \
+                  ResourceIndex.h \
+                  ResourceManager.cc \
+                  ResourceManager.h \
+                  ResourcePath.cc \
+                  ResourcePath.h \
+                  ResourceTag.cc \
+                  ResourceTag.h \
+                  TaggedResource.cc \
+                  TaggedResource.h \
+                  dumpttm.cc
+dumpwld_SOURCES = Exception.cc \
+                  Exception.h \
+                  FileBuffer.cc \
+                  FileBuffer.h \
+                  GenericResourceFile.cc \
+                  GenericResourceFile.h \
+                  Resource.h \
+                  ResourceArchive.cc \
+                  ResourceArchive.h \
+                  ResourceIndex.cc \
+                  ResourceIndex.h \
+                  ResourceManager.cc \
+                  ResourceManager.h \
+                  ResourcePath.cc \
+                  ResourcePath.h \
+                  ResourceTag.cc \
+                  ResourceTag.h \
+                  TileDataResource.cc \
+                  TileDataResource.h \
+                  TileWorldResource.cc \
+                  TileWorldResource.h \
+                  Video.h \
+                  dumpwld.cc
+viewres_SOURCES = AnimationResource.cc \
+                  AnimationResource.h \
+                  Clock.h \
+                  Event.cc \
+                  Event.h \
+                  EventHandler.h \
+                  EventListener.h \
+                  Exception.cc \
+                  Exception.h \
+                  FileBuffer.cc \
+                  FileBuffer.h \
+                  FontResource.cc \
+                  FontResource.h \
+                  GenericResourceFile.cc \
+                  GenericResourceFile.h \
+                  Image.cc \
+                  Image.h \
+                  ImageResource.cc \
+                  ImageResource.h \
+                  LabelResource.cc \
+                  LabelResource.h \
+                  MediaToolkit.cc \
+                  MediaToolkit.h \
+                  MousePointer.cc \
+                  MousePointer.h \
+                  MousePointerManager.cc \
+                  MousePointerManager.h \
+                  MoviePlayer.cc \
+                  MoviePlayer.h \
+                  MovieResource.cc \
+                  MovieResource.h \
+                  NameResource.cc \
+                  NameResource.h \
+                  PaletteResource.cc \
+                  PaletteResource.h \
+                  RequestResource.cc \
+                  RequestResource.h \
+                  Resource.h \
+                  ResourceArchive.cc \
+                  ResourceArchive.h \
+                  ResourceIndex.cc \
+                  ResourceIndex.h \
+                  ResourceManager.cc \
+                  ResourceManager.h \
+                  ResourcePath.cc \
+                  ResourcePath.h \
+                  ResourceTag.cc \
+                  ResourceTag.h \
+                  ScreenResource.cc \
+                  ScreenResource.h \
+                  SDL_Clock.cc \
+                  SDL_Clock.h \
+                  SDL_Toolkit.cc \
+                  SDL_Toolkit.h \
+                  SDL_Video.cc \
+                  SDL_Video.h \
+                  SoundResource.cc \
+                  SoundResource.h \
+                  TaggedResource.cc \
+                  TaggedResource.h \
+                  TestApplication.cc \
                   TestApplication.h \
+                  TextArea.cc \
+                  TextArea.h \
+                  TileDataResource.cc \
+                  TileDataResource.h \
+                  TileWorldResource.cc \
+                  TileWorldResource.h \
+                  Video.cc \
+                  Video.h \
+                  ZoneTableResource.cc \
+                  ZoneTableResource.h \
                   viewres.cc
-viewres_LDADD = libbak.a \
-                libsdlapp.a
-xbak_SOURCES = GameApplication.cc \
+xbak_SOURCES = AnimationResource.cc \
+               AnimationResource.h \
+               ButtonWidget.cc \
+               ButtonWidget.h \
+               ChoiceWidget.cc \
+               ChoiceWidget.h \
+               Clock.h \
+               ContainerWidget.cc \
+               ContainerWidget.h \
+               DialogWindow.cc \
+               DialogWindow.h \
+               Event.cc \
+               Event.h \
+               EventHandler.h \
+               EventListener.h \
+               Exception.cc \
+               Exception.h \
+               FileBuffer.cc \
+               FileBuffer.h \
+               FontResource.cc \
+               FontResource.h \
+               GameApplication.cc \
                GameApplication.h \
+               GenericResourceFile.cc \
+               GenericResourceFile.h \
+               Image.cc \
+               Image.h \
+               ImageResource.cc \
+               ImageResource.h \
+               LabelResource.cc \
+               LabelResource.h \
+               LabelWidget.cc \
+               LabelWidget.h \
+               MediaToolkit.cc \
+               MediaToolkit.h \
+               MousePointer.cc \
+               MousePointer.h \
+               MousePointerManager.cc \
+               MousePointerManager.h \
+               MoviePlayer.cc \
+               MoviePlayer.h \
+               MovieResource.cc \
+               MovieResource.h \
+               NameResource.cc \
+               NameResource.h \
+               OptionsDialog.cc \
+               OptionsDialog.h \
+               PaletteResource.cc \
+               PaletteResource.h \
+               PanelWidget.cc \
+               PanelWidget.h \
+               RequestResource.cc \
+               RequestResource.h \
+               Resource.h \
+               ResourceArchive.cc \
+               ResourceArchive.h \
+               ResourceIndex.cc \
+               ResourceIndex.h \
+               ResourceManager.cc \
+               ResourceManager.h \
+               ResourcePath.cc \
+               ResourcePath.h \
+               ResourceTag.cc \
+               ResourceTag.h \
+               ScreenResource.cc \
+               ScreenResource.h \
+               SDL_Clock.cc \
+               SDL_Clock.h \
+               SDL_Toolkit.cc \
+               SDL_Toolkit.h \
+               SDL_Video.cc \
+               SDL_Video.h \
+               SoundResource.cc \
+               SoundResource.h \
+               TaggedResource.cc \
+               TaggedResource.h \
+               TextArea.cc \
+               TextArea.h \
+               TickboxWidget.cc \
+               TickboxWidget.h \
+               TileDataResource.cc \
+               TileDataResource.h \
+               TileWorldResource.cc \
+               TileWorldResource.h \
+               Video.cc \
+               Video.h \
+               Widget.cc \
+               Widget.h \
+               WidgetCallBack.h \
+               WidgetFactory.cc \
+               WidgetFactory.h \
+               ZoneTableResource.cc \
+               ZoneTableResource.h \
                xbak.cc
-xbak_LDADD = libbak.a \
-             libsdlapp.a

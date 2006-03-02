@@ -27,9 +27,8 @@ Event::~Event()
 {
 }
 
-KeyboardEvent::KeyboardEvent(Key k, bool down)
+KeyboardEvent::KeyboardEvent(Key k)
 : key(k)
-, pressed(down)
 {
 }
 
@@ -41,12 +40,6 @@ Key
 KeyboardEvent::GetKey() const
 {
   return key;
-}
-
-bool
-KeyboardEvent::GetPressed() const
-{
-  return pressed;
 }
 
 MouseButtonEvent::MouseButtonEvent(MouseButton b, int x, int y)
@@ -100,10 +93,17 @@ MouseMotionEvent::GetYPos() const
   return ypos;
 }
 
-QuitEvent::QuitEvent() 
+ActionEvent::ActionEvent(int a)
+: action(a)
 {
 }
 
-QuitEvent::~QuitEvent()
+ActionEvent::~ActionEvent()
 {
+}
+
+int
+ActionEvent::GetAction() const
+{
+  return action;
 }

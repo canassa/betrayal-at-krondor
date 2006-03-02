@@ -24,16 +24,14 @@
 #include "config.h"
 #endif
 
-#include "EventTypes.h"
-
 class EventHandler {
   public:
     EventHandler() {};
     virtual ~EventHandler() {};
-    virtual bool HandleKeyboardEvent(int key, bool down) = 0;
-    virtual bool HandleMouseButtonEvent(int button, int x, int y, bool down) = 0;
-    virtual bool HandleMouseMotionEvent(int x, int y) = 0;
-    virtual bool HandleUpdateEvent() = 0;
+    virtual void HandleKeyboardEvent(int key, bool down) = 0;
+    virtual void HandleMouseButtonEvent(int button, int x, int y, bool down) = 0;
+    virtual void HandleMouseMotionEvent(int x, int y) = 0;
+    virtual void HandleUpdateEvent() = 0;
 };
 
 #endif

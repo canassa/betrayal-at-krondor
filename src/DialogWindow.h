@@ -41,10 +41,10 @@ class DialogWindow: public EventHandler {
     ~DialogWindow();
     void Create(RequestResource& req, ScreenResource& scr, FontResource& fnt, WidgetCallBack *wcb);
     void Run(PaletteResource& pal);
-    bool HandleKeyboardEvent(int key, bool down);
-    bool HandleMouseButtonEvent(int button, int x, int y, bool down);
-    bool HandleMouseMotionEvent(int x, int y);
-    bool HandleUpdateEvent();
+    void HandleKeyboardEvent(int key, bool down);
+    void HandleMouseButtonEvent(int button, int x, int y, bool down);
+    void HandleMouseMotionEvent(int x, int y);
+    void HandleUpdateEvent();
 };
 
 #endif

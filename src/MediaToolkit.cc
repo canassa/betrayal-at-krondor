@@ -23,11 +23,18 @@ MediaToolkit::MediaToolkit()
 : clock(0)
 , video(0)
 , eventHandler(0)
+, eventLoopRunning(false)
+, keyboardListeners()
+, mouseButtonListeners()
+, mouseMotionListeners()
 {
 }
 
 MediaToolkit::~MediaToolkit()
 {
+  keyboardListeners.clear();
+  mouseButtonListeners.clear();
+  mouseMotionListeners.clear();
 }
 
 Clock*
@@ -46,4 +53,28 @@ void
 MediaToolkit::SetEventHandler(EventHandler *eh)
 {
   eventHandler = eh;
+}
+
+void
+MediaToolkit::AddKeyboardListener(KeyboardEventListener *kel)
+{
+  keyboardListeners.push_back(kel);
+}
+
+void
+MediaToolkit::AddMouseButtonListener(MouseButtonEventListener *mbel)
+{
+  mouseButtonListeners.push_back(mbel);
+}
+
+void
+MediaToolkit::AddMouseMotionListener(MouseMotionEventListener *mmel)
+{
+  mouseMotionListeners.push_back(mmel);
+}
+
+void
+MediaToolkit::TerminateEventLoop()
+{
+  eventLoopRunning = false;
 }
