@@ -30,7 +30,6 @@ class EventHandler {
     virtual ~EventHandler() {};
     virtual void HandleKeyboardEvent(int key, bool down) = 0;
     virtual void HandleMouseButtonEvent(int button, int x, int y, bool down) = 0;
-    virtual void HandleMouseMotionEvent(int x, int y) = 0;
     virtual void HandleUpdateEvent() = 0;
 };
 

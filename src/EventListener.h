@@ -30,37 +30,36 @@ class EventListener {
   public:
     EventListener() {};
     virtual ~EventListener() {};
-    virtual void EventGenerated(Event &e) = 0;
 };
 
 class KeyboardEventListener: public EventListener {
   public:
     KeyboardEventListener() {};
     virtual ~KeyboardEventListener() {};
-    virtual void KeyPressed(KeyboardEvent &kbe) = 0;
-    virtual void KeyReleased(KeyboardEvent &kbe) = 0;
+    virtual void KeyPressed(const KeyboardEvent &kbe) = 0;
+    virtual void KeyReleased(const KeyboardEvent &kbe) = 0;
 };
 
 class MouseButtonEventListener: public EventListener {
   public:
     MouseButtonEventListener() {};
     virtual ~MouseButtonEventListener() {};
-    virtual void MouseButtonPressed(MouseButtonEvent &mbe) = 0;
-    virtual void MouseButtonReleased(MouseButtonEvent &mbe) = 0;
+    virtual void ButtonPressed(const MouseButtonEvent &mbe) = 0;
+    virtual void ButtonReleased(const MouseButtonEvent &mbe) = 0;
 };
 
 class MouseMotionEventListener: public EventListener {
   public:
     MouseMotionEventListener() {};
     virtual ~MouseMotionEventListener() {};
-    virtual void MouseMoved(MouseMotionEvent &mme) = 0;
+    virtual void MouseMoved(const MouseMotionEvent &mme) = 0;
 };
 
 class ActionEventListener: public EventListener {
   public:
     ActionEventListener() {};
     virtual ~ActionEventListener() {};
-    virtual void ActionPerformed(ActionEvent &ae) = 0;
+    virtual void ActionPerformed(const ActionEvent &ae) = 0;
 };
 
 #endif

@@ -119,12 +119,6 @@ MoviePlayer::HandleMouseButtonEvent(int button, int x, int y, bool down) {
 }
 
 void
-MoviePlayer::HandleMouseMotionEvent(int x, int y) {
-  x = 0;
-  y = 0;
-}
-
-void
 MoviePlayer::HandleUpdateEvent() {
   try {
     MovieTag *mt = (*tagVec)[currTag];

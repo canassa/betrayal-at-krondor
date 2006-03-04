@@ -43,7 +43,6 @@ class DialogWindow: public EventHandler {
     void Run(PaletteResource& pal);
     void HandleKeyboardEvent(int key, bool down);
     void HandleMouseButtonEvent(int button, int x, int y, bool down);
-    void HandleMouseMotionEvent(int x, int y);
     void HandleUpdateEvent();
 };
 

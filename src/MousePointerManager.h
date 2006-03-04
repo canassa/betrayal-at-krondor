@@ -27,12 +27,14 @@
 #include "config.h"
 #endif
 
+#include "EventListener.h"
+#include "MediaToolkit.h"
 #include "MousePointer.h"
 
 static const unsigned int NORMAL_POINTER = 0;
 static const unsigned int SPECIAL_POINTER = 1;
 
-class MousePointerManager {
+class MousePointerManager: public MouseMotionEventListener {
   private:
     unsigned int currentPointer;
     std::vector<MousePointer *> pointerVec;
@@ -42,9 +44,11 @@ class MousePointerManager {
   public:
     ~MousePointerManager();
     static MousePointerManager* GetInstance();
+    void Register(MediaToolkit *media);
     MousePointer* GetCurrentPointer();
     void SetCurrentPointer(unsigned int n);
     void AddPointer(const std::string& resname);
+    void MouseMoved(const MouseMotionEvent &mme);
 };
 
 #endif

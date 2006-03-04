@@ -124,12 +124,6 @@ DialogWindow::HandleMouseButtonEvent(int button, int x, int y, bool down)
 }
 
 void
-DialogWindow::HandleMouseMotionEvent(int x, int y)
-{
-  MousePointerManager::GetInstance()->GetCurrentPointer()->SetPosition(x, y);
-}
-
-void
 DialogWindow::HandleUpdateEvent()
 {
   panel->Draw(media->GetVideo());

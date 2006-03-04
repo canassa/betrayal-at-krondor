@@ -56,7 +56,6 @@ class MoviePlayer: public EventHandler {
     void Play(std::vector<MovieTag *> *movie, const bool repeat);
     void HandleKeyboardEvent(int key, bool down);
     void HandleMouseButtonEvent(int button, int x, int y, bool down);
-    void HandleMouseMotionEvent(int x, int y);
     void HandleUpdateEvent();
 };
 

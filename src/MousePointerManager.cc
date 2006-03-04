@@ -37,7 +37,8 @@ MousePointerManager::~MousePointerManager()
   pointerVec.clear();
 }
 
-MousePointerManager* MousePointerManager::GetInstance()
+MousePointerManager*
+MousePointerManager::GetInstance()
 {
   if (!instance) {
     instance = new MousePointerManager();
@@ -45,12 +46,20 @@ MousePointerManager* MousePointerManager::GetInstance()
   return instance;
 }
 
-MousePointer* MousePointerManager::GetCurrentPointer()
+void
+MousePointerManager::Register(MediaToolkit *media)
+{
+  media->AddMouseMotionListener(this);
+}
+
+MousePointer*
+MousePointerManager::GetCurrentPointer()
 {
   return pointerVec[currentPointer];
 }
 
-void MousePointerManager::SetCurrentPointer(const unsigned int n)
+void
+MousePointerManager::SetCurrentPointer(const unsigned int n)
 {
   if (n < pointerVec.size()) {
     currentPointer = n;
@@ -59,9 +68,15 @@ void MousePointerManager::SetCurrentPointer(const unsigned int n)
   }
 }
 
-void MousePointerManager::AddPointer(const std::string& resname)
+void
+MousePointerManager::AddPointer(const std::string& resname)
 {
   MousePointer *mp = new MousePointer(resname);
   pointerVec.push_back(mp);
 }
 
+void
+MousePointerManager::MouseMoved(const MouseMotionEvent &mme)
+{
+  pointerVec[currentPointer]->SetPosition(mme.GetXPos(), mme.GetYPos());
+}

@@ -53,40 +53,62 @@ SDL_Toolkit::GetInstance()
 void
 SDL_Toolkit::HandleEvent(SDL_Event& event)
 {
-  KeyboardEvent *kbe;
   if (eventHandler) {
     switch (event.type) {
       case SDL_KEYDOWN:
-        eventHandler->HandleKeyboardEvent(event.key.keysym.sym, true);
-        kbe = new KeyboardEvent((Key)event.key.keysym.sym);
-        for (unsigned int i = 0; i < keyboardListeners.size(); i++) {
-          keyboardListeners[i]->KeyPressed(*kbe);
+        {
+          eventHandler->HandleKeyboardEvent(event.key.keysym.sym, true);
+          KeyboardEvent kbe((Key)event.key.keysym.sym);
+          for (unsigned int i = 0; i < keyboardListeners.size(); i++) {
+            keyboardListeners[i]->KeyPressed(kbe);
+          }
         }
-        delete kbe;
         break;
       case SDL_KEYUP:
-        eventHandler->HandleKeyboardEvent(event.key.keysym.sym, false);
-        kbe = new KeyboardEvent((Key)event.key.keysym.sym);
-        for (unsigned int i = 0; i < keyboardListeners.size(); i++) {
-          keyboardListeners[i]->KeyReleased(*kbe);
+        {
+          eventHandler->HandleKeyboardEvent(event.key.keysym.sym, false);
+          KeyboardEvent kbe((Key)event.key.keysym.sym);
+          for (unsigned int i = 0; i < keyboardListeners.size(); i++) {
+            keyboardListeners[i]->KeyReleased(kbe);
+          }
         }
-        delete kbe;
         break;
       case SDL_MOUSEBUTTONDOWN:
-        eventHandler->HandleMouseButtonEvent(event.button.button - 1,
-                                             event.button.x / video->GetScaling(),
-                                             event.button.y / video->GetScaling(),
-                                             true);
+        {
+          eventHandler->HandleMouseButtonEvent(event.button.button - 1,
+                                               event.button.x / video->GetScaling(),
+                                               event.button.y / video->GetScaling(),
+                                               true);
+          MouseButtonEvent mbe((MouseButton)(event.button.button - 1),
+                               event.button.x / video->GetScaling(),
+                               event.button.y / video->GetScaling());
+          for (unsigned int i = 0; i < mouseButtonListeners.size(); i++) {
+            mouseButtonListeners[i]->ButtonPressed(mbe);
+          }
+        }
         break;
       case SDL_MOUSEBUTTONUP:
-        eventHandler->HandleMouseButtonEvent(event.button.button - 1,
-                                             event.button.x / video->GetScaling(),
-                                             event.button.y / video->GetScaling(),
-                                             false);
+        {
+          eventHandler->HandleMouseButtonEvent(event.button.button - 1,
+                                               event.button.x / video->GetScaling(),
+                                               event.button.y / video->GetScaling(),
+                                               false);
+          MouseButtonEvent mbe((MouseButton)(event.button.button - 1),
+                               event.button.x / video->GetScaling(),
+                               event.button.y / video->GetScaling());
+          for (unsigned int i = 0; i < mouseButtonListeners.size(); i++) {
+            mouseButtonListeners[i]->ButtonReleased(mbe);
+          }
+        }
         break;
       case SDL_MOUSEMOTION:
-        eventHandler->HandleMouseMotionEvent(event.motion.x / video->GetScaling(),
-                                             event.motion.y / video->GetScaling());
+        {
+          MouseMotionEvent mme(event.button.x / video->GetScaling(),
+                               event.button.y / video->GetScaling());
+          for (unsigned int i = 0; i < mouseMotionListeners.size(); i++) {
+            mouseMotionListeners[i]->MouseMoved(mme);
+          }
+        }
         break;
       default:
         break;
