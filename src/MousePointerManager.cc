@@ -49,6 +49,7 @@ MousePointerManager::GetInstance()
 void
 MousePointerManager::Register(MediaToolkit *media)
 {
+  media->AddMouseButtonListener(this);
   media->AddMouseMotionListener(this);
 }
 
@@ -73,6 +74,18 @@ MousePointerManager::AddPointer(const std::string& resname)
 {
   MousePointer *mp = new MousePointer(resname);
   pointerVec.push_back(mp);
+}
+
+void
+MousePointerManager::MouseButtonPressed(const MouseButtonEvent &mbe)
+{
+  pointerVec[currentPointer]->SetPosition(mbe.GetXPos(), mbe.GetYPos());
+}
+
+void
+MousePointerManager::MouseButtonReleased(const MouseButtonEvent &mbe)
+{
+  pointerVec[currentPointer]->SetPosition(mbe.GetXPos(), mbe.GetYPos());
 }
 
 void

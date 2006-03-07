@@ -46,10 +46,16 @@ static const unsigned int LOAD_PALETTE      = 0xf050;
 MoviePlayer::MoviePlayer(MediaToolkit *mtk)
 : media(mtk)
 {
+  media->AddKeyboardListener(this);
+  media->AddMouseButtonListener(this);
+  media->AddUpdateListener(this);
 }
 
 MoviePlayer::~MoviePlayer()
 {
+  media->RemoveKeyboardListener(this);
+  media->RemoveMouseButtonListener(this);
+  media->RemoveUpdateListener(this);
 }
 
 void
@@ -73,9 +79,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
 
     MousePointerManager::GetInstance()->GetCurrentPointer()->SetVisible(false);
     media->ClearEvents();
-    media->SetEventHandler(this);
     media->PollEventLoop();
-    media->SetEventHandler(0);
 
     (paletteSlot[currPalette])->FadeOut(media->GetVideo(), 0, VIDEO_COLORS, 64, 10, media->GetClock());
     if (screenSlot) {
@@ -101,25 +105,48 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
 }
 
 void
-MoviePlayer::HandleKeyboardEvent(int key, bool down) {
-  key = 0;
-  if (down) {
-    media->TerminateEventLoop();
+MoviePlayer::KeyPressed(const KeyboardEvent& kbe) {
+  switch (kbe.GetKey()) {
+    case KEY_ESCAPE:
+    case KEY_RETURN:
+    case KEY_SPACE:
+      media->TerminateEventLoop();
+      break;
+    default:
+      break;
   }
 }
 
 void
-MoviePlayer::HandleMouseButtonEvent(int button, int x, int y, bool down) {
-  button = 0;
-  x = 0;
-  y = 0;
-  if (down) {
-    media->TerminateEventLoop();
+MoviePlayer::KeyReleased(const KeyboardEvent& kbe) {
+  switch (kbe.GetKey()) {
+    default:
+      break;
   }
 }
 
 void
-MoviePlayer::HandleUpdateEvent() {
+MoviePlayer::MouseButtonPressed(const MouseButtonEvent& mbe) {
+  switch (mbe.GetButton()) {
+    case MB_LEFT:
+//      media->TerminateEventLoop();
+      break;
+    default:
+      break;
+  }
+}
+
+void
+MoviePlayer::MouseButtonReleased(const MouseButtonEvent& mbe) {
+  switch (mbe.GetButton()) {
+    default:
+      break;
+  }
+}
+
+void
+MoviePlayer::Update(const UpdateEvent& ue) {
+  ue.GetTicks();
   try {
     MovieTag *mt = (*tagVec)[currTag];
     switch (mt->code) {
@@ -231,7 +258,7 @@ MoviePlayer::HandleUpdateEvent() {
       }
     }
   } catch (Exception &e) {
-    e.Print("MoviePlayer::HandleUpdateEvent");
+    e.Print("MoviePlayer::Update");
     throw;
   }
 }

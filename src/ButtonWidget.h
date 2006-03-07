@@ -26,7 +26,9 @@
 
 #include "LabelWidget.h"
 
-class ButtonWidget: public Widget {
+class ButtonWidget
+: public Widget
+{
   private:
     bool enabled;
     bool pressed;

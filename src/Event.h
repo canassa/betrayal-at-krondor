@@ -190,7 +190,7 @@ class KeyboardEvent: public Event {
   private:
     Key key;
   public:
-    KeyboardEvent(Key k);
+    KeyboardEvent(const Key k);
     virtual ~KeyboardEvent();
     Key GetKey() const;
 };
@@ -201,7 +201,7 @@ class MouseButtonEvent: public Event {
     int xpos;
     int ypos;
   public:
-    MouseButtonEvent(MouseButton b, int x, int y);
+    MouseButtonEvent(const MouseButton b, const int x, const int y);
     virtual ~MouseButtonEvent();
     MouseButton GetButton() const;
     int GetXPos() const;
@@ -213,17 +213,26 @@ class MouseMotionEvent: public Event {
     int xpos;
     int ypos;
   public:
-    MouseMotionEvent(int x, int y);
+    MouseMotionEvent(const int x, const int y);
     virtual ~MouseMotionEvent();
     int GetXPos() const;
     int GetYPos() const;
+};
+
+class UpdateEvent: public Event {
+  private:
+    int ticks;
+  public:
+    UpdateEvent(const int t);
+    virtual ~UpdateEvent();
+    int GetTicks() const;
 };
 
 class ActionEvent: public Event {
   private:
     int action;
   public:
-    ActionEvent(int a);
+    ActionEvent(const int a);
     virtual ~ActionEvent();
     int GetAction() const;
 };

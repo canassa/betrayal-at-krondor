@@ -24,7 +24,6 @@
 #include "config.h"
 #endif
 
-#include "EventHandler.h"
 #include "MediaToolkit.h"
 #include "MovieResource.h"
 #include "ImageResource.h"
@@ -34,7 +33,11 @@
 static const unsigned int MAX_IMAGE_SLOTS   = 4;
 static const unsigned int MAX_PALETTE_SLOTS = 4;
 
-class MoviePlayer: public EventHandler {
+class MoviePlayer
+: public KeyboardEventListener
+, public MouseButtonEventListener
+, public UpdateEventListener
+{
   private:
     MediaToolkit *media;
     std::vector<MovieTag *> *tagVec;
@@ -54,9 +57,11 @@ class MoviePlayer: public EventHandler {
     MoviePlayer(MediaToolkit *mtk);
     ~MoviePlayer();
     void Play(std::vector<MovieTag *> *movie, const bool repeat);
-    void HandleKeyboardEvent(int key, bool down);
-    void HandleMouseButtonEvent(int button, int x, int y, bool down);
-    void HandleUpdateEvent();
+    void KeyPressed(const KeyboardEvent& kbe);
+    void KeyReleased(const KeyboardEvent& kbe);
+    void MouseButtonPressed(const MouseButtonEvent& mbe);
+    void MouseButtonReleased(const MouseButtonEvent& mbe);
+    void Update(const UpdateEvent& ue);
 };
 
 #endif

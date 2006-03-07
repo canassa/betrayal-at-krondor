@@ -53,94 +53,107 @@ SDL_Toolkit::GetInstance()
 void
 SDL_Toolkit::HandleEvent(SDL_Event& event)
 {
-  if (eventHandler) {
-    switch (event.type) {
-      case SDL_KEYDOWN:
-        {
+  switch (event.type) {
+    case SDL_KEYDOWN:
+      {
+        if (eventHandler) {
           eventHandler->HandleKeyboardEvent(event.key.keysym.sym, true);
-          KeyboardEvent kbe((Key)event.key.keysym.sym);
-          for (unsigned int i = 0; i < keyboardListeners.size(); i++) {
-            keyboardListeners[i]->KeyPressed(kbe);
-          }
         }
-        break;
-      case SDL_KEYUP:
-        {
+        KeyboardEvent kbe((Key)event.key.keysym.sym);
+        for (std::list<KeyboardEventListener *>::iterator it = keyboardListeners.begin(); it != keyboardListeners.end(); it++) {
+          (*it)->KeyPressed(kbe);
+        }
+      }
+      break;
+    case SDL_KEYUP:
+      {
+        if (eventHandler) {
           eventHandler->HandleKeyboardEvent(event.key.keysym.sym, false);
-          KeyboardEvent kbe((Key)event.key.keysym.sym);
-          for (unsigned int i = 0; i < keyboardListeners.size(); i++) {
-            keyboardListeners[i]->KeyReleased(kbe);
-          }
         }
-        break;
-      case SDL_MOUSEBUTTONDOWN:
-        {
+        KeyboardEvent kbe((Key)event.key.keysym.sym);
+        for (std::list<KeyboardEventListener *>::iterator it = keyboardListeners.begin(); it != keyboardListeners.end(); it++) {
+          (*it)->KeyReleased(kbe);
+        }
+      }
+      break;
+    case SDL_MOUSEBUTTONDOWN:
+      {
+        if (eventHandler) {
           eventHandler->HandleMouseButtonEvent(event.button.button - 1,
                                                event.button.x / video->GetScaling(),
                                                event.button.y / video->GetScaling(),
                                                true);
-          MouseButtonEvent mbe((MouseButton)(event.button.button - 1),
-                               event.button.x / video->GetScaling(),
-                               event.button.y / video->GetScaling());
-          for (unsigned int i = 0; i < mouseButtonListeners.size(); i++) {
-            mouseButtonListeners[i]->ButtonPressed(mbe);
-          }
         }
-        break;
-      case SDL_MOUSEBUTTONUP:
-        {
+        MouseButtonEvent mbe((MouseButton)(event.button.button - 1),
+                             event.button.x / video->GetScaling(),
+                             event.button.y / video->GetScaling());
+        for (std::list<MouseButtonEventListener *>::iterator it = mouseButtonListeners.begin(); it != mouseButtonListeners.end(); it++) {
+          (*it)->MouseButtonPressed(mbe);
+        }
+      }
+      break;
+    case SDL_MOUSEBUTTONUP:
+      {
+        if (eventHandler) {
           eventHandler->HandleMouseButtonEvent(event.button.button - 1,
                                                event.button.x / video->GetScaling(),
                                                event.button.y / video->GetScaling(),
                                                false);
-          MouseButtonEvent mbe((MouseButton)(event.button.button - 1),
-                               event.button.x / video->GetScaling(),
-                               event.button.y / video->GetScaling());
-          for (unsigned int i = 0; i < mouseButtonListeners.size(); i++) {
-            mouseButtonListeners[i]->ButtonReleased(mbe);
-          }
         }
-        break;
-      case SDL_MOUSEMOTION:
-        {
-          MouseMotionEvent mme(event.button.x / video->GetScaling(),
-                               event.button.y / video->GetScaling());
-          for (unsigned int i = 0; i < mouseMotionListeners.size(); i++) {
-            mouseMotionListeners[i]->MouseMoved(mme);
-          }
+        MouseButtonEvent mbe((MouseButton)(event.button.button - 1),
+                             event.button.x / video->GetScaling(),
+                             event.button.y / video->GetScaling());
+        for (std::list<MouseButtonEventListener *>::iterator it = mouseButtonListeners.begin(); it != mouseButtonListeners.end(); it++) {
+          (*it)->MouseButtonReleased(mbe);
         }
-        break;
-      default:
-        break;
-    }
+      }
+      break;
+    case SDL_MOUSEMOTION:
+      {
+        MouseMotionEvent mme(event.button.x / video->GetScaling(),
+                             event.button.y / video->GetScaling());
+        for (std::list<MouseMotionEventListener *>::iterator it = mouseMotionListeners.begin(); it != mouseMotionListeners.end(); it++) {
+          (*it)->MouseMoved(mme);
+        }
+      }
+      break;
+    default:
+      break;
   }
 }
 
 void
 SDL_Toolkit::PollEventLoop()
 {
-  if (eventHandler) {
-    eventLoopRunning = true;
-    SDL_Event event;
-    while (eventLoopRunning) {
-      while (SDL_PollEvent(&event)) {
-        HandleEvent(event);
-      }
+  int currentTicks;
+  int previousTicks = SDL_GetTicks();
+  SDL_Event event;
+
+  eventLoopRunning = true;
+  while (eventLoopRunning) {
+    while (SDL_PollEvent(&event)) {
+      HandleEvent(event);
+    }
+    if (eventHandler) {
       eventHandler->HandleUpdateEvent();
     }
+    currentTicks = SDL_GetTicks();
+    UpdateEvent ue(currentTicks - previousTicks);
+    for (std::list<UpdateEventListener *>::iterator it = updateListeners.begin(); it != updateListeners.end(); it++) {
+      (*it)->Update(ue);
+    }
+    previousTicks = currentTicks;
   }
 }
 
 void
 SDL_Toolkit::WaitEventLoop()
 {
-  if (eventHandler) {
-    eventLoopRunning = true;
-    SDL_Event event;
-    while (eventLoopRunning) {
-      if (SDL_WaitEvent(&event)) {
-        HandleEvent(event);
-      }
+  eventLoopRunning = true;
+  SDL_Event event;
+  while (eventLoopRunning) {
+    if (SDL_WaitEvent(&event)) {
+      HandleEvent(event);
     }
   }
 }

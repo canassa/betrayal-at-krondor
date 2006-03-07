@@ -27,7 +27,7 @@ Event::~Event()
 {
 }
 
-KeyboardEvent::KeyboardEvent(Key k)
+KeyboardEvent::KeyboardEvent(const Key k)
 : key(k)
 {
 }
@@ -42,7 +42,7 @@ KeyboardEvent::GetKey() const
   return key;
 }
 
-MouseButtonEvent::MouseButtonEvent(MouseButton b, int x, int y)
+MouseButtonEvent::MouseButtonEvent(const MouseButton b, const int x, const int y)
 :button(b)
 , xpos(x)
 , ypos(y)
@@ -71,7 +71,7 @@ MouseButtonEvent::GetYPos() const
   return ypos;
 }
 
-MouseMotionEvent::MouseMotionEvent(int x, int y)
+MouseMotionEvent::MouseMotionEvent(const int x, const int y)
 : xpos(x)
 , ypos(y)
 {
@@ -93,7 +93,22 @@ MouseMotionEvent::GetYPos() const
   return ypos;
 }
 
-ActionEvent::ActionEvent(int a)
+UpdateEvent::UpdateEvent(const int t)
+: ticks(t)
+{
+}
+
+UpdateEvent::~UpdateEvent()
+{
+}
+
+int
+UpdateEvent::GetTicks() const
+{
+  return ticks;
+}
+
+ActionEvent::ActionEvent(const int a)
 : action(a)
 {
 }

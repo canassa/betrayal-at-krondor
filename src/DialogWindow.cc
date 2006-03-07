@@ -101,7 +101,6 @@ void
 DialogWindow::HandleMouseButtonEvent(int button, int x, int y, bool down)
 {
   panel->Draw(media->GetVideo());
-  MousePointerManager::GetInstance()->GetCurrentPointer()->SetPosition(x, y);
   MousePointerManager::GetInstance()->GetCurrentPointer()->Draw(media->GetVideo());
   media->GetVideo()->Refresh();
   if (down) {

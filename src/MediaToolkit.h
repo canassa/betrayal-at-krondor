@@ -24,7 +24,7 @@
 #include "config.h"
 #endif
 
-#include <vector>
+#include <list>
 
 #include "Clock.h"
 #include "EventHandler.h"
@@ -37,9 +37,10 @@ class MediaToolkit {
     Video *video;
     EventHandler *eventHandler;
     bool eventLoopRunning;
-    std::vector<KeyboardEventListener *> keyboardListeners;
-    std::vector<MouseButtonEventListener *> mouseButtonListeners;
-    std::vector<MouseMotionEventListener *> mouseMotionListeners;
+    std::list<KeyboardEventListener *> keyboardListeners;
+    std::list<MouseButtonEventListener *> mouseButtonListeners;
+    std::list<MouseMotionEventListener *> mouseMotionListeners;
+    std::list<UpdateEventListener *> updateListeners;
   public:
     MediaToolkit();
     virtual ~MediaToolkit();
@@ -47,8 +48,13 @@ class MediaToolkit {
     Video* GetVideo() const;
     void SetEventHandler(EventHandler *eh);
     void AddKeyboardListener(KeyboardEventListener *kel);
+    void RemoveKeyboardListener(KeyboardEventListener *kel);
     void AddMouseButtonListener(MouseButtonEventListener *mbel);
+    void RemoveMouseButtonListener(MouseButtonEventListener *mbel);
     void AddMouseMotionListener(MouseMotionEventListener *mmel);
+    void RemoveMouseMotionListener(MouseMotionEventListener *mmel);
+    void AddUpdateListener(UpdateEventListener *uel);
+    void RemoveUpdateListener(UpdateEventListener *uel);
     void TerminateEventLoop();
     virtual void PollEventLoop() = 0;
     virtual void WaitEventLoop() = 0;

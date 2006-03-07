@@ -44,8 +44,8 @@ class MouseButtonEventListener: public EventListener {
   public:
     MouseButtonEventListener() {};
     virtual ~MouseButtonEventListener() {};
-    virtual void ButtonPressed(const MouseButtonEvent &mbe) = 0;
-    virtual void ButtonReleased(const MouseButtonEvent &mbe) = 0;
+    virtual void MouseButtonPressed(const MouseButtonEvent &mbe) = 0;
+    virtual void MouseButtonReleased(const MouseButtonEvent &mbe) = 0;
 };
 
 class MouseMotionEventListener: public EventListener {
@@ -53,6 +53,13 @@ class MouseMotionEventListener: public EventListener {
     MouseMotionEventListener() {};
     virtual ~MouseMotionEventListener() {};
     virtual void MouseMoved(const MouseMotionEvent &mme) = 0;
+};
+
+class UpdateEventListener: public EventListener {
+  public:
+    UpdateEventListener() {};
+    virtual ~UpdateEventListener() {};
+    virtual void Update(const UpdateEvent &ue) = 0;
 };
 
 class ActionEventListener: public EventListener {
