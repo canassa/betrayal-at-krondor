@@ -26,14 +26,15 @@
 
 #include "Widget.h"
 
-class ChoiceWidget: public Widget {
+class ChoiceWidget: public ActiveWidget {
   private:
   public:
-    ChoiceWidget(const int x, const int y, const int w, const int h);
+    ChoiceWidget(const int x, const int y, const int w, const int h, const int a);
     virtual ~ChoiceWidget();
-    virtual void Draw(Video *video);
-    virtual void Focus(int x, int y);
-    virtual void Activate(int x, int y);
+    void Draw(Video *video);
+    void Focus(Video *video);
+    void Activate();
+    void Deactivate();
 };
 
 #endif

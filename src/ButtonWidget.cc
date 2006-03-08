@@ -28,8 +28,8 @@ static const int TEXT_COLOR_PRESSED   = 6;
 static const int BUTTON_COLOR_NORMAL  = 14;
 static const int BUTTON_COLOR_PRESSED = 11;
 
-ButtonWidget::ButtonWidget(const int x, const int y, const int w, const int h)
-: Widget(x, y, w, h)
+ButtonWidget::ButtonWidget(const int x, const int y, const int w, const int h, const int a)
+: ActiveWidget(x, y, w, h, a)
 , enabled(true)
 , pressed(false)
 , label(0)
@@ -96,12 +96,17 @@ ButtonWidget::Focus(Video *video)
 }
 
 void
-ButtonWidget::Activate(const bool toggle)
+ButtonWidget::Activate()
 {
-  pressed = toggle;
-  if (toggle) {
-    if (callback) {
-      callback->ActionPerformed(action);
-    }
+  pressed = true;
+  ActionEvent ae(action);
+  for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); it++) {
+    (*it)->ActionPerformed(ae);
   }
+}
+
+void
+ButtonWidget::Deactivate()
+{
+  pressed = false;
 }

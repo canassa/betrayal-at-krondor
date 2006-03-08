@@ -19,8 +19,8 @@
 
 #include "ChoiceWidget.h"
 
-ChoiceWidget::ChoiceWidget(const int x, const int y, const int w, const int h)
-: Widget(x, y, w, h)
+ChoiceWidget::ChoiceWidget(const int x, const int y, const int w, const int h, const int a)
+: ActiveWidget(x, y, w, h, a)
 {
 }
 
@@ -35,15 +35,17 @@ ChoiceWidget::Draw(Video *video)
 }
 
 void
-ChoiceWidget::Focus(int x, int y)
+ChoiceWidget::Focus(Video *video)
 {
-  if (Covers(x, y)) {
-  }
+  video = video;
 }
 
 void
-ChoiceWidget::Activate(int x, int y)
+ChoiceWidget::Activate()
 {
-  if (Covers(x, y)) {
-  }
+}
+
+void
+ChoiceWidget::Deactivate()
+{
 }

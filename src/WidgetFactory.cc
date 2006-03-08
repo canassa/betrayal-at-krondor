@@ -28,12 +28,11 @@ WidgetFactory::~WidgetFactory()
 }
 
 ButtonWidget*
-WidgetFactory::CreateButton(RequestData& data, FontResource &fnt, WidgetCallBack *wcb)
+WidgetFactory::CreateButton(RequestData& data, FontResource &fnt, ActionEventListener *ael)
 {
-  ButtonWidget *button = new ButtonWidget(data.xpos, data.ypos, data.width, data.height);
+  ButtonWidget *button = new ButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
   button->SetLabel(data.label, &fnt);
-  button->SetAction(data.action);
-  button->SetCallBack(wcb);
+  button->AddActionListener(ael);
   return button;
 }
 
@@ -44,7 +43,7 @@ WidgetFactory::CreateChoice()
 }
 
 PanelWidget*
-WidgetFactory::CreatePanel(RequestResource &req, ScreenResource &scr, FontResource &fnt, WidgetCallBack *wcb)
+WidgetFactory::CreatePanel(RequestResource &req, ScreenResource &scr, FontResource &fnt, ActionEventListener *ael)
 {
   PanelWidget *panel = new PanelWidget(req.GetXPos(), req.GetYPos(), req.GetWidth(), req.GetHeight());
   panel->SetBackground(scr.GetImage());
@@ -55,8 +54,8 @@ WidgetFactory::CreatePanel(RequestResource &req, ScreenResource &scr, FontResour
     switch (data.widget) {
       case REQ_BUTTON:
         if (data.visible) {
-          ButtonWidget *button = CreateButton(data, fnt, wcb);
-          panel->AddWidget(button);
+          ButtonWidget *button = CreateButton(data, fnt, ael);
+          panel->AddActiveWidget(button);
         }
         break;
       case REQ_SELECT:

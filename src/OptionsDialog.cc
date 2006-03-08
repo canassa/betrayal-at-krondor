@@ -132,11 +132,11 @@ OptionsDialog::Update(const UpdateEvent& ue)
 }
 
 void
-OptionsDialog::ActionPerformed(const int action)
+OptionsDialog::ActionPerformed(const ActionEvent& ae)
 {
-  switch (action) {
+  switch (ae.GetAction()) {
     default:
-      printf("Action: %d\n", action);
+      printf("Action: %d\n", ae.GetAction());
       break;
   }
 }

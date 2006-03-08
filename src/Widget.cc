@@ -24,8 +24,6 @@ Widget::Widget(const int x, const int y, const int w, const int h)
 , ypos(y)
 , width(w)
 , height(h)
-, action(-1)
-, callback(0)
 {
 }
 
@@ -76,36 +74,27 @@ Widget::GetHeight() const
   return height;
 }
 
-void
-Widget::SetAction(const int a)
+
+ActiveWidget::ActiveWidget(const int x, const int y, const int w, const int h, const int a)
+: Widget(x, y, w, h)
+, action(a)
+, actionListeners()
 {
-  action = a;
+}
+
+ActiveWidget::~ActiveWidget()
+{
+  actionListeners.clear();
 }
 
 void
-Widget::SetCallBack(WidgetCallBack *wcb)
+ActiveWidget::AddActionListener(ActionEventListener *ael)
 {
-  callback = wcb;
+  actionListeners.push_back(ael);
 }
 
 void
-Widget::Draw(Video *video)
+ActiveWidget::RemoveActionListener(ActionEventListener *ael)
 {
-  video = video;
-}
-
-void
-Widget::Focus(Video *video)
-{
-  video = video;
-}
-
-void
-Widget::Activate(const bool toggle)
-{
-  if (toggle) {
-    if (callback) {
-      callback->ActionPerformed(action);
-    }
-  }
+  actionListeners.remove(ael);
 }

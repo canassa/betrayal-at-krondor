@@ -21,30 +21,57 @@
 
 ContainerWidget::ContainerWidget(const int x, const int y, const int w, const int h)
 : Widget(x, y, w, h)
-, widgetVec()
-, currentWidget(-1)
+, widgets()
+, activeWidgets()
 {
+  currentActiveWidget = activeWidgets.begin();
 }
 
 ContainerWidget::~ContainerWidget()
 {
-  for (unsigned int i = 0; i < widgetVec.size(); i++) {
-    delete widgetVec[i];
+  for (std::list<Widget *>::iterator it = widgets.begin(); it != widgets.end(); it++) {
+    delete (*it);
   }
-  widgetVec.clear();
+  widgets.clear();
+  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); it++) {
+    delete (*it);
+  }
+  activeWidgets.clear();
 }
 
 void
 ContainerWidget::AddWidget(Widget *w)
 {
-  widgetVec.push_back(w);
+  widgets.push_back(w);
+}
+
+void
+ContainerWidget::AddActiveWidget(ActiveWidget *aw)
+{
+  activeWidgets.push_back(aw);
+}
+
+void
+ContainerWidget::RemoveWidget(Widget *w)
+{
+  widgets.remove(w);
+  currentActiveWidget = activeWidgets.begin();
+}
+
+void
+ContainerWidget::RemoveActiveWidget(ActiveWidget *aw)
+{
+  activeWidgets.remove(aw);
 }
 
 void
 ContainerWidget::DrawWidgets(Video *video)
 {
-  for (unsigned int i = 0; i < widgetVec.size(); i++) {
-    widgetVec[i]->Draw(video);
+  for (std::list<Widget *>::iterator it = widgets.begin(); it != widgets.end(); it++) {
+    (*it)->Draw(video);
+  }
+  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); it++) {
+    (*it)->Draw(video);
   }
 }
 
@@ -57,29 +84,48 @@ ContainerWidget::Draw(Video *video)
 void
 ContainerWidget::NextWidget(Video *video)
 {
-  if (widgetVec.size() > 0) {
-    currentWidget++;
-    if ((unsigned int)currentWidget == widgetVec.size()) {
-      currentWidget = 0;
+  if (activeWidgets.size() > 0) {
+    if (currentActiveWidget != activeWidgets.end()) {
+      currentActiveWidget++;
+    } else {
+      currentActiveWidget = activeWidgets.begin();
     }
-    widgetVec[currentWidget]->Focus(video);
+    (*currentActiveWidget)->Focus(video);
   }
 }
 
 void
-ContainerWidget::Activate(const bool toggle)
+ContainerWidget::Activate()
 {
-  if ((currentWidget >= 0) && ((unsigned int)currentWidget < widgetVec.size())) {
-    widgetVec[currentWidget]->Activate(toggle);
+  if (activeWidgets.size() > 0) {
+    (*currentActiveWidget)->Activate();
   }
 }
 
 void
-ContainerWidget::Activate(const int x, const int y, const bool toggle)
+ContainerWidget::Deactivate()
 {
-  for (unsigned int i = 0; i < widgetVec.size(); i++) {
-    if (widgetVec[i]->Covers(x, y)) {
-      widgetVec[i]->Activate(toggle);
+  if (activeWidgets.size() > 0) {
+    (*currentActiveWidget)->Deactivate();
+  }
+}
+
+void
+ContainerWidget::Activate(const int x, const int y)
+{
+  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); it++) {
+    if ((*it)->Covers(x, y)) {
+      (*it)->Activate();
+    }
+  }
+}
+
+void
+ContainerWidget::Deactivate(const int x, const int y)
+{
+  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); it++) {
+    if ((*it)->Covers(x, y)) {
+      (*it)->Deactivate();
     }
   }
 }

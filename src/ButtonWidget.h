@@ -27,21 +27,21 @@
 #include "LabelWidget.h"
 
 class ButtonWidget
-: public Widget
+: public ActiveWidget
 {
   private:
     bool enabled;
     bool pressed;
     LabelWidget* label;
   public:
-    ButtonWidget(const int x, const int y, const int w, const int h);
+    ButtonWidget(const int x, const int y, const int w, const int h, const int a);
     virtual ~ButtonWidget();
     void SetEnabled(const bool toggle);
     void SetLabel(const std::string& s, FontResource *f);
     void Draw(Video *video);
     void Focus(Video *video);
-    void Activate(const bool toggle);
+    void Activate();
+    void Deactivate();
 };
 
 #endif
-

@@ -35,7 +35,7 @@ class DialogWindow {
   private:
     PanelWidget *panel;
   public:
-    DialogWindow(RequestResource& req, ScreenResource& scr, FontResource& fnt, WidgetCallBack *wcb);
+    DialogWindow(RequestResource& req, ScreenResource& scr, FontResource& fnt, ActionEventListener *ael);
     ~DialogWindow();
     void Draw(Video *video);
     void FadeIn(PaletteResource& pal, MediaToolkit *media);

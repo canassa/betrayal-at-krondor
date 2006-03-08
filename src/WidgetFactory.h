@@ -32,13 +32,12 @@
 #include "TickboxWidget.h"
 
 class WidgetFactory {
-  private:
   public:
     WidgetFactory();
     virtual ~WidgetFactory();
-    ButtonWidget* CreateButton(RequestData& data, FontResource& fnt, WidgetCallBack *wcb);
+    ButtonWidget* CreateButton(RequestData& data, FontResource& fnt, ActionEventListener *ael);
     ChoiceWidget* CreateChoice();
-    PanelWidget* CreatePanel(RequestResource& req, ScreenResource& scr, FontResource& fnt, WidgetCallBack *wcb);
+    PanelWidget* CreatePanel(RequestResource& req, ScreenResource& scr, FontResource& fnt, ActionEventListener *ael);
     TickboxWidget* CreateTickbox();
 };
 

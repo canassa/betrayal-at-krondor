@@ -26,13 +26,12 @@
 
 #include "DialogWindow.h"
 #include "EventListener.h"
-#include "WidgetCallBack.h"
 
 class OptionsDialog
 : public KeyboardEventListener
 , public MouseButtonEventListener
 , public UpdateEventListener
-, public WidgetCallBack
+, public ActionEventListener
 {
   private:
     MediaToolkit *media;
@@ -50,7 +49,7 @@ class OptionsDialog
     void MouseButtonPressed(const MouseButtonEvent& mbe);
     void MouseButtonReleased(const MouseButtonEvent& mbe);
     void Update(const UpdateEvent& ue);
-    void ActionPerformed(const int action);
+    void ActionPerformed(const ActionEvent& ae);
 };
 
 #endif

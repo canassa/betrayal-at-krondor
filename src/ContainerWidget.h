@@ -20,7 +20,7 @@
 #ifndef CONTAINER_WIDGET_H
 #define CONTAINER_WIDGET_H
 
-#include <vector>
+#include <list>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -30,8 +30,9 @@
 
 class ContainerWidget: public Widget {
   private:
-    std::vector<Widget *> widgetVec;
-    int currentWidget;
+    std::list<Widget *> widgets;
+    std::list<ActiveWidget *> activeWidgets;
+    std::list<ActiveWidget *>::iterator currentActiveWidget;
   protected:
     void DrawWidgets(Video *video);
   public:
@@ -39,9 +40,14 @@ class ContainerWidget: public Widget {
     virtual ~ContainerWidget();
     virtual void Draw(Video *video);
     void AddWidget(Widget *w);
+    void RemoveWidget(Widget *w);
+    void AddActiveWidget(ActiveWidget *aw);
+    void RemoveActiveWidget(ActiveWidget *aw);
     void NextWidget(Video *video);
-    void Activate(const bool toggle);
-    void Activate(const int x, const int y, const bool toggle);
+    void Activate();
+    void Deactivate();
+    void Activate(const int x, const int y);
+    void Deactivate(const int x, const int y);
 };
 
 #endif

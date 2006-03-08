@@ -44,7 +44,6 @@ noinst_HEADERS = AnimationResource.h \
                  TileWorldResource.h \
                  Video.h \
                  Widget.h \
-                 WidgetCallBack.h \
                  WidgetFactory.h \
                  ZoneTableResource.h
 bin_PROGRAMS = dumpads \
@@ -458,7 +457,6 @@ xbak_SOURCES = AnimationResource.cc \
                Video.h \
                Widget.cc \
                Widget.h \
-               WidgetCallBack.h \
                WidgetFactory.cc \
                WidgetFactory.h \
                ZoneTableResource.cc \

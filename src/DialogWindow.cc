@@ -23,12 +23,12 @@
 #include "ResourceManager.h"
 #include "WidgetFactory.h"
 
-DialogWindow::DialogWindow(RequestResource& req, ScreenResource& scr, FontResource& fnt, WidgetCallBack *wcb)
+DialogWindow::DialogWindow(RequestResource& req, ScreenResource& scr, FontResource& fnt, ActionEventListener *ael)
 : panel(0)
 {
   try{
     WidgetFactory wf;
-    panel = wf.CreatePanel(req, scr, fnt, wcb);
+    panel = wf.CreatePanel(req, scr, fnt, ael);
   } catch (Exception &e) {
     e.Print("DialogWindow::DialogWindow");
     throw;
@@ -69,25 +69,25 @@ DialogWindow::FadeOut(PaletteResource& pal, MediaToolkit *media)
 void
 DialogWindow::ActivateWidget()
 {
-  panel->Activate(true);
+  panel->Activate();
 }
 
 void
 DialogWindow::DeactivateWidget()
 {
-  panel->Activate(false);
+  panel->Deactivate();
 }
 
 void
 DialogWindow::ActivateWidget(const int x, const int y)
 {
-  panel->Activate(x, y, true);
+  panel->Activate(x, y);
 }
 
 void
 DialogWindow::DeactivateWidget(const int x, const int y)
 {
-  panel->Activate(x, y, false);
+  panel->Deactivate(x, y);
 }
 
 void

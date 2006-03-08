@@ -20,12 +20,14 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+#include <list>
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
+#include "EventListener.h"
 #include "Video.h"
-#include "WidgetCallBack.h"
 
 class Widget {
   protected:
@@ -33,8 +35,6 @@ class Widget {
     int ypos;
     int width;
     int height;
-    int action;
-    WidgetCallBack *callback;
   public:
     Widget(const int x, const int y, const int w, const int h);
     virtual ~Widget();
@@ -45,11 +45,21 @@ class Widget {
     int GetYCenter() const;
     int GetWidth() const;
     int GetHeight() const;
-    void SetAction(const int a);
-    void SetCallBack(WidgetCallBack *wcb);
-    virtual void Draw(Video *video);
-    virtual void Focus(Video *video);
-    virtual void Activate(const bool toggle);
+    virtual void Draw(Video *video) = 0;
+};
+
+class ActiveWidget: public Widget {
+  protected:
+    int action;
+    std::list<ActionEventListener *> actionListeners;
+  public:
+    ActiveWidget(const int x, const int y, const int w, const int h, const int a);
+    ~ActiveWidget();
+    void AddActionListener(ActionEventListener *ael);
+    void RemoveActionListener(ActionEventListener *ael);
+    virtual void Focus(Video *video) = 0;
+    virtual void Activate() = 0;
+    virtual void Deactivate() = 0;
 };
 
 #endif
