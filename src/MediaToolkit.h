@@ -27,7 +27,6 @@
 #include <list>
 
 #include "Clock.h"
-#include "EventHandler.h"
 #include "EventListener.h"
 #include "Video.h"
 
@@ -35,7 +34,6 @@ class MediaToolkit {
   protected:
     Clock *clock;
     Video *video;
-    EventHandler *eventHandler;
     bool eventLoopRunning;
     std::list<KeyboardEventListener *> keyboardListeners;
     std::list<MouseButtonEventListener *> mouseButtonListeners;
@@ -46,7 +44,6 @@ class MediaToolkit {
     virtual ~MediaToolkit();
     Clock* GetClock() const;
     Video* GetVideo() const;
-    void SetEventHandler(EventHandler *eh);
     void AddKeyboardListener(KeyboardEventListener *kel);
     void RemoveKeyboardListener(KeyboardEventListener *kel);
     void AddMouseButtonListener(MouseButtonEventListener *mbel);

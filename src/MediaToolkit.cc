@@ -22,7 +22,6 @@
 MediaToolkit::MediaToolkit()
 : clock(0)
 , video(0)
-, eventHandler(0)
 , eventLoopRunning(false)
 , keyboardListeners()
 , mouseButtonListeners()
@@ -49,12 +48,6 @@ Video*
 MediaToolkit::GetVideo() const
 {
   return video;
-}
-
-void
-MediaToolkit::SetEventHandler(EventHandler *eh)
-{
-  eventHandler = eh;
 }
 
 void

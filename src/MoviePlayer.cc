@@ -129,7 +129,7 @@ void
 MoviePlayer::MouseButtonPressed(const MouseButtonEvent& mbe) {
   switch (mbe.GetButton()) {
     case MB_LEFT:
-//      media->TerminateEventLoop();
+      media->TerminateEventLoop();
       break;
     default:
       break;
@@ -190,6 +190,7 @@ MoviePlayer::Update(const UpdateEvent& ue) {
         break;
       case FADE_OUT:
         (paletteSlot[currPalette])->FadeOut(media->GetVideo(), mt->data[0], mt->data[1], 64 << (mt->data[2] & 0x0f), 2 << mt->data[3], media->GetClock());
+        media->GetVideo()->Clear();
         paletteActivated = true;
         break;
       case FADE_IN:

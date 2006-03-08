@@ -24,7 +24,6 @@
 #include "config.h"
 #endif
 
-#include "EventHandler.h"
 #include "FontResource.h"
 #include "MediaToolkit.h"
 #include "PaletteResource.h"
@@ -32,18 +31,20 @@
 #include "RequestResource.h"
 #include "ScreenResource.h"
 
-class DialogWindow: public EventHandler {
+class DialogWindow {
   private:
-    MediaToolkit *media;
     PanelWidget *panel;
   public:
-    DialogWindow(MediaToolkit *mtk);
+    DialogWindow(RequestResource& req, ScreenResource& scr, FontResource& fnt, WidgetCallBack *wcb);
     ~DialogWindow();
-    void Create(RequestResource& req, ScreenResource& scr, FontResource& fnt, WidgetCallBack *wcb);
-    void Run(PaletteResource& pal);
-    void HandleKeyboardEvent(int key, bool down);
-    void HandleMouseButtonEvent(int button, int x, int y, bool down);
-    void HandleUpdateEvent();
+    void Draw(Video *video);
+    void FadeIn(PaletteResource& pal, MediaToolkit *media);
+    void FadeOut(PaletteResource& pal, MediaToolkit *media);
+    void ActivateWidget();
+    void DeactivateWidget();
+    void ActivateWidget(const int x, const int y);
+    void DeactivateWidget(const int x, const int y);
+    void SelectNextWidget(Video *video);
 };
 
 #endif

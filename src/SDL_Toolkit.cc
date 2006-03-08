@@ -56,9 +56,6 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
   switch (event.type) {
     case SDL_KEYDOWN:
       {
-        if (eventHandler) {
-          eventHandler->HandleKeyboardEvent(event.key.keysym.sym, true);
-        }
         KeyboardEvent kbe((Key)event.key.keysym.sym);
         for (std::list<KeyboardEventListener *>::iterator it = keyboardListeners.begin(); it != keyboardListeners.end(); it++) {
           (*it)->KeyPressed(kbe);
@@ -67,9 +64,6 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
       break;
     case SDL_KEYUP:
       {
-        if (eventHandler) {
-          eventHandler->HandleKeyboardEvent(event.key.keysym.sym, false);
-        }
         KeyboardEvent kbe((Key)event.key.keysym.sym);
         for (std::list<KeyboardEventListener *>::iterator it = keyboardListeners.begin(); it != keyboardListeners.end(); it++) {
           (*it)->KeyReleased(kbe);
@@ -78,12 +72,6 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
       break;
     case SDL_MOUSEBUTTONDOWN:
       {
-        if (eventHandler) {
-          eventHandler->HandleMouseButtonEvent(event.button.button - 1,
-                                               event.button.x / video->GetScaling(),
-                                               event.button.y / video->GetScaling(),
-                                               true);
-        }
         MouseButtonEvent mbe((MouseButton)(event.button.button - 1),
                              event.button.x / video->GetScaling(),
                              event.button.y / video->GetScaling());
@@ -94,12 +82,6 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
       break;
     case SDL_MOUSEBUTTONUP:
       {
-        if (eventHandler) {
-          eventHandler->HandleMouseButtonEvent(event.button.button - 1,
-                                               event.button.x / video->GetScaling(),
-                                               event.button.y / video->GetScaling(),
-                                               false);
-        }
         MouseButtonEvent mbe((MouseButton)(event.button.button - 1),
                              event.button.x / video->GetScaling(),
                              event.button.y / video->GetScaling());
@@ -133,9 +115,6 @@ SDL_Toolkit::PollEventLoop()
   while (eventLoopRunning) {
     while (SDL_PollEvent(&event)) {
       HandleEvent(event);
-    }
-    if (eventHandler) {
-      eventHandler->HandleUpdateEvent();
     }
     currentTicks = SDL_GetTicks();
     UpdateEvent ue(currentTicks - previousTicks);

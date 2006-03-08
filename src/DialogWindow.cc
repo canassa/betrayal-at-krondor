@@ -23,109 +23,75 @@
 #include "ResourceManager.h"
 #include "WidgetFactory.h"
 
-DialogWindow::DialogWindow(MediaToolkit *mtk)
-: media(mtk)
-, panel(0)
+DialogWindow::DialogWindow(RequestResource& req, ScreenResource& scr, FontResource& fnt, WidgetCallBack *wcb)
+: panel(0)
 {
+  try{
+    WidgetFactory wf;
+    panel = wf.CreatePanel(req, scr, fnt, wcb);
+  } catch (Exception &e) {
+    e.Print("DialogWindow::DialogWindow");
+    throw;
+  }
 }
 
 DialogWindow::~DialogWindow()
 {
-  delete panel;
-}
-
-void
-DialogWindow::Create(RequestResource& req, ScreenResource& scr, FontResource& fnt, WidgetCallBack *wcb)
-{
-  try{
-    WidgetFactory wf;
-    if (panel) {
-      delete panel;
-    }
-    panel = wf.CreatePanel(req, scr, fnt, wcb);
-    panel->Draw(media->GetVideo());
-    MousePointerManager::GetInstance()->GetCurrentPointer()->Draw(media->GetVideo());
-  } catch (Exception &e) {
-    e.Print("DialogWindow::Create");
-    throw;
+  if (panel) {
+    delete panel;
   }
 }
 
 void
-DialogWindow::Run(PaletteResource& pal)
+DialogWindow::Draw(Video *video)
 {
-  try {
-    pal.FadeIn(media->GetVideo(), 0, VIDEO_COLORS, 64, 10, media->GetClock());
-    media->ClearEvents();
-    media->SetEventHandler(this);
-    media->PollEventLoop();
-    media->SetEventHandler(0);
-    pal.FadeOut(media->GetVideo(), 0, VIDEO_COLORS, 64, 10, media->GetClock());
-  } catch (Exception &e) {
-    e.Print("DialogWindow::Run");
-    throw;
-  }
+  panel->Draw(video);
+  MousePointerManager::GetInstance()->GetCurrentPointer()->Draw(video);
+  video->Refresh();
 }
 
 void
-DialogWindow::HandleKeyboardEvent(int key, bool down)
-{
-  if (down) {
-    switch (key) {
-      case KEY_ESCAPE:
-        media->TerminateEventLoop();
-        break;
-      case KEY_TAB:
-        panel->NextWidget(media->GetVideo());
-        break;
-      case KEY_RETURN:
-      case KEY_SPACE:
-        panel->Activate(down);
-        break;
-      default:
-        break;
-    }
-  } else {
-    switch (key) {
-      case KEY_RETURN:
-      case KEY_SPACE:
-        panel->Activate(down);
-        break;
-      default:
-        break;
-    }
-  }
-}
-
-void
-DialogWindow::HandleMouseButtonEvent(int button, int x, int y, bool down)
+DialogWindow::FadeIn(PaletteResource& pal, MediaToolkit *media)
 {
   panel->Draw(media->GetVideo());
   MousePointerManager::GetInstance()->GetCurrentPointer()->Draw(media->GetVideo());
-  media->GetVideo()->Refresh();
-  if (down) {
-    switch (button) {
-      case MB_LEFT:
-        panel->Activate(x, y, down);
-        break;
-      default:
-        break;
-    }
-  } else {
-    switch (button) {
-      case MB_LEFT:
-        panel->Activate(x, y, down);
-        break;
-      default:
-        break;
-    }
-  }
+  pal.FadeIn(media->GetVideo(), 0, VIDEO_COLORS, 64, 10, media->GetClock());
 }
 
 void
-DialogWindow::HandleUpdateEvent()
+DialogWindow::FadeOut(PaletteResource& pal, MediaToolkit *media)
 {
   panel->Draw(media->GetVideo());
   MousePointerManager::GetInstance()->GetCurrentPointer()->Draw(media->GetVideo());
-  media->GetVideo()->Refresh();
+  pal.FadeOut(media->GetVideo(), 0, VIDEO_COLORS, 64, 10, media->GetClock());
+}
+
+void
+DialogWindow::ActivateWidget()
+{
+  panel->Activate(true);
+}
+
+void
+DialogWindow::DeactivateWidget()
+{
+  panel->Activate(false);
+}
+
+void
+DialogWindow::ActivateWidget(const int x, const int y)
+{
+  panel->Activate(x, y, true);
+}
+
+void
+DialogWindow::DeactivateWidget(const int x, const int y)
+{
+  panel->Activate(x, y, false);
+}
+
+void
+DialogWindow::SelectNextWidget(Video *video)
+{
+  panel->NextWidget(video);
 }

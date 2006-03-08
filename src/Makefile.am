@@ -5,7 +5,6 @@ noinst_HEADERS = AnimationResource.h \
                  ContainerWidget.h \
                  DialogWindow.h \
                  Event.h \
-                 EventHandler.h \
                  EventListener.h \
                  Exception.h \
                  FileBuffer.h \
@@ -305,7 +304,6 @@ viewres_SOURCES = AnimationResource.cc \
                   Clock.h \
                   Event.cc \
                   Event.h \
-                  EventHandler.h \
                   EventListener.h \
                   Exception.cc \
                   Exception.h \
@@ -386,7 +384,6 @@ xbak_SOURCES = AnimationResource.cc \
                DialogWindow.h \
                Event.cc \
                Event.h \
-               EventHandler.h \
                EventListener.h \
                Exception.cc \
                Exception.h \
