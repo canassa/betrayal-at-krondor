@@ -23,8 +23,8 @@ ContainerWidget::ContainerWidget(const int x, const int y, const int w, const in
 : Widget(x, y, w, h)
 , widgets()
 , activeWidgets()
+, currentActiveWidget()
 {
-  currentActiveWidget = activeWidgets.begin();
 }
 
 ContainerWidget::~ContainerWidget()
@@ -43,6 +43,7 @@ void
 ContainerWidget::AddWidget(Widget *w)
 {
   widgets.push_back(w);
+  currentActiveWidget = activeWidgets.begin();
 }
 
 void

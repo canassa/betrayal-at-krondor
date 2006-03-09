@@ -1,8 +1,9 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.59)
-AC_INIT(xbak, 0.0.5, guidoj@users.sf.net)
+AC_INIT(xbak, 0.0.6, guidoj@users.sf.net)
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADER([config.h])
+AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE
 
 # Checks for programs.
@@ -17,9 +18,12 @@ AC_PROG_RANLIB
 AC_CACHE_SAVE
 
 # Checks for libraries.
-AC_CHECK_LIB([SDL], [SDL_Init], , AC_MSG_ERROR([libSDL not found]))
+SDL_VERSION=1.2.8
+AM_PATH_SDL($SDL_VERSION,,AC_MSG_ERROR([SDL $SDL_VERSION not found!]))
 SDL_CXXFLAGS=$(sh sdl-config --cflags)
+SDL_LIBS=$(sh sdl-config --libs)
 CXXFLAGS="$CXXFLAGS $SDL_CXXFLAGS"
+LIBS="$LIBS $SDL_LIBS"
 
 AC_CACHE_SAVE
 
