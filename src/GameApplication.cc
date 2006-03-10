@@ -17,6 +17,9 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include <iomanip>
+#include <sstream>
+
 #include "AnimationResource.h"
 #include "Exception.h"
 #include "FontResource.h"
@@ -36,6 +39,7 @@ GameApplication* GameApplication::instance = 0;
 
 GameApplication::GameApplication()
 : mediaToolkit(SDL_Toolkit::GetInstance())
+, screenSaveCount(0)
 {
   mediaToolkit->GetVideo()->SetScaling(2);
   mediaToolkit->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
@@ -52,6 +56,7 @@ GameApplication::GameApplication()
   ta.Draw(mediaToolkit->GetVideo(), 16, 16);
   mediaToolkit->GetVideo()->Refresh();
   mediaToolkit->GetClock()->Delay(1000);
+  mediaToolkit->AddKeyboardListener(this);
 
   MousePointerManager::GetInstance()->AddPointer("POINTER.BMX");
   MousePointerManager::GetInstance()->AddPointer("POINTERG.BMX");
@@ -60,6 +65,7 @@ GameApplication::GameApplication()
 
 GameApplication::~GameApplication()
 {
+  mediaToolkit->RemoveKeyboardListener(this);
   delete MousePointerManager::GetInstance();
   delete mediaToolkit;
   delete ResourceManager::GetInstance();
@@ -99,5 +105,31 @@ GameApplication::Run()
     options.Run();
   } catch (Exception &e) {
     e.Print("GameApplication::Run");
+  }
+}
+
+void
+GameApplication::KeyPressed(const KeyboardEvent& kbe)
+{
+  switch (kbe.GetKey()){
+    case KEY_F12:
+      {
+        screenSaveCount++;
+        std::stringstream filenameStream;
+        filenameStream << "xbak_" << std::setw(3) << std::setfill('0') << screenSaveCount << ".bmp";
+        mediaToolkit->GetVideo()->SaveScreenShot(filenameStream.str());
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+void
+GameApplication::KeyReleased(const KeyboardEvent& kbe)
+{
+  switch (kbe.GetKey()){
+    default:
+      break;
   }
 }

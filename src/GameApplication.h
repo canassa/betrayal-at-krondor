@@ -26,11 +26,15 @@
 #include "config.h"
 #endif
 
+#include "EventListener.h"
 #include "MediaToolkit.h"
 
-class GameApplication {
+class GameApplication
+: KeyboardEventListener
+{
   private:
     MediaToolkit *mediaToolkit;
+    int screenSaveCount;
     static GameApplication *instance;
   protected:
     GameApplication();
@@ -39,6 +43,8 @@ class GameApplication {
     static GameApplication* GetInstance();
     void Intro();
     void Run();
+    void KeyPressed(const KeyboardEvent& kbe);
+    void KeyReleased(const KeyboardEvent& kbe);
 };
 
 #endif

@@ -1,3 +1,7 @@
+2006-03-XX, xbak-0.0,6:
+* Changed the EventHandler to more flexible EventListeners.
+* Added the ability to create screenshots (BMP format).
+
 2006-02-26, xbak-0.0.5:
 * LBL_*.DAT files and REQ_*.DAT files can be loaded.
 * Initial implementation of some GUI widgets is finished.
