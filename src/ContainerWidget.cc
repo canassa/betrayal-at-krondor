@@ -43,26 +43,26 @@ void
 ContainerWidget::AddWidget(Widget *w)
 {
   widgets.push_back(w);
-  currentActiveWidget = activeWidgets.begin();
 }
 
 void
 ContainerWidget::AddActiveWidget(ActiveWidget *aw)
 {
   activeWidgets.push_back(aw);
+  currentActiveWidget = activeWidgets.begin();
 }
 
 void
 ContainerWidget::RemoveWidget(Widget *w)
 {
   widgets.remove(w);
-  currentActiveWidget = activeWidgets.begin();
 }
 
 void
 ContainerWidget::RemoveActiveWidget(ActiveWidget *aw)
 {
   activeWidgets.remove(aw);
+  currentActiveWidget = activeWidgets.begin();
 }
 
 void
@@ -86,9 +86,8 @@ void
 ContainerWidget::NextWidget(Video *video)
 {
   if (activeWidgets.size() > 0) {
-    if (currentActiveWidget != activeWidgets.end()) {
-      currentActiveWidget++;
-    } else {
+    currentActiveWidget++;
+    if (currentActiveWidget == activeWidgets.end()) {
       currentActiveWidget = activeWidgets.begin();
     }
     (*currentActiveWidget)->Focus(video);
