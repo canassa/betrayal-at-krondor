@@ -27,6 +27,22 @@
 #include "DialogWindow.h"
 #include "EventListener.h"
 
+typedef enum _DialogType {
+  DT_CONTENTS,
+  DT_OPT0,
+  DT_OPT1,
+  DT_PREFERENCES,
+  DT_RESTORE,
+  DT_SAVE
+} DialogType;
+
+typedef enum _UserActionType {
+  UA_UNKNOWN,
+  UA_NEW_GAME,
+  UA_RESTORE,
+  UA_QUIT
+} UserActionType;
+
 class OptionsDialog
 : public KeyboardEventListener
 , public MouseButtonEventListener
@@ -35,15 +51,23 @@ class OptionsDialog
 {
   private:
     MediaToolkit *media;
+    UserActionType userAction;
+    DialogType dialogType;
     DialogWindow *window;
+    bool running;
+    FontResource bookFont;
     FontResource gameFont;
     PaletteResource optionsPalette;
-    ScreenResource optionsScreen;
+    ScreenResource options0Screen;
+    ScreenResource options1Screen;
+    ScreenResource options2Screen;
     RequestResource reqOpt0;
+    RequestResource reqOpt1;
+    RequestResource reqPref;
   public:
     OptionsDialog(MediaToolkit *mtk);
     ~OptionsDialog();
-    void Run();
+    UserActionType GetUserAction();
     void KeyPressed(const KeyboardEvent& kbe);
     void KeyReleased(const KeyboardEvent& kbe);
     void MouseButtonPressed(const MouseButtonEvent& mbe);
@@ -53,4 +77,3 @@ class OptionsDialog
 };
 
 #endif
-

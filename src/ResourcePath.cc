@@ -30,7 +30,7 @@ static const std::string DEFAULT_RESOURCE_PATH[] =
   "/opt/share/krondor/",
   "/usr/share/krondor/",
   "/usr/local/share/krondor/",
-  "~/krondor/",
+  "/krondor/",
   "./krondor/",
   "../krondor/",
   ""

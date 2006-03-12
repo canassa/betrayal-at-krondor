@@ -21,8 +21,7 @@
 #include "RequestResource.h"
 
 RequestResource::RequestResource()
-: type(0)
-, popup(false)
+: popup(false)
 , xpos(0)
 , ypos(0)
 , width(0)
@@ -36,11 +35,6 @@ RequestResource::RequestResource()
 RequestResource::~RequestResource()
 {
   data.clear();
-}
-
-int
-RequestResource::GetType() const {
-  return type;
 }
 
 bool
@@ -92,7 +86,7 @@ void
 RequestResource::Load(FileBuffer *buffer)
 {
   try {
-    type = buffer->GetSint16();
+    buffer->Skip(2);
     popup = (buffer->GetSint16() != 0);
     buffer->Skip(2);
     xpos = buffer->GetSint16();

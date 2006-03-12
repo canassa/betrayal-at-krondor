@@ -102,7 +102,7 @@ GameApplication::Run()
   try {
     mediaToolkit->GetVideo()->SetPointerPosition(0, 0);
     OptionsDialog options(mediaToolkit);
-    options.Run();
+    options.GetUserAction();
   } catch (Exception &e) {
     e.Print("GameApplication::Run");
   }

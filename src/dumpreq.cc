@@ -32,7 +32,8 @@ int main(int argc, char *argv[]) {
     }
     RequestResource *req = new RequestResource;
     ResourceManager::GetInstance()->Load(req, argv[1]);
-    printf("%3d %3d %3d %3d %3d %3d %3d\n", req->GetType(), req->GetXPos(), req->GetYPos(), req->GetWidth(), req->GetHeight(), req->GetXOff(), req->GetYOff());
+    printf("%5s %3d %3d %3d %3d %3d %3d\n", (req->IsPopup() ? "true" : "false"),
+           req->GetXPos(), req->GetYPos(), req->GetWidth(), req->GetHeight(), req->GetXOff(), req->GetYOff());
     for (unsigned int i = 0; i < req->GetSize(); i++) {
       RequestData data = req->GetRequestData(i);
       printf("%3d: %3d %3d %3d %3d %3d %3d %3d %s\n", i,

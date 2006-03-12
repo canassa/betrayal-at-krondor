@@ -31,6 +31,20 @@
 static const unsigned int REQ_SELECT = 4;
 static const unsigned int REQ_BUTTON = 6;
 
+static const unsigned int OPT0_CONTENTS    = 46;
+static const unsigned int OPT0_NEW_GAME    = 49;
+static const unsigned int OPT0_PREFERENCES = 25;
+static const unsigned int OPT0_QUIT        = 32;
+static const unsigned int OPT0_RESTORE     = 19;
+
+static const unsigned int OPT1_CANCEL      = 18;
+static const unsigned int OPT1_CONTENTS    = 46;
+static const unsigned int OPT1_NEWGAME     = 49;
+static const unsigned int OPT1_PREFERENCES = 25;
+static const unsigned int OPT1_QUIT        = 32;
+static const unsigned int OPT1_RESTORE     = 19;
+static const unsigned int OPT1_SAVE        = 31;
+
 typedef struct _RequestData {
   unsigned int widget;
   int action;
@@ -45,7 +59,6 @@ typedef struct _RequestData {
 
 class RequestResource: public Resource {
   private:
-    int type;
     bool popup;
     int xpos;
     int ypos;
@@ -57,7 +70,6 @@ class RequestResource: public Resource {
   public:
     RequestResource();
     virtual ~RequestResource();
-    int GetType() const;
     bool IsPopup() const;
     int GetXPos() const;
     int GetYPos() const;
@@ -71,4 +83,3 @@ class RequestResource: public Resource {
 };
 
 #endif
-

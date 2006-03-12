@@ -32,7 +32,7 @@ GenericResourceFile::Open(const std::string &name) {
   std::string filename = ResourcePath::GetInstance()->GetPath() + name;
   ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
   if (ifs.fail()) {
-    throw OpenError("GenericResourceFile::Open");
+    throw OpenError("GenericResourceFile::Open(" + name + ")");
   }
 }
 
@@ -85,4 +85,3 @@ GenericResourceFile::Load(FileBuffer &buffer)
     throw;
   }
 }
-
