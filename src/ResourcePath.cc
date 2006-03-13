@@ -63,6 +63,11 @@ ResourcePath::ResourcePath()
     }
     i++;
   }
+  if (!found) {
+    path = "";
+    override = "";
+    throw FileNotFound("ResourcePath::ResourcePath(" + SEARCH_TESTFILE + ")");
+  }
 }
 
 ResourcePath::~ResourcePath()

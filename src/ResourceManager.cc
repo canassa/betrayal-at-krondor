@@ -66,7 +66,7 @@ ResourceManager::LoadResource(const std::string &name)
         throw;
       }
     } else {
-      throw FileNotFound("ResourceManager::LoadResource");
+      throw FileNotFound("ResourceManager::LoadResource(" + name + ")");
     }
   }
   return 0;

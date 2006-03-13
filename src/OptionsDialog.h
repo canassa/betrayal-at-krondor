@@ -57,13 +57,18 @@ class OptionsDialog
     bool running;
     FontResource bookFont;
     FontResource gameFont;
+    PaletteResource contentsPalette;
     PaletteResource optionsPalette;
+    ScreenResource contentsScreen;
     ScreenResource options0Screen;
     ScreenResource options1Screen;
     ScreenResource options2Screen;
+    RequestResource reqCont;
+    RequestResource reqLoad;
     RequestResource reqOpt0;
     RequestResource reqOpt1;
     RequestResource reqPref;
+    RequestResource reqSave;
   public:
     OptionsDialog(MediaToolkit *mtk);
     ~OptionsDialog();

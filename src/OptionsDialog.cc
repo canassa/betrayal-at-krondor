@@ -33,13 +33,18 @@ OptionsDialog::OptionsDialog(MediaToolkit *mtk)
   try {
     ResourceManager::GetInstance()->Load(&bookFont, "BOOK.FNT");
     ResourceManager::GetInstance()->Load(&gameFont, "GAME.FNT");
+    ResourceManager::GetInstance()->Load(&contentsPalette, "CONTENTS.PAL");
     ResourceManager::GetInstance()->Load(&optionsPalette, "OPTIONS.PAL");
+    ResourceManager::GetInstance()->Load(&contentsScreen, "CONT2.SCX");
     ResourceManager::GetInstance()->Load(&options0Screen, "OPTIONS0.SCX");
     ResourceManager::GetInstance()->Load(&options1Screen, "OPTIONS1.SCX");
     ResourceManager::GetInstance()->Load(&options2Screen, "OPTIONS2.SCX");
+    ResourceManager::GetInstance()->Load(&reqCont, "CONTENTS.DAT");
+    ResourceManager::GetInstance()->Load(&reqLoad, "REQ_LOAD.DAT");
     ResourceManager::GetInstance()->Load(&reqOpt0, "REQ_OPT0.DAT");
     ResourceManager::GetInstance()->Load(&reqOpt1, "REQ_OPT1.DAT");
     ResourceManager::GetInstance()->Load(&reqPref, "REQ_PREF.DAT");
+    ResourceManager::GetInstance()->Load(&reqSave, "REQ_SAVE.DAT");
     int x = 0;
     int y = 0;
     media->GetMousePosition(&x, &y);
@@ -69,25 +74,36 @@ UserActionType
 OptionsDialog::GetUserAction()
 {
   try {
+    PaletteResource *palette = 0;
+    media->ClearEvents();
     while (userAction == UA_UNKNOWN) {
       switch (dialogType) {
+        case DT_CONTENTS:
+          palette = &contentsPalette;
+          window = new DialogWindow(reqCont, contentsScreen, bookFont, this);
+          break;
         case DT_OPT0:
+          palette = &optionsPalette;
           window = new DialogWindow(reqOpt0, options0Screen, gameFont, this);
           break;
         case DT_PREFERENCES:
+          palette = &optionsPalette;
           window = new DialogWindow(reqPref, options2Screen, gameFont, this);
           break;
+        case DT_RESTORE:
+          palette = &optionsPalette;
+          window = new DialogWindow(reqLoad, options2Screen, gameFont, this);
+          break;
         default:
-          window = 0;
+          break;
       }
       if (window) {
         media->GetVideo()->Clear();
-        window->FadeIn(optionsPalette, media);
+        window->FadeIn(*palette, media);
         running = true;
-        media->ClearEvents();
         media->PollEventLoop();
         running = false;
-        window->FadeOut(optionsPalette, media);
+        window->FadeOut(*palette, media);
         media->GetVideo()->Clear();
         delete window;
         window = 0;
@@ -104,6 +120,19 @@ void
 OptionsDialog::KeyPressed(const KeyboardEvent& kbe) {
   switch (kbe.GetKey()) {
     case KEY_ESCAPE:
+      switch (dialogType) {
+        case DT_CONTENTS:
+          dialogType = DT_OPT0;
+          break;
+        case DT_PREFERENCES:
+          dialogType = DT_OPT0;
+          break;
+        case DT_RESTORE:
+          dialogType = DT_OPT0;
+          break;
+        default:
+          break;
+      }
       media->TerminateEventLoop();
       break;
     case KEY_TAB:
@@ -175,6 +204,13 @@ void
 OptionsDialog::ActionPerformed(const ActionEvent& ae)
 {
   switch (dialogType) {
+    case DT_CONTENTS:
+      switch (ae.GetAction()) {
+        default:
+          dialogType = DT_OPT0;
+          break;
+      }
+      break;
     case DT_OPT0:
       switch (ae.GetAction()) {
         case OPT0_CONTENTS:
@@ -197,6 +233,13 @@ OptionsDialog::ActionPerformed(const ActionEvent& ae)
       }
       break;
     case DT_PREFERENCES:
+      switch (ae.GetAction()) {
+        default:
+          dialogType = DT_OPT0;
+          break;
+      }
+      break;
+    case DT_RESTORE:
       switch (ae.GetAction()) {
         default:
           dialogType = DT_OPT0;
