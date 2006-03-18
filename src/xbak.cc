@@ -37,6 +37,7 @@ int main(int argc, char **argv) {
     /* every exception should have been handled before */
     std::cerr << "Unhandled exception" << std::endl;
   }
+  ResourcePath::CleanUp();
   return 0;
 }
 
