@@ -25,6 +25,7 @@
 #endif
 
 #include "FontResource.h"
+#include "LabelResource.h"
 #include "MediaToolkit.h"
 #include "PaletteResource.h"
 #include "PanelWidget.h"
@@ -35,7 +36,7 @@ class DialogWindow {
   private:
     PanelWidget *panel;
   public:
-    DialogWindow(RequestResource& req, ScreenResource& scr, FontResource& fnt, ActionEventListener *ael);
+    DialogWindow(RequestResource& req, ScreenResource& scr, LabelResource& lbl, FontResource& fnt, ActionEventListener *ael);
     ~DialogWindow();
     void Draw(Video *video);
     void FadeIn(PaletteResource& pal, MediaToolkit *media);

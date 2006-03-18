@@ -28,8 +28,9 @@
 
 #include "Resource.h"
 
-static const unsigned int REQ_SELECT = 4;
-static const unsigned int REQ_BUTTON = 6;
+static const unsigned int REQ_IMAGEBUTTON = 3;
+static const unsigned int REQ_SELECT      = 4;
+static const unsigned int REQ_BUTTON      = 6;
 
 static const unsigned int OPT0_CONTENTS    = 46;
 static const unsigned int OPT0_NEW_GAME    = 49;
@@ -44,6 +45,10 @@ static const unsigned int OPT1_PREFERENCES = 25;
 static const unsigned int OPT1_QUIT        = 32;
 static const unsigned int OPT1_RESTORE     = 19;
 static const unsigned int OPT1_SAVE        = 31;
+
+static const unsigned int PREF_CANCEL      = 46;
+static const unsigned int PREF_DEFAULTS    = 32;
+static const unsigned int PREF_OK          = 24;
 
 typedef struct _RequestData {
   unsigned int widget;

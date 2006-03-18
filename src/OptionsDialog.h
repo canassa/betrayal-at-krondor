@@ -57,6 +57,9 @@ class OptionsDialog
     bool running;
     FontResource bookFont;
     FontResource gameFont;
+    LabelResource lblLoad;
+    LabelResource lblNull;
+    LabelResource lblPref;
     PaletteResource contentsPalette;
     PaletteResource optionsPalette;
     ScreenResource contentsScreen;

@@ -33,6 +33,8 @@ OptionsDialog::OptionsDialog(MediaToolkit *mtk)
   try {
     ResourceManager::GetInstance()->Load(&bookFont, "BOOK.FNT");
     ResourceManager::GetInstance()->Load(&gameFont, "GAME.FNT");
+    ResourceManager::GetInstance()->Load(&lblLoad, "LBL_LOAD.DAT");
+    ResourceManager::GetInstance()->Load(&lblPref, "LBL_PREF.DAT");
     ResourceManager::GetInstance()->Load(&contentsPalette, "CONTENTS.PAL");
     ResourceManager::GetInstance()->Load(&optionsPalette, "OPTIONS.PAL");
     ResourceManager::GetInstance()->Load(&contentsScreen, "CONT2.SCX");
@@ -80,19 +82,19 @@ OptionsDialog::GetUserAction()
       switch (dialogType) {
         case DT_CONTENTS:
           palette = &contentsPalette;
-          window = new DialogWindow(reqCont, contentsScreen, bookFont, this);
+          window = new DialogWindow(reqCont, contentsScreen, lblNull, bookFont, this);
           break;
         case DT_OPT0:
           palette = &optionsPalette;
-          window = new DialogWindow(reqOpt0, options0Screen, gameFont, this);
+          window = new DialogWindow(reqOpt0, options0Screen, lblNull, gameFont, this);
           break;
         case DT_PREFERENCES:
           palette = &optionsPalette;
-          window = new DialogWindow(reqPref, options2Screen, gameFont, this);
+          window = new DialogWindow(reqPref, options2Screen, lblPref, gameFont, this);
           break;
         case DT_RESTORE:
           palette = &optionsPalette;
-          window = new DialogWindow(reqLoad, options2Screen, gameFont, this);
+          window = new DialogWindow(reqLoad, options2Screen, lblLoad, gameFont, this);
           break;
         default:
           break;

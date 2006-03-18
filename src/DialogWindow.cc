@@ -23,12 +23,12 @@
 #include "ResourceManager.h"
 #include "WidgetFactory.h"
 
-DialogWindow::DialogWindow(RequestResource& req, ScreenResource& scr, FontResource& fnt, ActionEventListener *ael)
+DialogWindow::DialogWindow(RequestResource& req, ScreenResource& scr, LabelResource& lbl, FontResource& fnt, ActionEventListener *ael)
 : panel(0)
 {
   try{
     WidgetFactory wf;
-    panel = wf.CreatePanel(req, scr, fnt, ael);
+    panel = wf.CreatePanel(req, scr, lbl, fnt, ael);
   } catch (Exception &e) {
     e.Print("DialogWindow::DialogWindow");
     throw;

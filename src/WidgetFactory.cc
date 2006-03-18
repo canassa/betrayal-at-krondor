@@ -42,8 +42,34 @@ WidgetFactory::CreateChoice()
   return 0;
 }
 
+LabelWidget*
+WidgetFactory::CreateLabel(LabelData& data, FontResource &fnt, const int panelWidth)
+{
+  unsigned int width = 1;
+  switch (data.type) {
+    case LBL_STANDARD:
+      for (unsigned int i = 0; i < data.label.length(); i++) {
+        width += fnt.GetWidth((unsigned int)data.label[i] - fnt.GetFirst());
+      }
+      break;
+    case LBL_TITLE:
+      width = panelWidth;
+      break;
+    default:
+      break;
+  }
+  LabelWidget *label = new LabelWidget(data.xpos, data.ypos, width, fnt.GetHeight() + 1, &fnt);
+  label->SetText(data.label);
+  label->SetColor(data.color);
+  if (data.type == LBL_TITLE) {
+    label->SetShadow(data.shadow);
+    label->SetAlignment(HA_CENTER, VA_TOP);
+  }
+  return label;
+}
+
 PanelWidget*
-WidgetFactory::CreatePanel(RequestResource &req, ScreenResource &scr, FontResource &fnt, ActionEventListener *ael)
+WidgetFactory::CreatePanel(RequestResource &req, ScreenResource &scr, LabelResource &lbl, FontResource &fnt, ActionEventListener *ael)
 {
   PanelWidget *panel = new PanelWidget(req.GetXPos(), req.GetYPos(), req.GetWidth(), req.GetHeight());
   panel->SetBackground(scr.GetImage());
@@ -58,11 +84,19 @@ WidgetFactory::CreatePanel(RequestResource &req, ScreenResource &scr, FontResour
           panel->AddActiveWidget(button);
         }
         break;
+      case REQ_IMAGEBUTTON:
+        break;
       case REQ_SELECT:
         break;
       default:
         break;
     }
+  }
+  for (unsigned int i = 0; i < lbl.GetSize(); i++) {
+    LabelData data = lbl.GetLabelData(i);
+    int panelWidth = (req.GetWidth() > scr.GetImage()->GetWidth() ? req.GetWidth() : scr.GetImage()->GetWidth());
+    LabelWidget *label = CreateLabel(data, fnt, panelWidth);
+    panel->AddWidget(label);
   }
   return panel;
 }

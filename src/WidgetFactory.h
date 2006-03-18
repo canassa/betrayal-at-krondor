@@ -27,6 +27,7 @@
 #include "ButtonWidget.h"
 #include "ChoiceWidget.h"
 #include "PanelWidget.h"
+#include "LabelResource.h"
 #include "RequestResource.h"
 #include "ScreenResource.h"
 #include "TickboxWidget.h"
@@ -37,7 +38,8 @@ class WidgetFactory {
     virtual ~WidgetFactory();
     ButtonWidget* CreateButton(RequestData& data, FontResource& fnt, ActionEventListener *ael);
     ChoiceWidget* CreateChoice();
-    PanelWidget* CreatePanel(RequestResource& req, ScreenResource& scr, FontResource& fnt, ActionEventListener *ael);
+    LabelWidget* CreateLabel(LabelData& data, FontResource& fnt, const int panelWidth);
+    PanelWidget* CreatePanel(RequestResource& req, ScreenResource& scr, LabelResource& lbl, FontResource& fnt, ActionEventListener *ael);
     TickboxWidget* CreateTickbox();
 };
 
