@@ -55,8 +55,8 @@ int main(int argc, char *argv[]) {
     }
     delete map;
     delete wld;
-    delete ResourceManager::GetInstance();
-    delete ResourcePath::GetInstance();
+    ResourceManager::CleanUp();
+    ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

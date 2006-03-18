@@ -42,8 +42,8 @@ TestApplication::TestApplication()
 TestApplication::~TestApplication()
 {
   delete mediaToolkit;
-  delete ResourceManager::GetInstance();
-  delete ResourcePath::GetInstance();
+  ResourceManager::CleanUp();
+  ResourcePath::CleanUp();
 }
 
 TestApplication*
@@ -53,6 +53,15 @@ TestApplication::GetInstance()
     instance = new TestApplication();
   }
   return instance;
+}
+
+void
+TestApplication::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
 }
 
 void

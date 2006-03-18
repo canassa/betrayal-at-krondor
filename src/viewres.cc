@@ -95,7 +95,7 @@ int main(int argc, char **argv)
         app->PlayMovie(argv[2]);
         break;
     }
-    delete TestApplication::GetInstance();
+    TestApplication::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

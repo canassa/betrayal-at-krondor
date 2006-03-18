@@ -47,6 +47,7 @@ class MousePointerManager
   public:
     ~MousePointerManager();
     static MousePointerManager* GetInstance();
+    static void CleanUp();
     void Register(MediaToolkit *media);
     MousePointer* GetCurrentPointer();
     void SetCurrentPointer(unsigned int n);

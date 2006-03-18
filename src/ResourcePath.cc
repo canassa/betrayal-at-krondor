@@ -83,6 +83,15 @@ ResourcePath::GetInstance()
   return instance;
 }
 
+void
+ResourcePath::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
+}
+
 std::string
 ResourcePath::GetPath() const
 {

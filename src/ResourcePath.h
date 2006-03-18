@@ -37,6 +37,7 @@ class ResourcePath
   public:
     ~ResourcePath();
     static ResourcePath* GetInstance();
+    static void CleanUp();
     std::string GetPath() const;
     std::string GetOverridePath() const;
     void SetPath(const std::string &s);

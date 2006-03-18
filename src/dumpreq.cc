@@ -40,8 +40,8 @@ int main(int argc, char *argv[]) {
              data.widget, data.action, data.xpos, data.ypos, data.width, data.height, data.teleport, data.label.c_str());
     }
     delete req;
-    delete ResourceManager::GetInstance();
-    delete ResourcePath::GetInstance();
+    ResourceManager::CleanUp();
+    ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

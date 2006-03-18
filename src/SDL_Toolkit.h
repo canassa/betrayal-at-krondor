@@ -36,6 +36,7 @@ class SDL_Toolkit: public MediaToolkit {
   public:
     ~SDL_Toolkit();
     static SDL_Toolkit* GetInstance();
+    static void CleanUp();
     void PollEventLoop();
     void WaitEventLoop();
     void ClearEvents();

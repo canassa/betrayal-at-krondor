@@ -41,6 +41,7 @@ class GameApplication
   public:
     ~GameApplication();
     static GameApplication* GetInstance();
+    static void CleanUp();
     void Intro();
     void Run();
     void KeyPressed(const KeyboardEvent& kbe);

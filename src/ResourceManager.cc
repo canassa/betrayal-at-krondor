@@ -43,6 +43,15 @@ ResourceManager::GetInstance()
   return instance;
 }
 
+void
+ResourceManager::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
+}
+
 FileBuffer*
 ResourceManager::LoadResource(const std::string &name)
 {

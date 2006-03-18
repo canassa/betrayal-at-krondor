@@ -47,6 +47,15 @@ MousePointerManager::GetInstance()
 }
 
 void
+MousePointerManager::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
+}
+
+void
 MousePointerManager::Register(MediaToolkit *media)
 {
   media->AddMouseButtonListener(this);

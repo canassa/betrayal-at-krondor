@@ -71,8 +71,8 @@ int main(int argc, char *argv[]) {
       printf("\n");
     }
     delete anim;
-    delete ResourceManager::GetInstance();
-    delete ResourcePath::GetInstance();
+    ResourceManager::CleanUp();
+    ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
   try {
     GameApplication::GetInstance()->Intro();
     GameApplication::GetInstance()->Run();
-    delete GameApplication::GetInstance();
+    GameApplication::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

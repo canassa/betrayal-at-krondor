@@ -43,8 +43,8 @@ int main(int argc, char *argv[]) {
       }
     }
     delete bmx;
-    delete ResourceManager::GetInstance();
-    delete ResourcePath::GetInstance();
+    ResourceManager::CleanUp();
+    ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

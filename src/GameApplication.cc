@@ -66,10 +66,10 @@ GameApplication::GameApplication()
 GameApplication::~GameApplication()
 {
   mediaToolkit->RemoveKeyboardListener(this);
-  delete MousePointerManager::GetInstance();
+  MousePointerManager::CleanUp();
   delete mediaToolkit;
-  delete ResourceManager::GetInstance();
-  delete ResourcePath::GetInstance();
+  ResourceManager::CleanUp();
+  ResourcePath::CleanUp();
 }
 
 GameApplication*
@@ -79,6 +79,15 @@ GameApplication::GetInstance()
     instance = new GameApplication();
   }
   return instance;
+}
+
+void
+GameApplication::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
 }
 
 void
@@ -102,7 +111,9 @@ GameApplication::Run()
   try {
     mediaToolkit->GetVideo()->SetPointerPosition(0, 0);
     OptionsDialog options(mediaToolkit);
-    options.GetUserAction();
+    UserActionType userAction = options.GetUserAction();
+    if (userAction == UA_NEW_GAME) {
+    }
   } catch (Exception &e) {
     e.Print("GameApplication::Run");
   }

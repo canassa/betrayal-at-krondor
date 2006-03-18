@@ -38,8 +38,8 @@ int main(int argc, char *argv[]) {
              data.xpos, data.ypos, data.type, data.color, data.shadow, data.label.c_str());
     }
     delete lbl;
-    delete ResourceManager::GetInstance();
-    delete ResourcePath::GetInstance();
+    ResourceManager::CleanUp();
+    ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

@@ -51,6 +51,15 @@ SDL_Toolkit::GetInstance()
 }
 
 void
+SDL_Toolkit::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
+}
+
+void
 SDL_Toolkit::HandleEvent(SDL_Event& event)
 {
   switch (event.type) {

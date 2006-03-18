@@ -37,8 +37,8 @@ int main(int argc, char *argv[]) {
       printf("%3d #%02X%02X%02X\n", i, c[i].r, c[i].g, c[i].b);
     }
     delete pal;
-    delete ResourceManager::GetInstance();
-    delete ResourcePath::GetInstance();
+    ResourceManager::CleanUp();
+    ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

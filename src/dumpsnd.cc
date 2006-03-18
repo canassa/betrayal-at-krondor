@@ -36,8 +36,8 @@ int main(int argc, char *argv[]) {
     printf("%8s %d\n", data.name.c_str(), data.buffer->GetSize());
     data.buffer->Dump();
     delete snd;
-    delete ResourceManager::GetInstance();
-    delete ResourcePath::GetInstance();
+    ResourceManager::CleanUp();
+    ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

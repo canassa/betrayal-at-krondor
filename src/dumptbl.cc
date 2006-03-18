@@ -36,8 +36,8 @@ int main(int argc, char *argv[]) {
       printf("%3d %s\n", i, tbl->GetMapItem(i).c_str());
     }
     delete tbl;
-    delete ResourceManager::GetInstance();
-    delete ResourcePath::GetInstance();
+    ResourceManager::CleanUp();
+    ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

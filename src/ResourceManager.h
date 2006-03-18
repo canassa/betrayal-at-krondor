@@ -39,6 +39,7 @@ class ResourceManager {
   public:
     ~ResourceManager();
     static ResourceManager* GetInstance();
+    static void CleanUp();
     void Load(Resource *res, const std::string &name);
 };
 

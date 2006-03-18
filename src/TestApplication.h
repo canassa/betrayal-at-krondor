@@ -47,6 +47,7 @@ class TestApplication {
   public:
     ~TestApplication();
     static TestApplication* GetInstance();
+    static void CleanUp();
     void ActivatePalette();
     void ActivatePalette(const std::string& name);
     void ShowImage(const std::string& name);
