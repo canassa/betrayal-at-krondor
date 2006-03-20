@@ -40,7 +40,7 @@ static const unsigned int OPT0_RESTORE     = 19;
 
 static const unsigned int OPT1_CANCEL      = 18;
 static const unsigned int OPT1_CONTENTS    = 46;
-static const unsigned int OPT1_NEWGAME     = 49;
+static const unsigned int OPT1_NEW_GAME    = 49;
 static const unsigned int OPT1_PREFERENCES = 25;
 static const unsigned int OPT1_QUIT        = 32;
 static const unsigned int OPT1_RESTORE     = 19;

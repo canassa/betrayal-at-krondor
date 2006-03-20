@@ -28,7 +28,6 @@ int main(int argc, char **argv) {
     ResourcePath::GetInstance()->SetPath(std::string(argv[1]));
   }
   try {
-    GameApplication::GetInstance()->Intro();
     GameApplication::GetInstance()->Run();
     GameApplication::CleanUp();
   } catch (Exception &e) {

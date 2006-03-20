@@ -37,10 +37,12 @@ typedef enum _DialogType {
 } DialogType;
 
 typedef enum _UserActionType {
-  UA_UNKNOWN,
+  UA_CANCEL,
   UA_NEW_GAME,
+  UA_QUIT,
   UA_RESTORE,
-  UA_QUIT
+  UA_SAVE,
+  UA_UNKNOWN
 } UserActionType;
 
 class OptionsDialog
@@ -54,6 +56,7 @@ class OptionsDialog
     UserActionType userAction;
     DialogType dialogType;
     DialogWindow *window;
+    bool firstTime;
     bool running;
     FontResource bookFont;
     FontResource gameFont;
@@ -73,7 +76,7 @@ class OptionsDialog
     RequestResource reqPref;
     RequestResource reqSave;
   public:
-    OptionsDialog(MediaToolkit *mtk);
+    OptionsDialog(MediaToolkit *mtk, const bool first);
     ~OptionsDialog();
     UserActionType GetUserAction();
     void KeyPressed(const KeyboardEvent& kbe);

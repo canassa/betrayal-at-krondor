@@ -28,21 +28,32 @@
 
 #include "EventListener.h"
 #include "MediaToolkit.h"
+#include "OptionsDialog.h"
+
+typedef enum _GameState {
+  GS_CHAPTER,
+  GS_COMBAT,
+  GS_INTRO,
+  GS_OPTIONS,
+  GS_WORLD
+} GameState;
 
 class GameApplication
 : KeyboardEventListener
 {
   private:
     MediaToolkit *mediaToolkit;
+    GameState state;
     int screenSaveCount;
     static GameApplication *instance;
+    void Intro();
+    UserActionType Options(const bool firstTime);
   protected:
     GameApplication();
   public:
     ~GameApplication();
     static GameApplication* GetInstance();
     static void CleanUp();
-    void Intro();
     void Run();
     void KeyPressed(const KeyboardEvent& kbe);
     void KeyReleased(const KeyboardEvent& kbe);

@@ -27,7 +27,6 @@
 #include "MousePointerManager.h"
 #include "MoviePlayer.h"
 #include "MovieResource.h"
-#include "OptionsDialog.h"
 #include "PaletteResource.h"
 #include "ResourceManager.h"
 #include "ResourcePath.h"
@@ -39,6 +38,7 @@ GameApplication* GameApplication::instance = 0;
 
 GameApplication::GameApplication()
 : mediaToolkit(SDL_Toolkit::GetInstance())
+, state(GS_INTRO)
 , screenSaveCount(0)
 {
   mediaToolkit->GetVideo()->SetScaling(2);
@@ -105,14 +105,59 @@ GameApplication::Intro()
   }
 }
 
+UserActionType
+GameApplication::Options(const bool firstTime)
+{
+  try {
+    mediaToolkit->GetVideo()->SetPointerPosition(0, 0);
+    OptionsDialog options(mediaToolkit, firstTime);
+    return options.GetUserAction();
+  } catch (Exception &e) {
+    e.Print("GameApplication::Run");
+    return UA_QUIT;
+  }
+}
+
 void
 GameApplication::Run()
 {
   try {
-    mediaToolkit->GetVideo()->SetPointerPosition(0, 0);
-    OptionsDialog options(mediaToolkit);
-    UserActionType userAction = options.GetUserAction();
-    if (userAction == UA_NEW_GAME) {
+    bool firstTime = true;
+    while (true) {
+      switch (state) {
+        case GS_CHAPTER:
+          state = GS_WORLD;
+          break;
+        case GS_COMBAT:
+          state = GS_WORLD;
+          break;
+        case GS_INTRO:
+          Intro();
+          state = GS_OPTIONS;
+          break;
+        case GS_OPTIONS:
+          switch (Options(firstTime)) {
+            case UA_CANCEL:
+              break;
+            case UA_NEW_GAME:
+              state = GS_CHAPTER;
+              break;
+            case UA_QUIT:
+              return;
+              break;
+            case UA_RESTORE:
+              break;
+            case UA_SAVE:
+              break;
+            case UA_UNKNOWN:
+              break;
+          }
+          firstTime = false;
+          break;
+        case GS_WORLD:
+          return;
+          break;
+      }
     }
   } catch (Exception &e) {
     e.Print("GameApplication::Run");

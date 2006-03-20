@@ -23,11 +23,12 @@
 #include "ResourceManager.h"
 #include "WidgetFactory.h"
 
-OptionsDialog::OptionsDialog(MediaToolkit *mtk)
+OptionsDialog::OptionsDialog(MediaToolkit *mtk, const bool first)
 : media(mtk)
 , userAction(UA_UNKNOWN)
-, dialogType(DT_OPT0)
+, dialogType(first ? DT_OPT0 : DT_OPT1)
 , window(0)
+, firstTime(first)
 , running(false)
 {
   try {
@@ -85,6 +86,7 @@ OptionsDialog::GetUserAction()
           window = new DialogWindow(reqCont, contentsScreen, lblNull, bookFont, this);
           break;
         case DT_OPT0:
+        case DT_OPT1:
           palette = &optionsPalette;
           window = new DialogWindow(reqOpt0, options0Screen, lblNull, gameFont, this);
           break;
@@ -124,13 +126,13 @@ OptionsDialog::KeyPressed(const KeyboardEvent& kbe) {
     case KEY_ESCAPE:
       switch (dialogType) {
         case DT_CONTENTS:
-          dialogType = DT_OPT0;
+          dialogType = (firstTime ? DT_OPT0 : DT_OPT1);
           break;
         case DT_PREFERENCES:
-          dialogType = DT_OPT0;
+          dialogType = (firstTime ? DT_OPT0 : DT_OPT1);
           break;
         case DT_RESTORE:
-          dialogType = DT_OPT0;
+          dialogType = (firstTime ? DT_OPT0 : DT_OPT1);
           break;
         default:
           break;
@@ -209,7 +211,7 @@ OptionsDialog::ActionPerformed(const ActionEvent& ae)
     case DT_CONTENTS:
       switch (ae.GetAction()) {
         default:
-          dialogType = DT_OPT0;
+          dialogType = (firstTime ? DT_OPT0 : DT_OPT1);
           break;
       }
       break;
@@ -234,17 +236,44 @@ OptionsDialog::ActionPerformed(const ActionEvent& ae)
           break;
       }
       break;
+    case DT_OPT1:
+      switch (ae.GetAction()) {
+        case OPT1_CANCEL:
+          userAction = UA_CANCEL;
+          break;
+        case OPT1_CONTENTS:
+          dialogType = DT_CONTENTS;
+          break;
+        case OPT1_NEW_GAME:
+          userAction = UA_NEW_GAME;
+          break;
+        case OPT1_PREFERENCES:
+          dialogType = DT_PREFERENCES;
+          break;
+        case OPT1_QUIT:
+          userAction = UA_QUIT;
+          break;
+        case OPT1_RESTORE:
+          dialogType = DT_RESTORE;
+          break;
+        case OPT1_SAVE:
+          dialogType = DT_SAVE;
+          break;
+        default:
+          break;
+      }
+      break;
     case DT_PREFERENCES:
       switch (ae.GetAction()) {
         default:
-          dialogType = DT_OPT0;
+          dialogType = (firstTime ? DT_OPT0 : DT_OPT1);
           break;
       }
       break;
     case DT_RESTORE:
       switch (ae.GetAction()) {
         default:
-          dialogType = DT_OPT0;
+          dialogType = (firstTime ? DT_OPT0 : DT_OPT1);
           break;
       }
       break;
