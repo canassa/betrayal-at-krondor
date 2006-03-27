@@ -18,6 +18,7 @@
  */
 
 #include "Exception.h"
+#include "MousePointerManager.h"
 #include "MoviePlayer.h"
 #include "ResourceManager.h"
 #include "ResourcePath.h"
@@ -37,10 +38,14 @@ TestApplication::TestApplication()
 {
   mediaToolkit->GetVideo()->SetScaling(2);
   mediaToolkit->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
+
+  MousePointerManager::GetInstance()->AddPointer("POINTER.BMX");
+  MousePointerManager::GetInstance()->Register(mediaToolkit);
 }
 
 TestApplication::~TestApplication()
 {
+  MousePointerManager::CleanUp();
   delete mediaToolkit;
   ResourceManager::CleanUp();
   ResourcePath::CleanUp();
