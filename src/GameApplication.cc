@@ -39,6 +39,7 @@ GameApplication* GameApplication::instance = 0;
 GameApplication::GameApplication()
 : mediaToolkit(SDL_Toolkit::GetInstance())
 , state(GS_INTRO)
+, chapter(mediaToolkit)
 , screenSaveCount(0)
 {
   mediaToolkit->GetVideo()->SetScaling(2);
@@ -91,7 +92,7 @@ GameApplication::CleanUp()
 }
 
 void
-GameApplication::Intro()
+GameApplication::PlayIntro()
 {
   try {
     AnimationResource anim;
@@ -126,13 +127,14 @@ GameApplication::Run()
     while (true) {
       switch (state) {
         case GS_CHAPTER:
+          chapter.PlayIntro();
           state = GS_WORLD;
           break;
         case GS_COMBAT:
           state = GS_WORLD;
           break;
         case GS_INTRO:
-          Intro();
+          PlayIntro();
           state = GS_OPTIONS;
           break;
         case GS_OPTIONS:
@@ -141,6 +143,7 @@ GameApplication::Run()
               break;
             case UA_NEW_GAME:
               state = GS_CHAPTER;
+              chapter.SetCurrent(1);
               break;
             case UA_QUIT:
               return;

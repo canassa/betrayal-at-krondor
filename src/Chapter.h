@@ -17,49 +17,25 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef GAME_APPLICATION_H
-#define GAME_APPLICATION_H
-
-#include <map>
+#ifndef CHAPTER_H
+#define CHAPTER_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "Chapter.h"
-#include "EventListener.h"
 #include "MediaToolkit.h"
-#include "OptionsDialog.h"
 
-typedef enum _GameState {
-  GS_CHAPTER,
-  GS_COMBAT,
-  GS_INTRO,
-  GS_OPTIONS,
-  GS_WORLD
-} GameState;
-
-class GameApplication
-: KeyboardEventListener
-{
+class Chapter {
   private:
-    MediaToolkit *mediaToolkit;
-    GameState state;
-    Chapter chapter;
-    int screenSaveCount;
-    static GameApplication *instance;
-    void PlayIntro();
-    UserActionType Options(const bool firstTime);
-  protected:
-    GameApplication();
+    MediaToolkit *media;
+    int number;
   public:
-    ~GameApplication();
-    static GameApplication* GetInstance();
-    static void CleanUp();
-    void Run();
-    void KeyPressed(const KeyboardEvent& kbe);
-    void KeyReleased(const KeyboardEvent& kbe);
+    Chapter(MediaToolkit *mtk);
+    virtual ~Chapter();
+    void SetCurrent(const int n);
+    void PlayIntro();
+    void PlayScene(const int scene);
 };
 
 #endif
-

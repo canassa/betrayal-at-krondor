@@ -1,7 +1,8 @@
 noinst_HEADERS = AnimationResource.h \
-                 Clock.h \
                  ButtonWidget.h \
+                 Chapter.h \
                  ChoiceWidget.h \
+                 Clock.h \
                  ContainerWidget.h \
                  DialogWindow.h \
                  Event.h \
@@ -374,6 +375,8 @@ xbak_SOURCES = AnimationResource.cc \
                AnimationResource.h \
                ButtonWidget.cc \
                ButtonWidget.h \
+               Chapter.cc \
+               Chapter.h \
                ChoiceWidget.cc \
                ChoiceWidget.h \
                Clock.h \

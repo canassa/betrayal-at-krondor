@@ -17,49 +17,44 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef GAME_APPLICATION_H
-#define GAME_APPLICATION_H
+#include <sstream>
 
-#include <map>
-
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
+#include "AnimationResource.h"
 #include "Chapter.h"
-#include "EventListener.h"
-#include "MediaToolkit.h"
-#include "OptionsDialog.h"
+#include "Exception.h"
+#include "MoviePlayer.h"
+#include "ResourceManager.h"
 
-typedef enum _GameState {
-  GS_CHAPTER,
-  GS_COMBAT,
-  GS_INTRO,
-  GS_OPTIONS,
-  GS_WORLD
-} GameState;
-
-class GameApplication
-: KeyboardEventListener
+Chapter::Chapter(MediaToolkit *mtk)
+: media(mtk)
+, number(0)
 {
-  private:
-    MediaToolkit *mediaToolkit;
-    GameState state;
-    Chapter chapter;
-    int screenSaveCount;
-    static GameApplication *instance;
-    void PlayIntro();
-    UserActionType Options(const bool firstTime);
-  protected:
-    GameApplication();
-  public:
-    ~GameApplication();
-    static GameApplication* GetInstance();
-    static void CleanUp();
-    void Run();
-    void KeyPressed(const KeyboardEvent& kbe);
-    void KeyReleased(const KeyboardEvent& kbe);
-};
+}
 
-#endif
+Chapter::~Chapter()
+{
+}
+
+void
+Chapter::SetCurrent(const int n)
+{
+  number = n;
+}
+
+void
+Chapter::PlayIntro()
+{
+  try {
+    AnimationResource anim;
+    std::stringstream filenameStream;
+    filenameStream << "CHAPTER" << number << ".ADS";
+    ResourceManager::GetInstance()->Load(&anim, filenameStream.str());
+    MovieResource ttm;
+    ResourceManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
+    MoviePlayer moviePlayer(media);
+    moviePlayer.Play(&ttm.GetMovieTags(), false);
+  } catch (Exception &e) {
+    e.Print("Chapter::PlayIntro");
+  }
+}
 
