@@ -58,3 +58,22 @@ Chapter::PlayIntro()
   }
 }
 
+void
+Chapter::PlayScene(const int scene)
+{
+  try {
+    ScreenResource scr;
+    ResourceManager::GetInstance()->Load(&scr, "CFRAME.SCX");
+    scr.GetImage()->Draw(media->GetVideo(), 0, 0);
+    AnimationResource anim;
+    std::stringstream filenameStream;
+    filenameStream << "C" << number << scene << ".ADS";
+    ResourceManager::GetInstance()->Load(&anim, filenameStream.str());
+    MovieResource ttm;
+    ResourceManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
+    MoviePlayer moviePlayer(media);
+    moviePlayer.Play(&ttm.GetMovieTags(), false);
+  } catch (Exception &e) {
+    e.Print("Chapter::PlayIntro");
+  }
+}

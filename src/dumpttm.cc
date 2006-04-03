@@ -106,8 +106,10 @@ int main(int argc, char *argv[]) {
           printf(" fade in (first, n, steps, delay)");
           break;
         case 0x4200:
+          printf(" external image (x, y, w, h)");
           break;
         case 0x4210:
+          printf(" external image (x, y, w, h)");
           break;
         case 0xa010:
           break;

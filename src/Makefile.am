@@ -1,4 +1,5 @@
 noinst_HEADERS = AnimationResource.h \
+                 BookResource.h \
                  ButtonWidget.h \
                  Chapter.h \
                  ChoiceWidget.h \
@@ -49,6 +50,7 @@ noinst_HEADERS = AnimationResource.h \
                  ZoneTableResource.h
 bin_PROGRAMS = dumpads \
                dumpbmx \
+               dumpbok \
                dumpfnt \
                dumplbl \
                dumppal \
@@ -104,6 +106,26 @@ dumpbmx_SOURCES = Exception.cc \
                   ResourceTag.cc \
                   ResourceTag.h \
                   dumpbmx.cc
+dumpbok_SOURCES = BookResource.cc \
+                  BookResource.h \
+                  Exception.cc \
+                  Exception.h \
+                  FileBuffer.cc \
+                  FileBuffer.h \
+                  GenericResourceFile.cc \
+                  GenericResourceFile.h \
+                  Resource.h \
+                  ResourceArchive.cc \
+                  ResourceArchive.h \
+                  ResourceIndex.cc \
+                  ResourceIndex.h \
+                  ResourceManager.cc \
+                  ResourceManager.h \
+                  ResourcePath.cc \
+                  ResourcePath.h \
+                  ResourceTag.cc \
+                  ResourceTag.h \
+                  dumpbok.cc
 dumpfnt_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
@@ -373,6 +395,8 @@ viewres_SOURCES = AnimationResource.cc \
                   viewres.cc
 xbak_SOURCES = AnimationResource.cc \
                AnimationResource.h \
+               BookResource.cc \
+               BookResource.h \
                ButtonWidget.cc \
                ButtonWidget.h \
                Chapter.cc \
