@@ -55,6 +55,7 @@ class SDL_Video: public Video {
     void Clear();
     void Clear(int x, int y, int w, int h);
     void Refresh();
+    void GrabInput(const bool toggle);
     void SaveScreenShot(const std::string& filename);
 };
 

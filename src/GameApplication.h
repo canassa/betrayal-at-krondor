@@ -40,10 +40,12 @@ typedef enum _GameState {
 } GameState;
 
 class GameApplication
-: KeyboardEventListener
+: public KeyboardEventListener
+, public MouseButtonEventListener
 {
   private:
     MediaToolkit *mediaToolkit;
+    bool inputGrabbed;
     GameState state;
     Chapter chapter;
     int screenSaveCount;
@@ -59,6 +61,8 @@ class GameApplication
     void Run();
     void KeyPressed(const KeyboardEvent& kbe);
     void KeyReleased(const KeyboardEvent& kbe);
+    void MouseButtonPressed(const MouseButtonEvent& mbe);
+    void MouseButtonReleased(const MouseButtonEvent& mbe);
 };
 
 #endif

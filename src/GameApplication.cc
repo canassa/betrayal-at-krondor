@@ -38,6 +38,7 @@ GameApplication* GameApplication::instance = 0;
 
 GameApplication::GameApplication()
 : mediaToolkit(SDL_Toolkit::GetInstance())
+, inputGrabbed(false)
 , state(GS_INTRO)
 , chapter(mediaToolkit)
 , screenSaveCount(0)
@@ -58,6 +59,7 @@ GameApplication::GameApplication()
   mediaToolkit->GetVideo()->Refresh();
   mediaToolkit->GetClock()->Delay(1000);
   mediaToolkit->AddKeyboardListener(this);
+  mediaToolkit->AddMouseButtonListener(this);
 
   MousePointerManager::GetInstance()->AddPointer("POINTER.BMX");
   MousePointerManager::GetInstance()->AddPointer("POINTERG.BMX");
@@ -172,13 +174,17 @@ void
 GameApplication::KeyPressed(const KeyboardEvent& kbe)
 {
   switch (kbe.GetKey()){
-    case KEY_F12:
+    case KEY_F11:
       {
         screenSaveCount++;
         std::stringstream filenameStream;
         filenameStream << "xbak_" << std::setw(3) << std::setfill('0') << screenSaveCount << ".bmp";
         mediaToolkit->GetVideo()->SaveScreenShot(filenameStream.str());
       }
+      break;
+    case KEY_F12:
+      inputGrabbed = !inputGrabbed;
+      mediaToolkit->GetVideo()->GrabInput(inputGrabbed);
       break;
     default:
       break;
@@ -189,6 +195,36 @@ void
 GameApplication::KeyReleased(const KeyboardEvent& kbe)
 {
   switch (kbe.GetKey()){
+    default:
+      break;
+  }
+}
+
+void
+GameApplication::MouseButtonPressed(const MouseButtonEvent& mbe)
+{
+  switch (mbe.GetButton()){
+    case MB_LEFT:
+      if (!inputGrabbed) {
+        inputGrabbed = true;
+        mediaToolkit->GetVideo()->GrabInput(true);
+      }
+      break;
+    case MB_RIGHT:
+      if (inputGrabbed) {
+        inputGrabbed = false;
+        mediaToolkit->GetVideo()->GrabInput(false);
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+void
+GameApplication::MouseButtonReleased(const MouseButtonEvent& mbe)
+{
+  switch (mbe.GetButton()){
     default:
       break;
   }

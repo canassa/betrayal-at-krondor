@@ -43,7 +43,6 @@ SDL_Video::CreateScreen(const int w, const int h)
   SDL_ShowCursor(SDL_DISABLE);
   SDL_WarpMouse(0, 0);
   SDL_WM_SetCaption("xBaK", 0);
-  SDL_WM_GrabInput(SDL_GRAB_ON);
   if (SDL_EnableKeyRepeat(0, 0) < 0) {
     throw SDL_Exception(SDL_GetError());
   }
@@ -286,6 +285,12 @@ SDL_Video::Refresh()
 {
   SDL_BlitSurface(buffer, 0, disp, 0);
   SDL_Flip(disp);
+}
+
+void
+SDL_Video::GrabInput(const bool toggle)
+{
+  SDL_WM_GrabInput(toggle ? SDL_GRAB_ON : SDL_GRAB_OFF);
 }
 
 void

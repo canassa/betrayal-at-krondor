@@ -65,6 +65,7 @@ class Video {
     virtual void SetPalette(Color *color, const unsigned int first, const unsigned int n) = 0;
     virtual void SetPointerPosition(int x, int y) = 0;
     virtual void Refresh() = 0;
+    virtual void GrabInput(const bool toggle) = 0;
     virtual void SaveScreenShot(const std::string& filename) = 0;
 };
 
