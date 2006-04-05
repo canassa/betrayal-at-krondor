@@ -83,10 +83,10 @@ int main(int argc, char *argv[]) {
         case 0x1200:
           break;
         case 0x2000:
-          printf(" set frame (image, frame)");
+          printf(" set frame (?, frame)");
           break;
         case 0x2010:
-          printf(" set frame (image, frame)");
+          printf(" set frame (?, frame)");
           break;
         case 0x2300:
           break;

@@ -185,7 +185,6 @@ MoviePlayer::Update(const UpdateEvent& ue) {
         break;
       case SET_FRAME0:
       case SET_FRAME1:
-        currImage = mt->data[0];
         currFrame = mt->data[1];
         break;
       case FADE_OUT:
