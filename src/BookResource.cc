@@ -21,65 +21,72 @@
 #include "BookResource.h"
 
 BookResource::BookResource()
+: paragraphs()
 {
 }
 
 BookResource::~BookResource()
 {
+  paragraphs.clear();
+}
+
+unsigned int
+BookResource::GetNumParagraphs() const
+{
+  return paragraphs.size();
+}
+
+std::string&
+BookResource::GetParagraph(const unsigned int i)
+{
+  return paragraphs[i];
 }
 
 void
 BookResource::Load(FileBuffer *buffer)
 {
   try {
-    printf("%d\n", buffer->GetUint32());
-    unsigned int n;
-    n = buffer->GetUint16();
-    printf("%d\n", n);
-    for (unsigned int i = 0; i < n; i++) {
-      printf("%d ", buffer->GetUint32());
+    buffer->Skip(4);
+    for (unsigned int i = 0; i < buffer->GetUint16(); i++) {
+      buffer->Skip(4);
     }
-    printf("\n");
     for (unsigned int i = 0; i < 40; i++) {
-      printf("%04x ", buffer->GetUint16());
+      buffer->Skip(2);
     }
-    unsigned int code = buffer->GetUint8();
-    while (code != 0xf0) {
+    while (!buffer->AtEnd()) {
+      unsigned int code = buffer->GetUint8();
+      std::string s = "";
+      while ((code & 0xf0) != 0xf0) {
+        s += (char)code;
+        code = buffer->GetUint8();
+      }
+      if (s.length()) {
+        paragraphs.push_back(s);
+      }
       switch (code) {
+        case 0xf0:
+          do {
+            buffer->Skip(2);
+            if (!buffer->AtEnd()) {
+              code = buffer->GetUint8();
+              buffer->Skip(-1);
+            }
+          } while ((code != 0xf0) && (!buffer->AtEnd()));
+          break;
         case 0xf1:
-          printf("\n");
           for (unsigned int i = 0; i < 8; i++) {
-            printf("%d ", buffer->GetSint16());
+            buffer->Skip(2);
           }
-          printf("\n");
           break;
         case 0xf4:
           for (unsigned int i = 0; i < 5; i++) {
-            printf("%d ", buffer->GetSint16());
+            buffer->Skip(2);
           }
-          printf("\n");
           break;
         default:
-          printf("%c", (char)code);
           break;
       }
-      code = buffer->GetUint8();
     }
-    printf("\n");
-    code = buffer->GetUint8();
-    buffer->Skip(-1);
-    while (code != 0xf0) {
-      printf("%04x ", buffer->GetUint16());
-      code = buffer->GetUint8();
-      buffer->Skip(-1);
-    }
-    printf("\n");
-    while (code != 0xf0) {
-      printf("%04x ", buffer->GetUint16());
-      code = buffer->GetUint8();
-      buffer->Skip(-1);
-    }
-    printf("\n");
   } catch (Exception &e) {
     e.Print("BookResource::Load");
   }

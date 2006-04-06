@@ -32,6 +32,9 @@ int main(int argc, char *argv[]) {
     }
     BookResource *bok = new BookResource;
     ResourceManager::GetInstance()->Load(bok, argv[1]);
+    for (unsigned int i = 0; i < bok->GetNumParagraphs(); i++) {
+      std::cout << i << ": " << bok->GetParagraph(i)<< std::endl;
+    }
     delete bok;
     ResourceManager::CleanUp();
     ResourcePath::CleanUp();

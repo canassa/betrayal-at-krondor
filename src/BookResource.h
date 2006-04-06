@@ -24,13 +24,18 @@
 #include "config.h"
 #endif
 
+#include <vector>
+
 #include "Resource.h"
 
 class BookResource: public Resource {
   private:
+    std::vector<std::string> paragraphs;
   public:
     BookResource();
     virtual ~BookResource();
+    unsigned int GetNumParagraphs() const;
+    std::string& GetParagraph(unsigned int i);
     void Load(FileBuffer *buffer);
 };
 
