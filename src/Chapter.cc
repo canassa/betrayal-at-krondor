@@ -20,6 +20,7 @@
 #include <sstream>
 
 #include "AnimationResource.h"
+#include "BookResource.h"
 #include "Chapter.h"
 #include "Exception.h"
 #include "MoviePlayer.h"
@@ -75,5 +76,60 @@ Chapter::PlayScene(const int scene)
     moviePlayer.Play(&ttm.GetMovieTags(), false);
   } catch (Exception &e) {
     e.Print("Chapter::PlayIntro");
+  }
+}
+
+void
+Chapter::ReadBook(const int scene)
+{
+  try {
+    BookResource bok;
+    std::stringstream filenameStream;
+    filenameStream << "C" << number << scene << ".BOK";
+    ResourceManager::GetInstance()->Load(&bok, filenameStream.str());
+  } catch (Exception &e) {
+    e.Print("Chapter::ReadBook");
+  }
+}
+
+void
+Chapter::KeyPressed(const KeyboardEvent &kbe)
+{
+  switch (kbe.GetKey()) {
+    case KEY_ESCAPE:
+    case KEY_RETURN:
+    case KEY_SPACE:
+      break;
+    default:
+      break;
+  }
+}
+
+void
+Chapter::KeyReleased(const KeyboardEvent &kbe)
+{
+  switch (kbe.GetKey()) {
+    default:
+      break;
+  }
+}
+
+void
+Chapter::MouseButtonPressed(const MouseButtonEvent &mbe)
+{
+  switch (mbe.GetButton()) {
+    case MB_LEFT:
+      break;
+    default:
+      break;
+  }
+}
+
+void
+Chapter::MouseButtonReleased(const MouseButtonEvent &mbe)
+{
+  switch (mbe.GetButton()) {
+    default:
+      break;
   }
 }

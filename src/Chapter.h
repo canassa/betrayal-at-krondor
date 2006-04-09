@@ -24,9 +24,13 @@
 #include "config.h"
 #endif
 
+#include "EventListener.h"
 #include "MediaToolkit.h"
 
-class Chapter {
+class Chapter
+: public KeyboardEventListener
+, public MouseButtonEventListener
+{
   private:
     MediaToolkit *media;
     int number;
@@ -36,6 +40,11 @@ class Chapter {
     void SetCurrent(const int n);
     void PlayIntro();
     void PlayScene(const int scene);
+    void ReadBook(const int scene);
+    void KeyPressed(const KeyboardEvent &kbe);
+    void KeyReleased(const KeyboardEvent &kbe);
+    void MouseButtonPressed(const MouseButtonEvent &mbe);
+    void MouseButtonReleased(const MouseButtonEvent &mbe);
 };
 
 #endif
