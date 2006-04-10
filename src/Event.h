@@ -180,13 +180,7 @@ typedef enum
 } MouseButton;
 
 
-class Event {
-  public:
-    Event();
-    virtual ~Event();
-};
-
-class KeyboardEvent: public Event {
+class KeyboardEvent {
   private:
     Key key;
   public:
@@ -195,7 +189,7 @@ class KeyboardEvent: public Event {
     Key GetKey() const;
 };
 
-class MouseButtonEvent: public Event {
+class MouseButtonEvent {
   private:
     MouseButton button;
     int xpos;
@@ -208,7 +202,7 @@ class MouseButtonEvent: public Event {
     int GetYPos() const;
 };
 
-class MouseMotionEvent: public Event {
+class MouseMotionEvent {
   private:
     int xpos;
     int ypos;
@@ -219,7 +213,7 @@ class MouseMotionEvent: public Event {
     int GetYPos() const;
 };
 
-class UpdateEvent: public Event {
+class UpdateEvent {
   private:
     int ticks;
   public:
@@ -228,7 +222,7 @@ class UpdateEvent: public Event {
     int GetTicks() const;
 };
 
-class ActionEvent: public Event {
+class ActionEvent {
   private:
     int action;
   public:

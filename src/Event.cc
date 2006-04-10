@@ -19,14 +19,6 @@
 
 #include "Event.h"
 
-Event::Event() 
-{
-}
-
-Event::~Event()
-{
-}
-
 KeyboardEvent::KeyboardEvent(const Key k)
 : key(k)
 {

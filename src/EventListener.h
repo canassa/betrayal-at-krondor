@@ -26,13 +26,7 @@
 
 #include "Event.h"
 
-class EventListener {
-  public:
-    EventListener() {};
-    virtual ~EventListener() {};
-};
-
-class KeyboardEventListener: public EventListener {
+class KeyboardEventListener {
   public:
     KeyboardEventListener() {};
     virtual ~KeyboardEventListener() {};
@@ -40,7 +34,7 @@ class KeyboardEventListener: public EventListener {
     virtual void KeyReleased(const KeyboardEvent &kbe) = 0;
 };
 
-class MouseButtonEventListener: public EventListener {
+class MouseButtonEventListener {
   public:
     MouseButtonEventListener() {};
     virtual ~MouseButtonEventListener() {};
@@ -48,21 +42,21 @@ class MouseButtonEventListener: public EventListener {
     virtual void MouseButtonReleased(const MouseButtonEvent &mbe) = 0;
 };
 
-class MouseMotionEventListener: public EventListener {
+class MouseMotionEventListener {
   public:
     MouseMotionEventListener() {};
     virtual ~MouseMotionEventListener() {};
     virtual void MouseMoved(const MouseMotionEvent &mme) = 0;
 };
 
-class UpdateEventListener: public EventListener {
+class UpdateEventListener {
   public:
     UpdateEventListener() {};
     virtual ~UpdateEventListener() {};
     virtual void Update(const UpdateEvent &ue) = 0;
 };
 
-class ActionEventListener: public EventListener {
+class ActionEventListener {
   public:
     ActionEventListener() {};
     virtual ~ActionEventListener() {};
