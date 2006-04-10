@@ -1,6 +1,6 @@
-2006-04-XX, xbak-0.0,6:
+2006-04-10, xbak-0.0,6:
 * Changed the EventHandler to more flexible EventListeners.
-* More work is done on the GUI, more dialogs available.
+* More work is done on the GUI, more dialogs are available.
 * Added the ability to create screenshots (BMP format).
 * Keyboard and mouse grabbing is now user-controlled.
 * BOK files can be loaded and partially interpreted.
