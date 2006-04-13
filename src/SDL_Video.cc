@@ -1,4 +1,4 @@
-/*
+  /*
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or (at
@@ -22,6 +22,7 @@
 
 SDL_Video::SDL_Video()
 : Video()
+, info(SDL_GetVideoInfo())
 , disp(0)
 , buffer(0)
 {
@@ -48,7 +49,12 @@ SDL_Video::CreateScreen(const int w, const int h)
   }
   int width = w * scaling;
   int height = h * scaling;
-  unsigned int flags = SDL_HWSURFACE | SDL_ANYFORMAT;
+  unsigned int flags = SDL_ANYFORMAT;
+  if (info->hw_available) {
+    flags |= SDL_HWSURFACE;
+  } else {
+    flags |= SDL_SWSURFACE;
+  }
   int bpp = SDL_VideoModeOK(width, height, VIDEO_BPP, flags);
   if (bpp <= 0) {
     throw SDL_Exception(SDL_GetError());
@@ -59,12 +65,12 @@ SDL_Video::CreateScreen(const int w, const int h)
   }
   if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
     buffer = SDL_CreateRGBSurface(
-                 SDL_SWSURFACE, width, height, VIDEO_BPP,
-                 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+               SDL_SWSURFACE, width, height, VIDEO_BPP,
+               0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
   } else {
     buffer = SDL_CreateRGBSurface(
-                 SDL_SWSURFACE, width, height, VIDEO_BPP,
-                 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+               SDL_SWSURFACE, width, height, VIDEO_BPP,
+               0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
   }
   if (!buffer) {
     throw SDL_Exception(SDL_GetError());

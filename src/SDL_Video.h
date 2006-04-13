@@ -30,6 +30,7 @@
 
 class SDL_Video: public Video {
   private:
+    const SDL_VideoInfo *info;
     SDL_Surface* disp;
     SDL_Surface* buffer;
     unsigned int GetScaledPixel(const int x, const int y);
