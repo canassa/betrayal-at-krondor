@@ -63,15 +63,7 @@ SDL_Video::CreateScreen(const int w, const int h)
   if (!disp) {
     throw SDL_Exception(SDL_GetError());
   }
-  if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-    buffer = SDL_CreateRGBSurface(
-               SDL_SWSURFACE, width, height, VIDEO_BPP,
-               0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-  } else {
-    buffer = SDL_CreateRGBSurface(
-               SDL_SWSURFACE, width, height, VIDEO_BPP,
-               0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
-  }
+  buffer = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, VIDEO_BPP, 0, 0, 0, 0);
   if (!buffer) {
     throw SDL_Exception(SDL_GetError());
   }
@@ -96,28 +88,8 @@ unsigned int
 SDL_Video::GetScaledPixel(const int x, const int y)
 {
   if ((x >= 0) && (x < buffer->w) && (y >= 0) && (y < buffer->h)) {
-    unsigned int bpp = buffer->format->BytesPerPixel;
-    uint8_t *p = (uint8_t *)buffer->pixels + y * buffer->pitch + x * bpp;
-    switch (bpp) {
-      case 1:
-        return (unsigned int)(*p);
-        break;
-      case 2:
-        return (unsigned int)(*(uint16_t *)p);
-        break;
-      case 3:
-        if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-          return ((unsigned int)p[2] + ((unsigned int)p[1] << 8) + ((unsigned int)p[0] << 16));
-        } else {
-          return ((unsigned int)p[0] + ((unsigned int)p[1] << 8) + ((unsigned int)p[2] << 16));
-        }
-        break;
-      case 4:
-        return (unsigned int)(*(uint32_t *)p);
-        break;
-      default:
-        break;
-    }
+    uint8_t *p = (uint8_t *)buffer->pixels + y * buffer->pitch + x;
+    return (unsigned int)(*p);
   }
   return 0;
 }
@@ -126,32 +98,8 @@ void
 SDL_Video::PutScaledPixel(const int x, const int y, const unsigned int c)
 {
   if ((x >= 0) && (x < buffer->w) && (y >= 0) && (y < buffer->h)) {
-    unsigned int bpp = buffer->format->BytesPerPixel;
-    uint8_t *p = (uint8_t *)buffer->pixels + y * buffer->pitch + x * bpp;
-    switch (bpp) {
-      case 1:
-        *p = (uint8_t)c;
-        break;
-      case 2:
-        *(uint16_t *)p = (uint16_t)c;
-        break;
-      case 3:
-        if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-          p[0] = (uint8_t)(c >> 16) & 0xff;
-          p[1] = (uint8_t)(c >> 8) & 0xff;
-          p[2] = (uint8_t)c & 0xff;
-        } else {
-          p[0] = (uint8_t)c & 0xff;
-          p[1] = (uint8_t)(c >> 8) & 0xff;
-          p[2] = (uint8_t)(c >> 16) & 0xff;
-        }
-        break;
-      case 4:
-        *(uint32_t *)p = (uint32_t)c;
-        break;
-      default:
-        break;
-    }
+    uint8_t *p = (uint8_t *)buffer->pixels + y * buffer->pitch + x;
+    *p = (uint8_t)c;
   }
 }
 
