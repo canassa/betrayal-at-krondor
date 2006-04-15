@@ -17,49 +17,21 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef LABEL_WIDGET_H
-#define LABEL_WIDGET_H
-
-#include <vector>
+#ifndef POPUP_WIDGET_H
+#define POPUP_WIDGET_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "FontResource.h"
-#include "Widget.h"
+#include "ContainerWidget.h"
 
-typedef enum {
-  HA_LEFT,
-  HA_CENTER,
-  HA_RIGHT
-} HorizontalAlignment;
-
-typedef enum  {
-  VA_TOP,
-  VA_CENTER,
-  VA_BOTTOM
-} VerticalAlignment;
-
-class LabelWidget: public Widget {
+class PopUpWidget: public ContainerWidget {
   private:
-    std::vector<Widget> widgetVec;
-    FontResource *font;
-    std::string text;
-    int textWidth;
-    int textHeight;
-    int color;
-    int shadow;
-    HorizontalAlignment horAlign;
-    VerticalAlignment vertAlign;
   public:
-    LabelWidget(const int x, const int y, const int w, const int h, FontResource *f);
-    virtual ~LabelWidget();
+    PopUpWidget(const int x, const int y, const int w, const int h);
+    virtual ~PopUpWidget();
     void Draw(Video *video);
-    void SetColor(const int c);
-    void SetText(const std::string &t);
-    void SetShadow(const int s);
-    void SetAlignment(const HorizontalAlignment ha, const VerticalAlignment va);
 };
 
 #endif

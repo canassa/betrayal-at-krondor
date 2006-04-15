@@ -26,6 +26,7 @@ noinst_HEADERS = AnimationResource.h \
                  OptionsDialog.h \
                  PaletteResource.h \
                  PanelWidget.h \
+                 PopUpWidget.h \
                  RequestResource.h \
                  Resource.h \
                  ResourceArchive.h \
@@ -447,6 +448,8 @@ xbak_SOURCES = AnimationResource.cc \
                PaletteResource.h \
                PanelWidget.cc \
                PanelWidget.h \
+               PopUpWidget.cc \
+               PopUpWidget.h \
                RequestResource.cc \
                RequestResource.h \
                Resource.h \

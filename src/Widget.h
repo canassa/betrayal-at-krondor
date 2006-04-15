@@ -29,6 +29,16 @@
 #include "EventListener.h"
 #include "Video.h"
 
+static const int NO_SHADOW            = -1;
+static const int SHADOW_COLOR         = 1;
+static const int LIGHT_COLOR          = 4;
+static const int TEXT_COLOR_NORMAL    = 10;
+static const int TEXT_COLOR_DISABLED  = 11;
+static const int TEXT_COLOR_PRESSED   = 6;
+static const int BUTTON_COLOR_NORMAL  = 14;
+static const int BUTTON_COLOR_PRESSED = 11;
+static const int POPUP_COLOR          = 14;
+
 class Widget {
   protected:
     int xpos;

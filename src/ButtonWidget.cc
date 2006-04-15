@@ -20,14 +20,6 @@
 #include "ButtonWidget.h"
 #include "MousePointerManager.h"
 
-static const int SHADOW_COLOR         = 1;
-static const int LIGHT_COLOR          = 4;
-static const int TEXT_COLOR_NORMAL    = 10;
-static const int TEXT_COLOR_DISABLED  = 11;
-static const int TEXT_COLOR_PRESSED   = 6;
-static const int BUTTON_COLOR_NORMAL  = 14;
-static const int BUTTON_COLOR_PRESSED = 11;
-
 ButtonWidget::ButtonWidget(const int x, const int y, const int w, const int h, const int a)
 : ActiveWidget(x, y, w, h, a)
 , enabled(true)
