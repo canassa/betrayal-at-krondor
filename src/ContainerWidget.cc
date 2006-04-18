@@ -29,11 +29,11 @@ ContainerWidget::ContainerWidget(const int x, const int y, const int w, const in
 
 ContainerWidget::~ContainerWidget()
 {
-  for (std::list<Widget *>::iterator it = widgets.begin(); it != widgets.end(); it++) {
+  for (std::list<Widget *>::iterator it = widgets.begin(); it != widgets.end(); ++it) {
     delete (*it);
   }
   widgets.clear();
-  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); it++) {
+  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
     delete (*it);
   }
   activeWidgets.clear();
@@ -68,10 +68,10 @@ ContainerWidget::RemoveActiveWidget(ActiveWidget *aw)
 void
 ContainerWidget::DrawWidgets(Video *video)
 {
-  for (std::list<Widget *>::iterator it = widgets.begin(); it != widgets.end(); it++) {
+  for (std::list<Widget *>::iterator it = widgets.begin(); it != widgets.end(); ++it) {
     (*it)->Draw(video);
   }
-  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); it++) {
+  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
     (*it)->Draw(video);
   }
 }
@@ -113,7 +113,7 @@ ContainerWidget::Deactivate()
 void
 ContainerWidget::Activate(const int x, const int y)
 {
-  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); it++) {
+  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
     if ((*it)->Covers(x, y)) {
       (*it)->Activate();
     }
@@ -123,7 +123,7 @@ ContainerWidget::Activate(const int x, const int y)
 void
 ContainerWidget::Deactivate(const int x, const int y)
 {
-  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); it++) {
+  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
     if ((*it)->Covers(x, y)) {
       (*it)->Deactivate();
     }

@@ -27,7 +27,7 @@ ImageResource::ImageResource()
 
 ImageResource::~ImageResource()
 {
-  for (std::vector<Image*>::iterator it = images.begin(); it != images.end(); it++) {
+  for (std::vector<Image*>::iterator it = images.begin(); it != images.end(); ++it) {
     delete (*it);
   }
   images.clear();

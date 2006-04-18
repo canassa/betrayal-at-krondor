@@ -92,7 +92,7 @@ ButtonWidget::Activate()
 {
   pressed = true;
   ActionEvent ae(action);
-  for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); it++) {
+  for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it) {
     (*it)->ActionPerformed(ae);
   }
 }

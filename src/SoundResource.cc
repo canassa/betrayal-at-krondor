@@ -40,7 +40,7 @@ SoundResource::SoundResource()
 
 SoundResource::~SoundResource()
 {
-  for (std::map<unsigned int, SoundData>::iterator it = soundMap.begin(); it != soundMap.end(); it++) {
+  for (std::map<unsigned int, SoundData>::iterator it = soundMap.begin(); it != soundMap.end(); ++it) {
     delete (*it).second.buffer;
   }
   soundMap.clear();
