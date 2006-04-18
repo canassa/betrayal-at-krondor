@@ -39,7 +39,7 @@ class TextArea {
     virtual ~TextArea();
     void SetText(const std::string &s);
     void SetColor(const unsigned int c);
-    void Draw(Video *video, const unsigned int x, const unsigned int y);
+    void Draw(Video *video, const unsigned int x, const unsigned int y, const bool italic = false);
 };
 
 #endif

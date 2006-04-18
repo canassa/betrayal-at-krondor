@@ -52,7 +52,7 @@ class FontResource: public TaggedResource {
     unsigned int GetSize() const;
     FontGlyph* GetGlyph(const unsigned int n);
     void Load(FileBuffer *buffer);
-    void DrawChar(Video *video, const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color);
+    void DrawChar(Video *video, const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color, const bool italic);
 };
 
 #endif

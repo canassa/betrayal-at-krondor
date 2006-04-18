@@ -61,6 +61,7 @@ class Video {
                            const int xx, const int yy, const int ww, const int hh, uint8_t *p) = 0;
     virtual void DrawImage(const int x, const int y, const int w, const int h, uint8_t *p, const uint8_t transparant) = 0;
     virtual void DrawGlyph(const int x, const int y, const int w, const int h, const uint8_t c, uint16_t *p) = 0;
+    virtual void DrawGlyphItalic(const int x, const int y, const int w, const int h, const uint8_t c, uint16_t *p) = 0;
     virtual void GetPalette(Color *color, const unsigned int first, const unsigned int n) = 0;
     virtual void SetPalette(Color *color, const unsigned int first, const unsigned int n) = 0;
     virtual void SetPointerPosition(int x, int y) = 0;

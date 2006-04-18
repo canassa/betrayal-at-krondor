@@ -127,10 +127,14 @@ TestApplication::DrawFont(const std::string& name)
   try {
     ResourceManager::GetInstance()->Load(&fnt, name);
     mediaToolkit->GetVideo()->Clear();
-    TextArea ta(280, 180, fnt);
-    ta.SetText("The quick brown fox jumped over the lazy dog.");
-    ta.SetColor(15);
-    ta.Draw(mediaToolkit->GetVideo(), 10, 10);
+    TextArea ta1(280, 180, fnt);
+    ta1.SetText("The quick brown fox jumped over the lazy dog.");
+    ta1.SetColor(15);
+    ta1.Draw(mediaToolkit->GetVideo(), 10, 10, false);
+    TextArea ta2(280, 180, fnt);
+    ta2.SetText("The quick brown fox jumped over the lazy dog.");
+    ta2.SetColor(15);
+    ta2.Draw(mediaToolkit->GetVideo(), 10, 50, true);
     mediaToolkit->GetVideo()->Refresh();
     mediaToolkit->GetClock()->Delay(2000);
   } catch (Exception &e) {

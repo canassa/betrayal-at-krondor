@@ -117,10 +117,14 @@ FontResource::Load(FileBuffer *buffer)
 }
 
 void
-FontResource::DrawChar(Video *video, const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color)
+FontResource::DrawChar(Video *video, const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color, const bool italic)
 {
   if ((int)(ch - first) >= 0) {
-    video->DrawGlyph(x, y, fontGlyphs[ch - first]->width, height, color, fontGlyphs[ch - first]->data);
+    if (italic) {
+      video->DrawGlyphItalic(x, y, fontGlyphs[ch - first]->width, height, color, fontGlyphs[ch - first]->data);
+    } else {
+      video->DrawGlyph(x, y, fontGlyphs[ch - first]->width, height, color, fontGlyphs[ch - first]->data);
+    }
   }
 }
 

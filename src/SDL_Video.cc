@@ -213,6 +213,20 @@ SDL_Video::DrawGlyph(const int x, const int y, const int w, const int h, const u
 }
 
 void
+SDL_Video::DrawGlyphItalic(const int x, const int y, const int w, const int h, const uint8_t c, uint16_t *p)
+{
+  for (int j = 0; j < h; j++) {
+    for (int i = 0; i < w; i++) {
+      if (*p & (0x8000 >> i)) {
+        PutPixel(x + i + 4 - (j / 3), y + j, c);
+      }
+    }
+    p++;
+  }
+  SDL_UpdateRect(buffer, x * scaling, y * scaling, w * scaling, h * scaling);
+}
+
+void
 SDL_Video::GetPalette(Color *color, const unsigned int first, const unsigned int n)
 {
   if (buffer->format->palette) {

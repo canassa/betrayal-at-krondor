@@ -50,6 +50,7 @@ class SDL_Video: public Video {
                    const int xx, const int yy, const int ww, const int hh, uint8_t *p);
     void DrawImage(const int x, const int y, const int w, const int h, uint8_t *p, const uint8_t transparant);
     void DrawGlyph(const int x, const int y, const int w, const int h, const uint8_t c, uint16_t*p);
+    void DrawGlyphItalic(const int x, const int y, const int w, const int h, const uint8_t c, uint16_t*p);
     void GetPalette(Color *color, const unsigned int first, const unsigned int n);
     void SetPalette(Color *color, const unsigned int first, const unsigned int n);
     void SetPointerPosition(int x, int y);
