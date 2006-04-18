@@ -48,7 +48,7 @@ ResourceIndex::Init(const std::string &filename)
     }
     resourceFilename = rmfBuffer.GetString(RES_FILENAME_LEN);
     numResources = rmfBuffer.GetUint16();
-    
+
     GenericResourceFile res;
     res.Open(resourceFilename);
     FileBuffer resBuffer(RES_FILENAME_LEN + 4);
@@ -80,11 +80,10 @@ ResourceIndex::GetResourceFilename() const
 bool
 ResourceIndex::Find(const std::string &name, ResourceIndexData &data)
 {
-  try {
-    data = resIdxMap[name];
-  } catch (...) {
-    return false;
+  std::map<const std::string, ResourceIndexData>::iterator it = resIdxMap.find(name);
+  if (it != resIdxMap.end()) {
+    data = it->second;
+    return true;
   }
-  return true;
+  return false;
 }
-
