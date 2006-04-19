@@ -5,6 +5,7 @@ noinst_HEADERS = AnimationResource.h \
                  ChoiceWidget.h \
                  Clock.h \
                  ContainerWidget.h \
+                 DialogResource.h \
                  DialogWindow.h \
                  Event.h \
                  EventListener.h \
@@ -52,6 +53,7 @@ noinst_HEADERS = AnimationResource.h \
 bin_PROGRAMS = dumpads \
                dumpbmx \
                dumpbok \
+               dumpddx \
                dumpfnt \
                dumplbl \
                dumppal \
@@ -127,6 +129,26 @@ dumpbok_SOURCES = BookResource.cc \
                   ResourceTag.cc \
                   ResourceTag.h \
                   dumpbok.cc
+dumpddx_SOURCES = DialogResource.cc \
+                  DialogResource.h \
+                  Exception.cc \
+                  Exception.h \
+                  FileBuffer.cc \
+                  FileBuffer.h \
+                  GenericResourceFile.cc \
+                  GenericResourceFile.h \
+                  Resource.h \
+                  ResourceArchive.cc \
+                  ResourceArchive.h \
+                  ResourceIndex.cc \
+                  ResourceIndex.h \
+                  ResourceManager.cc \
+                  ResourceManager.h \
+                  ResourcePath.cc \
+                  ResourcePath.h \
+                  ResourceTag.cc \
+                  ResourceTag.h \
+                  dumpddx.cc
 dumpfnt_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
@@ -407,6 +429,8 @@ xbak_SOURCES = AnimationResource.cc \
                Clock.h \
                ContainerWidget.cc \
                ContainerWidget.h \
+               DialogResource.cc \
+               DialogResource.h \
                DialogWindow.cc \
                DialogWindow.h \
                Event.cc \
