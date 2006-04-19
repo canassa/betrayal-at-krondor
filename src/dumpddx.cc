@@ -28,7 +28,7 @@ void dumpDialogData(unsigned int n, DialogData *data, unsigned int depth) {
   for (unsigned int d = 0; d < depth; d++) {
     printf("\t");
   }
-  printf("%d\t%ld\n", n, data->subdata.size());
+  printf("%d\t%d\n", n, data->subdialogs);
   for (unsigned int i = 0; i < data->text.size(); i++) {
     for (unsigned int d = 0; d < depth; d++) {
       printf("\t");

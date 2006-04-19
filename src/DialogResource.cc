@@ -29,7 +29,7 @@ DialogResource::~DialogResource()
   for (std::map<const unsigned int, DialogData*>::iterator it = dialogMap.begin(); it != dialogMap.end(); ++it) {
     DialogData* data = it->second;
     data->text.clear();
-    for (unsigned int i = 0; i < data->subdialogs; i++) {
+    for (unsigned int i = 0; i < data->subdata.size(); i++) {
       delete data->subdata[i];
     }
     data->subdata.clear();
