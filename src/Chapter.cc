@@ -93,6 +93,23 @@ Chapter::ReadBook(const int scene)
 }
 
 void
+Chapter::ShowMap()
+{
+  try {
+    ScreenResource scr;
+    ResourceManager::GetInstance()->Load(&scr, "FULLMAP.SCX");
+    scr.GetImage()->Draw(media->GetVideo(), 0, 0);
+    PaletteResource pal;
+    ResourceManager::GetInstance()->Load(&pal, "FULLMAP.PAL");
+    pal.FadeIn(media->GetVideo(), 0, VIDEO_COLORS, 64, 10, media->GetClock());
+    media->GetClock()->Delay(2000);
+    pal.FadeOut(media->GetVideo(), 0, VIDEO_COLORS, 64, 10, media->GetClock());
+  } catch (Exception &e) {
+    e.Print("Chapter::ShowMap");
+  }
+}
+
+void
 Chapter::KeyPressed(const KeyboardEvent &kbe)
 {
   switch (kbe.GetKey()) {

@@ -130,7 +130,9 @@ GameApplication::Run()
       switch (state) {
         case GS_CHAPTER:
           chapter.PlayIntro();
+          chapter.ReadBook(1);
           chapter.PlayScene(1);
+          chapter.ShowMap();
           state = GS_WORLD;
           break;
         case GS_COMBAT:

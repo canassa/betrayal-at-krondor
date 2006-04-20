@@ -41,6 +41,7 @@ class Chapter
     void PlayIntro();
     void PlayScene(const int scene);
     void ReadBook(const int scene);
+    void ShowMap();
     void KeyPressed(const KeyboardEvent &kbe);
     void KeyReleased(const KeyboardEvent &kbe);
     void MouseButtonPressed(const MouseButtonEvent &mbe);
