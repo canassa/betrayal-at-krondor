@@ -38,8 +38,9 @@ GameApplication* GameApplication::instance = 0;
 
 GameApplication::GameApplication()
 : mediaToolkit(SDL_Toolkit::GetInstance())
+, done(false)
 , inputGrabbed(false)
-, state(GS_INTRO)
+, state(GameStateIntro::GetInstance())
 , chapter(mediaToolkit)
 , screenSaveCount(0)
 {
@@ -87,10 +88,21 @@ GameApplication::GetInstance()
 void
 GameApplication::CleanUp()
 {
+  GameStateChapter::CleanUp();
+  GameStateCombat::CleanUp();
+  GameStateIntro::CleanUp();
+  GameStateOptions::CleanUp();
+  GameStateWorld::CleanUp();
   if (instance) {
     delete instance;
     instance = 0;
   }
+}
+
+void
+GameApplication::SetState(GameState *st)
+{
+  state = st;
 }
 
 void
@@ -122,50 +134,37 @@ GameApplication::Options(const bool firstTime)
 }
 
 void
+GameApplication::StartChapter()
+{
+  try {
+    chapter.PlayIntro();
+    chapter.ReadBook(1);
+    chapter.PlayScene(1);
+    chapter.ShowMap();
+  } catch (Exception &e) {
+    e.Print("GameApplication::StartChapter");
+  }
+}
+
+void
+GameApplication::StartNewGame()
+{
+  chapter.SetCurrent(1);
+}
+
+void
+GameApplication::QuitGame()
+{
+  done = true;
+}
+
+void
 GameApplication::Run()
 {
   try {
-    bool firstTime = true;
-    while (true) {
-      switch (state) {
-        case GS_CHAPTER:
-          chapter.PlayIntro();
-          chapter.ReadBook(1);
-          chapter.PlayScene(1);
-          chapter.ShowMap();
-          state = GS_WORLD;
-          break;
-        case GS_COMBAT:
-          state = GS_WORLD;
-          break;
-        case GS_INTRO:
-          PlayIntro();
-          state = GS_OPTIONS;
-          break;
-        case GS_OPTIONS:
-          switch (Options(firstTime)) {
-            case UA_CANCEL:
-              break;
-            case UA_NEW_GAME:
-              state = GS_CHAPTER;
-              chapter.SetCurrent(1);
-              break;
-            case UA_QUIT:
-              return;
-              break;
-            case UA_RESTORE:
-              break;
-            case UA_SAVE:
-              break;
-            case UA_UNKNOWN:
-              break;
-          }
-          firstTime = false;
-          break;
-        case GS_WORLD:
-          return;
-          break;
-      }
+    done = false;
+    while (!done) {
+      state->Execute(this);
     }
   } catch (Exception &e) {
     e.Print("GameApplication::Run");

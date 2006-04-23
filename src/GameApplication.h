@@ -28,36 +28,35 @@
 
 #include "Chapter.h"
 #include "EventListener.h"
+#include "GameState.h"
 #include "MediaToolkit.h"
 #include "OptionsDialog.h"
-
-typedef enum _GameState {
-  GS_CHAPTER,
-  GS_COMBAT,
-  GS_INTRO,
-  GS_OPTIONS,
-  GS_WORLD
-} GameState;
 
 class GameApplication
 : public KeyboardEventListener
 , public MouseButtonEventListener
 {
   private:
+    friend class GameState;
     MediaToolkit *mediaToolkit;
+    bool done;
     bool inputGrabbed;
-    GameState state;
+    GameState *state;
     Chapter chapter;
     int screenSaveCount;
     static GameApplication *instance;
-    void PlayIntro();
-    UserActionType Options(const bool firstTime);
+    void SetState(GameState *st);
   protected:
     GameApplication();
   public:
     ~GameApplication();
     static GameApplication* GetInstance();
     static void CleanUp();
+    void PlayIntro();
+    UserActionType Options(const bool firstTime);
+    void StartChapter();
+    void StartNewGame();
+    void QuitGame();
     void Run();
     void KeyPressed(const KeyboardEvent& kbe);
     void KeyReleased(const KeyboardEvent& kbe);
