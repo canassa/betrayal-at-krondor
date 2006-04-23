@@ -20,8 +20,6 @@
 #ifndef GAME_APPLICATION_H
 #define GAME_APPLICATION_H
 
-#include <map>
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
