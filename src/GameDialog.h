@@ -17,51 +17,42 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef GAME_APPLICATION_H
-#define GAME_APPLICATION_H
+#ifndef GAME_DIALOG_H
+#define GAME_DIALOG_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "Chapter.h"
+#include "DialogWindow.h"
 #include "EventListener.h"
-#include "GameDialog.h"
-#include "GameState.h"
 #include "MediaToolkit.h"
-#include "OptionsDialog.h"
 
-class GameApplication
+class GameDialog
 : public KeyboardEventListener
 , public MouseButtonEventListener
+, public UpdateEventListener
+, public ActionEventListener
 {
   private:
-    friend class GameState;
-    MediaToolkit *mediaToolkit;
-    bool done;
-    bool inputGrabbed;
-    GameState *state;
-    Chapter chapter;
-    int screenSaveCount;
-    static GameApplication *instance;
-    void SetState(GameState *st);
-  protected:
-    GameApplication();
+    MediaToolkit *media;
+    DialogWindow *window;
+    bool running;
+    FontResource gameFont;
+    LabelResource lblNull;
+    PaletteResource optionsPalette;
+    ScreenResource frameScreen;
+    RequestResource reqMain;
   public:
-    ~GameApplication();
-    static GameApplication* GetInstance();
-    static void CleanUp();
-    void PlayIntro();
-    UserActionType Options(const bool firstTime);
-    void StartChapter();
-    void StartNewGame();
-    void PlayGame();
-    void QuitGame();
-    void Run();
+    GameDialog(MediaToolkit *mtk);
+    ~GameDialog();
+    void Play();
     void KeyPressed(const KeyboardEvent& kbe);
     void KeyReleased(const KeyboardEvent& kbe);
     void MouseButtonPressed(const MouseButtonEvent& mbe);
     void MouseButtonReleased(const MouseButtonEvent& mbe);
+    void Update(const UpdateEvent& ue);
+    void ActionPerformed(const ActionEvent& ae);
 };
 
 #endif

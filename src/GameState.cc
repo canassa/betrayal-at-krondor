@@ -228,5 +228,6 @@ GameStateWorld::CleanUp()
 void
 GameStateWorld::Execute(GameApplication *app)
 {
+  app->PlayGame();
   ChangeState(app, GameStateOptions::GetInstance());
 }
