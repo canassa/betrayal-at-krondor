@@ -17,31 +17,26 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef WIDGET_FACTORY_H
-#define WIDGET_FACTORY_H
+#ifndef TEXT_BUTTON_WIDGET_H
+#define TEXT_BUTTON_WIDGET_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "ChoiceWidget.h"
-#include "PanelWidget.h"
-#include "LabelResource.h"
-#include "RequestResource.h"
-#include "ScreenResource.h"
-#include "TextButtonWidget.h"
-#include "TickboxWidget.h"
+#include "ButtonWidget.h"
+#include "LabelWidget.h"
 
-class WidgetFactory {
+class TextButtonWidget
+: public ButtonWidget
+{
+  private:
+    LabelWidget* label;
   public:
-    WidgetFactory();
-    virtual ~WidgetFactory();
-    TextButtonWidget* CreateTextButton(RequestData& data, FontResource& fnt, ActionEventListener *ael);
-    ChoiceWidget* CreateChoice();
-    LabelWidget* CreateLabel(LabelData& data, FontResource& fnt, const int panelWidth);
-    PanelWidget* CreatePanel(RequestResource& req, ScreenResource& scr, LabelResource& lbl, FontResource& fnt, ActionEventListener *ael);
-    TickboxWidget* CreateTickbox();
+    TextButtonWidget(const int x, const int y, const int w, const int h, const int a);
+    virtual ~TextButtonWidget();
+    void SetLabel(const std::string& s, FontResource *f);
+    void Draw(Video *video);
 };
 
 #endif
-

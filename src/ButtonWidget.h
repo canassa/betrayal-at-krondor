@@ -24,7 +24,7 @@
 #include "config.h"
 #endif
 
-#include "LabelWidget.h"
+#include "Widget.h"
 
 class ButtonWidget
 : public ActiveWidget
@@ -32,16 +32,15 @@ class ButtonWidget
   private:
     bool enabled;
     bool pressed;
-    LabelWidget* label;
   public:
     ButtonWidget(const int x, const int y, const int w, const int h, const int a);
     virtual ~ButtonWidget();
     void SetEnabled(const bool toggle);
-    void SetLabel(const std::string& s, FontResource *f);
-    void Draw(Video *video);
+    bool IsEnabled() const;
     void Focus(Video *video);
     void Activate();
     void Deactivate();
+    bool IsActivated() const;
 };
 
 #endif

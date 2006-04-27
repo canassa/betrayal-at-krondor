@@ -24,15 +24,11 @@ ButtonWidget::ButtonWidget(const int x, const int y, const int w, const int h, c
 : ActiveWidget(x, y, w, h, a)
 , enabled(true)
 , pressed(false)
-, label(0)
 {
 }
 
 ButtonWidget::~ButtonWidget()
 {
-  if (label) {
-    delete label;
-  }
 }
 
 void
@@ -41,44 +37,10 @@ ButtonWidget::SetEnabled(const bool toggle)
   enabled = toggle;
 }
 
-void
-ButtonWidget::SetLabel(const std::string& s, FontResource* f)
+bool
+ButtonWidget::IsEnabled()const
 {
-  label = new LabelWidget(xpos + 2, ypos + 2, width - 4, height - 4, f);
-  label->SetText(s);
-}
-
-void
-ButtonWidget::Draw(Video *video)
-{
-  if (pressed) {
-    video->FillRect(xpos + 1, ypos + 1, width - 2, height - 2, BUTTON_COLOR_PRESSED);
-    video->DrawVLine(xpos, ypos, height, LIGHT_COLOR);
-    video->DrawHLine(xpos + 1, ypos, width - 1, SHADOW_COLOR);
-    video->DrawVLine(xpos + width - 1, ypos + 1, height - 2, SHADOW_COLOR);
-    video->DrawHLine(xpos + 1, ypos + height - 1, width - 1, LIGHT_COLOR);
-  } else {
-    video->FillRect(xpos + 1, ypos + 1, width - 2, height - 2, BUTTON_COLOR_NORMAL);
-    video->DrawVLine(xpos, ypos, height, SHADOW_COLOR);
-    video->DrawHLine(xpos + 1, ypos, width - 1, LIGHT_COLOR);
-    video->DrawVLine(xpos + width - 1, ypos + 1, height - 2, LIGHT_COLOR);
-    video->DrawHLine(xpos + 1, ypos + height - 1, width - 1, SHADOW_COLOR);
-  }
-  if (label) {
-    if (enabled) {
-      if (pressed) {
-        label->SetColor(TEXT_COLOR_PRESSED);
-        label->SetShadow(SHADOW_COLOR);
-      } else {
-        label->SetColor(TEXT_COLOR_NORMAL);
-        label->SetShadow(SHADOW_COLOR);
-      }
-    } else {
-      label->SetColor(TEXT_COLOR_DISABLED);
-      label->SetShadow(NO_SHADOW);
-    }
-    label->Draw(video);
-  }
+  return enabled;
 }
 
 void
@@ -101,4 +63,10 @@ void
 ButtonWidget::Deactivate()
 {
   pressed = false;
+}
+
+bool
+ButtonWidget::IsActivated() const
+{
+  return pressed;
 }

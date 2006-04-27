@@ -27,10 +27,10 @@ WidgetFactory::~WidgetFactory()
 {
 }
 
-ButtonWidget*
-WidgetFactory::CreateButton(RequestData& data, FontResource &fnt, ActionEventListener *ael)
+TextButtonWidget*
+WidgetFactory::CreateTextButton(RequestData& data, FontResource &fnt, ActionEventListener *ael)
 {
-  ButtonWidget *button = new ButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
+  TextButtonWidget *button = new TextButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
   button->SetLabel(data.label, &fnt);
   button->AddActionListener(ael);
   return button;
@@ -78,9 +78,11 @@ WidgetFactory::CreatePanel(RequestResource &req, ScreenResource &scr, LabelResou
     data.xpos += req.GetXOff();
     data.ypos += req.GetYOff();
     switch (data.widget) {
-      case REQ_BUTTON:
+      case REQ_USERDEFINED:
+        break;
+      case REQ_TEXTBUTTON:
         if (data.visible) {
-          ButtonWidget *button = CreateButton(data, fnt, ael);
+          TextButtonWidget *button = CreateTextButton(data, fnt, ael);
           panel->AddActiveWidget(button);
         }
         break;

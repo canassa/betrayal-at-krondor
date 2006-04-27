@@ -28,9 +28,10 @@
 
 #include "Resource.h"
 
+static const unsigned int REQ_USERDEFINED = 0;
 static const unsigned int REQ_IMAGEBUTTON = 3;
 static const unsigned int REQ_SELECT      = 4;
-static const unsigned int REQ_BUTTON      = 6;
+static const unsigned int REQ_TEXTBUTTON  = 6;
 
 static const unsigned int OPT0_CONTENTS    = 46;
 static const unsigned int OPT0_NEW_GAME    = 49;

@@ -45,6 +45,7 @@ noinst_HEADERS = AnimationResource.h \
                  TaggedResource.h \
                  TestApplication.h \
                  TextArea.h \
+                 TextButtonWidget.h \
                  TickboxWidget.h \
                  TileDataResource.h \
                  TileWorldResource.h \
@@ -507,6 +508,8 @@ xbak_SOURCES = AnimationResource.cc \
                TaggedResource.h \
                TextArea.cc \
                TextArea.h \
+               TextButtonWidget.cc \
+               TextButtonWidget.h \
                TickboxWidget.cc \
                TickboxWidget.h \
                TileDataResource.cc \
