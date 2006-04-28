@@ -182,6 +182,7 @@ GameStateOptions::Execute(GameApplication *app)
       break;
     case UA_NEW_GAME:
       app->StartNewGame();
+      firstTime = false;
       ChangeState(app, GameStateChapter::GetInstance());
       break;
     case UA_QUIT:
@@ -194,7 +195,6 @@ GameStateOptions::Execute(GameApplication *app)
     case UA_UNKNOWN:
       break;
   }
-  firstTime = false;
 }
 
 GameStateWorld* GameStateWorld::instance = 0;

@@ -83,20 +83,23 @@ OptionsDialog::GetUserAction()
       switch (dialogType) {
         case DT_CONTENTS:
           palette = &contentsPalette;
-          window = new DialogWindow(reqCont, contentsScreen, lblNull, bookFont, this);
+          window = new DialogWindow(reqCont, contentsScreen, 0, 0, this);
           break;
         case DT_OPT0:
+          palette = &optionsPalette;
+          window = new DialogWindow(reqOpt0, options0Screen, 0, &gameFont, this);
+          break;
         case DT_OPT1:
           palette = &optionsPalette;
-          window = new DialogWindow(reqOpt0, options0Screen, lblNull, gameFont, this);
+          window = new DialogWindow(reqOpt1, options1Screen, 0, &gameFont, this);
           break;
         case DT_PREFERENCES:
           palette = &optionsPalette;
-          window = new DialogWindow(reqPref, options2Screen, lblPref, gameFont, this);
+          window = new DialogWindow(reqPref, options2Screen, &lblPref, &gameFont, this);
           break;
         case DT_RESTORE:
           palette = &optionsPalette;
-          window = new DialogWindow(reqLoad, options2Screen, lblLoad, gameFont, this);
+          window = new DialogWindow(reqLoad, options2Screen, &lblLoad, &gameFont, this);
           break;
         default:
           break;

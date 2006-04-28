@@ -28,7 +28,6 @@ GameDialog::GameDialog(MediaToolkit *mtk)
 , running(false)
 {
   try {
-    ResourceManager::GetInstance()->Load(&gameFont, "GAME.FNT");
     ResourceManager::GetInstance()->Load(&optionsPalette, "OPTIONS.PAL");
     ResourceManager::GetInstance()->Load(&frameScreen, "FRAME.SCX");
     ResourceManager::GetInstance()->Load(&reqMain, "REQ_MAIN.DAT");
@@ -60,17 +59,15 @@ void
 GameDialog::Play()
 {
   try {
-    PaletteResource *palette = 0;
     media->ClearEvents();
-    palette = &optionsPalette;
-    window = new DialogWindow(reqMain, frameScreen, lblNull, gameFont, this);
+    window = new DialogWindow(reqMain, frameScreen, 0, 0, this);
     if (window) {
       media->GetVideo()->Clear();
-      window->FadeIn(*palette, media);
+      window->FadeIn(optionsPalette, media);
       running = true;
       media->PollEventLoop();
       running = false;
-      window->FadeOut(*palette, media);
+      window->FadeOut(optionsPalette, media);
       media->GetVideo()->Clear();
       delete window;
       window = 0;

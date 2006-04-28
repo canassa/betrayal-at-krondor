@@ -27,11 +27,19 @@ WidgetFactory::~WidgetFactory()
 {
 }
 
+ImageButtonWidget*
+WidgetFactory::CreateImageButton(RequestData& data, ActionEventListener *ael)
+{
+  ImageButtonWidget *button = new ImageButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
+  button->AddActionListener(ael);
+  return button;
+}
+
 TextButtonWidget*
-WidgetFactory::CreateTextButton(RequestData& data, FontResource &fnt, ActionEventListener *ael)
+WidgetFactory::CreateTextButton(RequestData& data, FontResource *fnt, ActionEventListener *ael)
 {
   TextButtonWidget *button = new TextButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
-  button->SetLabel(data.label, &fnt);
+  button->SetLabel(data.label, fnt);
   button->AddActionListener(ael);
   return button;
 }
@@ -43,13 +51,13 @@ WidgetFactory::CreateChoice()
 }
 
 LabelWidget*
-WidgetFactory::CreateLabel(LabelData& data, FontResource &fnt, const int panelWidth)
+WidgetFactory::CreateLabel(LabelData& data, FontResource *fnt, const int panelWidth)
 {
   unsigned int width = 1;
   switch (data.type) {
     case LBL_STANDARD:
       for (unsigned int i = 0; i < data.label.length(); i++) {
-        width += fnt.GetWidth((unsigned int)data.label[i] - fnt.GetFirst());
+        width += fnt->GetWidth((unsigned int)data.label[i] - fnt->GetFirst());
       }
       break;
     case LBL_TITLE:
@@ -58,7 +66,7 @@ WidgetFactory::CreateLabel(LabelData& data, FontResource &fnt, const int panelWi
     default:
       break;
   }
-  LabelWidget *label = new LabelWidget(data.xpos, data.ypos, width, fnt.GetHeight() + 1, &fnt);
+  LabelWidget *label = new LabelWidget(data.xpos, data.ypos, width, fnt->GetHeight() + 1, fnt);
   label->SetText(data.label);
   label->SetColor(data.color);
   if (data.type == LBL_TITLE) {
@@ -69,7 +77,7 @@ WidgetFactory::CreateLabel(LabelData& data, FontResource &fnt, const int panelWi
 }
 
 PanelWidget*
-WidgetFactory::CreatePanel(RequestResource &req, ScreenResource &scr, LabelResource &lbl, FontResource &fnt, ActionEventListener *ael)
+WidgetFactory::CreatePanel(RequestResource &req, ScreenResource &scr, LabelResource *lbl, FontResource *fnt, ActionEventListener *ael)
 {
   PanelWidget *panel = new PanelWidget(req.GetXPos(), req.GetYPos(), req.GetWidth(), req.GetHeight());
   panel->SetBackground(scr.GetImage());
@@ -87,6 +95,10 @@ WidgetFactory::CreatePanel(RequestResource &req, ScreenResource &scr, LabelResou
         }
         break;
       case REQ_IMAGEBUTTON:
+        if (data.visible) {
+          ImageButtonWidget *button = CreateImageButton(data, ael);
+          panel->AddActiveWidget(button);
+        }
         break;
       case REQ_SELECT:
         break;
@@ -94,11 +106,13 @@ WidgetFactory::CreatePanel(RequestResource &req, ScreenResource &scr, LabelResou
         break;
     }
   }
-  for (unsigned int i = 0; i < lbl.GetSize(); i++) {
-    LabelData data = lbl.GetLabelData(i);
-    int panelWidth = (req.GetWidth() > scr.GetImage()->GetWidth() ? req.GetWidth() : scr.GetImage()->GetWidth());
-    LabelWidget *label = CreateLabel(data, fnt, panelWidth);
-    panel->AddWidget(label);
+  if (lbl) {
+    for (unsigned int i = 0; i < lbl->GetSize(); i++) {
+      LabelData data = lbl->GetLabelData(i);
+      int panelWidth = (req.GetWidth() > scr.GetImage()->GetWidth() ? req.GetWidth() : scr.GetImage()->GetWidth());
+      LabelWidget *label = CreateLabel(data, fnt, panelWidth);
+      panel->AddWidget(label);
+    }
   }
   return panel;
 }

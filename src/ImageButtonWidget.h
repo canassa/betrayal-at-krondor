@@ -17,33 +17,28 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef WIDGET_FACTORY_H
-#define WIDGET_FACTORY_H
+#ifndef IMAGE_BUTTON_WIDGET_H
+#define IMAGE_BUTTON_WIDGET_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "ChoiceWidget.h"
-#include "PanelWidget.h"
-#include "ImageButtonWidget.h"
-#include "LabelResource.h"
-#include "RequestResource.h"
-#include "ScreenResource.h"
-#include "TextButtonWidget.h"
-#include "TickboxWidget.h"
+#include "ButtonWidget.h"
+#include "Image.h"
 
-class WidgetFactory {
+class ImageButtonWidget
+: public ButtonWidget
+{
+  private:
+    Image *normalImage;
+    Image *activatedImage;
+    Image *disabledImage;
   public:
-    WidgetFactory();
-    virtual ~WidgetFactory();
-    ImageButtonWidget* CreateImageButton(RequestData& data, ActionEventListener *ael);
-    TextButtonWidget* CreateTextButton(RequestData& data, FontResource* fnt, ActionEventListener *ael);
-    ChoiceWidget* CreateChoice();
-    LabelWidget* CreateLabel(LabelData& data, FontResource* fnt, const int panelWidth);
-    PanelWidget* CreatePanel(RequestResource& req, ScreenResource& scr, LabelResource* lbl, FontResource* fnt, ActionEventListener *ael);
-    TickboxWidget* CreateTickbox();
+    ImageButtonWidget(const int x, const int y, const int w, const int h, const int a);
+    virtual ~ImageButtonWidget();
+    void SetImage(Image *normal, Image *activated, Image *disabled);
+    void Draw(Video *video);
 };
 
 #endif
-

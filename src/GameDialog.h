@@ -38,8 +38,6 @@ class GameDialog
     MediaToolkit *media;
     DialogWindow *window;
     bool running;
-    FontResource gameFont;
-    LabelResource lblNull;
     PaletteResource optionsPalette;
     ScreenResource frameScreen;
     RequestResource reqMain;
@@ -56,4 +54,3 @@ class GameDialog
 };
 
 #endif
-

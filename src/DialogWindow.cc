@@ -23,7 +23,7 @@
 #include "ResourceManager.h"
 #include "WidgetFactory.h"
 
-DialogWindow::DialogWindow(RequestResource& req, ScreenResource& scr, LabelResource& lbl, FontResource& fnt, ActionEventListener *ael)
+DialogWindow::DialogWindow(RequestResource& req, ScreenResource& scr, LabelResource *lbl, FontResource *fnt, ActionEventListener *ael)
 : panel(0)
 {
   try{
