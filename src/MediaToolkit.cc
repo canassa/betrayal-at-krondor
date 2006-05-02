@@ -26,6 +26,7 @@ MediaToolkit::MediaToolkit()
 , keyboardListeners()
 , mouseButtonListeners()
 , mouseMotionListeners()
+, timerListeners()
 , updateListeners()
 {
 }
@@ -35,6 +36,7 @@ MediaToolkit::~MediaToolkit()
   keyboardListeners.clear();
   mouseButtonListeners.clear();
   mouseMotionListeners.clear();
+  timerListeners.clear();
   updateListeners.clear();
 }
 
@@ -84,6 +86,18 @@ void
 MediaToolkit::RemoveMouseMotionListener(MouseMotionEventListener *mmel)
 {
   mouseMotionListeners.remove(mmel);
+}
+
+void
+MediaToolkit::AddTimerListener(TimerEventListener *tel)
+{
+  timerListeners.push_back(tel);
+}
+
+void
+MediaToolkit::RemoveTimerListener(TimerEventListener *tel)
+{
+  timerListeners.remove(tel);
 }
 
 void

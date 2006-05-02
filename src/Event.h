@@ -213,6 +213,15 @@ class MouseMotionEvent {
     int GetYPos() const;
 };
 
+class TimerEvent {
+  private:
+    unsigned int id;
+  public:
+    TimerEvent(const unsigned int n);
+    virtual ~TimerEvent();
+    unsigned int GetID() const;
+};
+
 class UpdateEvent {
   private:
     int ticks;

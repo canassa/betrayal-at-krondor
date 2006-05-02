@@ -38,6 +38,7 @@ class MediaToolkit {
     std::list<KeyboardEventListener *> keyboardListeners;
     std::list<MouseButtonEventListener *> mouseButtonListeners;
     std::list<MouseMotionEventListener *> mouseMotionListeners;
+    std::list<TimerEventListener *> timerListeners;
     std::list<UpdateEventListener *> updateListeners;
   public:
     MediaToolkit();
@@ -50,6 +51,8 @@ class MediaToolkit {
     void RemoveMouseButtonListener(MouseButtonEventListener *mbel);
     void AddMouseMotionListener(MouseMotionEventListener *mmel);
     void RemoveMouseMotionListener(MouseMotionEventListener *mmel);
+    void AddTimerListener(TimerEventListener *tel);
+    void RemoveTimerListener(TimerEventListener *tel);
     void AddUpdateListener(UpdateEventListener *uel);
     void RemoveUpdateListener(UpdateEventListener *uel);
     void TerminateEventLoop();

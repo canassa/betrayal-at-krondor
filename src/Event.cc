@@ -85,6 +85,21 @@ MouseMotionEvent::GetYPos() const
   return ypos;
 }
 
+TimerEvent::TimerEvent(const unsigned int n)
+: id(n)
+{
+}
+
+TimerEvent::~TimerEvent()
+{
+}
+
+unsigned int
+TimerEvent::GetID() const
+{
+  return id;
+}
+
 UpdateEvent::UpdateEvent(const int t)
 : ticks(t)
 {

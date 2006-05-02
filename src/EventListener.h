@@ -49,6 +49,13 @@ class MouseMotionEventListener {
     virtual void MouseMoved(const MouseMotionEvent &mme) = 0;
 };
 
+class TimerEventListener {
+  public:
+    TimerEventListener() {};
+    virtual ~TimerEventListener() {};
+    virtual void Update(const TimerEvent &te) = 0;
+};
+
 class UpdateEventListener {
   public:
     UpdateEventListener() {};

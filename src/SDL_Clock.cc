@@ -17,15 +17,32 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#include "SDL.h"
 #include "SDL_Clock.h"
 
+Uint32
+SDL_Clock_TimerHandler(Uint32 ms, void *param)
+{
+  SDL_UserEvent userEvent;
+  SDL_Event event;
+
+  userEvent.type = SDL_USEREVENT;
+  userEvent.code = ms;
+  userEvent.data1 = param;
+  userEvent.data2 = 0;
+  event.type = SDL_USEREVENT;
+  event.user = userEvent;
+  SDL_PushEvent(&event);
+  return 0;
+}
+
 SDL_Clock::SDL_Clock()
+: timers()
 {
 }
 
 SDL_Clock::~SDL_Clock()
 {
+  timers.clear();
 }
 
 unsigned int
@@ -42,3 +59,16 @@ SDL_Clock::Delay(int ms)
   }
 }
 
+void
+SDL_Clock::StartTimer(unsigned int n, int ms)
+{
+  SDL_TimerID id = SDL_AddTimer(ms, SDL_Clock_TimerHandler, &n);
+  timers.insert(std::pair<const unsigned int, SDL_TimerID>(n, id));
+}
+
+void
+SDL_Clock::CancelTimer(unsigned int n)
+{
+  SDL_RemoveTimer(timers[n]);
+  timers.erase(n);
+}
