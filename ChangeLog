@@ -1,5 +1,6 @@
-2006-04-xx, xbak-0.0.7:
-* Added more GUI widgets.
+2006-05-xx, xbak-0.0.7:
+* Still more work on the GUI, more widgets.
+* Added timer events.
 * DDX files can be loaded and partially interpreted.
 * Several bug fixes.
 
