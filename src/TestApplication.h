@@ -33,7 +33,8 @@
 #include "PaletteResource.h"
 #include "ScreenResource.h"
 
-class TestApplication {
+class TestApplication
+: public TimerEventListener {
   private:
     MediaToolkit *mediaToolkit;
     PaletteResource pal;
@@ -54,7 +55,7 @@ class TestApplication {
     void ShowScreen(const std::string& name);
     void DrawFont(const std::string& name);
     void PlayMovie(const std::string& name);
+    void TimerExpired(const TimerEvent &te);
 };
 
 #endif
-

@@ -38,13 +38,14 @@ TestApplication::TestApplication()
 {
   mediaToolkit->GetVideo()->SetScaling(2);
   mediaToolkit->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
-
   MousePointerManager::GetInstance()->AddPointer("POINTER.BMX");
   MousePointerManager::GetInstance()->Register(mediaToolkit);
+  mediaToolkit->AddTimerListener(this);
 }
 
 TestApplication::~TestApplication()
 {
+  mediaToolkit->RemoveTimerListener(this);
   MousePointerManager::CleanUp();
   delete mediaToolkit;
   ResourceManager::CleanUp();
@@ -100,7 +101,8 @@ TestApplication::ShowImage(const std::string& name)
       mediaToolkit->GetVideo()->Clear();
       img.GetImage(i)->Draw(mediaToolkit->GetVideo(), 0, 0);
       mediaToolkit->GetVideo()->Refresh();
-      mediaToolkit->GetClock()->Delay(1000);
+      mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, 1000);
+      mediaToolkit->WaitEventLoop();
     }
   } catch (Exception &e) {
     e.Print("TestApplication::ShowImage");
@@ -115,7 +117,9 @@ TestApplication::ShowScreen(const std::string& name)
     mediaToolkit->GetVideo()->Clear();
     scr.GetImage()->Draw(mediaToolkit->GetVideo(), 0, 0);
     mediaToolkit->GetVideo()->Refresh();
-    mediaToolkit->GetClock()->Delay(2000);
+    mediaToolkit->ClearEvents();
+    mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, 2000);
+    mediaToolkit->WaitEventLoop();
   } catch (Exception &e) {
     e.Print("TestApplication::ShowScreen");
   }
@@ -136,7 +140,8 @@ TestApplication::DrawFont(const std::string& name)
     ta2.SetColor(15);
     ta2.Draw(mediaToolkit->GetVideo(), 10, 50, true);
     mediaToolkit->GetVideo()->Refresh();
-    mediaToolkit->GetClock()->Delay(2000);
+    mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, 2000);
+    mediaToolkit->WaitEventLoop();
   } catch (Exception &e) {
     e.Print("TestApplication::DrawFont");
   }
@@ -154,3 +159,10 @@ TestApplication::PlayMovie(const std::string& name)
   }
 }
 
+void
+TestApplication::TimerExpired(const TimerEvent &te)
+{
+  if (te.GetID() == TMR_TEST_APP) {
+    mediaToolkit->TerminateEventLoop();
+  }
+}

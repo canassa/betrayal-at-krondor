@@ -53,7 +53,7 @@ class TimerEventListener {
   public:
     TimerEventListener() {};
     virtual ~TimerEventListener() {};
-    virtual void Update(const TimerEvent &te) = 0;
+    virtual void TimerExpired(const TimerEvent &te) = 0;
 };
 
 class UpdateEventListener {

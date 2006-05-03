@@ -30,8 +30,8 @@ class Clock {
     virtual ~Clock() {};
     virtual unsigned int GetTicks() const = 0;
     virtual void Delay(int ms) = 0;
-    virtual void StartTimer(unsigned int n, int ms) = 0;
-    virtual void CancelTimer(unsigned int n) = 0;
+    virtual void StartTimer(unsigned long n, int ms) = 0;
+    virtual void CancelTimer(unsigned long n) = 0;
 };
 
 #endif

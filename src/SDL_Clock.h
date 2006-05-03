@@ -31,14 +31,14 @@
 
 class SDL_Clock: public Clock {
   private:
-    std::map <const unsigned int, SDL_TimerID> timers;
+    std::map <const unsigned long, SDL_TimerID> timers;
   public:
     SDL_Clock();
     ~SDL_Clock();
     unsigned int GetTicks() const;
     void Delay(int ms);
-    void StartTimer(unsigned int n, int ms);
-    void CancelTimer(unsigned int n);
+    void StartTimer(unsigned long n, int ms);
+    void CancelTimer(unsigned long n);
 };
 
 #endif

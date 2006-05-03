@@ -60,14 +60,14 @@ SDL_Clock::Delay(int ms)
 }
 
 void
-SDL_Clock::StartTimer(unsigned int n, int ms)
+SDL_Clock::StartTimer(unsigned long n, int ms)
 {
-  SDL_TimerID id = SDL_AddTimer(ms, SDL_Clock_TimerHandler, &n);
-  timers.insert(std::pair<const unsigned int, SDL_TimerID>(n, id));
+  SDL_TimerID id = SDL_AddTimer(ms, SDL_Clock_TimerHandler, (void *)n);
+  timers.insert(std::pair<const unsigned long, SDL_TimerID>(n, id));
 }
 
 void
-SDL_Clock::CancelTimer(unsigned int n)
+SDL_Clock::CancelTimer(unsigned long n)
 {
   SDL_RemoveTimer(timers[n]);
   timers.erase(n);

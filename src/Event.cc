@@ -85,7 +85,7 @@ MouseMotionEvent::GetYPos() const
   return ypos;
 }
 
-TimerEvent::TimerEvent(const unsigned int n)
+TimerEvent::TimerEvent(const unsigned long n)
 : id(n)
 {
 }
@@ -94,7 +94,7 @@ TimerEvent::~TimerEvent()
 {
 }
 
-unsigned int
+unsigned long
 TimerEvent::GetID() const
 {
   return id;

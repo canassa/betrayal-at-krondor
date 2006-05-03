@@ -156,6 +156,7 @@ typedef enum
 
 } Key;
 
+/* Keyboard modifiers */
 static const int MOD_NONE   = 0x0000;
 
 static const int MOD_LSHIFT = 0x0001;
@@ -171,6 +172,11 @@ static const int MOD_CAPS   = 0x2000;
 static const int MOD_CTRL   = MOD_LCTRL | MOD_RCTRL;
 static const int MOD_SHIFT  = MOD_LSHIFT | MOD_RSHIFT;
 static const int MOD_ALT    = MOD_LALT | MOD_RALT;
+
+/* Timer ID's */
+static const unsigned long TMR_TEST_APP = 1;
+static const unsigned long TMR_GAME_APP = 2;
+
 
 typedef enum
 {
@@ -215,11 +221,11 @@ class MouseMotionEvent {
 
 class TimerEvent {
   private:
-    unsigned int id;
+    unsigned long id;
   public:
-    TimerEvent(const unsigned int n);
+    TimerEvent(const unsigned long n);
     virtual ~TimerEvent();
-    unsigned int GetID() const;
+    unsigned long GetID() const;
 };
 
 class UpdateEvent {
