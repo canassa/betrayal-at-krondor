@@ -30,6 +30,7 @@
 class Chapter
 : public KeyboardEventListener
 , public MouseButtonEventListener
+, public TimerEventListener
 {
   private:
     MediaToolkit *media;
@@ -46,6 +47,7 @@ class Chapter
     void KeyReleased(const KeyboardEvent &kbe);
     void MouseButtonPressed(const MouseButtonEvent &mbe);
     void MouseButtonReleased(const MouseButtonEvent &mbe);
+    void TimerExpired(const TimerEvent &te);
 };
 
 #endif

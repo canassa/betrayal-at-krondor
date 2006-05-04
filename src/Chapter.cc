@@ -87,6 +87,10 @@ Chapter::ReadBook(const int scene)
     std::stringstream filenameStream;
     filenameStream << "C" << number << scene << ".BOK";
     ResourceManager::GetInstance()->Load(&bok, filenameStream.str());
+    media->AddKeyboardListener(this);
+    media->AddTimerListener(this);
+    media->RemoveTimerListener(this);
+    media->RemoveKeyboardListener(this);
   } catch (Exception &e) {
     e.Print("Chapter::ReadBook");
   }
@@ -101,9 +105,14 @@ Chapter::ShowMap()
     scr.GetImage()->Draw(media->GetVideo(), 0, 0);
     PaletteResource pal;
     ResourceManager::GetInstance()->Load(&pal, "FULLMAP.PAL");
+    media->AddKeyboardListener(this);
+    media->AddTimerListener(this);
     pal.FadeIn(media->GetVideo(), 0, VIDEO_COLORS, 64, 10, media->GetClock());
-    media->GetClock()->Delay(2000);
+    media->GetClock()->StartTimer(TMR_CHAPTER, 5000);
+    media->WaitEventLoop();
     pal.FadeOut(media->GetVideo(), 0, VIDEO_COLORS, 64, 10, media->GetClock());
+    media->RemoveTimerListener(this);
+    media->RemoveKeyboardListener(this);
   } catch (Exception &e) {
     e.Print("Chapter::ShowMap");
   }
@@ -116,6 +125,7 @@ Chapter::KeyPressed(const KeyboardEvent &kbe)
     case KEY_ESCAPE:
     case KEY_RETURN:
     case KEY_SPACE:
+      media->TerminateEventLoop();
       break;
     default:
       break;
@@ -136,6 +146,7 @@ Chapter::MouseButtonPressed(const MouseButtonEvent &mbe)
 {
   switch (mbe.GetButton()) {
     case MB_LEFT:
+      media->TerminateEventLoop();
       break;
     default:
       break;
@@ -148,5 +159,13 @@ Chapter::MouseButtonReleased(const MouseButtonEvent &mbe)
   switch (mbe.GetButton()) {
     default:
       break;
+  }
+}
+
+void
+Chapter::TimerExpired(const TimerEvent &te)
+{
+  if (te.GetID() == TMR_CHAPTER) {
+    media->TerminateEventLoop();
   }
 }
