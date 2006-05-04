@@ -48,6 +48,7 @@ MoviePlayer::MoviePlayer(MediaToolkit *mtk)
 {
   media->AddKeyboardListener(this);
   media->AddMouseButtonListener(this);
+  media->AddTimerListener(this);
   media->AddUpdateListener(this);
 }
 
@@ -55,6 +56,7 @@ MoviePlayer::~MoviePlayer()
 {
   media->RemoveKeyboardListener(this);
   media->RemoveMouseButtonListener(this);
+  media->RemoveTimerListener(this);
   media->RemoveUpdateListener(this);
 }
 
@@ -63,6 +65,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
   try {
     tagVec = movie;
     looped = repeat;
+    delayed = false;
     screenSlot = 0;
     memset(imageSlot, 0, sizeof(ImageResource*) * MAX_IMAGE_SLOTS);
     memset(paletteSlot, 0, sizeof(PaletteResource*) * MAX_PALETTE_SLOTS);
@@ -145,8 +148,16 @@ MoviePlayer::MouseButtonReleased(const MouseButtonEvent& mbe) {
 }
 
 void
+MoviePlayer::TimerExpired(const TimerEvent& te) {
+  if (te.GetID() == TMR_MOVIE_PLAYER) {
+    delayed = false;
+  }
+}
+
+void
 MoviePlayer::Update(const UpdateEvent& ue) {
   ue.GetTicks();
+  if (delayed) return;
   try {
     MovieTag *mt = (*tagVec)[currTag];
     switch (mt->code) {
@@ -168,7 +179,10 @@ MoviePlayer::Update(const UpdateEvent& ue) {
           paletteActivated = true;
         }
         media->GetVideo()->Refresh();
-        media->GetClock()->Delay(currDelay);
+        if (currDelay > 0) {
+          delayed = true;
+          media->GetClock()->StartTimer(TMR_MOVIE_PLAYER, currDelay);
+        }
         savedImageDrawn = false;
         break;
       case DELAY:
@@ -200,11 +214,20 @@ MoviePlayer::Update(const UpdateEvent& ue) {
         (imageSlot[currImage])->GetImage(currFrame)->Draw(media->GetVideo(), mt->data[0], mt->data[1], 0, 0, mt->data[2], mt->data[3]);
         break;
       case DRAW_SPRITE3:
-        media->GetClock()->Delay(currDelay);
+        if ((currDelay > 0) && (!delayed)) {
+          delayed = true;
+          media->GetClock()->StartTimer(TMR_MOVIE_PLAYER, 3 * currDelay);
+        }
       case DRAW_SPRITE2:
-        media->GetClock()->Delay(currDelay);
+        if ((currDelay > 0) && (!delayed)) {
+          delayed = true;
+          media->GetClock()->StartTimer(TMR_MOVIE_PLAYER, 2 * currDelay);
+        }
       case DRAW_SPRITE1:
-        media->GetClock()->Delay(currDelay);
+        if ((currDelay > 0) && (!delayed)) {
+          delayed = true;
+          media->GetClock()->StartTimer(TMR_MOVIE_PLAYER, currDelay);
+        }
       case DRAW_SPRITE0:
         if ((savedImage) && (!savedImageDrawn)) {
           savedImage->Draw(media->GetVideo(), 0, 0);

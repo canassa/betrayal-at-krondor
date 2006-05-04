@@ -174,8 +174,10 @@ static const int MOD_SHIFT  = MOD_LSHIFT | MOD_RSHIFT;
 static const int MOD_ALT    = MOD_LALT | MOD_RALT;
 
 /* Timer ID's */
-static const unsigned long TMR_TEST_APP = 1;
-static const unsigned long TMR_GAME_APP = 2;
+static const unsigned long TMR_TEST_APP     = 1;
+static const unsigned long TMR_GAME_APP     = 2;
+static const unsigned long TMR_CHAPTER      = 3;
+static const unsigned long TMR_MOVIE_PLAYER = 4;
 
 
 typedef enum

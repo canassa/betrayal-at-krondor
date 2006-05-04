@@ -36,6 +36,7 @@ static const unsigned int MAX_PALETTE_SLOTS = 4;
 class MoviePlayer
 : public KeyboardEventListener
 , public MouseButtonEventListener
+, public TimerEventListener
 , public UpdateEventListener
 {
   private:
@@ -53,6 +54,7 @@ class MoviePlayer
     unsigned int currDelay;
     bool paletteActivated;
     bool looped;
+    bool delayed;
   public:
     MoviePlayer(MediaToolkit *mtk);
     ~MoviePlayer();
@@ -61,6 +63,7 @@ class MoviePlayer
     void KeyReleased(const KeyboardEvent& kbe);
     void MouseButtonPressed(const MouseButtonEvent& mbe);
     void MouseButtonReleased(const MouseButtonEvent& mbe);
+    void TimerExpired(const TimerEvent& te);
     void Update(const UpdateEvent& ue);
 };
 
