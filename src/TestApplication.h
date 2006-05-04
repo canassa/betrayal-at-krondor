@@ -34,7 +34,9 @@
 #include "ScreenResource.h"
 
 class TestApplication
-: public TimerEventListener {
+: public KeyboardEventListener
+, public TimerEventListener
+{
   private:
     MediaToolkit *mediaToolkit;
     PaletteResource pal;
@@ -55,6 +57,8 @@ class TestApplication
     void ShowScreen(const std::string& name);
     void DrawFont(const std::string& name);
     void PlayMovie(const std::string& name);
+    void KeyPressed(const KeyboardEvent &kbe);
+    void KeyReleased(const KeyboardEvent &kbe);
     void TimerExpired(const TimerEvent &te);
 };
 

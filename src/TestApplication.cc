@@ -40,11 +40,13 @@ TestApplication::TestApplication()
   mediaToolkit->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
   MousePointerManager::GetInstance()->AddPointer("POINTER.BMX");
   MousePointerManager::GetInstance()->Register(mediaToolkit);
+  mediaToolkit->AddKeyboardListener(this);
   mediaToolkit->AddTimerListener(this);
 }
 
 TestApplication::~TestApplication()
 {
+  mediaToolkit->RemoveKeyboardListener(this);
   mediaToolkit->RemoveTimerListener(this);
   MousePointerManager::CleanUp();
   delete mediaToolkit;
@@ -101,7 +103,7 @@ TestApplication::ShowImage(const std::string& name)
       mediaToolkit->GetVideo()->Clear();
       img.GetImage(i)->Draw(mediaToolkit->GetVideo(), 0, 0);
       mediaToolkit->GetVideo()->Refresh();
-      mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, 1000);
+      mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, 2500);
       mediaToolkit->WaitEventLoop();
     }
   } catch (Exception &e) {
@@ -118,7 +120,7 @@ TestApplication::ShowScreen(const std::string& name)
     scr.GetImage()->Draw(mediaToolkit->GetVideo(), 0, 0);
     mediaToolkit->GetVideo()->Refresh();
     mediaToolkit->ClearEvents();
-    mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, 2000);
+    mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, 5000);
     mediaToolkit->WaitEventLoop();
   } catch (Exception &e) {
     e.Print("TestApplication::ShowScreen");
@@ -140,7 +142,7 @@ TestApplication::DrawFont(const std::string& name)
     ta2.SetColor(15);
     ta2.Draw(mediaToolkit->GetVideo(), 10, 50, true);
     mediaToolkit->GetVideo()->Refresh();
-    mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, 2000);
+    mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, 5000);
     mediaToolkit->WaitEventLoop();
   } catch (Exception &e) {
     e.Print("TestApplication::DrawFont");
@@ -156,6 +158,29 @@ TestApplication::PlayMovie(const std::string& name)
     moviePlayer.Play(&ttm.GetMovieTags(), false);
   } catch (Exception &e) {
     e.Print("TestApplication::PlayMovie");
+  }
+}
+
+void
+TestApplication::KeyPressed(const KeyboardEvent &kbe)
+{
+  switch (kbe.GetKey()) {
+    case KEY_ESCAPE:
+    case KEY_RETURN:
+    case KEY_SPACE:
+      mediaToolkit->TerminateEventLoop();
+      break;
+    default:
+      break;
+  }
+}
+
+void
+TestApplication::KeyReleased(const KeyboardEvent &kbe)
+{
+  switch (kbe.GetKey()) {
+    default:
+      break;
   }
 }
 
