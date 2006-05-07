@@ -36,6 +36,7 @@ OptionsDialog::OptionsDialog(MediaToolkit *mtk, const bool first)
     ResourceManager::GetInstance()->Load(&gameFont, "GAME.FNT");
     ResourceManager::GetInstance()->Load(&lblLoad, "LBL_LOAD.DAT");
     ResourceManager::GetInstance()->Load(&lblPref, "LBL_PREF.DAT");
+    ResourceManager::GetInstance()->Load(&lblSave, "LBL_SAVE.DAT");
     ResourceManager::GetInstance()->Load(&contentsPalette, "CONTENTS.PAL");
     ResourceManager::GetInstance()->Load(&optionsPalette, "OPTIONS.PAL");
     ResourceManager::GetInstance()->Load(&contentsScreen, "CONT2.SCX");
@@ -48,11 +49,13 @@ OptionsDialog::OptionsDialog(MediaToolkit *mtk, const bool first)
     ResourceManager::GetInstance()->Load(&reqOpt1, "REQ_OPT1.DAT");
     ResourceManager::GetInstance()->Load(&reqPref, "REQ_PREF.DAT");
     ResourceManager::GetInstance()->Load(&reqSave, "REQ_SAVE.DAT");
-    int x = 0;
-    int y = 0;
-    media->GetMousePosition(&x, &y);
+    if (first) {
+      int x = 0;
+      int y = 0;
+      media->GetMousePosition(&x, &y);
+      MousePointerManager::GetInstance()->GetCurrentPointer()->SetPosition(x, y);
+    }
     MousePointerManager::GetInstance()->SetCurrentPointer(NORMAL_POINTER);
-    MousePointerManager::GetInstance()->GetCurrentPointer()->SetPosition(x, y);
     MousePointerManager::GetInstance()->GetCurrentPointer()->SetVisible(true);
     media->AddKeyboardListener(this);
     media->AddMouseButtonListener(this);
@@ -100,6 +103,10 @@ OptionsDialog::GetUserAction()
         case DT_RESTORE:
           palette = &optionsPalette;
           window = new DialogWindow(reqLoad, options2Screen, &lblLoad, &gameFont, this);
+          break;
+        case DT_SAVE:
+          palette = &optionsPalette;
+          window = new DialogWindow(reqSave, options2Screen, &lblSave, &gameFont, this);
           break;
         default:
           break;
@@ -274,6 +281,13 @@ OptionsDialog::ActionPerformed(const ActionEvent& ae)
       }
       break;
     case DT_RESTORE:
+      switch (ae.GetAction()) {
+        default:
+          dialogType = (firstTime ? DT_OPT0 : DT_OPT1);
+          break;
+      }
+      break;
+    case DT_SAVE:
       switch (ae.GetAction()) {
         default:
           dialogType = (firstTime ? DT_OPT0 : DT_OPT1);

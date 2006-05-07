@@ -41,6 +41,7 @@ GameApplication::GameApplication()
 , done(false)
 , inputGrabbed(false)
 , state(GameStateIntro::GetInstance())
+, prevState(0)
 , chapter(mediaToolkit)
 , screenSaveCount(0)
 {
@@ -99,9 +100,16 @@ GameApplication::CleanUp()
   }
 }
 
+GameState *
+GameApplication::GetPrevState()
+{
+  return prevState;
+}
+
 void
 GameApplication::SetState(GameState *st)
 {
+  prevState = state;
   state = st;
 }
 

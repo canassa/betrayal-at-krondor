@@ -106,12 +106,14 @@ Chapter::ShowMap()
     PaletteResource pal;
     ResourceManager::GetInstance()->Load(&pal, "FULLMAP.PAL");
     media->AddKeyboardListener(this);
+    media->AddMouseButtonListener(this);
     media->AddTimerListener(this);
     pal.FadeIn(media->GetVideo(), 0, VIDEO_COLORS, 64, 10, media->GetClock());
     media->GetClock()->StartTimer(TMR_CHAPTER, 5000);
     media->WaitEventLoop();
     pal.FadeOut(media->GetVideo(), 0, VIDEO_COLORS, 64, 10, media->GetClock());
     media->RemoveTimerListener(this);
+    media->RemoveMouseButtonListener(this);
     media->RemoveKeyboardListener(this);
   } catch (Exception &e) {
     e.Print("Chapter::ShowMap");

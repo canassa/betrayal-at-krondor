@@ -41,6 +41,7 @@ class GameApplication
     bool done;
     bool inputGrabbed;
     GameState *state;
+    GameState *prevState;
     Chapter chapter;
     int screenSaveCount;
     static GameApplication *instance;
@@ -51,6 +52,7 @@ class GameApplication
     ~GameApplication();
     static GameApplication* GetInstance();
     static void CleanUp();
+    GameState* GetPrevState();
     void PlayIntro();
     UserActionType Options(const bool firstTime);
     void StartChapter();

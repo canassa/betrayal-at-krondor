@@ -63,6 +63,7 @@ class OptionsDialog
     LabelResource lblLoad;
     LabelResource lblNull;
     LabelResource lblPref;
+    LabelResource lblSave;
     PaletteResource contentsPalette;
     PaletteResource optionsPalette;
     ScreenResource contentsScreen;

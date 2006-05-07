@@ -179,6 +179,7 @@ GameStateOptions::Execute(GameApplication *app)
 {
   switch (app->Options(firstTime)) {
     case UA_CANCEL:
+      ChangeState(app, app->GetPrevState());
       break;
     case UA_NEW_GAME:
       app->StartNewGame();
