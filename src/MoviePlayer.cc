@@ -84,7 +84,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
     media->ClearEvents();
     media->PollEventLoop();
 
-    (paletteSlot[currPalette])->FadeOut(media->GetVideo(), 0, VIDEO_COLORS, 64, 10, media->GetClock());
+    (paletteSlot[currPalette])->FadeOut(media, 0, VIDEO_COLORS, 64, 8);
     if (screenSlot) {
       delete screenSlot;
     }
@@ -202,12 +202,12 @@ MoviePlayer::Update(const UpdateEvent& ue) {
         currFrame = mt->data[1];
         break;
       case FADE_OUT:
-        (paletteSlot[currPalette])->FadeOut(media->GetVideo(), mt->data[0], mt->data[1], 64 << (mt->data[2] & 0x0f), 2 << mt->data[3], media->GetClock());
+        (paletteSlot[currPalette])->FadeOut(media, mt->data[0], mt->data[1], 64 << (mt->data[2] & 0x0f), 2 << mt->data[3]);
         media->GetVideo()->Clear();
         paletteActivated = true;
         break;
       case FADE_IN:
-        (paletteSlot[currPalette])->FadeIn(media->GetVideo(), mt->data[0], mt->data[1], 64 << (mt->data[2] & 0x0f), 2 << mt->data[3], media->GetClock());
+        (paletteSlot[currPalette])->FadeIn(media, mt->data[0], mt->data[1], 64 << (mt->data[2] & 0x0f), 2 << mt->data[3]);
         paletteActivated = true;
         break;
       case DRAW_WINDOW:
@@ -276,6 +276,10 @@ MoviePlayer::Update(const UpdateEvent& ue) {
     if (currTag == tagVec->size()) {
       if (looped) {
         currTag = 0;
+        if (savedImage) {
+          delete savedImage;
+          savedImage = 0;
+        }
       } else {
         media->TerminateEventLoop();
       }

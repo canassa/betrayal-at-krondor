@@ -24,9 +24,8 @@
 #include "config.h"
 #endif
 
-#include "Clock.h"
+#include "MediaToolkit.h"
 #include "TaggedResource.h"
-#include "Video.h"
 
 class PaletteResource: public TaggedResource {
   private:
@@ -41,10 +40,10 @@ class PaletteResource: public TaggedResource {
     void Load(FileBuffer *buffer);
     void Activate(Video *video, const unsigned int first, const unsigned int n);
     void Retrieve(Video *video, const unsigned int first, const unsigned int n);
-    void FadeFrom(Video *video, Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay, Clock *clock);
-    void FadeTo(Video *video, Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay, Clock *clock);
-    void FadeIn(Video *video, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay, Clock *clock);
-    void FadeOut(Video *video, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay, Clock *clock);
+    void FadeFrom(MediaToolkit *media, Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay);
+    void FadeTo(MediaToolkit *media, Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay);
+    void FadeIn(MediaToolkit *media, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay);
+    void FadeOut(MediaToolkit *media, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay);
 };
 
 #endif

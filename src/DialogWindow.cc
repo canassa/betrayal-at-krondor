@@ -55,7 +55,7 @@ DialogWindow::FadeIn(PaletteResource& pal, MediaToolkit *media)
 {
   panel->Draw(media->GetVideo());
   MousePointerManager::GetInstance()->GetCurrentPointer()->Draw(media->GetVideo());
-  pal.FadeIn(media->GetVideo(), 0, VIDEO_COLORS, 64, 10, media->GetClock());
+  pal.FadeIn(media, 0, VIDEO_COLORS, 64, 8);
 }
 
 void
@@ -63,7 +63,7 @@ DialogWindow::FadeOut(PaletteResource& pal, MediaToolkit *media)
 {
   panel->Draw(media->GetVideo());
   MousePointerManager::GetInstance()->GetCurrentPointer()->Draw(media->GetVideo());
-  pal.FadeOut(media->GetVideo(), 0, VIDEO_COLORS, 64, 10, media->GetClock());
+  pal.FadeOut(media, 0, VIDEO_COLORS, 64, 8);
 }
 
 void

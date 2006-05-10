@@ -201,6 +201,8 @@ dumppal_SOURCES = Exception.cc \
                   FileBuffer.h \
                   GenericResourceFile.cc \
                   GenericResourceFile.h \
+                  MediaToolkit.cc \
+                  MediaToolkit.h \
                   PaletteResource.cc \
                   PaletteResource.h \
                   Resource.h \

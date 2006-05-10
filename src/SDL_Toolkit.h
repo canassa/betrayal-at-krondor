@@ -37,7 +37,9 @@ class SDL_Toolkit: public MediaToolkit {
     ~SDL_Toolkit();
     static SDL_Toolkit* GetInstance();
     static void CleanUp();
+    void PollEvents();
     void PollEventLoop();
+    void WaitEvents();
     void WaitEventLoop();
     void ClearEvents();
     void GetMousePosition(int *x, int *y);

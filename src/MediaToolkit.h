@@ -56,7 +56,9 @@ class MediaToolkit {
     void AddUpdateListener(UpdateEventListener *uel);
     void RemoveUpdateListener(UpdateEventListener *uel);
     void TerminateEventLoop();
+    virtual void PollEvents() = 0;
     virtual void PollEventLoop() = 0;
+    virtual void WaitEvents() = 0;
     virtual void WaitEventLoop() = 0;
     virtual void ClearEvents() = 0;
     virtual void GetMousePosition(int *x, int *y) = 0;

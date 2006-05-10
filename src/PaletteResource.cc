@@ -105,7 +105,7 @@ PaletteResource::Retrieve(Video *video, const unsigned int first, const unsigned
 }
 
 void
-PaletteResource::FadeFrom(Video *video, Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay, Clock *clock)
+PaletteResource::FadeFrom(MediaToolkit *media, Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
 {
   Color* tmp = new Color[VIDEO_COLORS];
   for (unsigned int i = 0; i <= steps; i++) {
@@ -115,18 +115,19 @@ PaletteResource::FadeFrom(Video *video, Color* from, const unsigned int first, c
       tmp[j].g = from[j].g + (int)((colors[j].g - from[j].g) * x);
       tmp[j].b = from[j].b + (int)((colors[j].b - from[j].b) * x);
     }
-    video->SetPalette(&tmp[first], first, n);
-    video->Refresh();
-    clock->Delay(delay);
+    media->GetVideo()->SetPalette(&tmp[first], first, n);
+    media->GetVideo()->Refresh();
+    media->GetClock()->Delay(delay);
+    media->PollEvents();
   }
   delete[] tmp;
 }
 
 void
-PaletteResource::FadeTo(Video *video, Color* to, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay, Clock *clock)
+PaletteResource::FadeTo(MediaToolkit *media, Color* to, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
 {
   Color* tmp = new Color[VIDEO_COLORS];
-  video->GetPalette(tmp, 0, VIDEO_COLORS);
+  media->GetVideo()->GetPalette(tmp, 0, VIDEO_COLORS);
   for (unsigned int i = 0; i <= steps; i++) {
     float x = (float)i / (float)steps;
     for (unsigned int j = first; j < first + n; j++) {
@@ -134,28 +135,29 @@ PaletteResource::FadeTo(Video *video, Color* to, const unsigned int first, const
       tmp[j].g = colors[j].g + (int)((to[j].g - colors[j].g) * x);
       tmp[j].b = colors[j].b + (int)((to[j].b - colors[j].b) * x);
     }
-    video->SetPalette(&tmp[first], first, n);
-    video->Refresh();
-    clock->Delay(delay);
+    media->GetVideo()->SetPalette(&tmp[first], first, n);
+    media->GetVideo()->Refresh();
+    media->GetClock()->Delay(delay);
+    media->PollEvents();
   }
   delete[] tmp;
 }
 
 void
-PaletteResource::FadeIn(Video *video, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay, Clock *clock)
+PaletteResource::FadeIn(MediaToolkit *media, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
 {
   Color* from = new Color[VIDEO_COLORS];
   memset(from, 0, VIDEO_COLORS * sizeof(Color));
-  FadeFrom(video, from, first, n, steps, delay, clock);
+  FadeFrom(media, from, first, n, steps, delay);
   delete[] from;
 }
 
 void
-PaletteResource::FadeOut(Video *video, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay, Clock *clock)
+PaletteResource::FadeOut(MediaToolkit *media, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
 {
   Color* to = new Color[VIDEO_COLORS];
   memset(to, 0, VIDEO_COLORS * sizeof(Color));
-  FadeTo(video, to, first, n, steps, delay, clock);
+  FadeTo(media, to, first, n, steps, delay);
   delete[] to;
 }
 
