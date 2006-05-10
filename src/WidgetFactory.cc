@@ -31,6 +31,7 @@ ImageButtonWidget*
 WidgetFactory::CreateImageButton(RequestData& data, ActionEventListener *ael)
 {
   ImageButtonWidget *button = new ImageButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
+  button->SetImage(0, 0, 0);
   button->AddActionListener(ael);
   return button;
 }

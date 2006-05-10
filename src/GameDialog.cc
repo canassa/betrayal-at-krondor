@@ -80,7 +80,7 @@ GameDialog::Play()
 void
 GameDialog::KeyPressed(const KeyboardEvent& kbe)
 {
-  switch (kbe.GetKey()){
+  switch (kbe.GetKey()) {
     case KEY_ESCAPE:
       media->TerminateEventLoop();
       break;
@@ -103,7 +103,7 @@ GameDialog::KeyPressed(const KeyboardEvent& kbe)
 void
 GameDialog::KeyReleased(const KeyboardEvent& kbe)
 {
-  switch (kbe.GetKey()){
+  switch (kbe.GetKey()) {
     case KEY_RETURN:
     case KEY_SPACE:
       if (running) {
@@ -118,7 +118,7 @@ GameDialog::KeyReleased(const KeyboardEvent& kbe)
 void
 GameDialog::MouseButtonPressed(const MouseButtonEvent& mbe)
 {
-  switch (mbe.GetButton()){
+  switch (mbe.GetButton()) {
     case MB_LEFT:
       if (running) {
         window->ActivateWidget(mbe.GetXPos(), mbe.GetYPos());
@@ -132,7 +132,7 @@ GameDialog::MouseButtonPressed(const MouseButtonEvent& mbe)
 void
 GameDialog::MouseButtonReleased(const MouseButtonEvent& mbe)
 {
-  switch (mbe.GetButton()){
+  switch (mbe.GetButton()) {
     case MB_LEFT:
       if (running) {
         window->DeactivateWidget(mbe.GetXPos(), mbe.GetYPos());
