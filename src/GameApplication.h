@@ -29,7 +29,6 @@
 #include "GameDialog.h"
 #include "GameState.h"
 #include "MediaToolkit.h"
-#include "OptionsDialog.h"
 
 class GameApplication
 : public KeyboardEventListener
@@ -52,9 +51,9 @@ class GameApplication
     ~GameApplication();
     static GameApplication* GetInstance();
     static void CleanUp();
+    MediaToolkit* GetMediaToolkit();
     GameState* GetPrevState();
     void PlayIntro();
-    UserActionType Options(const bool firstTime);
     void StartChapter();
     void StartNewGame();
     void PlayGame();

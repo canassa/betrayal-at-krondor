@@ -92,5 +92,11 @@ class SDL_Exception: public Exception {
     virtual ~SDL_Exception() throw ();
 };
 
+class UnexpectedValue: public Exception {
+  public:
+    UnexpectedValue(const std::string &loc);
+    virtual ~UnexpectedValue() throw ();
+};
+
 #endif
 

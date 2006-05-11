@@ -31,6 +31,7 @@ static const std::string IO_ERROR           = "Read/write error";
 static const std::string MEMORY_ERROR       = "Out of memory";
 static const std::string OPEN_ERROR         = "File not open";
 static const std::string SDL_EXCEPTION      = "SDL error";
+static const std::string UNEXPECTED_VALUE   = "Unexpected value";
 
 Exception::Exception(const std::string &loc, const std::string &msg): location(loc), message(msg) {
 }
@@ -100,5 +101,11 @@ SDL_Exception::SDL_Exception(const std::string &loc):Exception(loc, SDL_EXCEPTIO
 }
 
 SDL_Exception::~SDL_Exception() throw() {
+}
+
+UnexpectedValue::UnexpectedValue(const std::string &loc):Exception(loc, UNEXPECTED_VALUE) {
+}
+
+UnexpectedValue::~UnexpectedValue() throw() {
 }
 

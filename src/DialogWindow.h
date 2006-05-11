@@ -36,11 +36,11 @@ class DialogWindow {
   private:
     PanelWidget *panel;
   public:
-    DialogWindow(RequestResource& req, ScreenResource& scr, LabelResource *lbl, FontResource *fnt, ActionEventListener *ael);
+    DialogWindow(RequestResource* req, ScreenResource* scr, LabelResource *lbl, FontResource *fnt, ActionEventListener *ael);
     ~DialogWindow();
     void Draw(Video *video);
-    void FadeIn(PaletteResource& pal, MediaToolkit *media);
-    void FadeOut(PaletteResource& pal, MediaToolkit *media);
+    void FadeIn(PaletteResource* pal, MediaToolkit *media);
+    void FadeOut(PaletteResource* pal, MediaToolkit *media);
     void ActivateWidget();
     void DeactivateWidget();
     void ActivateWidget(const int x, const int y);

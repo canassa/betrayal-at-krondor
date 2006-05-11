@@ -60,14 +60,14 @@ GameDialog::Play()
 {
   try {
     media->ClearEvents();
-    window = new DialogWindow(reqMain, frameScreen, 0, 0, this);
+    window = new DialogWindow(&reqMain, &frameScreen, 0, 0, this);
     if (window) {
       media->GetVideo()->Clear();
-      window->FadeIn(optionsPalette, media);
+      window->FadeIn(&optionsPalette, media);
       running = true;
       media->PollEventLoop();
       running = false;
-      window->FadeOut(optionsPalette, media);
+      window->FadeOut(&optionsPalette, media);
       media->GetVideo()->Clear();
       delete window;
       window = 0;

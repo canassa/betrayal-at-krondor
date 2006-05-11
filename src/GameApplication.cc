@@ -100,6 +100,12 @@ GameApplication::CleanUp()
   }
 }
 
+MediaToolkit *
+GameApplication::GetMediaToolkit()
+{
+  return mediaToolkit;
+}
+
 GameState *
 GameApplication::GetPrevState()
 {
@@ -125,19 +131,6 @@ GameApplication::PlayIntro()
     moviePlayer.Play(&ttm.GetMovieTags(), true);
   } catch (Exception &e) {
     e.Print("GameApplication::Intro");
-  }
-}
-
-UserActionType
-GameApplication::Options(const bool firstTime)
-{
-  try {
-    mediaToolkit->GetVideo()->SetPointerPosition(0, 0);
-    OptionsDialog options(mediaToolkit, firstTime);
-    return options.GetUserAction();
-  } catch (Exception &e) {
-    e.Print("GameApplication::Run");
-    return UA_QUIT;
   }
 }
 

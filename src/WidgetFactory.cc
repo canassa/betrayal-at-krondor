@@ -78,14 +78,14 @@ WidgetFactory::CreateLabel(LabelData& data, FontResource *fnt, const int panelWi
 }
 
 PanelWidget*
-WidgetFactory::CreatePanel(RequestResource &req, ScreenResource &scr, LabelResource *lbl, FontResource *fnt, ActionEventListener *ael)
+WidgetFactory::CreatePanel(RequestResource *req, ScreenResource *scr, LabelResource *lbl, FontResource *fnt, ActionEventListener *ael)
 {
-  PanelWidget *panel = new PanelWidget(req.GetXPos(), req.GetYPos(), req.GetWidth(), req.GetHeight());
-  panel->SetBackground(scr.GetImage());
-  for (unsigned int i = 0; i < req.GetSize(); i++) {
-    RequestData data = req.GetRequestData(i);
-    data.xpos += req.GetXOff();
-    data.ypos += req.GetYOff();
+  PanelWidget *panel = new PanelWidget(req->GetXPos(), req->GetYPos(), req->GetWidth(), req->GetHeight());
+  panel->SetBackground(scr->GetImage());
+  for (unsigned int i = 0; i < req->GetSize(); i++) {
+    RequestData data = req->GetRequestData(i);
+    data.xpos += req->GetXOff();
+    data.ypos += req->GetYOff();
     switch (data.widget) {
       case REQ_USERDEFINED:
         break;
@@ -110,7 +110,7 @@ WidgetFactory::CreatePanel(RequestResource &req, ScreenResource &scr, LabelResou
   if (lbl) {
     for (unsigned int i = 0; i < lbl->GetSize(); i++) {
       LabelData data = lbl->GetLabelData(i);
-      int panelWidth = (req.GetWidth() > scr.GetImage()->GetWidth() ? req.GetWidth() : scr.GetImage()->GetWidth());
+      int panelWidth = (req->GetWidth() > scr->GetImage()->GetWidth() ? req->GetWidth() : scr->GetImage()->GetWidth());
       LabelWidget *label = CreateLabel(data, fnt, panelWidth);
       panel->AddWidget(label);
     }

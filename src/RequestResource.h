@@ -33,6 +33,13 @@ static const unsigned int REQ_IMAGEBUTTON = 3;
 static const unsigned int REQ_SELECT      = 4;
 static const unsigned int REQ_TEXTBUTTON  = 6;
 
+static const unsigned int ACT_ESCAPE       = 256;
+
+static const unsigned int CONT_EXIT        = 1;
+
+static const unsigned int LOAD_RESTORE     = 193;
+static const unsigned int LOAD_CANCEL      = 192;
+
 static const unsigned int OPT0_CONTENTS    = 46;
 static const unsigned int OPT0_NEW_GAME    = 49;
 static const unsigned int OPT0_PREFERENCES = 25;
@@ -47,9 +54,22 @@ static const unsigned int OPT1_QUIT        = 32;
 static const unsigned int OPT1_RESTORE     = 19;
 static const unsigned int OPT1_SAVE        = 31;
 
+static const unsigned int OPT_CANCEL       = 18;
+static const unsigned int OPT_CONTENTS     = 46;
+static const unsigned int OPT_NEW_GAME     = 49;
+static const unsigned int OPT_PREFERENCES  = 25;
+static const unsigned int OPT_QUIT         = 32;
+static const unsigned int OPT_RESTORE      = 19;
+static const unsigned int OPT_SAVE         = 31;
+
 static const unsigned int PREF_CANCEL      = 46;
 static const unsigned int PREF_DEFAULTS    = 32;
 static const unsigned int PREF_OK          = 24;
+
+static const unsigned int SAVE_REMOVE_DIR  = 195;
+static const unsigned int SAVE_REMOVE_GAME = 194;
+static const unsigned int SAVE_SAVE        = 193;
+static const unsigned int SAVE_CANCEL      = 192;
 
 typedef struct _RequestData {
   unsigned int widget;

@@ -5,6 +5,7 @@ noinst_HEADERS = AnimationResource.h \
                  ChoiceWidget.h \
                  Clock.h \
                  ContainerWidget.h \
+                 Dialog.h \
                  DialogResource.h \
                  DialogWindow.h \
                  Event.h \
@@ -27,7 +28,6 @@ noinst_HEADERS = AnimationResource.h \
                  MoviePlayer.h \
                  MovieResource.h \
                  NameResource.h \
-                 OptionsDialog.h \
                  PaletteResource.h \
                  PanelWidget.h \
                  PopUpWidget.h \
@@ -435,6 +435,8 @@ xbak_SOURCES = AnimationResource.cc \
                Clock.h \
                ContainerWidget.cc \
                ContainerWidget.h \
+               Dialog.cc \
+               Dialog.h \
                DialogResource.cc \
                DialogResource.h \
                DialogWindow.cc \
@@ -478,8 +480,6 @@ xbak_SOURCES = AnimationResource.cc \
                MovieResource.h \
                NameResource.cc \
                NameResource.h \
-               OptionsDialog.cc \
-               OptionsDialog.h \
                PaletteResource.cc \
                PaletteResource.h \
                PanelWidget.cc \

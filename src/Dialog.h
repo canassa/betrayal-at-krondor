@@ -17,8 +17,8 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef OPTIONS_DIALOG_H
-#define OPTIONS_DIALOG_H
+#ifndef DIALOG_H
+#define DIALOG_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -27,25 +27,7 @@
 #include "DialogWindow.h"
 #include "EventListener.h"
 
-typedef enum _DialogType {
-  DT_CONTENTS,
-  DT_OPT0,
-  DT_OPT1,
-  DT_PREFERENCES,
-  DT_RESTORE,
-  DT_SAVE
-} DialogType;
-
-typedef enum _UserActionType {
-  UA_CANCEL,
-  UA_NEW_GAME,
-  UA_QUIT,
-  UA_RESTORE,
-  UA_SAVE,
-  UA_UNKNOWN
-} UserActionType;
-
-class OptionsDialog
+class Dialog
 : public KeyboardEventListener
 , public MouseButtonEventListener
 , public UpdateEventListener
@@ -53,33 +35,23 @@ class OptionsDialog
 {
   private:
     MediaToolkit *media;
-    UserActionType userAction;
-    DialogType dialogType;
     DialogWindow *window;
-    bool firstTime;
+    FontResource *font;
+    LabelResource *label;
+    PaletteResource *palette;
+    ScreenResource *screen;
+    RequestResource *request;
+    unsigned int action;
     bool running;
-    FontResource bookFont;
-    FontResource gameFont;
-    LabelResource lblLoad;
-    LabelResource lblNull;
-    LabelResource lblPref;
-    LabelResource lblSave;
-    PaletteResource contentsPalette;
-    PaletteResource optionsPalette;
-    ScreenResource contentsScreen;
-    ScreenResource options0Screen;
-    ScreenResource options1Screen;
-    ScreenResource options2Screen;
-    RequestResource reqCont;
-    RequestResource reqLoad;
-    RequestResource reqOpt0;
-    RequestResource reqOpt1;
-    RequestResource reqPref;
-    RequestResource reqSave;
   public:
-    OptionsDialog(MediaToolkit *mtk, const bool first);
-    ~OptionsDialog();
-    UserActionType GetUserAction();
+    Dialog(MediaToolkit *mtk);
+    ~Dialog();
+    void SetFont(const std::string &name);
+    void SetLabel(const std::string &name);
+    void SetPalette(const std::string &name);
+    void SetScreen(const std::string &name);
+    void SetRequest(const std::string &name);
+    unsigned int Execute();
     void KeyPressed(const KeyboardEvent& kbe);
     void KeyReleased(const KeyboardEvent& kbe);
     void MouseButtonPressed(const MouseButtonEvent& mbe);

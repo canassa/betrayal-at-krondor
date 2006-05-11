@@ -41,7 +41,7 @@ class WidgetFactory {
     TextButtonWidget* CreateTextButton(RequestData& data, FontResource* fnt, ActionEventListener *ael);
     ChoiceWidget* CreateChoice();
     LabelWidget* CreateLabel(LabelData& data, FontResource* fnt, const int panelWidth);
-    PanelWidget* CreatePanel(RequestResource& req, ScreenResource& scr, LabelResource* lbl, FontResource* fnt, ActionEventListener *ael);
+    PanelWidget* CreatePanel(RequestResource* req, ScreenResource* scr, LabelResource* lbl, FontResource* fnt, ActionEventListener *ael);
     TickboxWidget* CreateTickbox();
 };
 

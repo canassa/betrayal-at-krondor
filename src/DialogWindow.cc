@@ -23,7 +23,7 @@
 #include "ResourceManager.h"
 #include "WidgetFactory.h"
 
-DialogWindow::DialogWindow(RequestResource& req, ScreenResource& scr, LabelResource *lbl, FontResource *fnt, ActionEventListener *ael)
+DialogWindow::DialogWindow(RequestResource* req, ScreenResource* scr, LabelResource *lbl, FontResource *fnt, ActionEventListener *ael)
 : panel(0)
 {
   try{
@@ -51,19 +51,19 @@ DialogWindow::Draw(Video *video)
 }
 
 void
-DialogWindow::FadeIn(PaletteResource& pal, MediaToolkit *media)
+DialogWindow::FadeIn(PaletteResource* pal, MediaToolkit *media)
 {
   panel->Draw(media->GetVideo());
   MousePointerManager::GetInstance()->GetCurrentPointer()->Draw(media->GetVideo());
-  pal.FadeIn(media, 0, VIDEO_COLORS, 64, 8);
+  pal->FadeIn(media, 0, VIDEO_COLORS, 64, 8);
 }
 
 void
-DialogWindow::FadeOut(PaletteResource& pal, MediaToolkit *media)
+DialogWindow::FadeOut(PaletteResource* pal, MediaToolkit *media)
 {
   panel->Draw(media->GetVideo());
   MousePointerManager::GetInstance()->GetCurrentPointer()->Draw(media->GetVideo());
-  pal.FadeOut(media, 0, VIDEO_COLORS, 64, 8);
+  pal->FadeOut(media, 0, VIDEO_COLORS, 64, 8);
 }
 
 void

@@ -24,6 +24,8 @@
 #include "config.h"
 #endif
 
+#include "Dialog.h"
+
 class GameApplication;
 
 class GameState
@@ -62,6 +64,20 @@ class GameStateCombat: public GameState
     void Execute(GameApplication *app);
 };
 
+class GameStateContents: public GameState
+{
+  private:
+    Dialog *dialog;
+    static GameStateContents *instance;
+  protected:
+    GameStateContents(MediaToolkit *mtk);
+  public:
+    ~GameStateContents();
+    static GameStateContents* GetInstance(MediaToolkit *mtk);
+    static void CleanUp();
+    void Execute(GameApplication *app);
+};
+
 class GameStateIntro: public GameState
 {
   private:
@@ -75,16 +91,59 @@ class GameStateIntro: public GameState
     void Execute(GameApplication *app);
 };
 
+class GameStateLoad: public GameState
+{
+  private:
+    Dialog *dialog;
+    static GameStateLoad *instance;
+  protected:
+    GameStateLoad(MediaToolkit *mtk);
+  public:
+    ~GameStateLoad();
+    static GameStateLoad* GetInstance(MediaToolkit *mtk);
+    static void CleanUp();
+    void Execute(GameApplication *app);
+};
+
 class GameStateOptions: public GameState
 {
   private:
-    static GameStateOptions *instance;
     bool firstTime;
+    Dialog *dialog;
+    static GameStateOptions *instance;
   protected:
-    GameStateOptions();
+    GameStateOptions(MediaToolkit *mtk);
   public:
     ~GameStateOptions();
-    static GameStateOptions* GetInstance();
+    static GameStateOptions* GetInstance(MediaToolkit *mtk);
+    static void CleanUp();
+    void Execute(GameApplication *app);
+};
+
+class GameStatePreferences: public GameState
+{
+  private:
+    Dialog *dialog;
+    static GameStatePreferences *instance;
+  protected:
+    GameStatePreferences(MediaToolkit *mtk);
+  public:
+    ~GameStatePreferences();
+    static GameStatePreferences* GetInstance(MediaToolkit *mtk);
+    static void CleanUp();
+    void Execute(GameApplication *app);
+};
+
+class GameStateSave: public GameState
+{
+  private:
+    Dialog *dialog;
+    static GameStateSave *instance;
+  protected:
+    GameStateSave(MediaToolkit *mtk);
+  public:
+    ~GameStateSave();
+    static GameStateSave* GetInstance(MediaToolkit *mtk);
     static void CleanUp();
     void Execute(GameApplication *app);
 };
