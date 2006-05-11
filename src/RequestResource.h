@@ -40,20 +40,6 @@ static const unsigned int CONT_EXIT        = 1;
 static const unsigned int LOAD_RESTORE     = 193;
 static const unsigned int LOAD_CANCEL      = 192;
 
-static const unsigned int OPT0_CONTENTS    = 46;
-static const unsigned int OPT0_NEW_GAME    = 49;
-static const unsigned int OPT0_PREFERENCES = 25;
-static const unsigned int OPT0_QUIT        = 32;
-static const unsigned int OPT0_RESTORE     = 19;
-
-static const unsigned int OPT1_CANCEL      = 18;
-static const unsigned int OPT1_CONTENTS    = 46;
-static const unsigned int OPT1_NEW_GAME    = 49;
-static const unsigned int OPT1_PREFERENCES = 25;
-static const unsigned int OPT1_QUIT        = 32;
-static const unsigned int OPT1_RESTORE     = 19;
-static const unsigned int OPT1_SAVE        = 31;
-
 static const unsigned int OPT_CANCEL       = 18;
 static const unsigned int OPT_CONTENTS     = 46;
 static const unsigned int OPT_NEW_GAME     = 49;
