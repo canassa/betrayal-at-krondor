@@ -91,8 +91,12 @@ GameApplication::CleanUp()
 {
   GameStateChapter::CleanUp();
   GameStateCombat::CleanUp();
+  GameStateContents::CleanUp();
   GameStateIntro::CleanUp();
+  GameStateLoad::CleanUp();
   GameStateOptions::CleanUp();
+  GameStatePreferences::CleanUp();
+  GameStateSave::CleanUp();
   GameStateWorld::CleanUp();
   if (instance) {
     delete instance;
