@@ -158,17 +158,6 @@ GameApplication::StartNewGame()
 }
 
 void
-GameApplication::PlayGame()
-{
-  try {
-    GameDialog game(mediaToolkit);
-    game.Play();
-  } catch (Exception &e) {
-    e.Print("GameApplication::PlayGame");
-  }
-}
-
-void
 GameApplication::QuitGame()
 {
   done = true;

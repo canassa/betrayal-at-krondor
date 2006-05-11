@@ -151,12 +151,13 @@ class GameStateSave: public GameState
 class GameStateWorld: public GameState
 {
   private:
+    Dialog *dialog;
     static GameStateWorld *instance;
   protected:
-    GameStateWorld();
+    GameStateWorld(MediaToolkit *mtk);
   public:
     ~GameStateWorld();
-    static GameStateWorld* GetInstance();
+    static GameStateWorld* GetInstance(MediaToolkit *mtk);
     static void CleanUp();
     void Execute(GameApplication *app);
 };

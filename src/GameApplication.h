@@ -26,7 +26,6 @@
 
 #include "Chapter.h"
 #include "EventListener.h"
-#include "GameDialog.h"
 #include "GameState.h"
 #include "MediaToolkit.h"
 
@@ -56,7 +55,6 @@ class GameApplication
     void PlayIntro();
     void StartChapter();
     void StartNewGame();
-    void PlayGame();
     void QuitGame();
     void Run();
     void KeyPressed(const KeyboardEvent& kbe);

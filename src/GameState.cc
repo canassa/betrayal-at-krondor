@@ -73,7 +73,7 @@ void
 GameStateChapter::Execute(GameApplication *app)
 {
   app->StartChapter();
-  ChangeState(app, GameStateWorld::GetInstance());
+  ChangeState(app, GameStateWorld::GetInstance(app->GetMediaToolkit()));
 }
 
 GameStateCombat* GameStateCombat::instance = 0;
@@ -107,7 +107,7 @@ GameStateCombat::CleanUp()
 void
 GameStateCombat::Execute(GameApplication *app)
 {
-  ChangeState(app, GameStateWorld::GetInstance());
+  ChangeState(app, GameStateWorld::GetInstance(app->GetMediaToolkit()));
 }
 
 GameStateContents* GameStateContents::instance = 0;
@@ -440,19 +440,26 @@ GameStateSave::Execute(GameApplication *app)
 
 GameStateWorld* GameStateWorld::instance = 0;
 
-GameStateWorld::GameStateWorld()
+GameStateWorld::GameStateWorld(MediaToolkit *mtk)
 {
+  dialog = new Dialog(mtk);
+  dialog->SetPalette("OPTIONS.PAL");
+  dialog->SetScreen("FRAME.SCX");
+  dialog->SetRequest("REQ_MAIN.DAT");
 }
 
 GameStateWorld::~GameStateWorld()
 {
+  if (dialog) {
+    delete dialog;
+  }
 }
 
 GameStateWorld*
-GameStateWorld::GetInstance()
+GameStateWorld::GetInstance(MediaToolkit *mtk)
 {
   if (!instance) {
-    instance = new GameStateWorld();
+    instance = new GameStateWorld(mtk);
   }
   return instance;
 }
@@ -469,6 +476,23 @@ GameStateWorld::CleanUp()
 void
 GameStateWorld::Execute(GameApplication *app)
 {
-  app->PlayGame();
-  ChangeState(app, GameStateOptions::GetInstance(app->GetMediaToolkit()));
+  switch (dialog->Execute()) {
+    case ACT_ESCAPE:
+    case MAIN_OPTIONS:
+      ChangeState(app, GameStateOptions::GetInstance(app->GetMediaToolkit()));
+      break;
+    case MAIN_UP:
+    case MAIN_DOWN:
+    case MAIN_LEFT:
+    case MAIN_RIGHT:
+    case MAIN_INV:
+    case MAIN_MAP:
+    case MAIN_CAMP:
+    case MAIN_UNKNOWN1:
+    case MAIN_UNKNOWN2:
+      break;
+    default:
+      throw UnexpectedValue("GameStateSave::Execute");
+      break;
+  }
 }

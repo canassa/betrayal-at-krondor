@@ -40,6 +40,17 @@ static const unsigned int CONT_EXIT        = 1;
 static const unsigned int LOAD_RESTORE     = 193;
 static const unsigned int LOAD_CANCEL      = 192;
 
+static const unsigned int MAIN_LEFT        = 75;
+static const unsigned int MAIN_UP          = 72;
+static const unsigned int MAIN_DOWN        = 80;
+static const unsigned int MAIN_RIGHT       = 77;
+static const unsigned int MAIN_UNKNOWN1    = 19;
+static const unsigned int MAIN_MAP         = 50;
+static const unsigned int MAIN_INV         = 46;
+static const unsigned int MAIN_UNKNOWN2    = 48;
+static const unsigned int MAIN_CAMP        = 18;
+static const unsigned int MAIN_OPTIONS     = 24;
+
 static const unsigned int OPT_CANCEL       = 18;
 static const unsigned int OPT_CONTENTS     = 46;
 static const unsigned int OPT_NEW_GAME     = 49;

@@ -15,7 +15,6 @@ noinst_HEADERS = AnimationResource.h \
                  FontResource.h \
                  GameApplication.h \
                  GameState.h \
-                 GameDialog.h \
                  GenericResourceFile.h \
                  Image.h \
                  ImageButtonWidget.h \
@@ -454,8 +453,6 @@ xbak_SOURCES = AnimationResource.cc \
                GameApplication.h \
                GameState.cc \
                GameState.h \
-               GameDialog.cc \
-               GameDialog.h \
                GenericResourceFile.cc \
                GenericResourceFile.h \
                Image.cc \
