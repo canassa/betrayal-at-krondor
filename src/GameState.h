@@ -38,6 +38,20 @@ class GameState
     virtual void Execute(GameApplication *app);
 };
 
+class GameStateCamp: public GameState
+{
+  private:
+    Dialog *dialog;
+    static GameStateCamp *instance;
+  protected:
+    GameStateCamp(MediaToolkit *mtk);
+  public:
+    ~GameStateCamp();
+    static GameStateCamp* GetInstance(MediaToolkit *mtk);
+    static void CleanUp();
+    void Execute(GameApplication *app);
+};
+
 class GameStateChapter: public GameState
 {
   private:
@@ -101,6 +115,20 @@ class GameStateLoad: public GameState
   public:
     ~GameStateLoad();
     static GameStateLoad* GetInstance(MediaToolkit *mtk);
+    static void CleanUp();
+    void Execute(GameApplication *app);
+};
+
+class GameStateMap: public GameState
+{
+  private:
+    Dialog *dialog;
+    static GameStateMap *instance;
+  protected:
+    GameStateMap(MediaToolkit *mtk);
+  public:
+    ~GameStateMap();
+    static GameStateMap* GetInstance(MediaToolkit *mtk);
     static void CleanUp();
     void Execute(GameApplication *app);
 };

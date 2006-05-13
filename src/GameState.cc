@@ -249,6 +249,66 @@ GameStateLoad::Execute(GameApplication *app)
   }
 }
 
+GameStateMap* GameStateMap::instance = 0;
+
+GameStateMap::GameStateMap(MediaToolkit *mtk)
+{
+  dialog = new Dialog(mtk);
+  dialog->SetPalette("OPTIONS.PAL");
+  dialog->SetScreen("FRAME.SCX");
+  dialog->SetIcons("BICONS1.BMX");
+  dialog->SetRequest("REQ_MAP.DAT");
+}
+
+GameStateMap::~GameStateMap()
+{
+  if (dialog) {
+    delete dialog;
+  }
+}
+
+GameStateMap*
+GameStateMap::GetInstance(MediaToolkit *mtk)
+{
+  if (!instance) {
+    instance = new GameStateMap(mtk);
+  }
+  return instance;
+}
+
+void
+GameStateMap::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
+}
+
+void
+GameStateMap::Execute(GameApplication *app)
+{
+  switch (dialog->Execute()) {
+    case ACT_ESCAPE:
+    case MAP_MAIN:
+      ChangeState(app, GameStateWorld::GetInstance(app->GetMediaToolkit()));
+      break;
+    case MAP_UP:
+    case MAP_DOWN:
+    case MAP_LEFT:
+    case MAP_RIGHT:
+    case MAP_FULLMAP:
+    case MAP_ZOOMIN:
+    case MAP_ZOOMOUT:
+    case MAP_CAMP:
+    case MAP_UNKNOWN:
+      break;
+    default:
+      throw UnexpectedValue("GameStateLoad::Execute");
+      break;
+  }
+}
+
 GameStateOptions* GameStateOptions::instance = 0;
 
 GameStateOptions::GameStateOptions(MediaToolkit *mtk)
@@ -483,12 +543,14 @@ GameStateWorld::Execute(GameApplication *app)
     case MAIN_OPTIONS:
       ChangeState(app, GameStateOptions::GetInstance(app->GetMediaToolkit()));
       break;
+    case MAIN_MAP:
+      ChangeState(app, GameStateMap::GetInstance(app->GetMediaToolkit()));
+      break;
     case MAIN_UP:
     case MAIN_DOWN:
     case MAIN_LEFT:
     case MAIN_RIGHT:
     case MAIN_INV:
-    case MAIN_MAP:
     case MAIN_CAMP:
     case MAIN_UNKNOWN1:
     case MAIN_UNKNOWN2:

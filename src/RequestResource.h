@@ -51,6 +51,17 @@ static const unsigned int MAIN_UNKNOWN2    = 48;
 static const unsigned int MAIN_CAMP        = 18;
 static const unsigned int MAIN_OPTIONS     = 24;
 
+static const unsigned int MAP_LEFT         = 75;
+static const unsigned int MAP_UP           = 72;
+static const unsigned int MAP_DOWN         = 80;
+static const unsigned int MAP_RIGHT        = 77;
+static const unsigned int MAP_UNKNOWN      = 19;
+static const unsigned int MAP_FULLMAP      = 33;
+static const unsigned int MAP_ZOOMOUT      = 73;
+static const unsigned int MAP_ZOOMIN       = 81;
+static const unsigned int MAP_CAMP         = 18;
+static const unsigned int MAP_MAIN         = 50;
+
 static const unsigned int OPT_CANCEL       = 18;
 static const unsigned int OPT_CONTENTS     = 46;
 static const unsigned int OPT_NEW_GAME     = 49;
