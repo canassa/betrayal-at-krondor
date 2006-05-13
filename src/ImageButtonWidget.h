@@ -33,11 +33,10 @@ class ImageButtonWidget
   private:
     Image *normalImage;
     Image *activatedImage;
-    Image *disabledImage;
   public:
     ImageButtonWidget(const int x, const int y, const int w, const int h, const int a);
     virtual ~ImageButtonWidget();
-    void SetImage(Image *normal, Image *activated, Image *disabled);
+    void SetImage(Image *normal, Image *activated);
     void Draw(Video *video);
 };
 

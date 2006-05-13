@@ -40,6 +40,7 @@ class Dialog
     LabelResource *label;
     PaletteResource *palette;
     ScreenResource *screen;
+    ImageResource *icons;
     RequestResource *request;
     unsigned int action;
     bool running;
@@ -50,6 +51,7 @@ class Dialog
     void SetLabel(const std::string &name);
     void SetPalette(const std::string &name);
     void SetScreen(const std::string &name);
+    void SetIcons(const std::string &name);
     void SetRequest(const std::string &name);
     unsigned int Execute();
     void KeyPressed(const KeyboardEvent& kbe);

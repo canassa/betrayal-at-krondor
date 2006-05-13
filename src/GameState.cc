@@ -117,6 +117,7 @@ GameStateContents::GameStateContents(MediaToolkit *mtk)
   dialog = new Dialog(mtk);
   dialog->SetPalette("CONTENTS.PAL");
   dialog->SetScreen("CONT2.SCX");
+  dialog->SetIcons("BICONS1.BMX");
   dialog->SetRequest("CONTENTS.DAT");
 }
 
@@ -304,7 +305,7 @@ GameStateOptions::Execute(GameApplication *app)
       ChangeState(app, GameStateChapter::GetInstance());
       break;
     case OPT_CANCEL:
-      ChangeState(app, app->GetPrevState());
+      ChangeState(app, GameStateWorld::GetInstance(app->GetMediaToolkit()));
       break;
     case OPT_CONTENTS:
       ChangeState(app, GameStateContents::GetInstance(app->GetMediaToolkit()));
@@ -445,6 +446,7 @@ GameStateWorld::GameStateWorld(MediaToolkit *mtk)
   dialog = new Dialog(mtk);
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("FRAME.SCX");
+  dialog->SetIcons("BICONS1.BMX");
   dialog->SetRequest("REQ_MAIN.DAT");
 }
 

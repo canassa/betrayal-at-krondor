@@ -25,9 +25,10 @@
 #endif
 
 #include "ChoiceWidget.h"
-#include "PanelWidget.h"
 #include "ImageButtonWidget.h"
+#include "ImageResource.h"
 #include "LabelResource.h"
+#include "PanelWidget.h"
 #include "RequestResource.h"
 #include "ScreenResource.h"
 #include "TextButtonWidget.h"
@@ -37,11 +38,11 @@ class WidgetFactory {
   public:
     WidgetFactory();
     virtual ~WidgetFactory();
-    ImageButtonWidget* CreateImageButton(RequestData& data, ActionEventListener *ael);
+    ImageButtonWidget* CreateImageButton(RequestData& data, ImageResource *img, ActionEventListener *ael);
     TextButtonWidget* CreateTextButton(RequestData& data, FontResource* fnt, ActionEventListener *ael);
     ChoiceWidget* CreateChoice();
     LabelWidget* CreateLabel(LabelData& data, FontResource* fnt, const int panelWidth);
-    PanelWidget* CreatePanel(RequestResource* req, ScreenResource* scr, LabelResource* lbl, FontResource* fnt, ActionEventListener *ael);
+    PanelWidget* CreatePanel(RequestResource* req, ScreenResource* scr, LabelResource* lbl, FontResource* fnt, ImageResource *img, ActionEventListener *ael);
     TickboxWidget* CreateTickbox();
 };
 

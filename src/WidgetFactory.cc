@@ -28,10 +28,18 @@ WidgetFactory::~WidgetFactory()
 }
 
 ImageButtonWidget*
-WidgetFactory::CreateImageButton(RequestData& data, ActionEventListener *ael)
+WidgetFactory::CreateImageButton(RequestData& data, ImageResource *img, ActionEventListener *ael)
 {
   ImageButtonWidget *button = new ImageButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
-  button->SetImage(0, 0, 0);
+  Image *normal = 0;
+  if (data.normalImage >= 0) {
+    normal = img->GetImage(data.normalImage);
+  }
+  Image *pressed = 0;
+  if (data.pressedImage >= 0) {
+    pressed = img->GetImage(data.pressedImage);
+  }
+  button->SetImage(normal, pressed);
   button->AddActionListener(ael);
   return button;
 }
@@ -78,7 +86,7 @@ WidgetFactory::CreateLabel(LabelData& data, FontResource *fnt, const int panelWi
 }
 
 PanelWidget*
-WidgetFactory::CreatePanel(RequestResource *req, ScreenResource *scr, LabelResource *lbl, FontResource *fnt, ActionEventListener *ael)
+WidgetFactory::CreatePanel(RequestResource *req, ScreenResource *scr, LabelResource *lbl, FontResource *fnt, ImageResource *img, ActionEventListener *ael)
 {
   PanelWidget *panel = new PanelWidget(req->GetXPos(), req->GetYPos(), req->GetWidth(), req->GetHeight());
   panel->SetBackground(scr->GetImage());
@@ -97,7 +105,7 @@ WidgetFactory::CreatePanel(RequestResource *req, ScreenResource *scr, LabelResou
         break;
       case REQ_IMAGEBUTTON:
         if (data.visible) {
-          ImageButtonWidget *button = CreateImageButton(data, ael);
+          ImageButtonWidget *button = CreateImageButton(data, img, ael);
           panel->AddActiveWidget(button);
         }
         break;

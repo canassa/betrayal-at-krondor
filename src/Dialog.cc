@@ -30,6 +30,7 @@ Dialog::Dialog(MediaToolkit *mtk)
 , label(0)
 , palette(0)
 , screen(0)
+, icons(0)
 , request(0)
 , action(0)
 , running(false)
@@ -62,6 +63,9 @@ Dialog::~Dialog()
   }
   if (screen) {
     delete screen;
+  }
+  if (icons) {
+    delete icons;
   }
   if (request) {
     delete request;
@@ -132,6 +136,21 @@ Dialog::SetScreen(const std::string &name)
 }
 
 void
+Dialog::SetIcons(const std::string &name)
+{
+  try {
+    if (icons) {
+      delete icons;
+    }
+    icons = new ImageResource();
+    ResourceManager::GetInstance()->Load(icons, name);
+  } catch (Exception &e) {
+    e.Print("Dialog::SetIcons");
+    throw;
+  }
+}
+
+void
 Dialog::SetRequest(const std::string &name)
 {
   try {
@@ -150,7 +169,7 @@ unsigned int
 Dialog::Execute()
 {
   try {
-    window = new DialogWindow(request, screen, label, font, this);
+    window = new DialogWindow(request, screen, label, font, icons, this);
     media->GetVideo()->Clear();
     window->FadeIn(palette, media);
     running = true;
