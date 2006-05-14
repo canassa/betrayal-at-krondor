@@ -28,58 +28,62 @@
 
 #include "Resource.h"
 
-static const unsigned int REQ_USERDEFINED = 0;
-static const unsigned int REQ_IMAGEBUTTON = 3;
-static const unsigned int REQ_SELECT      = 4;
-static const unsigned int REQ_TEXTBUTTON  = 6;
+static const unsigned int REQ_USERDEFINED   = 0;
+static const unsigned int REQ_IMAGEBUTTON   = 3;
+static const unsigned int REQ_SELECT        = 4;
+static const unsigned int REQ_TEXTBUTTON    = 6;
 
-static const unsigned int ACT_ESCAPE       = 256;
+static const unsigned int ACT_ESCAPE        = 256;
 
-static const unsigned int CONT_EXIT        = 1;
+static const unsigned int CAMP_EXIT         = 192;
+static const unsigned int CAMP_UNTIL_HEALED = 193;
+static const unsigned int CAMP_STOP         = 194;
 
-static const unsigned int FMAP_EXIT        = 18;
+static const unsigned int CONT_EXIT         = 1;
 
-static const unsigned int LOAD_RESTORE     = 193;
-static const unsigned int LOAD_CANCEL      = 192;
+static const unsigned int FMAP_EXIT         = 18;
 
-static const unsigned int MAIN_LEFT        = 75;
-static const unsigned int MAIN_UP          = 72;
-static const unsigned int MAIN_DOWN        = 80;
-static const unsigned int MAIN_RIGHT       = 77;
-static const unsigned int MAIN_UNKNOWN1    = 19;
-static const unsigned int MAIN_MAP         = 50;
-static const unsigned int MAIN_INV         = 46;
-static const unsigned int MAIN_UNKNOWN2    = 48;
-static const unsigned int MAIN_CAMP        = 18;
-static const unsigned int MAIN_OPTIONS     = 24;
+static const unsigned int LOAD_RESTORE      = 193;
+static const unsigned int LOAD_CANCEL       = 192;
 
-static const unsigned int MAP_LEFT         = 75;
-static const unsigned int MAP_UP           = 72;
-static const unsigned int MAP_DOWN         = 80;
-static const unsigned int MAP_RIGHT        = 77;
-static const unsigned int MAP_UNKNOWN      = 19;
-static const unsigned int MAP_FULLMAP      = 33;
-static const unsigned int MAP_ZOOMOUT      = 73;
-static const unsigned int MAP_ZOOMIN       = 81;
-static const unsigned int MAP_CAMP         = 18;
-static const unsigned int MAP_MAIN         = 50;
+static const unsigned int MAIN_LEFT         = 75;
+static const unsigned int MAIN_UP           = 72;
+static const unsigned int MAIN_DOWN         = 80;
+static const unsigned int MAIN_RIGHT        = 77;
+static const unsigned int MAIN_UNKNOWN1     = 19;
+static const unsigned int MAIN_MAP          = 50;
+static const unsigned int MAIN_INV          = 46;
+static const unsigned int MAIN_UNKNOWN2     = 48;
+static const unsigned int MAIN_CAMP         = 18;
+static const unsigned int MAIN_OPTIONS      = 24;
 
-static const unsigned int OPT_CANCEL       = 18;
-static const unsigned int OPT_CONTENTS     = 46;
-static const unsigned int OPT_NEW_GAME     = 49;
-static const unsigned int OPT_PREFERENCES  = 25;
-static const unsigned int OPT_QUIT         = 32;
-static const unsigned int OPT_RESTORE      = 19;
-static const unsigned int OPT_SAVE         = 31;
+static const unsigned int MAP_LEFT          = 75;
+static const unsigned int MAP_UP            = 72;
+static const unsigned int MAP_DOWN          = 80;
+static const unsigned int MAP_RIGHT         = 77;
+static const unsigned int MAP_UNKNOWN       = 19;
+static const unsigned int MAP_FULLMAP       = 33;
+static const unsigned int MAP_ZOOMOUT       = 73;
+static const unsigned int MAP_ZOOMIN        = 81;
+static const unsigned int MAP_CAMP          = 18;
+static const unsigned int MAP_MAIN          = 50;
 
-static const unsigned int PREF_CANCEL      = 46;
-static const unsigned int PREF_DEFAULTS    = 32;
-static const unsigned int PREF_OK          = 24;
+static const unsigned int OPT_CANCEL        = 18;
+static const unsigned int OPT_CONTENTS      = 46;
+static const unsigned int OPT_NEW_GAME      = 49;
+static const unsigned int OPT_PREFERENCES   = 25;
+static const unsigned int OPT_QUIT          = 32;
+static const unsigned int OPT_RESTORE       = 19;
+static const unsigned int OPT_SAVE          = 31;
 
-static const unsigned int SAVE_REMOVE_DIR  = 195;
-static const unsigned int SAVE_REMOVE_GAME = 194;
-static const unsigned int SAVE_SAVE        = 193;
-static const unsigned int SAVE_CANCEL      = 192;
+static const unsigned int PREF_CANCEL       = 46;
+static const unsigned int PREF_DEFAULTS     = 32;
+static const unsigned int PREF_OK           = 24;
+
+static const unsigned int SAVE_REMOVE_DIR   = 195;
+static const unsigned int SAVE_REMOVE_GAME  = 194;
+static const unsigned int SAVE_SAVE         = 193;
+static const unsigned int SAVE_CANCEL       = 192;
 
 typedef struct _RequestData {
   unsigned int widget;

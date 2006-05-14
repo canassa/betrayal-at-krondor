@@ -41,6 +41,59 @@ GameState::Execute(GameApplication *app)
   app = app;
 }
 
+GameStateCamp* GameStateCamp::instance = 0;
+
+GameStateCamp::GameStateCamp(MediaToolkit *mtk)
+{
+  dialog = new Dialog(mtk);
+  dialog->SetPalette("OPTIONS.PAL");
+  dialog->SetScreen("ENCAMP.SCX");
+  dialog->SetIcons("BICONS1.BMX");
+  dialog->SetRequest("REQ_CAMP.DAT");
+}
+
+GameStateCamp::~GameStateCamp()
+{
+  if (dialog) {
+    delete dialog;
+  }
+}
+
+GameStateCamp*
+GameStateCamp::GetInstance(MediaToolkit *mtk)
+{
+  if (!instance) {
+    instance = new GameStateCamp(mtk);
+  }
+  return instance;
+}
+
+void
+GameStateCamp::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
+}
+
+void
+GameStateCamp::Execute(GameApplication *app)
+{
+  switch (dialog->Execute()) {
+    case ACT_ESCAPE:
+    case CAMP_EXIT:
+      ChangeState(app, app->GetPrevState());
+      break;
+    case CAMP_UNTIL_HEALED:
+    case CAMP_STOP:
+      break;
+    default:
+      throw UnexpectedValue("GameStateCamp::Execute");
+      break;
+  }
+}
+
 GameStateChapter* GameStateChapter::instance = 0;
 
 GameStateChapter::GameStateChapter()
@@ -343,6 +396,9 @@ GameStateMap::Execute(GameApplication *app)
     case MAP_MAIN:
       ChangeState(app, GameStateWorld::GetInstance(app->GetMediaToolkit()));
       break;
+    case MAP_CAMP:
+      ChangeState(app, GameStateCamp::GetInstance(app->GetMediaToolkit()));
+      break;
     case MAP_FULLMAP:
       ChangeState(app, GameStateFullMap::GetInstance(app->GetMediaToolkit()));
       break;
@@ -352,7 +408,6 @@ GameStateMap::Execute(GameApplication *app)
     case MAP_RIGHT:
     case MAP_ZOOMIN:
     case MAP_ZOOMOUT:
-    case MAP_CAMP:
     case MAP_UNKNOWN:
       break;
     default:
@@ -595,6 +650,9 @@ GameStateWorld::Execute(GameApplication *app)
     case MAIN_OPTIONS:
       ChangeState(app, GameStateOptions::GetInstance(app->GetMediaToolkit()));
       break;
+    case MAIN_CAMP:
+      ChangeState(app, GameStateCamp::GetInstance(app->GetMediaToolkit()));
+      break;
     case MAIN_MAP:
       ChangeState(app, GameStateMap::GetInstance(app->GetMediaToolkit()));
       break;
@@ -603,7 +661,6 @@ GameStateWorld::Execute(GameApplication *app)
     case MAIN_LEFT:
     case MAIN_RIGHT:
     case MAIN_INV:
-    case MAIN_CAMP:
     case MAIN_UNKNOWN1:
     case MAIN_UNKNOWN2:
       break;
