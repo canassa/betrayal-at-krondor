@@ -50,10 +50,10 @@ static const unsigned int MAIN_LEFT         = 75;
 static const unsigned int MAIN_UP           = 72;
 static const unsigned int MAIN_DOWN         = 80;
 static const unsigned int MAIN_RIGHT        = 77;
-static const unsigned int MAIN_UNKNOWN1     = 19;
+static const unsigned int MAIN_UNKNOWN      = 19;
 static const unsigned int MAIN_MAP          = 50;
-static const unsigned int MAIN_INV          = 46;
-static const unsigned int MAIN_UNKNOWN2     = 48;
+static const unsigned int MAIN_CAST         = 46;
+static const unsigned int MAIN_BOOKMARK     = 48;
 static const unsigned int MAIN_CAMP         = 18;
 static const unsigned int MAIN_OPTIONS      = 24;
 

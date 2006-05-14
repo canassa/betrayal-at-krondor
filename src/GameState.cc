@@ -660,9 +660,9 @@ GameStateWorld::Execute(GameApplication *app)
     case MAIN_DOWN:
     case MAIN_LEFT:
     case MAIN_RIGHT:
-    case MAIN_INV:
-    case MAIN_UNKNOWN1:
-    case MAIN_UNKNOWN2:
+    case MAIN_CAST:
+    case MAIN_BOOKMARK:
+    case MAIN_UNKNOWN:
       break;
     default:
       throw UnexpectedValue("GameStateWorld::Execute");

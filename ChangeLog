@@ -1,5 +1,6 @@
-2006-05-xx, xbak-0.0.7:
+2006-05-14, xbak-0.0.7:
 * Implemented a proper game state machine.
+* Initial implementation of the main game dialog screen is done.
 * Still more work on the GUI, more widgets.
 * Added timer events.
 * DDX files can be loaded and partially interpreted.
@@ -44,6 +45,6 @@
 * PAL palette definitions can be loaded.
 * BMX and SCX images can be loaded and displayed.
 * FNT font definitions can be loaded, text can be displayed.
-* WLD map tiles can be loaded, types of the items on the map are mostly unknow.
+* WLD map tiles can be loaded, types of the items on the map are mostly unknown.
 * Sound data can be loaded, there is no sound yet though.
 
