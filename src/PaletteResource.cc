@@ -73,9 +73,9 @@ PaletteResource::Load(FileBuffer *buffer)
     size = vgabuf->GetSize() / 3;
     colors = new Color[size];
     for (unsigned int i = 0; i < size; i++) {
-      colors[i].r = vgabuf->GetUint8() << 2;
-      colors[i].g = vgabuf->GetUint8() << 2;
-      colors[i].b = vgabuf->GetUint8() << 2;
+      colors[i].r = (vgabuf->GetUint8() << 2) + 0x03;
+      colors[i].g = (vgabuf->GetUint8() << 2) + 0x03;
+      colors[i].b = (vgabuf->GetUint8() << 2) + 0x03;
     }
     Clear();
   } catch (Exception &e) {

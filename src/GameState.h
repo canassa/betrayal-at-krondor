@@ -92,6 +92,20 @@ class GameStateContents: public GameState
     void Execute(GameApplication *app);
 };
 
+class GameStateFullMap: public GameState
+{
+  private:
+    Dialog *dialog;
+    static GameStateFullMap *instance;
+  protected:
+    GameStateFullMap(MediaToolkit *mtk);
+  public:
+    ~GameStateFullMap();
+    static GameStateFullMap* GetInstance(MediaToolkit *mtk);
+    static void CleanUp();
+    void Execute(GameApplication *app);
+};
+
 class GameStateIntro: public GameState
 {
   private:

@@ -37,6 +37,8 @@ static const unsigned int ACT_ESCAPE       = 256;
 
 static const unsigned int CONT_EXIT        = 1;
 
+static const unsigned int FMAP_EXIT        = 18;
+
 static const unsigned int LOAD_RESTORE     = 193;
 static const unsigned int LOAD_CANCEL      = 192;
 

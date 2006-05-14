@@ -160,6 +160,56 @@ GameStateContents::Execute(GameApplication *app)
   }
 }
 
+GameStateFullMap* GameStateFullMap::instance = 0;
+
+GameStateFullMap::GameStateFullMap(MediaToolkit *mtk)
+{
+  dialog = new Dialog(mtk);
+  dialog->SetPalette("FULLMAP.PAL");
+  dialog->SetScreen("FULLMAP.SCX");
+  dialog->SetIcons("BICONS1.BMX");
+  dialog->SetRequest("REQ_FMAP.DAT");
+}
+
+GameStateFullMap::~GameStateFullMap()
+{
+  if (dialog) {
+    delete dialog;
+  }
+}
+
+GameStateFullMap*
+GameStateFullMap::GetInstance(MediaToolkit *mtk)
+{
+  if (!instance) {
+    instance = new GameStateFullMap(mtk);
+  }
+  return instance;
+}
+
+void
+GameStateFullMap::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
+}
+
+void
+GameStateFullMap::Execute(GameApplication *app)
+{
+  switch (dialog->Execute()) {
+    case ACT_ESCAPE:
+    case FMAP_EXIT:
+      ChangeState(app, GameStateMap::GetInstance(app->GetMediaToolkit()));
+      break;
+    default:
+      throw UnexpectedValue("GameStateFullMap::Execute");
+      break;
+  }
+}
+
 GameStateIntro* GameStateIntro::instance = 0;
 
 GameStateIntro::GameStateIntro()
@@ -293,18 +343,20 @@ GameStateMap::Execute(GameApplication *app)
     case MAP_MAIN:
       ChangeState(app, GameStateWorld::GetInstance(app->GetMediaToolkit()));
       break;
+    case MAP_FULLMAP:
+      ChangeState(app, GameStateFullMap::GetInstance(app->GetMediaToolkit()));
+      break;
     case MAP_UP:
     case MAP_DOWN:
     case MAP_LEFT:
     case MAP_RIGHT:
-    case MAP_FULLMAP:
     case MAP_ZOOMIN:
     case MAP_ZOOMOUT:
     case MAP_CAMP:
     case MAP_UNKNOWN:
       break;
     default:
-      throw UnexpectedValue("GameStateLoad::Execute");
+      throw UnexpectedValue("GameStateMap::Execute");
       break;
   }
 }
@@ -380,7 +432,7 @@ GameStateOptions::Execute(GameApplication *app)
       ChangeState(app, GameStateSave::GetInstance(app->GetMediaToolkit()));
       break;
     default:
-      throw UnexpectedValue("GameStatePreferences::Execute");
+      throw UnexpectedValue("GameStateOptions::Execute");
       break;
   }
 }
@@ -556,7 +608,7 @@ GameStateWorld::Execute(GameApplication *app)
     case MAIN_UNKNOWN2:
       break;
     default:
-      throw UnexpectedValue("GameStateSave::Execute");
+      throw UnexpectedValue("GameStateWorld::Execute");
       break;
   }
 }
