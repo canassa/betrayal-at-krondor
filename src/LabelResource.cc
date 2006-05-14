@@ -65,7 +65,7 @@ LabelResource::Load(FileBuffer *buffer)
         data[i].label = buffer->GetString();
       }
     }
-    delete offset;
+    delete[] offset;
   } catch (Exception &e) {
     e.Print("LabelResource::Load");
   }
