@@ -89,6 +89,7 @@ GameApplication::GetInstance()
 void
 GameApplication::CleanUp()
 {
+  GameStateCast::CleanUp();
   GameStateCamp::CleanUp();
   GameStateChapter::CleanUp();
   GameStateCombat::CleanUp();

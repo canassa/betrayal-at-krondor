@@ -94,6 +94,65 @@ GameStateCamp::Execute(GameApplication *app)
   }
 }
 
+GameStateCast* GameStateCast::instance = 0;
+
+GameStateCast::GameStateCast(MediaToolkit *mtk)
+{
+  dialog = new Dialog(mtk);
+  dialog->SetPalette("OPTIONS.PAL");
+  dialog->SetScreen("FRAME.SCX");
+  dialog->SetIcons("BICONS1.BMX");
+  dialog->SetRequest("REQ_CAST.DAT");
+}
+
+GameStateCast::~GameStateCast()
+{
+  if (dialog) {
+    delete dialog;
+  }
+}
+
+GameStateCast*
+GameStateCast::GetInstance(MediaToolkit *mtk)
+{
+  if (!instance) {
+    instance = new GameStateCast(mtk);
+  }
+  return instance;
+}
+
+void
+GameStateCast::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
+}
+
+void
+GameStateCast::Execute(GameApplication *app)
+{
+  switch (dialog->Execute()) {
+    case ACT_ESCAPE:
+    case CAST_EXIT:
+      ChangeState(app, GameStateWorld::GetInstance(app->GetMediaToolkit()));
+      break;
+    case CAST_CAMP1:
+    case CAST_CAMP2:
+      ChangeState(app, GameStateCamp::GetInstance(app->GetMediaToolkit()));
+      break;
+    case CAST_TRIANGLE:
+    case CAST_SQUARE:
+    case CAST_CAST:
+    case CAST_BOOKMARK:
+      break;
+    default:
+      throw UnexpectedValue("GameStateCast::Execute");
+      break;
+  }
+}
+
 GameStateChapter* GameStateChapter::instance = 0;
 
 GameStateChapter::GameStateChapter()
@@ -653,6 +712,9 @@ GameStateWorld::Execute(GameApplication *app)
     case MAIN_CAMP:
       ChangeState(app, GameStateCamp::GetInstance(app->GetMediaToolkit()));
       break;
+    case MAIN_CAST:
+      ChangeState(app, GameStateCast::GetInstance(app->GetMediaToolkit()));
+      break;
     case MAIN_MAP:
       ChangeState(app, GameStateMap::GetInstance(app->GetMediaToolkit()));
       break;
@@ -660,7 +722,6 @@ GameStateWorld::Execute(GameApplication *app)
     case MAIN_DOWN:
     case MAIN_LEFT:
     case MAIN_RIGHT:
-    case MAIN_CAST:
     case MAIN_BOOKMARK:
     case MAIN_UNKNOWN:
       break;

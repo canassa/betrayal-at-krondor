@@ -52,6 +52,20 @@ class GameStateCamp: public GameState
     void Execute(GameApplication *app);
 };
 
+class GameStateCast: public GameState
+{
+  private:
+    Dialog *dialog;
+    static GameStateCast *instance;
+  protected:
+    GameStateCast(MediaToolkit *mtk);
+  public:
+    ~GameStateCast();
+    static GameStateCast* GetInstance(MediaToolkit *mtk);
+    static void CleanUp();
+    void Execute(GameApplication *app);
+};
+
 class GameStateChapter: public GameState
 {
   private:

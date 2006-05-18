@@ -39,6 +39,14 @@ static const unsigned int CAMP_EXIT         = 192;
 static const unsigned int CAMP_UNTIL_HEALED = 193;
 static const unsigned int CAMP_STOP         = 194;
 
+static const unsigned int CAST_TRIANGLE     = 7;
+static const unsigned int CAST_SQUARE       = 6;
+static const unsigned int CAST_CAST         = 2;
+static const unsigned int CAST_BOOKMARK     = 3;
+static const unsigned int CAST_CAMP1        = 4;
+static const unsigned int CAST_CAMP2        = 5;
+static const unsigned int CAST_EXIT         = 1;
+
 static const unsigned int CONT_EXIT         = 1;
 
 static const unsigned int FMAP_EXIT         = 18;
