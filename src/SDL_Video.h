@@ -28,13 +28,13 @@
 
 #include "Video.h"
 
-class SDL_Video: public Video {
+class SDL_Video
+: public Video {
   private:
     const SDL_VideoInfo *info;
     SDL_Surface* disp;
+    SDL_Surface* stretched;
     SDL_Surface* buffer;
-    unsigned int GetScaledPixel(const int x, const int y);
-    void PutScaledPixel(const int x, const int y, const unsigned int c);
   public:
     SDL_Video();
     ~SDL_Video();
@@ -62,4 +62,3 @@ class SDL_Video: public Video {
 };
 
 #endif
-

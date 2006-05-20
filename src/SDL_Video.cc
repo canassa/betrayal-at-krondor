@@ -24,6 +24,7 @@ SDL_Video::SDL_Video()
 : Video()
 , info(SDL_GetVideoInfo())
 , disp(0)
+, stretched(0)
 , buffer(0)
 {
 }
@@ -32,6 +33,9 @@ SDL_Video::~SDL_Video()
 {
   if (disp) {
     SDL_FreeSurface(disp);
+  }
+  if (stretched) {
+    SDL_FreeSurface(stretched);
   }
   if (buffer) {
     SDL_FreeSurface(buffer);
@@ -63,7 +67,11 @@ SDL_Video::CreateScreen(const int w, const int h)
   if (!disp) {
     throw SDL_Exception(SDL_GetError());
   }
-  buffer = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, VIDEO_BPP, 0, 0, 0, 0);
+  stretched = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, VIDEO_BPP, 0, 0, 0, 0);
+  if (!stretched) {
+    throw SDL_Exception(SDL_GetError());
+  }
+  buffer = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, VIDEO_BPP, 0, 0, 0, 0);
   if (!buffer) {
     throw SDL_Exception(SDL_GetError());
   }
@@ -81,11 +89,11 @@ SDL_Video::Clear(int x, int y, int w, int h)
 {
   SDL_Rect rect = {x, y, w, h};
   SDL_FillRect(buffer, &rect, 0);
-  SDL_UpdateRect(buffer, x * scaling, y * scaling, w * scaling, h * scaling);
+  SDL_UpdateRect(buffer, x, y, w, h);
 }
 
 unsigned int
-SDL_Video::GetScaledPixel(const int x, const int y)
+SDL_Video::GetPixel(const int x, const int y)
 {
   if ((x >= 0) && (x < buffer->w) && (y >= 0) && (y < buffer->h)) {
     uint8_t *p = (uint8_t *)buffer->pixels + y * buffer->pitch + x;
@@ -95,27 +103,11 @@ SDL_Video::GetScaledPixel(const int x, const int y)
 }
 
 void
-SDL_Video::PutScaledPixel(const int x, const int y, const unsigned int c)
+SDL_Video::PutPixel(const int x, const int y, const unsigned int c)
 {
   if ((x >= 0) && (x < buffer->w) && (y >= 0) && (y < buffer->h)) {
     uint8_t *p = (uint8_t *)buffer->pixels + y * buffer->pitch + x;
     *p = (uint8_t)c;
-  }
-}
-
-unsigned int
-SDL_Video::GetPixel(const int x, const int y)
-{
-  return GetScaledPixel(x * scaling, y * scaling);
-}
-
-void
-SDL_Video::PutPixel(const int x, const int y, const unsigned int c)
-{
-  for (unsigned int i = 0; i < scaling; i++) {
-    for (unsigned int j = 0; j < scaling; j++) {
-      PutScaledPixel(x * scaling + i, y * scaling + j, c);
-    }
   }
 }
 
@@ -125,7 +117,7 @@ SDL_Video::DrawHLine(const int x, const int y, const int w, const unsigned int c
   for (int i = x; i < x + w; i++) {
     PutPixel(i, y, c);
   }
-  SDL_UpdateRect(buffer, x * scaling, y * scaling, w * scaling, scaling);
+  SDL_UpdateRect(buffer, x, y, w, 1);
 }
 
 void
@@ -134,7 +126,7 @@ SDL_Video::DrawVLine(const int x, const int y, const int h, const unsigned int c
   for (int j = y; j < y + h; j++) {
     PutPixel(x, j, c);
   }
-  SDL_UpdateRect(buffer, x * scaling, y * scaling, scaling, h * scaling);
+  SDL_UpdateRect(buffer, x, y, 1, h);
 }
 
 void
@@ -145,7 +137,7 @@ SDL_Video::FillRect(const int x, const int y, const int w, const int h, const un
       PutPixel(i, j, c);
     }
   }
-  SDL_UpdateRect(buffer, x * scaling, y * scaling, w * scaling, h * scaling);
+  SDL_UpdateRect(buffer, x, y, w, h);
 }
 
 void
@@ -166,7 +158,7 @@ SDL_Video::DrawImage(const int x, const int y, const int w, const int h, uint8_t
       PutPixel(i, j, *p++);
     }
   }
-  SDL_UpdateRect(buffer, x * scaling, y * scaling, w * scaling, h * scaling);
+  SDL_UpdateRect(buffer, x, y, w, h);
 }
 
 void
@@ -181,7 +173,7 @@ SDL_Video::DrawImage(const int x, const int y, const int w, const int h,
       p++;
     }
   }
-  SDL_UpdateRect(buffer, x * scaling, y * scaling, w * scaling, h * scaling);
+  SDL_UpdateRect(buffer, x, y, w, h);
 }
 
 void
@@ -195,7 +187,7 @@ SDL_Video::DrawImage(const int x, const int y, const int w, const int h, uint8_t
       p++;
     }
   }
-  SDL_UpdateRect(buffer, x * scaling, y * scaling, w * scaling, h * scaling);
+  SDL_UpdateRect(buffer, x, y, w, h);
 }
 
 void
@@ -209,7 +201,7 @@ SDL_Video::DrawGlyph(const int x, const int y, const int w, const int h, const u
     }
     p++;
   }
-  SDL_UpdateRect(buffer, x * scaling, y * scaling, w * scaling, h * scaling);
+  SDL_UpdateRect(buffer, x, y, w, h);
 }
 
 void
@@ -223,7 +215,7 @@ SDL_Video::DrawGlyphItalic(const int x, const int y, const int w, const int h, c
     }
     p++;
   }
-  SDL_UpdateRect(buffer, x * scaling, y * scaling, w * scaling, h * scaling);
+  SDL_UpdateRect(buffer, x, y, w, h);
 }
 
 void
@@ -240,6 +232,9 @@ SDL_Video::SetPalette(Color *color, const unsigned int first, const unsigned int
   if (buffer->format->palette) {
     SDL_SetPalette(buffer, SDL_LOGPAL, (SDL_Color *)color, first, n);
   }
+  if (stretched->format->palette) {
+    SDL_SetPalette(stretched, SDL_LOGPAL, (SDL_Color *)color, first, n);
+  }
 }
 
 void
@@ -251,7 +246,18 @@ SDL_Video::SetPointerPosition(int x, int y)
 void
 SDL_Video::Refresh()
 {
-  SDL_BlitSurface(buffer, 0, disp, 0);
+  for (int y = 0; y < buffer->h; y++) {
+    for (int x = 0; x < buffer->w; x++) {
+      memcpy((uint8_t *)stretched->pixels + y * scaling * stretched->pitch + x * scaling,
+             (uint8_t *)buffer->pixels + y * buffer->pitch + x, scaling);
+    }
+    for (unsigned int i = 1; i < scaling; i++) {
+      memcpy((uint8_t *)stretched->pixels + (y * scaling + i) * stretched->pitch,
+             (uint8_t *)stretched->pixels + y * scaling * stretched->pitch, stretched->w);
+    }
+  }
+  SDL_UpdateRect(stretched, 0, 0, 0, 0);
+  SDL_BlitSurface(stretched, 0, disp, 0);
   SDL_Flip(disp);
 }
 
