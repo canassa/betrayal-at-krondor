@@ -20,6 +20,8 @@
 #include "Exception.h"
 #include "SDL_Video.h"
 
+#define swap(a, b) { int h = a; a = b; b = h; }
+
 SDL_Video::SDL_Video()
 : Video()
 , info(SDL_GetVideoInfo())
@@ -114,19 +116,42 @@ SDL_Video::PutPixel(const int x, const int y, const unsigned int c)
 void
 SDL_Video::DrawHLine(const int x, const int y, const int w, const unsigned int c)
 {
-  for (int i = x; i < x + w; i++) {
-    PutPixel(i, y, c);
-  }
+  SDL_Rect rect = {x, y, w, 1};
+  SDL_FillRect(buffer, &rect, c);
   SDL_UpdateRect(buffer, x, y, w, 1);
 }
 
 void
 SDL_Video::DrawVLine(const int x, const int y, const int h, const unsigned int c)
 {
-  for (int j = y; j < y + h; j++) {
-    PutPixel(x, j, c);
-  }
+  SDL_Rect rect = {x, y, 1, h};
+  SDL_FillRect(buffer, &rect, c);
   SDL_UpdateRect(buffer, x, y, 1, h);
+}
+
+void
+SDL_Video::DrawLine(int x1, int y1, int x2, int y2, const unsigned int c)
+{
+  if (x1 > x2) {
+    swap(x1, x2);
+  }
+  if (y1 > y2) {
+    swap(y1, y2);
+  }
+  if ((x2 - x1) > (y2 - y1)) {
+    float f = (float)(y2 - y1) / (float)(x2 - x1);
+    for (int x = x1; x <= x2; x++) {
+      int y = y1 + (int)(f * (float)(x - x1));
+      PutPixel(x, y, c);
+    }
+  } else {
+    float f = (float)(x2 - x1) / (float)(y2 - y1);
+    for (int y = y1; y <= y2; y++) {
+      int x = x1 + (int)(f * (float)(y - y1));
+      PutPixel(x, y, c);
+    }
+  }
+  SDL_UpdateRect(buffer, x1, y1, x2 - x1 + 1, y2 - y1 + 1);
 }
 
 void
