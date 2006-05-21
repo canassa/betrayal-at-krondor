@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
     for (unsigned int i = 0; i < req->GetSize(); i++) {
       RequestData data = req->GetRequestData(i);
       printf("%3d: %3d %3d %3d %3d %3d %3d %3d %s %d\n", i,
-             data.widget, data.action, data.xpos, data.ypos, data.width, data.height, data.teleport, data.label.c_str(), data.normalImage);
+             data.widget, data.action, data.xpos, data.ypos, data.width, data.height, data.teleport, data.label.c_str(), data.image);
     }
     delete req;
     ResourceManager::CleanUp();

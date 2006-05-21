@@ -22,8 +22,8 @@
 #include "MoviePlayer.h"
 #include "ResourceManager.h"
 
-static const unsigned int SAVE_DISPLAY      = 0x0020;
-static const unsigned int DRAW_SAVED_IMAGE  = 0x0080;
+static const unsigned int SAVE_BACKGROUND   = 0x0020;
+static const unsigned int DRAW_BACKGROUND   = 0x0080;
 static const unsigned int END_OF_PAGE       = 0x0ff0;
 static const unsigned int DELAY             = 0x1020;
 static const unsigned int SLOT_IMAGE        = 0x1050;
@@ -69,6 +69,8 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
     screenSlot = 0;
     memset(imageSlot, 0, sizeof(ImageResource*) * MAX_IMAGE_SLOTS);
     memset(paletteSlot, 0, sizeof(PaletteResource*) * MAX_PALETTE_SLOTS);
+    backgroundImage = 0;
+    backgroundImageDrawn = false;
     savedImage = 0;
     savedImageDrawn = false;
     currFrame = 0;
@@ -161,16 +163,16 @@ MoviePlayer::Update(const UpdateEvent& ue) {
   try {
     MovieTag *mt = (*tagVec)[currTag];
     switch (mt->code) {
-      case SAVE_DISPLAY:
-        if (!savedImage) {
-          savedImage = new Image(VIDEO_WIDTH, VIDEO_HEIGHT);
+      case SAVE_BACKGROUND:
+        if (!backgroundImage) {
+          backgroundImage = new Image(VIDEO_WIDTH, VIDEO_HEIGHT);
         }
-        savedImage->Read(media->GetVideo(), 0, 0);
+        backgroundImage->Read(media->GetVideo(), 0, 0);
         break;
-      case DRAW_SAVED_IMAGE:
-        if (savedImage) {
-          savedImage->Draw(media->GetVideo(), 0, 0);
-          savedImageDrawn = true;
+      case DRAW_BACKGROUND:
+        if (backgroundImage) {
+          backgroundImage->Draw(media->GetVideo(), 0, 0);
+          backgroundImageDrawn = true;
         }
         break;
       case END_OF_PAGE:
@@ -183,6 +185,7 @@ MoviePlayer::Update(const UpdateEvent& ue) {
           delayed = true;
           media->GetClock()->StartTimer(TMR_MOVIE_PLAYER, currDelay);
         }
+        backgroundImageDrawn = false;
         savedImageDrawn = false;
         break;
       case DELAY:
@@ -211,7 +214,13 @@ MoviePlayer::Update(const UpdateEvent& ue) {
         paletteActivated = true;
         break;
       case DRAW_WINDOW:
-        (imageSlot[currImage])->GetImage(currFrame)->Draw(media->GetVideo(), mt->data[0], mt->data[1], 0, 0, mt->data[2], mt->data[3]);
+        if ((backgroundImage) && (!backgroundImageDrawn)) {
+          backgroundImage->Draw(media->GetVideo(), 0, 0);
+          backgroundImageDrawn = true;
+        }
+        if (imageSlot[currImage]) {
+          (imageSlot[currImage])->GetImage(currFrame)->Draw(media->GetVideo(), mt->data[0], mt->data[1], 0, 0, mt->data[2], mt->data[3]);
+        }
         break;
       case DRAW_SPRITE3:
         if ((currDelay > 0) && (!delayed)) {
@@ -229,11 +238,17 @@ MoviePlayer::Update(const UpdateEvent& ue) {
           media->GetClock()->StartTimer(TMR_MOVIE_PLAYER, currDelay);
         }
       case DRAW_SPRITE0:
+        if ((backgroundImage) && (!backgroundImageDrawn)) {
+          backgroundImage->Draw(media->GetVideo(), 0, 0);
+          backgroundImageDrawn = true;
+        }
         if ((savedImage) && (!savedImageDrawn)) {
           savedImage->Draw(media->GetVideo(), 0, 0);
           savedImageDrawn = true;
         }
-        (imageSlot[mt->data[3]])->GetImage(mt->data[2])->Draw(media->GetVideo(), mt->data[0], mt->data[1], 0);
+        if (imageSlot[mt->data[3]]) {
+          (imageSlot[mt->data[3]])->GetImage(mt->data[2])->Draw(media->GetVideo(), mt->data[0], mt->data[1], 0);
+        }
         break;
       case READ_IMAGE:
         if (savedImage) {
@@ -276,6 +291,10 @@ MoviePlayer::Update(const UpdateEvent& ue) {
     if (currTag == tagVec->size()) {
       if (looped) {
         currTag = 0;
+        if (backgroundImage) {
+          delete backgroundImage;
+          backgroundImage = 0;
+        }
         if (savedImage) {
           delete savedImage;
           savedImage = 0;

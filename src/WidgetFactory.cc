@@ -31,15 +31,11 @@ ImageButtonWidget*
 WidgetFactory::CreateImageButton(RequestData& data, ImageResource *img, ActionEventListener *ael)
 {
   ImageButtonWidget *button = new ImageButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
-  Image *normal = 0;
-  if (data.normalImage >= 0) {
-    normal = img->GetImage(data.normalImage);
+  Image *buttonImage = 0;
+  if (data.image >= 0) {
+    buttonImage = img->GetImage(data.image);
   }
-  Image *pressed = 0;
-  if (data.pressedImage >= 0) {
-    pressed = img->GetImage(data.pressedImage);
-  }
-  button->SetImage(normal, pressed);
+  button->SetImage(buttonImage);
   button->AddActionListener(ael);
   return button;
 }

@@ -103,8 +103,7 @@ typedef struct _RequestData {
   int height;
   int teleport;
   std::string label;
-  int normalImage;
-  int pressedImage;
+  int image;
 } RequestData;
 
 class RequestResource: public Resource {

@@ -45,6 +45,8 @@ class MoviePlayer
     ScreenResource* screenSlot;
     ImageResource* imageSlot[MAX_IMAGE_SLOTS];
     PaletteResource* paletteSlot[MAX_PALETTE_SLOTS];
+    Image *backgroundImage;
+    bool backgroundImageDrawn;
     Image *savedImage;
     bool savedImageDrawn;
     unsigned int currFrame;

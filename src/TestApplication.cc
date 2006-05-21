@@ -105,6 +105,7 @@ TestApplication::ShowImage(const std::string& name)
       mediaToolkit->GetVideo()->Refresh();
       mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, 2500);
       mediaToolkit->WaitEventLoop();
+      mediaToolkit->GetClock()->CancelTimer(TMR_TEST_APP);
     }
   } catch (Exception &e) {
     e.Print("TestApplication::ShowImage");
@@ -122,6 +123,7 @@ TestApplication::ShowScreen(const std::string& name)
     mediaToolkit->ClearEvents();
     mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, 5000);
     mediaToolkit->WaitEventLoop();
+    mediaToolkit->GetClock()->CancelTimer(TMR_TEST_APP);
   } catch (Exception &e) {
     e.Print("TestApplication::ShowScreen");
   }
@@ -144,6 +146,7 @@ TestApplication::DrawFont(const std::string& name)
     mediaToolkit->GetVideo()->Refresh();
     mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, 5000);
     mediaToolkit->WaitEventLoop();
+    mediaToolkit->GetClock()->CancelTimer(TMR_TEST_APP);
   } catch (Exception &e) {
     e.Print("TestApplication::DrawFont");
   }

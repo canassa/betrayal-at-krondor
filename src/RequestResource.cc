@@ -117,9 +117,8 @@ RequestResource::Load(FileBuffer *buffer)
       buffer->Skip(2);
       offset[i] = buffer->GetSint16();
       reqData.teleport = buffer->GetSint16();
-      reqData.normalImage = buffer->GetUint16();
-      reqData.normalImage = (reqData.normalImage >> 1) + (reqData.normalImage & 1);
-      reqData.pressedImage = reqData.normalImage;
+      reqData.image = buffer->GetUint16();
+      reqData.image = (reqData.image >> 1) + (reqData.image & 1);
       buffer->Skip(2);
       buffer->Skip(2);
       buffer->Skip(2);
