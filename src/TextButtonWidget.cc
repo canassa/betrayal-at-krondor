@@ -18,7 +18,6 @@
  */
 
 #include "TextButtonWidget.h"
-#include "MousePointerManager.h"
 
 TextButtonWidget::TextButtonWidget(const int x, const int y, const int w, const int h, const int a)
 : ButtonWidget(x, y, w, h, a)

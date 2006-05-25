@@ -18,7 +18,6 @@
  */
 
 #include "ImageButtonWidget.h"
-#include "MousePointerManager.h"
 
 ImageButtonWidget::ImageButtonWidget(const int x, const int y, const int w, const int h, const int a)
 : ButtonWidget(x, y, w, h, a)
