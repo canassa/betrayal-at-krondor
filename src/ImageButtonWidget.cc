@@ -22,7 +22,8 @@
 
 ImageButtonWidget::ImageButtonWidget(const int x, const int y, const int w, const int h, const int a)
 : ButtonWidget(x, y, w, h, a)
-, image(0)
+, normalImage(0)
+, activatedImage(0)
 {
 }
 
@@ -31,19 +32,24 @@ ImageButtonWidget::~ImageButtonWidget()
 }
 
 void
-ImageButtonWidget::SetImage(Image *img)
+ImageButtonWidget::SetImage(Image *normal, Image *activated)
 {
-  image = img;
+  normalImage = normal;
+  activatedImage = activated;
 }
 
 void
 ImageButtonWidget::Draw(Video *video)
 {
   if (IsEnabled()) {
-    if (image) {
-      image->Draw(video, xpos, ypos + 1, 0);
-    }
     if (IsActivated()) {
+      if (activatedImage) {
+        activatedImage->Draw(video, xpos, ypos + 1, 0);
+      }
+    } else {
+      if (normalImage) {
+        normalImage->Draw(video, xpos, ypos + 1, 0);
+      }
     }
   }
 }

@@ -30,7 +30,8 @@ Dialog::Dialog(MediaToolkit *mtk)
 , label(0)
 , palette(0)
 , screen(0)
-, icons(0)
+, normalIcons(0)
+, pressedIcons(0)
 , request(0)
 , action(0)
 , running(false)
@@ -64,8 +65,11 @@ Dialog::~Dialog()
   if (screen) {
     delete screen;
   }
-  if (icons) {
-    delete icons;
+  if (normalIcons) {
+    delete normalIcons;
+  }
+  if (pressedIcons) {
+    delete pressedIcons;
   }
   if (request) {
     delete request;
@@ -136,14 +140,19 @@ Dialog::SetScreen(const std::string &name)
 }
 
 void
-Dialog::SetIcons(const std::string &name)
+Dialog::SetIcons(const std::string &normalName, const std::string &pressedName)
 {
   try {
-    if (icons) {
-      delete icons;
+    if (normalIcons) {
+      delete normalIcons;
     }
-    icons = new ImageResource();
-    ResourceManager::GetInstance()->Load(icons, name);
+    normalIcons = new ImageResource();
+    ResourceManager::GetInstance()->Load(normalIcons, normalName);
+    if (pressedIcons) {
+      delete pressedIcons;
+    }
+    pressedIcons = new ImageResource();
+    ResourceManager::GetInstance()->Load(pressedIcons, pressedName);
   } catch (Exception &e) {
     e.Print("Dialog::SetIcons");
     throw;
@@ -169,7 +178,7 @@ unsigned int
 Dialog::Execute()
 {
   try {
-    window = new DialogWindow(request, screen, label, font, icons, this);
+    window = new DialogWindow(request, screen, label, font, normalIcons, pressedIcons, this);
     media->GetVideo()->Clear();
     window->FadeIn(palette, media);
     running = true;

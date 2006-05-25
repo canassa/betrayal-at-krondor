@@ -31,11 +31,12 @@ class ImageButtonWidget
 : public ButtonWidget
 {
   private:
-    Image *image;
+    Image *normalImage;
+    Image *activatedImage;
   public:
     ImageButtonWidget(const int x, const int y, const int w, const int h, const int a);
     virtual ~ImageButtonWidget();
-    void SetImage(Image *img);
+    void SetImage(Image *normal, Image *activated);
     void Draw(Video *video);
 };
 

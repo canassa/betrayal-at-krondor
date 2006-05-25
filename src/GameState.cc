@@ -48,7 +48,7 @@ GameStateCamp::GameStateCamp(MediaToolkit *mtk)
   dialog = new Dialog(mtk);
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("ENCAMP.SCX");
-  dialog->SetIcons("BICONS1.BMX");
+  dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_CAMP.DAT");
 }
 
@@ -101,7 +101,7 @@ GameStateCast::GameStateCast(MediaToolkit *mtk)
   dialog = new Dialog(mtk);
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("FRAME.SCX");
-  dialog->SetIcons("BICONS1.BMX");
+  dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_CAST.DAT");
 }
 
@@ -229,7 +229,7 @@ GameStateContents::GameStateContents(MediaToolkit *mtk)
   dialog = new Dialog(mtk);
   dialog->SetPalette("CONTENTS.PAL");
   dialog->SetScreen("CONT2.SCX");
-  dialog->SetIcons("BICONS1.BMX");
+  dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("CONTENTS.DAT");
 }
 
@@ -279,7 +279,7 @@ GameStateFullMap::GameStateFullMap(MediaToolkit *mtk)
   dialog = new Dialog(mtk);
   dialog->SetPalette("FULLMAP.PAL");
   dialog->SetScreen("FULLMAP.SCX");
-  dialog->SetIcons("BICONS1.BMX");
+  dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_FMAP.DAT");
 }
 
@@ -418,7 +418,7 @@ GameStateMap::GameStateMap(MediaToolkit *mtk)
   dialog = new Dialog(mtk);
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("FRAME.SCX");
-  dialog->SetIcons("BICONS1.BMX");
+  dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_MAP.DAT");
 }
 
@@ -672,7 +672,7 @@ GameStateWorld::GameStateWorld(MediaToolkit *mtk)
   dialog = new Dialog(mtk);
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("FRAME.SCX");
-  dialog->SetIcons("BICONS1.BMX");
+  dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_MAIN.DAT");
 }
 
