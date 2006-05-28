@@ -120,9 +120,10 @@ RequestResource::Load(FileBuffer *buffer)
       reqData.image = buffer->GetUint16();
       reqData.image = (reqData.image >> 1) + (reqData.image & 1);
       buffer->Skip(2);
-      buffer->Skip(2);
+      reqData.special = buffer->GetUint16();
       buffer->Skip(2);
       data.push_back(reqData);
+      printf("\n");
     }
     buffer->Skip(2);
     unsigned int start = buffer->GetBytesDone();
