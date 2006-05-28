@@ -28,6 +28,7 @@
 #include "EventListener.h"
 #include "GameState.h"
 #include "MediaToolkit.h"
+#include "Party.h"
 
 class GameApplication
 : public KeyboardEventListener
@@ -41,6 +42,7 @@ class GameApplication
     GameState *state;
     GameState *prevState;
     Chapter chapter;
+    Party party;
     int screenSaveCount;
     static GameApplication *instance;
     void SetState(GameState *st);

@@ -2,6 +2,7 @@ noinst_HEADERS = AnimationResource.h \
                  BookResource.h \
                  ButtonWidget.h \
                  Chapter.h \
+                 CharacterButtonWidget.h \
                  ChoiceWidget.h \
                  Clock.h \
                  ContainerWidget.h \
@@ -29,6 +30,9 @@ noinst_HEADERS = AnimationResource.h \
                  NameResource.h \
                  PaletteResource.h \
                  PanelWidget.h \
+                 Party.h \
+                 PartyResource.h \
+                 PlayerCharacter.h \
                  PopUpWidget.h \
                  RequestResource.h \
                  Resource.h \
@@ -429,6 +433,8 @@ xbak_SOURCES = AnimationResource.cc \
                ButtonWidget.h \
                Chapter.cc \
                Chapter.h \
+               CharacterButtonWidget.cc \
+               CharacterButtonWidget.h \
                ChoiceWidget.cc \
                ChoiceWidget.h \
                Clock.h \
@@ -481,6 +487,12 @@ xbak_SOURCES = AnimationResource.cc \
                PaletteResource.h \
                PanelWidget.cc \
                PanelWidget.h \
+               Party.cc \
+               Party.h \
+               PartyResource.cc \
+               PartyResource.h \
+               PlayerCharacter.cc \
+               PlayerCharacter.h \
                PopUpWidget.cc \
                PopUpWidget.h \
                RequestResource.cc \

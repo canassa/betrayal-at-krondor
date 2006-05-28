@@ -24,6 +24,7 @@
 #include "config.h"
 #endif
 
+#include "CharacterButtonWidget.h"
 #include "ChoiceWidget.h"
 #include "ImageButtonWidget.h"
 #include "ImageResource.h"
@@ -41,9 +42,10 @@ class WidgetFactory {
     ImageButtonWidget* CreateImageButton(RequestData& data, ImageResource *normal, ImageResource *pressed, ActionEventListener *ael);
     TextButtonWidget* CreateTextButton(RequestData& data, FontResource* fnt, ActionEventListener *ael);
     ChoiceWidget* CreateChoice();
+    TickboxWidget* CreateTickbox();
     LabelWidget* CreateLabel(LabelData& data, FontResource* fnt, const int panelWidth);
     PanelWidget* CreatePanel(RequestResource* req, ScreenResource* scr, LabelResource* lbl, FontResource* fnt, ImageResource *normal, ImageResource *pressed, ActionEventListener *ael);
-    TickboxWidget* CreateTickbox();
+    CharacterButtonWidget* CreateCharacterButton(RequestData& data, ImageResource *normal, ImageResource *selected, ActionEventListener *ael);
 };
 
 #endif

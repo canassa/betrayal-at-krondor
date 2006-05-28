@@ -123,7 +123,6 @@ RequestResource::Load(FileBuffer *buffer)
       reqData.special = buffer->GetUint16();
       buffer->Skip(2);
       data.push_back(reqData);
-      printf("\n");
     }
     buffer->Skip(2);
     unsigned int start = buffer->GetBytesDone();

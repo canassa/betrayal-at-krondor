@@ -57,6 +57,12 @@ WidgetFactory::CreateChoice()
   return 0;
 }
 
+TickboxWidget*
+WidgetFactory::CreateTickbox()
+{
+  return 0;
+}
+
 LabelWidget*
 WidgetFactory::CreateLabel(LabelData& data, FontResource *fnt, const int panelWidth)
 {
@@ -124,8 +130,17 @@ WidgetFactory::CreatePanel(RequestResource *req, ScreenResource *scr, LabelResou
   return panel;
 }
 
-TickboxWidget*
-WidgetFactory::CreateTickbox()
+CharacterButtonWidget*
+WidgetFactory::CreateCharacterButton(RequestData& data, ImageResource *normal, ImageResource *selected, ActionEventListener *ael)
 {
-  return 0;
+  CharacterButtonWidget *button = new CharacterButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
+  Image *normalImage = 0;
+  Image *selectedImage = 0;
+  if (data.image >= 0) {
+    normalImage = normal->GetImage(data.image);
+    selectedImage = selected->GetImage(data.image);
+  }
+  button->SetImage(normalImage, selectedImage);
+  button->AddActionListener(ael);
+  return button;
 }

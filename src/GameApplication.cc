@@ -43,6 +43,7 @@ GameApplication::GameApplication()
 , state(GameStateIntro::GetInstance())
 , prevState(0)
 , chapter(mediaToolkit)
+, party()
 , screenSaveCount(0)
 {
   mediaToolkit->GetVideo()->SetScaling(2);
