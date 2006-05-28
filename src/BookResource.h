@@ -35,7 +35,7 @@ class BookResource: public Resource {
     BookResource();
     virtual ~BookResource();
     unsigned int GetNumParagraphs() const;
-    std::string& GetParagraph(unsigned int i);
+    std::string& GetParagraph(const unsigned int i);
     void Load(FileBuffer *buffer);
 };
 

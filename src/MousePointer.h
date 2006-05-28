@@ -66,7 +66,7 @@ class MousePointer {
     ImageResource pointerImages;
   public:
     MousePointer(const std::string &resname);
-    ~MousePointer();
+    virtual ~MousePointer();
     void SetPointerType(MousePointerType mpt);
     void SetPosition(const int x, const int y);
     void SetVisible(const bool vis);
