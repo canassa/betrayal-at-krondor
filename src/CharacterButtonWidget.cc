@@ -23,8 +23,7 @@ Image* CharacterButtonWidget::selectedImage = 0;
 
 CharacterButtonWidget::CharacterButtonWidget(const int x, const int y, const int w, const int h, const int a)
 : ButtonWidget(x, y, w, h, a)
-, isSelected(false)
-, normalImage(0)
+, character(0)
 {
 }
 
@@ -33,15 +32,14 @@ CharacterButtonWidget::~CharacterButtonWidget()
 }
 
 void
-CharacterButtonWidget::SetIsSelected(const bool toggle)
+CharacterButtonWidget::SetCharacter(PlayerCharacter *pc)
 {
-  isSelected = toggle;
+  character = pc;
 }
 
 void
-CharacterButtonWidget::SetImage(Image *normal, Image *selected)
+CharacterButtonWidget::SetImage(Image *selected)
 {
-  normalImage = normal;
   selectedImage = selected;
 }
 
@@ -49,12 +47,10 @@ void
 CharacterButtonWidget::Draw(Video *video)
 {
   if (IsEnabled()) {
-    if (normalImage) {
-      normalImage->Draw(video, xpos, ypos + 1, 0);
-    }
-    if (isSelected) {
-      if (selectedImage) {
-        selectedImage->Draw(video, xpos, ypos + 1, 0);
+    if (character) {
+      character->GetHeadImage()->Draw(video, xpos, ypos, 0);
+      if (character->IsSelected()) {
+        selectedImage->Draw(video, xpos, ypos, 0);
       }
     }
   }

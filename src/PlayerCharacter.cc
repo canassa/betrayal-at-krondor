@@ -23,6 +23,8 @@ PlayerCharacter::PlayerCharacter(const std::string& s)
 : name(s)
 , headImage(0)
 , skillsImage(0)
+, order(-1)
+, selected(false)
 {
 }
 
@@ -54,6 +56,18 @@ PlayerCharacter::GetCondition() const
   return condition;
 }
 
+int
+PlayerCharacter::GetOrder() const
+{
+  return order;
+}
+
+bool
+PlayerCharacter::IsSelected() const
+{
+  return selected;
+}
+
 RatingSet&
 PlayerCharacter::GetRatings()
 {
@@ -76,4 +90,16 @@ void
 PlayerCharacter::SetSkillsImage(Image *img)
 {
   skillsImage = img;
+}
+
+void
+PlayerCharacter::SetOrder(const int n)
+{
+  order = n;
+}
+
+void
+PlayerCharacter::Select(const bool toggle)
+{
+  selected = toggle;
 }

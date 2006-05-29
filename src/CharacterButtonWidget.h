@@ -25,20 +25,21 @@
 #endif
 
 #include "ButtonWidget.h"
-#include "Image.h"
+#include "PlayerCharacter.h"
+
+static const unsigned int SELECTED_IMAGE = 7;
 
 class CharacterButtonWidget
 : public ButtonWidget
 {
   private:
-    bool isSelected;
-    Image *normalImage;
+    PlayerCharacter *character;
     static Image *selectedImage;
   public:
     CharacterButtonWidget(const int x, const int y, const int w, const int h, const int a);
     virtual ~CharacterButtonWidget();
-    void SetIsSelected(const bool toggle);
-    void SetImage(Image *normal, Image *selected);
+    void SetCharacter(PlayerCharacter *pc);
+    void SetImage(Image *selected);
     void Draw(Video *video);
 };
 

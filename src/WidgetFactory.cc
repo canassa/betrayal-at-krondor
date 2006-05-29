@@ -131,16 +131,11 @@ WidgetFactory::CreatePanel(RequestResource *req, ScreenResource *scr, LabelResou
 }
 
 CharacterButtonWidget*
-WidgetFactory::CreateCharacterButton(RequestData& data, ImageResource *normal, ImageResource *selected, ActionEventListener *ael)
+WidgetFactory::CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource *img, ActionEventListener *ael)
 {
   CharacterButtonWidget *button = new CharacterButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
-  Image *normalImage = 0;
-  Image *selectedImage = 0;
-  if (data.image >= 0) {
-    normalImage = normal->GetImage(data.image);
-    selectedImage = selected->GetImage(data.image);
-  }
-  button->SetImage(normalImage, selectedImage);
+  button->SetCharacter(pc);
+  button->SetImage(img->GetImage(SELECTED_IMAGE));
   button->AddActionListener(ael);
   return button;
 }

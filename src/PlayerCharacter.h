@@ -59,6 +59,8 @@ class PlayerCharacter {
     std::string name;
     Image *headImage;
     Image *skillsImage;
+    int order;
+    bool selected;
     RatingSet ratings;
     ConditionType condition;
     SkillSet skills;
@@ -68,11 +70,15 @@ class PlayerCharacter {
     std::string& GetName();
     Image* GetHeadImage() const;
     Image* GetSkillsImage() const;
+    int GetOrder() const;
+    bool IsSelected() const;
     ConditionType GetCondition() const;
     RatingSet& GetRatings();
     SkillSet& GetSkills();
     void SetHeadImage(Image *img);
     void SetSkillsImage(Image *img);
+    void SetOrder(const int n);
+    void Select(const bool toggle);
 };
 
 #endif

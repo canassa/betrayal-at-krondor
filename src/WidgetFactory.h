@@ -45,7 +45,7 @@ class WidgetFactory {
     TickboxWidget* CreateTickbox();
     LabelWidget* CreateLabel(LabelData& data, FontResource* fnt, const int panelWidth);
     PanelWidget* CreatePanel(RequestResource* req, ScreenResource* scr, LabelResource* lbl, FontResource* fnt, ImageResource *normal, ImageResource *pressed, ActionEventListener *ael);
-    CharacterButtonWidget* CreateCharacterButton(RequestData& data, ImageResource *normal, ImageResource *selected, ActionEventListener *ael);
+    CharacterButtonWidget* CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource *img, ActionEventListener *ael);
 };
 
 #endif
