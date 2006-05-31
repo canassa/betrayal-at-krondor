@@ -48,6 +48,7 @@ NameResource::Load(FileBuffer *buffer)
     for (unsigned int i = 0; i < n; i++) {
       offset[i] = buffer->GetUint16();
     }
+    buffer->Skip(2);
     unsigned int start = buffer->GetBytesDone();
     for (unsigned int i = 0; i < n; i++) {
       buffer->Seek(start + offset[i]);
