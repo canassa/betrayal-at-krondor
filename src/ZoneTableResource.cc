@@ -84,8 +84,7 @@ ZoneTableResource::Load(FileBuffer *buffer)
     }
     unsigned int mapDataStart = mapbuf->GetBytesDone();
     for (unsigned int i = 0; i < numMapItems; i++) {
-      mapbuf->Rewind();
-      mapbuf->Skip(mapDataStart + mapOffset[i]);
+      mapbuf->Seek(mapDataStart + mapOffset[i]);
       std::string item = mapbuf->GetString();
       mapItems.push_back(item);
     }

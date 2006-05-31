@@ -123,8 +123,7 @@ SoundResource::Load(FileBuffer *buffer)
       std::streamoff offset = infbuf->GetUint32();
       std::string name;
       if (tags.Find(id, name)) {
-        buffer->Rewind();
-        buffer->Skip(offset + 8);
+        buffer->Seek(offset + 8);
         FileBuffer *sndbuf = 0;
         if (id != buffer->GetUint16()) {
           Clear();

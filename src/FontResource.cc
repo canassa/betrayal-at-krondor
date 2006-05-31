@@ -98,8 +98,7 @@ FontResource::Load(FileBuffer *buffer)
     }
     unsigned int glyphDataStart = glyphbuf->GetBytesDone();
     for (unsigned int i = 0; i < numChars; i++) {
-      glyphbuf->Rewind();
-      glyphbuf->Skip(glyphDataStart + glyphOffset[i]);
+      glyphbuf->Seek(glyphDataStart + glyphOffset[i]);
       for (unsigned int j = 0; j < height; j++) {
         fontGlyphs[i]->data[j] = (uint16_t)glyphbuf->GetUint8() << 8;
         if (fontGlyphs[i]->width > 8) {

@@ -46,6 +46,8 @@ class FileBuffer {
     void Dump();
     void Copy(FileBuffer *buf, unsigned int n); 
     void Fill(FileBuffer *buf);
+    void Rewind();
+    void Seek(const unsigned int n);
     void Skip(const int n);
 
     void SkipBits();
@@ -60,7 +62,6 @@ class FileBuffer {
     unsigned int GetBytesLeft() const;
     uint8_t * GetCurrent() const;
     unsigned int GetNextBit() const;
-    void Rewind();
 
     uint8_t GetUint8();
     uint16_t GetUint16();

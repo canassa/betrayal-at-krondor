@@ -76,8 +76,7 @@ DialogResource::ReadDialogData(FileBuffer *buffer, DialogData *data)
     bool done = false;
     for (unsigned int i = 0; i < data->subdialogs; i++) {
       if (pageOffset[i].type >= 0) {
-        buffer->Rewind();
-        buffer->Skip(pageOffset[i].offset);
+        buffer->Seek(pageOffset[i].offset);
         DialogData* sub = new DialogData;
         ReadDialogData(buffer, sub);
         data->subdata.push_back(sub);
@@ -116,8 +115,7 @@ DialogResource::Load(FileBuffer *buffer)
       offset.insert(std::pair<const unsigned int, unsigned int>(key, value));
     }
     for (std::map<const unsigned int, unsigned int>::iterator it = offset.begin(); it != offset.end(); ++it) {
-      buffer->Rewind();
-      buffer->Skip(it->second);
+      buffer->Seek(it->second);
       DialogData* data = new DialogData;
       ReadDialogData(buffer, data);
       dialogMap.insert(std::pair<const unsigned int, DialogData*>(it->first, data));

@@ -97,6 +97,14 @@ FileBuffer::Dump()
 }
 
 void
+FileBuffer::Seek(const unsigned int n)
+{
+  if ((current) && (n <= size)) {
+    current = buffer + n;
+  }
+}
+
+void
 FileBuffer::Skip(const int n)
 {
   if ((current) && (current + n <= buffer + size)) {

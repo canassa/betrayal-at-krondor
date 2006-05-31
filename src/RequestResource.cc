@@ -128,8 +128,7 @@ RequestResource::Load(FileBuffer *buffer)
     unsigned int start = buffer->GetBytesDone();
     for (unsigned int i = 0; i < numRecords; i++) {
       if (offset[i] >= 0) {
-        buffer->Rewind();
-        buffer->Skip(start + offset[i]);
+        buffer->Seek(start + offset[i]);
         data[i].label = buffer->GetString();
       }
     }

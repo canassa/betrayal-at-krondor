@@ -50,8 +50,7 @@ NameResource::Load(FileBuffer *buffer)
     }
     unsigned int start = buffer->GetBytesDone();
     for (unsigned int i = 0; i < n; i++) {
-      buffer->Rewind();
-      buffer->Skip(start + offset[i]);
+      buffer->Seek(start + offset[i]);
       name.push_back(buffer->GetString());
     }
     delete[] offset;

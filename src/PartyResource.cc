@@ -51,8 +51,7 @@ PartyResource::Load(FileBuffer *buffer)
     buffer->Skip(2);
     unsigned int start = buffer->GetBytesDone();
     for (unsigned int i = 0; i < PARTY_SIZE; i++) {
-      buffer->Rewind();
-      buffer->Skip(start + offset[i]);
+      buffer->Seek(start + offset[i]);
       PartyData *pd = new PartyData;
       pd->name = buffer->GetString();
       data.push_back(pd);
