@@ -21,6 +21,7 @@
 #include "DialogResource.h"
 
 DialogResource::DialogResource()
+: dialogMap()
 {
 }
 
