@@ -35,7 +35,8 @@ typedef struct _DialogData {
   std::vector<struct _DialogData *> subdata;
 } DialogData;
 
-class DialogResource: public Resource {
+class DialogResource
+: public Resource {
   private:
     std::map<const unsigned int, DialogData*> dialogMap;
     void ReadDialogData(FileBuffer *buffer, DialogData *data);
