@@ -40,10 +40,10 @@ GameApplication::GameApplication()
 : mediaToolkit(SDL_Toolkit::GetInstance())
 , done(false)
 , inputGrabbed(false)
+, game()
 , state(GameStateIntro::GetInstance())
 , prevState(0)
 , chapter(mediaToolkit)
-, party()
 , screenSaveCount(0)
 {
   mediaToolkit->GetVideo()->SetScaling(2);
@@ -113,6 +113,12 @@ MediaToolkit *
 GameApplication::GetMediaToolkit()
 {
   return mediaToolkit;
+}
+
+Game&
+GameApplication::GetGame()
+{
+  return game;
 }
 
 GameState *

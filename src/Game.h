@@ -17,33 +17,22 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef PARTY_RESOURCE_H
-#define PARTY_RESOURCE_H
-
-#include <vector>
+#ifndef GAME_H
+#define GAME_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "Resource.h"
+#include "Party.h"
 
-static const unsigned int PARTY_SIZE = 6;
-
-typedef struct _PartyData {
-  std::string name;
-} PartyData;
-
-class PartyResource
-: public Resource {
+class Game {
   private:
-    std::vector<PartyData *> data;
+    Party party;
   public:
-    PartyResource();
-    virtual ~PartyResource();
-    unsigned int GetSize() const;
-    PartyData* GetData(const unsigned int n);
-    void Load(FileBuffer *buffer);
+    Game();
+    ~Game();
+    Party& GetParty();
 };
 
 #endif

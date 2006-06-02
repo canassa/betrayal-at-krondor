@@ -18,52 +18,38 @@
  */
 
 #include "Exception.h"
+#include "Game.h"
+#include "ImageResource.h"
 #include "PartyResource.h"
+#include "PlayerCharacter.h"
+#include "ResourceManager.h"
 
-PartyResource::PartyResource()
-: data()
-{
-}
-
-PartyResource::~PartyResource()
-{
-  for (unsigned int i = 0; i < data.size(); i++) {
-    delete data[i];
-  }
-  data.clear();
-}
-
-unsigned int
-PartyResource::GetSize() const
-{
-  return data.size();
-}
-
-PartyData *
-PartyResource::GetData(const unsigned int n)
-{
-  return data[n];
-}
-
-void
-PartyResource::Load(FileBuffer *buffer)
+Game::Game()
+: party()
 {
   try {
-    unsigned int offset[PARTY_SIZE];
-    for (unsigned int i = 0; i < PARTY_SIZE; i++) {
-      offset[i] = buffer->GetUint16();
-      buffer->Skip(93);
-    }
-    buffer->Skip(2);
-    unsigned int start = buffer->GetBytesDone();
-    for (unsigned int i = 0; i < PARTY_SIZE; i++) {
-      buffer->Seek(start + offset[i]);
-      PartyData *pd = new PartyData;
-      pd->name = buffer->GetString();
-      data.push_back(pd);
+    PartyResource partyRes;
+    ResourceManager::GetInstance()->Load(&partyRes, "PARTY.DAT");
+    ImageResource heads;
+    ResourceManager::GetInstance()->Load(&heads, "HEADS.BMX");
+    for (unsigned int i = 0; i < partyRes.GetSize(); i++) {
+      PartyData *pd = partyRes.GetData(i);
+      PlayerCharacter *pc = new PlayerCharacter(pd->name);
+      pc->SetHeadImage(heads.GetImage(i));
+      party.AddMember(pc);
     }
   } catch (Exception &e) {
-    e.Print("PartyResource::Load");
+    e.Print("Game::Game");
     throw;
   }
+}
+
+Game::~Game()
+{
+}
+
+Party&
+Game::GetParty()
+{
+  return party;
 }

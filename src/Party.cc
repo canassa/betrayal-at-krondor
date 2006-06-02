@@ -18,14 +18,10 @@
  */
 
 #include "Party.h"
-#include "PartyResource.h"
-#include "ResourceManager.h"
 
 Party::Party()
 : members()
 {
-  PartyResource p;
-  ResourceManager::GetInstance()->Load(&p, "PARTY.DAT");
 }
 
 Party::~Party()

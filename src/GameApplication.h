@@ -26,9 +26,9 @@
 
 #include "Chapter.h"
 #include "EventListener.h"
+#include "Game.h"
 #include "GameState.h"
 #include "MediaToolkit.h"
-#include "Party.h"
 
 class GameApplication
 : public KeyboardEventListener
@@ -39,12 +39,13 @@ class GameApplication
     MediaToolkit *mediaToolkit;
     bool done;
     bool inputGrabbed;
+    Game game;
     GameState *state;
     GameState *prevState;
     Chapter chapter;
-    Party party;
     int screenSaveCount;
     static GameApplication *instance;
+    Game& GetGame();
     void SetState(GameState *st);
   protected:
     GameApplication();
