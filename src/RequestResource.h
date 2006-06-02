@@ -93,6 +93,9 @@ static const unsigned int SAVE_REMOVE_GAME  = 194;
 static const unsigned int SAVE_SAVE         = 193;
 static const unsigned int SAVE_CANCEL       = 192;
 
+static const int SPECIAL_BUTTON    = 2;
+static const int SPECIAL_3DVIEW    = 3;
+
 typedef struct _RequestData {
   unsigned int widget;
   int action;

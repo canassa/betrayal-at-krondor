@@ -46,6 +46,7 @@ class WidgetFactory {
     LabelWidget* CreateLabel(LabelData& data, FontResource* fnt, const int panelWidth);
     PanelWidget* CreatePanel(RequestResource* req, ScreenResource* scr, LabelResource* lbl, FontResource* fnt, ImageResource *normal, ImageResource *pressed, ActionEventListener *ael);
     CharacterButtonWidget* CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource *img, ActionEventListener *ael);
+    void AddCharacterButton(PanelWidget *panel, RequestResource* req, unsigned int n, PlayerCharacter *pc, ImageResource *img, ActionEventListener *ael);
 };
 
 #endif

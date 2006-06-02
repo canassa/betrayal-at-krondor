@@ -139,3 +139,26 @@ WidgetFactory::CreateCharacterButton(RequestData& data, PlayerCharacter *pc, Ima
   button->AddActionListener(ael);
   return button;
 }
+
+void
+WidgetFactory::AddCharacterButton(PanelWidget *panel, RequestResource* req, unsigned int n, PlayerCharacter *pc, ImageResource *img, ActionEventListener *ael)
+{
+  unsigned int m = 0;
+  unsigned int i = 0;
+  RequestData data;
+  while ((i < req->GetSize()) && (m < n)) {
+    data = req->GetRequestData(i);
+    if ((data.widget == REQ_USERDEFINED) && (data.special == SPECIAL_BUTTON)) {
+      m++;
+    }
+    i++;
+  }
+  if (m == n) {
+    data.xpos += req->GetXOff();
+    data.ypos += req->GetYOff();
+    if (data.visible) {
+      CharacterButtonWidget *button = CreateCharacterButton(data, pc, img, ael);
+      panel->AddActiveWidget(button);
+    }
+  }
+}
