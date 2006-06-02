@@ -157,11 +157,8 @@ SDL_Video::DrawLine(int x1, int y1, int x2, int y2, const unsigned int c)
 void
 SDL_Video::FillRect(const int x, const int y, const int w, const int h, const unsigned int c)
 {
-  for (int j = y; j < y + h; j++) {
-    for (int i = x; i < x + w; i++) {
-      PutPixel(i, j, c);
-    }
-  }
+  SDL_Rect rect = {x, y, w, h};
+  SDL_FillRect(buffer, &rect, c);
   SDL_UpdateRect(buffer, x, y, w, h);
 }
 
