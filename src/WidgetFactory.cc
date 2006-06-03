@@ -27,6 +27,15 @@ WidgetFactory::~WidgetFactory()
 {
 }
 
+TextButtonWidget*
+WidgetFactory::CreateTextButton(RequestData& data, FontResource *fnt, ActionEventListener *ael)
+{
+  TextButtonWidget *button = new TextButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
+  button->SetLabel(data.label, fnt);
+  button->AddActionListener(ael);
+  return button;
+}
+
 ImageButtonWidget*
 WidgetFactory::CreateImageButton(RequestData& data, ImageResource *normal, ImageResource *pressed, ActionEventListener *ael)
 {
@@ -42,11 +51,12 @@ WidgetFactory::CreateImageButton(RequestData& data, ImageResource *normal, Image
   return button;
 }
 
-TextButtonWidget*
-WidgetFactory::CreateTextButton(RequestData& data, FontResource *fnt, ActionEventListener *ael)
+CharacterButtonWidget*
+WidgetFactory::CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource *img, ActionEventListener *ael)
 {
-  TextButtonWidget *button = new TextButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
-  button->SetLabel(data.label, fnt);
+  CharacterButtonWidget *button = new CharacterButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
+  button->SetCharacter(pc);
+  button->SetImage(img->GetImage(SELECTED_IMAGE));
   button->AddActionListener(ael);
   return button;
 }
@@ -90,26 +100,32 @@ WidgetFactory::CreateLabel(LabelData& data, FontResource *fnt, const int panelWi
 }
 
 PanelWidget*
-WidgetFactory::CreatePanel(RequestResource *req, ScreenResource *scr, LabelResource *lbl, FontResource *fnt, ImageResource *normal, ImageResource *pressed, ActionEventListener *ael)
+WidgetFactory::CreatePanel(WidgetResources& widgetRes)
 {
-  PanelWidget *panel = new PanelWidget(req->GetXPos(), req->GetYPos(), req->GetWidth(), req->GetHeight());
-  panel->SetBackground(scr->GetImage());
-  for (unsigned int i = 0; i < req->GetSize(); i++) {
-    RequestData data = req->GetRequestData(i);
-    data.xpos += req->GetXOff();
-    data.ypos += req->GetYOff();
+  PanelWidget *panel = new PanelWidget(widgetRes.request->GetXPos(), widgetRes.request->GetYPos(),
+                                       widgetRes.request->GetWidth(), widgetRes.request->GetHeight());
+  panel->SetBackground(widgetRes.screen->GetImage());
+  for (unsigned int i = 0; i < widgetRes.request->GetSize(); i++) {
+    RequestData data = widgetRes.request->GetRequestData(i);
+    data.xpos += widgetRes.request->GetXOff();
+    data.ypos += widgetRes.request->GetYOff();
     switch (data.widget) {
       case REQ_USERDEFINED:
+        if ((data.special == SPECIAL_BUTTON) && (data.visible)) {
+          CharacterButtonWidget *button = CreateCharacterButton(data, widgetRes.members.front(), widgetRes.heads, widgetRes.eventListener);
+          panel->AddActiveWidget(button);
+          widgetRes.members.pop_front();
+        }
         break;
       case REQ_TEXTBUTTON:
         if (data.visible) {
-          TextButtonWidget *button = CreateTextButton(data, fnt, ael);
+          TextButtonWidget *button = CreateTextButton(data, widgetRes.font, widgetRes.eventListener);
           panel->AddActiveWidget(button);
         }
         break;
       case REQ_IMAGEBUTTON:
         if (data.visible) {
-          ImageButtonWidget *button = CreateImageButton(data, normal,pressed, ael);
+          ImageButtonWidget *button = CreateImageButton(data, widgetRes.normal, widgetRes.pressed, widgetRes.eventListener);
           panel->AddActiveWidget(button);
         }
         break;
@@ -119,46 +135,14 @@ WidgetFactory::CreatePanel(RequestResource *req, ScreenResource *scr, LabelResou
         break;
     }
   }
-  if (lbl) {
-    for (unsigned int i = 0; i < lbl->GetSize(); i++) {
-      LabelData data = lbl->GetLabelData(i);
-      int panelWidth = (req->GetWidth() > scr->GetImage()->GetWidth() ? req->GetWidth() : scr->GetImage()->GetWidth());
-      LabelWidget *label = CreateLabel(data, fnt, panelWidth);
+  if (widgetRes.label) {
+    for (unsigned int i = 0; i < widgetRes.label->GetSize(); i++) {
+      LabelData data = widgetRes.label->GetLabelData(i);
+      int panelWidth = (widgetRes.request->GetWidth() > widgetRes.screen->GetImage()->GetWidth() ?
+                        widgetRes.request->GetWidth() : widgetRes.screen->GetImage()->GetWidth());
+      LabelWidget *label = CreateLabel(data, widgetRes.font, panelWidth);
       panel->AddWidget(label);
     }
   }
   return panel;
-}
-
-CharacterButtonWidget*
-WidgetFactory::CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource *img, ActionEventListener *ael)
-{
-  CharacterButtonWidget *button = new CharacterButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
-  button->SetCharacter(pc);
-  button->SetImage(img->GetImage(SELECTED_IMAGE));
-  button->AddActionListener(ael);
-  return button;
-}
-
-void
-WidgetFactory::AddCharacterButton(PanelWidget *panel, RequestResource* req, unsigned int n, PlayerCharacter *pc, ImageResource *img, ActionEventListener *ael)
-{
-  unsigned int m = 0;
-  unsigned int i = 0;
-  RequestData data;
-  while ((i < req->GetSize()) && (m < n)) {
-    data = req->GetRequestData(i);
-    if ((data.widget == REQ_USERDEFINED) && (data.special == SPECIAL_BUTTON)) {
-      m++;
-    }
-    i++;
-  }
-  if (m == n) {
-    data.xpos += req->GetXOff();
-    data.ypos += req->GetYOff();
-    if (data.visible) {
-      CharacterButtonWidget *button = CreateCharacterButton(data, pc, img, ael);
-      panel->AddActiveWidget(button);
-    }
-  }
 }

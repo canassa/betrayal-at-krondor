@@ -26,13 +26,8 @@
 Dialog::Dialog(MediaToolkit *mtk)
 : media(mtk)
 , window(0)
-, font(0)
-, label(0)
 , palette(0)
-, screen(0)
-, normalIcons(0)
-, pressedIcons(0)
-, request(0)
+, widgetRes()
 , action(0)
 , running(false)
 {
@@ -42,6 +37,8 @@ Dialog::Dialog(MediaToolkit *mtk)
     media->AddKeyboardListener(this);
     media->AddMouseButtonListener(this);
     media->AddUpdateListener(this);
+    memset(&widgetRes, 0, sizeof(WidgetResources));
+    widgetRes.eventListener = this;
   } catch (Exception &e) {
     e.Print("Dialog::Dialog");
     throw;
@@ -53,26 +50,30 @@ Dialog::~Dialog()
   media->RemoveUpdateListener(this);
   media->RemoveMouseButtonListener(this);
   media->RemoveKeyboardListener(this);
-  if (font) {
-    delete font;
+  widgetRes.members.clear();
+  if (widgetRes.font) {
+    delete widgetRes.font;
   }
-  if (label) {
-    delete label;
+  if (widgetRes.label) {
+    delete widgetRes.label;
+  }
+  if (widgetRes.screen) {
+    delete widgetRes.screen;
+  }
+  if (widgetRes.normal) {
+    delete widgetRes.normal;
+  }
+  if (widgetRes.pressed) {
+    delete widgetRes.pressed;
+  }
+  if (widgetRes.heads) {
+    delete widgetRes.heads;
+  }
+  if (widgetRes.request) {
+    delete widgetRes.request;
   }
   if (palette) {
     delete palette;
-  }
-  if (screen) {
-    delete screen;
-  }
-  if (normalIcons) {
-    delete normalIcons;
-  }
-  if (pressedIcons) {
-    delete pressedIcons;
-  }
-  if (request) {
-    delete request;
   }
   if (window) {
     delete window;
@@ -83,11 +84,11 @@ void
 Dialog::SetFont(const std::string &name)
 {
   try {
-    if (font) {
-      delete font;
+    if (widgetRes.font) {
+      delete widgetRes.font;
     }
-    font = new FontResource();
-    ResourceManager::GetInstance()->Load(font, name);
+    widgetRes.font = new FontResource();
+    ResourceManager::GetInstance()->Load(widgetRes.font, name);
   } catch (Exception &e) {
     e.Print("Dialog::SetFont");
     throw;
@@ -98,11 +99,11 @@ void
 Dialog::SetLabel(const std::string &name)
 {
   try {
-    if (label) {
-      delete label;
+    if (widgetRes.label) {
+      delete widgetRes.label;
     }
-    label = new LabelResource();
-    ResourceManager::GetInstance()->Load(label, name);
+    widgetRes.label = new LabelResource();
+    ResourceManager::GetInstance()->Load(widgetRes.label, name);
   } catch (Exception &e) {
     e.Print("Dialog::SetLabel");
     throw;
@@ -128,11 +129,11 @@ void
 Dialog::SetScreen(const std::string &name)
 {
   try {
-    if (screen) {
-      delete screen;
+    if (widgetRes.screen) {
+      delete widgetRes.screen;
     }
-    screen = new ScreenResource();
-    ResourceManager::GetInstance()->Load(screen, name);
+    widgetRes.screen = new ScreenResource();
+    ResourceManager::GetInstance()->Load(widgetRes.screen, name);
   } catch (Exception &e) {
     e.Print("Dialog::SetScreen");
     throw;
@@ -143,16 +144,31 @@ void
 Dialog::SetIcons(const std::string &normalName, const std::string &pressedName)
 {
   try {
-    if (normalIcons) {
-      delete normalIcons;
+    if (widgetRes.normal) {
+      delete widgetRes.normal;
     }
-    normalIcons = new ImageResource();
-    ResourceManager::GetInstance()->Load(normalIcons, normalName);
-    if (pressedIcons) {
-      delete pressedIcons;
+    widgetRes.normal = new ImageResource();
+    ResourceManager::GetInstance()->Load(widgetRes.normal, normalName);
+    if (widgetRes.pressed) {
+      delete widgetRes.pressed;
     }
-    pressedIcons = new ImageResource();
-    ResourceManager::GetInstance()->Load(pressedIcons, pressedName);
+    widgetRes.pressed = new ImageResource();
+    ResourceManager::GetInstance()->Load(widgetRes.pressed, pressedName);
+  } catch (Exception &e) {
+    e.Print("Dialog::SetIcons");
+    throw;
+  }
+}
+
+void
+Dialog::SetHeads(const std::string &name)
+{
+  try {
+    if (widgetRes.heads) {
+      delete widgetRes.heads;
+    }
+    widgetRes.heads = new ImageResource();
+    ResourceManager::GetInstance()->Load(widgetRes.heads, name);
   } catch (Exception &e) {
     e.Print("Dialog::SetIcons");
     throw;
@@ -163,22 +179,34 @@ void
 Dialog::SetRequest(const std::string &name)
 {
   try {
-    if (request) {
-      delete request;
+    if (widgetRes.request) {
+      delete widgetRes.request;
     }
-    request = new RequestResource();
-    ResourceManager::GetInstance()->Load(request, name);
+    widgetRes.request = new RequestResource();
+    ResourceManager::GetInstance()->Load(widgetRes.request, name);
   } catch (Exception &e) {
     e.Print("Dialog::SetRequest");
     throw;
   }
 }
 
+void
+Dialog::AddMember(PlayerCharacter *pc)
+{
+  widgetRes.members.push_back(pc);
+}
+
+void
+Dialog::ClearMembers()
+{
+  widgetRes.members.clear();
+}
+
 unsigned int
 Dialog::Execute()
 {
   try {
-    window = new DialogWindow(request, screen, label, font, normalIcons, pressedIcons, this);
+    window = new DialogWindow(widgetRes);
     media->GetVideo()->Clear();
     window->FadeIn(palette, media);
     running = true;

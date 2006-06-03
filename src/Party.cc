@@ -35,8 +35,30 @@ Party::GetMember(const unsigned int n)
   return members[n];
 }
 
+PlayerCharacter *
+Party::GetActiveMember(const int order)
+{
+  unsigned int i = 0;
+  bool found = false;
+  while (!found && (i < members.size())) {
+    found = (order == members[i]->GetOrder());
+    i++;
+  }
+  if (found) {
+    return members[i-1];
+  }
+  return 0;
+}
+
 void
 Party::AddMember(PlayerCharacter *pc)
 {
   members.push_back(pc);
+}
+
+void
+Party::Activate(const unsigned int n, const int order)
+{
+  GetActiveMember(order)->SetOrder(-1);
+  members[n]->SetOrder(order);
 }

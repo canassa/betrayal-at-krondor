@@ -28,7 +28,13 @@
 
 #include "Resource.h"
 
-static const unsigned int PARTY_SIZE = 6;
+static const unsigned int PARTY_LOCKLEAR = 0;
+static const unsigned int PARTY_GORATH   = 1;
+static const unsigned int PARTY_OWYN     = 2;
+static const unsigned int PARTY_PUG      = 3;
+static const unsigned int PARTY_JAMES    = 4;
+static const unsigned int PARTY_PATRUS   = 5;
+static const unsigned int PARTY_SIZE     = 6;
 
 typedef struct _PartyData {
   std::string name;

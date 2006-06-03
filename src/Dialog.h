@@ -36,13 +36,8 @@ class Dialog
   private:
     MediaToolkit *media;
     DialogWindow *window;
-    FontResource *font;
-    LabelResource *label;
     PaletteResource *palette;
-    ScreenResource *screen;
-    ImageResource *normalIcons;
-    ImageResource *pressedIcons;
-    RequestResource *request;
+    WidgetResources widgetRes;
     unsigned int action;
     bool running;
   public:
@@ -53,7 +48,10 @@ class Dialog
     void SetPalette(const std::string &name);
     void SetScreen(const std::string &name);
     void SetIcons(const std::string &normalName, const std::string &pressedName);
+    void SetHeads(const std::string &name);
     void SetRequest(const std::string &name);
+    void AddMember(PlayerCharacter *pc);
+    void ClearMembers();
     unsigned int Execute();
     void KeyPressed(const KeyboardEvent& kbe);
     void KeyReleased(const KeyboardEvent& kbe);

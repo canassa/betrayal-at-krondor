@@ -21,14 +21,13 @@
 #include "DialogWindow.h"
 #include "MousePointerManager.h"
 #include "ResourceManager.h"
-#include "WidgetFactory.h"
 
-DialogWindow::DialogWindow(RequestResource* req, ScreenResource* scr, LabelResource *lbl, FontResource *fnt, ImageResource *normal, ImageResource *pressed, ActionEventListener *ael)
+DialogWindow::DialogWindow(WidgetResources& widgetRes)
 : panel(0)
 {
   try{
     WidgetFactory wf;
-    panel = wf.CreatePanel(req, scr, lbl, fnt, normal, pressed, ael);
+    panel = wf.CreatePanel(widgetRes);
   } catch (Exception &e) {
     e.Print("DialogWindow::DialogWindow");
     throw;

@@ -20,6 +20,8 @@
 #ifndef WIDGET_FACTORY_H
 #define WIDGET_FACTORY_H
 
+#include <deque>
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -35,18 +37,29 @@
 #include "TextButtonWidget.h"
 #include "TickboxWidget.h"
 
+typedef struct _WidgetResources {
+  RequestResource *request;
+  ScreenResource *screen;
+  LabelResource *label;
+  FontResource *font;
+  ImageResource *normal;
+  ImageResource *pressed;
+  ImageResource *heads;
+  std::deque<PlayerCharacter*> members;
+  ActionEventListener *eventListener;
+} WidgetResources;
+
 class WidgetFactory {
   public:
     WidgetFactory();
     virtual ~WidgetFactory();
-    ImageButtonWidget* CreateImageButton(RequestData& data, ImageResource *normal, ImageResource *pressed, ActionEventListener *ael);
     TextButtonWidget* CreateTextButton(RequestData& data, FontResource* fnt, ActionEventListener *ael);
+    ImageButtonWidget* CreateImageButton(RequestData& data, ImageResource *normal, ImageResource *pressed, ActionEventListener *ael);
+    CharacterButtonWidget* CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource *img, ActionEventListener *ael);
     ChoiceWidget* CreateChoice();
     TickboxWidget* CreateTickbox();
     LabelWidget* CreateLabel(LabelData& data, FontResource* fnt, const int panelWidth);
-    PanelWidget* CreatePanel(RequestResource* req, ScreenResource* scr, LabelResource* lbl, FontResource* fnt, ImageResource *normal, ImageResource *pressed, ActionEventListener *ael);
-    CharacterButtonWidget* CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource *img, ActionEventListener *ael);
-    void AddCharacterButton(PanelWidget *panel, RequestResource* req, unsigned int n, PlayerCharacter *pc, ImageResource *img, ActionEventListener *ael);
+    PanelWidget* CreatePanel(WidgetResources& widgetRes);
 };
 
 #endif

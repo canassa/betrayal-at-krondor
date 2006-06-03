@@ -32,12 +32,13 @@
 #include "PanelWidget.h"
 #include "RequestResource.h"
 #include "ScreenResource.h"
+#include "WidgetFactory.h"
 
 class DialogWindow {
   private:
     PanelWidget *panel;
   public:
-    DialogWindow(RequestResource* req, ScreenResource* scr, LabelResource *lbl, FontResource *fnt, ImageResource *normal, ImageResource *pressed, ActionEventListener *ael);
+    DialogWindow(WidgetResources& widgetRes);
     ~DialogWindow();
     void Draw(Video *video);
     void FadeIn(PaletteResource* pal, MediaToolkit *media);

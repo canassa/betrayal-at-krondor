@@ -39,8 +39,10 @@ class Party {
   public:
     Party();
     ~Party();
-    void AddMember(PlayerCharacter *pc);
     PlayerCharacter* GetMember(const unsigned int n);
+    PlayerCharacter* GetActiveMember(const int order);
+    void AddMember(PlayerCharacter *pc);
+    void Activate(const unsigned int n, const int order);
 };
 
 #endif
