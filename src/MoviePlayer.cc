@@ -100,6 +100,9 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
         delete paletteSlot[i];
       }
     }
+    if (backgroundImage) {
+      delete backgroundImage;
+    }
     if (savedImage) {
       delete savedImage;
     }
