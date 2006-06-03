@@ -105,16 +105,17 @@ WidgetFactory::CreatePanel(WidgetResources& widgetRes)
   PanelWidget *panel = new PanelWidget(widgetRes.request->GetXPos(), widgetRes.request->GetYPos(),
                                        widgetRes.request->GetWidth(), widgetRes.request->GetHeight());
   panel->SetBackground(widgetRes.screen->GetImage());
+  unsigned int nextMember = 0;
   for (unsigned int i = 0; i < widgetRes.request->GetSize(); i++) {
     RequestData data = widgetRes.request->GetRequestData(i);
     data.xpos += widgetRes.request->GetXOff();
     data.ypos += widgetRes.request->GetYOff();
     switch (data.widget) {
       case REQ_USERDEFINED:
-        if ((data.special == SPECIAL_BUTTON) && (data.visible)) {
-          CharacterButtonWidget *button = CreateCharacterButton(data, widgetRes.members.front(), widgetRes.heads, widgetRes.eventListener);
+        if (data.special == SPECIAL_BUTTON) {
+          CharacterButtonWidget *button = CreateCharacterButton(data, widgetRes.members[nextMember], widgetRes.heads, widgetRes.eventListener);
           panel->AddActiveWidget(button);
-          widgetRes.members.pop_front();
+          nextMember++;
         }
         break;
       case REQ_TEXTBUTTON:

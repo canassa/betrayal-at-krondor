@@ -19,25 +19,25 @@
 
 #include "Exception.h"
 #include "Game.h"
-#include "ImageResource.h"
-#include "PartyResource.h"
 #include "PlayerCharacter.h"
 #include "ResourceManager.h"
 
 Game::Game()
-: party()
+: party(0)
 {
   try {
-    PartyResource partyRes;
     ResourceManager::GetInstance()->Load(&partyRes, "PARTY.DAT");
-    ImageResource heads;
     ResourceManager::GetInstance()->Load(&heads, "HEADS.BMX");
+    party = new Party();
     for (unsigned int i = 0; i < partyRes.GetSize(); i++) {
       PartyData *pd = partyRes.GetData(i);
       PlayerCharacter *pc = new PlayerCharacter(pd->name);
       pc->SetHeadImage(heads.GetImage(i));
-      party.AddMember(pc);
+      party->AddMember(pc);
     }
+    party->Activate(0, 0);
+    party->Activate(1, 2);
+    party->Activate(2, 1);
   } catch (Exception &e) {
     e.Print("Game::Game");
     throw;
@@ -46,9 +46,12 @@ Game::Game()
 
 Game::~Game()
 {
+  if (party) {
+    delete party;
+  }
 }
 
-Party&
+Party *
 Game::GetParty()
 {
   return party;

@@ -46,6 +46,9 @@ static const unsigned int CAST_BOOKMARK     = 3;
 static const unsigned int CAST_CAMP1        = 4;
 static const unsigned int CAST_CAMP2        = 5;
 static const unsigned int CAST_EXIT         = 1;
+static const unsigned int CAST_MEMBER1      = 128;
+static const unsigned int CAST_MEMBER2      = 129;
+static const unsigned int CAST_MEMBER3      = 130;
 
 static const unsigned int CONT_EXIT         = 1;
 
@@ -64,6 +67,9 @@ static const unsigned int MAIN_CAST         = 46;
 static const unsigned int MAIN_BOOKMARK     = 48;
 static const unsigned int MAIN_CAMP         = 18;
 static const unsigned int MAIN_OPTIONS      = 24;
+static const unsigned int MAIN_MEMBER1      = 2;
+static const unsigned int MAIN_MEMBER2      = 3;
+static const unsigned int MAIN_MEMBER3      = 4;
 
 static const unsigned int MAP_LEFT          = 75;
 static const unsigned int MAP_UP            = 72;
@@ -75,6 +81,9 @@ static const unsigned int MAP_ZOOMOUT       = 73;
 static const unsigned int MAP_ZOOMIN        = 81;
 static const unsigned int MAP_CAMP          = 18;
 static const unsigned int MAP_MAIN          = 50;
+static const unsigned int MAP_MEMBER1       = 2;
+static const unsigned int MAP_MEMBER2       = 3;
+static const unsigned int MAP_MEMBER3       = 4;
 
 static const unsigned int OPT_CANCEL        = 18;
 static const unsigned int OPT_CONTENTS      = 46;

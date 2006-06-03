@@ -50,7 +50,6 @@ Dialog::~Dialog()
   media->RemoveUpdateListener(this);
   media->RemoveMouseButtonListener(this);
   media->RemoveKeyboardListener(this);
-  widgetRes.members.clear();
   if (widgetRes.font) {
     delete widgetRes.font;
   }
@@ -191,15 +190,16 @@ Dialog::SetRequest(const std::string &name)
 }
 
 void
-Dialog::AddMember(PlayerCharacter *pc)
+Dialog::SetMembers(Party *party)
 {
-  widgetRes.members.push_back(pc);
-}
-
-void
-Dialog::ClearMembers()
-{
-  widgetRes.members.clear();
+  if (party) {
+    for (unsigned int i = 0; i < MAX_ACTIVE_MEMBERS; i++) {
+      PlayerCharacter *pc = party->GetActiveMember(i);
+      widgetRes.members[i] = pc;
+    }
+  } else {
+    throw NullPointer("Dialog::AddMembers");
+  }
 }
 
 unsigned int

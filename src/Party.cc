@@ -26,6 +26,9 @@ Party::Party()
 
 Party::~Party()
 {
+  for (unsigned int i = 0; i < members.size(); i++) {
+    delete members[i];
+  }
   members.clear();
 }
 
@@ -59,6 +62,9 @@ Party::AddMember(PlayerCharacter *pc)
 void
 Party::Activate(const unsigned int n, const int order)
 {
-  GetActiveMember(order)->SetOrder(-1);
+  PlayerCharacter *pc = GetActiveMember(order);
+  if (pc) {
+    pc->SetOrder(-1);
+  }
   members[n]->SetOrder(order);
 }

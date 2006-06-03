@@ -39,13 +39,12 @@ class GameApplication
     MediaToolkit *mediaToolkit;
     bool done;
     bool inputGrabbed;
-    Game game;
+    Game *game;
     GameState *state;
     GameState *prevState;
     Chapter chapter;
     int screenSaveCount;
     static GameApplication *instance;
-    Game& GetGame();
     void SetState(GameState *st);
   protected:
     GameApplication();
@@ -54,6 +53,7 @@ class GameApplication
     static GameApplication* GetInstance();
     static void CleanUp();
     MediaToolkit* GetMediaToolkit();
+    Game* GetGame();
     GameState* GetPrevState();
     void PlayIntro();
     void StartChapter();

@@ -40,7 +40,7 @@ GameApplication::GameApplication()
 : mediaToolkit(SDL_Toolkit::GetInstance())
 , done(false)
 , inputGrabbed(false)
-, game()
+, game(0)
 , state(GameStateIntro::GetInstance())
 , prevState(0)
 , chapter(mediaToolkit)
@@ -49,6 +49,7 @@ GameApplication::GameApplication()
   mediaToolkit->GetVideo()->SetScaling(2);
   mediaToolkit->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
   mediaToolkit->GetVideo()->Clear();
+  game = new Game();
 
   PaletteResource pal;
   pal.Fill();
@@ -73,6 +74,7 @@ GameApplication::~GameApplication()
 {
   mediaToolkit->RemoveKeyboardListener(this);
   MousePointerManager::CleanUp();
+  delete game;
   delete mediaToolkit;
   ResourceManager::CleanUp();
   ResourcePath::CleanUp();
@@ -115,7 +117,7 @@ GameApplication::GetMediaToolkit()
   return mediaToolkit;
 }
 
-Game&
+Game *
 GameApplication::GetGame()
 {
   return game;

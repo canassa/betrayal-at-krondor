@@ -24,15 +24,19 @@
 #include "config.h"
 #endif
 
+#include "ImageResource.h"
 #include "Party.h"
+#include "PartyResource.h"
 
 class Game {
   private:
-    Party party;
+    Party *party;
+    PartyResource partyRes;
+    ImageResource heads;
   public:
     Game();
     ~Game();
-    Party& GetParty();
+    Party* GetParty();
 };
 
 #endif

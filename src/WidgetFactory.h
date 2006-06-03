@@ -37,6 +37,8 @@
 #include "TextButtonWidget.h"
 #include "TickboxWidget.h"
 
+static const unsigned int MAX_ACTIVE_MEMBERS = 3;
+
 typedef struct _WidgetResources {
   RequestResource *request;
   ScreenResource *screen;
@@ -45,7 +47,7 @@ typedef struct _WidgetResources {
   ImageResource *normal;
   ImageResource *pressed;
   ImageResource *heads;
-  std::deque<PlayerCharacter*> members;
+  PlayerCharacter *members[MAX_ACTIVE_MEMBERS];
   ActionEventListener *eventListener;
 } WidgetResources;
 

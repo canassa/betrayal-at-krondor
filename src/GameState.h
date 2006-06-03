@@ -38,35 +38,38 @@ class GameState
     virtual void Execute(GameApplication *app);
 };
 
-class GameStateCamp: public GameState
+class GameStateCamp
+: public GameState
 {
   private:
     Dialog *dialog;
     static GameStateCamp *instance;
   protected:
-    GameStateCamp(MediaToolkit *mtk);
+    GameStateCamp(GameApplication *app);
   public:
     ~GameStateCamp();
-    static GameStateCamp* GetInstance(MediaToolkit *mtk);
+    static GameStateCamp* GetInstance(GameApplication *app);
     static void CleanUp();
     void Execute(GameApplication *app);
 };
 
-class GameStateCast: public GameState
+class GameStateCast
+: public GameState
 {
   private:
     Dialog *dialog;
     static GameStateCast *instance;
   protected:
-    GameStateCast(MediaToolkit *mtk);
+    GameStateCast(GameApplication *app);
   public:
     ~GameStateCast();
-    static GameStateCast* GetInstance(MediaToolkit *mtk);
+    static GameStateCast* GetInstance(GameApplication *app);
     static void CleanUp();
     void Execute(GameApplication *app);
 };
 
-class GameStateChapter: public GameState
+class GameStateChapter
+: public GameState
 {
   private:
     static GameStateChapter *instance;
@@ -79,7 +82,8 @@ class GameStateChapter: public GameState
     void Execute(GameApplication *app);
 };
 
-class GameStateCombat: public GameState
+class GameStateCombat
+: public GameState
 {
   private:
     static GameStateCombat *instance;
@@ -92,35 +96,38 @@ class GameStateCombat: public GameState
     void Execute(GameApplication *app);
 };
 
-class GameStateContents: public GameState
+class GameStateContents
+: public GameState
 {
   private:
     Dialog *dialog;
     static GameStateContents *instance;
   protected:
-    GameStateContents(MediaToolkit *mtk);
+    GameStateContents(GameApplication *app);
   public:
     ~GameStateContents();
-    static GameStateContents* GetInstance(MediaToolkit *mtk);
+    static GameStateContents* GetInstance(GameApplication *app);
     static void CleanUp();
     void Execute(GameApplication *app);
 };
 
-class GameStateFullMap: public GameState
+class GameStateFullMap
+: public GameState
 {
   private:
     Dialog *dialog;
     static GameStateFullMap *instance;
   protected:
-    GameStateFullMap(MediaToolkit *mtk);
+    GameStateFullMap(GameApplication *app);
   public:
     ~GameStateFullMap();
-    static GameStateFullMap* GetInstance(MediaToolkit *mtk);
+    static GameStateFullMap* GetInstance(GameApplication *app);
     static void CleanUp();
     void Execute(GameApplication *app);
 };
 
-class GameStateIntro: public GameState
+class GameStateIntro
+: public GameState
 {
   private:
     static GameStateIntro *instance;
@@ -133,87 +140,93 @@ class GameStateIntro: public GameState
     void Execute(GameApplication *app);
 };
 
-class GameStateLoad: public GameState
+class GameStateLoad
+: public GameState
 {
   private:
     Dialog *dialog;
     static GameStateLoad *instance;
   protected:
-    GameStateLoad(MediaToolkit *mtk);
+    GameStateLoad(GameApplication *app);
   public:
     ~GameStateLoad();
-    static GameStateLoad* GetInstance(MediaToolkit *mtk);
+    static GameStateLoad* GetInstance(GameApplication *app);
     static void CleanUp();
     void Execute(GameApplication *app);
 };
 
-class GameStateMap: public GameState
+class GameStateMap
+: public GameState
 {
   private:
     Dialog *dialog;
     static GameStateMap *instance;
   protected:
-    GameStateMap(MediaToolkit *mtk);
+    GameStateMap(GameApplication *app);
   public:
     ~GameStateMap();
-    static GameStateMap* GetInstance(MediaToolkit *mtk);
+    static GameStateMap* GetInstance(GameApplication *app);
     static void CleanUp();
     void Execute(GameApplication *app);
 };
 
-class GameStateOptions: public GameState
+class GameStateOptions
+: public GameState
 {
   private:
     bool firstTime;
     Dialog *dialog;
     static GameStateOptions *instance;
   protected:
-    GameStateOptions(MediaToolkit *mtk);
+    GameStateOptions(GameApplication *app);
   public:
     ~GameStateOptions();
-    static GameStateOptions* GetInstance(MediaToolkit *mtk);
+    static GameStateOptions* GetInstance(GameApplication *app);
     static void CleanUp();
     void Execute(GameApplication *app);
 };
 
-class GameStatePreferences: public GameState
+class GameStatePreferences
+: public GameState
 {
   private:
     Dialog *dialog;
     static GameStatePreferences *instance;
   protected:
-    GameStatePreferences(MediaToolkit *mtk);
+    GameStatePreferences(GameApplication *app);
   public:
     ~GameStatePreferences();
-    static GameStatePreferences* GetInstance(MediaToolkit *mtk);
+    static GameStatePreferences* GetInstance(GameApplication *app);
     static void CleanUp();
     void Execute(GameApplication *app);
 };
 
-class GameStateSave: public GameState
+class GameStateSave
+: public GameState
 {
   private:
     Dialog *dialog;
     static GameStateSave *instance;
   protected:
-    GameStateSave(MediaToolkit *mtk);
+    GameStateSave(GameApplication *app);
   public:
     ~GameStateSave();
-    static GameStateSave* GetInstance(MediaToolkit *mtk);
+    static GameStateSave* GetInstance(GameApplication *app);
     static void CleanUp();
     void Execute(GameApplication *app);
 };
 
-class GameStateWorld: public GameState
+class GameStateWorld
+: public GameState
 {
   private:
     Dialog *dialog;
     static GameStateWorld *instance;
   protected:
-    GameStateWorld(MediaToolkit *mtk);
+    GameStateWorld(GameApplication *app);
   public:
     ~GameStateWorld();
-    static GameStateWorld* GetInstance(MediaToolkit *mtk);
+    static GameStateWorld* GetInstance(GameApplication *app);
     static void CleanUp();
     void Execute(GameApplication *app);
 };
