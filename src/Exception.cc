@@ -29,6 +29,7 @@ static const std::string FILE_NOT_FOUND     = "File not found";
 static const std::string INDEX_OUT_OF_RANGE = "Index out of range";
 static const std::string IO_ERROR           = "Read/write error";
 static const std::string MEMORY_ERROR       = "Out of memory";
+static const std::string NULL_POINTER       = "Null pointer";
 static const std::string OPEN_ERROR         = "File not open";
 static const std::string SDL_EXCEPTION      = "SDL error";
 static const std::string UNEXPECTED_VALUE   = "Unexpected value";
@@ -89,6 +90,12 @@ IOError::IOError(const std::string &loc):Exception(loc, IO_ERROR) {
 }
 
 IOError::~IOError() throw() {
+}
+
+NullPointer::NullPointer(const std::string &loc):Exception(loc, NULL_POINTER) {
+}
+
+NullPointer::~NullPointer() throw() {
 }
 
 OpenError::OpenError(const std::string &loc):Exception(loc, OPEN_ERROR) {

@@ -80,6 +80,12 @@ class IOError: public Exception {
     virtual ~IOError() throw ();
 };
 
+class NullPointer: public Exception {
+  public:
+    NullPointer(const std::string &loc);
+    virtual ~NullPointer() throw ();
+};
+
 class OpenError: public Exception {
   public:
     OpenError(const std::string &loc);
