@@ -43,10 +43,10 @@ class DialogWindow {
     void Draw(Video *video);
     void FadeIn(PaletteResource* pal, MediaToolkit *media);
     void FadeOut(PaletteResource* pal, MediaToolkit *media);
-    void ActivateWidget();
-    void DeactivateWidget();
-    void ActivateWidget(const int x, const int y);
-    void DeactivateWidget(const int x, const int y);
+    void LeftClickWidget(const bool toggle);
+    void RightClickWidget(const bool toggle);
+    void LeftClickWidget(const bool toggle, const int x, const int y);
+    void RightClickWidget(const bool toggle, const int x, const int y);
     void SelectNextWidget(Video *video);
 };
 

@@ -224,12 +224,13 @@ GameApplication::MouseButtonPressed(const MouseButtonEvent& mbe)
 {
   switch (mbe.GetButton()){
     case MB_LEFT:
+    case MB_RIGHT:
       if (!inputGrabbed) {
         inputGrabbed = true;
         mediaToolkit->GetVideo()->GrabInput(true);
       }
       break;
-    case MB_RIGHT:
+    case MB_MIDDLE:
       if (inputGrabbed) {
         inputGrabbed = false;
         mediaToolkit->GetVideo()->GrabInput(false);

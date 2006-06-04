@@ -41,6 +41,8 @@ class CharacterButtonWidget
     void SetCharacter(PlayerCharacter *pc);
     void SetImage(Image *selected);
     void Draw(Video *video);
+    void LeftClick(const bool toggle);
+    void RightClick(const bool toggle);
 };
 
 #endif

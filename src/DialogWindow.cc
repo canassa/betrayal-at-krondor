@@ -66,27 +66,27 @@ DialogWindow::FadeOut(PaletteResource* pal, MediaToolkit *media)
 }
 
 void
-DialogWindow::ActivateWidget()
+DialogWindow::LeftClickWidget(const bool toggle)
 {
-  panel->Activate();
+  panel->LeftClickWidget(toggle);
 }
 
 void
-DialogWindow::DeactivateWidget()
+DialogWindow::RightClickWidget(const bool toggle)
 {
-  panel->Deactivate();
+  panel->RightClickWidget(toggle);
 }
 
 void
-DialogWindow::ActivateWidget(const int x, const int y)
+DialogWindow::LeftClickWidget(const bool toggle, const int x, const int y)
 {
-  panel->Activate(x, y);
+  panel->LeftClickWidget(toggle, x, y);
 }
 
 void
-DialogWindow::DeactivateWidget(const int x, const int y)
+DialogWindow::RightClickWidget(const bool toggle, const int x, const int y)
 {
-  panel->Deactivate(x, y);
+  panel->RightClickWidget(toggle, x, y);
 }
 
 void

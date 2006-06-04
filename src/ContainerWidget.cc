@@ -95,37 +95,37 @@ ContainerWidget::NextWidget(Video *video)
 }
 
 void
-ContainerWidget::Activate()
+ContainerWidget::LeftClickWidget(const bool toggle)
 {
   if (activeWidgets.size() > 0) {
-    (*currentActiveWidget)->Activate();
+    (*currentActiveWidget)->LeftClick(toggle);
   }
 }
 
 void
-ContainerWidget::Deactivate()
+ContainerWidget::RightClickWidget(const bool toggle)
 {
   if (activeWidgets.size() > 0) {
-    (*currentActiveWidget)->Deactivate();
+    (*currentActiveWidget)->RightClick(toggle);
   }
 }
 
 void
-ContainerWidget::Activate(const int x, const int y)
+ContainerWidget::LeftClickWidget(const bool toggle, const int x, const int y)
 {
   for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
     if ((*it)->Covers(x, y)) {
-      (*it)->Activate();
+      (*it)->LeftClick(toggle);
     }
   }
 }
 
 void
-ContainerWidget::Deactivate(const int x, const int y)
+ContainerWidget::RightClickWidget(const bool toggle, const int x, const int y)
 {
   for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
     if ((*it)->Covers(x, y)) {
-      (*it)->Deactivate();
+      (*it)->RightClick(toggle);
     }
   }
 }

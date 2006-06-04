@@ -37,10 +37,28 @@ ButtonWidget::SetEnabled(const bool toggle)
   enabled = toggle;
 }
 
+int
+ButtonWidget::GetAction() const
+{
+  return action;
+}
+
 bool
-ButtonWidget::IsEnabled()const
+ButtonWidget::IsEnabled() const
 {
   return enabled;
+}
+
+void
+ButtonWidget::SetPressed(const bool toggle)
+{
+  pressed = toggle;
+}
+
+bool
+ButtonWidget::IsPressed() const
+{
+  return pressed;
 }
 
 void
@@ -50,23 +68,10 @@ ButtonWidget::Focus(Video *video)
 }
 
 void
-ButtonWidget::Activate()
+ButtonWidget::GenerateActionEvent(const int a)
 {
-  pressed = true;
-  ActionEvent ae(action);
+  ActionEvent ae(a);
   for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it) {
     (*it)->ActionPerformed(ae);
   }
-}
-
-void
-ButtonWidget::Deactivate()
-{
-  pressed = false;
-}
-
-bool
-ButtonWidget::IsActivated() const
-{
-  return pressed;
 }

@@ -22,7 +22,7 @@
 ImageButtonWidget::ImageButtonWidget(const int x, const int y, const int w, const int h, const int a)
 : ButtonWidget(x, y, w, h, a)
 , normalImage(0)
-, activatedImage(0)
+, pressedImage(0)
 {
 }
 
@@ -31,24 +31,40 @@ ImageButtonWidget::~ImageButtonWidget()
 }
 
 void
-ImageButtonWidget::SetImage(Image *normal, Image *activated)
+ImageButtonWidget::SetImage(Image *normal, Image *press)
 {
   normalImage = normal;
-  activatedImage = activated;
+  pressedImage = press;
 }
 
 void
 ImageButtonWidget::Draw(Video *video)
 {
   if (IsEnabled()) {
-    if (IsActivated()) {
-      if (activatedImage) {
-        activatedImage->Draw(video, xpos, ypos + 1, 0);
+    if (IsPressed()) {
+      if (pressedImage) {
+        pressedImage->Draw(video, xpos, ypos + 1, 0);
       }
     } else {
       if (normalImage) {
         normalImage->Draw(video, xpos, ypos + 1, 0);
       }
     }
+  }
+}
+
+void
+ImageButtonWidget::LeftClick(const bool toggle)
+{
+  SetPressed(toggle);
+  if (toggle) {
+    GenerateActionEvent(GetAction());
+  }
+}
+
+void
+ImageButtonWidget::RightClick(const bool toggle)
+{
+  if (toggle) {
   }
 }

@@ -149,8 +149,11 @@ GameStateCast::Execute(GameApplication *app)
     case CAST_CAST:
     case CAST_BOOKMARK:
     case CAST_MEMBER1:
+    case CAST_MEMBER1 + RIGHT_CLICK_OFFSET:
     case CAST_MEMBER2:
+    case CAST_MEMBER2 + RIGHT_CLICK_OFFSET:
     case CAST_MEMBER3:
+    case CAST_MEMBER3 + RIGHT_CLICK_OFFSET:
       break;
     default:
       throw UnexpectedValue("GameStateCast::Execute");
@@ -476,8 +479,11 @@ GameStateMap::Execute(GameApplication *app)
     case MAP_ZOOMOUT:
     case MAP_UNKNOWN:
     case MAP_MEMBER1:
+    case MAP_MEMBER1 + RIGHT_CLICK_OFFSET:
     case MAP_MEMBER2:
+    case MAP_MEMBER2 + RIGHT_CLICK_OFFSET:
     case MAP_MEMBER3:
+    case MAP_MEMBER3 + RIGHT_CLICK_OFFSET:
       break;
     default:
       throw UnexpectedValue("GameStateMap::Execute");
@@ -737,8 +743,11 @@ GameStateWorld::Execute(GameApplication *app)
     case MAIN_BOOKMARK:
     case MAIN_UNKNOWN:
     case MAIN_MEMBER1:
+    case MAIN_MEMBER1 + RIGHT_CLICK_OFFSET:
     case MAIN_MEMBER2:
+    case MAIN_MEMBER2 + RIGHT_CLICK_OFFSET:
     case MAIN_MEMBER3:
+    case MAIN_MEMBER3 + RIGHT_CLICK_OFFSET:
       break;
     default:
       throw UnexpectedValue("GameStateWorld::Execute");

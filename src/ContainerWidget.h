@@ -28,7 +28,8 @@
 
 #include "Widget.h"
 
-class ContainerWidget: public Widget {
+class ContainerWidget
+: public Widget {
   private:
     std::list<Widget *> widgets;
     std::list<ActiveWidget *> activeWidgets;
@@ -44,10 +45,10 @@ class ContainerWidget: public Widget {
     void AddActiveWidget(ActiveWidget *aw);
     void RemoveActiveWidget(ActiveWidget *aw);
     void NextWidget(Video *video);
-    void Activate();
-    void Deactivate();
-    void Activate(const int x, const int y);
-    void Deactivate(const int x, const int y);
+    void LeftClickWidget(const bool toggle);
+    void RightClickWidget(const bool toggle);
+    void LeftClickWidget(const bool toggle, const int x, const int y);
+    void RightClickWidget(const bool toggle, const int x, const int y);
 };
 
 #endif

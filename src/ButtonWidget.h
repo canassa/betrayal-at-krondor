@@ -35,12 +35,15 @@ class ButtonWidget
   public:
     ButtonWidget(const int x, const int y, const int w, const int h, const int a);
     virtual ~ButtonWidget();
+    int GetAction() const;
     void SetEnabled(const bool toggle);
     bool IsEnabled() const;
+    void SetPressed(const bool toggle);
+    bool IsPressed() const;
     void Focus(Video *video);
-    void Activate();
-    void Deactivate();
-    bool IsActivated() const;
+    void GenerateActionEvent(const int a);
+    virtual void LeftClick(const bool toggle) = 0;
+    virtual void RightClick(const bool toggle) = 0;
 };
 
 #endif

@@ -42,7 +42,7 @@ TextButtonWidget::SetLabel(const std::string& s, FontResource* f)
 void
 TextButtonWidget::Draw(Video *video)
 {
-  if (IsActivated()) {
+  if (IsPressed()) {
     video->FillRect(xpos + 1, ypos + 1, width - 2, height - 2, BUTTON_COLOR_PRESSED);
     video->DrawVLine(xpos, ypos, height, LIGHT_COLOR);
     video->DrawHLine(xpos + 1, ypos, width - 1, SHADOW_COLOR);
@@ -57,7 +57,7 @@ TextButtonWidget::Draw(Video *video)
   }
   if (label) {
     if (IsEnabled()) {
-      if (IsActivated()) {
+      if (IsPressed()) {
         label->SetColor(TEXT_COLOR_PRESSED);
         label->SetShadow(SHADOW_COLOR);
       } else {
@@ -69,5 +69,21 @@ TextButtonWidget::Draw(Video *video)
       label->SetShadow(NO_SHADOW);
     }
     label->Draw(video);
+  }
+}
+
+void
+TextButtonWidget::LeftClick(const bool toggle)
+{
+  SetPressed(toggle);
+  if (toggle) {
+    GenerateActionEvent(GetAction());
+  }
+}
+
+void
+TextButtonWidget::RightClick(const bool toggle)
+{
+  if (toggle) {
   }
 }

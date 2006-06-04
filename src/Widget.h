@@ -39,6 +39,8 @@ static const int BUTTON_COLOR_NORMAL  = 14;
 static const int BUTTON_COLOR_PRESSED = 11;
 static const int POPUP_COLOR          = 14;
 
+static const int RIGHT_CLICK_OFFSET   = 256;
+
 class Widget {
   protected:
     int xpos;
@@ -68,8 +70,8 @@ class ActiveWidget: public Widget {
     void AddActionListener(ActionEventListener *ael);
     void RemoveActionListener(ActionEventListener *ael);
     virtual void Focus(Video *video) = 0;
-    virtual void Activate() = 0;
-    virtual void Deactivate() = 0;
+    virtual void LeftClick(const bool toggle) = 0;
+    virtual void RightClick(const bool toggle) = 0;
 };
 
 #endif

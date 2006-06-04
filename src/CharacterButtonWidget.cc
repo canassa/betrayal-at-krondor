@@ -53,3 +53,19 @@ CharacterButtonWidget::Draw(Video *video)
     }
   }
 }
+
+void
+CharacterButtonWidget::LeftClick(const bool toggle)
+{
+  if (toggle) {
+    GenerateActionEvent(GetAction());
+  }
+}
+
+void
+CharacterButtonWidget::RightClick(const bool toggle)
+{
+  if (toggle) {
+    GenerateActionEvent(GetAction() + RIGHT_CLICK_OFFSET);
+  }
+}

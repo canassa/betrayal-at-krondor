@@ -238,7 +238,7 @@ Dialog::KeyPressed(const KeyboardEvent& kbe) {
     case KEY_RETURN:
     case KEY_SPACE:
       if (running) {
-        window->ActivateWidget();
+        window->LeftClickWidget(true);
       }
       break;
     default:
@@ -252,7 +252,7 @@ Dialog::KeyReleased(const KeyboardEvent& kbe) {
     case KEY_RETURN:
     case KEY_SPACE:
       if (running) {
-        window->DeactivateWidget();
+        window->LeftClickWidget(false);
       }
       break;
     default:
@@ -265,7 +265,12 @@ Dialog::MouseButtonPressed(const MouseButtonEvent& mbe) {
   switch (mbe.GetButton()) {
     case MB_LEFT:
       if (running) {
-        window->ActivateWidget(mbe.GetXPos(), mbe.GetYPos());
+        window->LeftClickWidget(true, mbe.GetXPos(), mbe.GetYPos());
+      }
+      break;
+    case MB_RIGHT:
+      if (running) {
+        window->RightClickWidget(true, mbe.GetXPos(), mbe.GetYPos());
       }
       break;
     default:
@@ -278,7 +283,12 @@ Dialog::MouseButtonReleased(const MouseButtonEvent& mbe) {
   switch (mbe.GetButton()) {
     case MB_LEFT:
       if (running) {
-        window->DeactivateWidget(mbe.GetXPos(), mbe.GetYPos());
+        window->LeftClickWidget(false, mbe.GetXPos(), mbe.GetYPos());
+      }
+      break;
+    case MB_RIGHT:
+      if (running) {
+        window->RightClickWidget(false, mbe.GetXPos(), mbe.GetYPos());
       }
       break;
     default:
