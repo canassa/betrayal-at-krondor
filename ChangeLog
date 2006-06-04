@@ -1,3 +1,7 @@
+2006-06-xx, xbak-0.0.8:
+* More work on the main game dialogs: character buttons are done.
+* Several bug fixes.
+
 2006-05-14, xbak-0.0.7:
 * Implemented a proper game state machine.
 * Initial implementation of the main game dialog screen is done.
