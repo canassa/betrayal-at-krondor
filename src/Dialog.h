@@ -51,7 +51,7 @@ class Dialog
     void SetIcons(const std::string &normalName, const std::string &pressedName);
     void SetHeads(const std::string &name);
     void SetRequest(const std::string &name);
-    void SetMembers(Party *party);
+    void SetMembers(Party *party, const int special);
     unsigned int Execute();
     void KeyPressed(const KeyboardEvent& kbe);
     void KeyReleased(const KeyboardEvent& kbe);

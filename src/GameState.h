@@ -140,6 +140,21 @@ class GameStateIntro
     void Execute(GameApplication *app);
 };
 
+class GameStateInventory
+: public GameState
+{
+  private:
+    Dialog *dialog;
+    static GameStateInventory *instance;
+  protected:
+    GameStateInventory(GameApplication *app);
+  public:
+    ~GameStateInventory();
+    static GameStateInventory* GetInstance(GameApplication *app);
+    static void CleanUp();
+    void Execute(GameApplication *app);
+};
+
 class GameStateLoad
 : public GameState
 {

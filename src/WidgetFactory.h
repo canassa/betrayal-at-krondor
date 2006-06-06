@@ -48,6 +48,7 @@ typedef struct _WidgetResources {
   ImageResource *pressed;
   ImageResource *heads;
   PlayerCharacter *members[MAX_ACTIVE_MEMBERS];
+  int special;
   ActionEventListener *eventListener;
 } WidgetResources;
 

@@ -36,8 +36,9 @@ int main(int argc, char *argv[]) {
            req->GetXPos(), req->GetYPos(), req->GetWidth(), req->GetHeight(), req->GetXOff(), req->GetYOff());
     for (unsigned int i = 0; i < req->GetSize(); i++) {
       RequestData data = req->GetRequestData(i);
-      printf("%3d: %3d %3d %3d %3d %3d %3d %3d %3d %3d %s\n", i,
-             data.widget, data.action, data.xpos, data.ypos, data.width, data.height, data.teleport, data.image, data.special, data.label.c_str());
+      printf("%3d: %3d %3d %3d %3d %3d %3d %3d %3d %3d %5s %s\n", i,
+             data.widget, data.action, data.xpos, data.ypos, data.width, data.height,
+             data.teleport, data.image, data.special, (data.visible ? "true" : "false"), data.label.c_str());
     }
     delete req;
     ResourceManager::CleanUp();

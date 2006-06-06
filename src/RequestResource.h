@@ -54,6 +54,13 @@ static const unsigned int CONT_EXIT         = 1;
 
 static const unsigned int FMAP_EXIT         = 18;
 
+static const unsigned int INV_MEMBER1       = 2;
+static const unsigned int INV_MEMBER2       = 3;
+static const unsigned int INV_MEMBER3       = 4;
+static const unsigned int INV_UNKNOWN       = 22;
+static const unsigned int INV_EXIT          = 1;
+static const unsigned int INV_MORE_INFO     = 57;
+
 static const unsigned int LOAD_RESTORE      = 193;
 static const unsigned int LOAD_CANCEL       = 192;
 
@@ -102,8 +109,8 @@ static const unsigned int SAVE_REMOVE_GAME  = 194;
 static const unsigned int SAVE_SAVE         = 193;
 static const unsigned int SAVE_CANCEL       = 192;
 
-static const int SPECIAL_BUTTON    = 2;
-static const int SPECIAL_3DVIEW    = 3;
+static const int SPECIAL_TYPE1 = 2;
+static const int SPECIAL_TYPE2 = 3;
 
 typedef struct _RequestData {
   unsigned int widget;

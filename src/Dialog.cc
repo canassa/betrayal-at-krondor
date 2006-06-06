@@ -190,9 +190,10 @@ Dialog::SetRequest(const std::string &name)
 }
 
 void
-Dialog::SetMembers(Party *party)
+Dialog::SetMembers(Party *party, const int special)
 {
   if (party) {
+    widgetRes.special = special;
     for (unsigned int i = 0; i < MAX_ACTIVE_MEMBERS; i++) {
       PlayerCharacter *pc = party->GetActiveMember(i);
       widgetRes.members[i] = pc;

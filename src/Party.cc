@@ -60,11 +60,19 @@ Party::AddMember(PlayerCharacter *pc)
 }
 
 void
-Party::Activate(const unsigned int n, const int order)
+Party::ActivateMember(const unsigned int n, const int order)
 {
   PlayerCharacter *pc = GetActiveMember(order);
   if (pc) {
     pc->SetOrder(-1);
   }
   members[n]->SetOrder(order);
+}
+
+void
+Party::SelectMember(const int order)
+{
+  for (unsigned int i = 0; i < members.size(); i++) {
+    members[i]->Select((order >= 0) && (members[i]->GetOrder() == order));
+  }
 }

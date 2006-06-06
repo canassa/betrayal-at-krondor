@@ -35,9 +35,9 @@ Game::Game()
       pc->SetHeadImage(heads.GetImage(i));
       party->AddMember(pc);
     }
-    party->Activate(0, 0);
-    party->Activate(1, 2);
-    party->Activate(2, 1);
+    party->ActivateMember(0, 0);
+    party->ActivateMember(1, 2);
+    party->ActivateMember(2, 1);
   } catch (Exception &e) {
     e.Print("Game::Game");
     throw;

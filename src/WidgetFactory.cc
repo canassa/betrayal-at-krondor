@@ -112,7 +112,7 @@ WidgetFactory::CreatePanel(WidgetResources& widgetRes)
     data.ypos += widgetRes.request->GetYOff();
     switch (data.widget) {
       case REQ_USERDEFINED:
-        if (data.special == SPECIAL_BUTTON) {
+        if ((data.action >= 0) && (data.special == widgetRes.special)) {
           CharacterButtonWidget *button = CreateCharacterButton(data, widgetRes.members[nextMember], widgetRes.heads, widgetRes.eventListener);
           panel->AddActiveWidget(button);
           nextMember++;

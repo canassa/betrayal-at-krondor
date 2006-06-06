@@ -104,7 +104,7 @@ GameStateCast::GameStateCast(GameApplication *app)
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_CAST.DAT");
   dialog->SetHeads("HEADS.BMX");
-  dialog->SetMembers(app->GetGame()->GetParty());
+  dialog->SetMembers(app->GetGame()->GetParty(), SPECIAL_TYPE1);
 }
 
 GameStateCast::~GameStateCast()
@@ -138,21 +138,28 @@ GameStateCast::Execute(GameApplication *app)
   switch (dialog->Execute()) {
     case ACT_ESCAPE:
     case CAST_EXIT:
+      app->GetGame()->GetParty()->SelectMember(-1);
       ChangeState(app, GameStateWorld::GetInstance(app));
       break;
     case CAST_CAMP1:
     case CAST_CAMP2:
       ChangeState(app, GameStateCamp::GetInstance(app));
       break;
+    case CAST_MEMBER1:
+      app->GetGame()->GetParty()->SelectMember(0);
+      break;
+    case CAST_MEMBER2:
+      app->GetGame()->GetParty()->SelectMember(1);
+      break;
+    case CAST_MEMBER3:
+      app->GetGame()->GetParty()->SelectMember(2);
+      break;
     case CAST_TRIANGLE:
     case CAST_SQUARE:
     case CAST_CAST:
     case CAST_BOOKMARK:
-    case CAST_MEMBER1:
     case CAST_MEMBER1 + RIGHT_CLICK_OFFSET:
-    case CAST_MEMBER2:
     case CAST_MEMBER2 + RIGHT_CLICK_OFFSET:
-    case CAST_MEMBER3:
     case CAST_MEMBER3 + RIGHT_CLICK_OFFSET:
       break;
     default:
@@ -365,6 +372,72 @@ GameStateIntro::Execute(GameApplication *app)
   ChangeState(app, GameStateOptions::GetInstance(app));
 }
 
+GameStateInventory* GameStateInventory::instance = 0;
+
+GameStateInventory::GameStateInventory(GameApplication *app)
+{
+  dialog = new Dialog(app->GetMediaToolkit());
+  dialog->SetFont("GAME.FNT");
+  dialog->SetPalette("OPTIONS.PAL");
+  dialog->SetScreen("FRAME.SCX");
+  dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
+  dialog->SetRequest("REQ_INV.DAT");
+  dialog->SetHeads("HEADS.BMX");
+  dialog->SetMembers(app->GetGame()->GetParty(), SPECIAL_TYPE2);
+}
+
+GameStateInventory::~GameStateInventory()
+{
+  if (dialog) {
+    delete dialog;
+  }
+}
+
+GameStateInventory*
+GameStateInventory::GetInstance(GameApplication *app)
+{
+  if (!instance) {
+    instance = new GameStateInventory(app);
+  }
+  return instance;
+}
+
+void
+GameStateInventory::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
+}
+
+void
+GameStateInventory::Execute(GameApplication *app)
+{
+  switch (dialog->Execute()) {
+    case ACT_ESCAPE:
+    case INV_EXIT:
+      app->GetGame()->GetParty()->SelectMember(-1);
+      ChangeState(app, app->GetPrevState());
+      break;
+    case INV_MEMBER1:
+      app->GetGame()->GetParty()->SelectMember(0);
+      break;
+    case INV_MEMBER2:
+      app->GetGame()->GetParty()->SelectMember(1);
+      break;
+    case INV_MEMBER3:
+      app->GetGame()->GetParty()->SelectMember(2);
+      break;
+    case INV_UNKNOWN:
+    case INV_MORE_INFO:
+      break;
+    default:
+      throw UnexpectedValue("GameStateWorld::Execute");
+      break;
+  }
+}
+
 GameStateLoad* GameStateLoad::instance = 0;
 
 GameStateLoad::GameStateLoad(GameApplication *app)
@@ -429,7 +502,7 @@ GameStateMap::GameStateMap(GameApplication *app)
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_MAP.DAT");
   dialog->SetHeads("HEADS.BMX");
-  dialog->SetMembers(app->GetGame()->GetParty());
+  dialog->SetMembers(app->GetGame()->GetParty(), SPECIAL_TYPE1);
 }
 
 GameStateMap::~GameStateMap()
@@ -479,10 +552,10 @@ GameStateMap::Execute(GameApplication *app)
     case MAP_ZOOMOUT:
     case MAP_UNKNOWN:
     case MAP_MEMBER1:
-    case MAP_MEMBER1 + RIGHT_CLICK_OFFSET:
     case MAP_MEMBER2:
-    case MAP_MEMBER2 + RIGHT_CLICK_OFFSET:
     case MAP_MEMBER3:
+    case MAP_MEMBER1 + RIGHT_CLICK_OFFSET:
+    case MAP_MEMBER2 + RIGHT_CLICK_OFFSET:
     case MAP_MEMBER3 + RIGHT_CLICK_OFFSET:
       break;
     default:
@@ -691,7 +764,7 @@ GameStateWorld::GameStateWorld(GameApplication *app)
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_MAIN.DAT");
   dialog->SetHeads("HEADS.BMX");
-  dialog->SetMembers(app->GetGame()->GetParty());
+  dialog->SetMembers(app->GetGame()->GetParty(), SPECIAL_TYPE1);
 }
 
 GameStateWorld::~GameStateWorld()
@@ -731,10 +804,23 @@ GameStateWorld::Execute(GameApplication *app)
       ChangeState(app, GameStateCamp::GetInstance(app));
       break;
     case MAIN_CAST:
+      app->GetGame()->GetParty()->SelectMember(0);
       ChangeState(app, GameStateCast::GetInstance(app));
       break;
     case MAIN_MAP:
       ChangeState(app, GameStateMap::GetInstance(app));
+      break;
+    case MAIN_MEMBER1:
+      app->GetGame()->GetParty()->SelectMember(0);
+      ChangeState(app, GameStateInventory::GetInstance(app));
+      break;
+    case MAIN_MEMBER2:
+      app->GetGame()->GetParty()->SelectMember(1);
+      ChangeState(app, GameStateInventory::GetInstance(app));
+      break;
+    case MAIN_MEMBER3:
+      app->GetGame()->GetParty()->SelectMember(2);
+      ChangeState(app, GameStateInventory::GetInstance(app));
       break;
     case MAIN_UP:
     case MAIN_DOWN:
@@ -742,11 +828,8 @@ GameStateWorld::Execute(GameApplication *app)
     case MAIN_RIGHT:
     case MAIN_BOOKMARK:
     case MAIN_UNKNOWN:
-    case MAIN_MEMBER1:
     case MAIN_MEMBER1 + RIGHT_CLICK_OFFSET:
-    case MAIN_MEMBER2:
     case MAIN_MEMBER2 + RIGHT_CLICK_OFFSET:
-    case MAIN_MEMBER3:
     case MAIN_MEMBER3 + RIGHT_CLICK_OFFSET:
       break;
     default:

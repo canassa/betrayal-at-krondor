@@ -42,7 +42,8 @@ class Party {
     PlayerCharacter* GetMember(const unsigned int n);
     PlayerCharacter* GetActiveMember(const int order);
     void AddMember(PlayerCharacter *pc);
-    void Activate(const unsigned int n, const int order);
+    void ActivateMember(const unsigned int n, const int order);
+    void SelectMember(const int order);
 };
 
 #endif
