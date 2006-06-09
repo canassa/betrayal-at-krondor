@@ -30,8 +30,8 @@ Notes for running the xbak demo:
   Initially the keyboard and mouse are not grabbed. Grabbing the input
   can be toggled by pressing the F12 key. Or, if the input is not grabbed,
   move the mouse inside the xbak application window and press the left
-  mouse button to grab the input. When the input is grabbed, press the
-  right mouse button to release the grab on input again.
+  or right mouse button to grab the input. When the input is grabbed,
+  pressing the middle mouse button will release the grab on input.
 * Screenshots
   Screenshots can be made using the F11 key. The screenshots will be saved
   in the current directory. The images are stored in BMP format. The

@@ -1,5 +1,6 @@
-2006-06-xx, xbak-0.0.8:
-* More work on the main game dialogs: character buttons are done.
+2006-06-08, xbak-0.0.8:
+* More work on the main game dialogs.
+* Character button GUI widgets are available.
 * Several bug fixes.
 
 2006-05-14, xbak-0.0.7:
