@@ -29,7 +29,8 @@ typedef enum _CommandType
   CT_BMX,
   CT_FNT,
   CT_SCX,
-  CT_TTM
+  CT_TTM,
+  CT_WLD
 } CommandType;
 
 CommandType
@@ -50,6 +51,9 @@ get_command_type(char *cmd)
   if (strncmp(cmd, "TTM", 3) == 0) {
     return CT_TTM;
   }
+  if (strncmp(cmd, "WLD", 3) == 0) {
+    return CT_WLD;
+  }
   return CT_UNKNOWN;
 }
 
@@ -60,7 +64,7 @@ int main(int argc, char **argv)
     CommandType ct = get_command_type(argv[1]);
     switch (ct) {
       case CT_UNKNOWN:
-        printf("Usage: %s <BMX|FNT|SCX|TTM> <command-options>\n", argv[0]);
+        printf("Usage: %s <BMX|FNT|SCX|TTM|WLD> <command-options>\n", argv[0]);
         return -1;
       case CT_BMX:
         if (argc != 4) {
@@ -94,6 +98,14 @@ int main(int argc, char **argv)
         app->ActivatePalette();
         app->PlayMovie(argv[2]);
         break;
+      case CT_WLD:
+        if (argc != 4) {
+          printf("Usage: %s WLD <zone> <tile>\n", argv[0]);
+          return -1;
+        }
+        app->ActivatePalette("Z" + std::string(argv[2]) + ".PAL");
+        app->WalkWorld(argv[2], argv[3]);
+        break;
     }
     TestApplication::CleanUp();
   } catch (Exception &e) {
@@ -104,4 +116,3 @@ int main(int argc, char **argv)
   }
   return 0;
 }
-

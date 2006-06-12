@@ -20,8 +20,6 @@
 #include "Exception.h"
 #include "SDL_Video.h"
 
-#define swap(a, b) { int h = a; a = b; b = h; }
-
 SDL_Video::SDL_Video()
 : Video()
 , info(SDL_GetVideoInfo())
@@ -129,26 +127,41 @@ SDL_Video::DrawVLine(const int x, const int y, const int h, const unsigned int c
   SDL_UpdateRect(buffer, x, y, 1, h);
 }
 
+#define swap(a,b) { int h = a; a = b; b = h; }
+
 void
 SDL_Video::DrawLine(int x1, int y1, int x2, int y2, const unsigned int c)
 {
+  // Bresenham's line algorithm
+  bool steep = abs(y2 - y1) > abs(x2 - x1);
+  if (steep) {
+    swap(x1, y1);
+    swap(x2, y2);
+  }
   if (x1 > x2) {
     swap(x1, x2);
-  }
-  if (y1 > y2) {
     swap(y1, y2);
   }
-  if ((x2 - x1) > (y2 - y1)) {
-    float f = (float)(y2 - y1) / (float)(x2 - x1);
-    for (int x = x1; x <= x2; x++) {
-      int y = y1 + (int)(f * (float)(x - x1));
+  int dx = x2 - x1;
+  int dy = abs(y2 - y1);
+  int err = 0;
+  int yy;
+  if (y1 < y2) {
+    yy = 1;
+  } else {
+    yy = -1;
+  }
+  int y = y1;
+  for (int x = x1; x <= x2; x++) {
+    if (steep) {
+      PutPixel(y, x, c);
+    } else {
       PutPixel(x, y, c);
     }
-  } else {
-    float f = (float)(x2 - x1) / (float)(y2 - y1);
-    for (int y = y1; y <= y2; y++) {
-      int x = x1 + (int)(f * (float)(y - y1));
-      PutPixel(x, y, c);
+    err += dy;
+    if ((err + err) >= dx) {
+      y += yy;
+      err -= dx;
     }
   }
   SDL_UpdateRect(buffer, x1, y1, x2 - x1 + 1, y2 - y1 + 1);

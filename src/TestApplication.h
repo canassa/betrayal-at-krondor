@@ -32,6 +32,7 @@
 #include "MovieResource.h"
 #include "PaletteResource.h"
 #include "ScreenResource.h"
+#include "TileWorldResource.h"
 
 class TestApplication
 : public KeyboardEventListener
@@ -44,6 +45,7 @@ class TestApplication
     ImageResource img;
     ScreenResource scr;
     MovieResource ttm;
+    TileWorldResource wld;
     static TestApplication *instance;
   protected:
     TestApplication();
@@ -57,6 +59,7 @@ class TestApplication
     void ShowScreen(const std::string& name);
     void DrawFont(const std::string& name);
     void PlayMovie(const std::string& name);
+    void WalkWorld(const std::string& zone, const std::string& tile);
     void KeyPressed(const KeyboardEvent &kbe);
     void KeyReleased(const KeyboardEvent &kbe);
     void TimerExpired(const TimerEvent &te);

@@ -35,6 +35,7 @@ TestApplication::TestApplication()
 , img()
 , scr()
 , ttm()
+, wld()
 {
   mediaToolkit->GetVideo()->SetScaling(2);
   mediaToolkit->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
@@ -159,6 +160,25 @@ TestApplication::PlayMovie(const std::string& name)
     ResourceManager::GetInstance()->Load(&ttm, name);
     MoviePlayer moviePlayer(mediaToolkit);
     moviePlayer.Play(&ttm.GetMovieTags(), false);
+  } catch (Exception &e) {
+    e.Print("TestApplication::PlayMovie");
+  }
+}
+
+void
+TestApplication::WalkWorld(const std::string& zone, const std::string& tile)
+{
+  try {
+    ResourceManager::GetInstance()->Load(&img, "Z" + zone + "H.BMX");
+    ResourceManager::GetInstance()->Load(&wld, "T" + zone + tile + ".WLD");
+    mediaToolkit->GetVideo()->DrawLine(10, 10, 200, 150, 1);
+    mediaToolkit->GetVideo()->DrawLine(240, 20, 20, 160, 2);
+    mediaToolkit->GetVideo()->DrawLine(300, 180, 190, 30, 3);
+    mediaToolkit->GetVideo()->DrawLine(40, 170, 250, 40, 4);
+    mediaToolkit->GetVideo()->Refresh();
+    mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, 5000);
+    mediaToolkit->WaitEventLoop();
+    mediaToolkit->GetClock()->CancelTimer(TMR_TEST_APP);
   } catch (Exception &e) {
     e.Print("TestApplication::PlayMovie");
   }
