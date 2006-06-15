@@ -175,6 +175,9 @@ TestApplication::WalkWorld(const std::string& zone, const std::string& tile)
     mediaToolkit->GetVideo()->DrawLine(240, 20, 20, 160, 2);
     mediaToolkit->GetVideo()->DrawLine(300, 180, 190, 30, 3);
     mediaToolkit->GetVideo()->DrawLine(40, 170, 250, 40, 4);
+    int x[3] = {100, 150, 120};
+    int y[3] = {60, 50, 120};
+    mediaToolkit->GetVideo()->DrawPolygon(x, y, 3, 5);
     mediaToolkit->GetVideo()->Refresh();
     mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, 5000);
     mediaToolkit->WaitEventLoop();

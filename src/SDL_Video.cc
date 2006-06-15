@@ -168,6 +168,15 @@ SDL_Video::DrawLine(int x1, int y1, int x2, int y2, const unsigned int c)
 }
 
 void
+SDL_Video::DrawPolygon(const int *x, const int *y, const unsigned int n, const unsigned int c)
+{
+  for (unsigned int i = 1; i < n; i++) {
+    DrawLine(x[i-1], y[i-1], x[i], y[i], c);
+  }
+  DrawLine(x[n-1], y[n-1], x[0], y[0], c);
+}
+
+void
 SDL_Video::FillRect(const int x, const int y, const int w, const int h, const unsigned int c)
 {
   SDL_Rect rect = {x, y, w, h};
