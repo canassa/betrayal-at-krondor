@@ -28,6 +28,15 @@
 
 #include "Video.h"
 
+typedef struct _PolygonEdge {
+  int x0;
+  int y0;
+  int x1;
+  int y1;
+  int dx;
+  int dy;
+} PolygonEdge;
+
 class SDL_Video
 : public Video {
   private:
@@ -35,6 +44,8 @@ class SDL_Video
     SDL_Surface* disp;
     SDL_Surface* stretched;
     SDL_Surface* buffer;
+    bool CreateEdge(PolygonEdge &edge, const int x1, const int y1, const int x2, const int y2);
+    void SortEdges(PolygonEdge* &edges, const unsigned int n);
   public:
     SDL_Video();
     ~SDL_Video();
@@ -45,6 +56,7 @@ class SDL_Video
     void DrawVLine(const int x, const int y, const int h, const unsigned int c);
     void DrawLine(int x1, int y1, int x2, int y2, const unsigned int c);
     void DrawPolygon(const int *x, const int *y, const unsigned int n, const unsigned int c);
+    void FillPolygon(const int *x, const int *y, const unsigned int n, const unsigned int c);
     void FillRect(const int x, const int y, const int w, const int h, const unsigned int c);
     void ReadImage(const int x, const int y, const int w, const int h, uint8_t *p);
     void DrawImage(const int x, const int y, const int w, const int h, uint8_t *p);
