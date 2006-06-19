@@ -188,8 +188,7 @@ SDL_Video::CreateEdge(PolygonEdge &edge, const int x1, const int y1, const int x
       edge.x1 = x1;
       edge.y1 = y1;
     }
-    edge.dx = (edge.x1 - edge.x0);
-    edge.dy = (edge.y1 - edge.y0);
+    edge.dxdy = (float)(edge.x1 - edge.x0) / (float)(edge.y1 - edge.y0);
     return true;
   }
 }
@@ -230,30 +229,28 @@ SDL_Video::FillPolygon(const int* x, const int* y, const unsigned int n, const u
   SortEdges(edges, m);
   unsigned int l = 0;
   while (l < m) {
+    bool draw = false;
+    int xx = edges[l].x0;
     int yy = edges[l].y0;
-    unsigned int i = l;
-    while (((i + 1) < m) && (edges[i].y0 == yy)) {
-      // TODO: rewrite using parity algorithm
-      if (((edges[i].x0 == edges[i].x1) && (edges[i].y0 == edges[i].y1) &&
-           (edges[i].x0 == edges[i+1].x0) && (edges[i].y0 == edges[i+1].y0) &&
-           (edges[i+1].y0 < edges[i+1].y1)) ||
-          ((edges[i+1].x0 == edges[i+1].x1) && (edges[i+1].y0 == edges[i+1].y1) &&
-           (edges[i+1].x0 == edges[i+2].x0) && (edges[i+1].y0 == edges[i+2].y0) &&
-           (edges[i+2].y0 < edges[i+2].y1))) {
-        DrawHLine(edges[i].x0, yy, edges[i+2].x0 - edges[i].x0 + 1, c);
-        i += 3;
-      } else {
-        DrawHLine(edges[i].x0, yy, edges[i+1].x0 - edges[i].x0 + 1, c);
-        i += 2;
+    bool isdot = (yy == edges[l].y1);
+    unsigned int i = l + 1;
+    while ((i < m) && (edges[i].y0 == yy)) {
+      if (!(isdot && (xx == edges[i].x0) && (yy < edges[i].y1))) {
+        draw = !draw;
       }
+      if (draw) {
+        DrawHLine(xx, yy, edges[i].x0 - xx + 1, c);
+      }
+      xx = edges[i].x0;
+      isdot = (yy == edges[i].y1);
+      i++;
     }
     i = l;
     while ((i < m) && (edges[i].y0 == yy)) {
       if (edges[i].y1 > yy) {
         edges[i].y0++;
       }
-      // TODO: implement without floats
-      edges[i].x0 = edges[i].x1 - (int)(((float)edges[i].dx * (float)(edges[i].y1 - edges[i].y0)/(float)edges[i].dy) - 0.5);
+      edges[i].x0 = edges[i].x1 - (int)(((float)(edges[i].y1 - edges[i].y0) * edges[i].dxdy) - 0.5);
       i++;
     }
     SortEdges(edges, m);

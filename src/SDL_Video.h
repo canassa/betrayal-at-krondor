@@ -33,8 +33,7 @@ typedef struct _PolygonEdge {
   int y0;
   int x1;
   int y1;
-  int dx;
-  int dy;
+  float dxdy;
 } PolygonEdge;
 
 class SDL_Video
