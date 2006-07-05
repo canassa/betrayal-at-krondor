@@ -16,6 +16,7 @@ noinst_HEADERS = AnimationResource.h \
                  FontResource.h \
                  Game.h \
                  GameApplication.h \
+                 GameResource.h \
                  GameState.h \
                  GenericResourceFile.h \
                  Image.h \
@@ -63,6 +64,7 @@ bin_PROGRAMS = dumpads \
                dumpbok \
                dumpddx \
                dumpfnt \
+               dumpgam \
                dumplbl \
                dumppal \
                dumpreq \
@@ -179,6 +181,26 @@ dumpfnt_SOURCES = Exception.cc \
                   TaggedResource.cc \
                   TaggedResource.h \
                   dumpfnt.cc
+dumpgam_SOURCES = Exception.cc \
+                  Exception.h \
+                  FileBuffer.cc \
+                  FileBuffer.h \
+                  GameResource.cc \
+                  GameResource.h \
+                  GenericResourceFile.cc \
+                  GenericResourceFile.h \
+                  Resource.h \
+                  ResourceArchive.cc \
+                  ResourceArchive.h \
+                  ResourceIndex.cc \
+                  ResourceIndex.h \
+                  ResourceManager.cc \
+                  ResourceManager.h \
+                  ResourcePath.cc \
+                  ResourcePath.h \
+                  ResourceTag.cc \
+                  ResourceTag.h \
+                  dumpgam.cc
 dumplbl_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
@@ -460,6 +482,8 @@ xbak_SOURCES = AnimationResource.cc \
                Game.h \
                GameApplication.cc \
                GameApplication.h \
+               GameResource.cc \
+               GameResource.h \
                GameState.cc \
                GameState.h \
                GenericResourceFile.cc \
