@@ -29,10 +29,15 @@ GenericResourceFile::~GenericResourceFile() {
 
 void
 GenericResourceFile::Open(const std::string &name) {
-  std::string filename = ResourcePath::GetInstance()->GetPath() + name;
+  std::string filename = ResourcePath::GetInstance()->GetOverridePath() + name;
   ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
   if (ifs.fail()) {
-    throw OpenError("GenericResourceFile::Open(" + filename + ")");
+    ifs.clear();
+    filename = ResourcePath::GetInstance()->GetPath() + name;
+    ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
+    if (ifs.fail()) {
+      throw OpenError("GenericResourceFile::Open(" + filename + ")");
+    }
   }
 }
 
