@@ -18,7 +18,7 @@
  */
 
 #include "Exception.h"
-#include "GenericResourceFile.h"
+#include "ResourceFile.h"
 #include "ResourceManager.h"
 
 ResourceManager* ResourceManager::instance = 0;
@@ -56,12 +56,12 @@ FileBuffer*
 ResourceManager::LoadResource(const std::string &name)
 {
   try {
-    GenericResourceFile grf;
-    grf.Open(name);
-    FileBuffer *buffer = new FileBuffer(grf.Size());
-    grf.Seek(0);
-    grf.Load(*buffer);
-    grf.Close();
+    ResourceFile resfile;
+    resfile.Open(name);
+    FileBuffer *buffer = new FileBuffer(resfile.Size());
+    resfile.Seek(0);
+    resfile.Load(*buffer);
+    resfile.Close();
     return buffer;
   } catch (Exception &e1) {
     ResourceIndexData resIdxData = {0, 0};

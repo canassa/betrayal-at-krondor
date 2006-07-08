@@ -17,27 +17,24 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#include "Exception.h"
-#include "ResourceArchive.h"
+#ifndef RESOURCE_FILE_H
+#define RESOURCE_FILE_H
 
-ResourceArchive::ResourceArchive()
-: ResourceFile()
-{
-}
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
-ResourceArchive::~ResourceArchive()
-{
-}
+#include "GenericFile.h"
 
-void
-ResourceArchive::LoadResource(FileBuffer &buffer, const std::streamoff offset)
-{
-  try {
-    Seek(offset);
-    Load(buffer);
-  } catch (Exception &e) {
-    e.Print("ResourceArchive::LoadResource");
-    throw;
-  }
-}
+class ResourceFile
+: public GenericFile {
+  private:
+    std::ifstream ifs;
+  public:
+    ResourceFile();
+    virtual ~ResourceFile();
+    std::string GetDefaultPath() const;
+    std::string GetAlternatePath() const;
+};
 
+#endif

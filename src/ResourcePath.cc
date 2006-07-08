@@ -104,14 +104,15 @@ ResourcePath::GetOverridePath() const
   return override;
 }
 
-void ResourcePath::SetPath(const std::string &s)
+void
+ResourcePath::SetPath(const std::string &s)
 {
   path = s;
   override = path + DEFAULT_OVERRIDE;
 }
 
-void ResourcePath::SetOverridePath(const std::string &s)
+void
+ResourcePath::SetOverridePath(const std::string &s)
 {
   override = s;
 }
-

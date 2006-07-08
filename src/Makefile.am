@@ -18,7 +18,7 @@ noinst_HEADERS = AnimationResource.h \
                  GameApplication.h \
                  GameResource.h \
                  GameState.h \
-                 GenericResourceFile.h \
+                 GenericFile.h \
                  Image.h \
                  ImageButtonWidget.h \
                  ImageResource.h \
@@ -39,6 +39,7 @@ noinst_HEADERS = AnimationResource.h \
                  RequestResource.h \
                  Resource.h \
                  ResourceArchive.h \
+                 ResourceFile.h \
                  ResourceIndex.h \
                  ResourceManager.h \
                  ResourcePath.h \
@@ -81,11 +82,13 @@ dumpads_SOURCES = AnimationResource.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
-                  GenericResourceFile.cc \
-                  GenericResourceFile.h \
+                  GenericFile.cc \
+                  GenericFile.h \
                   Resource.h \
                   ResourceArchive.cc \
                   ResourceArchive.h \
+                  ResourceFile.cc \
+                  ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
                   ResourceManager.cc \
@@ -101,8 +104,8 @@ dumpbmx_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
-                  GenericResourceFile.cc \
-                  GenericResourceFile.h \
+                  GenericFile.cc \
+                  GenericFile.h \
                   Image.cc \
                   Image.h \
                   ImageResource.cc \
@@ -110,6 +113,8 @@ dumpbmx_SOURCES = Exception.cc \
                   Resource.h \
                   ResourceArchive.cc \
                   ResourceArchive.h \
+                  ResourceFile.cc \
+                  ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
                   ResourceManager.cc \
@@ -125,11 +130,13 @@ dumpbok_SOURCES = BookResource.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
-                  GenericResourceFile.cc \
-                  GenericResourceFile.h \
+                  GenericFile.cc \
+                  GenericFile.h \
                   Resource.h \
                   ResourceArchive.cc \
                   ResourceArchive.h \
+                  ResourceFile.cc \
+                  ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
                   ResourceManager.cc \
@@ -145,11 +152,13 @@ dumpddx_SOURCES = DialogResource.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
-                  GenericResourceFile.cc \
-                  GenericResourceFile.h \
+                  GenericFile.cc \
+                  GenericFile.h \
                   Resource.h \
                   ResourceArchive.cc \
                   ResourceArchive.h \
+                  ResourceFile.cc \
+                  ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
                   ResourceManager.cc \
@@ -165,11 +174,13 @@ dumpfnt_SOURCES = Exception.cc \
                   FileBuffer.h \
                   FontResource.cc \
                   FontResource.h \
-                  GenericResourceFile.cc \
-                  GenericResourceFile.h \
+                  GenericFile.cc \
+                  GenericFile.h \
                   Resource.h \
                   ResourceArchive.cc \
                   ResourceArchive.h \
+                  ResourceFile.cc \
+                  ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
                   ResourceManager.cc \
@@ -187,11 +198,13 @@ dumpgam_SOURCES = Exception.cc \
                   FileBuffer.h \
                   GameResource.cc \
                   GameResource.h \
-                  GenericResourceFile.cc \
-                  GenericResourceFile.h \
+                  GenericFile.cc \
+                  GenericFile.h \
                   Resource.h \
                   ResourceArchive.cc \
                   ResourceArchive.h \
+                  ResourceFile.cc \
+                  ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
                   ResourceManager.cc \
@@ -205,13 +218,15 @@ dumplbl_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
-                  GenericResourceFile.cc \
-                  GenericResourceFile.h \
+                  GenericFile.cc \
+                  GenericFile.h \
                   LabelResource.cc \
                   LabelResource.h \
                   Resource.h \
                   ResourceArchive.cc \
                   ResourceArchive.h \
+                  ResourceFile.cc \
+                  ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
                   ResourceManager.cc \
@@ -225,8 +240,8 @@ dumppal_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
-                  GenericResourceFile.cc \
-                  GenericResourceFile.h \
+                  GenericFile.cc \
+                  GenericFile.h \
                   MediaToolkit.cc \
                   MediaToolkit.h \
                   PaletteResource.cc \
@@ -234,6 +249,8 @@ dumppal_SOURCES = Exception.cc \
                   Resource.h \
                   ResourceArchive.cc \
                   ResourceArchive.h \
+                  ResourceFile.cc \
+                  ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
                   ResourceManager.cc \
@@ -249,13 +266,15 @@ dumpreq_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
-                  GenericResourceFile.cc \
-                  GenericResourceFile.h \
+                  GenericFile.cc \
+                  GenericFile.h \
                   RequestResource.cc \
                   RequestResource.h \
                   Resource.h \
                   ResourceArchive.cc \
                   ResourceArchive.h \
+                  ResourceFile.cc \
+                  ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
                   ResourceManager.cc \
@@ -269,13 +288,15 @@ dumpscx_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
-                  GenericResourceFile.cc \
-                  GenericResourceFile.h \
+                  GenericFile.cc \
+                  GenericFile.h \
                   Image.cc \
                   Image.h \
                   Resource.h \
                   ResourceArchive.cc \
                   ResourceArchive.h \
+                  ResourceFile.cc \
+                  ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
                   ResourceManager.cc \
@@ -291,11 +312,13 @@ dumpsnd_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
-                  GenericResourceFile.cc \
-                  GenericResourceFile.h \
+                  GenericFile.cc \
+                  GenericFile.h \
                   Resource.h \
                   ResourceArchive.cc \
                   ResourceArchive.h \
+                  ResourceFile.cc \
+                  ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
                   ResourceManager.cc \
@@ -313,11 +336,13 @@ dumptbl_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
-                  GenericResourceFile.cc \
-                  GenericResourceFile.h \
+                  GenericFile.cc \
+                  GenericFile.h \
                   Resource.h \
                   ResourceArchive.cc \
                   ResourceArchive.h \
+                  ResourceFile.cc \
+                  ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
                   ResourceManager.cc \
@@ -335,13 +360,15 @@ dumpttm_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
-                  GenericResourceFile.cc \
-                  GenericResourceFile.h \
+                  GenericFile.cc \
+                  GenericFile.h \
                   MovieResource.cc \
                   MovieResource.h \
                   Resource.h \
                   ResourceArchive.cc \
                   ResourceArchive.h \
+                  ResourceFile.cc \
+                  ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
                   ResourceManager.cc \
@@ -357,11 +384,13 @@ dumpwld_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
-                  GenericResourceFile.cc \
-                  GenericResourceFile.h \
+                  GenericFile.cc \
+                  GenericFile.h \
                   Resource.h \
                   ResourceArchive.cc \
                   ResourceArchive.h \
+                  ResourceFile.cc \
+                  ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
                   ResourceManager.cc \
@@ -388,8 +417,8 @@ viewres_SOURCES = AnimationResource.cc \
                   FileBuffer.h \
                   FontResource.cc \
                   FontResource.h \
-                  GenericResourceFile.cc \
-                  GenericResourceFile.h \
+                  GenericFile.cc \
+                  GenericFile.h \
                   Image.cc \
                   Image.h \
                   ImageResource.cc \
@@ -415,6 +444,8 @@ viewres_SOURCES = AnimationResource.cc \
                   Resource.h \
                   ResourceArchive.cc \
                   ResourceArchive.h \
+                  ResourceFile.cc \
+                  ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
                   ResourceManager.cc \
@@ -486,8 +517,8 @@ xbak_SOURCES = AnimationResource.cc \
                GameResource.h \
                GameState.cc \
                GameState.h \
-               GenericResourceFile.cc \
-               GenericResourceFile.h \
+               GenericFile.cc \
+               GenericFile.h \
                Image.cc \
                Image.h \
                ImageButtonWidget.cc \
@@ -527,6 +558,8 @@ xbak_SOURCES = AnimationResource.cc \
                Resource.h \
                ResourceArchive.cc \
                ResourceArchive.h \
+               ResourceFile.cc \
+               ResourceFile.h \
                ResourceIndex.cc \
                ResourceIndex.h \
                ResourceManager.cc \

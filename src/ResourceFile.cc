@@ -17,27 +17,24 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef GENERIC_RESOURCE_FILE_H
-#define GENERIC_RESOURCE_FILE_H
+#include "Exception.h"
+#include "ResourceFile.h"
+#include "ResourcePath.h"
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+ResourceFile::ResourceFile() {
+}
 
-#include "FileBuffer.h"
+ResourceFile::~ResourceFile() {
+}
 
-class GenericResourceFile {
-  private:
-    std::ifstream ifs;
-  public:
-    GenericResourceFile();
-    virtual ~GenericResourceFile();
-    void Open(const std::string &name);
-    void Close();
-    void Seek(const std::streamoff offset);
-    void SeekEnd(const std::streamoff offset);
-    std::streamsize Size();
-    void Load(FileBuffer &buffer);
-};
+std::string
+ResourceFile::GetDefaultPath() const
+{
+  return ResourcePath::GetInstance()->GetPath();
+}
 
-#endif
+std::string
+ResourceFile::GetAlternatePath() const
+{
+  return ResourcePath::GetInstance()->GetOverridePath();
+}

@@ -18,62 +18,74 @@
  */
 
 #include "Exception.h"
-#include "GenericResourceFile.h"
+#include "GenericFile.h"
 #include "ResourcePath.h"
 
-GenericResourceFile::GenericResourceFile() {
+GenericFile::GenericFile() {
 }
 
-GenericResourceFile::~GenericResourceFile() {
+GenericFile::~GenericFile() {
+}
+
+std::string
+GenericFile::GetDefaultPath() const
+{
+  return std::string("");
+}
+
+std::string
+GenericFile::GetAlternatePath() const
+{
+  return std::string("");
 }
 
 void
-GenericResourceFile::Open(const std::string &name) {
-  std::string filename = ResourcePath::GetInstance()->GetOverridePath() + name;
+GenericFile::Open(const std::string &name) {
+  std::string filename = GetDefaultPath() + name;
   ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
   if (ifs.fail()) {
     ifs.clear();
-    filename = ResourcePath::GetInstance()->GetPath() + name;
+    filename = GetAlternatePath() + name;
     ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
     if (ifs.fail()) {
-      throw OpenError("GenericResourceFile::Open(" + filename + ")");
+      throw OpenError("GenericFile::Open(" + filename + ")");
     }
   }
 }
 
 void
-GenericResourceFile::Close() {
+GenericFile::Close() {
   if (ifs.is_open()) {
     ifs.close();
   }
 }
 
 void
-GenericResourceFile::Seek(const std::streamoff offset) {
+GenericFile::Seek(const std::streamoff offset) {
   if (ifs.is_open()) {
     ifs.seekg(offset, std::ios::beg);
     if (ifs.fail()) {
-      throw IOError("GenericResourceFile::Seek");
+      throw IOError("GenericFile::Seek");
     }
   }
 }
 
 void
-GenericResourceFile::SeekEnd(const std::streamoff offset) {
+GenericFile::SeekEnd(const std::streamoff offset) {
   if (ifs.is_open()) {
     ifs.seekg(offset, std::ios::end);
     if (ifs.fail()) {
-      throw IOError("GenericResourceFile::SeekEnd");
+      throw IOError("GenericFile::SeekEnd");
     }
   }
 }
 
 std::streamsize
-GenericResourceFile::Size() {
+GenericFile::Size() {
   if (ifs.is_open()) {
     ifs.seekg(0, std::ios::end);
     if (ifs.fail()) {
-      throw IOError("GenericResourceFile::Size");
+      throw IOError("GenericFile::Size");
     }
     return ifs.tellg();
   }
@@ -81,12 +93,12 @@ GenericResourceFile::Size() {
 }
 
 void
-GenericResourceFile::Load(FileBuffer &buffer)
+GenericFile::Load(FileBuffer &buffer)
 {
   try {
     buffer.Load(ifs);
   } catch (Exception &e) {
-    e.Print("GenericResourceFile::Load");
+    e.Print("GenericFile::Load");
     throw;
   }
 }

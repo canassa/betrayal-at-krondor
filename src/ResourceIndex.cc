@@ -18,7 +18,6 @@
  */
 
 #include "Exception.h"
-#include "GenericResourceFile.h"
 #include "ResourceArchive.h"
 #include "ResourceIndex.h"
 
@@ -37,7 +36,7 @@ void
 ResourceIndex::Init(const std::string &filename)
 {
   try {
-    GenericResourceFile rmf;
+    ResourceFile rmf;
     rmf.Open(filename);
     FileBuffer rmfBuffer(rmf.Size());
     rmf.Seek(0);
@@ -49,7 +48,7 @@ ResourceIndex::Init(const std::string &filename)
     resourceFilename = rmfBuffer.GetString(RES_FILENAME_LEN);
     numResources = rmfBuffer.GetUint16();
 
-    GenericResourceFile res;
+    ResourceFile res;
     res.Open(resourceFilename);
     FileBuffer resBuffer(RES_FILENAME_LEN + 4);
     for (unsigned int i = 0; i < numResources; i++) {

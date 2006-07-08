@@ -24,11 +24,12 @@
 #include "config.h"
 #endif
 
-#include "GenericResourceFile.h"
+#include "ResourceFile.h"
 
 #define RES_FILENAME_LEN 13
 
-class ResourceArchive: public GenericResourceFile {
+class ResourceArchive
+: public ResourceFile {
   public:
     ResourceArchive();
     virtual ~ResourceArchive();
