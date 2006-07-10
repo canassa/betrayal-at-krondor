@@ -24,6 +24,7 @@
 #include "Exception.h"
 #include "FontResource.h"
 #include "GameApplication.h"
+#include "GamePath.h"
 #include "MousePointerManager.h"
 #include "MoviePlayer.h"
 #include "MovieResource.h"
@@ -50,6 +51,7 @@ GameApplication::GameApplication()
   mediaToolkit->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
   mediaToolkit->GetVideo()->Clear();
   game = new Game();
+  GamePath::GetInstance();
 
   PaletteResource pal;
   pal.Fill();
@@ -78,6 +80,7 @@ GameApplication::~GameApplication()
   delete mediaToolkit;
   ResourceManager::CleanUp();
   ResourcePath::CleanUp();
+  GamePath::CleanUp();
 }
 
 GameApplication*
