@@ -17,8 +17,8 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef RESOURCE_FILE_H
-#define RESOURCE_FILE_H
+#ifndef GAME_FILE_H
+#define GAME_FILE_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -26,11 +26,11 @@
 
 #include "GenericFile.h"
 
-class ResourceFile
+class GameFile
 : public GenericFile {
   public:
-    ResourceFile();
-    virtual ~ResourceFile();
+    GameFile();
+    virtual ~GameFile();
     std::string GetDefaultPath() const;
     std::string GetAlternatePath() const;
 };

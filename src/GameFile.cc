@@ -17,22 +17,24 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef RESOURCE_FILE_H
-#define RESOURCE_FILE_H
+#include "Exception.h"
+#include "GameFile.h"
+#include "GamePath.h"
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+GameFile::GameFile() {
+}
 
-#include "GenericFile.h"
+GameFile::~GameFile() {
+}
 
-class ResourceFile
-: public GenericFile {
-  public:
-    ResourceFile();
-    virtual ~ResourceFile();
-    std::string GetDefaultPath() const;
-    std::string GetAlternatePath() const;
-};
+std::string
+GameFile::GetDefaultPath() const
+{
+  return GamePath::GetInstance()->GetPath();
+}
 
-#endif
+std::string
+GameFile::GetAlternatePath() const
+{
+  return GamePath::GetInstance()->GetOriginalPath();
+}

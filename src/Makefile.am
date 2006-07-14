@@ -16,6 +16,7 @@ noinst_HEADERS = AnimationResource.h \
                  FontResource.h \
                  Game.h \
                  GameApplication.h \
+                 GameFile.h \
                  GamePath.h \
                  GameResource.h \
                  GameState.h \
@@ -514,6 +515,8 @@ xbak_SOURCES = AnimationResource.cc \
                Game.h \
                GameApplication.cc \
                GameApplication.h \
+               GameFile.cc \
+               GameFile.h \
                GamePath.cc \
                GamePath.h \
                GameResource.cc \
