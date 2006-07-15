@@ -39,6 +39,12 @@ GenericFile::GetAlternatePath() const
   return std::string("");
 }
 
+std::string
+GenericFile::GetLastResortPath() const
+{
+  return std::string("");
+}
+
 void
 GenericFile::Open(const std::string &name) {
   std::string filename = GetDefaultPath() + name;
@@ -48,7 +54,12 @@ GenericFile::Open(const std::string &name) {
     filename = GetAlternatePath() + name;
     ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
     if (ifs.fail()) {
-      throw OpenError("GenericFile::Open(" + filename + ")");
+      ifs.clear();
+      filename = GetLastResortPath() + name;
+      ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
+      if (ifs.fail()) {
+        throw OpenError("GenericFile::Open(" + filename + ")");
+      }
     }
   }
 }

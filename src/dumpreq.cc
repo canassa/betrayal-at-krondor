@@ -20,7 +20,7 @@
 #include <iostream>
 
 #include "Exception.h"
-#include "ResourceManager.h"
+#include "FileManager.h"
 #include "ResourcePath.h"
 #include "RequestResource.h"
 
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     RequestResource *req = new RequestResource;
-    ResourceManager::GetInstance()->Load(req, argv[1]);
+    FileManager::GetInstance()->Load(req, argv[1]);
     printf("%5s %3d %3d %3d %3d %3d %3d\n", (req->IsPopup() ? "true" : "false"),
            req->GetXPos(), req->GetYPos(), req->GetWidth(), req->GetHeight(), req->GetXOff(), req->GetYOff());
     for (unsigned int i = 0; i < req->GetSize(); i++) {
@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
              data.teleport, data.image, data.special, (data.visible ? "true" : "false"), data.label.c_str());
     }
     delete req;
-    ResourceManager::CleanUp();
+    FileManager::CleanUp();
     ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");

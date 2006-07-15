@@ -19,9 +19,9 @@
 
 #include <iostream>
 
-#include "Exception.h"
 #include "AnimationResource.h"
-#include "ResourceManager.h"
+#include "Exception.h"
+#include "FileManager.h"
 #include "ResourcePath.h"
 
 int main(int argc, char *argv[]) {
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     AnimationResource *anim = new AnimationResource;
-    ResourceManager::GetInstance()->Load(anim, argv[1]);
+    FileManager::GetInstance()->Load(anim, argv[1]);
     AnimationData data = anim->GetAnimationData(1);
     printf("%s %s %s\n", anim->GetVersion().c_str(), data.name.c_str(), data.resource.c_str());
     FileBuffer *scr = anim->GetScript();
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
       printf("\n");
     }
     delete anim;
-    ResourceManager::CleanUp();
+    FileManager::CleanUp();
     ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");

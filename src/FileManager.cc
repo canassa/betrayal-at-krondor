@@ -18,33 +18,34 @@
  */
 
 #include "Exception.h"
+#include "FileManager.h"
+#include "GameFile.h"
 #include "ResourceFile.h"
-#include "ResourceManager.h"
 
-ResourceManager* ResourceManager::instance = 0;
+FileManager* FileManager::instance = 0;
 
-ResourceManager::ResourceManager()
+FileManager::FileManager()
 {
   resIndex.Init("krondor.rmf");
   resArchive.Open(resIndex.GetResourceFilename());
 }
 
-ResourceManager::~ResourceManager()
+FileManager::~FileManager()
 {
   resArchive.Close();
 }
 
-ResourceManager*
-ResourceManager::GetInstance()
+FileManager*
+FileManager::GetInstance()
 {
   if (!instance) {
-    instance = new ResourceManager();
+    instance = new FileManager();
   }
   return instance;
 }
 
 void
-ResourceManager::CleanUp()
+FileManager::CleanUp()
 {
   if (instance) {
     delete instance;
@@ -53,7 +54,24 @@ ResourceManager::CleanUp()
 }
 
 FileBuffer*
-ResourceManager::LoadResource(const std::string &name)
+FileManager::LoadGame(const std::string &name)
+{
+  try {
+    GameFile gamfile;
+    gamfile.Open(name);
+    FileBuffer *buffer = new FileBuffer(gamfile.Size());
+    gamfile.Seek(0);
+    gamfile.Load(*buffer);
+    gamfile.Close();
+    return buffer;
+  } catch (Exception &e) {
+    throw FileNotFound("FileManager::LoadGame(" + name + ")");
+  }
+  return 0;
+}
+
+FileBuffer*
+FileManager::LoadResource(const std::string &name)
 {
   try {
     ResourceFile resfile;
@@ -71,18 +89,32 @@ ResourceManager::LoadResource(const std::string &name)
         resArchive.LoadResource(*buffer, resIdxData.offset);
         return buffer;
       } catch (Exception &e2) {
-        e2.Print("ResourceManager::LoadResource");
+        e2.Print("FileManager::LoadResource");
         throw;
       }
     } else {
-      throw FileNotFound("ResourceManager::LoadResource(" + name + ")");
+      throw FileNotFound("FileManager::LoadResource(" + name + ")");
     }
   }
   return 0;
 }
 
 void
-ResourceManager::Load(Resource *res, const std::string &name)
+FileManager::Load(GameData *gam, const std::string &name)
+{
+  try {
+    FileBuffer *buffer;
+    buffer = LoadGame(name);
+    gam->Load(buffer);
+    delete buffer;
+  } catch (Exception &e) {
+    e.Print("FileManager::Load");
+    throw;
+  }
+}
+
+void
+FileManager::Load(Resource *res, const std::string &name)
 {
   try {
     FileBuffer *buffer;
@@ -90,7 +122,7 @@ ResourceManager::Load(Resource *res, const std::string &name)
     res->Load(buffer);
     delete buffer;
   } catch (Exception &e) {
-    e.Print("ResourceManager::Load");
+    e.Print("FileManager::Load");
     throw;
   }
 }

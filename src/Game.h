@@ -30,13 +30,16 @@
 
 class Game {
   private:
+    std::string name;
     Party *party;
     PartyResource partyRes;
     ImageResource heads;
   public:
     Game();
     ~Game();
+    std::string& GetName();
     Party* GetParty();
+    void Load(FileBuffer *buffer);
 };
 
 #endif

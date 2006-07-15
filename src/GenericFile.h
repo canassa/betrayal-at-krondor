@@ -34,6 +34,7 @@ class GenericFile {
     virtual ~GenericFile();
     virtual std::string GetDefaultPath() const;
     virtual std::string GetAlternatePath() const;
+    virtual std::string GetLastResortPath() const;
     void Open(const std::string &name);
     void Close();
     void Seek(const std::streamoff offset);

@@ -18,9 +18,9 @@
  */
 
 #include "Exception.h"
+#include "FileManager.h"
 #include "MousePointerManager.h"
 #include "MoviePlayer.h"
-#include "ResourceManager.h"
 #include "ResourcePath.h"
 #include "SDL_Toolkit.h"
 #include "TestApplication.h"
@@ -51,7 +51,7 @@ TestApplication::~TestApplication()
   mediaToolkit->RemoveTimerListener(this);
   MousePointerManager::CleanUp();
   delete mediaToolkit;
-  ResourceManager::CleanUp();
+  FileManager::CleanUp();
   ResourcePath::CleanUp();
 }
 
@@ -88,7 +88,7 @@ void
 TestApplication::ActivatePalette(const std::string& name)
 {
   try {
-    ResourceManager::GetInstance()->Load(&pal, name);
+    FileManager::GetInstance()->Load(&pal, name);
     pal.Activate(mediaToolkit->GetVideo(), 0, 256);
   } catch (Exception &e) {
     e.Print("TestApplication::ActivatePalette");
@@ -99,7 +99,7 @@ void
 TestApplication::ShowImage(const std::string& name)
 {
   try {
-    ResourceManager::GetInstance()->Load(&img, name);
+    FileManager::GetInstance()->Load(&img, name);
     for (unsigned int i = 0; i < img.GetNumImages(); i++) {
       mediaToolkit->GetVideo()->Clear();
       img.GetImage(i)->Draw(mediaToolkit->GetVideo(), 0, 0);
@@ -117,7 +117,7 @@ void
 TestApplication::ShowScreen(const std::string& name)
 {
   try {
-    ResourceManager::GetInstance()->Load(&scr, name);
+    FileManager::GetInstance()->Load(&scr, name);
     mediaToolkit->GetVideo()->Clear();
     scr.GetImage()->Draw(mediaToolkit->GetVideo(), 0, 0);
     mediaToolkit->GetVideo()->Refresh();
@@ -134,7 +134,7 @@ void
 TestApplication::DrawFont(const std::string& name)
 {
   try {
-    ResourceManager::GetInstance()->Load(&fnt, name);
+    FileManager::GetInstance()->Load(&fnt, name);
     mediaToolkit->GetVideo()->Clear();
     TextArea ta1(280, 180, fnt);
     ta1.SetText("The quick brown fox jumped over the lazy dog.");
@@ -157,7 +157,7 @@ void
 TestApplication::PlayMovie(const std::string& name)
 {
   try {
-    ResourceManager::GetInstance()->Load(&ttm, name);
+    FileManager::GetInstance()->Load(&ttm, name);
     MoviePlayer moviePlayer(mediaToolkit);
     moviePlayer.Play(&ttm.GetMovieTags(), false);
   } catch (Exception &e) {
@@ -169,8 +169,8 @@ void
 TestApplication::WalkWorld(const std::string& zone, const std::string& tile)
 {
   try {
-    ResourceManager::GetInstance()->Load(&img, "Z" + zone + "H.BMX");
-    ResourceManager::GetInstance()->Load(&wld, "T" + zone + tile + ".WLD");
+    FileManager::GetInstance()->Load(&img, "Z" + zone + "H.BMX");
+    FileManager::GetInstance()->Load(&wld, "T" + zone + tile + ".WLD");
     mediaToolkit->GetVideo()->DrawLine(10, 10, 200, 150, 1);
     mediaToolkit->GetVideo()->DrawLine(240, 20, 20, 160, 2);
     mediaToolkit->GetVideo()->DrawLine(300, 180, 190, 30, 3);

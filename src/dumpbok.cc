@@ -19,9 +19,9 @@
 
 #include <iostream>
 
-#include "Exception.h"
 #include "BookResource.h"
-#include "ResourceManager.h"
+#include "Exception.h"
+#include "FileManager.h"
 #include "ResourcePath.h"
 
 int main(int argc, char *argv[]) {
@@ -31,12 +31,12 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     BookResource *bok = new BookResource;
-    ResourceManager::GetInstance()->Load(bok, argv[1]);
+    FileManager::GetInstance()->Load(bok, argv[1]);
     for (unsigned int i = 0; i < bok->GetNumParagraphs(); i++) {
       std::cout << i << ": " << bok->GetParagraph(i)<< std::endl;
     }
     delete bok;
-    ResourceManager::CleanUp();
+    FileManager::CleanUp();
     ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");

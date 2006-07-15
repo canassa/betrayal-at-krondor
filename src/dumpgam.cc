@@ -20,9 +20,9 @@
 #include <iostream>
 
 #include "Exception.h"
-#include "GameResource.h"
-#include "ResourceManager.h"
-#include "ResourcePath.h"
+#include "FileManager.h"
+#include "GameData.h"
+#include "GamePath.h"
 
 int main(int argc, char *argv[]) {
   try {
@@ -30,12 +30,12 @@ int main(int argc, char *argv[]) {
       std::cerr << "Usage: " << argv[0] << " <GAM-file>" << std::endl;
       return 1;
     }
-    GameResource *gam = new GameResource;
-    ResourceManager::GetInstance()->Load(gam, argv[1]);
+    GameData *gam = new GameData;
+    FileManager::GetInstance()->Load(gam, argv[1]);
     printf("%s\n", gam->GetName().c_str());
     delete gam;
-    ResourceManager::CleanUp();
-    ResourcePath::CleanUp();
+    FileManager::CleanUp();
+    GamePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

@@ -20,8 +20,8 @@
 #include <iostream>
 
 #include "Exception.h"
+#include "FileManager.h"
 #include "ImageResource.h"
-#include "ResourceManager.h"
 #include "ResourcePath.h"
 
 int main(int argc, char *argv[]) {
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     ImageResource *bmx = new ImageResource;
-    ResourceManager::GetInstance()->Load(bmx, argv[1]);
+    FileManager::GetInstance()->Load(bmx, argv[1]);
     for (unsigned int i = 0; i < bmx->GetNumImages(); i++) {
       Image *image = bmx->GetImage(i);
       printf("%2d  %dx%d\n", i, image->GetWidth(), image->GetHeight());
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
       }
     }
     delete bmx;
-    ResourceManager::CleanUp();
+    FileManager::CleanUp();
     ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");

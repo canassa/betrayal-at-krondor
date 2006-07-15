@@ -19,7 +19,6 @@
 
 #include "ImageResource.h"
 #include "MousePointerManager.h"
-#include "ResourceManager.h"
 
 MousePointerManager* MousePointerManager::instance = 0;
 

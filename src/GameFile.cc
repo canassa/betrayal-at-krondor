@@ -38,3 +38,9 @@ GameFile::GetAlternatePath() const
 {
   return GamePath::GetInstance()->GetOriginalPath();
 }
+
+std::string
+GameFile::GetLastResortPath() const
+{
+  return GamePath::GetInstance()->GetResourcePath();
+}

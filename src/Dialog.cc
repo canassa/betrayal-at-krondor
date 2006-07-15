@@ -19,8 +19,8 @@
 
 #include "Exception.h"
 #include "Dialog.h"
+#include "FileManager.h"
 #include "MousePointerManager.h"
-#include "ResourceManager.h"
 #include "WidgetFactory.h"
 
 Dialog::Dialog(MediaToolkit *mtk)
@@ -87,7 +87,7 @@ Dialog::SetFont(const std::string &name)
       delete widgetRes.font;
     }
     widgetRes.font = new FontResource();
-    ResourceManager::GetInstance()->Load(widgetRes.font, name);
+    FileManager::GetInstance()->Load(widgetRes.font, name);
   } catch (Exception &e) {
     e.Print("Dialog::SetFont");
     throw;
@@ -102,7 +102,7 @@ Dialog::SetLabel(const std::string &name)
       delete widgetRes.label;
     }
     widgetRes.label = new LabelResource();
-    ResourceManager::GetInstance()->Load(widgetRes.label, name);
+    FileManager::GetInstance()->Load(widgetRes.label, name);
   } catch (Exception &e) {
     e.Print("Dialog::SetLabel");
     throw;
@@ -117,7 +117,7 @@ Dialog::SetPalette(const std::string &name)
       delete palette;
     }
     palette = new PaletteResource();
-    ResourceManager::GetInstance()->Load(palette, name);
+    FileManager::GetInstance()->Load(palette, name);
   } catch (Exception &e) {
     e.Print("Dialog::Setpalette");
     throw;
@@ -132,7 +132,7 @@ Dialog::SetScreen(const std::string &name)
       delete widgetRes.screen;
     }
     widgetRes.screen = new ScreenResource();
-    ResourceManager::GetInstance()->Load(widgetRes.screen, name);
+    FileManager::GetInstance()->Load(widgetRes.screen, name);
   } catch (Exception &e) {
     e.Print("Dialog::SetScreen");
     throw;
@@ -147,12 +147,12 @@ Dialog::SetIcons(const std::string &normalName, const std::string &pressedName)
       delete widgetRes.normal;
     }
     widgetRes.normal = new ImageResource();
-    ResourceManager::GetInstance()->Load(widgetRes.normal, normalName);
+    FileManager::GetInstance()->Load(widgetRes.normal, normalName);
     if (widgetRes.pressed) {
       delete widgetRes.pressed;
     }
     widgetRes.pressed = new ImageResource();
-    ResourceManager::GetInstance()->Load(widgetRes.pressed, pressedName);
+    FileManager::GetInstance()->Load(widgetRes.pressed, pressedName);
   } catch (Exception &e) {
     e.Print("Dialog::SetIcons");
     throw;
@@ -167,7 +167,7 @@ Dialog::SetHeads(const std::string &name)
       delete widgetRes.heads;
     }
     widgetRes.heads = new ImageResource();
-    ResourceManager::GetInstance()->Load(widgetRes.heads, name);
+    FileManager::GetInstance()->Load(widgetRes.heads, name);
   } catch (Exception &e) {
     e.Print("Dialog::SetIcons");
     throw;
@@ -182,7 +182,7 @@ Dialog::SetRequest(const std::string &name)
       delete widgetRes.request;
     }
     widgetRes.request = new RequestResource();
-    ResourceManager::GetInstance()->Load(widgetRes.request, name);
+    FileManager::GetInstance()->Load(widgetRes.request, name);
   } catch (Exception &e) {
     e.Print("Dialog::SetRequest");
     throw;

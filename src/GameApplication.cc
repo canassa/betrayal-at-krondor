@@ -22,6 +22,7 @@
 
 #include "AnimationResource.h"
 #include "Exception.h"
+#include "FileManager.h"
 #include "FontResource.h"
 #include "GameApplication.h"
 #include "GamePath.h"
@@ -29,7 +30,6 @@
 #include "MoviePlayer.h"
 #include "MovieResource.h"
 #include "PaletteResource.h"
-#include "ResourceManager.h"
 #include "ResourcePath.h"
 #include "ScreenResource.h"
 #include "SDL_Toolkit.h"
@@ -57,7 +57,7 @@ GameApplication::GameApplication()
   pal.Fill();
   pal.Activate(mediaToolkit->GetVideo(), 0, VIDEO_COLORS);
   FontResource fnt;
-  ResourceManager::GetInstance()->Load(&fnt, "GAME.FNT");
+  FileManager::GetInstance()->Load(&fnt, "GAME.FNT");
   TextArea ta(240, 16, fnt);
   ta.SetText("xBaK: Betrayal at Krondor  A fan-made remake");
   ta.SetColor(15);
@@ -78,7 +78,7 @@ GameApplication::~GameApplication()
   MousePointerManager::CleanUp();
   delete game;
   delete mediaToolkit;
-  ResourceManager::CleanUp();
+  FileManager::CleanUp();
   ResourcePath::CleanUp();
   GamePath::CleanUp();
 }
@@ -144,9 +144,9 @@ GameApplication::PlayIntro()
 {
   try {
     AnimationResource anim;
-    ResourceManager::GetInstance()->Load(&anim, "INTRO.ADS");
+    FileManager::GetInstance()->Load(&anim, "INTRO.ADS");
     MovieResource ttm;
-    ResourceManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
+    FileManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
     MoviePlayer moviePlayer(mediaToolkit);
     moviePlayer.Play(&ttm.GetMovieTags(), true);
   } catch (Exception &e) {

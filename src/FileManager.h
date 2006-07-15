@@ -17,24 +17,34 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef GAME_RESOURCE_H
-#define GAME_RESOURCE_H
+#ifndef FILE_MANAGER_H
+#define FILE_MANAGER_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
+#include "GameData.h"
 #include "Resource.h"
+#include "ResourceArchive.h"
+#include "ResourceIndex.h"
 
-class GameResource
-: public Resource {
+class FileManager {
   private:
-    std::string name;
+    ResourceIndex resIndex;
+    ResourceArchive resArchive;
+    FileBuffer* LoadGame(const std::string &name);
+    FileBuffer* LoadResource(const std::string &name);
+    static FileManager *instance;
+  protected:
+    FileManager();
   public:
-    GameResource();
-    virtual ~GameResource();
-    std::string& GetName();
-    void Load(FileBuffer *buffer);
+    ~FileManager();
+    static FileManager* GetInstance();
+    static void CleanUp();
+    void Load(GameData *gam, const std::string &name);
+    void Load(Resource *res, const std::string &name);
 };
 
 #endif
+

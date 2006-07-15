@@ -33,7 +33,8 @@ GamePath* GamePath::instance = 0;
 GamePath::GamePath()
 {
   path = DEFAULT_GAME_PATH;
-  original = ResourcePath::GetInstance()->GetPath() + "GAMES/";
+  original = ResourcePath::GetInstance()->GetPath() + "games/";
+  resource = ResourcePath::GetInstance()->GetPath();
 
   struct stat statbuf;
   if (stat(path.data(), &statbuf) == -1)
@@ -86,6 +87,12 @@ GamePath::GetOriginalPath() const
   return original;
 }
 
+std::string
+GamePath::GetResourcePath() const
+{
+  return resource;
+}
+
 void
 GamePath::SetPath(const std::string &s)
 {
@@ -96,4 +103,10 @@ void
 GamePath::SetOriginalPath(const std::string &s)
 {
   original = s;
+}
+
+void
+GamePath::SetResourcePath(const std::string &s)
+{
+  resource = s;
 }

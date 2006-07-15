@@ -18,9 +18,9 @@
  */
 
 #include "Exception.h"
+#include "FileManager.h"
 #include "MousePointerManager.h"
 #include "MoviePlayer.h"
-#include "ResourceManager.h"
 
 static const unsigned int SAVE_BACKGROUND   = 0x0020;
 static const unsigned int DRAW_BACKGROUND   = 0x0080;
@@ -268,7 +268,7 @@ MoviePlayer::Update(const UpdateEvent& ue) {
         }
         mt->name[mt->name.length() - 1] = 'X';
         screenSlot = new ScreenResource;
-        ResourceManager::GetInstance()->Load(screenSlot, mt->name);
+        FileManager::GetInstance()->Load(screenSlot, mt->name);
         screenSlot->GetImage()->Draw(media->GetVideo(), 0, 0);
         break;
       case LOAD_IMAGE:
@@ -277,14 +277,14 @@ MoviePlayer::Update(const UpdateEvent& ue) {
         }
         mt->name[mt->name.length() - 1] = 'X';
         imageSlot[currImage] = new ImageResource;
-        ResourceManager::GetInstance()->Load(imageSlot[currImage], mt->name);
+        FileManager::GetInstance()->Load(imageSlot[currImage], mt->name);
         break;
       case LOAD_PALETTE:
         if (paletteSlot[currPalette]) {
           delete paletteSlot[currPalette];
         }
         paletteSlot[currPalette] = new PaletteResource;
-        ResourceManager::GetInstance()->Load(paletteSlot[currPalette], mt->name);
+        FileManager::GetInstance()->Load(paletteSlot[currPalette], mt->name);
         paletteActivated = false;
         break;
       default:

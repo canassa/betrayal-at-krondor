@@ -19,8 +19,8 @@
 
 #include "Exception.h"
 #include "DialogWindow.h"
+#include "FileManager.h"
 #include "MousePointerManager.h"
-#include "ResourceManager.h"
 
 DialogWindow::DialogWindow(WidgetResources& widgetRes)
 : panel(0)

@@ -20,7 +20,7 @@
 #include <iostream>
 
 #include "Exception.h"
-#include "ResourceManager.h"
+#include "FileManager.h"
 #include "ResourcePath.h"
 #include "ZoneTableResource.h"
 
@@ -31,12 +31,12 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     ZoneTableResource *tbl = new ZoneTableResource;
-    ResourceManager::GetInstance()->Load(tbl, argv[1]);
+    FileManager::GetInstance()->Load(tbl, argv[1]);
     for (unsigned int i = 0; i < tbl->GetMapSize(); i++) {
       printf("%3d %s\n", i, tbl->GetMapItem(i).c_str());
     }
     delete tbl;
-    ResourceManager::CleanUp();
+    FileManager::CleanUp();
     ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");

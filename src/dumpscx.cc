@@ -20,7 +20,7 @@
 #include <iostream>
 
 #include "Exception.h"
-#include "ResourceManager.h"
+#include "FileManager.h"
 #include "ResourcePath.h"
 #include "ScreenResource.h"
 
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     ScreenResource *scx = new ScreenResource;
-    ResourceManager::GetInstance()->Load(scx, argv[1]);
+    FileManager::GetInstance()->Load(scx, argv[1]);
     Image *image = scx->GetImage();
     printf("%dx%d\n", image->GetWidth(), image->GetHeight());
     for (int y = 0; y < image->GetHeight(); y++) {
@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
       printf("\n");
     }
     delete scx;
-    ResourceManager::CleanUp();
+    FileManager::CleanUp();
     ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");

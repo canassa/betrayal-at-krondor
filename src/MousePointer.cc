@@ -21,8 +21,8 @@
 #include "config.h"
 #endif
 
+#include "FileManager.h"
 #include "MousePointer.h"
-#include "ResourceManager.h"
 
 MousePointer::MousePointer(const std::string &resname)
 : visible(false)
@@ -31,7 +31,7 @@ MousePointer::MousePointer(const std::string &resname)
 , pointerType(MP_SWORD)
 , pointerImages()
 {
-  ResourceManager::GetInstance()->Load(&pointerImages, resname);
+  FileManager::GetInstance()->Load(&pointerImages, resname);
 }
 
 MousePointer::~MousePointer()

@@ -20,8 +20,8 @@
 #include <iostream>
 
 #include "Exception.h"
+#include "FileManager.h"
 #include "PaletteResource.h"
-#include "ResourceManager.h"
 #include "ResourcePath.h"
 
 int main(int argc, char *argv[]) {
@@ -31,13 +31,13 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     PaletteResource *pal = new PaletteResource;
-    ResourceManager::GetInstance()->Load(pal, argv[1]);
+    FileManager::GetInstance()->Load(pal, argv[1]);
     Color *c = pal->GetColors();
     for (unsigned int i = 0; i < pal->GetSize(); i++) {
       printf("%3d #%02X%02X%02X\n", i, c[i].r, c[i].g, c[i].b);
     }
     delete pal;
-    ResourceManager::CleanUp();
+    FileManager::CleanUp();
     ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");

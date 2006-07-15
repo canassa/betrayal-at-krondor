@@ -17,31 +17,30 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef RESOURCE_MANAGER_H
-#define RESOURCE_MANAGER_H
+#include "Exception.h"
+#include "GameData.h"
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+GameData::GameData()
+: name("")
+{
+}
 
-#include "Resource.h"
-#include "ResourceArchive.h"
-#include "ResourceIndex.h"
+GameData::~GameData()
+{
+}
 
-class ResourceManager {
-  private:
-    ResourceIndex resIndex;
-    ResourceArchive resArchive;
-    FileBuffer* LoadResource(const std::string &name);
-    static ResourceManager *instance;
-  protected:
-    ResourceManager();
-  public:
-    ~ResourceManager();
-    static ResourceManager* GetInstance();
-    static void CleanUp();
-    void Load(Resource *res, const std::string &name);
-};
+std::string&
+GameData::GetName()
+{
+  return name;
+}
 
-#endif
-
+void
+GameData::Load(FileBuffer *buffer)
+{
+  try {
+    name = buffer->GetString();
+  } catch (Exception &e) {
+    e.Print("GameData::Load");
+  }
+}

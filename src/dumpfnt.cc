@@ -20,8 +20,8 @@
 #include <iostream>
 
 #include "Exception.h"
+#include "FileManager.h"
 #include "FontResource.h"
-#include "ResourceManager.h"
 #include "ResourcePath.h"
 
 int main(int argc, char *argv[]) {
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     FontResource *fnt = new FontResource;
-    ResourceManager::GetInstance()->Load(fnt, argv[1]);
+    FileManager::GetInstance()->Load(fnt, argv[1]);
     for (unsigned int i = 0; i < fnt->GetSize(); i++) {
       printf("%2d: '%c' (%d)\n", i, i + fnt->GetFirst(), fnt->GetWidth(i));
       FontGlyph *glyph = fnt->GetGlyph(i);
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
       }
     }
     delete fnt;
-    ResourceManager::CleanUp();
+    FileManager::CleanUp();
     ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");

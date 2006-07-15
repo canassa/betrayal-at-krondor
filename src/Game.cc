@@ -18,16 +18,17 @@
  */
 
 #include "Exception.h"
+#include "FileManager.h"
 #include "Game.h"
 #include "PlayerCharacter.h"
-#include "ResourceManager.h"
 
 Game::Game()
-: party(0)
+: name("")
+, party(0)
 {
   try {
-    ResourceManager::GetInstance()->Load(&partyRes, "PARTY.DAT");
-    ResourceManager::GetInstance()->Load(&heads, "HEADS.BMX");
+    FileManager::GetInstance()->Load(&partyRes, "PARTY.DAT");
+    FileManager::GetInstance()->Load(&heads, "HEADS.BMX");
     party = new Party();
     for (unsigned int i = 0; i < partyRes.GetSize(); i++) {
       PartyData *pd = partyRes.GetData(i);
@@ -51,8 +52,24 @@ Game::~Game()
   }
 }
 
+std::string&
+Game::GetName()
+{
+  return name;
+}
+
 Party *
 Game::GetParty()
 {
   return party;
+}
+
+void
+Game::Load(FileBuffer *buffer)
+{
+  try {
+    name = buffer->GetString();
+  } catch (Exception &e) {
+    e.Print("Game::Load");
+  }
 }

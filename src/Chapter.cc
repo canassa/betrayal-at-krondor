@@ -23,8 +23,8 @@
 #include "BookResource.h"
 #include "Chapter.h"
 #include "Exception.h"
+#include "FileManager.h"
 #include "MoviePlayer.h"
-#include "ResourceManager.h"
 
 Chapter::Chapter(MediaToolkit *mtk)
 : media(mtk)
@@ -49,9 +49,9 @@ Chapter::PlayIntro()
     AnimationResource anim;
     std::stringstream filenameStream;
     filenameStream << "CHAPTER" << number << ".ADS";
-    ResourceManager::GetInstance()->Load(&anim, filenameStream.str());
+    FileManager::GetInstance()->Load(&anim, filenameStream.str());
     MovieResource ttm;
-    ResourceManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
+    FileManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
     MoviePlayer moviePlayer(media);
     moviePlayer.Play(&ttm.GetMovieTags(), false);
   } catch (Exception &e) {
@@ -64,14 +64,14 @@ Chapter::PlayScene(const int scene)
 {
   try {
     ScreenResource scr;
-    ResourceManager::GetInstance()->Load(&scr, "CFRAME.SCX");
+    FileManager::GetInstance()->Load(&scr, "CFRAME.SCX");
     scr.GetImage()->Draw(media->GetVideo(), 0, 0);
     AnimationResource anim;
     std::stringstream filenameStream;
     filenameStream << "C" << number << scene << ".ADS";
-    ResourceManager::GetInstance()->Load(&anim, filenameStream.str());
+    FileManager::GetInstance()->Load(&anim, filenameStream.str());
     MovieResource ttm;
-    ResourceManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
+    FileManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
     MoviePlayer moviePlayer(media);
     moviePlayer.Play(&ttm.GetMovieTags(), false);
   } catch (Exception &e) {
@@ -86,7 +86,7 @@ Chapter::ReadBook(const int scene)
     BookResource bok;
     std::stringstream filenameStream;
     filenameStream << "C" << number << scene << ".BOK";
-    ResourceManager::GetInstance()->Load(&bok, filenameStream.str());
+    FileManager::GetInstance()->Load(&bok, filenameStream.str());
     media->AddKeyboardListener(this);
     media->AddTimerListener(this);
     media->RemoveTimerListener(this);
@@ -101,10 +101,10 @@ Chapter::ShowMap()
 {
   try {
     ScreenResource scr;
-    ResourceManager::GetInstance()->Load(&scr, "FULLMAP.SCX");
+    FileManager::GetInstance()->Load(&scr, "FULLMAP.SCX");
     scr.GetImage()->Draw(media->GetVideo(), 0, 0);
     PaletteResource pal;
-    ResourceManager::GetInstance()->Load(&pal, "FULLMAP.PAL");
+    FileManager::GetInstance()->Load(&pal, "FULLMAP.PAL");
     media->AddKeyboardListener(this);
     media->AddMouseButtonListener(this);
     media->AddTimerListener(this);

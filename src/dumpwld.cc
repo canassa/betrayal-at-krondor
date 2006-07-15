@@ -20,7 +20,7 @@
 #include <iostream>
 
 #include "Exception.h"
-#include "ResourceManager.h"
+#include "FileManager.h"
 #include "ResourcePath.h"
 #include "TileWorldResource.h"
 
@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     TileWorldResource *wld = new TileWorldResource;
-    ResourceManager::GetInstance()->Load(wld, argv[1]);
+    FileManager::GetInstance()->Load(wld, argv[1]);
     printf("%d %d %d %d %d\n", wld->GetSize(), wld->GetMinX(), wld->GetMaxX(), wld->GetMinY(), wld->GetMaxY());
     unsigned int deltaX = wld->GetMaxX() - wld->GetMinX();
     unsigned int deltaY = wld->GetMaxY() - wld->GetMinY();
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
     }
     delete map;
     delete wld;
-    ResourceManager::CleanUp();
+    FileManager::CleanUp();
     ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");

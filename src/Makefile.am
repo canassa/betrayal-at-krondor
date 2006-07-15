@@ -13,12 +13,13 @@ noinst_HEADERS = AnimationResource.h \
                  EventListener.h \
                  Exception.h \
                  FileBuffer.h \
+                 FileManager.h \
                  FontResource.h \
                  Game.h \
                  GameApplication.h \
+                 GameData.h \
                  GameFile.h \
                  GamePath.h \
-                 GameResource.h \
                  GameState.h \
                  GenericFile.h \
                  Image.h \
@@ -43,7 +44,6 @@ noinst_HEADERS = AnimationResource.h \
                  ResourceArchive.h \
                  ResourceFile.h \
                  ResourceIndex.h \
-                 ResourceManager.h \
                  ResourcePath.h \
                  ResourceTag.h \
                  SDL_Clock.h \
@@ -84,6 +84,12 @@ dumpads_SOURCES = AnimationResource.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
+                  FileManager.cc \
+                  FileManager.h \
+                  GameFile.cc \
+                  GameFile.h \
+                  GamePath.cc \
+                  GamePath.h \
                   GenericFile.cc \
                   GenericFile.h \
                   Resource.h \
@@ -93,8 +99,6 @@ dumpads_SOURCES = AnimationResource.cc \
                   ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
-                  ResourceManager.cc \
-                  ResourceManager.h \
                   ResourcePath.cc \
                   ResourcePath.h \
                   ResourceTag.cc \
@@ -106,6 +110,12 @@ dumpbmx_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
+                  FileManager.cc \
+                  FileManager.h \
+                  GameFile.cc \
+                  GameFile.h \
+                  GamePath.cc \
+                  GamePath.h \
                   GenericFile.cc \
                   GenericFile.h \
                   Image.cc \
@@ -119,8 +129,6 @@ dumpbmx_SOURCES = Exception.cc \
                   ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
-                  ResourceManager.cc \
-                  ResourceManager.h \
                   ResourcePath.cc \
                   ResourcePath.h \
                   ResourceTag.cc \
@@ -132,6 +140,12 @@ dumpbok_SOURCES = BookResource.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
+                  FileManager.cc \
+                  FileManager.h \
+                  GameFile.cc \
+                  GameFile.h \
+                  GamePath.cc \
+                  GamePath.h \
                   GenericFile.cc \
                   GenericFile.h \
                   Resource.h \
@@ -141,8 +155,6 @@ dumpbok_SOURCES = BookResource.cc \
                   ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
-                  ResourceManager.cc \
-                  ResourceManager.h \
                   ResourcePath.cc \
                   ResourcePath.h \
                   ResourceTag.cc \
@@ -154,6 +166,12 @@ dumpddx_SOURCES = DialogResource.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
+                  FileManager.cc \
+                  FileManager.h \
+                  GameFile.cc \
+                  GameFile.h \
+                  GamePath.cc \
+                  GamePath.h \
                   GenericFile.cc \
                   GenericFile.h \
                   Resource.h \
@@ -163,8 +181,6 @@ dumpddx_SOURCES = DialogResource.cc \
                   ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
-                  ResourceManager.cc \
-                  ResourceManager.h \
                   ResourcePath.cc \
                   ResourcePath.h \
                   ResourceTag.cc \
@@ -174,8 +190,14 @@ dumpfnt_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
+                  FileManager.cc \
+                  FileManager.h \
                   FontResource.cc \
                   FontResource.h \
+                  GameFile.cc \
+                  GameFile.h \
+                  GamePath.cc \
+                  GamePath.h \
                   GenericFile.cc \
                   GenericFile.h \
                   Resource.h \
@@ -185,8 +207,6 @@ dumpfnt_SOURCES = Exception.cc \
                   ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
-                  ResourceManager.cc \
-                  ResourceManager.h \
                   ResourcePath.cc \
                   ResourcePath.h \
                   ResourceTag.cc \
@@ -198,8 +218,14 @@ dumpgam_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
-                  GameResource.cc \
-                  GameResource.h \
+                  FileManager.cc \
+                  FileManager.h \
+                  GameData.cc \
+                  GameData.h \
+                  GameFile.cc \
+                  GameFile.h \
+                  GamePath.cc \
+                  GamePath.h \
                   GenericFile.cc \
                   GenericFile.h \
                   Resource.h \
@@ -209,8 +235,6 @@ dumpgam_SOURCES = Exception.cc \
                   ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
-                  ResourceManager.cc \
-                  ResourceManager.h \
                   ResourcePath.cc \
                   ResourcePath.h \
                   ResourceTag.cc \
@@ -220,6 +244,12 @@ dumplbl_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
+                  FileManager.cc \
+                  FileManager.h \
+                  GameFile.cc \
+                  GameFile.h \
+                  GamePath.cc \
+                  GamePath.h \
                   GenericFile.cc \
                   GenericFile.h \
                   LabelResource.cc \
@@ -231,8 +261,6 @@ dumplbl_SOURCES = Exception.cc \
                   ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
-                  ResourceManager.cc \
-                  ResourceManager.h \
                   ResourcePath.cc \
                   ResourcePath.h \
                   ResourceTag.cc \
@@ -242,6 +270,12 @@ dumppal_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
+                  FileManager.cc \
+                  FileManager.h \
+                  GameFile.cc \
+                  GameFile.h \
+                  GamePath.cc \
+                  GamePath.h \
                   GenericFile.cc \
                   GenericFile.h \
                   MediaToolkit.cc \
@@ -255,8 +289,6 @@ dumppal_SOURCES = Exception.cc \
                   ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
-                  ResourceManager.cc \
-                  ResourceManager.h \
                   ResourcePath.cc \
                   ResourcePath.h \
                   ResourceTag.cc \
@@ -268,6 +300,12 @@ dumpreq_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
+                  FileManager.cc \
+                  FileManager.h \
+                  GameFile.cc \
+                  GameFile.h \
+                  GamePath.cc \
+                  GamePath.h \
                   GenericFile.cc \
                   GenericFile.h \
                   RequestResource.cc \
@@ -279,8 +317,6 @@ dumpreq_SOURCES = Exception.cc \
                   ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
-                  ResourceManager.cc \
-                  ResourceManager.h \
                   ResourcePath.cc \
                   ResourcePath.h \
                   ResourceTag.cc \
@@ -290,6 +326,12 @@ dumpscx_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
+                  FileManager.cc \
+                  FileManager.h \
+                  GameFile.cc \
+                  GameFile.h \
+                  GamePath.cc \
+                  GamePath.h \
                   GenericFile.cc \
                   GenericFile.h \
                   Image.cc \
@@ -301,8 +343,6 @@ dumpscx_SOURCES = Exception.cc \
                   ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
-                  ResourceManager.cc \
-                  ResourceManager.h \
                   ResourcePath.cc \
                   ResourcePath.h \
                   ResourceTag.cc \
@@ -314,6 +354,12 @@ dumpsnd_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
+                  FileManager.cc \
+                  FileManager.h \
+                  GameFile.cc \
+                  GameFile.h \
+                  GamePath.cc \
+                  GamePath.h \
                   GenericFile.cc \
                   GenericFile.h \
                   Resource.h \
@@ -323,8 +369,6 @@ dumpsnd_SOURCES = Exception.cc \
                   ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
-                  ResourceManager.cc \
-                  ResourceManager.h \
                   ResourcePath.cc \
                   ResourcePath.h \
                   ResourceTag.cc \
@@ -338,6 +382,12 @@ dumptbl_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
+                  FileManager.cc \
+                  FileManager.h \
+                  GameFile.cc \
+                  GameFile.h \
+                  GamePath.cc \
+                  GamePath.h \
                   GenericFile.cc \
                   GenericFile.h \
                   Resource.h \
@@ -347,8 +397,6 @@ dumptbl_SOURCES = Exception.cc \
                   ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
-                  ResourceManager.cc \
-                  ResourceManager.h \
                   ResourcePath.cc \
                   ResourcePath.h \
                   ResourceTag.cc \
@@ -362,6 +410,12 @@ dumpttm_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
+                  FileManager.cc \
+                  FileManager.h \
+                  GameFile.cc \
+                  GameFile.h \
+                  GamePath.cc \
+                  GamePath.h \
                   GenericFile.cc \
                   GenericFile.h \
                   MovieResource.cc \
@@ -373,8 +427,6 @@ dumpttm_SOURCES = Exception.cc \
                   ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
-                  ResourceManager.cc \
-                  ResourceManager.h \
                   ResourcePath.cc \
                   ResourcePath.h \
                   ResourceTag.cc \
@@ -386,6 +438,12 @@ dumpwld_SOURCES = Exception.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
+                  FileManager.cc \
+                  FileManager.h \
+                  GameFile.cc \
+                  GameFile.h \
+                  GamePath.cc \
+                  GamePath.h \
                   GenericFile.cc \
                   GenericFile.h \
                   Resource.h \
@@ -395,8 +453,6 @@ dumpwld_SOURCES = Exception.cc \
                   ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
-                  ResourceManager.cc \
-                  ResourceManager.h \
                   ResourcePath.cc \
                   ResourcePath.h \
                   ResourceTag.cc \
@@ -417,8 +473,14 @@ viewres_SOURCES = AnimationResource.cc \
                   Exception.h \
                   FileBuffer.cc \
                   FileBuffer.h \
+                  FileManager.cc \
+                  FileManager.h \
                   FontResource.cc \
                   FontResource.h \
+                  GameFile.cc \
+                  GameFile.h \
+                  GamePath.cc \
+                  GamePath.h \
                   GenericFile.cc \
                   GenericFile.h \
                   Image.cc \
@@ -450,8 +512,6 @@ viewres_SOURCES = AnimationResource.cc \
                   ResourceFile.h \
                   ResourceIndex.cc \
                   ResourceIndex.h \
-                  ResourceManager.cc \
-                  ResourceManager.h \
                   ResourcePath.cc \
                   ResourcePath.h \
                   ResourceTag.cc \
@@ -509,6 +569,8 @@ xbak_SOURCES = AnimationResource.cc \
                Exception.h \
                FileBuffer.cc \
                FileBuffer.h \
+               FileManager.cc \
+               FileManager.h \
                FontResource.cc \
                FontResource.h \
                Game.cc \
@@ -519,8 +581,8 @@ xbak_SOURCES = AnimationResource.cc \
                GameFile.h \
                GamePath.cc \
                GamePath.h \
-               GameResource.cc \
-               GameResource.h \
+               GameData.cc \
+               GameData.h \
                GameState.cc \
                GameState.h \
                GenericFile.cc \
@@ -568,8 +630,6 @@ xbak_SOURCES = AnimationResource.cc \
                ResourceFile.h \
                ResourceIndex.cc \
                ResourceIndex.h \
-               ResourceManager.cc \
-               ResourceManager.h \
                ResourcePath.cc \
                ResourcePath.h \
                ResourceTag.cc \

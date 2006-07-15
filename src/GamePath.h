@@ -31,6 +31,7 @@ class GamePath
   private:
     std::string path;
     std::string original;
+    std::string resource;
     static GamePath *instance;
   protected:
     GamePath();
@@ -40,8 +41,10 @@ class GamePath
     static void CleanUp();
     std::string GetPath() const;
     std::string GetOriginalPath() const;
+    std::string GetResourcePath() const;
     void SetPath(const std::string &s);
     void SetOriginalPath(const std::string &s);
+    void SetResourcePath(const std::string &s);
 };
 
 #endif

@@ -19,9 +19,9 @@
 
 #include <iostream>
 
-#include "Exception.h"
 #include "DialogResource.h"
-#include "ResourceManager.h"
+#include "Exception.h"
+#include "FileManager.h"
 #include "ResourcePath.h"
 
 void dumpDialogData(unsigned int n, DialogData *data, unsigned int depth) {
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     DialogResource *ddx = new DialogResource;
-    ResourceManager::GetInstance()->Load(ddx, argv[1]);
+    FileManager::GetInstance()->Load(ddx, argv[1]);
     printf("Size: %d\n", ddx->GetSize());
     DialogData* data;
     for (unsigned int i = 0; i < 512; i++) {
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
       }
     }
     delete ddx;
-    ResourceManager::CleanUp();
+    FileManager::CleanUp();
     ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");

@@ -20,9 +20,9 @@
 #include <iostream>
 
 #include "Exception.h"
-#include "SoundResource.h"
-#include "ResourceManager.h"
+#include "FileManager.h"
 #include "ResourcePath.h"
+#include "SoundResource.h"
 
 int main(int argc, char *argv[]) {
   try {
@@ -31,12 +31,12 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     SoundResource *snd = new SoundResource;
-    ResourceManager::GetInstance()->Load(snd, "Frp.sx");
+    FileManager::GetInstance()->Load(snd, "Frp.sx");
     SoundData data = snd->GetSoundData(atoi(argv[1]));
     printf("%8s %d\n", data.name.c_str(), data.buffer->GetSize());
     data.buffer->Dump();
     delete snd;
-    ResourceManager::CleanUp();
+    FileManager::CleanUp();
     ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");

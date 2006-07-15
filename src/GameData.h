@@ -17,30 +17,24 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#include "Exception.h"
-#include "GameResource.h"
+#ifndef GAME_DATA_H
+#define GAME_DATA_H
 
-GameResource::GameResource()
-: name("")
-{
-}
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
-GameResource::~GameResource()
-{
-}
+#include "Resource.h"
 
-std::string&
-GameResource::GetName()
-{
-  return name;
-}
+class GameData
+: public Resource {
+  private:
+    std::string name;
+  public:
+    GameData();
+    virtual ~GameData();
+    std::string& GetName();
+    void Load(FileBuffer *buffer);
+};
 
-void
-GameResource::Load(FileBuffer *buffer)
-{
-  try {
-    name = buffer->GetString();
-  } catch (Exception &e) {
-    e.Print("GameResource::Load");
-  }
-}
+#endif

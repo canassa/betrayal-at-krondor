@@ -20,8 +20,8 @@
 #include <iostream>
 
 #include "Exception.h"
+#include "FileManager.h"
 #include "MovieResource.h"
-#include "ResourceManager.h"
 #include "ResourcePath.h"
 
 int main(int argc, char *argv[]) {
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     MovieResource *ttm = new MovieResource;
-    ResourceManager::GetInstance()->Load(ttm, argv[1]);
+    FileManager::GetInstance()->Load(ttm, argv[1]);
     printf("%s %d\n", ttm->GetVersion().c_str(), ttm->GetPages());
     std::vector<MovieTag *> mt = ttm->GetMovieTags();
     for (unsigned int i = 0; i < mt.size(); i++) {
@@ -174,7 +174,7 @@ int main(int argc, char *argv[]) {
       printf("\n");
     }
     delete ttm;
-    ResourceManager::CleanUp();
+    FileManager::CleanUp();
     ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");

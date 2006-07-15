@@ -33,6 +33,7 @@ class GameFile
     virtual ~GameFile();
     std::string GetDefaultPath() const;
     std::string GetAlternatePath() const;
+    std::string GetLastResortPath() const;
 };
 
 #endif

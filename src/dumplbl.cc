@@ -20,7 +20,7 @@
 #include <iostream>
 
 #include "Exception.h"
-#include "ResourceManager.h"
+#include "FileManager.h"
 #include "ResourcePath.h"
 #include "LabelResource.h"
 
@@ -31,14 +31,14 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     LabelResource *lbl = new LabelResource;
-    ResourceManager::GetInstance()->Load(lbl, argv[1]);
+    FileManager::GetInstance()->Load(lbl, argv[1]);
     for (unsigned int i = 0; i < lbl->GetSize(); i++) {
       LabelData data = lbl->GetLabelData(i);
       printf("%3d: %3d %3d %3d %3d %3d %s\n", i,
              data.xpos, data.ypos, data.type, data.color, data.shadow, data.label.c_str());
     }
     delete lbl;
-    ResourceManager::CleanUp();
+    FileManager::CleanUp();
     ResourcePath::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
