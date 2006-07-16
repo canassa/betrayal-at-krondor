@@ -124,7 +124,7 @@ FileBuffer::SkipBits()
 typedef struct _CodeTableEntry {
   uint16_t prefix;
   uint8_t  append;
-} __attribute__ ((packed)) CodeTableEntry;
+} CodeTableEntry;
 
 void
 FileBuffer::DecompressLZW(FileBuffer *result)

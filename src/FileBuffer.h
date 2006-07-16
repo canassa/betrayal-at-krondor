@@ -20,6 +20,8 @@
 #ifndef FILE_BUFFER_H
 #define FILE_BUFFER_H
 
+#include <stdint.h>
+
 #include <fstream>
 #include <string>
 
