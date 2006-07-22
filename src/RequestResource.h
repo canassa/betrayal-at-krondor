@@ -26,7 +26,7 @@
 #include "config.h"
 #endif
 
-#include "Resource.h"
+#include "ResourceData.h"
 
 static const unsigned int REQ_USERDEFINED   = 0;
 static const unsigned int REQ_IMAGEBUTTON   = 3;
@@ -126,7 +126,8 @@ typedef struct _RequestData {
   std::string label;
 } RequestData;
 
-class RequestResource: public Resource {
+class RequestResource
+: public ResourceData {
   private:
     bool popup;
     int xpos;

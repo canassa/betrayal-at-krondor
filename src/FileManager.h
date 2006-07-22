@@ -25,8 +25,8 @@
 #endif
 
 #include "GameData.h"
-#include "Resource.h"
 #include "ResourceArchive.h"
+#include "ResourceData.h"
 #include "ResourceIndex.h"
 
 class FileManager {
@@ -43,7 +43,7 @@ class FileManager {
     static FileManager* GetInstance();
     static void CleanUp();
     void Load(GameData *gam, const std::string &name);
-    void Load(Resource *res, const std::string &name);
+    void Load(ResourceData *res, const std::string &name);
 };
 
 #endif

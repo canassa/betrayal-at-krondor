@@ -24,9 +24,10 @@
 #include "config.h"
 #endif
 
-#include "Resource.h"
+#include "ResourceData.h"
 
-class TileDataResource: public Resource {
+class TileDataResource
+: public ResourceData {
   private:
   public:
     TileDataResource();

@@ -130,7 +130,8 @@ SoundResource::Load(FileBuffer *buffer)
           throw DataCorruption("SoundResource::Load");
         }
         buffer->Skip(3);
-        unsigned int size = buffer->GetUint32();
+        unsigned int size = buffer->GetUint32() + 7;
+        buffer->Seek(offset + 10);
         sndbuf = new FileBuffer(size);
         sndbuf->Fill(buffer);
         SoundData data;

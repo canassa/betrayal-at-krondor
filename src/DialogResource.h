@@ -27,7 +27,7 @@
 #include "config.h"
 #endif
 
-#include "Resource.h"
+#include "ResourceData.h"
 
 typedef struct _DialogData {
   unsigned int subdialogs;
@@ -36,7 +36,7 @@ typedef struct _DialogData {
 } DialogData;
 
 class DialogResource
-: public Resource {
+: public ResourceData {
   private:
     std::map<const unsigned int, DialogData*> dialogMap;
     void ReadDialogData(FileBuffer *buffer, DialogData *data);

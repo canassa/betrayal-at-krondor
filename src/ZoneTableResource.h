@@ -33,7 +33,8 @@ typedef struct _AppData {
   uint8_t *data;
 } AppData;
 
-class ZoneTableResource: public TaggedResource {
+class ZoneTableResource
+: public TaggedResource {
   private:
     std::vector<std::string> mapItems;
     std::vector<AppData> appItems;

@@ -38,7 +38,8 @@ typedef struct _FontGlyph {
   GlyphData data;
 } FontGlyph;
 
-class FontResource: public TaggedResource {
+class FontResource
+: public TaggedResource {
   private:
     unsigned int first;
     unsigned int height;

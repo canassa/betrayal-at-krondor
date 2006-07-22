@@ -37,6 +37,7 @@ AC_LANG([C++])
 CXXFLAGS="$CXXFLAGS -W -Wall -Werror -Wpointer-arith -Wcast-qual -Wwrite-strings -Wshadow -Wcast-align -Winline -ansi -pedantic"
 
 AC_C_CONST
+AC_FUNC_STAT
 AC_HEADER_STDC
 AC_HEADER_STDBOOL
 AC_TYPE_SIZE_T
@@ -56,6 +57,7 @@ AC_CACHE_SAVE
 # Checks for library functions.
 AC_CHECK_FUNCS([memcpy])
 AC_CHECK_FUNCS([memset])
+AC_CHECK_FUNCS([mkdir])
 
 AC_CACHE_SAVE
 

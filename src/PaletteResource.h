@@ -27,7 +27,8 @@
 #include "MediaToolkit.h"
 #include "TaggedResource.h"
 
-class PaletteResource: public TaggedResource {
+class PaletteResource
+: public TaggedResource {
   private:
     unsigned int size;
     Color *colors;

@@ -34,7 +34,8 @@ typedef struct _MovieTag {
   std::vector<int> data;
 } MovieTag;
 
-class MovieResource: public TaggedResource {
+class MovieResource
+: public TaggedResource {
   private:
     std::string version;
     unsigned int pages;

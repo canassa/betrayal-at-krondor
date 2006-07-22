@@ -26,7 +26,7 @@
 #include "config.h"
 #endif
 
-#include "Resource.h"
+#include "ResourceData.h"
 
 static const uint32_t TAG_ADS = 0x3a534441;
 static const uint32_t TAG_APP = 0x3a505041;
@@ -48,7 +48,8 @@ static const uint32_t TAG_TTI = 0x3a495454;
 static const uint32_t TAG_VER = 0x3a524556;
 static const uint32_t TAG_VGA = 0x3a414756;
 
-class TaggedResource: public Resource {
+class TaggedResource
+: public ResourceData {
   private:
     std::map<const unsigned int, FileBuffer*> bufferMap;
   public:

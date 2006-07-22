@@ -26,7 +26,7 @@
 #include "config.h"
 #endif
 
-#include "Resource.h"
+#include "ResourceData.h"
 
 static const unsigned int TILE_SIZE   = 64000;
 static const unsigned int TILE_SIZE_2 = TILE_SIZE / 2;
@@ -40,7 +40,8 @@ typedef struct _TileWorldItem {
   unsigned int ypos;
 } TileWorldItem;
 
-class TileWorldResource: public Resource {
+class TileWorldResource
+: public ResourceData {
   private:
     unsigned int xCenter;
     unsigned int yCenter;

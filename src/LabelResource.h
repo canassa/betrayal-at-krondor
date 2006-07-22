@@ -26,7 +26,7 @@
 #include "config.h"
 #endif
 
-#include "Resource.h"
+#include "ResourceData.h"
 
 static const int LBL_STANDARD = 0;
 static const int LBL_TITLE    = 3;
@@ -40,7 +40,8 @@ typedef struct _LabelData {
   std::string label;
 } LabelData;
 
-class LabelResource: public Resource {
+class LabelResource
+: public ResourceData {
   private:
     std::vector<LabelData> data;
   public:

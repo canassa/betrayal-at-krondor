@@ -26,9 +26,10 @@
 #include "config.h"
 #endif
 
-#include "Resource.h"
+#include "ResourceData.h"
 
-class NameResource: public Resource {
+class NameResource
+: public ResourceData {
   private:
     std::vector<std::string> name;
   public:

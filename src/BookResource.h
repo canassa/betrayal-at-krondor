@@ -26,9 +26,10 @@
 
 #include <vector>
 
-#include "Resource.h"
+#include "ResourceData.h"
 
-class BookResource: public Resource {
+class BookResource
+: public ResourceData {
   private:
     std::vector<std::string> paragraphs;
   public:

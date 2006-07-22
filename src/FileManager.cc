@@ -114,7 +114,7 @@ FileManager::Load(GameData *gam, const std::string &name)
 }
 
 void
-FileManager::Load(Resource *res, const std::string &name)
+FileManager::Load(ResourceData *res, const std::string &name)
 {
   try {
     FileBuffer *buffer;

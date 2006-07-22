@@ -24,10 +24,9 @@
 #include "config.h"
 #endif
 
-#include "Resource.h"
+#include "FileBuffer.h"
 
-class GameData
-: public Resource {
+class GameData {
   private:
     std::string name;
   public:

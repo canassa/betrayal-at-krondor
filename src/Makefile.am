@@ -40,8 +40,8 @@ noinst_HEADERS = AnimationResource.h \
                  PlayerCharacter.h \
                  PopUpWidget.h \
                  RequestResource.h \
-                 Resource.h \
                  ResourceArchive.h \
+                 ResourceData.h \
                  ResourceFile.h \
                  ResourceIndex.h \
                  ResourcePath.h \
@@ -62,6 +62,10 @@ noinst_HEADERS = AnimationResource.h \
                  Widget.h \
                  WidgetFactory.h \
                  ZoneTableResource.h
+noinst_LIBRARIES = libsdldriver.a \
+                   libresbase.a \
+                   libresdata.a \
+                   libguitoolkit.a
 bin_PROGRAMS = dumpads \
                dumpbmx \
                dumpbok \
@@ -78,590 +82,200 @@ bin_PROGRAMS = dumpads \
                dumpwld \
                viewres \
                xbak
+libguitoolkit_a_SOURCES = ButtonWidget.cc \
+                          ButtonWidget.h \
+                          CharacterButtonWidget.cc \
+                          CharacterButtonWidget.h \
+                          ChoiceWidget.cc \
+                          ChoiceWidget.h \
+                          ContainerWidget.cc \
+                          ContainerWidget.h \
+                          Dialog.cc \
+                          Dialog.h \
+                          DialogWindow.cc \
+                          DialogWindow.h \
+                          Image.cc \
+                          Image.h \
+                          ImageButtonWidget.cc \
+                          ImageButtonWidget.h \
+                          LabelWidget.cc \
+                          LabelWidget.h \
+                          MousePointer.cc \
+                          MousePointer.h \
+                          MousePointerManager.cc \
+                          MousePointerManager.h \
+                          MoviePlayer.cc \
+                          MoviePlayer.h \
+                          PanelWidget.cc \
+                          PanelWidget.h \
+                          PopUpWidget.cc \
+                          PopUpWidget.h \
+                          TextArea.cc \
+                          TextArea.h \
+                          TextButtonWidget.cc \
+                          TextButtonWidget.h \
+                          TickboxWidget.cc \
+                          TickboxWidget.h \
+                          Widget.cc \
+                          Widget.h \
+                          WidgetFactory.cc \
+                          WidgetFactory.h
+libresbase_a_SOURCES = Exception.cc \
+                       Exception.h \
+                       FileBuffer.cc \
+                       FileBuffer.h \
+                       FileManager.cc \
+                       FileManager.h \
+                       GameData.cc \
+                       GameData.h \
+                       GameFile.cc \
+                       GameFile.h \
+                       GamePath.cc \
+                       GamePath.h \
+                       GenericFile.cc \
+                       GenericFile.h \
+                       ResourceArchive.cc \
+                       ResourceArchive.h \
+                       ResourceData.h \
+                       ResourceFile.cc \
+                       ResourceFile.h \
+                       ResourceIndex.cc \
+                       ResourceIndex.h \
+                       ResourcePath.cc \
+                       ResourcePath.h \
+                       ResourceTag.cc \
+                       ResourceTag.h \
+                       TaggedResource.cc \
+                       TaggedResource.h
+libresdata_a_SOURCES = AnimationResource.cc \
+                       AnimationResource.h \
+                       BookResource.cc \
+                       BookResource.h \
+                       DialogResource.cc \
+                       DialogResource.h \
+                       FontResource.cc \
+                       FontResource.h \
+                       ImageResource.cc \
+                       ImageResource.h \
+                       LabelResource.cc \
+                       LabelResource.h \
+                       MovieResource.cc \
+                       MovieResource.h \
+                       NameResource.cc \
+                       NameResource.h \
+                       PaletteResource.cc \
+                       PaletteResource.h \
+                       PartyResource.cc \
+                       PartyResource.h \
+                       RequestResource.cc \
+                       RequestResource.h \
+                       ScreenResource.cc \
+                       ScreenResource.h \
+                       SoundResource.cc \
+                       SoundResource.h \
+                       TileDataResource.cc \
+                       TileDataResource.h \
+                       TileWorldResource.cc \
+                       TileWorldResource.h \
+                       ZoneTableResource.cc \
+                       ZoneTableResource.h
+libsdldriver_a_SOURCES = Clock.h \
+                         Event.cc \
+                         Event.h \
+                         EventListener.h \
+                         MediaToolkit.cc \
+                         MediaToolkit.h \
+                         SDL_Clock.cc \
+                         SDL_Clock.h \
+                         SDL_Toolkit.cc \
+                         SDL_Toolkit.h \
+                         SDL_Video.cc \
+                         SDL_Video.h \
+                         Video.cc \
+                         Video.h
 dumpads_SOURCES = AnimationResource.cc \
                   AnimationResource.h \
-                  Exception.cc \
-                  Exception.h \
-                  FileBuffer.cc \
-                  FileBuffer.h \
-                  FileManager.cc \
-                  FileManager.h \
-                  GameFile.cc \
-                  GameFile.h \
-                  GamePath.cc \
-                  GamePath.h \
-                  GenericFile.cc \
-                  GenericFile.h \
-                  Resource.h \
-                  ResourceArchive.cc \
-                  ResourceArchive.h \
-                  ResourceFile.cc \
-                  ResourceFile.h \
-                  ResourceIndex.cc \
-                  ResourceIndex.h \
-                  ResourcePath.cc \
-                  ResourcePath.h \
-                  ResourceTag.cc \
-                  ResourceTag.h \
-                  TaggedResource.cc \
-                  TaggedResource.h \
                   dumpads.cc
-dumpbmx_SOURCES = Exception.cc \
-                  Exception.h \
-                  FileBuffer.cc \
-                  FileBuffer.h \
-                  FileManager.cc \
-                  FileManager.h \
-                  GameFile.cc \
-                  GameFile.h \
-                  GamePath.cc \
-                  GamePath.h \
-                  GenericFile.cc \
-                  GenericFile.h \
-                  Image.cc \
+dumpads_LDADD   = libresbase.a
+dumpbmx_SOURCES = Image.cc \
                   Image.h \
                   ImageResource.cc \
                   ImageResource.h \
-                  Resource.h \
-                  ResourceArchive.cc \
-                  ResourceArchive.h \
-                  ResourceFile.cc \
-                  ResourceFile.h \
-                  ResourceIndex.cc \
-                  ResourceIndex.h \
-                  ResourcePath.cc \
-                  ResourcePath.h \
-                  ResourceTag.cc \
-                  ResourceTag.h \
                   dumpbmx.cc
+dumpbmx_LDADD   = libresbase.a
 dumpbok_SOURCES = BookResource.cc \
                   BookResource.h \
-                  Exception.cc \
-                  Exception.h \
-                  FileBuffer.cc \
-                  FileBuffer.h \
-                  FileManager.cc \
-                  FileManager.h \
-                  GameFile.cc \
-                  GameFile.h \
-                  GamePath.cc \
-                  GamePath.h \
-                  GenericFile.cc \
-                  GenericFile.h \
-                  Resource.h \
-                  ResourceArchive.cc \
-                  ResourceArchive.h \
-                  ResourceFile.cc \
-                  ResourceFile.h \
-                  ResourceIndex.cc \
-                  ResourceIndex.h \
-                  ResourcePath.cc \
-                  ResourcePath.h \
-                  ResourceTag.cc \
-                  ResourceTag.h \
                   dumpbok.cc
+dumpbok_LDADD   = libresbase.a
 dumpddx_SOURCES = DialogResource.cc \
                   DialogResource.h \
-                  Exception.cc \
-                  Exception.h \
-                  FileBuffer.cc \
-                  FileBuffer.h \
-                  FileManager.cc \
-                  FileManager.h \
-                  GameFile.cc \
-                  GameFile.h \
-                  GamePath.cc \
-                  GamePath.h \
-                  GenericFile.cc \
-                  GenericFile.h \
-                  Resource.h \
-                  ResourceArchive.cc \
-                  ResourceArchive.h \
-                  ResourceFile.cc \
-                  ResourceFile.h \
-                  ResourceIndex.cc \
-                  ResourceIndex.h \
-                  ResourcePath.cc \
-                  ResourcePath.h \
-                  ResourceTag.cc \
-                  ResourceTag.h \
                   dumpddx.cc
-dumpfnt_SOURCES = Exception.cc \
-                  Exception.h \
-                  FileBuffer.cc \
-                  FileBuffer.h \
-                  FileManager.cc \
-                  FileManager.h \
-                  FontResource.cc \
+dumpddx_LDADD   = libresbase.a
+dumpfnt_SOURCES = FontResource.cc \
                   FontResource.h \
-                  GameFile.cc \
-                  GameFile.h \
-                  GamePath.cc \
-                  GamePath.h \
-                  GenericFile.cc \
-                  GenericFile.h \
-                  Resource.h \
-                  ResourceArchive.cc \
-                  ResourceArchive.h \
-                  ResourceFile.cc \
-                  ResourceFile.h \
-                  ResourceIndex.cc \
-                  ResourceIndex.h \
-                  ResourcePath.cc \
-                  ResourcePath.h \
-                  ResourceTag.cc \
-                  ResourceTag.h \
-                  TaggedResource.cc \
-                  TaggedResource.h \
                   dumpfnt.cc
-dumpgam_SOURCES = Exception.cc \
-                  Exception.h \
-                  FileBuffer.cc \
-                  FileBuffer.h \
-                  FileManager.cc \
-                  FileManager.h \
-                  GameData.cc \
-                  GameData.h \
-                  GameFile.cc \
-                  GameFile.h \
-                  GamePath.cc \
-                  GamePath.h \
-                  GenericFile.cc \
-                  GenericFile.h \
-                  Resource.h \
-                  ResourceArchive.cc \
-                  ResourceArchive.h \
-                  ResourceFile.cc \
-                  ResourceFile.h \
-                  ResourceIndex.cc \
-                  ResourceIndex.h \
-                  ResourcePath.cc \
-                  ResourcePath.h \
-                  ResourceTag.cc \
-                  ResourceTag.h \
-                  dumpgam.cc
-dumplbl_SOURCES = Exception.cc \
-                  Exception.h \
-                  FileBuffer.cc \
-                  FileBuffer.h \
-                  FileManager.cc \
-                  FileManager.h \
-                  GameFile.cc \
-                  GameFile.h \
-                  GamePath.cc \
-                  GamePath.h \
-                  GenericFile.cc \
-                  GenericFile.h \
-                  LabelResource.cc \
+dumpfnt_LDADD   = libresbase.a
+dumpgam_SOURCES = dumpgam.cc
+dumpgam_LDADD   = libresbase.a
+dumplbl_SOURCES = LabelResource.cc \
                   LabelResource.h \
-                  Resource.h \
-                  ResourceArchive.cc \
-                  ResourceArchive.h \
-                  ResourceFile.cc \
-                  ResourceFile.h \
-                  ResourceIndex.cc \
-                  ResourceIndex.h \
-                  ResourcePath.cc \
-                  ResourcePath.h \
-                  ResourceTag.cc \
-                  ResourceTag.h \
                   dumplbl.cc
-dumppal_SOURCES = Exception.cc \
-                  Exception.h \
-                  FileBuffer.cc \
-                  FileBuffer.h \
-                  FileManager.cc \
-                  FileManager.h \
-                  GameFile.cc \
-                  GameFile.h \
-                  GamePath.cc \
-                  GamePath.h \
-                  GenericFile.cc \
-                  GenericFile.h \
-                  MediaToolkit.cc \
+dumplbl_LDADD   = libresbase.a
+dumppal_SOURCES = MediaToolkit.cc \
                   MediaToolkit.h \
                   PaletteResource.cc \
                   PaletteResource.h \
-                  Resource.h \
-                  ResourceArchive.cc \
-                  ResourceArchive.h \
-                  ResourceFile.cc \
-                  ResourceFile.h \
-                  ResourceIndex.cc \
-                  ResourceIndex.h \
-                  ResourcePath.cc \
-                  ResourcePath.h \
-                  ResourceTag.cc \
-                  ResourceTag.h \
-                  TaggedResource.cc \
-                  TaggedResource.h \
                   dumppal.cc
-dumpreq_SOURCES = Exception.cc \
-                  Exception.h \
-                  FileBuffer.cc \
-                  FileBuffer.h \
-                  FileManager.cc \
-                  FileManager.h \
-                  GameFile.cc \
-                  GameFile.h \
-                  GamePath.cc \
-                  GamePath.h \
-                  GenericFile.cc \
-                  GenericFile.h \
-                  RequestResource.cc \
+dumppal_LDADD   = libresbase.a
+dumpreq_SOURCES = RequestResource.cc \
                   RequestResource.h \
-                  Resource.h \
-                  ResourceArchive.cc \
-                  ResourceArchive.h \
-                  ResourceFile.cc \
-                  ResourceFile.h \
-                  ResourceIndex.cc \
-                  ResourceIndex.h \
-                  ResourcePath.cc \
-                  ResourcePath.h \
-                  ResourceTag.cc \
-                  ResourceTag.h \
                   dumpreq.cc
-dumpscx_SOURCES = Exception.cc \
-                  Exception.h \
-                  FileBuffer.cc \
-                  FileBuffer.h \
-                  FileManager.cc \
-                  FileManager.h \
-                  GameFile.cc \
-                  GameFile.h \
-                  GamePath.cc \
-                  GamePath.h \
-                  GenericFile.cc \
-                  GenericFile.h \
-                  Image.cc \
+dumpreq_LDADD   = libresbase.a
+dumpscx_SOURCES = Image.cc \
                   Image.h \
-                  Resource.h \
-                  ResourceArchive.cc \
-                  ResourceArchive.h \
-                  ResourceFile.cc \
-                  ResourceFile.h \
-                  ResourceIndex.cc \
-                  ResourceIndex.h \
-                  ResourcePath.cc \
-                  ResourcePath.h \
-                  ResourceTag.cc \
-                  ResourceTag.h \
                   ScreenResource.cc \
                   ScreenResource.h \
                   dumpscx.cc
-dumpsnd_SOURCES = Exception.cc \
-                  Exception.h \
-                  FileBuffer.cc \
-                  FileBuffer.h \
-                  FileManager.cc \
-                  FileManager.h \
-                  GameFile.cc \
-                  GameFile.h \
-                  GamePath.cc \
-                  GamePath.h \
-                  GenericFile.cc \
-                  GenericFile.h \
-                  Resource.h \
-                  ResourceArchive.cc \
-                  ResourceArchive.h \
-                  ResourceFile.cc \
-                  ResourceFile.h \
-                  ResourceIndex.cc \
-                  ResourceIndex.h \
-                  ResourcePath.cc \
-                  ResourcePath.h \
-                  ResourceTag.cc \
-                  ResourceTag.h \
-                  SoundResource.cc \
+dumpscx_LDADD   = libresbase.a
+dumpsnd_SOURCES = SoundResource.cc \
                   SoundResource.h \
-                  TaggedResource.cc \
-                  TaggedResource.h \
                   dumpsnd.cc
-dumptbl_SOURCES = Exception.cc \
-                  Exception.h \
-                  FileBuffer.cc \
-                  FileBuffer.h \
-                  FileManager.cc \
-                  FileManager.h \
-                  GameFile.cc \
-                  GameFile.h \
-                  GamePath.cc \
-                  GamePath.h \
-                  GenericFile.cc \
-                  GenericFile.h \
-                  Resource.h \
-                  ResourceArchive.cc \
-                  ResourceArchive.h \
-                  ResourceFile.cc \
-                  ResourceFile.h \
-                  ResourceIndex.cc \
-                  ResourceIndex.h \
-                  ResourcePath.cc \
-                  ResourcePath.h \
-                  ResourceTag.cc \
-                  ResourceTag.h \
-                  TaggedResource.cc \
-                  TaggedResource.h \
-                  ZoneTableResource.cc \
+dumpsnd_LDADD   = libresbase.a
+dumptbl_SOURCES = ZoneTableResource.cc \
                   ZoneTableResource.h \
                   dumptbl.cc
-dumpttm_SOURCES = Exception.cc \
-                  Exception.h \
-                  FileBuffer.cc \
-                  FileBuffer.h \
-                  FileManager.cc \
-                  FileManager.h \
-                  GameFile.cc \
-                  GameFile.h \
-                  GamePath.cc \
-                  GamePath.h \
-                  GenericFile.cc \
-                  GenericFile.h \
-                  MovieResource.cc \
+dumptbl_LDADD   = libresbase.a
+dumpttm_SOURCES = MovieResource.cc \
                   MovieResource.h \
-                  Resource.h \
-                  ResourceArchive.cc \
-                  ResourceArchive.h \
-                  ResourceFile.cc \
-                  ResourceFile.h \
-                  ResourceIndex.cc \
-                  ResourceIndex.h \
-                  ResourcePath.cc \
-                  ResourcePath.h \
-                  ResourceTag.cc \
-                  ResourceTag.h \
-                  TaggedResource.cc \
-                  TaggedResource.h \
                   dumpttm.cc
-dumpwld_SOURCES = Exception.cc \
-                  Exception.h \
-                  FileBuffer.cc \
-                  FileBuffer.h \
-                  FileManager.cc \
-                  FileManager.h \
-                  GameFile.cc \
-                  GameFile.h \
-                  GamePath.cc \
-                  GamePath.h \
-                  GenericFile.cc \
-                  GenericFile.h \
-                  Resource.h \
-                  ResourceArchive.cc \
-                  ResourceArchive.h \
-                  ResourceFile.cc \
-                  ResourceFile.h \
-                  ResourceIndex.cc \
-                  ResourceIndex.h \
-                  ResourcePath.cc \
-                  ResourcePath.h \
-                  ResourceTag.cc \
-                  ResourceTag.h \
-                  TileDataResource.cc \
+dumpttm_LDADD   = libresbase.a
+dumpwld_SOURCES = TileDataResource.cc \
                   TileDataResource.h \
                   TileWorldResource.cc \
                   TileWorldResource.h \
-                  Video.h \
                   dumpwld.cc
-viewres_SOURCES = AnimationResource.cc \
-                  AnimationResource.h \
-                  Clock.h \
-                  Event.cc \
-                  Event.h \
-                  EventListener.h \
-                  Exception.cc \
-                  Exception.h \
-                  FileBuffer.cc \
-                  FileBuffer.h \
-                  FileManager.cc \
-                  FileManager.h \
-                  FontResource.cc \
-                  FontResource.h \
-                  GameFile.cc \
-                  GameFile.h \
-                  GamePath.cc \
-                  GamePath.h \
-                  GenericFile.cc \
-                  GenericFile.h \
-                  Image.cc \
-                  Image.h \
-                  ImageResource.cc \
-                  ImageResource.h \
-                  LabelResource.cc \
-                  LabelResource.h \
-                  MediaToolkit.cc \
-                  MediaToolkit.h \
-                  MousePointer.cc \
-                  MousePointer.h \
-                  MousePointerManager.cc \
-                  MousePointerManager.h \
-                  MoviePlayer.cc \
-                  MoviePlayer.h \
-                  MovieResource.cc \
-                  MovieResource.h \
-                  NameResource.cc \
-                  NameResource.h \
-                  PaletteResource.cc \
-                  PaletteResource.h \
-                  RequestResource.cc \
-                  RequestResource.h \
-                  Resource.h \
-                  ResourceArchive.cc \
-                  ResourceArchive.h \
-                  ResourceFile.cc \
-                  ResourceFile.h \
-                  ResourceIndex.cc \
-                  ResourceIndex.h \
-                  ResourcePath.cc \
-                  ResourcePath.h \
-                  ResourceTag.cc \
-                  ResourceTag.h \
-                  ScreenResource.cc \
-                  ScreenResource.h \
-                  SDL_Clock.cc \
-                  SDL_Clock.h \
-                  SDL_Toolkit.cc \
-                  SDL_Toolkit.h \
-                  SDL_Video.cc \
-                  SDL_Video.h \
-                  SoundResource.cc \
-                  SoundResource.h \
-                  TaggedResource.cc \
-                  TaggedResource.h \
-                  TestApplication.cc \
+dumpwld_LDADD   = libresbase.a
+viewres_SOURCES = TestApplication.cc \
                   TestApplication.h \
-                  TextArea.cc \
-                  TextArea.h \
-                  TileDataResource.cc \
-                  TileDataResource.h \
-                  TileWorldResource.cc \
-                  TileWorldResource.h \
-                  Video.cc \
-                  Video.h \
-                  ZoneTableResource.cc \
-                  ZoneTableResource.h \
                   viewres.cc
-xbak_SOURCES = AnimationResource.cc \
-               AnimationResource.h \
-               BookResource.cc \
-               BookResource.h \
-               ButtonWidget.cc \
-               ButtonWidget.h \
-               Chapter.cc \
+viewres_LDADD = libguitoolkit.a \
+                libresdata.a \
+                libresbase.a \
+                libsdldriver.a
+xbak_SOURCES = Chapter.cc \
                Chapter.h \
-               CharacterButtonWidget.cc \
-               CharacterButtonWidget.h \
-               ChoiceWidget.cc \
-               ChoiceWidget.h \
-               Clock.h \
-               ContainerWidget.cc \
-               ContainerWidget.h \
-               Dialog.cc \
-               Dialog.h \
-               DialogResource.cc \
-               DialogResource.h \
-               DialogWindow.cc \
-               DialogWindow.h \
-               Event.cc \
-               Event.h \
-               EventListener.h \
-               Exception.cc \
-               Exception.h \
-               FileBuffer.cc \
-               FileBuffer.h \
-               FileManager.cc \
-               FileManager.h \
-               FontResource.cc \
-               FontResource.h \
                Game.cc \
                Game.h \
                GameApplication.cc \
                GameApplication.h \
-               GameFile.cc \
-               GameFile.h \
-               GamePath.cc \
-               GamePath.h \
-               GameData.cc \
-               GameData.h \
                GameState.cc \
                GameState.h \
-               GenericFile.cc \
-               GenericFile.h \
-               Image.cc \
-               Image.h \
-               ImageButtonWidget.cc \
-               ImageButtonWidget.h \
-               ImageResource.cc \
-               ImageResource.h \
-               LabelResource.cc \
-               LabelResource.h \
-               LabelWidget.cc \
-               LabelWidget.h \
-               MediaToolkit.cc \
-               MediaToolkit.h \
-               MousePointer.cc \
-               MousePointer.h \
-               MousePointerManager.cc \
-               MousePointerManager.h \
-               MoviePlayer.cc \
-               MoviePlayer.h \
-               MovieResource.cc \
-               MovieResource.h \
-               NameResource.cc \
-               NameResource.h \
-               PaletteResource.cc \
-               PaletteResource.h \
-               PanelWidget.cc \
-               PanelWidget.h \
                Party.cc \
                Party.h \
-               PartyResource.cc \
-               PartyResource.h \
                PlayerCharacter.cc \
                PlayerCharacter.h \
-               PopUpWidget.cc \
-               PopUpWidget.h \
-               RequestResource.cc \
-               RequestResource.h \
-               Resource.h \
-               ResourceArchive.cc \
-               ResourceArchive.h \
-               ResourceFile.cc \
-               ResourceFile.h \
-               ResourceIndex.cc \
-               ResourceIndex.h \
-               ResourcePath.cc \
-               ResourcePath.h \
-               ResourceTag.cc \
-               ResourceTag.h \
-               ScreenResource.cc \
-               ScreenResource.h \
-               SDL_Clock.cc \
-               SDL_Clock.h \
-               SDL_Toolkit.cc \
-               SDL_Toolkit.h \
-               SDL_Video.cc \
-               SDL_Video.h \
-               SoundResource.cc \
-               SoundResource.h \
-               TaggedResource.cc \
-               TaggedResource.h \
-               TextArea.cc \
-               TextArea.h \
-               TextButtonWidget.cc \
-               TextButtonWidget.h \
-               TickboxWidget.cc \
-               TickboxWidget.h \
-               TileDataResource.cc \
-               TileDataResource.h \
-               TileWorldResource.cc \
-               TileWorldResource.h \
-               Video.cc \
-               Video.h \
-               Widget.cc \
-               Widget.h \
-               WidgetFactory.cc \
-               WidgetFactory.h \
-               ZoneTableResource.cc \
-               ZoneTableResource.h \
                xbak.cc
+xbak_LDADD = libguitoolkit.a \
+             libresdata.a \
+             libresbase.a \
+             libsdldriver.a

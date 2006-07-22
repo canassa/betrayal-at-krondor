@@ -34,7 +34,11 @@ int main(int argc, char *argv[]) {
     FileManager::GetInstance()->Load(snd, "Frp.sx");
     SoundData data = snd->GetSoundData(atoi(argv[1]));
     printf("%8s %d\n", data.name.c_str(), data.buffer->GetSize());
-    data.buffer->Dump();
+    //data.buffer->Dump();
+    std::ofstream ofs;
+    ofs.open("snd.out", std::ios::binary);
+    data.buffer->Save(ofs);
+    ofs.close();
     delete snd;
     FileManager::CleanUp();
     ResourcePath::CleanUp();

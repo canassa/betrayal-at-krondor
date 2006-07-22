@@ -25,12 +25,13 @@
 #endif
 
 #include "Image.h"
-#include "Resource.h"
+#include "ResourceData.h"
 
 static const unsigned int SCREEN_WIDTH  = 320;
 static const unsigned int SCREEN_HEIGHT = 200;
 
-class ScreenResource: public Resource {
+class ScreenResource
+: public ResourceData {
   private:
     Image *image;
   public:

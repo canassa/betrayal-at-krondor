@@ -27,9 +27,10 @@
 #endif
 
 #include "Image.h"
-#include "Resource.h"
+#include "ResourceData.h"
 
-class ImageResource: public Resource {
+class ImageResource
+: public ResourceData {
   private:
     unsigned int numImages;
     std::vector<Image *> images;

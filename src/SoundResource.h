@@ -31,7 +31,8 @@ typedef struct _SoundData {
   FileBuffer *buffer;
 } SoundData;
 
-class SoundResource: public TaggedResource {
+class SoundResource
+: public TaggedResource {
   private:
     std::map<unsigned int, SoundData> soundMap;
     FileBuffer * CreateWave(FileBuffer *buffer, const unsigned int size);

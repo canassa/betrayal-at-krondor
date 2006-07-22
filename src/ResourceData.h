@@ -17,8 +17,8 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef RESOURCE_H
-#define RESOURCE_H
+#ifndef RESOURCE_DATA_H
+#define RESOURCE_DATA_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -26,10 +26,10 @@
 
 #include "FileBuffer.h"
 
-class Resource {
+class ResourceData {
   public:
-    Resource() {};
-    virtual ~Resource() {};
+    ResourceData() {};
+    virtual ~ResourceData() {};
     virtual void Load(FileBuffer *buffer) = 0;
 };
 

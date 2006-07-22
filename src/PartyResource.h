@@ -26,7 +26,7 @@
 #include "config.h"
 #endif
 
-#include "Resource.h"
+#include "ResourceData.h"
 
 static const unsigned int PARTY_LOCKLEAR = 0;
 static const unsigned int PARTY_GORATH   = 1;
@@ -41,7 +41,7 @@ typedef struct _PartyData {
 } PartyData;
 
 class PartyResource
-: public Resource {
+: public ResourceData {
   private:
     std::vector<PartyData *> data;
   public:
