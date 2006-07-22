@@ -29,6 +29,23 @@
 #include "config.h"
 #endif
 
+// try to determine endianness
+#undef XBAK_LITTLE_ENDIAN
+#undef XBAK_BIG_ENDIAN
+#if (defined(__i386__) || defined(__i386)) || \
+     defined(__ia64__) || defined(WIN32) || \
+     defined(_WIN32) || defined(__WIN32__) || \
+    (defined(__alpha__) || defined(__alpha)) || \
+    (defined(__arm__) || defined(__thumb__)) || \
+    (defined(__sh__) || defined(__sh64__)) || \
+    (defined(__mips__) && defined(__MIPSEL__)) || \
+     defined(__SYMBIAN32__) || defined(__x86_64__) || \
+     defined(__OS2__) || defined(__LITTLE_ENDIAN__)
+#define XBAK_LITTLE_ENDIAN
+#else
+#define XBAK_BIG_ENDIAN
+#endif
+
 static const unsigned int COMPRESSION_LZW = 0;
 static const unsigned int COMPRESSION_LZ = 1;
 static const unsigned int COMPRESSION_RLE = 2;
