@@ -68,7 +68,11 @@ TaggedResource::Split(FileBuffer *buffer)
       case TAG_VGA:
         {
           unsigned int size = buffer->GetUint32();
-          bufferMap.erase(label);
+          std::map<const unsigned int, FileBuffer*>::iterator it = bufferMap.find(label);
+          if (it != bufferMap.end()) {
+            delete (*it).second;
+            bufferMap.erase(it);
+          }
           if (size & 0x80000000) {
             FileBuffer *lblbuf = new FileBuffer(size & 0x7fffffff);
             lblbuf->Fill(buffer);
