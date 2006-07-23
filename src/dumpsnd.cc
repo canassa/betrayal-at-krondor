@@ -33,12 +33,13 @@ int main(int argc, char *argv[]) {
     SoundResource *snd = new SoundResource;
     FileManager::GetInstance()->Load(snd, "Frp.sx");
     SoundData data = snd->GetSoundData(atoi(argv[1]));
-    printf("%8s %d\n", data.name.c_str(), data.buffer->GetSize());
-    //data.buffer->Dump();
-    std::ofstream ofs;
-    ofs.open("snd.out", std::ios::binary);
-    data.buffer->Save(ofs);
-    ofs.close();
+    printf("%8s %d %ld\n", data.name.c_str(), data.type, data.samples.size());
+    for (unsigned int i = 0; i < data.samples.size(); i++) {
+      Sample *sample = data.samples[i];
+      for (unsigned int j = 0; j < sample->GetSize(); j++) {
+        sample->GetBuffer(j)->Dump();
+      }
+    }
     delete snd;
     FileManager::CleanUp();
     ResourcePath::CleanUp();

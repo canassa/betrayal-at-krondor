@@ -41,7 +41,10 @@ SoundResource::SoundResource()
 SoundResource::~SoundResource()
 {
   for (std::map<unsigned int, SoundData>::iterator it = soundMap.begin(); it != soundMap.end(); ++it) {
-    delete (*it).second.buffer;
+    SoundData data = (*it).second;
+    for (std::vector<Sample *>::iterator it2 = data.samples.begin(); it2 != data.samples.end(); ++it2) {
+      delete (*it2);
+    }
   }
   soundMap.clear();
 }
@@ -124,20 +127,41 @@ SoundResource::Load(FileBuffer *buffer)
       std::string name;
       if (tags.Find(id, name)) {
         buffer->Seek(offset + 8);
-        FileBuffer *sndbuf = 0;
         if (id != buffer->GetUint16()) {
           Clear();
           throw DataCorruption("SoundResource::Load");
         }
-        buffer->Skip(3);
-        unsigned int size = buffer->GetUint32() + 7;
-        buffer->Seek(offset + 10);
-        sndbuf = new FileBuffer(size);
-        sndbuf->Fill(buffer);
         SoundData data;
         data.name = name;
-        data.buffer = sndbuf;
+        data.type = buffer->GetUint8();
+        buffer->Skip(2);
+        FileBuffer *sndbuf = new FileBuffer(buffer->GetUint32() - 2);
+        buffer->Skip(2);
+        sndbuf->Fill(buffer);
+        buffer->Skip(-sndbuf->GetSize());
+        int code = buffer->GetUint8();
+        while (code != 0xff) {
+          Sample *sample = new Sample(code);
+          std::vector<unsigned int> offsetVec;
+          std::vector<unsigned int> sizeVec;
+          code = buffer->GetUint8();
+          while (code != 0xff) {
+            buffer->Skip(1);
+            offsetVec.push_back(buffer->GetUint16());
+            sizeVec.push_back(buffer->GetUint16());
+            code = buffer->GetUint8();
+          }
+          for (unsigned int j = 0; j < offsetVec.size(); j++) {
+            sndbuf->Seek(offsetVec[j]);
+            FileBuffer *samplebuf = new FileBuffer(sizeVec[j]);
+            samplebuf->Fill(sndbuf);
+            sample->AddBuffer(samplebuf);
+          }
+          data.samples.push_back(sample);
+          code = buffer->GetUint8();
+        }
         soundMap.insert(std::pair<unsigned int, SoundData>(id, data));
+        delete sndbuf;
       } else {
         throw DataCorruption("SoundResource::Load");
       }
