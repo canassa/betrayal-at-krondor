@@ -17,35 +17,38 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef SOUND_RESOURCE_H
-#define SOUND_RESOURCE_H
-
-#include <vector>
-
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
+#include "Exception.h"
 #include "Sound.h"
-#include "TaggedResource.h"
 
-typedef struct _SoundData {
-  std::string name;
-  unsigned int type;
-  std::vector<Sound *> sounds;
-} SoundData;
+Sound::Sound(const unsigned int t)
+: type(t)
+, samples()
+{
+}
 
-class SoundResource
-: public TaggedResource {
-  private:
-    std::map<unsigned int, SoundData> soundMap;
-    FileBuffer * CreateWave(FileBuffer *buffer, const unsigned int size);
-    FileBuffer * CreateMidi(FileBuffer *buffer, const unsigned int size);
-  public:
-    SoundResource();
-    virtual ~SoundResource();
-    void Load(FileBuffer *buffer);
-    SoundData& GetSoundData(unsigned int id);
-};
+Sound::~Sound()
+{
+  for (unsigned int i = 0; i < samples.size(); i++) {
+    delete samples[i];
+  }
+}
 
-#endif
+unsigned int
+Sound::GetSize() const
+{
+  return samples.size();
+}
+
+Sample *
+Sound::GetSample(const unsigned int n)
+{
+  return samples[n];
+}
+
+void
+Sound::AddSample(FileBuffer *buffer)
+{
+  Sample *sample = new Sample();
+  sample->Load(buffer);
+  samples.push_back(sample);
+}

@@ -17,35 +17,87 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "Exception.h"
 #include "Sample.h"
 
-Sample::Sample(const unsigned int t)
-: type(t)
-, buffer()
+Sample::Sample()
+: type(0)
+, channels(1)
+, rate(0)
+, bitsPerSample(8)
+, sampleBuffer(0)
 {
 }
 
 Sample::~Sample()
 {
-  for (unsigned int i = 0; i < buffer.size(); i++) {
-    delete buffer[i];
+  if (sampleBuffer) {
+    delete sampleBuffer;
   }
 }
 
 unsigned int
-Sample::GetSize() const
+Sample::GetChannels() const
 {
-  return buffer.size();
+  return channels;
 }
 
-void
-Sample::AddBuffer(FileBuffer *buf)
+unsigned int
+Sample::GetRate() const
 {
-  buffer.push_back(buf);
+  return rate;
+}
+
+unsigned int
+Sample::GetBitsPerSample() const
+{
+  return bitsPerSample;
 }
 
 FileBuffer *
-Sample::GetBuffer(const unsigned int n)
+Sample::GetBuffer()
 {
-  return buffer[n];
+  return sampleBuffer;
+}
+
+void
+Sample::Load(FileBuffer *buffer)
+{
+  if (sampleBuffer) {
+    delete sampleBuffer;
+  }
+  unsigned int size = 0;
+  type = buffer->GetUint8();
+  switch (type) {
+    case 0x00:
+    case 0x01:
+    case 0x02:
+    case 0x03:
+    case 0x04:
+    case 0x05:
+    case 0x06:
+    case 0x07:
+    case 0x08:
+    case 0x09:
+    case 0x0a:
+    case 0x0b:
+    case 0x0c:
+    case 0x0d:
+    case 0x0e:
+    case 0x0f:
+    case 0x29:
+      size = buffer->GetBytesLeft();
+      break;
+    case 0xfe:
+      buffer->Skip(1);
+      rate = buffer->GetUint16();
+      size = buffer->GetUint32();
+      buffer->Skip(2);
+      break;
+    default:
+      throw DataCorruption("Sample::Load");
+      break;
+  }
+  sampleBuffer = new FileBuffer(size);
+  sampleBuffer->Fill(buffer);
 }

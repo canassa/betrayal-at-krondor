@@ -20,8 +20,6 @@
 #ifndef SAMPLE_H
 #define SAMPLE_H
 
-#include <vector>
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -31,13 +29,18 @@
 class Sample {
   private:
     unsigned int type;
-    std::vector<FileBuffer *> buffer;
+    unsigned int channels;
+    unsigned int rate;
+    unsigned int bitsPerSample;
+    FileBuffer *sampleBuffer;
   public:
-    Sample(const unsigned int t);
+    Sample();
     virtual ~Sample();
-    unsigned int GetSize() const;
-    void AddBuffer(FileBuffer *buf);
-    FileBuffer * GetBuffer(const unsigned int n);
+    unsigned int GetChannels() const;
+    unsigned int GetRate() const;
+    unsigned int GetBitsPerSample() const;
+    FileBuffer * GetBuffer();
+    void Load(FileBuffer *buffer);
 };
 
 #endif

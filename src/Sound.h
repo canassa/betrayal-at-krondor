@@ -17,8 +17,8 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef SOUND_RESOURCE_H
-#define SOUND_RESOURCE_H
+#ifndef SOUND_H
+#define SOUND_H
 
 #include <vector>
 
@@ -26,26 +26,18 @@
 #include "config.h"
 #endif
 
-#include "Sound.h"
-#include "TaggedResource.h"
+#include "Sample.h"
 
-typedef struct _SoundData {
-  std::string name;
-  unsigned int type;
-  std::vector<Sound *> sounds;
-} SoundData;
-
-class SoundResource
-: public TaggedResource {
+class Sound {
   private:
-    std::map<unsigned int, SoundData> soundMap;
-    FileBuffer * CreateWave(FileBuffer *buffer, const unsigned int size);
-    FileBuffer * CreateMidi(FileBuffer *buffer, const unsigned int size);
+    unsigned int type;
+    std::vector<Sample *> samples;
   public:
-    SoundResource();
-    virtual ~SoundResource();
-    void Load(FileBuffer *buffer);
-    SoundData& GetSoundData(unsigned int id);
+    Sound(const unsigned int t);
+    virtual ~Sound();
+    unsigned int GetSize() const;
+    Sample * GetSample(const unsigned int n);
+    void AddSample(FileBuffer *buffer);
 };
 
 #endif

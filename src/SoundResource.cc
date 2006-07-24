@@ -35,6 +35,7 @@ static const unsigned int SMF_PPQN        = 96;
 
 SoundResource::SoundResource()
 : TaggedResource()
+, soundMap()
 {
 }
 
@@ -42,7 +43,7 @@ SoundResource::~SoundResource()
 {
   for (std::map<unsigned int, SoundData>::iterator it = soundMap.begin(); it != soundMap.end(); ++it) {
     SoundData data = (*it).second;
-    for (std::vector<Sample *>::iterator it2 = data.samples.begin(); it2 != data.samples.end(); ++it2) {
+    for (std::vector<Sound *>::iterator it2 = data.sounds.begin(); it2 != data.sounds.end(); ++it2) {
       delete (*it2);
     }
   }
@@ -141,7 +142,7 @@ SoundResource::Load(FileBuffer *buffer)
         buffer->Skip(-sndbuf->GetSize());
         int code = buffer->GetUint8();
         while (code != 0xff) {
-          Sample *sample = new Sample(code);
+          Sound *sound = new Sound(code);
           std::vector<unsigned int> offsetVec;
           std::vector<unsigned int> sizeVec;
           code = buffer->GetUint8();
@@ -155,9 +156,10 @@ SoundResource::Load(FileBuffer *buffer)
             sndbuf->Seek(offsetVec[j]);
             FileBuffer *samplebuf = new FileBuffer(sizeVec[j]);
             samplebuf->Fill(sndbuf);
-            sample->AddBuffer(samplebuf);
+            sound->AddSample(samplebuf);
+            delete samplebuf;
           }
-          data.samples.push_back(sample);
+          data.sounds.push_back(sound);
           code = buffer->GetUint8();
         }
         soundMap.insert(std::pair<unsigned int, SoundData>(id, data));
