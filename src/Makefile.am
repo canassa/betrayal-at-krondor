@@ -46,7 +46,6 @@ noinst_HEADERS = AnimationResource.h \
                  ResourceIndex.h \
                  ResourcePath.h \
                  ResourceTag.h \
-                 Sample.h \
                  SDL_Clock.h \
                  SDL_Toolkit.h \
                  SDL_Video.h \
@@ -112,8 +111,6 @@ libguitoolkit_a_SOURCES = ButtonWidget.cc \
                           PanelWidget.h \
                           PopUpWidget.cc \
                           PopUpWidget.h \
-                          Sample.cc \
-                          Sample.h \
                           Sound.cc \
                           Sound.h \
                           TextArea.cc \
@@ -243,9 +240,7 @@ dumpscx_SOURCES = Image.cc \
                   ScreenResource.h \
                   dumpscx.cc
 dumpscx_LDADD   = libresbase.a
-dumpsnd_SOURCES = Sample.cc \
-                  Sample.h \
-                  Sound.cc \
+dumpsnd_SOURCES = Sound.cc \
                   Sound.h \
                   SoundResource.cc \
                   SoundResource.h \

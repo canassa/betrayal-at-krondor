@@ -21,17 +21,7 @@
 #include "SoundResource.h"
 #include "ResourceTag.h"
 
-static const unsigned int MAX_NUM_SFX     = 1000;
-
-static const uint32_t     RIFF_ID         = 0x46464952;
-static const uint32_t     WAVE_ID         = 0x45564157;
-static const uint32_t     FMT_ID          = 0x20746d66;
-static const uint32_t     DATA_ID         = 0x61746164;
-
-static const uint32_t     SMF_HEADER      = 0x6468544d;
-static const uint32_t     SMF_TRACK       = 0x6b72544d;
-static const unsigned int SMF_HEADER_SIZE = 6;
-static const unsigned int SMF_PPQN        = 96;
+static const unsigned int MAX_NUM_SFX = 1000;
 
 SoundResource::SoundResource()
 : TaggedResource()
@@ -54,55 +44,6 @@ SoundData&
 SoundResource::GetSoundData(unsigned int id)
 {
   return soundMap[id];
-}
-
-FileBuffer *
-SoundResource::CreateWave(FileBuffer *buffer, const unsigned int size)
-{
-  FileBuffer *wave = new FileBuffer(12 + 8 + 16 + 8 + size);
-  wave->PutUint32(RIFF_ID);
-  wave->PutUint32(wave->GetSize() - 8);
-  wave->PutUint32(WAVE_ID);
-  wave->PutUint32(FMT_ID);
-  wave->PutUint32(16);
-  wave->PutUint16(1);
-  wave->PutUint16(1);
-  wave->PutUint32(0x8400);
-  wave->PutUint32(0x8400);
-  wave->PutUint16(1);
-  wave->PutUint16(8);
-  wave->PutUint32(DATA_ID);
-  wave->PutUint32(size);
-  wave->Copy(buffer, size);
-  wave->Rewind();
-  return wave;
-}
-
-FileBuffer *
-SoundResource::CreateMidi(FileBuffer *buffer, const unsigned int size)
-{
-  const uint8_t *tmp;
-  FileBuffer *midi = new FileBuffer(8 + SMF_HEADER_SIZE + 8 + size);
-  midi->PutUint32(SMF_HEADER);
-  tmp = (const uint8_t *)&SMF_HEADER_SIZE;
-  midi->PutUint8(tmp[3]);
-  midi->PutUint8(tmp[2]);
-  midi->PutUint8(tmp[1]);
-  midi->PutUint8(tmp[0]);
-  midi->PutUint16(0);
-  midi->PutUint8(0);
-  midi->PutUint8(1);
-  midi->PutUint8(0);
-  midi->PutUint8(SMF_PPQN);
-  midi->PutUint32(SMF_TRACK);
-  tmp = (const uint8_t *)&size;
-  midi->PutUint8(tmp[3]);
-  midi->PutUint8(tmp[2]);
-  midi->PutUint8(tmp[1]);
-  midi->PutUint8(tmp[0]);
-  midi->Copy(buffer, size);
-  midi->Rewind();
-  return midi;
 }
 
 void

@@ -22,6 +22,7 @@
 #include "Exception.h"
 #include "FileManager.h"
 #include "ResourcePath.h"
+#include "Sound.h"
 #include "SoundResource.h"
 
 int main(int argc, char *argv[]) {
@@ -37,9 +38,16 @@ int main(int argc, char *argv[]) {
     for (unsigned int i = 0; i < data.sounds.size(); i++) {
       Sound *sound = data.sounds[i];
       for (unsigned int j = 0; j < sound->GetSize(); j++) {
-        Sample *sample = sound->GetSample(j);
-        printf("  %2d %2d: %d %d %d\n", i, j, sample->GetChannels(), sample->GetRate(), sample->GetBitsPerSample());
-        sample->GetBuffer()->Dump();
+        SampleData *sample = sound->GetSample(j);
+        printf("  %2d %2d %d\n", i, j, sample->format);
+        sample->buffer->Dump();
+        if (sample->format == SF_WAVE) {
+          sample->buffer->Rewind();
+          std::ofstream ofs;
+          ofs.open("sound.wav", std::ios::binary);
+          sample->buffer->Save(ofs);
+          ofs.close();
+        }
       }
     }
     delete snd;

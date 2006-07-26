@@ -26,17 +26,30 @@
 #include "config.h"
 #endif
 
-#include "Sample.h"
+#include "FileBuffer.h"
+
+typedef enum _SampleFormat {
+  SF_MIDI,
+  SF_WAVE,
+  SF_UNKNOWN
+} SampleFormat;
+
+typedef struct _SampleData {
+  SampleFormat format;
+  FileBuffer *buffer;
+} SampleData;
 
 class Sound {
   private:
     unsigned int type;
-    std::vector<Sample *> samples;
+    std::vector<SampleData *> samples;
+    FileBuffer * CreateMidi(FileBuffer *buffer);
+    FileBuffer * CreateWave(FileBuffer *buffer);
   public:
     Sound(const unsigned int t);
     virtual ~Sound();
     unsigned int GetSize() const;
-    Sample * GetSample(const unsigned int n);
+    SampleData * GetSample(const unsigned int n);
     void AddSample(FileBuffer *buffer);
 };
 
