@@ -84,10 +84,14 @@ class FileBuffer {
 
     uint8_t GetUint8();
     uint16_t GetUint16();
+    uint16_t GetUint16Reverse();
     uint32_t GetUint32();
+    uint32_t GetUint32Reverse();
     int8_t GetSint8();
     int16_t GetSint16();
+    int16_t GetSint16Reverse();
     int32_t GetSint32();
+    int32_t GetSint32Reverse();
     std::string GetString();
     std::string GetString(const unsigned int len);
     void GetData(void * data, const unsigned int n);
@@ -95,10 +99,14 @@ class FileBuffer {
 
     void PutUint8(const uint8_t x);
     void PutUint16(const uint16_t x);
+    void PutUint16Reverse(const uint16_t x);
     void PutUint32(const uint32_t x);
+    void PutUint32Reverse(const uint32_t x);
     void PutSint8(const int8_t x);
     void PutSint16(const int16_t x);
+    void PutSint16Reverse(const int16_t x);
     void PutSint32(const int32_t x);
+    void PutSint32Reverse(const int32_t x);
     void PutString(const std::string s);
     void PutData(void * data, const unsigned int n);
     void PutData(const uint8_t x, const unsigned int n);

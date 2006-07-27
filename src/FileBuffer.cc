@@ -324,6 +324,24 @@ FileBuffer::GetUint16()
   return 0;
 }
 
+uint16_t
+FileBuffer::GetUint16Reverse()
+{
+  if ((current) && (current + 2 <= buffer + size)) {
+    uint16_t n = 0;
+#ifdef XBAK_LITTLE_ENDIAN
+    n = ((uint8_t *)current)[0] << 8 | ((uint8_t *)current)[1];
+#else
+    n = *((uint16_t *)current);
+#endif
+    current += 2;
+    return n;
+  } else {
+    throw BufferEmpty("FileBuffer::GetUint16");
+  }
+  return 0;
+}
+
 uint32_t
 FileBuffer::GetUint32()
 {
@@ -333,6 +351,24 @@ FileBuffer::GetUint32()
     n = *((uint32_t *)current);
 #else
     n = ((uint8_t *)current)[0] << 24 | ((uint8_t *)current)[1] << 16 | ((uint8_t *)current)[2] << 8 | ((uint8_t *)current)[3];
+#endif
+    current += 4;
+    return n;
+  } else {
+    throw BufferEmpty("FileBuffer::GetUint32");
+  }
+  return 0;
+}
+
+uint32_t
+FileBuffer::GetUint32Reverse()
+{
+  if ((current) && (current + 4 <= buffer + size)) {
+    uint32_t n = 0;
+#ifdef XBAK_LITTLE_ENDIAN
+    n = ((uint8_t *)current)[0] << 24 | ((uint8_t *)current)[1] << 16 | ((uint8_t *)current)[2] << 8 | ((uint8_t *)current)[3];
+#else
+    n = *((uint32_t *)current);
 #endif
     current += 4;
     return n;
@@ -374,6 +410,24 @@ FileBuffer::GetSint16()
   return 0;
 }
 
+int16_t
+FileBuffer::GetSint16Reverse()
+{
+  if ((current) && (current + 2 <= buffer + size)) {
+    int16_t n = 0;
+#ifdef XBAK_LITTLE_ENDIAN
+    n = ((int8_t *)current)[0] << 8 | ((int8_t *)current)[1];
+#else
+    n = *((int16_t *)current);
+#endif
+    current += 2;
+    return n;
+  } else {
+    throw BufferEmpty("FileBuffer::GetSint16");
+  }
+  return 0;
+}
+
 int32_t
 FileBuffer::GetSint32()
 {
@@ -383,6 +437,24 @@ FileBuffer::GetSint32()
     n = *((int32_t *)current);
 #else
     n = ((int8_t *)current)[0] << 24 | ((int8_t *)current)[1] << 16 | ((int8_t *)current)[2] << 8 | ((int8_t *)current)[3];
+#endif
+    current += 4;
+    return n;
+  } else {
+    throw BufferEmpty("FileBuffer::GetSint32");
+  }
+  return 0;
+}
+
+int32_t
+FileBuffer::GetSint32Reverse()
+{
+  if ((current) && (current + 4 <= buffer + size)) {
+    int32_t n = 0;
+#ifdef XBAK_LITTLE_ENDIAN
+    n = ((int8_t *)current)[0] << 24 | ((int8_t *)current)[1] << 16 | ((int8_t *)current)[2] << 8 | ((int8_t *)current)[3];
+#else
+    n = *((int32_t *)current);
 #endif
     current += 4;
     return n;
@@ -482,6 +554,22 @@ FileBuffer::PutUint16(const uint16_t x)
 }
 
 void
+FileBuffer::PutUint16Reverse(const uint16_t x)
+{
+  if ((current) && (current + 2 <= buffer + size)) {
+#ifdef XBAK_LITTLE_ENDIAN
+    ((uint8_t *)current)[0] = (x >> 8) & 0xff;
+    ((uint8_t *)current)[1] = x & 0xff;
+#else
+    *((uint16_t *)current) = x;
+#endif
+    current += 2;
+  } else {
+    throw BufferFull("FileBuffer::PutUint16");
+  }
+}
+
+void
 FileBuffer::PutUint32(const uint32_t x)
 {
   if ((current) && (current + 4 <= buffer + size)) {
@@ -492,6 +580,24 @@ FileBuffer::PutUint32(const uint32_t x)
     ((uint8_t *)current)[1] = (x >> 16) & 0xff;
     ((uint8_t *)current)[2] = (x >> 8) & 0xff;
     ((uint8_t *)current)[3] = x & 0xff;
+#endif
+    current += 4;
+  } else {
+    throw BufferFull("FileBuffer::PutUint32");
+  }
+}
+
+void
+FileBuffer::PutUint32Reverse(const uint32_t x)
+{
+  if ((current) && (current + 4 <= buffer + size)) {
+#ifdef XBAK_LITTLE_ENDIAN
+    ((uint8_t *)current)[0] = (x >> 24) & 0xff;
+    ((uint8_t *)current)[1] = (x >> 16) & 0xff;
+    ((uint8_t *)current)[2] = (x >> 8) & 0xff;
+    ((uint8_t *)current)[3] = x & 0xff;
+#else
+    *((uint32_t *)current) = x;
 #endif
     current += 4;
   } else {
@@ -527,6 +633,22 @@ FileBuffer::PutSint16(const int16_t x)
 }
 
 void
+FileBuffer::PutSint16Reverse(const int16_t x)
+{
+  if ((current) && (current + 2 <= buffer + size)) {
+#ifdef XBAK_LITTLE_ENDIAN
+    ((int8_t *)current)[0] = (x >> 8) & 0xff;
+    ((int8_t *)current)[1] = x & 0xff;
+#else
+    *((int16_t *)current) = x;
+#endif
+    current += 2;
+  } else {
+    throw BufferFull("FileBuffer::PutSint16");
+  }
+}
+
+void
 FileBuffer::PutSint32(const int32_t x)
 {
   if ((current) && (current + 4 <= buffer + size)) {
@@ -537,6 +659,24 @@ FileBuffer::PutSint32(const int32_t x)
     ((int8_t *)current)[1] = (x >> 16) & 0xff;
     ((int8_t *)current)[2] = (x >> 8) & 0xff;
     ((int8_t *)current)[3] = x & 0xff;
+#endif
+    current += 4;
+  } else {
+    throw BufferFull("FileBuffer::PutSint32");
+  }
+}
+
+void
+FileBuffer::PutSint32Reverse(const int32_t x)
+{
+  if ((current) && (current + 4 <= buffer + size)) {
+#ifdef XBAK_LITTLE_ENDIAN
+    ((int8_t *)current)[0] = (x >> 24) & 0xff;
+    ((int8_t *)current)[1] = (x >> 16) & 0xff;
+    ((int8_t *)current)[2] = (x >> 8) & 0xff;
+    ((int8_t *)current)[3] = x & 0xff;
+#else
+    *((int32_t *)current) = x;
 #endif
     current += 4;
   } else {
