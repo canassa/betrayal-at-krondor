@@ -46,6 +46,7 @@ Sound::GetSample(const unsigned int n)
   return samples[n];
 }
 
+/* WAVE/RIFF tags & constants */
 static const uint32_t RIFF_ID         = 0x46464952;
 static const uint32_t WAVE_ID         = 0x45564157;
 static const uint32_t FMT_ID          = 0x20746d66;
@@ -77,28 +78,56 @@ Sound::CreateWave(FileBuffer *buffer)
   return wave;
 }
 
+/* Standard MIDI File tags & constants */
 static const uint32_t SMF_HEADER      = 0x6468544d;
 static const uint32_t SMF_TRACK       = 0x6b72544d;
-static const uint32_t SMF_HEADER_SIZE = 0x00000006;
+static const uint32_t SMF_HEADER_SIZE = 6;
 static const uint8_t  SMF_PPQN        = 96;
 
+/* MIDI event codes */
+static const uint8_t MIDI_NOTE_OFF = 0x80;
+static const uint8_t MIDI_NOTE_ON  = 0x90;
+static const uint8_t MIDI_KEY      = 0xa0;
+static const uint8_t MIDI_CONTROL  = 0xb0;
+static const uint8_t MIDI_PATCH    = 0xc0;
+static const uint8_t MIDI_CHANNEL  = 0xd0;
+static const uint8_t MIDI_PITCH    = 0xe0;
+static const uint8_t MIDI_SYSEX    = 0xf0;
+static const uint8_t MIDI_META     = 0xff;
+
+/* MIDI Meta events */
+static const uint8_t META_SEQNUM     = 0x00;
+static const uint8_t META_TEXT       = 0x01;
+static const uint8_t META_COPYRIGHT  = 0x02;
+static const uint8_t META_TRACK      = 0x03;
+static const uint8_t META_INSTRUMENT = 0x04;
+static const uint8_t META_LYRIC      = 0x05;
+static const uint8_t META_MARKER     = 0x06;
+static const uint8_t META_CUE        = 0x07;
+static const uint8_t META_CHANNEL    = 0x20;
+static const uint8_t META_PORT       = 0x21;
+static const uint8_t META_EOT        = 0x2f;
+static const uint8_t META_TEMPO      = 0x51;
+static const uint8_t META_SMPTE      = 0x54;
+static const uint8_t META_TIME       = 0x58;
+static const uint8_t META_KEY        = 0x59;
+static const uint8_t META_SEQDATA    = 0x7f;
+
 FileBuffer *
-Sound::CreateMidi(FileBuffer *buffer)
+Sound::CreateMidi(FileBuffer *buffer, unsigned int channel)
 {
+  buffer->Skip(2);
   unsigned int size = buffer->GetBytesLeft();
   FileBuffer *midi = new FileBuffer(8 + SMF_HEADER_SIZE + 8 + size);
   midi->PutUint32(SMF_HEADER);
-  midi->PutUint32(SMF_HEADER_SIZE);
+  midi->PutUint32Reverse(SMF_HEADER_SIZE);
   midi->PutUint16(0);
   midi->PutUint8(0);
   midi->PutUint8(1);
   midi->PutUint8(0);
   midi->PutUint8(SMF_PPQN);
   midi->PutUint32(SMF_TRACK);
-  midi->PutUint8((size >> 24) & 0xff);
-  midi->PutUint8((size >> 16) & 0xff);
-  midi->PutUint8((size >> 8) & 0xff);
-  midi->PutUint8(size & 0xff);
+  midi->PutUint32Reverse(size);
   midi->Copy(buffer, size);
   midi->Rewind();
   return midi;
@@ -108,35 +137,13 @@ void
 Sound::AddSample(FileBuffer *buffer)
 {
   SampleData *sample = new SampleData();
-  switch (buffer->GetUint8()) {
-    case 0x00:
-    case 0x01:
-    case 0x02:
-    case 0x03:
-    case 0x04:
-    case 0x05:
-    case 0x06:
-    case 0x07:
-    case 0x08:
-    case 0x09:
-    case 0x0a:
-    case 0x0b:
-    case 0x0c:
-    case 0x0d:
-    case 0x0e:
-    case 0x0f:
-    case 0x29:
-      sample->format = SF_UNKNOWN;
-      sample->buffer = new FileBuffer(buffer->GetBytesLeft());
-      sample->buffer->Fill(buffer);
-      break;
-    case 0xfe:
-      sample->format = SF_WAVE;
-      sample->buffer = CreateWave(buffer);
-      break;
-    default:
-      throw DataCorruption("Sound::AddSample");
-      break;
+  unsigned int code = buffer->GetUint8();
+  if (code == 0xfe) {
+    sample->format = SF_WAVE;
+    sample->buffer = CreateWave(buffer);
+  } else {
+    sample->format = SF_MIDI;
+    sample->buffer = CreateMidi(buffer, code & 0x0f);
   }
   samples.push_back(sample);
 }
