@@ -43,7 +43,7 @@ class Sound {
   private:
     unsigned int type;
     std::vector<SampleData *> samples;
-    FileBuffer * CreateMidi(FileBuffer *buffer);
+    FileBuffer * CreateMidi(FileBuffer *buffer, const unsigned int channel);
     FileBuffer * CreateWave(FileBuffer *buffer);
   public:
     Sound(const unsigned int t);

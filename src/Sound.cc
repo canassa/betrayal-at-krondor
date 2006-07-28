@@ -114,9 +114,17 @@ static const uint8_t META_KEY        = 0x59;
 static const uint8_t META_SEQDATA    = 0x7f;
 
 FileBuffer *
-Sound::CreateMidi(FileBuffer *buffer, unsigned int channel)
+Sound::CreateMidi(FileBuffer *buffer, const unsigned int channel)
 {
   buffer->Skip(2);
+  unsigned int code = buffer->GetUint8();
+  if (code & 0x0f != channel) {
+    throw DataCorruption("Sound::CreateMidi");
+  }
+  switch (code & 0xf0) {
+    default:
+      break;
+  }
   unsigned int size = buffer->GetBytesLeft();
   FileBuffer *midi = new FileBuffer(8 + SMF_HEADER_SIZE + 8 + size);
   midi->PutUint32(SMF_HEADER);
