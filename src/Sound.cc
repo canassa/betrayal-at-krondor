@@ -85,15 +85,19 @@ static const uint32_t SMF_HEADER_SIZE = 6;
 static const uint8_t  SMF_PPQN        = 96;
 
 /* MIDI event codes */
-static const uint8_t MIDI_NOTE_OFF = 0x80;
-static const uint8_t MIDI_NOTE_ON  = 0x90;
-static const uint8_t MIDI_KEY      = 0xa0;
-static const uint8_t MIDI_CONTROL  = 0xb0;
-static const uint8_t MIDI_PATCH    = 0xc0;
-static const uint8_t MIDI_CHANNEL  = 0xd0;
-static const uint8_t MIDI_PITCH    = 0xe0;
-static const uint8_t MIDI_SYSEX    = 0xf0;
-static const uint8_t MIDI_META     = 0xff;
+static const uint8_t MIDI_NOTE_OFF  = 0x80;
+static const uint8_t MIDI_NOTE_ON   = 0x90;
+static const uint8_t MIDI_KEY       = 0xa0;
+static const uint8_t MIDI_CONTROL   = 0xb0;
+static const uint8_t MIDI_PATCH     = 0xc0;
+static const uint8_t MIDI_CHANNEL   = 0xd0;
+static const uint8_t MIDI_PITCH     = 0xe0;
+static const uint8_t MIDI_SYSEX     = 0xf0;
+static const uint8_t MIDI_TIMING    = 0xf8;
+static const uint8_t MIDI_SEQ_START = 0xfa;
+static const uint8_t MIDI_SEQ_CONT  = 0xfb;
+static const uint8_t MIDI_SEQ_END   = 0xfc;
+static const uint8_t MIDI_META      = 0xff;
 
 /* MIDI Meta events */
 static const uint8_t META_SEQNUM     = 0x00;
@@ -113,19 +117,79 @@ static const uint8_t META_TIME       = 0x58;
 static const uint8_t META_KEY        = 0x59;
 static const uint8_t META_SEQDATA    = 0x7f;
 
+typedef struct _MidiEvent {
+  unsigned int delta;
+  unsigned int size;
+  uint8_t data[8];
+} MidiEvent;
+
 FileBuffer *
 Sound::CreateMidi(FileBuffer *buffer, const unsigned int channel)
 {
-  buffer->Skip(2);
-  unsigned int code = buffer->GetUint8();
-  if (code & 0x0f != channel) {
-    throw DataCorruption("Sound::CreateMidi");
+  unsigned int delta;
+  unsigned int code;
+  unsigned int mode = 0;
+  unsigned int size = 0;
+
+  buffer->Skip(1);
+  while ((mode != MIDI_SEQ_END) && !buffer->AtEnd()) {
+    delta = buffer->GetUint8();
+    while (delta == MIDI_TIMING) {
+      MidiEvent *me = new MidiEvent;
+      me->delta = 0;
+      me->data[0] = MIDI_TIMING;
+      me->size = 1;
+      delete me;
+      delta = buffer->GetUint8();
+    }
+    code = buffer->GetUint8();
+    if (((code & 0xf0) == MIDI_NOTE_ON) ||
+        ((code & 0xf0) == MIDI_CONTROL) ||
+        ((code & 0xf0) == MIDI_PATCH)  ||
+        ((code & 0xf0) == MIDI_PITCH)) {
+      mode = code;
+      if ((code & 0x0f) != channel) {
+        throw DataCorruption("Sound::CreateMidi");
+      }
+    } else if (code == MIDI_SEQ_END) {
+      mode = code;
+    } else {
+      buffer->Skip(-1);
+    }
+    MidiEvent *me = new MidiEvent;
+    me->delta = delta;
+    me->data[0] = mode;
+    switch (mode & 0xf0) {
+      case MIDI_NOTE_ON:
+        me->data[1] = buffer->GetUint8();
+        me->data[2] = buffer->GetUint8();
+        if (me->data[2]) {
+          me->size = 3;
+        } else {
+          me->data[0] = MIDI_NOTE_OFF | channel;
+          me->size = 2;
+        }
+        break;
+      case MIDI_CONTROL:
+      case MIDI_PITCH:
+        me->data[1] = buffer->GetUint8();
+        me->data[2] = buffer->GetUint8();
+        me->size = 3;
+        break;
+      case MIDI_PATCH:
+        me->data[1] = buffer->GetUint8();
+        me->size = 2;
+        break;
+      default:
+        if (mode = MIDI_SEQ_END) {
+          me->size = 1;
+        } else {
+          throw DataCorruption("Sound::CreateMidi");
+        }
+        break;
+    }
+    delete me;
   }
-  switch (code & 0xf0) {
-    default:
-      break;
-  }
-  unsigned int size = buffer->GetBytesLeft();
   FileBuffer *midi = new FileBuffer(8 + SMF_HEADER_SIZE + 8 + size);
   midi->PutUint32(SMF_HEADER);
   midi->PutUint32Reverse(SMF_HEADER_SIZE);
