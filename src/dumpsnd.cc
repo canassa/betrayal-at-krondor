@@ -18,6 +18,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 
 #include "Exception.h"
 #include "FileManager.h"
@@ -41,13 +42,18 @@ int main(int argc, char *argv[]) {
         SampleData *sample = sound->GetSample(j);
         printf("  %2d %2d %d\n", i, j, sample->format);
         sample->buffer->Dump();
+        sample->buffer->Rewind();
+        std::stringstream ss;
+        ss << "sound_" << i << "_" << j;
         if (sample->format == SF_WAVE) {
-          sample->buffer->Rewind();
-          std::ofstream ofs;
-          ofs.open("sound.wav", std::ios::binary);
-          sample->buffer->Save(ofs);
-          ofs.close();
+          ss << ".wav";
+        } else if (sample->format == SF_MIDI) {
+          ss << ".mid";
         }
+        std::ofstream ofs;
+        ofs.open(ss.str().c_str(), std::ios::binary);
+        sample->buffer->Save(ofs);
+        ofs.close();
       }
     }
     delete snd;

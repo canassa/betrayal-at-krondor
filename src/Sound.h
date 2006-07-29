@@ -43,6 +43,7 @@ class Sound {
   private:
     unsigned int type;
     std::vector<SampleData *> samples;
+    void PutVLQ(FileBuffer *buffer, unsigned int quant);
     FileBuffer * CreateMidi(FileBuffer *buffer, const unsigned int channel);
     FileBuffer * CreateWave(FileBuffer *buffer);
   public:
