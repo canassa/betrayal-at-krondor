@@ -67,22 +67,22 @@ noinst_LIBRARIES = libsdldriver.a \
                    libresbase.a \
                    libresdata.a \
                    libguitoolkit.a
-bin_PROGRAMS = dumpads \
-               dumpbmx \
-               dumpbok \
-               dumpddx \
-               dumpfnt \
-               dumpgam \
-               dumplbl \
-               dumppal \
-               dumpreq \
-               dumpscx \
-               dumpsnd \
-               dumptbl \
-               dumpttm \
-               dumpwld \
-               viewres \
-               xbak
+noinst_PROGRAMS = dumpads \
+                  dumpbmx \
+                  dumpbok \
+                  dumpddx \
+                  dumpfnt \
+                  dumpgam \
+                  dumplbl \
+                  dumppal \
+                  dumpreq \
+                  dumpscx \
+                  dumpsnd \
+                  dumptbl \
+                  dumpttm \
+                  dumpwld \
+                  viewres
+bin_PROGRAMS = xbak
 libguitoolkit_a_SOURCES = ButtonWidget.cc \
                           ButtonWidget.h \
                           CharacterButtonWidget.cc \

@@ -39,8 +39,6 @@ class SoundResource
 : public TaggedResource {
   private:
     std::map<unsigned int, SoundData> soundMap;
-    FileBuffer * CreateWave(FileBuffer *buffer, const unsigned int size);
-    FileBuffer * CreateMidi(FileBuffer *buffer, const unsigned int size);
   public:
     SoundResource();
     virtual ~SoundResource();
