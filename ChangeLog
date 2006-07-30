@@ -1,3 +1,10 @@
+2006-08-??, xbak-0.0.9:
+* Sound data can be loaded and interpreted.
+* Initial implmentation of loading/saving games is done.
+* Added some drawing primitives.
+* Plugged a memory leak.
+* Several bug fixes.
+
 2006-06-08, xbak-0.0.8:
 * More work on the main game dialogs.
 * Character button GUI widgets are available.
