@@ -55,6 +55,8 @@ class Sound {
   public:
     Sound(const unsigned int t);
     virtual ~Sound();
+    unsigned int GetType() const;
+    unsigned int GetChannel() const;
     SoundFormat GetFormat() const;
     FileBuffer * GetSamples();
     void AddVoice(FileBuffer *buf);

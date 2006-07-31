@@ -34,6 +34,18 @@ Sound::~Sound()
   delete buffer;
 }
 
+unsigned int
+Sound::GetType() const
+{
+  return type;
+}
+
+unsigned int
+Sound::GetChannel() const
+{
+  return channel;
+}
+
 SoundFormat
 Sound::GetFormat() const
 {
@@ -234,14 +246,12 @@ Sound::GenerateMidi()
   buffer->PutUint16Reverse(SMF_PPQN);
   buffer->PutUint32(SMF_TRACK);
   buffer->PutUint32Reverse(size);
-  tick = 0;
   for (std::multimap<unsigned int, MidiEvent *>::iterator it = midiEvents.begin(); it != midiEvents.end(); ++it) {
     MidiEvent *me = (*it).second;
     PutVariableLength(buffer, me->delta);
     for (unsigned int i = 0; i < me->size; i++) {
       buffer->PutUint8(me->data[i]);
     }
-    tick = (*it).first;
     delete (*it).second;
   }
   midiEvents.clear();

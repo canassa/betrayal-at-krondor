@@ -38,6 +38,7 @@ int main(int argc, char *argv[]) {
     printf("%8s %d %d\n", data.name.c_str(), data.type, (unsigned int)data.sounds.size());
     for (unsigned int i = 0; i < data.sounds.size(); i++) {
       Sound *sound = data.sounds[i];
+      printf("%d: %d %d %d\n", i, sound->GetType(),sound->GetChannel(), sound->GetFormat());
       FileBuffer *buf = sound->GetSamples();
       buf->Dump();
       buf->Rewind();
