@@ -22,28 +22,28 @@
 
 Sound::Sound(const unsigned int t)
 : type(t)
-, samples()
+, channel(255)
+, format(SF_UNKNOWN)
+, buffer()
+, midiEvents()
 {
 }
 
 Sound::~Sound()
 {
-  for (unsigned int i = 0; i < samples.size(); i++) {
-    delete (samples[i])->buffer;
-    delete samples[i];
-  }
+  delete buffer;
 }
 
-unsigned int
-Sound::GetSize() const
+SoundFormat
+Sound::GetFormat() const
 {
-  return samples.size();
+  return format;
 }
 
-SampleData *
-Sound::GetSample(const unsigned int n)
+FileBuffer *
+Sound::GetSamples()
 {
-  return samples[n];
+  return buffer;
 }
 
 /* WAVE/RIFF tags & constants */
@@ -52,30 +52,34 @@ static const uint32_t WAVE_ID         = 0x45564157;
 static const uint32_t FMT_ID          = 0x20746d66;
 static const uint32_t DATA_ID         = 0x61746164;
 
-FileBuffer *
-Sound::CreateWave(FileBuffer *buffer)
+void
+Sound::CreateWaveSamples(FileBuffer *buf)
 {
-  buffer->Skip(1);
-  unsigned int rate = buffer->GetUint16();
-  unsigned int size = buffer->GetUint32();
-  buffer->Skip(2);
-  FileBuffer *wave = new FileBuffer(12 + 8 + 16 + 8 + size);
-  wave->PutUint32(RIFF_ID);
-  wave->PutUint32(wave->GetSize() - 8);
-  wave->PutUint32(WAVE_ID);
-  wave->PutUint32(FMT_ID);
-  wave->PutUint32(16);      // chunk size
-  wave->PutUint16(1);       // compression: 1 = uncompressed PCM
-  wave->PutUint16(1);       // # channels
-  wave->PutUint32(rate);    // sample rate
-  wave->PutUint32(rate);    // average bytes per sec: sample rate * block align
-  wave->PutUint16(1);       // block align: significant bits per sample / 8 * # channels
-  wave->PutUint16(8);       // significant bits per sample
-  wave->PutUint32(DATA_ID);
-  wave->PutUint32(size);
-  wave->Copy(buffer, size);
-  wave->Rewind();
-  return wave;
+  buf->Skip(1);
+  unsigned int rate = buf->GetUint16();
+  unsigned int size = buf->GetUint32();
+  buf->Skip(2);
+  buffer = new FileBuffer(12 + 8 + 16 + 8 + size);
+  buffer->PutUint32(RIFF_ID);
+  buffer->PutUint32(buffer->GetSize() - 8);
+  buffer->PutUint32(WAVE_ID);
+  buffer->PutUint32(FMT_ID);
+  buffer->PutUint32(16);      // chunk size
+  buffer->PutUint16(1);       // compression: 1 = uncompressed PCM
+  buffer->PutUint16(1);       // # channels
+  buffer->PutUint32(rate);    // sample rate
+  buffer->PutUint32(rate);    // average bytes per sec: sample rate * block align
+  buffer->PutUint16(1);       // block align: significant bits per sample / 8 * # channels
+  buffer->PutUint16(8);       // significant bits per sample
+  buffer->PutUint32(DATA_ID);
+  buffer->PutUint32(size);
+  buffer->Copy(buf, size);
+  buffer->Rewind();
+}
+
+void
+Sound::GenerateWave()
+{
 }
 
 /* Standard MIDI File tags & constants */
@@ -118,79 +122,61 @@ static const uint8_t META_TIME       = 0x58;
 static const uint8_t META_KEY        = 0x59;
 static const uint8_t META_SEQDATA    = 0x7f;
 
-typedef struct _MidiEvent {
-  unsigned int delta;
-  unsigned int size;
-  uint8_t data[8];
-} MidiEvent;
-
 void
-Sound::PutVLQ(FileBuffer *buffer, unsigned int quant)
+Sound::PutVariableLength(FileBuffer *buf, unsigned int n)
 {
-  unsigned int tmp = (quant & 0x7f);
-  unsigned int count = 1;
-  while (quant >>= 7)
+  unsigned int tmp = (n & 0x7f);
+  unsigned int k = 1;
+  while (n >>= 7)
   {
     tmp <<= 8;
-    tmp |= ((quant & 0x7f) | 0x80);
-    count++;
+    tmp |= ((n & 0x7f) | 0x80);
+    k++;
   }
-  while (count--)
+  while (k--)
   {
-    buffer->PutUint8(tmp & 0xff);
+    buf->PutUint8(tmp & 0xff);
     tmp >>= 8;
   }
 }
 
-FileBuffer *
-Sound::CreateMidi(FileBuffer *buffer, const unsigned int channel)
+void
+Sound::CreateMidiEvents(FileBuffer *buf)
 {
   unsigned int delta;
   unsigned int code;
   unsigned int mode = 0;
-  unsigned int size = 0;
-  std::vector<MidiEvent *> midiEvents;
+  unsigned int tick = 0;
 
-  buffer->Skip(1);
-  while ((mode != MIDI_SEQ_END) && !buffer->AtEnd()) {
+  buf->Skip(1);
+  while ((mode != MIDI_SEQ_END) && !buf->AtEnd()) {
     delta = 0;
-    code = buffer->GetUint8();
+    code = buf->GetUint8();
     while (code == MIDI_TIMING) {
       delta += 240;
-      code = buffer->GetUint8();
+      code = buf->GetUint8();
     }
     delta += code;
-    size += 1;
-    if (delta >= (1 << 7)) {
-      size += 1;
-    }
-    if (delta >= (1 << 14)) {
-      size += 1;
-    }
-    if (delta >= (1 << 21)) {
-      size += 1;
-    }
-    code = buffer->GetUint8();
+    code = buf->GetUint8();
     if (((code & 0xf0) == MIDI_NOTE_ON) ||
         ((code & 0xf0) == MIDI_CONTROL) ||
         ((code & 0xf0) == MIDI_PATCH)  ||
         ((code & 0xf0) == MIDI_PITCH)) {
       mode = code;
       if ((code & 0x0f) != channel) {
-        throw DataCorruption("Sound::CreateMidi");
+        throw DataCorruption("Sound::CreateMidiEvents");
       }
     } else if (code == MIDI_SEQ_END) {
       mode = code;
     } else {
-      buffer->Skip(-1);
+      buf->Skip(-1);
     }
     MidiEvent *me = new MidiEvent;
-    me->delta = delta;
     me->data[0] = mode;
     switch (mode & 0xf0) {
       case MIDI_NOTE_ON:
-        me->data[1] = buffer->GetUint8();
-        me->data[2] = buffer->GetUint8();
+        me->data[1] = buf->GetUint8();
+        me->data[2] = buf->GetUint8();
         if (me->data[2] == 0) {
           me->data[0] = MIDI_NOTE_OFF | channel;
         }
@@ -198,67 +184,92 @@ Sound::CreateMidi(FileBuffer *buffer, const unsigned int channel)
         break;
       case MIDI_CONTROL:
       case MIDI_PITCH:
-        me->data[1] = buffer->GetUint8();
-        me->data[2] = buffer->GetUint8();
+        me->data[1] = buf->GetUint8();
+        me->data[2] = buf->GetUint8();
         me->size = 3;
         break;
       case MIDI_PATCH:
-        me->data[1] = buffer->GetUint8();
+        me->data[1] = buf->GetUint8();
         me->size = 2;
         break;
       default:
         if (mode = MIDI_SEQ_END) {
           me->size = 1;
         } else {
-          throw DataCorruption("Sound::CreateMidi");
+          throw DataCorruption("Sound::CreateMidiEvents");
         }
         break;
     }
-    midiEvents.push_back(me);
-    size += me->size;
+    tick += delta;
+    midiEvents.insert(std::pair<unsigned int, MidiEvent *>(tick, me));
   }
-  FileBuffer *midi = new FileBuffer(8 + SMF_HEADER_SIZE + 8 + 7 + size + 4);
-  midi->PutUint32(SMF_HEADER);
-  midi->PutUint32Reverse(SMF_HEADER_SIZE);
-  midi->PutUint16Reverse(SMF_FORMAT);
-  midi->PutUint16Reverse(1);
-  midi->PutUint16Reverse(SMF_PPQN);
-  midi->PutUint32(SMF_TRACK);
-  midi->PutUint32Reverse(size);
-  midi->PutUint8(0);
-  midi->PutUint8(MIDI_META);
-  midi->PutUint8(META_TEMPO);
-  midi->PutUint8(3);
-  midi->PutUint8(0x07);
-  midi->PutUint8(0xa1);
-  midi->PutUint8(0x20);
-  for (unsigned int i = 0; i < midiEvents.size(); i++) {
-    PutVLQ(midi, midiEvents[i]->delta);
-    for (unsigned int j = 0; j < midiEvents[i]->size; j++) {
-      midi->PutUint8(midiEvents[i]->data[j]);
-    }
-    delete midiEvents[i];
-  }
-  midiEvents.clear();
-  midi->PutUint8(0);
-  midi->PutUint8(MIDI_META);
-  midi->PutUint8(META_EOT);
-  midi->PutUint8(0);
-  midi->Rewind();
-  return midi;
 }
 
 void
-Sound::AddSample(FileBuffer *buffer)
+Sound::GenerateMidi()
 {
-  SampleData *sample = new SampleData();
-  unsigned int code = buffer->GetUint8();
-  if (code == 0xfe) {
-    sample->format = SF_WAVE;
-    sample->buffer = CreateWave(buffer);
-  } else {
-    sample->format = SF_MIDI;
-    sample->buffer = CreateMidi(buffer, code & 0x0f);
+  unsigned int size = 0;
+  unsigned int tick = 0;
+  for (std::multimap<unsigned int, MidiEvent *>::iterator it = midiEvents.begin(); it != midiEvents.end(); ++it) {
+    MidiEvent *me = (*it).second;
+    me->delta = (*it).first - tick;
+    size += 1;
+    if (me->delta >= (1 << 7)) {
+      size += 1;
+    }
+    if (me->delta >= (1 << 14)) {
+      size += 1;
+    }
+    if (me->delta >= (1 << 21)) {
+      size += 1;
+    }
+    size += me->size;
+    tick = (*it).first;
   }
-  samples.push_back(sample);
+  buffer = new FileBuffer(8 + SMF_HEADER_SIZE + 8 + size + 4);
+  buffer->PutUint32(SMF_HEADER);
+  buffer->PutUint32Reverse(SMF_HEADER_SIZE);
+  buffer->PutUint16Reverse(SMF_FORMAT);
+  buffer->PutUint16Reverse(1);
+  buffer->PutUint16Reverse(SMF_PPQN);
+  buffer->PutUint32(SMF_TRACK);
+  buffer->PutUint32Reverse(size);
+  tick = 0;
+  for (std::multimap<unsigned int, MidiEvent *>::iterator it = midiEvents.begin(); it != midiEvents.end(); ++it) {
+    MidiEvent *me = (*it).second;
+    PutVariableLength(buffer, me->delta);
+    for (unsigned int i = 0; i < me->size; i++) {
+      buffer->PutUint8(me->data[i]);
+    }
+    tick = (*it).first;
+    delete (*it).second;
+  }
+  midiEvents.clear();
+  buffer->PutUint8(0);
+  buffer->PutUint8(MIDI_META);
+  buffer->PutUint8(META_EOT);
+  buffer->PutUint8(0);
+  buffer->Rewind();
+}
+
+void
+Sound::AddVoice(FileBuffer *buf)
+{
+  unsigned int code = buf->GetUint8();
+  channel = code & 0x0f;
+  if (code == 0xfe) {
+    format = SF_WAVE;
+    CreateWaveSamples(buf);
+  } else {
+    format = SF_MIDI;
+    CreateMidiEvents(buf);
+  }
+}
+
+void
+Sound::GenerateBuffer()
+{
+  if (format == SF_MIDI) {
+    GenerateMidi();
+  }
 }

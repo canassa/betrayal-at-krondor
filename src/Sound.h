@@ -20,7 +20,7 @@
 #ifndef SOUND_H
 #define SOUND_H
 
-#include <vector>
+#include <map>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -28,30 +28,37 @@
 
 #include "FileBuffer.h"
 
-typedef enum _SampleFormat {
+typedef enum _SoundFormat {
   SF_MIDI,
   SF_WAVE,
   SF_UNKNOWN
-} SampleFormat;
+} SoundFormat;
 
-typedef struct _SampleData {
-  SampleFormat format;
-  FileBuffer *buffer;
-} SampleData;
+typedef struct _MidiEvent {
+  unsigned int delta;
+  unsigned int size;
+  uint8_t data[8];
+} MidiEvent;
 
 class Sound {
   private:
     unsigned int type;
-    std::vector<SampleData *> samples;
-    void PutVLQ(FileBuffer *buffer, unsigned int quant);
-    FileBuffer * CreateMidi(FileBuffer *buffer, const unsigned int channel);
-    FileBuffer * CreateWave(FileBuffer *buffer);
+    unsigned int channel;
+    SoundFormat format;
+    FileBuffer *buffer;
+    std::multimap<unsigned int, MidiEvent *> midiEvents;
+    void PutVariableLength(FileBuffer *buf, unsigned int n);
+    void CreateWaveSamples(FileBuffer *buf);
+    void CreateMidiEvents(FileBuffer *buf);
+    void GenerateMidi();
+    void GenerateWave();
   public:
     Sound(const unsigned int t);
     virtual ~Sound();
-    unsigned int GetSize() const;
-    SampleData * GetSample(const unsigned int n);
-    void AddSample(FileBuffer *buffer);
+    SoundFormat GetFormat() const;
+    FileBuffer * GetSamples();
+    void AddVoice(FileBuffer *buf);
+    void GenerateBuffer();
 };
 
 #endif

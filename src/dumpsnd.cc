@@ -38,23 +38,20 @@ int main(int argc, char *argv[]) {
     printf("%8s %d %d\n", data.name.c_str(), data.type, (unsigned int)data.sounds.size());
     for (unsigned int i = 0; i < data.sounds.size(); i++) {
       Sound *sound = data.sounds[i];
-      for (unsigned int j = 0; j < sound->GetSize(); j++) {
-        SampleData *sample = sound->GetSample(j);
-        printf("  %2d %2d %d\n", i, j, sample->format);
-        sample->buffer->Dump();
-        sample->buffer->Rewind();
-        std::stringstream ss;
-        ss << "sound_" << i << "_" << j;
-        if (sample->format == SF_WAVE) {
-          ss << ".wav";
-        } else if (sample->format == SF_MIDI) {
-          ss << ".mid";
-        }
-        std::ofstream ofs;
-        ofs.open(ss.str().c_str(), std::ios::binary);
-        sample->buffer->Save(ofs);
-        ofs.close();
+      FileBuffer *buf = sound->GetSamples();
+      buf->Dump();
+      buf->Rewind();
+      std::stringstream ss;
+      ss << "sound_" << i;
+      if (sound->GetFormat() == SF_WAVE) {
+        ss << ".wav";
+      } else if (sound->GetFormat() == SF_MIDI) {
+        ss << ".mid";
       }
+      std::ofstream ofs;
+      ofs.open(ss.str().c_str(), std::ios::binary);
+      buf->Save(ofs);
+      ofs.close();
     }
     delete snd;
     FileManager::CleanUp();

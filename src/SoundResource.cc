@@ -97,9 +97,10 @@ SoundResource::Load(FileBuffer *buffer)
             sndbuf->Seek(offsetVec[j]);
             FileBuffer *samplebuf = new FileBuffer(sizeVec[j]);
             samplebuf->Fill(sndbuf);
-            sound->AddSample(samplebuf);
+            sound->AddVoice(samplebuf);
             delete samplebuf;
           }
+          sound->GenerateBuffer();
           data.sounds.push_back(sound);
           code = buffer->GetUint8();
         }
