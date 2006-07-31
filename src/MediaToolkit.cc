@@ -20,7 +20,8 @@
 #include "MediaToolkit.h"
 
 MediaToolkit::MediaToolkit()
-: clock(0)
+: audio(0)
+, clock(0)
 , video(0)
 , eventLoopRunning(false)
 , keyboardListeners()
@@ -38,6 +39,12 @@ MediaToolkit::~MediaToolkit()
   mouseMotionListeners.clear();
   timerListeners.clear();
   updateListeners.clear();
+}
+
+Audio*
+MediaToolkit::GetAudio() const
+{
+  return audio;
 }
 
 Clock*

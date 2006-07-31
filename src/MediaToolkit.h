@@ -26,12 +26,14 @@
 
 #include <list>
 
+#include "Audio.h"
 #include "Clock.h"
 #include "EventListener.h"
 #include "Video.h"
 
 class MediaToolkit {
   protected:
+    Audio *audio;
     Clock *clock;
     Video *video;
     bool eventLoopRunning;
@@ -43,6 +45,7 @@ class MediaToolkit {
   public:
     MediaToolkit();
     virtual ~MediaToolkit();
+    Audio* GetAudio() const;
     Clock* GetClock() const;
     Video* GetVideo() const;
     void AddKeyboardListener(KeyboardEventListener *kel);

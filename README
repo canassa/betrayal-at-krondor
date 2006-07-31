@@ -1,7 +1,9 @@
 xBaK is licensed under the GPL. See COPYING for more information.
 
 Required tools and software:
-* SDL ("http://www.libsdl.org")
+* SDL       ("http://www.libsdl.org/")
+* SDL_mixer ("http://www.libsdl.org/projects/SDL_mixer/")
+* SDL_sound ("http://icculus.org/SDL_sound/")
 
 To build on linux change to the directory where xBaK sources are extracted.
 Next run "./configure" and, if no errors are reported, continu to run "make".

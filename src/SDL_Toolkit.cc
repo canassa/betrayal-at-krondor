@@ -18,6 +18,7 @@
  */
 
 #include "Exception.h"
+#include "SDL_Audio.h"
 #include "SDL_Clock.h"
 #include "SDL_Toolkit.h"
 #include "SDL_Video.h"
@@ -30,12 +31,14 @@ SDL_Toolkit::SDL_Toolkit()
   if (SDL_Init(SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_VIDEO) < 0) {
     throw SDL_Exception(SDL_GetError());
   }
+  audio = new SDL_Audio();
   clock = new SDL_Clock();
   video = new SDL_Video();
 }
 
 SDL_Toolkit::~SDL_Toolkit()
 {
+  delete audio;
   delete clock;
   delete video;
   SDL_Quit();

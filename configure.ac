@@ -24,6 +24,8 @@ SDL_CXXFLAGS=$(sh sdl-config --cflags)
 SDL_LIBS=$(sh sdl-config --libs)
 CXXFLAGS="$CXXFLAGS $SDL_CXXFLAGS"
 LIBS="$LIBS $SDL_LIBS"
+AC_CHECK_LIB([SDL_mixer], [Mix_Linked_Version], , AC_MSG_ERROR([SDL_mixer not found]))
+AC_CHECK_LIB([SDL_sound], [Sound_GetLinkedVersion], , AC_MSG_ERROR([SDL_sound not found]))
 
 AC_CACHE_SAVE
 

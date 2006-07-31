@@ -1,4 +1,5 @@
 noinst_HEADERS = AnimationResource.h \
+                 Audio.h \
                  BookResource.h \
                  ButtonWidget.h \
                  Chapter.h \
@@ -182,12 +183,15 @@ libresdata_a_SOURCES = AnimationResource.cc \
                        TileWorldResource.h \
                        ZoneTableResource.cc \
                        ZoneTableResource.h
-libsdldriver_a_SOURCES = Clock.h \
+libsdldriver_a_SOURCES = Audio.h \
+                         Clock.h \
                          Event.cc \
                          Event.h \
                          EventListener.h \
                          MediaToolkit.cc \
                          MediaToolkit.h \
+                         SDL_Audio.cc \
+                         SDL_Audio.h \
                          SDL_Clock.cc \
                          SDL_Clock.h \
                          SDL_Toolkit.cc \
