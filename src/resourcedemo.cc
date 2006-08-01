@@ -29,6 +29,7 @@ typedef enum _CommandType
   CT_BMX,
   CT_FNT,
   CT_SCX,
+  CT_SND,
   CT_TTM,
   CT_WLD
 } CommandType;
@@ -48,6 +49,9 @@ get_command_type(char *cmd)
   if (strncmp(cmd, "SCX", 3) == 0) {
     return CT_SCX;
   }
+  if (strncmp(cmd, "SND", 3) == 0) {
+    return CT_SND;
+  }
   if (strncmp(cmd, "TTM", 3) == 0) {
     return CT_TTM;
   }
@@ -64,7 +68,7 @@ int main(int argc, char **argv)
     CommandType ct = get_command_type(argv[1]);
     switch (ct) {
       case CT_UNKNOWN:
-        printf("Usage: %s <BMX|FNT|SCX|TTM|WLD> <command-options>\n", argv[0]);
+        printf("Usage: %s <BMX|FNT|SCX|SND|TTM|WLD> <command-options>\n", argv[0]);
         return -1;
       case CT_BMX:
         if (argc != 4) {
@@ -89,6 +93,13 @@ int main(int argc, char **argv)
         }
         app->ActivatePalette(argv[2]);
         app->ShowScreen(argv[3]);
+        break;
+      case CT_SND:
+        if (argc != 3) {
+          printf("Usage: %s SND <index>\n", argv[0]);
+          return -1;
+        }
+        app->PlaySound(atoi(argv[2]));
         break;
       case CT_TTM:
         if (argc != 3) {

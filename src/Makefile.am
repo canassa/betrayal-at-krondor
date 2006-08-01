@@ -82,7 +82,7 @@ noinst_PROGRAMS = dumpads \
                   dumptbl \
                   dumpttm \
                   dumpwld \
-                  viewres
+                  resourcedemo
 bin_PROGRAMS = xbak
 libguitoolkit_a_SOURCES = ButtonWidget.cc \
                           ButtonWidget.h \
@@ -264,13 +264,13 @@ dumpwld_SOURCES = TileDataResource.cc \
                   TileWorldResource.h \
                   dumpwld.cc
 dumpwld_LDADD   = libresbase.a
-viewres_SOURCES = TestApplication.cc \
-                  TestApplication.h \
-                  viewres.cc
-viewres_LDADD = libguitoolkit.a \
-                libresdata.a \
-                libresbase.a \
-                libsdldriver.a
+resourcedemo_SOURCES = TestApplication.cc \
+                       TestApplication.h \
+                       resourcedemo.cc
+resourcedemo_LDADD = libguitoolkit.a \
+                     libresdata.a \
+                     libresbase.a \
+                     libsdldriver.a
 xbak_SOURCES = Chapter.cc \
                Chapter.h \
                Game.cc \

@@ -32,6 +32,7 @@
 #include "MovieResource.h"
 #include "PaletteResource.h"
 #include "ScreenResource.h"
+#include "SoundResource.h"
 #include "TileWorldResource.h"
 
 class TestApplication
@@ -44,6 +45,7 @@ class TestApplication
     FontResource fnt;
     ImageResource img;
     ScreenResource scr;
+    SoundResource snd;
     MovieResource ttm;
     TileWorldResource wld;
     static TestApplication *instance;
@@ -59,6 +61,7 @@ class TestApplication
     void ShowScreen(const std::string& name);
     void DrawFont(const std::string& name);
     void PlayMovie(const std::string& name);
+    void PlaySound(const unsigned int index);
     void WalkWorld(const std::string& zone, const std::string& tile);
     void KeyPressed(const KeyboardEvent &kbe);
     void KeyReleased(const KeyboardEvent &kbe);

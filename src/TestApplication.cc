@@ -34,6 +34,7 @@ TestApplication::TestApplication()
 , fnt()
 , img()
 , scr()
+, snd()
 , ttm()
 , wld()
 {
@@ -162,6 +163,18 @@ TestApplication::PlayMovie(const std::string& name)
     moviePlayer.Play(&ttm.GetMovieTags(), false);
   } catch (Exception &e) {
     e.Print("TestApplication::PlayMovie");
+  }
+}
+
+void
+TestApplication::PlaySound(const unsigned int index)
+{
+  try {
+    FileManager::GetInstance()->Load(&snd, "Frp.sx");
+    SoundData data = snd.GetSoundData(index);
+    mediaToolkit->GetAudio()->PlaySound(data.sounds[0]->GetSamples());
+  } catch (Exception &e) {
+    e.Print("TestApplication::PlaySound");
   }
 }
 
