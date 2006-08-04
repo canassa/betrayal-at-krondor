@@ -183,37 +183,39 @@ Sound::CreateMidiEvents(FileBuffer *buf)
     } else {
       buf->Skip(-1);
     }
-    MidiEvent *me = new MidiEvent;
-    me->data[0] = mode;
-    switch (mode & 0xf0) {
-      case MIDI_NOTE_ON:
-        me->data[1] = buf->GetUint8();
-        me->data[2] = buf->GetUint8();
-        if (me->data[2] == 0) {
-          me->data[0] = MIDI_NOTE_OFF | channel;
-        }
-        me->size = 3;
-        break;
-      case MIDI_CONTROL:
-      case MIDI_PITCH:
-        me->data[1] = buf->GetUint8();
-        me->data[2] = buf->GetUint8();
-        me->size = 3;
-        break;
-      case MIDI_PATCH:
-        me->data[1] = buf->GetUint8();
-        me->size = 2;
-        break;
-      default:
-        if (mode = MIDI_SEQ_END) {
-          me->size = 1;
-        } else {
-          throw DataCorruption("Sound::CreateMidiEvents");
-        }
-        break;
+    if (mode != MIDI_SEQ_END) {
+      MidiEvent *me = new MidiEvent;
+      me->data[0] = mode;
+      switch (mode & 0xf0) {
+        case MIDI_NOTE_ON:
+          me->data[1] = buf->GetUint8();
+          me->data[2] = buf->GetUint8();
+          if (me->data[2] == 0) {
+            me->data[0] = MIDI_NOTE_OFF | channel;
+          }
+          me->size = 3;
+          break;
+        case MIDI_CONTROL:
+        case MIDI_PITCH:
+          me->data[1] = buf->GetUint8();
+          me->data[2] = buf->GetUint8();
+          me->size = 3;
+          break;
+        case MIDI_PATCH:
+          me->data[1] = buf->GetUint8();
+          me->size = 2;
+          break;
+        default:
+          if (mode = MIDI_SEQ_END) {
+            me->size = 1;
+          } else {
+            throw DataCorruption("Sound::CreateMidiEvents");
+          }
+          break;
+      }
+      tick += delta;
+      midiEvents.insert(std::pair<unsigned int, MidiEvent *>(tick, me));
     }
-    tick += delta;
-    midiEvents.insert(std::pair<unsigned int, MidiEvent *>(tick, me));
   }
 }
 

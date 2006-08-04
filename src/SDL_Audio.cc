@@ -71,12 +71,13 @@ SDL_Audio::~SDL_Audio()
 {
   Mix_HaltChannel(-1);
   Mix_CloseAudio();
-  Sound_Quit();
+  if (!Sound_Quit()) {
+    throw SDL_Exception(Sound_GetError());
+  }
   if (audioMutex)
   {
     SDL_DestroyMutex(audioMutex);
   }
-
 }
 
 int
