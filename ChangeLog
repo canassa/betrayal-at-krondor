@@ -1,7 +1,8 @@
-2006-08-??, xbak-0.0.9:
-* Sound data can be loaded and interpreted.
+2006-08-06, xbak-0.0.9:
+* Sound (MIDI/WAVE) can be loaded and played.
 * Initial implmentation of loading/saving games is done.
 * Added some drawing primitives.
+* Fixed a few portability issues.
 * Plugged a memory leak.
 * Several bug fixes.
 
