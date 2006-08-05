@@ -27,9 +27,9 @@
 static const unsigned int AUDIO_FREQUENCY       = 11025;
 static const unsigned int AUDIO_FORMAT          = AUDIO_U8;
 static const unsigned int AUDIO_STEREO          = 2;
-static const unsigned int AUDIO_CHANNELS        = 16;
-static const unsigned int AUDIO_BUFFER_SIZE     = 32786;
-static const unsigned int AUDIO_RAW_BUFFER_SIZE = 1024 * 1024;
+static const unsigned int AUDIO_CHANNELS        = 8;
+static const unsigned int AUDIO_BUFFER_SIZE     = 4096;
+static const unsigned int AUDIO_RAW_BUFFER_SIZE = 16384;
 
 SDL_mutex    *audioMutex;
 Sound_Sample *audioSample[AUDIO_CHANNELS];
@@ -93,7 +93,11 @@ SDL_Audio::PlaySound(FileBuffer *buffer, const int repeat)
   if (!sample) {
     throw SDL_Exception(Sound_GetError());
   }
-  Mix_Chunk *chunk = Mix_QuickLoad_RAW((Uint8*)sample->buffer, sample->buffer_size);
+  unsigned int decoded = Sound_DecodeAll(sample);
+  if (sample->flags & SOUND_SAMPLEFLAG_ERROR) {
+    throw SDL_Exception(Sound_GetError());
+  }
+  Mix_Chunk *chunk = Mix_QuickLoad_RAW((Uint8*)sample->buffer, decoded);
   if (!chunk) {
     throw SDL_Exception(Mix_GetError());
   }

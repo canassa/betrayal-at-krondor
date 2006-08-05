@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
       printf("%d: %d %d %d\n", i, sound->GetType(),sound->GetChannel(), sound->GetFormat());
       FileBuffer *buf = sound->GetSamples();
       buf->Dump();
+/*
       buf->Rewind();
       std::stringstream ss;
       ss << "sound_" << i;
@@ -53,6 +54,7 @@ int main(int argc, char *argv[]) {
       ofs.open(ss.str().c_str(), std::ios::binary);
       buf->Save(ofs);
       ofs.close();
+*/
     }
     delete snd;
     FileManager::CleanUp();

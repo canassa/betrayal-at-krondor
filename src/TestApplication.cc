@@ -122,7 +122,6 @@ TestApplication::ShowScreen(const std::string& name)
     mediaToolkit->GetVideo()->Clear();
     scr.GetImage()->Draw(mediaToolkit->GetVideo(), 0, 0);
     mediaToolkit->GetVideo()->Refresh();
-    mediaToolkit->ClearEvents();
     mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, 5000);
     mediaToolkit->WaitEventLoop();
     mediaToolkit->GetClock()->CancelTimer(TMR_TEST_APP);
@@ -172,7 +171,11 @@ TestApplication::PlaySound(const unsigned int index)
   try {
     FileManager::GetInstance()->Load(&snd, "Frp.sx");
     SoundData data = snd.GetSoundData(index);
-    mediaToolkit->GetAudio()->PlaySound(data.sounds[0]->GetSamples());
+    unsigned int channel = mediaToolkit->GetAudio()->PlaySound(data.sounds[0]->GetSamples());
+    mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, 10000);
+    mediaToolkit->WaitEventLoop();
+    mediaToolkit->GetClock()->CancelTimer(TMR_TEST_APP);
+    mediaToolkit->GetAudio()->StopSound(channel);
   } catch (Exception &e) {
     e.Print("TestApplication::PlaySound");
   }
