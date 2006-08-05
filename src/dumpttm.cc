@@ -145,10 +145,10 @@ int main(int argc, char *argv[]) {
           printf(" load sound resource");
           break;
         case 0xc030:
-          printf(" load sound (sound)");
+          printf(" select sound (sound)");
           break;
         case 0xc040:
-          printf(" unload sound (sound)");
+          printf(" deselect sound (sound)");
           break;
         case 0xc050:
           printf(" play sound (sound)");

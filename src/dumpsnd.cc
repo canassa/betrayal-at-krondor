@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     SoundResource *snd = new SoundResource;
-    FileManager::GetInstance()->Load(snd, "Frp.sx");
+    FileManager::GetInstance()->Load(snd, "frp.sx");
     SoundData data = snd->GetSoundData(atoi(argv[1]));
     printf("%8s %d %d\n", data.name.c_str(), data.type, (unsigned int)data.sounds.size());
     for (unsigned int i = 0; i < data.sounds.size(); i++) {

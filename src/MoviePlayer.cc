@@ -22,26 +22,31 @@
 #include "MousePointerManager.h"
 #include "MoviePlayer.h"
 
-static const unsigned int SAVE_BACKGROUND   = 0x0020;
-static const unsigned int DRAW_BACKGROUND   = 0x0080;
-static const unsigned int END_OF_PAGE       = 0x0ff0;
-static const unsigned int DELAY             = 0x1020;
-static const unsigned int SLOT_IMAGE        = 0x1050;
-static const unsigned int SLOT_PALETTE      = 0x1060;
-static const unsigned int SET_SCENE         = 0x1110;
-static const unsigned int SET_FRAME0        = 0x2000;
-static const unsigned int SET_FRAME1        = 0x2010;
-static const unsigned int FADE_OUT          = 0x4110;
-static const unsigned int FADE_IN           = 0x4120;
-static const unsigned int DRAW_WINDOW       = 0xa100;
-static const unsigned int DRAW_SPRITE0      = 0xa500;
-static const unsigned int DRAW_SPRITE1      = 0xa510;
-static const unsigned int DRAW_SPRITE2      = 0xa520;
-static const unsigned int DRAW_SPRITE3      = 0xa530;
-static const unsigned int READ_IMAGE        = 0xb600;
-static const unsigned int LOAD_SCREEN       = 0xf010;
-static const unsigned int LOAD_IMAGE        = 0xf020;
-static const unsigned int LOAD_PALETTE      = 0xf050;
+static const unsigned int SAVE_BACKGROUND    = 0x0020;
+static const unsigned int DRAW_BACKGROUND    = 0x0080;
+static const unsigned int END_OF_PAGE        = 0x0ff0;
+static const unsigned int DELAY              = 0x1020;
+static const unsigned int SLOT_IMAGE         = 0x1050;
+static const unsigned int SLOT_PALETTE       = 0x1060;
+static const unsigned int SET_SCENE          = 0x1110;
+static const unsigned int SET_FRAME0         = 0x2000;
+static const unsigned int SET_FRAME1         = 0x2010;
+static const unsigned int FADE_OUT           = 0x4110;
+static const unsigned int FADE_IN            = 0x4120;
+static const unsigned int DRAW_WINDOW        = 0xa100;
+static const unsigned int DRAW_SPRITE0       = 0xa500;
+static const unsigned int DRAW_SPRITE1       = 0xa510;
+static const unsigned int DRAW_SPRITE2       = 0xa520;
+static const unsigned int DRAW_SPRITE3       = 0xa530;
+static const unsigned int READ_IMAGE         = 0xb600;
+static const unsigned int LOAD_SOUNDRESOURCE = 0xc020;
+static const unsigned int SELECT_SOUND       = 0xc030;
+static const unsigned int DESELECT_SOUND     = 0xc040;
+static const unsigned int PLAY_SOUND         = 0xc050;
+static const unsigned int STOP_SOUND         = 0xc060;
+static const unsigned int LOAD_SCREEN        = 0xf010;
+static const unsigned int LOAD_IMAGE         = 0xf020;
+static const unsigned int LOAD_PALETTE       = 0xf050;
 
 MoviePlayer::MoviePlayer(MediaToolkit *mtk)
 : media(mtk)
@@ -67,6 +72,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
     looped = repeat;
     delayed = false;
     screenSlot = 0;
+    soundSlot = 0;
     memset(imageSlot, 0, sizeof(ImageResource*) * MAX_IMAGE_SLOTS);
     memset(paletteSlot, 0, sizeof(PaletteResource*) * MAX_PALETTE_SLOTS);
     backgroundImage = 0;
@@ -78,6 +84,8 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
     currPalette = 0;
     currTag = 0;
     currDelay = 0;
+    currSound = 0;
+    soundMap.clear();
     paletteSlot[currPalette] = new PaletteResource;
     paletteSlot[currPalette]->Retrieve(media->GetVideo(), 0, VIDEO_COLORS);
     paletteActivated = false;
@@ -89,6 +97,9 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
     (paletteSlot[currPalette])->FadeOut(media, 0, VIDEO_COLORS, 64, 8);
     if (screenSlot) {
       delete screenSlot;
+    }
+    if (soundSlot) {
+      delete soundSlot;
     }
     for (unsigned int i = 0; i < MAX_IMAGE_SLOTS; i++) {
       if (imageSlot[i]) {
@@ -256,11 +267,63 @@ MoviePlayer::Update(const UpdateEvent& ue) {
       case READ_IMAGE:
         if (savedImage) {
           delete savedImage;
-          savedImage = 0;
         }
         savedImage = new Image(mt->data[2], mt->data[3]);
         savedImage->Read(media->GetVideo(), mt->data[0], mt->data[1]);
         savedImageDrawn = false;
+        break;
+      case LOAD_SOUNDRESOURCE:
+        if (soundSlot) {
+          delete soundSlot;
+        }
+        soundSlot = new SoundResource;
+        FileManager::GetInstance()->Load(soundSlot, "frp.sx");
+        break;
+      case SELECT_SOUND:
+        {
+          std::map<unsigned int, int>::iterator it = soundMap.find(mt->data[0]);
+          if (it != soundMap.end()) {
+            if (it->second >= 0) {
+              media->GetAudio()->StopSound(it->second);
+            }
+            soundMap.erase(it);
+          }
+          soundMap.insert(std::pair<unsigned int, int>(mt->data[0], -1));
+        }
+        break;
+      case DESELECT_SOUND:
+        {
+          std::map<unsigned int, int>::iterator it = soundMap.find(mt->data[0]);
+          if (it != soundMap.end()) {
+            if (it->second >= 0) {
+              media->GetAudio()->StopSound(it->second);
+            }
+            soundMap.erase(it);
+          }
+        }
+        break;
+      case PLAY_SOUND:
+        {
+          std::map<unsigned int, int>::iterator it = soundMap.find(mt->data[0]);
+          if (it != soundMap.end()) {
+            if (it->second >= 0) {
+              media->GetAudio()->StopSound(it->second);
+            }
+            SoundData data = soundSlot->GetSoundData(it->first);
+            it->second = media->GetAudio()->PlaySound(data.sounds[0]->GetSamples());
+          }
+        }
+        break;
+      case STOP_SOUND:
+        {
+          std::map<unsigned int, int>::iterator it = soundMap.find(mt->data[0]);
+          if (it != soundMap.end()) {
+            if (it->second >= 0) {
+              media->GetAudio()->StopSound(it->second);
+            }
+            soundMap.erase(it);
+          }
+        }
         break;
       case LOAD_SCREEN:
         if (screenSlot) {

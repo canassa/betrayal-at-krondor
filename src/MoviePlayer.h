@@ -28,6 +28,7 @@
 #include "MovieResource.h"
 #include "ImageResource.h"
 #include "PaletteResource.h"
+#include "SoundResource.h"
 #include "ScreenResource.h"
 
 static const unsigned int MAX_IMAGE_SLOTS   = 4;
@@ -43,6 +44,7 @@ class MoviePlayer
     MediaToolkit *media;
     std::vector<MovieTag *> *tagVec;
     ScreenResource* screenSlot;
+    SoundResource* soundSlot;
     ImageResource* imageSlot[MAX_IMAGE_SLOTS];
     PaletteResource* paletteSlot[MAX_PALETTE_SLOTS];
     Image *backgroundImage;
@@ -54,6 +56,8 @@ class MoviePlayer
     unsigned int currPalette;
     unsigned int currTag;
     unsigned int currDelay;
+    unsigned int currSound;
+    std::map<unsigned int, int> soundMap;
     bool paletteActivated;
     bool looped;
     bool delayed;
