@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.59)
-AC_INIT(xbak, 0.0.8, guidoj@users.sf.net)
+AC_INIT(xbak, 0.0.9, guidoj@users.sf.net)
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADER([config.h])
 AC_CANONICAL_TARGET
