@@ -199,7 +199,7 @@ Dialog::SetMembers(Party *party, const int special)
       widgetRes.members[i] = pc;
     }
   } else {
-    throw NullPointer("Dialog::AddMembers");
+    throw NullPointer(__FILE__, __LINE__);
   }
 }
 

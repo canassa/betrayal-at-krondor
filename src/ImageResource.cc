@@ -50,7 +50,7 @@ ImageResource::Load(FileBuffer *buffer)
 {
   try {
     if (buffer->GetUint16() != 0x1066 ) {
-      throw DataCorruption("ImageResource::Load");
+      throw DataCorruption(__FILE__, __LINE__);
     }
     unsigned int compression = (unsigned int)buffer->GetUint16();
     numImages = (unsigned int)buffer->GetUint16();

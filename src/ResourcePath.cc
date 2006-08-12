@@ -66,7 +66,7 @@ ResourcePath::ResourcePath()
   if (!found) {
     path = "";
     override = "";
-    throw FileNotFound("ResourcePath::ResourcePath(" + SEARCH_TESTFILE + ")");
+    throw FileNotFound(__FILE__, __LINE__, SEARCH_TESTFILE);
   }
 }
 

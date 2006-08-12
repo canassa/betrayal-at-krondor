@@ -49,7 +49,7 @@ SDL_Video::CreateScreen(const int w, const int h)
   SDL_WarpMouse(0, 0);
   SDL_WM_SetCaption("xBaK", 0);
   if (SDL_EnableKeyRepeat(0, 0) < 0) {
-    throw SDL_Exception(SDL_GetError());
+    throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
   }
   int width = w * scaling;
   int height = h * scaling;
@@ -61,19 +61,19 @@ SDL_Video::CreateScreen(const int w, const int h)
   }
   int bpp = SDL_VideoModeOK(width, height, VIDEO_BPP, flags);
   if (bpp <= 0) {
-    throw SDL_Exception(SDL_GetError());
+    throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
   }
   disp = SDL_SetVideoMode(width, height, bpp, flags);
   if (!disp) {
-    throw SDL_Exception(SDL_GetError());
+    throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
   }
   stretched = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, VIDEO_BPP, 0, 0, 0, 0);
   if (!stretched) {
-    throw SDL_Exception(SDL_GetError());
+    throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
   }
   buffer = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, VIDEO_BPP, 0, 0, 0, 0);
   if (!buffer) {
-    throw SDL_Exception(SDL_GetError());
+    throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
   }
 }
 

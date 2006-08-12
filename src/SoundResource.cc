@@ -56,7 +56,7 @@ SoundResource::Load(FileBuffer *buffer)
     if (!Find(TAG_INF, infbuf) ||
         !Find(TAG_TAG, tagbuf)) {
       Clear();
-      throw DataCorruption("SoundResource::Load");
+      throw DataCorruption(__FILE__, __LINE__);
     }
     infbuf->Skip(2);
     unsigned int n = infbuf->GetUint16();
@@ -71,7 +71,7 @@ SoundResource::Load(FileBuffer *buffer)
         buffer->Seek(offset + 8);
         if (id != buffer->GetUint16()) {
           Clear();
-          throw DataCorruption("SoundResource::Load");
+          throw DataCorruption(__FILE__, __LINE__);
         }
         SoundData data;
         data.name = name;
@@ -107,7 +107,7 @@ SoundResource::Load(FileBuffer *buffer)
         soundMap.insert(std::pair<unsigned int, SoundData>(id, data));
         delete sndbuf;
       } else {
-        throw DataCorruption("SoundResource::Load");
+        throw DataCorruption(__FILE__, __LINE__);
       }
     }
     Clear();

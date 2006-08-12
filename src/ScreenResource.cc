@@ -46,7 +46,7 @@ ScreenResource::Load(FileBuffer *buffer)
       buffer->Rewind();
     }
     if (buffer->GetUint8() != 0x02) {
-      throw DataCorruption("ScreenResource::Load");
+      throw DataCorruption(__FILE__, __LINE__);
     }
     FileBuffer *decompressed = new FileBuffer(buffer->GetUint32());
     buffer->DecompressLZW(decompressed);

@@ -73,7 +73,7 @@ MovieResource::Load(FileBuffer *buffer)
         !Find(TAG_TT3, tt3buf) ||
         !Find(TAG_TAG, tagbuf)) {
       Clear();
-      throw DataCorruption("MovieResource::Load");
+      throw DataCorruption(__FILE__, __LINE__);
     }
     version = verbuf->GetString();
     pages = pagbuf->GetUint16();

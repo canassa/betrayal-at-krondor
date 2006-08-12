@@ -68,7 +68,7 @@ PaletteResource::Load(FileBuffer *buffer)
     FileBuffer *vgabuf;
     if (!Find(TAG_VGA, vgabuf)) {
       Clear();
-      throw DataCorruption("PaletteResource::Load");
+      throw DataCorruption(__FILE__, __LINE__);
     }
     size = vgabuf->GetSize() / 3;
     colors = new Color[size];
@@ -160,4 +160,3 @@ PaletteResource::FadeOut(MediaToolkit *media, const unsigned int first, const un
   FadeTo(media, to, first, n, steps, delay);
   delete[] to;
 }
-

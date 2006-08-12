@@ -50,20 +50,20 @@ SDL_Audio::SDL_Audio()
   memset(audioSample, 0, sizeof(audioSample));
   audioMutex = SDL_CreateMutex();
   if (!audioMutex) {
-    throw SDL_Exception(SDL_GetError());
+    throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
   }
   if (!Sound_Init()) {
-    throw SDL_Exception(Sound_GetError());
+    throw SDL_Exception(__FILE__, __LINE__, Sound_GetError());
   }
   if (Mix_OpenAudio(AUDIO_FREQUENCY, AUDIO_FORMAT, AUDIO_STEREO, AUDIO_BUFFER_SIZE) < 0)
   {
-    throw SDL_Exception(Mix_GetError());
+    throw SDL_Exception(__FILE__, __LINE__, Mix_GetError());
   }
   Mix_AllocateChannels(AUDIO_CHANNELS);
   Mix_ChannelFinished(ChannelDone);
   if (Mix_VolumeMusic(90) < 0)
   {
-    throw SDL_Exception(Mix_GetError());
+    throw SDL_Exception(__FILE__, __LINE__, Mix_GetError());
   }
 }
 
@@ -72,7 +72,7 @@ SDL_Audio::~SDL_Audio()
   Mix_HaltChannel(-1);
   Mix_CloseAudio();
   if (!Sound_Quit()) {
-    throw SDL_Exception(Sound_GetError());
+    throw SDL_Exception(__FILE__, __LINE__, Sound_GetError());
   }
   if (audioMutex)
   {
@@ -87,23 +87,23 @@ SDL_Audio::PlaySound(FileBuffer *buffer, const int repeat)
   buffer->Rewind();
   SDL_RWops *rwops = SDL_RWFromMem(buffer->GetCurrent(), buffer->GetSize());
   if (!rwops) {
-    throw SDL_Exception(SDL_GetError());
+    throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
   }
   Sound_Sample *sample = Sound_NewSample(rwops, 0, &info, AUDIO_RAW_BUFFER_SIZE);
   if (!sample) {
-    throw SDL_Exception(Sound_GetError());
+    throw SDL_Exception(__FILE__, __LINE__, Sound_GetError());
   }
   unsigned int decoded = Sound_DecodeAll(sample);
   if (sample->flags & SOUND_SAMPLEFLAG_ERROR) {
-    throw SDL_Exception(Sound_GetError());
+    throw SDL_Exception(__FILE__, __LINE__, Sound_GetError());
   }
   Mix_Chunk *chunk = Mix_QuickLoad_RAW((Uint8*)sample->buffer, decoded);
   if (!chunk) {
-    throw SDL_Exception(Mix_GetError());
+    throw SDL_Exception(__FILE__, __LINE__, Mix_GetError());
   }
   int channel = Mix_PlayChannel(-1, chunk, repeat);
   if (channel < 0) {
-    throw SDL_Exception(Mix_GetError());
+    throw SDL_Exception(__FILE__, __LINE__, Mix_GetError());
   }
   SDL_LockMutex(audioMutex);
   audioSample[channel] = sample;

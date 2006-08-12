@@ -64,10 +64,10 @@ FileBuffer::Load(std::ifstream &ifs)
     current = buffer;
     ifs.read((char *)buffer, size);
     if (ifs.fail()) {
-      throw IOError("FileBuffer::Load");
+      throw IOError(__FILE__, __LINE__);
     }
   } else {
-    throw OpenError("FileBuffer::Load");
+    throw OpenError(__FILE__, __LINE__);
   }
 }
 
@@ -78,10 +78,10 @@ FileBuffer::Save(std::ofstream &ofs)
     current = buffer;
     ofs.write((char *)buffer, size);
     if (ofs.fail()) {
-      throw IOError("FileBuffer::Save");
+      throw IOError(__FILE__, __LINE__);
     }
   } else {
-    throw OpenError("FileBuffer::Save");
+    throw OpenError(__FILE__, __LINE__);
   }
 }
 
@@ -234,7 +234,7 @@ FileBuffer::Decompress(FileBuffer *result, const unsigned int method)
   switch (method) {
     case COMPRESSION_LZW:
       if ((GetUint8() != 0x02) || (GetUint32() != result->GetSize())) {
-        throw DataCorruption("FileBuffer::Decompress"); 
+        throw DataCorruption(__FILE__, __LINE__); 
       } 
       DecompressLZW(result);
       break;
@@ -245,7 +245,7 @@ FileBuffer::Decompress(FileBuffer *result, const unsigned int method)
       DecompressRLE(result);
       break;
     default:
-      throw CompressionError("FileBuffer::Decompress");
+      throw CompressionError(__FILE__, __LINE__);
       break;
   }
 }
@@ -301,7 +301,7 @@ FileBuffer::GetUint8()
     current += 1;
     return n;
   } else {
-    throw BufferEmpty("FileBuffer::GetUint8");
+    throw BufferEmpty(__FILE__, __LINE__);
   }
   return 0;
 }
@@ -319,7 +319,7 @@ FileBuffer::GetUint16()
     current += 2;
     return n;
   } else {
-    throw BufferEmpty("FileBuffer::GetUint16");
+    throw BufferEmpty(__FILE__, __LINE__);
   }
   return 0;
 }
@@ -337,7 +337,7 @@ FileBuffer::GetUint16Reverse()
     current += 2;
     return n;
   } else {
-    throw BufferEmpty("FileBuffer::GetUint16");
+    throw BufferEmpty(__FILE__, __LINE__);
   }
   return 0;
 }
@@ -355,7 +355,7 @@ FileBuffer::GetUint32()
     current += 4;
     return n;
   } else {
-    throw BufferEmpty("FileBuffer::GetUint32");
+    throw BufferEmpty(__FILE__, __LINE__);
   }
   return 0;
 }
@@ -373,7 +373,7 @@ FileBuffer::GetUint32Reverse()
     current += 4;
     return n;
   } else {
-    throw BufferEmpty("FileBuffer::GetUint32");
+    throw BufferEmpty(__FILE__, __LINE__);
   }
   return 0;
 }
@@ -387,7 +387,7 @@ FileBuffer::GetSint8()
     current += 1;
     return n;
   } else {
-    throw BufferEmpty("FileBuffer::GetSint8");
+    throw BufferEmpty(__FILE__, __LINE__);
   }
   return 0;
 }
@@ -405,7 +405,7 @@ FileBuffer::GetSint16()
     current += 2;
     return n;
   } else {
-    throw BufferEmpty("FileBuffer::GetSint16");
+    throw BufferEmpty(__FILE__, __LINE__);
   }
   return 0;
 }
@@ -423,7 +423,7 @@ FileBuffer::GetSint16Reverse()
     current += 2;
     return n;
   } else {
-    throw BufferEmpty("FileBuffer::GetSint16");
+    throw BufferEmpty(__FILE__, __LINE__);
   }
   return 0;
 }
@@ -441,7 +441,7 @@ FileBuffer::GetSint32()
     current += 4;
     return n;
   } else {
-    throw BufferEmpty("FileBuffer::GetSint32");
+    throw BufferEmpty(__FILE__, __LINE__);
   }
   return 0;
 }
@@ -459,7 +459,7 @@ FileBuffer::GetSint32Reverse()
     current += 4;
     return n;
   } else {
-    throw BufferEmpty("FileBuffer::GetSint32");
+    throw BufferEmpty(__FILE__, __LINE__);
   }
   return 0;
 }
@@ -475,7 +475,7 @@ FileBuffer::GetString()
     current += s.length() + 1;
     return s;
   } else {
-    throw BufferEmpty("FileBuffer::GetString");
+    throw BufferEmpty(__FILE__, __LINE__);
   }
   return "";
 }
@@ -488,7 +488,7 @@ FileBuffer::GetString(const unsigned int len)
     current += len;
     return s;
   } else {
-    throw BufferEmpty("FileBuffer::GetString");
+    throw BufferEmpty(__FILE__, __LINE__);
   }
   return "";
 }
@@ -501,7 +501,7 @@ FileBuffer::GetData(void *data,
     memcpy(data, current, n);
     current += n;
   } else {
-    throw BufferEmpty("FileBuffer::GetData");
+    throw BufferEmpty(__FILE__, __LINE__);
   }
 }
 
@@ -522,7 +522,7 @@ FileBuffer::GetBits(const unsigned int n)
     }
     return x;
   } else {
-    throw BufferEmpty("FileBuffer::GetBits");
+    throw BufferEmpty(__FILE__, __LINE__);
   }
 }
 
@@ -533,7 +533,7 @@ FileBuffer::PutUint8(const uint8_t x)
     *((uint8_t *)current) = x;
     current += 1;
   } else {
-    throw BufferFull("FileBuffer::PutUint8");
+    throw BufferFull(__FILE__, __LINE__);
   }
 }
 
@@ -549,7 +549,7 @@ FileBuffer::PutUint16(const uint16_t x)
 #endif
     current += 2;
   } else {
-    throw BufferFull("FileBuffer::PutUint16");
+    throw BufferFull(__FILE__, __LINE__);
   }
 }
 
@@ -565,7 +565,7 @@ FileBuffer::PutUint16Reverse(const uint16_t x)
 #endif
     current += 2;
   } else {
-    throw BufferFull("FileBuffer::PutUint16");
+    throw BufferFull(__FILE__, __LINE__);
   }
 }
 
@@ -583,7 +583,7 @@ FileBuffer::PutUint32(const uint32_t x)
 #endif
     current += 4;
   } else {
-    throw BufferFull("FileBuffer::PutUint32");
+    throw BufferFull(__FILE__, __LINE__);
   }
 }
 
@@ -601,7 +601,7 @@ FileBuffer::PutUint32Reverse(const uint32_t x)
 #endif
     current += 4;
   } else {
-    throw BufferFull("FileBuffer::PutUint32");
+    throw BufferFull(__FILE__, __LINE__);
   }
 }
 
@@ -612,7 +612,7 @@ FileBuffer::PutSint8(const int8_t x)
     *((int8_t *)current) = x;
     current += 1;
   } else {
-    throw BufferFull("FileBuffer::PutSint8");
+    throw BufferFull(__FILE__, __LINE__);
   }
 }
 
@@ -628,7 +628,7 @@ FileBuffer::PutSint16(const int16_t x)
 #endif
     current += 2;
   } else {
-    throw BufferFull("FileBuffer::PutSint16");
+    throw BufferFull(__FILE__, __LINE__);
   }
 }
 
@@ -644,7 +644,7 @@ FileBuffer::PutSint16Reverse(const int16_t x)
 #endif
     current += 2;
   } else {
-    throw BufferFull("FileBuffer::PutSint16");
+    throw BufferFull(__FILE__, __LINE__);
   }
 }
 
@@ -662,7 +662,7 @@ FileBuffer::PutSint32(const int32_t x)
 #endif
     current += 4;
   } else {
-    throw BufferFull("FileBuffer::PutSint32");
+    throw BufferFull(__FILE__, __LINE__);
   }
 }
 
@@ -680,7 +680,7 @@ FileBuffer::PutSint32Reverse(const int32_t x)
 #endif
     current += 4;
   } else {
-    throw BufferFull("FileBuffer::PutSint32");
+    throw BufferFull(__FILE__, __LINE__);
   }
 }
 
@@ -692,7 +692,7 @@ FileBuffer::PutString(const std::string s)
     current += s.length();
     *current++ = 0;
   } else {
-    throw BufferFull("FileBuffer::PutString");
+    throw BufferFull(__FILE__, __LINE__);
   }
 }
 
@@ -703,7 +703,7 @@ FileBuffer::PutData(void *data, const unsigned int n)
     memcpy(current, data, n);
     current += n;
   } else {
-    throw BufferFull("FileBuffer::PutData");
+    throw BufferFull(__FILE__, __LINE__);
   }
 }
 
@@ -713,7 +713,7 @@ void FileBuffer::PutData(const uint8_t x, const unsigned int n)
     memset(current, x, n);
     current += n;
   } else {
-    throw BufferFull("FileBuffer::PutData");
+    throw BufferFull(__FILE__, __LINE__);
   }
 }
 

@@ -80,7 +80,8 @@ GameStateCamp::CleanUp()
 void
 GameStateCamp::Execute(GameApplication *app)
 {
-  switch (dialog->Execute()) {
+  unsigned int action = dialog->Execute();
+  switch (action) {
     case ACT_ESCAPE:
     case CAMP_EXIT:
       ChangeState(app, app->GetPrevState());
@@ -89,7 +90,7 @@ GameStateCamp::Execute(GameApplication *app)
     case CAMP_STOP:
       break;
     default:
-      throw UnexpectedValue("GameStateCamp::Execute");
+      throw UnexpectedValue(__FILE__, __LINE__, action);
       break;
   }
 }
@@ -135,7 +136,8 @@ GameStateCast::CleanUp()
 void
 GameStateCast::Execute(GameApplication *app)
 {
-  switch (dialog->Execute()) {
+  unsigned int action = dialog->Execute();
+  switch (action) {
     case ACT_ESCAPE:
     case CAST_EXIT:
       app->GetGame()->GetParty()->SelectMember(-1);
@@ -163,7 +165,7 @@ GameStateCast::Execute(GameApplication *app)
     case CAST_MEMBER3 + RIGHT_CLICK_OFFSET:
       break;
     default:
-      throw UnexpectedValue("GameStateCast::Execute");
+      throw UnexpectedValue(__FILE__, __LINE__, action);
       break;
   }
 }
@@ -276,13 +278,14 @@ GameStateContents::CleanUp()
 void
 GameStateContents::Execute(GameApplication *app)
 {
-  switch (dialog->Execute()) {
+  unsigned int action = dialog->Execute();
+  switch (action) {
     case ACT_ESCAPE:
     case CONT_EXIT:
       ChangeState(app, app->GetPrevState());
       break;
     default:
-      throw UnexpectedValue("GameStateContents::Execute");
+      throw UnexpectedValue(__FILE__, __LINE__, action);
       break;
   }
 }
@@ -326,13 +329,14 @@ GameStateFullMap::CleanUp()
 void
 GameStateFullMap::Execute(GameApplication *app)
 {
-  switch (dialog->Execute()) {
+  unsigned int action = dialog->Execute();
+  switch (action) {
     case ACT_ESCAPE:
     case FMAP_EXIT:
       ChangeState(app, GameStateMap::GetInstance(app));
       break;
     default:
-      throw UnexpectedValue("GameStateFullMap::Execute");
+      throw UnexpectedValue(__FILE__, __LINE__, action);
       break;
   }
 }
@@ -414,7 +418,8 @@ GameStateInventory::CleanUp()
 void
 GameStateInventory::Execute(GameApplication *app)
 {
-  switch (dialog->Execute()) {
+  unsigned int action = dialog->Execute();
+  switch (action) {
     case ACT_ESCAPE:
     case INV_EXIT:
       app->GetGame()->GetParty()->SelectMember(-1);
@@ -433,7 +438,7 @@ GameStateInventory::Execute(GameApplication *app)
     case INV_MORE_INFO:
       break;
     default:
-      throw UnexpectedValue("GameStateWorld::Execute");
+      throw UnexpectedValue(__FILE__, __LINE__, action);
       break;
   }
 }
@@ -478,7 +483,8 @@ GameStateLoad::CleanUp()
 void
 GameStateLoad::Execute(GameApplication *app)
 {
-  switch (dialog->Execute()) {
+  unsigned int action = dialog->Execute();
+  switch (action) {
     case ACT_ESCAPE:
     case LOAD_CANCEL:
       ChangeState(app, app->GetPrevState());
@@ -487,7 +493,7 @@ GameStateLoad::Execute(GameApplication *app)
       ChangeState(app, app->GetPrevState());
       break;
     default:
-      throw UnexpectedValue("GameStateLoad::Execute");
+      throw UnexpectedValue(__FILE__, __LINE__, action);
       break;
   }
 }
@@ -533,7 +539,8 @@ GameStateMap::CleanUp()
 void
 GameStateMap::Execute(GameApplication *app)
 {
-  switch (dialog->Execute()) {
+  unsigned int action = dialog->Execute();
+  switch (action) {
     case ACT_ESCAPE:
     case MAP_MAIN:
       ChangeState(app, GameStateWorld::GetInstance(app));
@@ -559,7 +566,7 @@ GameStateMap::Execute(GameApplication *app)
     case MAP_MEMBER3 + RIGHT_CLICK_OFFSET:
       break;
     default:
-      throw UnexpectedValue("GameStateMap::Execute");
+      throw UnexpectedValue(__FILE__, __LINE__, action);
       break;
   }
 }
@@ -609,7 +616,8 @@ GameStateOptions::Execute(GameApplication *app)
     dialog->SetScreen("OPTIONS1.SCX");
     dialog->SetRequest("REQ_OPT1.DAT");
   }
-  switch (dialog->Execute()) {
+  unsigned int action = dialog->Execute();
+  switch (action) {
     case ACT_ESCAPE:
     case OPT_QUIT:
       app->QuitGame();
@@ -635,7 +643,7 @@ GameStateOptions::Execute(GameApplication *app)
       ChangeState(app, GameStateSave::GetInstance(app));
       break;
     default:
-      throw UnexpectedValue("GameStateOptions::Execute");
+      throw UnexpectedValue(__FILE__, __LINE__, action);
       break;
   }
 }
@@ -680,7 +688,8 @@ GameStatePreferences::CleanUp()
 void
 GameStatePreferences::Execute(GameApplication *app)
 {
-  switch (dialog->Execute()) {
+  unsigned int action = dialog->Execute();
+  switch (action) {
     case ACT_ESCAPE:
     case PREF_CANCEL:
       ChangeState(app, app->GetPrevState());
@@ -691,7 +700,7 @@ GameStatePreferences::Execute(GameApplication *app)
     case PREF_DEFAULTS:
       break;
     default:
-      throw UnexpectedValue("GameStatePreferences::Execute");
+      throw UnexpectedValue(__FILE__, __LINE__, action);
       break;
   }
 }
@@ -736,7 +745,8 @@ GameStateSave::CleanUp()
 void
 GameStateSave::Execute(GameApplication *app)
 {
-  switch (dialog->Execute()) {
+  unsigned int action = dialog->Execute();
+  switch (action) {
     case ACT_ESCAPE:
     case SAVE_CANCEL:
       ChangeState(app, app->GetPrevState());
@@ -749,7 +759,7 @@ GameStateSave::Execute(GameApplication *app)
     case SAVE_REMOVE_DIR:
       break;
     default:
-      throw UnexpectedValue("GameStateSave::Execute");
+      throw UnexpectedValue(__FILE__, __LINE__, action);
       break;
   }
 }
@@ -795,7 +805,8 @@ GameStateWorld::CleanUp()
 void
 GameStateWorld::Execute(GameApplication *app)
 {
-  switch (dialog->Execute()) {
+  unsigned int action = dialog->Execute();
+  switch (action) {
     case ACT_ESCAPE:
     case MAIN_OPTIONS:
       ChangeState(app, GameStateOptions::GetInstance(app));
@@ -833,7 +844,7 @@ GameStateWorld::Execute(GameApplication *app)
     case MAIN_MEMBER3 + RIGHT_CLICK_OFFSET:
       break;
     default:
-      throw UnexpectedValue("GameStateWorld::Execute");
+      throw UnexpectedValue(__FILE__, __LINE__, action);
       break;
   }
 }

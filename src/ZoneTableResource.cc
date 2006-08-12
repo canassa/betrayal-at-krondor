@@ -74,7 +74,7 @@ ZoneTableResource::Load(FileBuffer *buffer)
         !Find(TAG_GID, gidbuf) ||
         !Find(TAG_DAT, datbuf)) {
       Clear();
-      throw DataCorruption("ZoneTableResource::Load");
+      throw DataCorruption(__FILE__, __LINE__);
     }
     mapbuf->Skip(2);
     unsigned int numMapItems = mapbuf->GetUint16() + 1;

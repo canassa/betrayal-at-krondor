@@ -65,7 +65,7 @@ FileManager::LoadGame(const std::string &name)
     gamfile.Close();
     return buffer;
   } catch (Exception &e) {
-    throw FileNotFound("FileManager::LoadGame(" + name + ")");
+    throw FileNotFound(__FILE__, __LINE__, name);
   }
   return 0;
 }
@@ -93,7 +93,7 @@ FileManager::LoadResource(const std::string &name)
         throw;
       }
     } else {
-      throw FileNotFound("FileManager::LoadResource(" + name + ")");
+      throw FileNotFound(__FILE__, __LINE__, name);
     }
   }
   return 0;

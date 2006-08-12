@@ -43,7 +43,7 @@ ResourceIndex::Init(const std::string &filename)
     rmf.Load(rmfBuffer);
     rmf.Close();
     if ((rmfBuffer.GetUint32() != 1) || (rmfBuffer.GetUint16() != 4)) {
-      throw DataCorruption("ResourceIndex::Init");
+      throw DataCorruption(__FILE__, __LINE__);
     }
     resourceFilename = rmfBuffer.GetString(RES_FILENAME_LEN);
     numResources = rmfBuffer.GetUint16();

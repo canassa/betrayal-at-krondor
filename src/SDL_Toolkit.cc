@@ -29,7 +29,7 @@ SDL_Toolkit::SDL_Toolkit()
 : MediaToolkit()
 {
   if (SDL_Init(SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_VIDEO) < 0) {
-    throw SDL_Exception(SDL_GetError());
+    throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
   }
   audio = new SDL_Audio();
   clock = new SDL_Clock();

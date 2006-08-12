@@ -69,12 +69,12 @@ AnimationResource::Load(FileBuffer *buffer)
         !Find(TAG_SCR, scrbuf) ||
         !Find(TAG_TAG, tagbuf)) {
       Clear();
-      throw DataCorruption("AnimationResource::Load");
+      throw DataCorruption(__FILE__, __LINE__);
     }
     version = verbuf->GetString();
     if (scrbuf->GetUint8() != 0x02) {
       Clear();
-      throw DataCorruption("AnimationResource::Load");
+      throw DataCorruption(__FILE__, __LINE__);
     }
     script = new FileBuffer(scrbuf->GetUint32());
     scrbuf->DecompressLZW(script);
@@ -91,7 +91,7 @@ AnimationResource::Load(FileBuffer *buffer)
         data.resource = resource;
         animationMap.insert(std::pair<unsigned int, AnimationData>(id, data));
       } else {
-        throw DataCorruption("AnimationResource::Load");
+        throw DataCorruption(__FILE__, __LINE__);
       }
     }
     Clear();

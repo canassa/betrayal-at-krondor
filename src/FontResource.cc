@@ -72,7 +72,7 @@ FontResource::Load(FileBuffer *buffer)
     FileBuffer *fntbuf;
     if (!Find(TAG_FNT, fntbuf)) {
       Clear();
-      throw DataCorruption("FontResource::Load");
+      throw DataCorruption(__FILE__, __LINE__);
     }
     fntbuf->Skip(2);
     height = (unsigned int)fntbuf->GetUint8();
@@ -82,7 +82,7 @@ FontResource::Load(FileBuffer *buffer)
     fntbuf->Skip(2);
     if (fntbuf->GetUint8() != 0x01) {
       Clear();
-      throw CompressionError("FontResource::Load");
+      throw CompressionError(__FILE__, __LINE__);
     }
     unsigned int size = (unsigned int)fntbuf->GetUint32();
     FileBuffer *glyphbuf = new FileBuffer(size);

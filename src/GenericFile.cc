@@ -58,7 +58,7 @@ GenericFile::Open(const std::string &name) {
       filename = GetLastResortPath() + name;
       ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
       if (ifs.fail()) {
-        throw OpenError("GenericFile::Open(" + filename + ")");
+        throw OpenError(__FILE__, __LINE__, "(" + filename + ")");
       }
     }
   }
@@ -76,7 +76,7 @@ GenericFile::Seek(const std::streamoff offset) {
   if (ifs.is_open()) {
     ifs.seekg(offset, std::ios::beg);
     if (ifs.fail()) {
-      throw IOError("GenericFile::Seek");
+      throw IOError(__FILE__, __LINE__);
     }
   }
 }
@@ -86,7 +86,7 @@ GenericFile::SeekEnd(const std::streamoff offset) {
   if (ifs.is_open()) {
     ifs.seekg(offset, std::ios::end);
     if (ifs.fail()) {
-      throw IOError("GenericFile::SeekEnd");
+      throw IOError(__FILE__, __LINE__);
     }
   }
 }
@@ -96,7 +96,7 @@ GenericFile::Size() {
   if (ifs.is_open()) {
     ifs.seekg(0, std::ios::end);
     if (ifs.fail()) {
-      throw IOError("GenericFile::Size");
+      throw IOError(__FILE__, __LINE__);
     }
     return ifs.tellg();
   }

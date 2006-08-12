@@ -37,18 +37,18 @@ GamePath::GamePath()
   resource = ResourcePath::GetInstance()->GetPath();
 
   struct stat statbuf;
-  if (stat(path.data(), &statbuf) == -1)
+  if (stat(path.c_str(), &statbuf) == -1)
   {
     if (errno == ENOENT)
     {
-      if (mkdir(path.data(), S_IRWXU| S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) == -1)
+      if (mkdir(path.c_str(), S_IRWXU| S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) == -1)
       {
-        throw IOError("GamePath::GamePath");
+        throw IOError(__FILE__, __LINE__);
       }
     }
     else
     {
-      throw FileNotFound("GamePath::GamePath");
+      throw FileNotFound(__FILE__, __LINE__, path);
     }
   }
 }

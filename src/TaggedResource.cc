@@ -87,7 +87,7 @@ TaggedResource::Split(FileBuffer *buffer)
         }
         break;
       default:
-        throw DataCorruption("TaggedResource::Split");
+        throw DataCorruption(__FILE__, __LINE__);
         break;
     }
   }

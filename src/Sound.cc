@@ -176,7 +176,7 @@ Sound::CreateMidiEvents(FileBuffer *buf)
         ((code & 0xf0) == MIDI_PITCH)) {
       mode = code;
       if ((code & 0x0f) != channel) {
-        throw DataCorruption("Sound::CreateMidiEvents");
+        throw DataCorruption(__FILE__, __LINE__);
       }
     } else if (code == MIDI_SEQ_END) {
       mode = code;
@@ -209,7 +209,7 @@ Sound::CreateMidiEvents(FileBuffer *buf)
           if (mode = MIDI_SEQ_END) {
             me->size = 1;
           } else {
-            throw DataCorruption("Sound::CreateMidiEvents");
+            throw DataCorruption(__FILE__, __LINE__);
           }
           break;
       }

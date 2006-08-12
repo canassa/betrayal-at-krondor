@@ -29,10 +29,12 @@
 
 class Exception: public std::exception {
   private:
-    std::string location;
+    std::string filename;
+    unsigned int linenr;
     std::string message;
   public:
-    Exception(const std::string &loc, const std::string &msg);
+    Exception(const std::string &file, const unsigned int line, const std::string &msg);
+    Exception(const std::string &file, const unsigned int line, const std::string &msg, const unsigned int val);
     virtual ~Exception() throw();
     void Print(const std::string &handler) const throw();
     std::string What() const throw();
@@ -40,69 +42,69 @@ class Exception: public std::exception {
 
 class BufferEmpty: public Exception {
   public:
-    BufferEmpty(const std::string &loc);
+    BufferEmpty(const std::string &file, const unsigned int line, const std::string &msg = "");
     virtual ~BufferEmpty() throw ();
 };
 
 class BufferFull: public Exception {
   public:
-    BufferFull(const std::string &loc);
+    BufferFull(const std::string &file, const unsigned int line, const std::string &msg = "");
     virtual ~BufferFull() throw ();
 };
 
 class CompressionError: public Exception {
   public:
-    CompressionError(const std::string &loc);
+    CompressionError(const std::string &file, const unsigned int line, const std::string &msg = "");
     virtual ~CompressionError() throw ();
 };
 
 class DataCorruption: public Exception {
   public:
-    DataCorruption(const std::string &loc);
+    DataCorruption(const std::string &file, const unsigned int line, const std::string &msg = "");
     virtual ~DataCorruption() throw ();
 };
 
 class FileNotFound: public Exception {
   public:
-    FileNotFound(const std::string &loc);
+    FileNotFound(const std::string &file, const unsigned int line, const std::string &msg);
     virtual ~FileNotFound() throw ();
 };
 
 class IndexOutOfRange: public Exception {
   public:
-    IndexOutOfRange(const std::string &loc);
+    IndexOutOfRange(const std::string &file, const unsigned int line, const std::string &msg = "");
     virtual ~IndexOutOfRange() throw ();
 };
 
 class IOError: public Exception {
   public:
-    IOError(const std::string &loc);
+    IOError(const std::string &file, const unsigned int line, const std::string &msg = "");
     virtual ~IOError() throw ();
 };
 
 class NullPointer: public Exception {
   public:
-    NullPointer(const std::string &loc);
+    NullPointer(const std::string &file, const unsigned int line, const std::string &msg = "");
     virtual ~NullPointer() throw ();
 };
 
 class OpenError: public Exception {
   public:
-    OpenError(const std::string &loc);
+    OpenError(const std::string &file, const unsigned int line, const std::string &msg = "");
     virtual ~OpenError() throw ();
 };
 
 class SDL_Exception: public Exception {
   public:
-    SDL_Exception(const std::string &loc);
+    SDL_Exception(const std::string &file, const unsigned int line, const std::string &msg);
     virtual ~SDL_Exception() throw ();
 };
 
 class UnexpectedValue: public Exception {
   public:
-    UnexpectedValue(const std::string &loc);
+    UnexpectedValue(const std::string &file, const unsigned int line, const std::string &value);
+    UnexpectedValue(const std::string &file, const unsigned int line, const unsigned int value);
     virtual ~UnexpectedValue() throw ();
 };
 
 #endif
-
