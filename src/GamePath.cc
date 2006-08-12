@@ -18,7 +18,9 @@
  */
 
 #include <errno.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -28,7 +30,11 @@
 
 GamePath* GamePath::instance = 0;
 
-#define DEFAULT_GAME_PATH std::string(getenv("HOME")) + "/." + std::string(PACKAGE) + "/"
+#if defined(WIN32) || defined(__APPLE_CC__)
+static const std::string DEFAULT_GAME_PATH = "";
+#else
+static const std::string DEFAULT_GAME_PATH = std::string(getenv("HOME")) + "/." + std::string(PACKAGE) + "/";
+#endif
 
 GamePath::GamePath()
 {
@@ -36,21 +42,18 @@ GamePath::GamePath()
   original = ResourcePath::GetInstance()->GetPath() + "games/";
   resource = ResourcePath::GetInstance()->GetPath();
 
+#if !defined(WIN32) && !defined(__APPLE_CC__)
   struct stat statbuf;
-  if (stat(path.c_str(), &statbuf) == -1)
-  {
-    if (errno == ENOENT)
-    {
-      if (mkdir(path.c_str(), S_IRWXU| S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) == -1)
-      {
+  if (stat(path.c_str(), &statbuf) == -1) {
+    if (errno == ENOENT) {
+      if (mkdir(path.c_str(), S_IRWXU| S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) == -1) {
         throw IOError(__FILE__, __LINE__);
       }
-    }
-    else
-    {
+    } else {
       throw FileNotFound(__FILE__, __LINE__, path);
     }
   }
+#endif
 }
 
 GamePath::~GamePath()
