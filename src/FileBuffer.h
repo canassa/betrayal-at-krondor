@@ -20,13 +20,17 @@
 #ifndef FILE_BUFFER_H
 #define FILE_BUFFER_H
 
-#include <stdint.h>
-
 #include <fstream>
 #include <string>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
+
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#else
+#include "alt_stdint.h"
 #endif
 
 // try to determine endianness

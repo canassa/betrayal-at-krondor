@@ -20,11 +20,16 @@
 #ifndef VIDEO_H
 #define VIDEO_H
 
-#include <stdint.h>
 #include <string>
 
 #ifdef HAVE_CONFIG
 #include "config.h"
+#endif
+
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#else
+#include "alt_stdint.h"
 #endif
 
 static const unsigned int VIDEO_WIDTH  = 320;
