@@ -72,7 +72,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
     looped = repeat;
     delayed = false;
     screenSlot = 0;
-    soundSlot = 0;
+    soundSlot = SoundResource::GetInstance();
     memset(imageSlot, 0, sizeof(ImageResource*) * MAX_IMAGE_SLOTS);
     memset(paletteSlot, 0, sizeof(PaletteResource*) * MAX_PALETTE_SLOTS);
     backgroundImage = 0;
@@ -97,9 +97,6 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
     (paletteSlot[currPalette])->FadeOut(media, 0, VIDEO_COLORS, 64, 8);
     if (screenSlot) {
       delete screenSlot;
-    }
-    if (soundSlot) {
-      delete soundSlot;
     }
     for (unsigned int i = 0; i < MAX_IMAGE_SLOTS; i++) {
       if (imageSlot[i]) {
@@ -273,11 +270,6 @@ MoviePlayer::Update(const UpdateEvent& ue) {
         savedImageDrawn = false;
         break;
       case LOAD_SOUNDRESOURCE:
-        if (soundSlot) {
-          delete soundSlot;
-        }
-        soundSlot = new SoundResource;
-        FileManager::GetInstance()->Load(soundSlot, "frp.sx");
         break;
       case SELECT_SOUND:
         {

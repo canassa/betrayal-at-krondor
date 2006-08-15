@@ -34,10 +34,10 @@ TestApplication::TestApplication()
 , fnt()
 , img()
 , scr()
-, snd()
 , ttm()
 , wld()
 {
+  snd = SoundResource::GetInstance();
   mediaToolkit->GetVideo()->SetScaling(2);
   mediaToolkit->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
   MousePointerManager::GetInstance()->AddPointer("POINTER.BMX");
@@ -52,6 +52,7 @@ TestApplication::~TestApplication()
   mediaToolkit->RemoveTimerListener(this);
   MousePointerManager::CleanUp();
   delete mediaToolkit;
+  SoundResource::CleanUp();
   FileManager::CleanUp();
   ResourcePath::CleanUp();
 }
@@ -169,8 +170,7 @@ void
 TestApplication::PlaySound(const unsigned int index)
 {
   try {
-    FileManager::GetInstance()->Load(&snd, "frp.sx");
-    SoundData data = snd.GetSoundData(index);
+    SoundData data = snd->GetSoundData(index);
     unsigned int channel = mediaToolkit->GetAudio()->PlaySound(data.sounds[0]->GetSamples());
     mediaToolkit->GetClock()->StartTimer(TMR_TEST_APP, (index < 1000 ? 5000 : 30000));
     mediaToolkit->WaitEventLoop();

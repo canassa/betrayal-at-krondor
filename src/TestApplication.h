@@ -45,9 +45,9 @@ class TestApplication
     FontResource fnt;
     ImageResource img;
     ScreenResource scr;
-    SoundResource snd;
     MovieResource ttm;
     TileWorldResource wld;
+    SoundResource* snd;
     static TestApplication *instance;
   protected:
     TestApplication();

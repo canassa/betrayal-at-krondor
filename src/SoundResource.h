@@ -39,9 +39,13 @@ class SoundResource
 : public TaggedResource {
   private:
     std::map<unsigned int, SoundData> soundMap;
-  public:
+    static SoundResource* instance;
+  protected:
     SoundResource();
-    virtual ~SoundResource();
+  public:
+    ~SoundResource();
+    static SoundResource* GetInstance();
+    static void CleanUp();
     void Load(FileBuffer *buffer);
     SoundData& GetSoundData(unsigned int id);
 };

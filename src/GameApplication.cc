@@ -78,6 +78,7 @@ GameApplication::~GameApplication()
   MousePointerManager::CleanUp();
   delete game;
   delete mediaToolkit;
+  SoundResource::CleanUp();
   FileManager::CleanUp();
   ResourcePath::CleanUp();
   GamePath::CleanUp();

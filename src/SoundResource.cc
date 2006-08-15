@@ -18,10 +18,13 @@
  */
 
 #include "Exception.h"
+#include "FileManager.h"
 #include "SoundResource.h"
 #include "ResourceTag.h"
 
 static const unsigned int MAX_NUM_SFX = 1000;
+
+SoundResource* SoundResource::instance = 0;
 
 SoundResource::SoundResource()
 : TaggedResource()
@@ -38,6 +41,25 @@ SoundResource::~SoundResource()
     }
   }
   soundMap.clear();
+}
+
+SoundResource*
+SoundResource::GetInstance()
+{
+  if (!instance) {
+    instance = new SoundResource();
+    FileManager::GetInstance()->Load(instance, "frp.sx");
+  }
+  return instance;
+}
+
+void
+SoundResource::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
 }
 
 SoundData&
