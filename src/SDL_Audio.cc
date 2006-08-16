@@ -105,9 +105,13 @@ SDL_Audio::PlaySound(FileBuffer *buffer, const int repeat)
   if (channel < 0) {
     throw SDL_Exception(__FILE__, __LINE__, Mix_GetError());
   }
-  SDL_LockMutex(audioMutex);
+  if (SDL_LockMutex(audioMutex) < 0) {
+    throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
+  }
   audioSample[channel] = sample;
-  SDL_UnlockMutex(audioMutex);
+  if (SDL_UnlockMutex(audioMutex) < 0) {
+    throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
+  }
   return channel;
 }
 
