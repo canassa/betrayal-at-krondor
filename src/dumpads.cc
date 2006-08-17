@@ -36,19 +36,19 @@ int main(int argc, char *argv[]) {
     printf("%s %s %s\n", anim->GetVersion().c_str(), data.name.c_str(), data.resource.c_str());
     FileBuffer *scr = anim->GetScript();
     while (!scr->AtEnd()) {
-      unsigned int code = scr->GetUint16();
+      unsigned int code = scr->GetUint16LE();
       printf("%04x ", code);
       switch (code) {
         case 0x0001:
           break;
         case 0x1030:
-          printf(" %d %d", scr->GetUint16(), scr->GetUint16());
+          printf(" %d %d", scr->GetUint16LE(), scr->GetUint16LE());
           break;
         case 0x1330:
-          printf(" %d %d", scr->GetUint16(), scr->GetUint16());
+          printf(" %d %d", scr->GetUint16LE(), scr->GetUint16LE());
           break;
         case 0x1350:
-          printf(" %d %d", scr->GetUint16(), scr->GetUint16());
+          printf(" %d %d", scr->GetUint16LE(), scr->GetUint16LE());
           break;
         case 0x1420:
           break;
@@ -57,10 +57,10 @@ int main(int argc, char *argv[]) {
         case 0x1520:
           break;
         case 0x2005:
-          printf(" %d %d %d %d", scr->GetUint16(), scr->GetUint16(), scr->GetUint16(), scr->GetUint16());
+          printf(" %d %d %d %d", scr->GetUint16LE(), scr->GetUint16LE(), scr->GetUint16LE(), scr->GetUint16LE());
           break;
         case 0x2010:
-          printf(" %d %d %d", scr->GetUint16(), scr->GetUint16(), scr->GetUint16());
+          printf(" %d %d %d", scr->GetUint16LE(), scr->GetUint16LE(), scr->GetUint16LE());
           break;
         case 0xffff:
           break;

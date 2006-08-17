@@ -45,7 +45,7 @@ void
 TaggedResource::Split(FileBuffer *buffer)
 {
   while (!buffer->AtEnd()) {
-    unsigned int label = buffer->GetUint32();
+    unsigned int label = buffer->GetUint32LE();
     switch (label) {
       case TAG_ADS:
       case TAG_APP:
@@ -67,7 +67,7 @@ TaggedResource::Split(FileBuffer *buffer)
       case TAG_VER:
       case TAG_VGA:
         {
-          unsigned int size = buffer->GetUint32();
+          unsigned int size = buffer->GetUint32LE();
           std::map<const unsigned int, FileBuffer*>::iterator it = bufferMap.find(label);
           if (it != bufferMap.end()) {
             delete (*it).second;

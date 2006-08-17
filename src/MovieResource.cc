@@ -76,20 +76,20 @@ MovieResource::Load(FileBuffer *buffer)
       throw DataCorruption(__FILE__, __LINE__);
     }
     version = verbuf->GetString();
-    pages = pagbuf->GetUint16();
+    pages = pagbuf->GetUint16LE();
     tt3buf->Skip(1);
-    FileBuffer *tmpbuf = new FileBuffer(tt3buf->GetUint32());
+    FileBuffer *tmpbuf = new FileBuffer(tt3buf->GetUint32LE());
     tt3buf->DecompressRLE(tmpbuf);
     ResourceTag tags;
     tags.Load(tagbuf);
     while (!tmpbuf->AtEnd()) {
       MovieTag *mt = new MovieTag;
-      unsigned int code = tmpbuf->GetUint16();
+      unsigned int code = tmpbuf->GetUint16LE();
       unsigned int size = code & 0x000f;
       code &= 0xfff0;
       mt->code = code;
       if ((code == 0x1110) && (size == 1)) {
-        unsigned int id = tmpbuf->GetUint16();
+        unsigned int id = tmpbuf->GetUint16LE();
         mt->data.push_back(id);
         std::string name;
         if (tags.Find(id, name)) {
@@ -103,7 +103,7 @@ MovieResource::Load(FileBuffer *buffer)
         }
       } else {
         for (unsigned int i = 0; i < size; i++) {
-          mt->data.push_back(tmpbuf->GetSint16());
+          mt->data.push_back(tmpbuf->GetSint16LE());
         }
       }
       movieTags.push_back(mt);

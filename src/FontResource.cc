@@ -84,12 +84,12 @@ FontResource::Load(FileBuffer *buffer)
       Clear();
       throw CompressionError(__FILE__, __LINE__);
     }
-    unsigned int size = (unsigned int)fntbuf->GetUint32();
+    unsigned int size = (unsigned int)fntbuf->GetUint32LE();
     FileBuffer *glyphbuf = new FileBuffer(size);
     fntbuf->DecompressRLE(glyphbuf);
     unsigned int *glyphOffset = new unsigned int [numChars];
     for (unsigned int i = 0; i < numChars; i++) {
-      glyphOffset[i] = glyphbuf->GetUint16();
+      glyphOffset[i] = glyphbuf->GetUint16LE();
     }
     for (unsigned int i = 0; i < numChars; i++) {
       FontGlyph *glyph = new FontGlyph;

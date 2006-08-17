@@ -43,10 +43,10 @@ void
 NameResource::Load(FileBuffer *buffer)
 {
   try {
-    unsigned int n = buffer->GetUint16();
+    unsigned int n = buffer->GetUint16LE();
     unsigned int *offset = new unsigned int[n];
     for (unsigned int i = 0; i < n; i++) {
-      offset[i] = buffer->GetUint16();
+      offset[i] = buffer->GetUint16LE();
     }
     buffer->Skip(2);
     unsigned int start = buffer->GetBytesDone();

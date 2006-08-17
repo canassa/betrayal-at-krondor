@@ -33,23 +33,6 @@
 #include "alt_stdint.h"
 #endif
 
-// try to determine endianness
-#undef XBAK_LITTLE_ENDIAN
-#undef XBAK_BIG_ENDIAN
-#if (defined(__i386__) || defined(__i386)) || \
-     defined(__ia64__) || defined(WIN32) || \
-     defined(_WIN32) || defined(__WIN32__) || \
-    (defined(__alpha__) || defined(__alpha)) || \
-    (defined(__arm__) || defined(__thumb__)) || \
-    (defined(__sh__) || defined(__sh64__)) || \
-    (defined(__mips__) && defined(__MIPSEL__)) || \
-     defined(__SYMBIAN32__) || defined(__x86_64__) || \
-     defined(__OS2__) || defined(__LITTLE_ENDIAN__)
-#define XBAK_LITTLE_ENDIAN
-#else
-#define XBAK_BIG_ENDIAN
-#endif
-
 static const unsigned int COMPRESSION_LZW = 0;
 static const unsigned int COMPRESSION_LZ = 1;
 static const unsigned int COMPRESSION_RLE = 2;
@@ -87,30 +70,30 @@ class FileBuffer {
     unsigned int GetNextBit() const;
 
     uint8_t GetUint8();
-    uint16_t GetUint16();
-    uint16_t GetUint16Reverse();
-    uint32_t GetUint32();
-    uint32_t GetUint32Reverse();
+    uint16_t GetUint16LE();
+    uint16_t GetUint16BE();
+    uint32_t GetUint32LE();
+    uint32_t GetUint32BE();
     int8_t GetSint8();
-    int16_t GetSint16();
-    int16_t GetSint16Reverse();
-    int32_t GetSint32();
-    int32_t GetSint32Reverse();
+    int16_t GetSint16LE();
+    int16_t GetSint16BE();
+    int32_t GetSint32LE();
+    int32_t GetSint32BE();
     std::string GetString();
     std::string GetString(const unsigned int len);
     void GetData(void * data, const unsigned int n);
     unsigned int GetBits(const unsigned int n);
 
     void PutUint8(const uint8_t x);
-    void PutUint16(const uint16_t x);
-    void PutUint16Reverse(const uint16_t x);
-    void PutUint32(const uint32_t x);
-    void PutUint32Reverse(const uint32_t x);
+    void PutUint16LE(const uint16_t x);
+    void PutUint16BE(const uint16_t x);
+    void PutUint32LE(const uint32_t x);
+    void PutUint32BE(const uint32_t x);
     void PutSint8(const int8_t x);
-    void PutSint16(const int16_t x);
-    void PutSint16Reverse(const int16_t x);
-    void PutSint32(const int32_t x);
-    void PutSint32Reverse(const int32_t x);
+    void PutSint16LE(const int16_t x);
+    void PutSint16BE(const int16_t x);
+    void PutSint32LE(const int32_t x);
+    void PutSint32BE(const int32_t x);
     void PutString(const std::string s);
     void PutData(void * data, const unsigned int n);
     void PutData(const uint8_t x, const unsigned int n);

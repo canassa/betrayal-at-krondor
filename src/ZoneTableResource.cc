@@ -77,10 +77,10 @@ ZoneTableResource::Load(FileBuffer *buffer)
       throw DataCorruption(__FILE__, __LINE__);
     }
     mapbuf->Skip(2);
-    unsigned int numMapItems = mapbuf->GetUint16() + 1;
+    unsigned int numMapItems = mapbuf->GetUint16LE() + 1;
     unsigned int *mapOffset = new unsigned int [numMapItems];
     for (unsigned int i = 0; i < numMapItems; i++) {
-      mapOffset[i] = mapbuf->GetUint16();
+      mapOffset[i] = mapbuf->GetUint16LE();
     }
     unsigned int mapDataStart = mapbuf->GetBytesDone();
     for (unsigned int i = 0; i < numMapItems; i++) {
@@ -89,8 +89,8 @@ ZoneTableResource::Load(FileBuffer *buffer)
       mapItems.push_back(item);
     }
     delete[] mapOffset;
-    unsigned int numAppItems = appbuf->GetUint16();
-    unsigned int appDataSize = appbuf->GetUint16();
+    unsigned int numAppItems = appbuf->GetUint16LE();
+    unsigned int appDataSize = appbuf->GetUint16LE();
     for (unsigned int i = 0; i< numAppItems; i++) {
       AppData item;
       item.size = appDataSize;

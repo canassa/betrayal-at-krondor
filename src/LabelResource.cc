@@ -44,14 +44,14 @@ void
 LabelResource::Load(FileBuffer *buffer)
 {
   try {
-    unsigned int numRecords = buffer->GetUint16();
+    unsigned int numRecords = buffer->GetUint16LE();
     int *offset = new int[numRecords];
     for (unsigned int i = 0; i < numRecords; i++) {
       LabelData lblData;
-      offset[i] = buffer->GetSint16();
-      lblData.xpos = buffer->GetSint16();
-      lblData.ypos = buffer->GetSint16();
-      lblData.type = buffer->GetSint16();
+      offset[i] = buffer->GetSint16LE();
+      lblData.xpos = buffer->GetSint16LE();
+      lblData.ypos = buffer->GetSint16LE();
+      lblData.type = buffer->GetSint16LE();
       lblData.color = buffer->GetSint8();
       lblData.shadow = buffer->GetSint8();
       data.push_back(lblData);

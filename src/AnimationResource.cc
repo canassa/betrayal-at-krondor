@@ -76,13 +76,13 @@ AnimationResource::Load(FileBuffer *buffer)
       Clear();
       throw DataCorruption(__FILE__, __LINE__);
     }
-    script = new FileBuffer(scrbuf->GetUint32());
+    script = new FileBuffer(scrbuf->GetUint32LE());
     scrbuf->DecompressLZW(script);
     ResourceTag tags;
     tags.Load(tagbuf);
-    unsigned int n = resbuf->GetUint16();
+    unsigned int n = resbuf->GetUint16LE();
     for (unsigned int i = 0; i < n; i++) {
-      unsigned int id = resbuf->GetUint16();
+      unsigned int id = resbuf->GetUint16LE();
       std::string resource = resbuf->GetString();
       std::string name;
       if (tags.Find(id, name)) {

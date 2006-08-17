@@ -20,6 +20,8 @@
 #include <iomanip>
 #include <iostream>
 
+#include "SDL_endian.h"
+
 #include "Exception.h"
 #include "FileBuffer.h"
 
@@ -198,7 +200,7 @@ FileBuffer::DecompressLZ(FileBuffer *result)
       if (code & mask) {
         result->PutUint8(GetUint8());
       } else {
-        unsigned int off = GetUint16();
+        unsigned int off = GetUint16LE();
         unsigned int len = GetUint8() + 5;
         result->PutData(data + off, len);
       }
@@ -233,7 +235,7 @@ FileBuffer::Decompress(FileBuffer *result, const unsigned int method)
 {
   switch (method) {
     case COMPRESSION_LZW:
-      if ((GetUint8() != 0x02) || (GetUint32() != result->GetSize())) {
+      if ((GetUint8() != 0x02) || (GetUint32LE() != result->GetSize())) {
         throw DataCorruption(__FILE__, __LINE__); 
       } 
       DecompressLZW(result);
@@ -307,15 +309,11 @@ FileBuffer::GetUint8()
 }
 
 uint16_t
-FileBuffer::GetUint16()
+FileBuffer::GetUint16LE()
 {
   if ((current) && (current + 2 <= buffer + size)) {
     uint16_t n = 0;
-#ifdef XBAK_LITTLE_ENDIAN
-    n = *((uint16_t *)current);
-#else
-    n = ((uint8_t *)current)[0] << 8 | ((uint8_t *)current)[1];
-#endif
+    n = SDL_SwapLE16(*((uint16_t *)current));
     current += 2;
     return n;
   } else {
@@ -325,15 +323,11 @@ FileBuffer::GetUint16()
 }
 
 uint16_t
-FileBuffer::GetUint16Reverse()
+FileBuffer::GetUint16BE()
 {
   if ((current) && (current + 2 <= buffer + size)) {
     uint16_t n = 0;
-#ifdef XBAK_LITTLE_ENDIAN
-    n = ((uint8_t *)current)[0] << 8 | ((uint8_t *)current)[1];
-#else
-    n = *((uint16_t *)current);
-#endif
+    n = SDL_SwapBE16(*((uint16_t *)current));
     current += 2;
     return n;
   } else {
@@ -343,15 +337,11 @@ FileBuffer::GetUint16Reverse()
 }
 
 uint32_t
-FileBuffer::GetUint32()
+FileBuffer::GetUint32LE()
 {
   if ((current) && (current + 4 <= buffer + size)) {
     uint32_t n = 0;
-#ifdef XBAK_LITTLE_ENDIAN
-    n = *((uint32_t *)current);
-#else
-    n = ((uint8_t *)current)[0] << 24 | ((uint8_t *)current)[1] << 16 | ((uint8_t *)current)[2] << 8 | ((uint8_t *)current)[3];
-#endif
+    n = SDL_SwapLE32(*((uint32_t *)current));
     current += 4;
     return n;
   } else {
@@ -361,15 +351,11 @@ FileBuffer::GetUint32()
 }
 
 uint32_t
-FileBuffer::GetUint32Reverse()
+FileBuffer::GetUint32BE()
 {
   if ((current) && (current + 4 <= buffer + size)) {
     uint32_t n = 0;
-#ifdef XBAK_LITTLE_ENDIAN
-    n = ((uint8_t *)current)[0] << 24 | ((uint8_t *)current)[1] << 16 | ((uint8_t *)current)[2] << 8 | ((uint8_t *)current)[3];
-#else
-    n = *((uint32_t *)current);
-#endif
+    n = SDL_SwapBE32(*((uint32_t *)current));
     current += 4;
     return n;
   } else {
@@ -393,15 +379,11 @@ FileBuffer::GetSint8()
 }
 
 int16_t
-FileBuffer::GetSint16()
+FileBuffer::GetSint16LE()
 {
   if ((current) && (current + 2 <= buffer + size)) {
     int16_t n = 0;
-#ifdef XBAK_LITTLE_ENDIAN
-    n = *((int16_t *)current);
-#else
-    n = ((int8_t *)current)[0] << 8 | ((int8_t *)current)[1];
-#endif
+    n = SDL_SwapLE16(*((uint16_t *)current));
     current += 2;
     return n;
   } else {
@@ -411,15 +393,11 @@ FileBuffer::GetSint16()
 }
 
 int16_t
-FileBuffer::GetSint16Reverse()
+FileBuffer::GetSint16BE()
 {
   if ((current) && (current + 2 <= buffer + size)) {
     int16_t n = 0;
-#ifdef XBAK_LITTLE_ENDIAN
-    n = ((int8_t *)current)[0] << 8 | ((int8_t *)current)[1];
-#else
-    n = *((int16_t *)current);
-#endif
+    n = SDL_SwapBE16(*((uint16_t *)current));
     current += 2;
     return n;
   } else {
@@ -429,15 +407,11 @@ FileBuffer::GetSint16Reverse()
 }
 
 int32_t
-FileBuffer::GetSint32()
+FileBuffer::GetSint32LE()
 {
   if ((current) && (current + 4 <= buffer + size)) {
     int32_t n = 0;
-#ifdef XBAK_LITTLE_ENDIAN
-    n = *((int32_t *)current);
-#else
-    n = ((int8_t *)current)[0] << 24 | ((int8_t *)current)[1] << 16 | ((int8_t *)current)[2] << 8 | ((int8_t *)current)[3];
-#endif
+    n = SDL_SwapLE32(*((uint32_t *)current));
     current += 4;
     return n;
   } else {
@@ -447,15 +421,11 @@ FileBuffer::GetSint32()
 }
 
 int32_t
-FileBuffer::GetSint32Reverse()
+FileBuffer::GetSint32BE()
 {
   if ((current) && (current + 4 <= buffer + size)) {
     int32_t n = 0;
-#ifdef XBAK_LITTLE_ENDIAN
-    n = ((int8_t *)current)[0] << 24 | ((int8_t *)current)[1] << 16 | ((int8_t *)current)[2] << 8 | ((int8_t *)current)[3];
-#else
-    n = *((int32_t *)current);
-#endif
+    n = SDL_SwapBE32(*((uint32_t *)current));
     current += 4;
     return n;
   } else {
@@ -538,15 +508,10 @@ FileBuffer::PutUint8(const uint8_t x)
 }
 
 void
-FileBuffer::PutUint16(const uint16_t x)
+FileBuffer::PutUint16LE(const uint16_t x)
 {
   if ((current) && (current + 2 <= buffer + size)) {
-#ifdef XBAK_LITTLE_ENDIAN
-    *((uint16_t *)current) = x;
-#else
-    ((uint8_t *)current)[0] = (x >> 8) & 0xff;
-    ((uint8_t *)current)[1] = x & 0xff;
-#endif
+    *((uint16_t *)current) = SDL_SwapLE16(x);
     current += 2;
   } else {
     throw BufferFull(__FILE__, __LINE__);
@@ -554,15 +519,10 @@ FileBuffer::PutUint16(const uint16_t x)
 }
 
 void
-FileBuffer::PutUint16Reverse(const uint16_t x)
+FileBuffer::PutUint16BE(const uint16_t x)
 {
   if ((current) && (current + 2 <= buffer + size)) {
-#ifdef XBAK_LITTLE_ENDIAN
-    ((uint8_t *)current)[0] = (x >> 8) & 0xff;
-    ((uint8_t *)current)[1] = x & 0xff;
-#else
-    *((uint16_t *)current) = x;
-#endif
+    *((uint16_t *)current) = SDL_SwapBE16(x);
     current += 2;
   } else {
     throw BufferFull(__FILE__, __LINE__);
@@ -570,17 +530,10 @@ FileBuffer::PutUint16Reverse(const uint16_t x)
 }
 
 void
-FileBuffer::PutUint32(const uint32_t x)
+FileBuffer::PutUint32LE(const uint32_t x)
 {
   if ((current) && (current + 4 <= buffer + size)) {
-#ifdef XBAK_LITTLE_ENDIAN
-    *((uint32_t *)current) = x;
-#else
-    ((uint8_t *)current)[0] = (x >> 24) & 0xff;
-    ((uint8_t *)current)[1] = (x >> 16) & 0xff;
-    ((uint8_t *)current)[2] = (x >> 8) & 0xff;
-    ((uint8_t *)current)[3] = x & 0xff;
-#endif
+    *((uint32_t *)current) = SDL_SwapLE32(x);
     current += 4;
   } else {
     throw BufferFull(__FILE__, __LINE__);
@@ -588,17 +541,10 @@ FileBuffer::PutUint32(const uint32_t x)
 }
 
 void
-FileBuffer::PutUint32Reverse(const uint32_t x)
+FileBuffer::PutUint32BE(const uint32_t x)
 {
   if ((current) && (current + 4 <= buffer + size)) {
-#ifdef XBAK_LITTLE_ENDIAN
-    ((uint8_t *)current)[0] = (x >> 24) & 0xff;
-    ((uint8_t *)current)[1] = (x >> 16) & 0xff;
-    ((uint8_t *)current)[2] = (x >> 8) & 0xff;
-    ((uint8_t *)current)[3] = x & 0xff;
-#else
-    *((uint32_t *)current) = x;
-#endif
+    *((uint32_t *)current) = SDL_SwapBE32(x);
     current += 4;
   } else {
     throw BufferFull(__FILE__, __LINE__);
@@ -617,15 +563,10 @@ FileBuffer::PutSint8(const int8_t x)
 }
 
 void
-FileBuffer::PutSint16(const int16_t x)
+FileBuffer::PutSint16LE(const int16_t x)
 {
   if ((current) && (current + 2 <= buffer + size)) {
-#ifdef XBAK_LITTLE_ENDIAN
-    *((int16_t *)current) = x;
-#else
-    ((int8_t *)current)[0] = (x >> 8) & 0xff;
-    ((int8_t *)current)[1] = x & 0xff;
-#endif
+    *((uint16_t *)current) = SDL_SwapLE16(x);
     current += 2;
   } else {
     throw BufferFull(__FILE__, __LINE__);
@@ -633,15 +574,10 @@ FileBuffer::PutSint16(const int16_t x)
 }
 
 void
-FileBuffer::PutSint16Reverse(const int16_t x)
+FileBuffer::PutSint16BE(const int16_t x)
 {
   if ((current) && (current + 2 <= buffer + size)) {
-#ifdef XBAK_LITTLE_ENDIAN
-    ((int8_t *)current)[0] = (x >> 8) & 0xff;
-    ((int8_t *)current)[1] = x & 0xff;
-#else
-    *((int16_t *)current) = x;
-#endif
+    *((uint16_t *)current) = SDL_SwapBE16(x);
     current += 2;
   } else {
     throw BufferFull(__FILE__, __LINE__);
@@ -649,17 +585,10 @@ FileBuffer::PutSint16Reverse(const int16_t x)
 }
 
 void
-FileBuffer::PutSint32(const int32_t x)
+FileBuffer::PutSint32LE(const int32_t x)
 {
   if ((current) && (current + 4 <= buffer + size)) {
-#ifdef XBAK_LITTLE_ENDIAN
-    *((int32_t *)current) = x;
-#else
-    ((int8_t *)current)[0] = (x >> 24) & 0xff;
-    ((int8_t *)current)[1] = (x >> 16) & 0xff;
-    ((int8_t *)current)[2] = (x >> 8) & 0xff;
-    ((int8_t *)current)[3] = x & 0xff;
-#endif
+    *((uint32_t *)current) = SDL_SwapLE32(x);
     current += 4;
   } else {
     throw BufferFull(__FILE__, __LINE__);
@@ -667,17 +596,10 @@ FileBuffer::PutSint32(const int32_t x)
 }
 
 void
-FileBuffer::PutSint32Reverse(const int32_t x)
+FileBuffer::PutSint32BE(const int32_t x)
 {
   if ((current) && (current + 4 <= buffer + size)) {
-#ifdef XBAK_LITTLE_ENDIAN
-    ((int8_t *)current)[0] = (x >> 24) & 0xff;
-    ((int8_t *)current)[1] = (x >> 16) & 0xff;
-    ((int8_t *)current)[2] = (x >> 8) & 0xff;
-    ((int8_t *)current)[3] = x & 0xff;
-#else
-    *((int32_t *)current) = x;
-#endif
+    *((uint32_t *)current) = SDL_SwapBE32(x);
     current += 4;
   } else {
     throw BufferFull(__FILE__, __LINE__);
@@ -716,4 +638,3 @@ void FileBuffer::PutData(const uint8_t x, const unsigned int n)
     throw BufferFull(__FILE__, __LINE__);
   }
 }
-

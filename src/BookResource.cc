@@ -47,7 +47,7 @@ BookResource::Load(FileBuffer *buffer)
 {
   try {
     buffer->Skip(4);
-    for (unsigned int i = 0; i < buffer->GetUint16(); i++) {
+    for (unsigned int i = 0; i < buffer->GetUint16LE(); i++) {
       buffer->Skip(4);
     }
     for (unsigned int i = 0; i < 40; i++) {

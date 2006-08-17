@@ -81,17 +81,17 @@ SoundResource::Load(FileBuffer *buffer)
       throw DataCorruption(__FILE__, __LINE__);
     }
     infbuf->Skip(2);
-    unsigned int n = infbuf->GetUint16();
+    unsigned int n = infbuf->GetUint16LE();
     infbuf->Skip(1);
     ResourceTag tags;
     tags.Load(tagbuf);
     for (unsigned int i = 0; i < n; i++) {
-      unsigned int id = infbuf->GetUint16();
-      std::streamoff offset = infbuf->GetUint32();
+      unsigned int id = infbuf->GetUint16LE();
+      std::streamoff offset = infbuf->GetUint32LE();
       std::string name;
       if (tags.Find(id, name)) {
         buffer->Seek(offset + 8);
-        if (id != buffer->GetUint16()) {
+        if (id != buffer->GetUint16LE()) {
           Clear();
           throw DataCorruption(__FILE__, __LINE__);
         }
@@ -99,7 +99,7 @@ SoundResource::Load(FileBuffer *buffer)
         data.name = name;
         data.type = buffer->GetUint8();
         buffer->Skip(2);
-        FileBuffer *sndbuf = new FileBuffer(buffer->GetUint32() - 2);
+        FileBuffer *sndbuf = new FileBuffer(buffer->GetUint32LE() - 2);
         buffer->Skip(2);
         sndbuf->Fill(buffer);
         buffer->Skip(-sndbuf->GetSize());
@@ -111,8 +111,8 @@ SoundResource::Load(FileBuffer *buffer)
           code = buffer->GetUint8();
           while (code != 0xff) {
             buffer->Skip(1);
-            offsetVec.push_back(buffer->GetUint16());
-            sizeVec.push_back(buffer->GetUint16());
+            offsetVec.push_back(buffer->GetUint16LE());
+            sizeVec.push_back(buffer->GetUint16LE());
             code = buffer->GetUint8();
           }
           for (unsigned int j = 0; j < offsetVec.size(); j++) {

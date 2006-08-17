@@ -70,8 +70,8 @@ DialogResource::ReadDialogData(FileBuffer *buffer, DialogData *data)
     for (unsigned int i = 0; i < data->subdialogs; i++) {
       DialogPageOffset dpo;
       buffer->Skip(4);
-      dpo.type = buffer->GetSint16();
-      dpo.offset = buffer->GetUint32();
+      dpo.type = buffer->GetSint16LE();
+      dpo.offset = buffer->GetUint32LE();
       pageOffset.push_back(dpo);
     }
     bool done = false;
@@ -108,11 +108,11 @@ void
 DialogResource::Load(FileBuffer *buffer)
 {
   try {
-    unsigned int n = buffer->GetUint16();
+    unsigned int n = buffer->GetUint16LE();
     std::map<const unsigned int, unsigned int> offset;
     for (unsigned int i = 0; i < n; i++) {
-      unsigned int key = buffer->GetUint32();
-      unsigned int value = buffer->GetUint32();
+      unsigned int key = buffer->GetUint32LE();
+      unsigned int value = buffer->GetUint32LE();
       offset.insert(std::pair<const unsigned int, unsigned int>(key, value));
     }
     for (std::map<const unsigned int, unsigned int>::iterator it = offset.begin(); it != offset.end(); ++it) {

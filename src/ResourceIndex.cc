@@ -42,11 +42,11 @@ ResourceIndex::Init(const std::string &filename)
     rmf.Seek(0);
     rmf.Load(rmfBuffer);
     rmf.Close();
-    if ((rmfBuffer.GetUint32() != 1) || (rmfBuffer.GetUint16() != 4)) {
+    if ((rmfBuffer.GetUint32LE() != 1) || (rmfBuffer.GetUint16LE() != 4)) {
       throw DataCorruption(__FILE__, __LINE__);
     }
     resourceFilename = rmfBuffer.GetString(RES_FILENAME_LEN);
-    numResources = rmfBuffer.GetUint16();
+    numResources = rmfBuffer.GetUint16LE();
 
     ResourceFile res;
     res.Open(resourceFilename);
@@ -54,13 +54,13 @@ ResourceIndex::Init(const std::string &filename)
     for (unsigned int i = 0; i < numResources; i++) {
       /* skip the hashkey */
       rmfBuffer.Skip(4);
-      std::streamoff offset = rmfBuffer.GetUint32();
+      std::streamoff offset = rmfBuffer.GetUint32LE();
       res.Seek(offset);
       res.Load(resBuffer);
       std::string resIdxName = resBuffer.GetString(RES_FILENAME_LEN);
       ResourceIndexData resIdxData;
       resIdxData.offset = offset + RES_FILENAME_LEN + 4;
-      resIdxData.size = resBuffer.GetUint32();
+      resIdxData.size = resBuffer.GetUint32LE();
       resIdxMap.insert(std::pair<const std::string, ResourceIndexData>(resIdxName, resIdxData));
     }
     res.Close();

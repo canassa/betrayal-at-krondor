@@ -51,7 +51,7 @@ PartyResource::Load(FileBuffer *buffer)
   try {
     unsigned int offset[PARTY_SIZE];
     for (unsigned int i = 0; i < PARTY_SIZE; i++) {
-      offset[i] = buffer->GetUint16();
+      offset[i] = buffer->GetUint16LE();
       buffer->Skip(93);
     }
     buffer->Skip(2);

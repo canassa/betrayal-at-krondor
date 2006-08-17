@@ -68,23 +68,23 @@ void
 Sound::CreateWaveSamples(FileBuffer *buf)
 {
   buf->Skip(1);
-  unsigned int rate = buf->GetUint16();
-  unsigned int size = buf->GetUint32();
+  unsigned int rate = buf->GetUint16LE();
+  unsigned int size = buf->GetUint32LE();
   buf->Skip(2);
   buffer = new FileBuffer(12 + 8 + 16 + 8 + size);
-  buffer->PutUint32(RIFF_ID);
-  buffer->PutUint32(buffer->GetSize() - 8);
-  buffer->PutUint32(WAVE_ID);
-  buffer->PutUint32(FMT_ID);
-  buffer->PutUint32(16);      // chunk size
-  buffer->PutUint16(1);       // compression: 1 = uncompressed PCM
-  buffer->PutUint16(1);       // # channels
-  buffer->PutUint32(rate);    // sample rate
-  buffer->PutUint32(rate);    // average bytes per sec: sample rate * block align
-  buffer->PutUint16(1);       // block align: significant bits per sample / 8 * # channels
-  buffer->PutUint16(8);       // significant bits per sample
-  buffer->PutUint32(DATA_ID);
-  buffer->PutUint32(size);
+  buffer->PutUint32LE(RIFF_ID);
+  buffer->PutUint32LE(buffer->GetSize() - 8);
+  buffer->PutUint32LE(WAVE_ID);
+  buffer->PutUint32LE(FMT_ID);
+  buffer->PutUint32LE(16);      // chunk size
+  buffer->PutUint16LE(1);       // compression: 1 = uncompressed PCM
+  buffer->PutUint16LE(1);       // # channels
+  buffer->PutUint32LE(rate);    // sample rate
+  buffer->PutUint32LE(rate);    // average bytes per sec: sample rate * block align
+  buffer->PutUint16LE(1);       // block align: significant bits per sample / 8 * # channels
+  buffer->PutUint16LE(8);       // significant bits per sample
+  buffer->PutUint32LE(DATA_ID);
+  buffer->PutUint32LE(size);
   buffer->Copy(buf, size);
   buffer->Rewind();
 }
@@ -241,13 +241,13 @@ Sound::GenerateMidi()
     tick = (*it).first;
   }
   buffer = new FileBuffer(8 + SMF_HEADER_SIZE + 8 + size + 4);
-  buffer->PutUint32(SMF_HEADER);
-  buffer->PutUint32Reverse(SMF_HEADER_SIZE);
-  buffer->PutUint16Reverse(SMF_FORMAT);
-  buffer->PutUint16Reverse(1);
-  buffer->PutUint16Reverse(SMF_PPQN);
-  buffer->PutUint32(SMF_TRACK);
-  buffer->PutUint32Reverse(size);
+  buffer->PutUint32LE(SMF_HEADER);
+  buffer->PutUint32BE(SMF_HEADER_SIZE);
+  buffer->PutUint16BE(SMF_FORMAT);
+  buffer->PutUint16BE(1);
+  buffer->PutUint16BE(SMF_PPQN);
+  buffer->PutUint32LE(SMF_TRACK);
+  buffer->PutUint32BE(size);
   for (std::multimap<unsigned int, MidiEvent *>::iterator it = midiEvents.begin(); it != midiEvents.end(); ++it) {
     MidiEvent *me = (*it).second;
     PutVariableLength(buffer, me->delta);

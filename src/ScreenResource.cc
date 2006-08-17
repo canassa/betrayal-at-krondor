@@ -42,13 +42,13 @@ void
 ScreenResource::Load(FileBuffer *buffer)
 {
   try {
-    if (buffer->GetUint16() != 0x27b6) {
+    if (buffer->GetUint16LE() != 0x27b6) {
       buffer->Rewind();
     }
     if (buffer->GetUint8() != 0x02) {
       throw DataCorruption(__FILE__, __LINE__);
     }
-    FileBuffer *decompressed = new FileBuffer(buffer->GetUint32());
+    FileBuffer *decompressed = new FileBuffer(buffer->GetUint32LE());
     buffer->DecompressLZW(decompressed);
     image = new Image(SCREEN_WIDTH, SCREEN_HEIGHT);
     image->Load(decompressed, 0);

@@ -33,9 +33,9 @@ void
 ResourceTag::Load(FileBuffer *buffer)
 {
   try {
-    unsigned int n = buffer->GetUint16();
+    unsigned int n = buffer->GetUint16LE();
     for (unsigned int i = 0; i < n; i++) {
-      unsigned int id = buffer->GetUint16();
+      unsigned int id = buffer->GetUint16LE();
       std::string name = buffer->GetString();
       tagMap.insert(std::pair<const unsigned int, std::string>(id, name));
     }

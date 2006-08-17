@@ -87,40 +87,40 @@ RequestResource::Load(FileBuffer *buffer)
 {
   try {
     buffer->Skip(2);
-    popup = (buffer->GetSint16() != 0);
+    popup = (buffer->GetSint16LE() != 0);
     buffer->Skip(2);
-    xpos = buffer->GetSint16();
-    ypos = buffer->GetSint16();
-    width = buffer->GetUint16();
-    height = buffer->GetUint16();
+    xpos = buffer->GetSint16LE();
+    ypos = buffer->GetSint16LE();
+    width = buffer->GetUint16LE();
+    height = buffer->GetUint16LE();
     buffer->Skip(2);
-    xoff = buffer->GetSint16();
-    yoff = buffer->GetSint16();
-    buffer->Skip(2);
-    buffer->Skip(2);
+    xoff = buffer->GetSint16LE();
+    yoff = buffer->GetSint16LE();
     buffer->Skip(2);
     buffer->Skip(2);
-    unsigned int numRecords = buffer->GetUint16();
+    buffer->Skip(2);
+    buffer->Skip(2);
+    unsigned int numRecords = buffer->GetUint16LE();
     int *offset = new int[numRecords];
     for (unsigned int i = 0; i < numRecords; i++) {
       RequestData reqData;
-      reqData.widget = buffer->GetUint16();
-      reqData.action = buffer->GetSint16();
+      reqData.widget = buffer->GetUint16LE();
+      reqData.action = buffer->GetSint16LE();
       reqData.visible = (buffer->GetUint8() > 0);
       buffer->Skip(2);
       buffer->Skip(2);
       buffer->Skip(2);
-      reqData.xpos = buffer->GetSint16();
-      reqData.ypos = buffer->GetSint16();
-      reqData.width = buffer->GetUint16();
-      reqData.height = buffer->GetUint16();
+      reqData.xpos = buffer->GetSint16LE();
+      reqData.ypos = buffer->GetSint16LE();
+      reqData.width = buffer->GetUint16LE();
+      reqData.height = buffer->GetUint16LE();
       buffer->Skip(2);
-      offset[i] = buffer->GetSint16();
-      reqData.teleport = buffer->GetSint16();
-      reqData.image = buffer->GetUint16();
+      offset[i] = buffer->GetSint16LE();
+      reqData.teleport = buffer->GetSint16LE();
+      reqData.image = buffer->GetUint16LE();
       reqData.image = (reqData.image >> 1) + (reqData.image & 1);
       buffer->Skip(2);
-      reqData.special = buffer->GetUint16();
+      reqData.special = buffer->GetUint16LE();
       buffer->Skip(2);
       data.push_back(reqData);
     }
@@ -137,4 +137,3 @@ RequestResource::Load(FileBuffer *buffer)
     e.Print("RequestResource::Load");
   }
 }
-

@@ -74,10 +74,10 @@ TileWorldResource::Load(FileBuffer *buffer)
   try {
     while (!buffer->AtEnd()) {
       TileWorldItem twi;
-      twi.type = buffer->GetUint32();
-      twi.flags = buffer->GetUint32();
-      twi.xpos = buffer->GetUint32();
-      twi.ypos = buffer->GetUint32();
+      twi.type = buffer->GetUint32LE();
+      twi.flags = buffer->GetUint32LE();
+      twi.xpos = buffer->GetUint32LE();
+      twi.ypos = buffer->GetUint32LE();
       if (twi.type == OBJECT_CENTER) {
         xCenter = twi.xpos;
         yCenter = twi.ypos;

@@ -49,22 +49,22 @@ void
 ImageResource::Load(FileBuffer *buffer)
 {
   try {
-    if (buffer->GetUint16() != 0x1066 ) {
+    if (buffer->GetUint16LE() != 0x1066 ) {
       throw DataCorruption(__FILE__, __LINE__);
     }
-    unsigned int compression = (unsigned int)buffer->GetUint16();
-    numImages = (unsigned int)buffer->GetUint16();
+    unsigned int compression = (unsigned int)buffer->GetUint16LE();
+    numImages = (unsigned int)buffer->GetUint16LE();
     unsigned int *imageSize = new unsigned int[numImages];
     unsigned int *imageFlags = new unsigned int[numImages];
     buffer->Skip(2);
-    unsigned int size = buffer->GetUint32();
+    unsigned int size = buffer->GetUint32LE();
     for (unsigned int i = 0; i < numImages; i++) {
-      imageSize[i] = (unsigned int)buffer->GetUint16();
-      imageFlags[i] = (unsigned int)buffer->GetUint16();
+      imageSize[i] = (unsigned int)buffer->GetUint16LE();
+      imageFlags[i] = (unsigned int)buffer->GetUint16LE();
       unsigned int width;
       unsigned int height;
-      width = (unsigned int)buffer->GetUint16();
-      height = (unsigned int)buffer->GetUint16();
+      width = (unsigned int)buffer->GetUint16LE();
+      height = (unsigned int)buffer->GetUint16LE();
       Image *img = new Image(width, height);
       images.push_back(img);
     }
