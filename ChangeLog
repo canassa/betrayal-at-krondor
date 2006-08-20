@@ -1,6 +1,10 @@
+2006-08-20, xbak-0.0.10:
+* Fixed crash on starting a new game
+* Fixed a few portability issues.
+
 2006-08-06, xbak-0.0.9:
 * Sound (MIDI/WAVE) can be loaded and played.
-* Initial implmentation of loading/saving games is done.
+* Initial implementation of loading/saving games is done.
 * Added some drawing primitives.
 * Fixed a few portability issues.
 * Plugged a memory leak.
