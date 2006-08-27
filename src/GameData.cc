@@ -22,6 +22,13 @@
 
 GameData::GameData()
 : name("")
+, xpos(0)
+, ypos(0)
+, xcell(0)
+, ycell(0)
+, xloc(0)
+, yloc(0)
+, orientation(0)
 {
 }
 
@@ -35,11 +42,71 @@ GameData::GetName()
   return name;
 }
 
+unsigned int
+GameData::GetXPos() const
+{
+  return xpos;
+}
+
+unsigned int
+GameData::GetYPos() const
+{
+  return ypos;
+}
+
+unsigned int
+GameData::GetZone() const
+{
+  return zone;
+}
+
+unsigned int
+GameData::GetXCell() const
+{
+  return xcell;
+}
+
+unsigned int
+GameData::GetYCell() const
+{
+  return ycell;
+}
+
+unsigned int
+GameData::GetXLoc() const
+{
+  return xloc;
+}
+
+unsigned int
+GameData::GetYLoc() const
+{
+  return yloc;
+}
+
+unsigned int
+GameData::GetOrientation() const
+{
+  return orientation;
+}
+
 void
 GameData::Load(FileBuffer *buffer)
 {
   try {
     name = buffer->GetString();
+    buffer->Seek(90);
+    buffer->Skip(16);
+    ypos = buffer->GetUint32LE();
+    xpos = buffer->GetUint32LE();
+    buffer->Skip(4);
+    zone = buffer->GetUint8();
+    xcell = buffer->GetUint8();
+    ycell = buffer->GetUint8();
+    xloc = buffer->GetUint32LE();
+    yloc = buffer->GetUint32LE();
+    buffer->Skip(5);
+    orientation = buffer->GetUint16LE();
   } catch (Exception &e) {
     e.Print("GameData::Load");
   }

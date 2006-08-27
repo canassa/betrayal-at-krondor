@@ -32,10 +32,12 @@ class Party {
   private:
     std::vector<PlayerCharacter *> members;
     int zone;
-    int xTilePos;
-    int yTilePos;
-    int xCellPos;
-    int yCellPos;
+    int xPos;
+    int yPos;
+    int xCell;
+    int yCell;
+    int xLoc;
+    int yLoc;
   public:
     Party();
     ~Party();

@@ -32,7 +32,9 @@ int main(int argc, char *argv[]) {
     }
     GameData *gam = new GameData;
     FileManager::GetInstance()->Load(gam, argv[1]);
-    printf("%s\n", gam->GetName().c_str());
+    printf("%s  (%d, %d)\n", gam->GetName().c_str(), gam->GetXPos(), gam->GetYPos());
+    printf("z: %d  c: (%d, %d)  l: (%d, %d)  o: %d\n",
+           gam->GetZone(), gam->GetXCell(), gam->GetYCell(), gam->GetXLoc(), gam->GetYLoc(), gam->GetOrientation());
     delete gam;
     FileManager::CleanUp();
     GamePath::CleanUp();

@@ -42,9 +42,9 @@ int main(int argc, char *argv[]) {
     memset(map, 0, MAP_SIZE_X * MAP_SIZE_Y);
     for (unsigned int i = 0; i < wld->GetSize(); i++) {
       TileWorldItem mi = wld->GetItem(i);
-      printf("%d,%d: %3d %08x\n", mi.xpos, mi.ypos, mi.type, mi.flags);
-      unsigned int x = (mi.xpos - wld->GetMinX()) * MAP_SIZE_X / deltaX;
-      unsigned int y = (mi.ypos - wld->GetMinY()) * MAP_SIZE_Y / deltaY;
+      printf("%d,%d: %3d %08x\n", mi.xloc, mi.yloc, mi.type, mi.flags);
+      unsigned int x = (mi.xloc - wld->GetMinX()) * MAP_SIZE_X / deltaX;
+      unsigned int y = (mi.yloc - wld->GetMinY()) * MAP_SIZE_Y / deltaY;
       map[x + y * MAP_SIZE_X] = mi.type;
     }
     for (unsigned int y = 0; y < MAP_SIZE_Y; y++) {

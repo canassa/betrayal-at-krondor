@@ -36,8 +36,8 @@ static const unsigned int OBJECT_CENTER = 0;
 typedef struct _TileWorldItem {
   unsigned int type;
   unsigned int flags;
-  unsigned int xpos;
-  unsigned int ypos;
+  unsigned int xloc;
+  unsigned int yloc;
 } TileWorldItem;
 
 class TileWorldResource

@@ -454,7 +454,7 @@ std::string
 FileBuffer::GetString(const unsigned int len)
 {
   if ((current) && (current + len <= buffer + size)) {
-    std::string s = std::string((char *)current, len);
+    std::string s = std::string((char *)current);
     current += len;
     return s;
   } else {

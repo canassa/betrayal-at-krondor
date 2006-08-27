@@ -29,10 +29,26 @@
 class GameData {
   private:
     std::string name;
+    unsigned int xpos;
+    unsigned int ypos;
+    unsigned int zone;
+    unsigned int xcell;
+    unsigned int ycell;
+    unsigned int xloc;
+    unsigned int yloc;
+    unsigned int orientation;
   public:
     GameData();
     virtual ~GameData();
     std::string& GetName();
+    unsigned int GetXPos() const;
+    unsigned int GetYPos() const;
+    unsigned int GetZone() const;
+    unsigned int GetXCell() const;
+    unsigned int GetYCell() const;
+    unsigned int GetXLoc() const;
+    unsigned int GetYLoc() const;
+    unsigned int GetOrientation() const;
     void Load(FileBuffer *buffer);
 };
 
