@@ -206,7 +206,7 @@ Sound::CreateMidiEvents(FileBuffer *buf)
           me->size = 2;
           break;
         default:
-          if (mode = MIDI_SEQ_END) {
+          if (mode == MIDI_SEQ_END) {
             me->size = 1;
           } else {
             throw DataCorruption(__FILE__, __LINE__);
