@@ -28,6 +28,7 @@
 
 #include "CharacterButtonWidget.h"
 #include "ChoiceWidget.h"
+#include "CompassWidget.h"
 #include "ImageButtonWidget.h"
 #include "ImageResource.h"
 #include "LabelResource.h"
@@ -46,6 +47,8 @@ typedef struct _WidgetResources {
   FontResource *font;
   ImageResource *normal;
   ImageResource *pressed;
+  ImageResource *compass;
+  Orientation *orient;
   ImageResource *heads;
   PlayerCharacter *members[MAX_ACTIVE_MEMBERS];
   int special;
@@ -61,6 +64,7 @@ class WidgetFactory {
     CharacterButtonWidget* CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource *img, ActionEventListener *ael);
     ChoiceWidget* CreateChoice();
     TickboxWidget* CreateTickbox();
+    CompassWidget* CreateCompass(ImageResource *img, Orientation* orient);
     LabelWidget* CreateLabel(LabelData& data, FontResource* fnt, const int panelWidth);
     PanelWidget* CreatePanel(WidgetResources& widgetRes);
 };

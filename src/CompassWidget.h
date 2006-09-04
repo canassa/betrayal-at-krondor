@@ -17,40 +17,28 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef PARTY_H
-#define PARTY_H
-
-#include <vector>
+#ifndef COMPASS_WIDGET_H
+#define COMPASS_WIDGET_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
+#include "Image.h"
 #include "Orientation.h"
-#include "PlayerCharacter.h"
+#include "Widget.h"
 
-class Party {
+class CompassWidget
+: public Widget {
   private:
-    std::vector<PlayerCharacter *> members;
     Orientation *orientation;
-    int zone;
-    int xPos;
-    int yPos;
-    int xCell;
-    int yCell;
-    int xLoc;
-    int yLoc;
+    Image *compassImage;
   public:
-    Party();
-    ~Party();
-    PlayerCharacter* GetMember(const unsigned int n);
-    PlayerCharacter* GetActiveMember(const int order);
-    Orientation* GetOrientation();
-    void AddMember(PlayerCharacter *pc);
-    void ActivateMember(const unsigned int n, const int order);
-    void SelectMember(const int order);
-    void SetHeading(const int head);
-    void Turn(const int delta);
+    CompassWidget();
+    virtual ~CompassWidget();
+    void SetOrientation(Orientation *orient);
+    void SetImage(Image *image);
+    void Draw(Video *video);
 };
 
 #endif

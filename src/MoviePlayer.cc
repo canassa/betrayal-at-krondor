@@ -94,7 +94,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
     media->ClearEvents();
     media->PollEventLoop();
 
-    (paletteSlot[currPalette])->FadeOut(media, 0, VIDEO_COLORS, 64, 8);
+    (paletteSlot[currPalette])->FadeOut(media, 0, VIDEO_COLORS, 64, 5);
     if (screenSlot) {
       delete screenSlot;
     }

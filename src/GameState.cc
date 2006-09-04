@@ -388,6 +388,7 @@ GameStateInventory::GameStateInventory(GameApplication *app)
   dialog->SetRequest("REQ_INV.DAT");
   dialog->SetHeads("HEADS.BMX");
   dialog->SetMembers(app->GetGame()->GetParty(), SPECIAL_TYPE2);
+  dialog->SetCompass("COMPASS.BMX", app->GetGame()->GetParty()->GetOrientation());
 }
 
 GameStateInventory::~GameStateInventory()
@@ -509,6 +510,7 @@ GameStateMap::GameStateMap(GameApplication *app)
   dialog->SetRequest("REQ_MAP.DAT");
   dialog->SetHeads("HEADS.BMX");
   dialog->SetMembers(app->GetGame()->GetParty(), SPECIAL_TYPE1);
+  dialog->SetCompass("COMPASS.BMX", app->GetGame()->GetParty()->GetOrientation());
 }
 
 GameStateMap::~GameStateMap()
@@ -775,6 +777,7 @@ GameStateWorld::GameStateWorld(GameApplication *app)
   dialog->SetRequest("REQ_MAIN.DAT");
   dialog->SetHeads("HEADS.BMX");
   dialog->SetMembers(app->GetGame()->GetParty(), SPECIAL_TYPE1);
+  dialog->SetCompass("COMPASS.BMX", app->GetGame()->GetParty()->GetOrientation());
 }
 
 GameStateWorld::~GameStateWorld()

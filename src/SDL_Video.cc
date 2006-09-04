@@ -294,7 +294,7 @@ SDL_Video::DrawImage(const int x, const int y, const int w, const int h,
 {
   for (int j = y; j < y + h; j++) {
     for (int i = x; i < x + w; i++) {
-      if ((i >= xx) && (i < (x + ww)) && (j >= yy) && (j < (y + hh))) {
+      if ((i >= xx) && (i < (xx + ww)) && (j >= yy) && (j < (yy + hh))) {
         PutPixel(i, j, *p);
       }
       p++;

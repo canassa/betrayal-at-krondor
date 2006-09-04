@@ -65,6 +65,9 @@ Dialog::~Dialog()
   if (widgetRes.pressed) {
     delete widgetRes.pressed;
   }
+  if (widgetRes.compass) {
+    delete widgetRes.compass;
+  }
   if (widgetRes.heads) {
     delete widgetRes.heads;
   }
@@ -160,6 +163,22 @@ Dialog::SetIcons(const std::string &normalName, const std::string &pressedName)
 }
 
 void
+Dialog::SetCompass(const std::string &name, Orientation *orient)
+{
+  try {
+    if (widgetRes.compass) {
+      delete widgetRes.compass;
+    }
+    widgetRes.compass = new ImageResource();
+    FileManager::GetInstance()->Load(widgetRes.compass, name);
+    widgetRes.orient = orient;
+  } catch (Exception &e) {
+    e.Print("Dialog::SetCompass");
+    throw;
+  }
+}
+
+void
 Dialog::SetHeads(const std::string &name)
 {
   try {
@@ -169,7 +188,7 @@ Dialog::SetHeads(const std::string &name)
     widgetRes.heads = new ImageResource();
     FileManager::GetInstance()->Load(widgetRes.heads, name);
   } catch (Exception &e) {
-    e.Print("Dialog::SetIcons");
+    e.Print("Dialog::SetHeads");
     throw;
   }
 }

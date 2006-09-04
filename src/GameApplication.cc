@@ -63,7 +63,7 @@ GameApplication::GameApplication()
   ta.SetColor(15);
   ta.Draw(mediaToolkit->GetVideo(), 16, 16);
   mediaToolkit->GetVideo()->Refresh();
-  mediaToolkit->GetClock()->Delay(1000);
+  mediaToolkit->GetClock()->Delay(500);
   mediaToolkit->AddKeyboardListener(this);
   mediaToolkit->AddMouseButtonListener(this);
 

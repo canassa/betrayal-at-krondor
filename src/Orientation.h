@@ -17,41 +17,33 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef PARTY_H
-#define PARTY_H
-
-#include <vector>
+#ifndef ORIENTATION_H
+#define ORIENTATION_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "Orientation.h"
-#include "PlayerCharacter.h"
+static const int MAX_HEADING_BITS = 8;
 
-class Party {
+static const int NORTH = 0;
+static const int EAST  = 64;
+static const int SOUTH = 128;
+static const int WEST  = 192;
+
+class Orientation {
   private:
-    std::vector<PlayerCharacter *> members;
-    Orientation *orientation;
-    int zone;
-    int xPos;
-    int yPos;
-    int xCell;
-    int yCell;
-    int xLoc;
-    int yLoc;
+    int heading;
+    static double cosTbl[1 << MAX_HEADING_BITS];
+    static double sinTbl[1 << MAX_HEADING_BITS];
   public:
-    Party();
-    ~Party();
-    PlayerCharacter* GetMember(const unsigned int n);
-    PlayerCharacter* GetActiveMember(const int order);
-    Orientation* GetOrientation();
-    void AddMember(PlayerCharacter *pc);
-    void ActivateMember(const unsigned int n, const int order);
-    void SelectMember(const int order);
+    Orientation();
+    ~Orientation();
+    int GetHeading();
     void SetHeading(const int head);
-    void Turn(const int delta);
+    double GetCos();
+    double GetSin();
+    void AdjustHeading(const int delta);
 };
 
 #endif
-

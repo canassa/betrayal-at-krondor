@@ -108,10 +108,10 @@ Chapter::ShowMap()
     media->AddKeyboardListener(this);
     media->AddMouseButtonListener(this);
     media->AddTimerListener(this);
-    pal.FadeIn(media, 0, VIDEO_COLORS, 64, 8);
-    media->GetClock()->StartTimer(TMR_CHAPTER, 5000);
+    pal.FadeIn(media, 0, VIDEO_COLORS, 64, 5);
+    media->GetClock()->StartTimer(TMR_CHAPTER, 4000);
     media->WaitEventLoop();
-    pal.FadeOut(media, 0, VIDEO_COLORS, 64, 8);
+    pal.FadeOut(media, 0, VIDEO_COLORS, 64, 5);
     media->RemoveTimerListener(this);
     media->RemoveMouseButtonListener(this);
     media->RemoveKeyboardListener(this);

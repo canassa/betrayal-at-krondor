@@ -6,6 +6,7 @@ noinst_HEADERS = AnimationResource.h \
                  CharacterButtonWidget.h \
                  ChoiceWidget.h \
                  Clock.h \
+                 CompassWidget.h \
                  ContainerWidget.h \
                  Dialog.h \
                  DialogResource.h \
@@ -34,6 +35,7 @@ noinst_HEADERS = AnimationResource.h \
                  MoviePlayer.h \
                  MovieResource.h \
                  NameResource.h \
+                 Orientation.h \
                  PaletteResource.h \
                  PanelWidget.h \
                  Party.h \
@@ -90,6 +92,8 @@ libguitoolkit_a_SOURCES = ButtonWidget.cc \
                           CharacterButtonWidget.h \
                           ChoiceWidget.cc \
                           ChoiceWidget.h \
+                          CompassWidget.cc \
+                          CompassWidget.h \
                           ContainerWidget.cc \
                           ContainerWidget.h \
                           Dialog.cc \
@@ -279,6 +283,8 @@ xbak_SOURCES = Chapter.cc \
                GameApplication.h \
                GameState.cc \
                GameState.h \
+               Orientation.cc \
+               Orientation.h \
                Party.cc \
                Party.h \
                PlayerCharacter.cc \

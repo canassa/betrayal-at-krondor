@@ -73,6 +73,15 @@ WidgetFactory::CreateTickbox()
   return 0;
 }
 
+CompassWidget*
+WidgetFactory::CreateCompass(ImageResource *img, Orientation* orient)
+{
+  CompassWidget *compass = new CompassWidget();
+  compass->SetOrientation(orient);
+  compass->SetImage(img->GetImage(0));
+  return compass;
+}
+
 LabelWidget*
 WidgetFactory::CreateLabel(LabelData& data, FontResource *fnt, const int panelWidth)
 {
@@ -138,12 +147,16 @@ WidgetFactory::CreatePanel(WidgetResources& widgetRes)
   }
   if (widgetRes.label) {
     for (unsigned int i = 0; i < widgetRes.label->GetSize(); i++) {
-      LabelData data = widgetRes.label->GetLabelData(i);
+                  LabelData data = widgetRes.label->GetLabelData(i);
       int panelWidth = (widgetRes.request->GetWidth() > widgetRes.screen->GetImage()->GetWidth() ?
                         widgetRes.request->GetWidth() : widgetRes.screen->GetImage()->GetWidth());
       LabelWidget *label = CreateLabel(data, widgetRes.font, panelWidth);
       panel->AddWidget(label);
     }
+  }
+  if (widgetRes.compass) {
+    CompassWidget *compass = CreateCompass(widgetRes.compass, widgetRes.orient);
+    panel->AddWidget(compass);
   }
   return panel;
 }

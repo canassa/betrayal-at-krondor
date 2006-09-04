@@ -22,6 +22,8 @@
 Party::Party()
 : members()
 {
+  orientation = new Orientation();
+  orientation->SetHeading(SOUTH);
 }
 
 Party::~Party()
@@ -30,6 +32,9 @@ Party::~Party()
     delete members[i];
   }
   members.clear();
+  if (orientation) {
+    delete orientation;
+  }
 }
 
 PlayerCharacter *
@@ -51,6 +56,12 @@ Party::GetActiveMember(const int order)
     return members[i-1];
   }
   return 0;
+}
+
+Orientation *
+Party::GetOrientation()
+{
+  return orientation;
 }
 
 void
@@ -75,4 +86,16 @@ Party::SelectMember(const int order)
   for (unsigned int i = 0; i < members.size(); i++) {
     members[i]->Select((order >= 0) && (members[i]->GetOrder() == order));
   }
+}
+
+void
+Party::SetHeading(const int head)
+{
+  orientation->SetHeading(head);
+}
+
+void
+Party::Turn(const int delta)
+{
+  orientation->AdjustHeading(delta);
 }

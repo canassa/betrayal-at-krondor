@@ -32,6 +32,10 @@ Sound::Sound(const unsigned int t)
 Sound::~Sound()
 {
   delete buffer;
+  for (std::multimap<unsigned int, MidiEvent*>::iterator it= midiEvents.begin(); it != midiEvents.end(); ++it) {
+    delete it->second;
+  }
+  midiEvents.clear();
 }
 
 unsigned int
