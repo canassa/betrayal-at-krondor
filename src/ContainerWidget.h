@@ -45,6 +45,7 @@ class ContainerWidget
     void AddActiveWidget(ActiveWidget *aw);
     void RemoveActiveWidget(ActiveWidget *aw);
     void NextWidget(Video *video);
+    void PreviousWidget(Video *video);
     void LeftClickWidget(const bool toggle);
     void RightClickWidget(const bool toggle);
     void LeftClickWidget(const bool toggle, const int x, const int y);

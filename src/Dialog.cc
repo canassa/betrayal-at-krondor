@@ -222,100 +222,6 @@ Dialog::SetMembers(Party *party, const int special)
   }
 }
 
-unsigned int
-Dialog::Execute()
-{
-  try {
-    window = new DialogWindow(widgetRes);
-    media->GetVideo()->Clear();
-    window->FadeIn(palette, media);
-    running = true;
-    media->PollEventLoop();
-    running = false;
-    window->FadeOut(palette, media);
-    media->GetVideo()->Clear();
-    delete window;
-    window = 0;
-    return action;
-  } catch (Exception &e) {
-    e.Print("Dialog::Execute");
-    throw;
-  }
-}
-
-void
-Dialog::KeyPressed(const KeyboardEvent& kbe) {
-  switch (kbe.GetKey()) {
-    case KEY_ESCAPE:
-      action = ACT_ESCAPE;
-      media->TerminateEventLoop();
-      break;
-    case KEY_TAB:
-      if (running) {
-        window->SelectNextWidget(media->GetVideo());
-      }
-      break;
-    case KEY_RETURN:
-    case KEY_SPACE:
-      if (running) {
-        window->LeftClickWidget(true);
-      }
-      break;
-    default:
-      break;
-  }
-}
-
-void
-Dialog::KeyReleased(const KeyboardEvent& kbe) {
-  switch (kbe.GetKey()) {
-    case KEY_RETURN:
-    case KEY_SPACE:
-      if (running) {
-        window->LeftClickWidget(false);
-      }
-      break;
-    default:
-      break;
-  }
-}
-
-void
-Dialog::MouseButtonPressed(const MouseButtonEvent& mbe) {
-  switch (mbe.GetButton()) {
-    case MB_LEFT:
-      if (running) {
-        window->LeftClickWidget(true, mbe.GetXPos(), mbe.GetYPos());
-      }
-      break;
-    case MB_RIGHT:
-      if (running) {
-        window->RightClickWidget(true, mbe.GetXPos(), mbe.GetYPos());
-      }
-      break;
-    default:
-      break;
-  }
-}
-
-void
-Dialog::MouseButtonReleased(const MouseButtonEvent& mbe) {
-  switch (mbe.GetButton()) {
-    case MB_LEFT:
-      if (running) {
-        window->LeftClickWidget(false, mbe.GetXPos(), mbe.GetYPos());
-      }
-      break;
-    case MB_RIGHT:
-      if (running) {
-        window->RightClickWidget(false, mbe.GetXPos(), mbe.GetYPos());
-      }
-      break;
-    default:
-      break;
-  }
-}
-
 void
 Dialog::Update(const UpdateEvent& ue)
 {
@@ -334,7 +240,7 @@ Dialog::ActionPerformed(const ActionEvent& ae)
 
 
 GameDialog::GameDialog(MediaToolkit *mtk)
-  : Dialog(mtk)
+: Dialog(mtk)
 {
 }
 
@@ -342,12 +248,205 @@ GameDialog::~GameDialog()
 {
 }
 
+unsigned int
+GameDialog::Execute()
+{
+  try {
+    window = new DialogWindow(widgetRes);
+    media->GetVideo()->Clear();
+    window->FadeIn(palette, media);
+    running = true;
+    media->PollEventLoop();
+    running = false;
+    window->FadeOut(palette, media);
+    media->GetVideo()->Clear();
+    delete window;
+    window = 0;
+    return action;
+  } catch (Exception &e) {
+    e.Print("GameDialog::Execute");
+    throw;
+  }
+}
+
+void
+GameDialog::KeyPressed(const KeyboardEvent& kbe) {
+  switch (kbe.GetKey()) {
+    case KEY_ESCAPE:
+      action = ACT_ESCAPE;
+      media->TerminateEventLoop();
+      break;
+    case KEY_DOWN:
+      break;
+    case KEY_UP:
+      break;
+    case KEY_RETURN:
+    case KEY_SPACE:
+      if (running) {
+        window->LeftClickWidget(true);
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+void
+GameDialog::KeyReleased(const KeyboardEvent& kbe) {
+  switch (kbe.GetKey()) {
+    case KEY_RETURN:
+    case KEY_SPACE:
+      if (running) {
+        window->LeftClickWidget(false);
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+void
+GameDialog::MouseButtonPressed(const MouseButtonEvent& mbe) {
+  switch (mbe.GetButton()) {
+    case MB_LEFT:
+      if (running) {
+        window->LeftClickWidget(true, mbe.GetXPos(), mbe.GetYPos());
+      }
+      break;
+    case MB_RIGHT:
+      if (running) {
+        window->RightClickWidget(true, mbe.GetXPos(), mbe.GetYPos());
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+void
+GameDialog::MouseButtonReleased(const MouseButtonEvent& mbe) {
+  switch (mbe.GetButton()) {
+    case MB_LEFT:
+      if (running) {
+        window->LeftClickWidget(false, mbe.GetXPos(), mbe.GetYPos());
+      }
+      break;
+    case MB_RIGHT:
+      if (running) {
+        window->RightClickWidget(false, mbe.GetXPos(), mbe.GetYPos());
+      }
+      break;
+    default:
+      break;
+  }
+}
+
 
 OptionsDialog::OptionsDialog(MediaToolkit *mtk)
-  : Dialog(mtk)
+: Dialog(mtk)
 {
 }
 
 OptionsDialog::~OptionsDialog()
 {
+}
+
+unsigned int
+OptionsDialog::Execute()
+{
+  try {
+    window = new DialogWindow(widgetRes);
+    media->GetVideo()->Clear();
+    window->FadeIn(palette, media);
+    running = true;
+    media->PollEventLoop();
+    running = false;
+    window->FadeOut(palette, media);
+    media->GetVideo()->Clear();
+    delete window;
+    window = 0;
+    return action;
+  } catch (Exception &e) {
+    e.Print("OptionsDialog::Execute");
+    throw;
+  }
+}
+
+void
+OptionsDialog::KeyPressed(const KeyboardEvent& kbe) {
+  switch (kbe.GetKey()) {
+    case KEY_ESCAPE:
+      action = ACT_ESCAPE;
+      media->TerminateEventLoop();
+      break;
+    case KEY_DOWN:
+    case KEY_TAB:
+      if (running) {
+        window->SelectNextWidget(media->GetVideo());
+      }
+      break;
+    case KEY_UP:
+      if (running) {
+        window->SelectPreviousWidget(media->GetVideo());
+      }
+      break;
+    case KEY_RETURN:
+    case KEY_SPACE:
+      if (running) {
+        window->LeftClickWidget(true);
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+void
+OptionsDialog::KeyReleased(const KeyboardEvent& kbe) {
+  switch (kbe.GetKey()) {
+    case KEY_RETURN:
+    case KEY_SPACE:
+      if (running) {
+        window->LeftClickWidget(false);
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+void
+OptionsDialog::MouseButtonPressed(const MouseButtonEvent& mbe) {
+  switch (mbe.GetButton()) {
+    case MB_LEFT:
+      if (running) {
+        window->LeftClickWidget(true, mbe.GetXPos(), mbe.GetYPos());
+      }
+      break;
+    case MB_RIGHT:
+      if (running) {
+        window->RightClickWidget(true, mbe.GetXPos(), mbe.GetYPos());
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+void
+OptionsDialog::MouseButtonReleased(const MouseButtonEvent& mbe) {
+  switch (mbe.GetButton()) {
+    case MB_LEFT:
+      if (running) {
+        window->LeftClickWidget(false, mbe.GetXPos(), mbe.GetYPos());
+      }
+      break;
+    case MB_RIGHT:
+      if (running) {
+        window->RightClickWidget(false, mbe.GetXPos(), mbe.GetYPos());
+      }
+      break;
+    default:
+      break;
+  }
 }

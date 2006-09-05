@@ -29,12 +29,12 @@
 #include "Party.h"
 
 class Dialog
-  : public KeyboardEventListener
-  , public MouseButtonEventListener
-  , public UpdateEventListener
+: public KeyboardEventListener
+, public MouseButtonEventListener
+, public UpdateEventListener
 , public ActionEventListener
 {
-  private:
+  protected:
     MediaToolkit *media;
     DialogWindow *window;
     PaletteResource *palette;
@@ -53,29 +53,39 @@ class Dialog
     void SetHeads(const std::string &name);
     void SetRequest(const std::string &name);
     void SetMembers(Party *party, const int special);
-    unsigned int Execute();
-    void KeyPressed(const KeyboardEvent& kbe);
-    void KeyReleased(const KeyboardEvent& kbe);
-    void MouseButtonPressed(const MouseButtonEvent& mbe);
-    void MouseButtonReleased(const MouseButtonEvent& mbe);
+    virtual unsigned int Execute() = 0;
+    virtual void KeyPressed(const KeyboardEvent& kbe) = 0;
+    virtual void KeyReleased(const KeyboardEvent& kbe) = 0;
+    virtual void MouseButtonPressed(const MouseButtonEvent& mbe) = 0;
+    virtual void MouseButtonReleased(const MouseButtonEvent& mbe) = 0;
     void Update(const UpdateEvent& ue);
     void ActionPerformed(const ActionEvent& ae);
 };
 
 class GameDialog
-  : public Dialog
+: public Dialog
 {
   public:
     GameDialog(MediaToolkit *mtk);
     ~GameDialog();
+    unsigned int Execute();
+    void KeyPressed(const KeyboardEvent& kbe);
+    void KeyReleased(const KeyboardEvent& kbe);
+    void MouseButtonPressed(const MouseButtonEvent& mbe);
+    void MouseButtonReleased(const MouseButtonEvent& mbe);
 };
 
 class OptionsDialog
-  : public Dialog
+: public Dialog
 {
   public:
     OptionsDialog(MediaToolkit *mtk);
     ~OptionsDialog();
+    unsigned int Execute();
+    void KeyPressed(const KeyboardEvent& kbe);
+    void KeyReleased(const KeyboardEvent& kbe);
+    void MouseButtonPressed(const MouseButtonEvent& mbe);
+    void MouseButtonReleased(const MouseButtonEvent& mbe);
 };
 
 #endif

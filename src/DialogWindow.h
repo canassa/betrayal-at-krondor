@@ -48,6 +48,7 @@ class DialogWindow {
     void LeftClickWidget(const bool toggle, const int x, const int y);
     void RightClickWidget(const bool toggle, const int x, const int y);
     void SelectNextWidget(Video *video);
+    void SelectPreviousWidget(Video *video);
 };
 
 #endif

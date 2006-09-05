@@ -45,7 +45,7 @@ GameStateCamp* GameStateCamp::instance = 0;
 
 GameStateCamp::GameStateCamp(GameApplication *app)
 {
-  dialog = new Dialog(app->GetMediaToolkit());
+  dialog = new GameDialog(app->GetMediaToolkit());
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("ENCAMP.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
@@ -99,13 +99,14 @@ GameStateCast* GameStateCast::instance = 0;
 
 GameStateCast::GameStateCast(GameApplication *app)
 {
-  dialog = new Dialog(app->GetMediaToolkit());
+  dialog = new GameDialog(app->GetMediaToolkit());
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("FRAME.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_CAST.DAT");
   dialog->SetHeads("HEADS.BMX");
   dialog->SetMembers(app->GetGame()->GetParty(), SPECIAL_TYPE1);
+  dialog->SetCompass("COMPASS.BMX", app->GetGame()->GetParty()->GetOrientation());
 }
 
 GameStateCast::~GameStateCast()
@@ -243,7 +244,7 @@ GameStateContents* GameStateContents::instance = 0;
 
 GameStateContents::GameStateContents(GameApplication *app)
 {
-  dialog = new Dialog(app->GetMediaToolkit());
+  dialog = new OptionsDialog(app->GetMediaToolkit());
   dialog->SetPalette("CONTENTS.PAL");
   dialog->SetScreen("CONT2.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
@@ -294,7 +295,7 @@ GameStateFullMap* GameStateFullMap::instance = 0;
 
 GameStateFullMap::GameStateFullMap(GameApplication *app)
 {
-  dialog = new Dialog(app->GetMediaToolkit());
+  dialog = new GameDialog(app->GetMediaToolkit());
   dialog->SetPalette("FULLMAP.PAL");
   dialog->SetScreen("FULLMAP.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
@@ -380,7 +381,7 @@ GameStateInventory* GameStateInventory::instance = 0;
 
 GameStateInventory::GameStateInventory(GameApplication *app)
 {
-  dialog = new Dialog(app->GetMediaToolkit());
+  dialog = new GameDialog(app->GetMediaToolkit());
   dialog->SetFont("GAME.FNT");
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("FRAME.SCX");
@@ -448,7 +449,7 @@ GameStateLoad* GameStateLoad::instance = 0;
 
 GameStateLoad::GameStateLoad(GameApplication *app)
 {
-  dialog = new Dialog(app->GetMediaToolkit());
+  dialog = new OptionsDialog(app->GetMediaToolkit());
   dialog->SetFont("GAME.FNT");
   dialog->SetLabel("LBL_LOAD.DAT");
   dialog->SetPalette("OPTIONS.PAL");
@@ -503,7 +504,7 @@ GameStateMap* GameStateMap::instance = 0;
 
 GameStateMap::GameStateMap(GameApplication *app)
 {
-  dialog = new Dialog(app->GetMediaToolkit());
+  dialog = new GameDialog(app->GetMediaToolkit());
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("FRAME.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
@@ -578,7 +579,7 @@ GameStateOptions* GameStateOptions::instance = 0;
 GameStateOptions::GameStateOptions(GameApplication *app)
 : firstTime(true)
 {
-  dialog = new Dialog(app->GetMediaToolkit());
+  dialog = new OptionsDialog(app->GetMediaToolkit());
   dialog->SetFont("GAME.FNT");
   dialog->SetPalette("OPTIONS.PAL");
 }
@@ -654,7 +655,7 @@ GameStatePreferences* GameStatePreferences::instance = 0;
 
 GameStatePreferences::GameStatePreferences(GameApplication *app)
 {
-  dialog = new Dialog(app->GetMediaToolkit());
+  dialog = new OptionsDialog(app->GetMediaToolkit());
   dialog->SetFont("GAME.FNT");
   dialog->SetLabel("LBL_PREF.DAT");
   dialog->SetPalette("OPTIONS.PAL");
@@ -711,7 +712,7 @@ GameStateSave* GameStateSave::instance = 0;
 
 GameStateSave::GameStateSave(GameApplication *app)
 {
-  dialog = new Dialog(app->GetMediaToolkit());
+  dialog = new OptionsDialog(app->GetMediaToolkit());
   dialog->SetFont("GAME.FNT");
   dialog->SetLabel("LBL_SAVE.DAT");
   dialog->SetPalette("OPTIONS.PAL");
@@ -770,7 +771,7 @@ GameStateWorld* GameStateWorld::instance = 0;
 
 GameStateWorld::GameStateWorld(GameApplication *app)
 {
-  dialog = new Dialog(app->GetMediaToolkit());
+  dialog = new GameDialog(app->GetMediaToolkit());
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("FRAME.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");

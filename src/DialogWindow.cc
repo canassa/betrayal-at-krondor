@@ -94,3 +94,9 @@ DialogWindow::SelectNextWidget(Video *video)
 {
   panel->NextWidget(video);
 }
+
+void
+DialogWindow::SelectPreviousWidget(Video *video)
+{
+  panel->PreviousWidget(video);
+}

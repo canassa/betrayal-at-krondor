@@ -95,6 +95,18 @@ ContainerWidget::NextWidget(Video *video)
 }
 
 void
+ContainerWidget::PreviousWidget(Video *video)
+{
+  if (activeWidgets.size() > 0) {
+    if (currentActiveWidget == activeWidgets.begin()) {
+      currentActiveWidget = activeWidgets.end();
+    }
+    currentActiveWidget--;
+    (*currentActiveWidget)->Focus(video);
+  }
+}
+
+void
 ContainerWidget::LeftClickWidget(const bool toggle)
 {
   if (activeWidgets.size() > 0) {
