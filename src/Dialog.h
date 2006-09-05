@@ -29,9 +29,9 @@
 #include "Party.h"
 
 class Dialog
-: public KeyboardEventListener
-, public MouseButtonEventListener
-, public UpdateEventListener
+  : public KeyboardEventListener
+  , public MouseButtonEventListener
+  , public UpdateEventListener
 , public ActionEventListener
 {
   private:
@@ -43,7 +43,7 @@ class Dialog
     bool running;
   public:
     Dialog(MediaToolkit *mtk);
-    ~Dialog();
+    virtual ~Dialog();
     void SetFont(const std::string &name);
     void SetLabel(const std::string &name);
     void SetPalette(const std::string &name);
@@ -60,6 +60,22 @@ class Dialog
     void MouseButtonReleased(const MouseButtonEvent& mbe);
     void Update(const UpdateEvent& ue);
     void ActionPerformed(const ActionEvent& ae);
+};
+
+class GameDialog
+  : public Dialog
+{
+  public:
+    GameDialog(MediaToolkit *mtk);
+    ~GameDialog();
+};
+
+class OptionsDialog
+  : public Dialog
+{
+  public:
+    OptionsDialog(MediaToolkit *mtk);
+    ~OptionsDialog();
 };
 
 #endif

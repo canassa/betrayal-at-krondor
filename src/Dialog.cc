@@ -331,3 +331,23 @@ Dialog::ActionPerformed(const ActionEvent& ae)
   action = ae.GetAction();
   media->TerminateEventLoop();
 }
+
+
+GameDialog::GameDialog(MediaToolkit *mtk)
+  : Dialog(mtk)
+{
+}
+
+GameDialog::~GameDialog()
+{
+}
+
+
+OptionsDialog::OptionsDialog(MediaToolkit *mtk)
+  : Dialog(mtk)
+{
+}
+
+OptionsDialog::~OptionsDialog()
+{
+}
