@@ -35,6 +35,8 @@ class GameState
   public:
     GameState();
     virtual ~GameState();
+    virtual void Enter();
+    virtual void Leave();
     virtual void Execute(GameApplication *app);
 };
 

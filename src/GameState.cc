@@ -36,6 +36,16 @@ GameState::ChangeState(GameApplication *app, GameState *state)
 }
 
 void
+GameState::Enter()
+{
+}
+
+void
+GameState::Leave()
+{
+}
+
+void
 GameState::Execute(GameApplication *app)
 {
   app = app;
@@ -157,6 +167,10 @@ GameStateCast::Execute(GameApplication *app)
     case CAST_MEMBER3:
       app->GetGame()->GetParty()->SelectMember(2);
       break;
+    case ACT_UP:
+    case ACT_DOWN:
+    case ACT_LEFT:
+    case ACT_RIGHT:
     case CAST_TRIANGLE:
     case CAST_SQUARE:
     case CAST_CAST:
@@ -436,8 +450,15 @@ GameStateInventory::Execute(GameApplication *app)
     case INV_MEMBER3:
       app->GetGame()->GetParty()->SelectMember(2);
       break;
+    case ACT_UP:
+    case ACT_DOWN:
+    case ACT_LEFT:
+    case ACT_RIGHT:
     case INV_UNKNOWN:
     case INV_MORE_INFO:
+    case INV_MEMBER1 + RIGHT_CLICK_OFFSET:
+    case INV_MEMBER2 + RIGHT_CLICK_OFFSET:
+    case INV_MEMBER3 + RIGHT_CLICK_OFFSET:
       break;
     default:
       throw UnexpectedValue(__FILE__, __LINE__, action);
@@ -554,9 +575,13 @@ GameStateMap::Execute(GameApplication *app)
     case MAP_FULLMAP:
       ChangeState(app, GameStateFullMap::GetInstance(app));
       break;
+    case ACT_UP:
     case MAP_UP:
+    case ACT_DOWN:
     case MAP_DOWN:
+    case ACT_LEFT:
     case MAP_LEFT:
+    case ACT_RIGHT:
     case MAP_RIGHT:
     case MAP_ZOOMIN:
     case MAP_ZOOMOUT:
@@ -837,9 +862,13 @@ GameStateWorld::Execute(GameApplication *app)
       app->GetGame()->GetParty()->SelectMember(2);
       ChangeState(app, GameStateInventory::GetInstance(app));
       break;
+    case ACT_UP:
     case MAIN_UP:
+    case ACT_DOWN:
     case MAIN_DOWN:
+    case ACT_LEFT:
     case MAIN_LEFT:
+    case ACT_RIGHT:
     case MAIN_RIGHT:
     case MAIN_BOOKMARK:
     case MAIN_UNKNOWN:

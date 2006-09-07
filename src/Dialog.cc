@@ -223,6 +223,54 @@ Dialog::SetMembers(Party *party, const int special)
 }
 
 void
+Dialog::Enter()
+{
+  try {
+    window = new DialogWindow(widgetRes);
+    media->GetVideo()->Clear();
+    window->FadeIn(palette, media);
+  } catch (Exception &e) {
+    e.Print("Dialog::Enter");
+    throw;
+  }
+}
+
+void
+Dialog::Leave()
+{
+  try {
+    window->FadeOut(palette, media);
+    media->GetVideo()->Clear();
+    delete window;
+    window = 0;
+  } catch (Exception &e) {
+    e.Print("Dialog::Leave");
+    throw;
+  }
+}
+
+unsigned int
+Dialog::Execute()
+{
+  try {
+    window = new DialogWindow(widgetRes);
+    media->GetVideo()->Clear();
+    window->FadeIn(palette, media);
+    running = true;
+    media->PollEventLoop();
+    running = false;
+    window->FadeOut(palette, media);
+    media->GetVideo()->Clear();
+    delete window;
+    window = 0;
+    return action;
+  } catch (Exception &e) {
+    e.Print("Dialog::Execute");
+    throw;
+  }
+}
+
+void
 Dialog::Update(const UpdateEvent& ue)
 {
   ue.GetTicks();
@@ -238,75 +286,9 @@ Dialog::ActionPerformed(const ActionEvent& ae)
   media->TerminateEventLoop();
 }
 
-
-GameDialog::GameDialog(MediaToolkit *mtk)
-: Dialog(mtk)
-{
-}
-
-GameDialog::~GameDialog()
-{
-}
-
-unsigned int
-GameDialog::Execute()
-{
-  try {
-    window = new DialogWindow(widgetRes);
-    media->GetVideo()->Clear();
-    window->FadeIn(palette, media);
-    running = true;
-    media->PollEventLoop();
-    running = false;
-    window->FadeOut(palette, media);
-    media->GetVideo()->Clear();
-    delete window;
-    window = 0;
-    return action;
-  } catch (Exception &e) {
-    e.Print("GameDialog::Execute");
-    throw;
-  }
-}
-
 void
-GameDialog::KeyPressed(const KeyboardEvent& kbe) {
-  switch (kbe.GetKey()) {
-    case KEY_ESCAPE:
-      action = ACT_ESCAPE;
-      media->TerminateEventLoop();
-      break;
-    case KEY_DOWN:
-      break;
-    case KEY_UP:
-      break;
-    case KEY_RETURN:
-    case KEY_SPACE:
-      if (running) {
-        window->LeftClickWidget(true);
-      }
-      break;
-    default:
-      break;
-  }
-}
-
-void
-GameDialog::KeyReleased(const KeyboardEvent& kbe) {
-  switch (kbe.GetKey()) {
-    case KEY_RETURN:
-    case KEY_SPACE:
-      if (running) {
-        window->LeftClickWidget(false);
-      }
-      break;
-    default:
-      break;
-  }
-}
-
-void
-GameDialog::MouseButtonPressed(const MouseButtonEvent& mbe) {
+Dialog::MouseButtonPressed(const MouseButtonEvent& mbe)
+{
   switch (mbe.GetButton()) {
     case MB_LEFT:
       if (running) {
@@ -324,7 +306,8 @@ GameDialog::MouseButtonPressed(const MouseButtonEvent& mbe) {
 }
 
 void
-GameDialog::MouseButtonReleased(const MouseButtonEvent& mbe) {
+Dialog::MouseButtonReleased(const MouseButtonEvent& mbe)
+{
   switch (mbe.GetButton()) {
     case MB_LEFT:
       if (running) {
@@ -342,6 +325,54 @@ GameDialog::MouseButtonReleased(const MouseButtonEvent& mbe) {
 }
 
 
+GameDialog::GameDialog(MediaToolkit *mtk)
+: Dialog(mtk)
+{
+}
+
+GameDialog::~GameDialog()
+{
+}
+
+void
+GameDialog::KeyPressed(const KeyboardEvent& kbe)
+{
+  switch (kbe.GetKey()) {
+    case KEY_ESCAPE:
+      action = ACT_ESCAPE;
+      media->TerminateEventLoop();
+      break;
+    case KEY_UP:
+      action = ACT_UP;
+      media->TerminateEventLoop();
+      break;
+    case KEY_DOWN:
+      action = ACT_DOWN;
+      media->TerminateEventLoop();
+      break;
+    case KEY_LEFT:
+      action = ACT_LEFT;
+      media->TerminateEventLoop();
+      break;
+    case KEY_RIGHT:
+      action = ACT_RIGHT;
+      media->TerminateEventLoop();
+      break;
+    default:
+      break;
+  }
+}
+
+void
+GameDialog::KeyReleased(const KeyboardEvent& kbe)
+{
+  switch (kbe.GetKey()) {
+    default:
+      break;
+  }
+}
+
+
 OptionsDialog::OptionsDialog(MediaToolkit *mtk)
 : Dialog(mtk)
 {
@@ -351,29 +382,9 @@ OptionsDialog::~OptionsDialog()
 {
 }
 
-unsigned int
-OptionsDialog::Execute()
-{
-  try {
-    window = new DialogWindow(widgetRes);
-    media->GetVideo()->Clear();
-    window->FadeIn(palette, media);
-    running = true;
-    media->PollEventLoop();
-    running = false;
-    window->FadeOut(palette, media);
-    media->GetVideo()->Clear();
-    delete window;
-    window = 0;
-    return action;
-  } catch (Exception &e) {
-    e.Print("OptionsDialog::Execute");
-    throw;
-  }
-}
-
 void
-OptionsDialog::KeyPressed(const KeyboardEvent& kbe) {
+OptionsDialog::KeyPressed(const KeyboardEvent& kbe)
+{
   switch (kbe.GetKey()) {
     case KEY_ESCAPE:
       action = ACT_ESCAPE;
@@ -402,48 +413,13 @@ OptionsDialog::KeyPressed(const KeyboardEvent& kbe) {
 }
 
 void
-OptionsDialog::KeyReleased(const KeyboardEvent& kbe) {
+OptionsDialog::KeyReleased(const KeyboardEvent& kbe)
+{
   switch (kbe.GetKey()) {
     case KEY_RETURN:
     case KEY_SPACE:
       if (running) {
         window->LeftClickWidget(false);
-      }
-      break;
-    default:
-      break;
-  }
-}
-
-void
-OptionsDialog::MouseButtonPressed(const MouseButtonEvent& mbe) {
-  switch (mbe.GetButton()) {
-    case MB_LEFT:
-      if (running) {
-        window->LeftClickWidget(true, mbe.GetXPos(), mbe.GetYPos());
-      }
-      break;
-    case MB_RIGHT:
-      if (running) {
-        window->RightClickWidget(true, mbe.GetXPos(), mbe.GetYPos());
-      }
-      break;
-    default:
-      break;
-  }
-}
-
-void
-OptionsDialog::MouseButtonReleased(const MouseButtonEvent& mbe) {
-  switch (mbe.GetButton()) {
-    case MB_LEFT:
-      if (running) {
-        window->LeftClickWidget(false, mbe.GetXPos(), mbe.GetYPos());
-      }
-      break;
-    case MB_RIGHT:
-      if (running) {
-        window->RightClickWidget(false, mbe.GetXPos(), mbe.GetYPos());
       }
       break;
     default:
