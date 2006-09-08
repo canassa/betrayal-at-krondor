@@ -1,5 +1,11 @@
+2006-09-xx, xbak-0.0.11:
+* Added the compass.
+* Dialogs are now more flexible.
+* Plugged a memory leak.
+* Several bug fixes.
+
 2006-08-20, xbak-0.0.10:
-* Fixed crash on starting a new game
+* Fixed crash on starting a new game.
 * Fixed a few portability issues.
 
 2006-08-06, xbak-0.0.9:

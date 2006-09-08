@@ -52,6 +52,8 @@ class GameStateCamp
     ~GameStateCamp();
     static GameStateCamp* GetInstance(GameApplication *app);
     static void CleanUp();
+    void Enter();
+    void Leave();
     void Execute(GameApplication *app);
 };
 
@@ -67,6 +69,8 @@ class GameStateCast
     ~GameStateCast();
     static GameStateCast* GetInstance(GameApplication *app);
     static void CleanUp();
+    void Enter();
+    void Leave();
     void Execute(GameApplication *app);
 };
 
@@ -110,6 +114,8 @@ class GameStateContents
     ~GameStateContents();
     static GameStateContents* GetInstance(GameApplication *app);
     static void CleanUp();
+    void Enter();
+    void Leave();
     void Execute(GameApplication *app);
 };
 
@@ -125,6 +131,8 @@ class GameStateFullMap
     ~GameStateFullMap();
     static GameStateFullMap* GetInstance(GameApplication *app);
     static void CleanUp();
+    void Enter();
+    void Leave();
     void Execute(GameApplication *app);
 };
 
@@ -154,6 +162,8 @@ class GameStateInventory
     ~GameStateInventory();
     static GameStateInventory* GetInstance(GameApplication *app);
     static void CleanUp();
+    void Enter();
+    void Leave();
     void Execute(GameApplication *app);
 };
 
@@ -169,6 +179,8 @@ class GameStateLoad
     ~GameStateLoad();
     static GameStateLoad* GetInstance(GameApplication *app);
     static void CleanUp();
+    void Enter();
+    void Leave();
     void Execute(GameApplication *app);
 };
 
@@ -184,6 +196,8 @@ class GameStateMap
     ~GameStateMap();
     static GameStateMap* GetInstance(GameApplication *app);
     static void CleanUp();
+    void Enter();
+    void Leave();
     void Execute(GameApplication *app);
 };
 
@@ -200,6 +214,8 @@ class GameStateOptions
     ~GameStateOptions();
     static GameStateOptions* GetInstance(GameApplication *app);
     static void CleanUp();
+    void Enter();
+    void Leave();
     void Execute(GameApplication *app);
 };
 
@@ -215,6 +231,8 @@ class GameStatePreferences
     ~GameStatePreferences();
     static GameStatePreferences* GetInstance(GameApplication *app);
     static void CleanUp();
+    void Enter();
+    void Leave();
     void Execute(GameApplication *app);
 };
 
@@ -230,6 +248,8 @@ class GameStateSave
     ~GameStateSave();
     static GameStateSave* GetInstance(GameApplication *app);
     static void CleanUp();
+    void Enter();
+    void Leave();
     void Execute(GameApplication *app);
 };
 
@@ -245,6 +265,8 @@ class GameStateWorld
     ~GameStateWorld();
     static GameStateWorld* GetInstance(GameApplication *app);
     static void CleanUp();
+    void Enter();
+    void Leave();
     void Execute(GameApplication *app);
 };
 

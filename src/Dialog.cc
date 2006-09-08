@@ -253,16 +253,9 @@ unsigned int
 Dialog::Execute()
 {
   try {
-    window = new DialogWindow(widgetRes);
-    media->GetVideo()->Clear();
-    window->FadeIn(palette, media);
     running = true;
     media->PollEventLoop();
     running = false;
-    window->FadeOut(palette, media);
-    media->GetVideo()->Clear();
-    delete window;
-    window = 0;
     return action;
   } catch (Exception &e) {
     e.Print("Dialog::Execute");

@@ -88,6 +88,18 @@ GameStateCamp::CleanUp()
 }
 
 void
+GameStateCamp::Enter()
+{
+  dialog->Enter();
+}
+
+void
+GameStateCamp::Leave()
+{
+  dialog->Leave();
+}
+
+void
 GameStateCamp::Execute(GameApplication *app)
 {
   unsigned int action = dialog->Execute();
@@ -142,6 +154,18 @@ GameStateCast::CleanUp()
     delete instance;
     instance = 0;
   }
+}
+
+void
+GameStateCast::Enter()
+{
+  dialog->Enter();
+}
+
+void
+GameStateCast::Leave()
+{
+  dialog->Leave();
 }
 
 void
@@ -291,6 +315,18 @@ GameStateContents::CleanUp()
 }
 
 void
+GameStateContents::Enter()
+{
+  dialog->Enter();
+}
+
+void
+GameStateContents::Leave()
+{
+  dialog->Leave();
+}
+
+void
 GameStateContents::Execute(GameApplication *app)
 {
   unsigned int action = dialog->Execute();
@@ -339,6 +375,18 @@ GameStateFullMap::CleanUp()
     delete instance;
     instance = 0;
   }
+}
+
+void
+GameStateFullMap::Enter()
+{
+  dialog->Enter();
+}
+
+void
+GameStateFullMap::Leave()
+{
+  dialog->Leave();
 }
 
 void
@@ -432,6 +480,18 @@ GameStateInventory::CleanUp()
 }
 
 void
+GameStateInventory::Enter()
+{
+  dialog->Enter();
+}
+
+void
+GameStateInventory::Leave()
+{
+  dialog->Leave();
+}
+
+void
 GameStateInventory::Execute(GameApplication *app)
 {
   unsigned int action = dialog->Execute();
@@ -504,6 +564,18 @@ GameStateLoad::CleanUp()
 }
 
 void
+GameStateLoad::Enter()
+{
+  dialog->Enter();
+}
+
+void
+GameStateLoad::Leave()
+{
+  dialog->Leave();
+}
+
+void
 GameStateLoad::Execute(GameApplication *app)
 {
   unsigned int action = dialog->Execute();
@@ -558,6 +630,18 @@ GameStateMap::CleanUp()
     delete instance;
     instance = 0;
   }
+}
+
+void
+GameStateMap::Enter()
+{
+  dialog->Enter();
+}
+
+void
+GameStateMap::Leave()
+{
+  dialog->Leave();
 }
 
 void
@@ -635,7 +719,7 @@ GameStateOptions::CleanUp()
 }
 
 void
-GameStateOptions::Execute(GameApplication *app)
+GameStateOptions::Enter()
 {
   if (firstTime) {
     dialog->SetScreen("OPTIONS0.SCX");
@@ -644,6 +728,18 @@ GameStateOptions::Execute(GameApplication *app)
     dialog->SetScreen("OPTIONS1.SCX");
     dialog->SetRequest("REQ_OPT1.DAT");
   }
+  dialog->Enter();
+}
+
+void
+GameStateOptions::Leave()
+{
+  dialog->Leave();
+}
+
+void
+GameStateOptions::Execute(GameApplication *app)
+{
   unsigned int action = dialog->Execute();
   switch (action) {
     case ACT_ESCAPE:
@@ -714,6 +810,18 @@ GameStatePreferences::CleanUp()
 }
 
 void
+GameStatePreferences::Enter()
+{
+  dialog->Enter();
+}
+
+void
+GameStatePreferences::Leave()
+{
+  dialog->Leave();
+}
+
+void
 GameStatePreferences::Execute(GameApplication *app)
 {
   unsigned int action = dialog->Execute();
@@ -768,6 +876,18 @@ GameStateSave::CleanUp()
     delete instance;
     instance = 0;
   }
+}
+
+void
+GameStateSave::Enter()
+{
+  dialog->Enter();
+}
+
+void
+GameStateSave::Leave()
+{
+  dialog->Leave();
 }
 
 void
@@ -829,6 +949,18 @@ GameStateWorld::CleanUp()
     delete instance;
     instance = 0;
   }
+}
+
+void
+GameStateWorld::Enter()
+{
+  dialog->Enter();
+}
+
+void
+GameStateWorld::Leave()
+{
+  dialog->Leave();
 }
 
 void

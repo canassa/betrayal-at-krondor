@@ -184,19 +184,18 @@ void
 GameApplication::Run()
 {
   try {
+    state->Enter();
+    GameState *savedState = state;
     done = false;
     while (!done) {
-      if (state != prevState) {
-        if (prevState) {
-          prevState->Leave();
-        }
+      if (state != savedState) {
+        savedState->Leave();
         state->Enter();
+        savedState = state;
       }
       state->Execute(this);
     }
-    if (prevState) {
-      prevState->Leave();
-    }
+    savedState->Leave();
   } catch (Exception &e) {
     e.Print("GameApplication::Run");
   }
