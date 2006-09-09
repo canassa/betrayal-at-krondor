@@ -29,6 +29,10 @@
 #include "Orientation.h"
 #include "PlayerCharacter.h"
 
+static const int TURN_SIZE  = 2;
+static const int TURN_LEFT  = -1 * TURN_SIZE;
+static const int TURN_RIGHT = +1 * TURN_SIZE;
+
 class Party {
   private:
     std::vector<PlayerCharacter *> members;

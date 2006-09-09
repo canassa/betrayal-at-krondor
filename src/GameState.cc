@@ -994,14 +994,18 @@ GameStateWorld::Execute(GameApplication *app)
       app->GetGame()->GetParty()->SelectMember(2);
       ChangeState(app, GameStateInventory::GetInstance(app));
       break;
+    case ACT_LEFT:
+    case MAIN_LEFT:
+      app->GetGame()->GetParty()->Turn(TURN_LEFT);
+      break;
+    case ACT_RIGHT:
+    case MAIN_RIGHT:
+      app->GetGame()->GetParty()->Turn(TURN_RIGHT);
+      break;
     case ACT_UP:
     case MAIN_UP:
     case ACT_DOWN:
     case MAIN_DOWN:
-    case ACT_LEFT:
-    case MAIN_LEFT:
-    case ACT_RIGHT:
-    case MAIN_RIGHT:
     case MAIN_BOOKMARK:
     case MAIN_UNKNOWN:
     case MAIN_MEMBER1 + RIGHT_CLICK_OFFSET:

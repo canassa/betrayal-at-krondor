@@ -48,7 +48,7 @@ SDL_Video::CreateScreen(const int w, const int h)
   SDL_ShowCursor(SDL_DISABLE);
   SDL_WarpMouse(0, 0);
   SDL_WM_SetCaption("xBaK", 0);
-  if (SDL_EnableKeyRepeat(0, 0) < 0) {
+  if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL) < 0) {
     throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
   }
   int width = w * scaling;
