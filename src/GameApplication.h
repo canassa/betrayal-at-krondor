@@ -24,7 +24,6 @@
 #include "config.h"
 #endif
 
-#include "Chapter.h"
 #include "EventListener.h"
 #include "Game.h"
 #include "GameState.h"
@@ -42,7 +41,6 @@ class GameApplication
     Game *game;
     GameState *state;
     GameState *prevState;
-    Chapter chapter;
     int screenSaveCount;
     static GameApplication *instance;
     void SetState(GameState *st);

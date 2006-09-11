@@ -24,22 +24,16 @@
 #include "Chapter.h"
 #include "Exception.h"
 #include "FileManager.h"
+#include "GameApplication.h"
 #include "MoviePlayer.h"
 
-Chapter::Chapter(MediaToolkit *mtk)
-: media(mtk)
-, number(0)
+Chapter::Chapter(const int n)
+: number(n)
 {
 }
 
 Chapter::~Chapter()
 {
-}
-
-void
-Chapter::SetCurrent(const int n)
-{
-  number = n;
 }
 
 void
@@ -52,7 +46,7 @@ Chapter::PlayIntro()
     FileManager::GetInstance()->Load(&anim, filenameStream.str());
     MovieResource ttm;
     FileManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
-    MoviePlayer moviePlayer(media);
+    MoviePlayer moviePlayer(GameApplication::GetInstance()->GetMediaToolkit());
     moviePlayer.Play(&ttm.GetMovieTags(), false);
   } catch (Exception &e) {
     e.Print("Chapter::PlayIntro");
@@ -65,14 +59,14 @@ Chapter::PlayScene(const int scene)
   try {
     ScreenResource scr;
     FileManager::GetInstance()->Load(&scr, "CFRAME.SCX");
-    scr.GetImage()->Draw(media->GetVideo(), 0, 0);
+    scr.GetImage()->Draw(GameApplication::GetInstance()->GetMediaToolkit()->GetVideo(), 0, 0);
     AnimationResource anim;
     std::stringstream filenameStream;
     filenameStream << "C" << number << scene << ".ADS";
     FileManager::GetInstance()->Load(&anim, filenameStream.str());
     MovieResource ttm;
     FileManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
-    MoviePlayer moviePlayer(media);
+    MoviePlayer moviePlayer(GameApplication::GetInstance()->GetMediaToolkit());
     moviePlayer.Play(&ttm.GetMovieTags(), false);
   } catch (Exception &e) {
     e.Print("Chapter::PlayIntro");
@@ -87,10 +81,10 @@ Chapter::ReadBook(const int scene)
     std::stringstream filenameStream;
     filenameStream << "C" << number << scene << ".BOK";
     FileManager::GetInstance()->Load(&bok, filenameStream.str());
-    media->AddKeyboardListener(this);
-    media->AddTimerListener(this);
-    media->RemoveTimerListener(this);
-    media->RemoveKeyboardListener(this);
+    GameApplication::GetInstance()->GetMediaToolkit()->AddKeyboardListener(this);
+    GameApplication::GetInstance()->GetMediaToolkit()->AddTimerListener(this);
+    GameApplication::GetInstance()->GetMediaToolkit()->RemoveTimerListener(this);
+    GameApplication::GetInstance()->GetMediaToolkit()->RemoveKeyboardListener(this);
   } catch (Exception &e) {
     e.Print("Chapter::ReadBook");
   }
@@ -102,19 +96,19 @@ Chapter::ShowMap()
   try {
     ScreenResource scr;
     FileManager::GetInstance()->Load(&scr, "FULLMAP.SCX");
-    scr.GetImage()->Draw(media->GetVideo(), 0, 0);
+    scr.GetImage()->Draw(GameApplication::GetInstance()->GetMediaToolkit()->GetVideo(), 0, 0);
     PaletteResource pal;
     FileManager::GetInstance()->Load(&pal, "FULLMAP.PAL");
-    media->AddKeyboardListener(this);
-    media->AddMouseButtonListener(this);
-    media->AddTimerListener(this);
-    pal.FadeIn(media, 0, VIDEO_COLORS, 64, 5);
-    media->GetClock()->StartTimer(TMR_CHAPTER, 4000);
-    media->WaitEventLoop();
-    pal.FadeOut(media, 0, VIDEO_COLORS, 64, 5);
-    media->RemoveTimerListener(this);
-    media->RemoveMouseButtonListener(this);
-    media->RemoveKeyboardListener(this);
+    GameApplication::GetInstance()->GetMediaToolkit()->AddKeyboardListener(this);
+    GameApplication::GetInstance()->GetMediaToolkit()->AddMouseButtonListener(this);
+    GameApplication::GetInstance()->GetMediaToolkit()->AddTimerListener(this);
+    pal.FadeIn(GameApplication::GetInstance()->GetMediaToolkit(), 0, VIDEO_COLORS, 64, 5);
+    GameApplication::GetInstance()->GetMediaToolkit()->GetClock()->StartTimer(TMR_CHAPTER, 4000);
+    GameApplication::GetInstance()->GetMediaToolkit()->WaitEventLoop();
+    pal.FadeOut(GameApplication::GetInstance()->GetMediaToolkit(), 0, VIDEO_COLORS, 64, 5);
+    GameApplication::GetInstance()->GetMediaToolkit()->RemoveTimerListener(this);
+    GameApplication::GetInstance()->GetMediaToolkit()->RemoveMouseButtonListener(this);
+    GameApplication::GetInstance()->GetMediaToolkit()->RemoveKeyboardListener(this);
   } catch (Exception &e) {
     e.Print("Chapter::ShowMap");
   }
@@ -127,7 +121,7 @@ Chapter::KeyPressed(const KeyboardEvent &kbe)
     case KEY_ESCAPE:
     case KEY_RETURN:
     case KEY_SPACE:
-      media->TerminateEventLoop();
+      GameApplication::GetInstance()->GetMediaToolkit()->TerminateEventLoop();
       break;
     default:
       break;
@@ -148,7 +142,7 @@ Chapter::MouseButtonPressed(const MouseButtonEvent &mbe)
 {
   switch (mbe.GetButton()) {
     case MB_LEFT:
-      media->TerminateEventLoop();
+      GameApplication::GetInstance()->GetMediaToolkit()->TerminateEventLoop();
       break;
     default:
       break;
@@ -168,6 +162,6 @@ void
 Chapter::TimerExpired(const TimerEvent &te)
 {
   if (te.GetID() == TMR_CHAPTER) {
-    media->TerminateEventLoop();
+    GameApplication::GetInstance()->GetMediaToolkit()->TerminateEventLoop();
   }
 }

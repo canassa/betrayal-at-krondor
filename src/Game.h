@@ -24,6 +24,7 @@
 #include "config.h"
 #endif
 
+#include "Chapter.h"
 #include "ImageResource.h"
 #include "Party.h"
 #include "PartyResource.h"
@@ -31,6 +32,7 @@
 class Game {
   private:
     std::string name;
+    Chapter *chapter;
     Party *party;
     PartyResource partyRes;
     ImageResource heads;
@@ -39,6 +41,7 @@ class Game {
     ~Game();
     std::string& GetName();
     Party* GetParty();
+    Chapter* GetChapter();
     void Load(FileBuffer *buffer);
 };
 

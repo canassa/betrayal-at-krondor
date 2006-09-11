@@ -30,9 +30,9 @@ GameState::~GameState()
 }
 
 void
-GameState::ChangeState(GameApplication *app, GameState *state)
+GameState::ChangeState(GameState *state)
 {
-  app->SetState(state);
+  GameApplication::GetInstance()->SetState(state);
 }
 
 void
@@ -46,16 +46,15 @@ GameState::Leave()
 }
 
 void
-GameState::Execute(GameApplication *app)
+GameState::Execute()
 {
-  app = app;
 }
 
 GameStateCamp* GameStateCamp::instance = 0;
 
-GameStateCamp::GameStateCamp(GameApplication *app)
+GameStateCamp::GameStateCamp()
 {
-  dialog = new GameDialog(app->GetMediaToolkit());
+  dialog = new GameDialog(GameApplication::GetInstance()->GetMediaToolkit());
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("ENCAMP.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
@@ -70,10 +69,10 @@ GameStateCamp::~GameStateCamp()
 }
 
 GameStateCamp*
-GameStateCamp::GetInstance(GameApplication *app)
+GameStateCamp::GetInstance()
 {
   if (!instance) {
-    instance = new GameStateCamp(app);
+    instance = new GameStateCamp();
   }
   return instance;
 }
@@ -100,13 +99,13 @@ GameStateCamp::Leave()
 }
 
 void
-GameStateCamp::Execute(GameApplication *app)
+GameStateCamp::Execute()
 {
   unsigned int action = dialog->Execute();
   switch (action) {
     case ACT_ESCAPE:
     case CAMP_EXIT:
-      ChangeState(app, app->GetPrevState());
+      ChangeState(GameApplication::GetInstance()->GetPrevState());
       break;
     case CAMP_UNTIL_HEALED:
     case CAMP_STOP:
@@ -119,16 +118,16 @@ GameStateCamp::Execute(GameApplication *app)
 
 GameStateCast* GameStateCast::instance = 0;
 
-GameStateCast::GameStateCast(GameApplication *app)
+GameStateCast::GameStateCast()
 {
-  dialog = new GameDialog(app->GetMediaToolkit());
+  dialog = new GameDialog(GameApplication::GetInstance()->GetMediaToolkit());
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("FRAME.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_CAST.DAT");
   dialog->SetHeads("HEADS.BMX");
-  dialog->SetMembers(app->GetGame()->GetParty(), SPECIAL_TYPE1);
-  dialog->SetCompass("COMPASS.BMX", app->GetGame()->GetParty()->GetOrientation());
+  dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), SPECIAL_TYPE1);
+  dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetParty()->GetOrientation());
 }
 
 GameStateCast::~GameStateCast()
@@ -139,10 +138,10 @@ GameStateCast::~GameStateCast()
 }
 
 GameStateCast*
-GameStateCast::GetInstance(GameApplication *app)
+GameStateCast::GetInstance()
 {
   if (!instance) {
-    instance = new GameStateCast(app);
+    instance = new GameStateCast();
   }
   return instance;
 }
@@ -169,27 +168,27 @@ GameStateCast::Leave()
 }
 
 void
-GameStateCast::Execute(GameApplication *app)
+GameStateCast::Execute()
 {
   unsigned int action = dialog->Execute();
   switch (action) {
     case ACT_ESCAPE:
     case CAST_EXIT:
-      app->GetGame()->GetParty()->SelectMember(-1);
-      ChangeState(app, GameStateWorld::GetInstance(app));
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(-1);
+      ChangeState(GameStateWorld::GetInstance());
       break;
     case CAST_CAMP1:
     case CAST_CAMP2:
-      ChangeState(app, GameStateCamp::GetInstance(app));
+      ChangeState(GameStateCamp::GetInstance());
       break;
     case CAST_MEMBER1:
-      app->GetGame()->GetParty()->SelectMember(0);
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(0);
       break;
     case CAST_MEMBER2:
-      app->GetGame()->GetParty()->SelectMember(1);
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(1);
       break;
     case CAST_MEMBER3:
-      app->GetGame()->GetParty()->SelectMember(2);
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(2);
       break;
     case ACT_UP:
     case ACT_DOWN:
@@ -238,10 +237,10 @@ GameStateChapter::CleanUp()
 }
 
 void
-GameStateChapter::Execute(GameApplication *app)
+GameStateChapter::Execute()
 {
-  app->StartChapter();
-  ChangeState(app, GameStateWorld::GetInstance(app));
+  GameApplication::GetInstance()->StartChapter();
+  ChangeState(GameStateWorld::GetInstance());
 }
 
 GameStateCombat* GameStateCombat::instance = 0;
@@ -273,16 +272,16 @@ GameStateCombat::CleanUp()
 }
 
 void
-GameStateCombat::Execute(GameApplication *app)
+GameStateCombat::Execute()
 {
-  ChangeState(app, GameStateWorld::GetInstance(app));
+  ChangeState(GameStateWorld::GetInstance());
 }
 
 GameStateContents* GameStateContents::instance = 0;
 
-GameStateContents::GameStateContents(GameApplication *app)
+GameStateContents::GameStateContents()
 {
-  dialog = new OptionsDialog(app->GetMediaToolkit());
+  dialog = new OptionsDialog(GameApplication::GetInstance()->GetMediaToolkit());
   dialog->SetPalette("CONTENTS.PAL");
   dialog->SetScreen("CONT2.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
@@ -297,10 +296,10 @@ GameStateContents::~GameStateContents()
 }
 
 GameStateContents*
-GameStateContents::GetInstance(GameApplication *app)
+GameStateContents::GetInstance()
 {
   if (!instance) {
-    instance = new GameStateContents(app);
+    instance = new GameStateContents();
   }
   return instance;
 }
@@ -327,13 +326,13 @@ GameStateContents::Leave()
 }
 
 void
-GameStateContents::Execute(GameApplication *app)
+GameStateContents::Execute()
 {
   unsigned int action = dialog->Execute();
   switch (action) {
     case ACT_ESCAPE:
     case CONT_EXIT:
-      ChangeState(app, app->GetPrevState());
+      ChangeState(GameApplication::GetInstance()->GetPrevState());
       break;
     default:
       throw UnexpectedValue(__FILE__, __LINE__, action);
@@ -343,9 +342,9 @@ GameStateContents::Execute(GameApplication *app)
 
 GameStateFullMap* GameStateFullMap::instance = 0;
 
-GameStateFullMap::GameStateFullMap(GameApplication *app)
+GameStateFullMap::GameStateFullMap()
 {
-  dialog = new GameDialog(app->GetMediaToolkit());
+  dialog = new GameDialog(GameApplication::GetInstance()->GetMediaToolkit());
   dialog->SetPalette("FULLMAP.PAL");
   dialog->SetScreen("FULLMAP.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
@@ -360,10 +359,10 @@ GameStateFullMap::~GameStateFullMap()
 }
 
 GameStateFullMap*
-GameStateFullMap::GetInstance(GameApplication *app)
+GameStateFullMap::GetInstance()
 {
   if (!instance) {
-    instance = new GameStateFullMap(app);
+    instance = new GameStateFullMap();
   }
   return instance;
 }
@@ -390,13 +389,13 @@ GameStateFullMap::Leave()
 }
 
 void
-GameStateFullMap::Execute(GameApplication *app)
+GameStateFullMap::Execute()
 {
   unsigned int action = dialog->Execute();
   switch (action) {
     case ACT_ESCAPE:
     case FMAP_EXIT:
-      ChangeState(app, GameStateMap::GetInstance(app));
+      ChangeState(GameStateMap::GetInstance());
       break;
     default:
       throw UnexpectedValue(__FILE__, __LINE__, action);
@@ -433,25 +432,25 @@ GameStateIntro::CleanUp()
 }
 
 void
-GameStateIntro::Execute(GameApplication *app)
+GameStateIntro::Execute()
 {
-  app->PlayIntro();
-  ChangeState(app, GameStateOptions::GetInstance(app));
+  GameApplication::GetInstance()->PlayIntro();
+  ChangeState(GameStateOptions::GetInstance());
 }
 
 GameStateInventory* GameStateInventory::instance = 0;
 
-GameStateInventory::GameStateInventory(GameApplication *app)
+GameStateInventory::GameStateInventory()
 {
-  dialog = new GameDialog(app->GetMediaToolkit());
+  dialog = new GameDialog(GameApplication::GetInstance()->GetMediaToolkit());
   dialog->SetFont("GAME.FNT");
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("FRAME.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_INV.DAT");
   dialog->SetHeads("HEADS.BMX");
-  dialog->SetMembers(app->GetGame()->GetParty(), SPECIAL_TYPE2);
-  dialog->SetCompass("COMPASS.BMX", app->GetGame()->GetParty()->GetOrientation());
+  dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), SPECIAL_TYPE2);
+  dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetParty()->GetOrientation());
 }
 
 GameStateInventory::~GameStateInventory()
@@ -462,10 +461,10 @@ GameStateInventory::~GameStateInventory()
 }
 
 GameStateInventory*
-GameStateInventory::GetInstance(GameApplication *app)
+GameStateInventory::GetInstance()
 {
   if (!instance) {
-    instance = new GameStateInventory(app);
+    instance = new GameStateInventory();
   }
   return instance;
 }
@@ -492,23 +491,23 @@ GameStateInventory::Leave()
 }
 
 void
-GameStateInventory::Execute(GameApplication *app)
+GameStateInventory::Execute()
 {
   unsigned int action = dialog->Execute();
   switch (action) {
     case ACT_ESCAPE:
     case INV_EXIT:
-      app->GetGame()->GetParty()->SelectMember(-1);
-      ChangeState(app, app->GetPrevState());
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(-1);
+      ChangeState(GameApplication::GetInstance()->GetPrevState());
       break;
     case INV_MEMBER1:
-      app->GetGame()->GetParty()->SelectMember(0);
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(0);
       break;
     case INV_MEMBER2:
-      app->GetGame()->GetParty()->SelectMember(1);
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(1);
       break;
     case INV_MEMBER3:
-      app->GetGame()->GetParty()->SelectMember(2);
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(2);
       break;
     case ACT_UP:
     case ACT_DOWN:
@@ -528,9 +527,9 @@ GameStateInventory::Execute(GameApplication *app)
 
 GameStateLoad* GameStateLoad::instance = 0;
 
-GameStateLoad::GameStateLoad(GameApplication *app)
+GameStateLoad::GameStateLoad()
 {
-  dialog = new OptionsDialog(app->GetMediaToolkit());
+  dialog = new OptionsDialog(GameApplication::GetInstance()->GetMediaToolkit());
   dialog->SetFont("GAME.FNT");
   dialog->SetLabel("LBL_LOAD.DAT");
   dialog->SetPalette("OPTIONS.PAL");
@@ -546,10 +545,10 @@ GameStateLoad::~GameStateLoad()
 }
 
 GameStateLoad*
-GameStateLoad::GetInstance(GameApplication *app)
+GameStateLoad::GetInstance()
 {
   if (!instance) {
-    instance = new GameStateLoad(app);
+    instance = new GameStateLoad();
   }
   return instance;
 }
@@ -576,16 +575,16 @@ GameStateLoad::Leave()
 }
 
 void
-GameStateLoad::Execute(GameApplication *app)
+GameStateLoad::Execute()
 {
   unsigned int action = dialog->Execute();
   switch (action) {
     case ACT_ESCAPE:
     case LOAD_CANCEL:
-      ChangeState(app, app->GetPrevState());
+      ChangeState(GameApplication::GetInstance()->GetPrevState());
       break;
     case LOAD_RESTORE:
-      ChangeState(app, app->GetPrevState());
+      ChangeState(GameApplication::GetInstance()->GetPrevState());
       break;
     default:
       throw UnexpectedValue(__FILE__, __LINE__, action);
@@ -595,16 +594,16 @@ GameStateLoad::Execute(GameApplication *app)
 
 GameStateMap* GameStateMap::instance = 0;
 
-GameStateMap::GameStateMap(GameApplication *app)
+GameStateMap::GameStateMap()
 {
-  dialog = new GameDialog(app->GetMediaToolkit());
+  dialog = new GameDialog(GameApplication::GetInstance()->GetMediaToolkit());
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("FRAME.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_MAP.DAT");
   dialog->SetHeads("HEADS.BMX");
-  dialog->SetMembers(app->GetGame()->GetParty(), SPECIAL_TYPE1);
-  dialog->SetCompass("COMPASS.BMX", app->GetGame()->GetParty()->GetOrientation());
+  dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), SPECIAL_TYPE1);
+  dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetParty()->GetOrientation());
 }
 
 GameStateMap::~GameStateMap()
@@ -615,10 +614,10 @@ GameStateMap::~GameStateMap()
 }
 
 GameStateMap*
-GameStateMap::GetInstance(GameApplication *app)
+GameStateMap::GetInstance()
 {
   if (!instance) {
-    instance = new GameStateMap(app);
+    instance = new GameStateMap();
   }
   return instance;
 }
@@ -645,19 +644,19 @@ GameStateMap::Leave()
 }
 
 void
-GameStateMap::Execute(GameApplication *app)
+GameStateMap::Execute()
 {
   unsigned int action = dialog->Execute();
   switch (action) {
     case ACT_ESCAPE:
     case MAP_MAIN:
-      ChangeState(app, GameStateWorld::GetInstance(app));
+      ChangeState(GameStateWorld::GetInstance());
       break;
     case MAP_CAMP:
-      ChangeState(app, GameStateCamp::GetInstance(app));
+      ChangeState(GameStateCamp::GetInstance());
       break;
     case MAP_FULLMAP:
-      ChangeState(app, GameStateFullMap::GetInstance(app));
+      ChangeState(GameStateFullMap::GetInstance());
       break;
     case ACT_UP:
     case MAP_UP:
@@ -685,10 +684,10 @@ GameStateMap::Execute(GameApplication *app)
 
 GameStateOptions* GameStateOptions::instance = 0;
 
-GameStateOptions::GameStateOptions(GameApplication *app)
+GameStateOptions::GameStateOptions()
 : firstTime(true)
 {
-  dialog = new OptionsDialog(app->GetMediaToolkit());
+  dialog = new OptionsDialog(GameApplication::GetInstance()->GetMediaToolkit());
   dialog->SetFont("GAME.FNT");
   dialog->SetPalette("OPTIONS.PAL");
 }
@@ -701,10 +700,10 @@ GameStateOptions::~GameStateOptions()
 }
 
 GameStateOptions*
-GameStateOptions::GetInstance(GameApplication *app)
+GameStateOptions::GetInstance()
 {
   if (!instance) {
-    instance = new GameStateOptions(app);
+    instance = new GameStateOptions();
   }
   return instance;
 }
@@ -738,33 +737,33 @@ GameStateOptions::Leave()
 }
 
 void
-GameStateOptions::Execute(GameApplication *app)
+GameStateOptions::Execute()
 {
   unsigned int action = dialog->Execute();
   switch (action) {
     case ACT_ESCAPE:
     case OPT_QUIT:
-      app->QuitGame();
+      GameApplication::GetInstance()->QuitGame();
       break;
     case OPT_NEW_GAME:
-      app->StartNewGame();
+      GameApplication::GetInstance()->StartNewGame();
       firstTime = false;
-      ChangeState(app, GameStateChapter::GetInstance());
+      ChangeState(GameStateChapter::GetInstance());
       break;
     case OPT_CANCEL:
-      ChangeState(app, GameStateWorld::GetInstance(app));
+      ChangeState(GameStateWorld::GetInstance());
       break;
     case OPT_CONTENTS:
-      ChangeState(app, GameStateContents::GetInstance(app));
+      ChangeState(GameStateContents::GetInstance());
       break;
     case OPT_PREFERENCES:
-      ChangeState(app, GameStatePreferences::GetInstance(app));
+      ChangeState(GameStatePreferences::GetInstance());
       break;
     case OPT_RESTORE:
-      ChangeState(app, GameStateLoad::GetInstance(app));
+      ChangeState(GameStateLoad::GetInstance());
       break;
     case OPT_SAVE:
-      ChangeState(app, GameStateSave::GetInstance(app));
+      ChangeState(GameStateSave::GetInstance());
       break;
     default:
       throw UnexpectedValue(__FILE__, __LINE__, action);
@@ -774,9 +773,9 @@ GameStateOptions::Execute(GameApplication *app)
 
 GameStatePreferences* GameStatePreferences::instance = 0;
 
-GameStatePreferences::GameStatePreferences(GameApplication *app)
+GameStatePreferences::GameStatePreferences()
 {
-  dialog = new OptionsDialog(app->GetMediaToolkit());
+  dialog = new OptionsDialog(GameApplication::GetInstance()->GetMediaToolkit());
   dialog->SetFont("GAME.FNT");
   dialog->SetLabel("LBL_PREF.DAT");
   dialog->SetPalette("OPTIONS.PAL");
@@ -792,10 +791,10 @@ GameStatePreferences::~GameStatePreferences()
 }
 
 GameStatePreferences*
-GameStatePreferences::GetInstance(GameApplication *app)
+GameStatePreferences::GetInstance()
 {
   if (!instance) {
-    instance = new GameStatePreferences(app);
+    instance = new GameStatePreferences();
   }
   return instance;
 }
@@ -822,16 +821,16 @@ GameStatePreferences::Leave()
 }
 
 void
-GameStatePreferences::Execute(GameApplication *app)
+GameStatePreferences::Execute()
 {
   unsigned int action = dialog->Execute();
   switch (action) {
     case ACT_ESCAPE:
     case PREF_CANCEL:
-      ChangeState(app, app->GetPrevState());
+      ChangeState(GameApplication::GetInstance()->GetPrevState());
       break;
     case PREF_OK:
-      ChangeState(app, app->GetPrevState());
+      ChangeState(GameApplication::GetInstance()->GetPrevState());
       break;
     case PREF_DEFAULTS:
       break;
@@ -843,9 +842,9 @@ GameStatePreferences::Execute(GameApplication *app)
 
 GameStateSave* GameStateSave::instance = 0;
 
-GameStateSave::GameStateSave(GameApplication *app)
+GameStateSave::GameStateSave()
 {
-  dialog = new OptionsDialog(app->GetMediaToolkit());
+  dialog = new OptionsDialog(GameApplication::GetInstance()->GetMediaToolkit());
   dialog->SetFont("GAME.FNT");
   dialog->SetLabel("LBL_SAVE.DAT");
   dialog->SetPalette("OPTIONS.PAL");
@@ -861,10 +860,10 @@ GameStateSave::~GameStateSave()
 }
 
 GameStateSave*
-GameStateSave::GetInstance(GameApplication *app)
+GameStateSave::GetInstance()
 {
   if (!instance) {
-    instance = new GameStateSave(app);
+    instance = new GameStateSave();
   }
   return instance;
 }
@@ -891,16 +890,16 @@ GameStateSave::Leave()
 }
 
 void
-GameStateSave::Execute(GameApplication *app)
+GameStateSave::Execute()
 {
   unsigned int action = dialog->Execute();
   switch (action) {
     case ACT_ESCAPE:
     case SAVE_CANCEL:
-      ChangeState(app, app->GetPrevState());
+      ChangeState(GameApplication::GetInstance()->GetPrevState());
       break;
     case SAVE_SAVE:
-      ChangeState(app, app->GetPrevState());
+      ChangeState(GameApplication::GetInstance()->GetPrevState());
       break;
     case SAVE_REMOVE_GAME:
       break;
@@ -914,16 +913,16 @@ GameStateSave::Execute(GameApplication *app)
 
 GameStateWorld* GameStateWorld::instance = 0;
 
-GameStateWorld::GameStateWorld(GameApplication *app)
+GameStateWorld::GameStateWorld()
 {
-  dialog = new GameDialog(app->GetMediaToolkit());
+  dialog = new GameDialog(GameApplication::GetInstance()->GetMediaToolkit());
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("FRAME.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_MAIN.DAT");
   dialog->SetHeads("HEADS.BMX");
-  dialog->SetMembers(app->GetGame()->GetParty(), SPECIAL_TYPE1);
-  dialog->SetCompass("COMPASS.BMX", app->GetGame()->GetParty()->GetOrientation());
+  dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), SPECIAL_TYPE1);
+  dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetParty()->GetOrientation());
 }
 
 GameStateWorld::~GameStateWorld()
@@ -934,10 +933,10 @@ GameStateWorld::~GameStateWorld()
 }
 
 GameStateWorld*
-GameStateWorld::GetInstance(GameApplication *app)
+GameStateWorld::GetInstance()
 {
   if (!instance) {
-    instance = new GameStateWorld(app);
+    instance = new GameStateWorld();
   }
   return instance;
 }
@@ -964,43 +963,43 @@ GameStateWorld::Leave()
 }
 
 void
-GameStateWorld::Execute(GameApplication *app)
+GameStateWorld::Execute()
 {
   unsigned int action = dialog->Execute();
   switch (action) {
     case ACT_ESCAPE:
     case MAIN_OPTIONS:
-      ChangeState(app, GameStateOptions::GetInstance(app));
+      ChangeState(GameStateOptions::GetInstance());
       break;
     case MAIN_CAMP:
-      ChangeState(app, GameStateCamp::GetInstance(app));
+      ChangeState(GameStateCamp::GetInstance());
       break;
     case MAIN_CAST:
-      app->GetGame()->GetParty()->SelectMember(0);
-      ChangeState(app, GameStateCast::GetInstance(app));
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(0);
+      ChangeState(GameStateCast::GetInstance());
       break;
     case MAIN_MAP:
-      ChangeState(app, GameStateMap::GetInstance(app));
+      ChangeState(GameStateMap::GetInstance());
       break;
     case MAIN_MEMBER1:
-      app->GetGame()->GetParty()->SelectMember(0);
-      ChangeState(app, GameStateInventory::GetInstance(app));
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(0);
+      ChangeState(GameStateInventory::GetInstance());
       break;
     case MAIN_MEMBER2:
-      app->GetGame()->GetParty()->SelectMember(1);
-      ChangeState(app, GameStateInventory::GetInstance(app));
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(1);
+      ChangeState(GameStateInventory::GetInstance());
       break;
     case MAIN_MEMBER3:
-      app->GetGame()->GetParty()->SelectMember(2);
-      ChangeState(app, GameStateInventory::GetInstance(app));
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(2);
+      ChangeState(GameStateInventory::GetInstance());
       break;
     case ACT_LEFT:
     case MAIN_LEFT:
-      app->GetGame()->GetParty()->Turn(TURN_LEFT);
+      GameApplication::GetInstance()->GetGame()->GetParty()->Turn(TURN_LEFT);
       break;
     case ACT_RIGHT:
     case MAIN_RIGHT:
-      app->GetGame()->GetParty()->Turn(TURN_RIGHT);
+      GameApplication::GetInstance()->GetGame()->GetParty()->Turn(TURN_RIGHT);
       break;
     case ACT_UP:
     case MAIN_UP:

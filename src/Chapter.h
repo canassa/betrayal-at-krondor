@@ -25,7 +25,6 @@
 #endif
 
 #include "EventListener.h"
-#include "MediaToolkit.h"
 
 class Chapter
 : public KeyboardEventListener
@@ -33,12 +32,10 @@ class Chapter
 , public TimerEventListener
 {
   private:
-    MediaToolkit *media;
     int number;
   public:
-    Chapter(MediaToolkit *mtk);
-    virtual ~Chapter();
-    void SetCurrent(const int n);
+    Chapter(const int n);
+    ~Chapter();
     void PlayIntro();
     void PlayScene(const int scene);
     void ReadBook(const int scene);

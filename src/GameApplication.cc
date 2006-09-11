@@ -44,13 +44,11 @@ GameApplication::GameApplication()
 , game(0)
 , state(GameStateIntro::GetInstance())
 , prevState(0)
-, chapter(mediaToolkit)
 , screenSaveCount(0)
 {
   mediaToolkit->GetVideo()->SetScaling(2);
   mediaToolkit->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
   mediaToolkit->GetVideo()->Clear();
-  game = new Game();
   GamePath::GetInstance();
 
   PaletteResource pal;
@@ -76,7 +74,9 @@ GameApplication::~GameApplication()
 {
   mediaToolkit->RemoveKeyboardListener(this);
   MousePointerManager::CleanUp();
-  delete game;
+  if (game) {
+    delete game;
+  }
   delete mediaToolkit;
   SoundResource::CleanUp();
   FileManager::CleanUp();
@@ -159,10 +159,10 @@ void
 GameApplication::StartChapter()
 {
   try {
-    chapter.PlayIntro();
-    chapter.ReadBook(1);
-    chapter.PlayScene(1);
-    chapter.ShowMap();
+    game->GetChapter()->PlayIntro();
+    game->GetChapter()->ReadBook(1);
+    game->GetChapter()->PlayScene(1);
+    game->GetChapter()->ShowMap();
   } catch (Exception &e) {
     e.Print("GameApplication::StartChapter");
   }
@@ -171,7 +171,10 @@ GameApplication::StartChapter()
 void
 GameApplication::StartNewGame()
 {
-  chapter.SetCurrent(1);
+  if (game) {
+    delete game;
+  }
+  game = new Game();
 }
 
 void
@@ -193,7 +196,7 @@ GameApplication::Run()
         state->Enter();
         savedState = state;
       }
-      state->Execute(this);
+      state->Execute();
     }
     savedState->Leave();
   } catch (Exception &e) {

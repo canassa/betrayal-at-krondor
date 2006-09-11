@@ -26,18 +26,16 @@
 
 #include "Dialog.h"
 
-class GameApplication;
-
 class GameState
 {
   protected:
-    void ChangeState(GameApplication *app, GameState *state);
+    void ChangeState(GameState *state);
   public:
     GameState();
     virtual ~GameState();
     virtual void Enter();
     virtual void Leave();
-    virtual void Execute(GameApplication *app);
+    virtual void Execute();
 };
 
 class GameStateCamp
@@ -47,14 +45,14 @@ class GameStateCamp
     Dialog *dialog;
     static GameStateCamp *instance;
   protected:
-    GameStateCamp(GameApplication *app);
+    GameStateCamp();
   public:
     ~GameStateCamp();
-    static GameStateCamp* GetInstance(GameApplication *app);
+    static GameStateCamp* GetInstance();
     static void CleanUp();
     void Enter();
     void Leave();
-    void Execute(GameApplication *app);
+    void Execute();
 };
 
 class GameStateCast
@@ -64,14 +62,14 @@ class GameStateCast
     Dialog *dialog;
     static GameStateCast *instance;
   protected:
-    GameStateCast(GameApplication *app);
+    GameStateCast();
   public:
     ~GameStateCast();
-    static GameStateCast* GetInstance(GameApplication *app);
+    static GameStateCast* GetInstance();
     static void CleanUp();
     void Enter();
     void Leave();
-    void Execute(GameApplication *app);
+    void Execute();
 };
 
 class GameStateChapter
@@ -85,7 +83,7 @@ class GameStateChapter
     ~GameStateChapter();
     static GameStateChapter* GetInstance();
     static void CleanUp();
-    void Execute(GameApplication *app);
+    void Execute();
 };
 
 class GameStateCombat
@@ -99,7 +97,7 @@ class GameStateCombat
     ~GameStateCombat();
     static GameStateCombat* GetInstance();
     static void CleanUp();
-    void Execute(GameApplication *app);
+    void Execute();
 };
 
 class GameStateContents
@@ -109,14 +107,14 @@ class GameStateContents
     Dialog *dialog;
     static GameStateContents *instance;
   protected:
-    GameStateContents(GameApplication *app);
+    GameStateContents();
   public:
     ~GameStateContents();
-    static GameStateContents* GetInstance(GameApplication *app);
+    static GameStateContents* GetInstance();
     static void CleanUp();
     void Enter();
     void Leave();
-    void Execute(GameApplication *app);
+    void Execute();
 };
 
 class GameStateFullMap
@@ -126,14 +124,14 @@ class GameStateFullMap
     Dialog *dialog;
     static GameStateFullMap *instance;
   protected:
-    GameStateFullMap(GameApplication *app);
+    GameStateFullMap();
   public:
     ~GameStateFullMap();
-    static GameStateFullMap* GetInstance(GameApplication *app);
+    static GameStateFullMap* GetInstance();
     static void CleanUp();
     void Enter();
     void Leave();
-    void Execute(GameApplication *app);
+    void Execute();
 };
 
 class GameStateIntro
@@ -147,7 +145,7 @@ class GameStateIntro
     ~GameStateIntro();
     static GameStateIntro* GetInstance();
     static void CleanUp();
-    void Execute(GameApplication *app);
+    void Execute();
 };
 
 class GameStateInventory
@@ -157,14 +155,14 @@ class GameStateInventory
     Dialog *dialog;
     static GameStateInventory *instance;
   protected:
-    GameStateInventory(GameApplication *app);
+    GameStateInventory();
   public:
     ~GameStateInventory();
-    static GameStateInventory* GetInstance(GameApplication *app);
+    static GameStateInventory* GetInstance();
     static void CleanUp();
     void Enter();
     void Leave();
-    void Execute(GameApplication *app);
+    void Execute();
 };
 
 class GameStateLoad
@@ -174,14 +172,14 @@ class GameStateLoad
     Dialog *dialog;
     static GameStateLoad *instance;
   protected:
-    GameStateLoad(GameApplication *app);
+    GameStateLoad();
   public:
     ~GameStateLoad();
-    static GameStateLoad* GetInstance(GameApplication *app);
+    static GameStateLoad* GetInstance();
     static void CleanUp();
     void Enter();
     void Leave();
-    void Execute(GameApplication *app);
+    void Execute();
 };
 
 class GameStateMap
@@ -191,14 +189,14 @@ class GameStateMap
     Dialog *dialog;
     static GameStateMap *instance;
   protected:
-    GameStateMap(GameApplication *app);
+    GameStateMap();
   public:
     ~GameStateMap();
-    static GameStateMap* GetInstance(GameApplication *app);
+    static GameStateMap* GetInstance();
     static void CleanUp();
     void Enter();
     void Leave();
-    void Execute(GameApplication *app);
+    void Execute();
 };
 
 class GameStateOptions
@@ -209,14 +207,14 @@ class GameStateOptions
     Dialog *dialog;
     static GameStateOptions *instance;
   protected:
-    GameStateOptions(GameApplication *app);
+    GameStateOptions();
   public:
     ~GameStateOptions();
-    static GameStateOptions* GetInstance(GameApplication *app);
+    static GameStateOptions* GetInstance();
     static void CleanUp();
     void Enter();
     void Leave();
-    void Execute(GameApplication *app);
+    void Execute();
 };
 
 class GameStatePreferences
@@ -226,14 +224,14 @@ class GameStatePreferences
     Dialog *dialog;
     static GameStatePreferences *instance;
   protected:
-    GameStatePreferences(GameApplication *app);
+    GameStatePreferences();
   public:
     ~GameStatePreferences();
-    static GameStatePreferences* GetInstance(GameApplication *app);
+    static GameStatePreferences* GetInstance();
     static void CleanUp();
     void Enter();
     void Leave();
-    void Execute(GameApplication *app);
+    void Execute();
 };
 
 class GameStateSave
@@ -243,14 +241,14 @@ class GameStateSave
     Dialog *dialog;
     static GameStateSave *instance;
   protected:
-    GameStateSave(GameApplication *app);
+    GameStateSave();
   public:
     ~GameStateSave();
-    static GameStateSave* GetInstance(GameApplication *app);
+    static GameStateSave* GetInstance();
     static void CleanUp();
     void Enter();
     void Leave();
-    void Execute(GameApplication *app);
+    void Execute();
 };
 
 class GameStateWorld
@@ -260,14 +258,14 @@ class GameStateWorld
     Dialog *dialog;
     static GameStateWorld *instance;
   protected:
-    GameStateWorld(GameApplication *app);
+    GameStateWorld();
   public:
     ~GameStateWorld();
-    static GameStateWorld* GetInstance(GameApplication *app);
+    static GameStateWorld* GetInstance();
     static void CleanUp();
     void Enter();
     void Leave();
-    void Execute(GameApplication *app);
+    void Execute();
 };
 
 #endif

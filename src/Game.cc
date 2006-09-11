@@ -24,11 +24,13 @@
 
 Game::Game()
 : name("")
+, chapter(0)
 , party(0)
 {
   try {
     FileManager::GetInstance()->Load(&partyRes, "PARTY.DAT");
     FileManager::GetInstance()->Load(&heads, "HEADS.BMX");
+    chapter = new Chapter(1);
     party = new Party();
     for (unsigned int i = 0; i < partyRes.GetSize(); i++) {
       PartyData *pd = partyRes.GetData(i);
@@ -50,6 +52,9 @@ Game::~Game()
   if (party) {
     delete party;
   }
+  if (chapter) {
+    delete chapter;
+  }
 }
 
 std::string&
@@ -62,6 +67,12 @@ Party *
 Game::GetParty()
 {
   return party;
+}
+
+Chapter *
+Game::GetChapter()
+{
+  return chapter;
 }
 
 void
