@@ -372,8 +372,8 @@ SDL_Video::Refresh()
   SDL_UpdateRect(buffer, 0, 0, 0, 0);
   for (int y = 0; y < buffer->h; y++) {
     for (int x = 0; x < buffer->w; x++) {
-      memcpy((uint8_t *)stretched->pixels + y * scaling * stretched->pitch + x * scaling,
-             (uint8_t *)buffer->pixels + y * buffer->pitch + x, scaling);
+      memset((uint8_t *)stretched->pixels + y * scaling * stretched->pitch + x * scaling,
+             *((uint8_t *)buffer->pixels + y * buffer->pitch + x), scaling);
     }
     for (unsigned int i = 1; i < scaling; i++) {
       memcpy((uint8_t *)stretched->pixels + (y * scaling + i) * stretched->pitch,
