@@ -24,6 +24,7 @@ noinst_HEADERS = AnimationResource.h \
                  GamePath.h \
                  GameState.h \
                  GenericFile.h \
+                 HotspotWidget.h \
                  Image.h \
                  ImageButtonWidget.h \
                  ImageResource.h \
@@ -100,6 +101,8 @@ libguitoolkit_a_SOURCES = ButtonWidget.cc \
                           Dialog.h \
                           DialogWindow.cc \
                           DialogWindow.h \
+                          HotspotWidget.cc \
+                          HotspotWidget.h \
                           Image.cc \
                           Image.h \
                           ImageButtonWidget.cc \
