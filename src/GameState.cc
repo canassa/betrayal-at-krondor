@@ -54,7 +54,7 @@ GameStateCamp* GameStateCamp::instance = 0;
 
 GameStateCamp::GameStateCamp()
 {
-  dialog = new GameDialog(GameApplication::GetInstance()->GetMediaToolkit());
+  dialog = new GameDialog();
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("ENCAMP.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
@@ -120,7 +120,7 @@ GameStateCast* GameStateCast::instance = 0;
 
 GameStateCast::GameStateCast()
 {
-  dialog = new GameDialog(GameApplication::GetInstance()->GetMediaToolkit());
+  dialog = new GameDialog();
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("FRAME.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
@@ -281,7 +281,7 @@ GameStateContents* GameStateContents::instance = 0;
 
 GameStateContents::GameStateContents()
 {
-  dialog = new OptionsDialog(GameApplication::GetInstance()->GetMediaToolkit());
+  dialog = new OptionsDialog();
   dialog->SetPalette("CONTENTS.PAL");
   dialog->SetScreen("CONT2.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
@@ -344,7 +344,7 @@ GameStateFullMap* GameStateFullMap::instance = 0;
 
 GameStateFullMap::GameStateFullMap()
 {
-  dialog = new GameDialog(GameApplication::GetInstance()->GetMediaToolkit());
+  dialog = new GameDialog();
   dialog->SetPalette("FULLMAP.PAL");
   dialog->SetScreen("FULLMAP.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
@@ -442,7 +442,7 @@ GameStateInventory* GameStateInventory::instance = 0;
 
 GameStateInventory::GameStateInventory()
 {
-  dialog = new GameDialog(GameApplication::GetInstance()->GetMediaToolkit());
+  dialog = new GameDialog();
   dialog->SetFont("GAME.FNT");
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("FRAME.SCX");
@@ -529,7 +529,7 @@ GameStateLoad* GameStateLoad::instance = 0;
 
 GameStateLoad::GameStateLoad()
 {
-  dialog = new OptionsDialog(GameApplication::GetInstance()->GetMediaToolkit());
+  dialog = new OptionsDialog();
   dialog->SetFont("GAME.FNT");
   dialog->SetLabel("LBL_LOAD.DAT");
   dialog->SetPalette("OPTIONS.PAL");
@@ -596,7 +596,7 @@ GameStateMap* GameStateMap::instance = 0;
 
 GameStateMap::GameStateMap()
 {
-  dialog = new GameDialog(GameApplication::GetInstance()->GetMediaToolkit());
+  dialog = new GameDialog();
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("FRAME.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
@@ -687,7 +687,7 @@ GameStateOptions* GameStateOptions::instance = 0;
 GameStateOptions::GameStateOptions()
 : firstTime(true)
 {
-  dialog = new OptionsDialog(GameApplication::GetInstance()->GetMediaToolkit());
+  dialog = new OptionsDialog();
   dialog->SetFont("GAME.FNT");
   dialog->SetPalette("OPTIONS.PAL");
 }
@@ -775,7 +775,7 @@ GameStatePreferences* GameStatePreferences::instance = 0;
 
 GameStatePreferences::GameStatePreferences()
 {
-  dialog = new OptionsDialog(GameApplication::GetInstance()->GetMediaToolkit());
+  dialog = new OptionsDialog();
   dialog->SetFont("GAME.FNT");
   dialog->SetLabel("LBL_PREF.DAT");
   dialog->SetPalette("OPTIONS.PAL");
@@ -844,7 +844,7 @@ GameStateSave* GameStateSave::instance = 0;
 
 GameStateSave::GameStateSave()
 {
-  dialog = new OptionsDialog(GameApplication::GetInstance()->GetMediaToolkit());
+  dialog = new OptionsDialog();
   dialog->SetFont("GAME.FNT");
   dialog->SetLabel("LBL_SAVE.DAT");
   dialog->SetPalette("OPTIONS.PAL");
@@ -915,7 +915,7 @@ GameStateWorld* GameStateWorld::instance = 0;
 
 GameStateWorld::GameStateWorld()
 {
-  dialog = new GameDialog(GameApplication::GetInstance()->GetMediaToolkit());
+  dialog = new GameDialog();
   dialog->SetPalette("OPTIONS.PAL");
   dialog->SetScreen("FRAME.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");

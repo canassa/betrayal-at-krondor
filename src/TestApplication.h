@@ -28,7 +28,6 @@
 
 #include "ImageResource.h"
 #include "FontResource.h"
-#include "MediaToolkit.h"
 #include "MovieResource.h"
 #include "PaletteResource.h"
 #include "ScreenResource.h"
@@ -40,7 +39,6 @@ class TestApplication
 , public TimerEventListener
 {
   private:
-    MediaToolkit *mediaToolkit;
     PaletteResource pal;
     FontResource fnt;
     ImageResource img;

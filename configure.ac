@@ -18,14 +18,16 @@ AC_PROG_RANLIB
 AC_CACHE_SAVE
 
 # Checks for libraries.
-SDL_VERSION=1.2.8
-AM_PATH_SDL($SDL_VERSION,,AC_MSG_ERROR([SDL $SDL_VERSION not found!]))
-SDL_CXXFLAGS=$(sh sdl-config --cflags)
-SDL_LIBS=$(sh sdl-config --libs)
-CXXFLAGS="$CXXFLAGS $SDL_CXXFLAGS"
-LIBS="$LIBS $SDL_LIBS"
+#SDL_VERSION=1.2.8
+#AM_PATH_SDL($SDL_VERSION,,AC_MSG_ERROR([SDL $SDL_VERSION not found!]))
+#AC_DEFINE([HAVE_SDLLIB], )
+AC_CHECK_TOOL([SDLCONFIG], [sdl-config], AC_MSG_ERROR([sdl-config not found]))
+AC_CHECK_LIB([SDL], [SDL_Init], , AC_MSG_ERROR([SDL not found]))
 AC_CHECK_LIB([SDL_mixer], [Mix_Linked_Version], , AC_MSG_ERROR([SDL_mixer not found]))
 AC_CHECK_LIB([SDL_sound], [Sound_GetLinkedVersion], , AC_MSG_ERROR([SDL_sound not found]))
+SDL_CFLAGS=$(sh sdl-config --cflags)
+SDL_LIBS=$(sh sdl-config --libs)
+LIBS="$LIBS $SDL_LIBS"
 
 AC_CACHE_SAVE
 
@@ -36,7 +38,7 @@ AC_CACHE_SAVE
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_LANG([C++])
-CXXFLAGS="$CXXFLAGS -W -Wall -Werror -Wpointer-arith -Wcast-qual -Wwrite-strings -Wshadow -Wcast-align -Winline -ansi -pedantic"
+CXXFLAGS="$CXXFLAGS $SDL_CFLAGS -W -Wall -Werror -Wpointer-arith -Wcast-qual -Wwrite-strings -Wshadow -Wcast-align -Winline -ansi -pedantic"
 
 AC_C_CONST
 AC_FUNC_STAT

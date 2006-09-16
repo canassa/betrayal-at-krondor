@@ -27,7 +27,6 @@
 #include "EventListener.h"
 #include "Game.h"
 #include "GameState.h"
-#include "MediaToolkit.h"
 
 class GameApplication
 : public KeyboardEventListener
@@ -35,7 +34,6 @@ class GameApplication
 {
   private:
     friend class GameState;
-    MediaToolkit *mediaToolkit;
     bool done;
     bool inputGrabbed;
     Game *game;
@@ -50,7 +48,6 @@ class GameApplication
     ~GameApplication();
     static GameApplication* GetInstance();
     static void CleanUp();
-    MediaToolkit* GetMediaToolkit();
     Game* GetGame();
     GameState* GetPrevState();
     void PlayIntro();

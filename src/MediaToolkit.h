@@ -32,6 +32,8 @@
 #include "Video.h"
 
 class MediaToolkit {
+  private:
+    static MediaToolkit* instance;
   protected:
     Audio *audio;
     Clock *clock;
@@ -45,6 +47,8 @@ class MediaToolkit {
   public:
     MediaToolkit();
     virtual ~MediaToolkit();
+    static MediaToolkit* GetInstance();
+    static void CleanUp();
     Audio* GetAudio() const;
     Clock* GetClock() const;
     Video* GetVideo() const;

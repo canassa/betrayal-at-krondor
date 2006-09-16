@@ -24,7 +24,6 @@
 #include "config.h"
 #endif
 
-#include "MediaToolkit.h"
 #include "MovieResource.h"
 #include "ImageResource.h"
 #include "PaletteResource.h"
@@ -41,7 +40,6 @@ class MoviePlayer
 , public UpdateEventListener
 {
   private:
-    MediaToolkit *media;
     std::vector<MovieTag *> *tagVec;
     ScreenResource* screenSlot;
     SoundResource* soundSlot;
@@ -59,10 +57,11 @@ class MoviePlayer
     unsigned int currSound;
     std::map<unsigned int, int> soundMap;
     bool paletteActivated;
+    bool playing;
     bool looped;
     bool delayed;
   public:
-    MoviePlayer(MediaToolkit *mtk);
+    MoviePlayer();
     ~MoviePlayer();
     void Play(std::vector<MovieTag *> *movie, const bool repeat);
     void KeyPressed(const KeyboardEvent& kbe);

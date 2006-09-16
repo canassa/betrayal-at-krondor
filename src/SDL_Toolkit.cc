@@ -23,8 +23,6 @@
 #include "SDL_Toolkit.h"
 #include "SDL_Video.h"
 
-SDL_Toolkit* SDL_Toolkit::instance = 0;
-
 SDL_Toolkit::SDL_Toolkit()
 : MediaToolkit()
 {
@@ -42,24 +40,6 @@ SDL_Toolkit::~SDL_Toolkit()
   delete clock;
   delete video;
   SDL_Quit();
-}
-
-SDL_Toolkit*
-SDL_Toolkit::GetInstance()
-{
-  if (!instance) {
-    instance = new SDL_Toolkit();
-  }
-  return instance;
-}
-
-void
-SDL_Toolkit::CleanUp()
-{
-  if (instance) {
-    delete instance;
-    instance = 0;
-  }
 }
 
 void

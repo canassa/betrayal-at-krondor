@@ -17,7 +17,11 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "Exception.h"
 #include "MediaToolkit.h"
+#include "SDL_Toolkit.h"
+
+MediaToolkit* MediaToolkit::instance = 0;
 
 MediaToolkit::MediaToolkit()
 : audio(0)
@@ -39,6 +43,28 @@ MediaToolkit::~MediaToolkit()
   mouseMotionListeners.clear();
   timerListeners.clear();
   updateListeners.clear();
+}
+
+MediaToolkit*
+MediaToolkit::GetInstance()
+{
+  if (!instance) {
+#ifdef HAVE_LIBSDL
+    instance = new SDL_Toolkit();
+#else
+    throw Exception(__FILE__, __LINE__, "No media toolkit available!");
+#endif
+  }
+  return instance;
+}
+
+void
+MediaToolkit::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
 }
 
 Audio*

@@ -235,12 +235,11 @@ dumplbl_SOURCES = LabelResource.cc \
                   LabelResource.h \
                   dumplbl.cc
 dumplbl_LDADD   = libresbase.a
-dumppal_SOURCES = MediaToolkit.cc \
-                  MediaToolkit.h \
-                  PaletteResource.cc \
+dumppal_SOURCES = PaletteResource.cc \
                   PaletteResource.h \
                   dumppal.cc
-dumppal_LDADD   = libresbase.a
+dumppal_LDADD   = libresbase.a \
+                  libsdldriver.a
 dumpreq_SOURCES = RequestResource.cc \
                   RequestResource.h \
                   dumpreq.cc

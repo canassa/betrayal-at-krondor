@@ -38,46 +38,43 @@
 GameApplication* GameApplication::instance = 0;
 
 GameApplication::GameApplication()
-: mediaToolkit(SDL_Toolkit::GetInstance())
-, done(false)
+: done(false)
 , inputGrabbed(false)
 , game(0)
 , state(GameStateIntro::GetInstance())
 , prevState(0)
 , screenSaveCount(0)
 {
-  mediaToolkit->GetVideo()->SetScaling(2);
-  mediaToolkit->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
-  mediaToolkit->GetVideo()->Clear();
+  MediaToolkit* media = MediaToolkit::GetInstance();
+  media->GetVideo()->SetScaling(2);
+  media->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
+  media->GetVideo()->Clear();
   GamePath::GetInstance();
 
   PaletteResource pal;
   pal.Fill();
-  pal.Activate(mediaToolkit->GetVideo(), 0, VIDEO_COLORS);
+  pal.Activate(media->GetVideo(), 0, VIDEO_COLORS);
   FontResource fnt;
   FileManager::GetInstance()->Load(&fnt, "GAME.FNT");
   TextArea ta(240, 16, fnt);
   ta.SetText("xBaK: Betrayal at Krondor  A fan-made remake");
   ta.SetColor(15);
-  ta.Draw(mediaToolkit->GetVideo(), 16, 16);
-  mediaToolkit->GetVideo()->Refresh();
-  mediaToolkit->GetClock()->Delay(500);
-  mediaToolkit->AddKeyboardListener(this);
-  mediaToolkit->AddMouseButtonListener(this);
+  ta.Draw(media->GetVideo(), 16, 16);
+  media->GetVideo()->Refresh();
+  media->GetClock()->Delay(500);
 
   MousePointerManager::GetInstance()->AddPointer("POINTER.BMX");
   MousePointerManager::GetInstance()->AddPointer("POINTERG.BMX");
-  MousePointerManager::GetInstance()->Register(mediaToolkit);
+  MousePointerManager::GetInstance()->Register(media);
 }
 
 GameApplication::~GameApplication()
 {
-  mediaToolkit->RemoveKeyboardListener(this);
   MousePointerManager::CleanUp();
   if (game) {
     delete game;
   }
-  delete mediaToolkit;
+  MediaToolkit::CleanUp();
   SoundResource::CleanUp();
   FileManager::CleanUp();
   ResourcePath::CleanUp();
@@ -115,12 +112,6 @@ GameApplication::CleanUp()
   }
 }
 
-MediaToolkit *
-GameApplication::GetMediaToolkit()
-{
-  return mediaToolkit;
-}
-
 Game *
 GameApplication::GetGame()
 {
@@ -148,7 +139,7 @@ GameApplication::PlayIntro()
     FileManager::GetInstance()->Load(&anim, "INTRO.ADS");
     MovieResource ttm;
     FileManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
-    MoviePlayer moviePlayer(mediaToolkit);
+    MoviePlayer moviePlayer;
     moviePlayer.Play(&ttm.GetMovieTags(), true);
   } catch (Exception &e) {
     e.Print("GameApplication::Intro");
@@ -187,6 +178,8 @@ void
 GameApplication::Run()
 {
   try {
+    MediaToolkit::GetInstance()->AddKeyboardListener(this);
+    MediaToolkit::GetInstance()->AddMouseButtonListener(this);
     state->Enter();
     GameState *savedState = state;
     done = false;
@@ -199,6 +192,8 @@ GameApplication::Run()
       state->Execute();
     }
     savedState->Leave();
+    MediaToolkit::GetInstance()->RemoveKeyboardListener(this);
+    MediaToolkit::GetInstance()->RemoveMouseButtonListener(this);
   } catch (Exception &e) {
     e.Print("GameApplication::Run");
   }
@@ -213,12 +208,12 @@ GameApplication::KeyPressed(const KeyboardEvent& kbe)
         screenSaveCount++;
         std::stringstream filenameStream;
         filenameStream << "xbak_" << std::setw(3) << std::setfill('0') << screenSaveCount << ".bmp";
-        mediaToolkit->GetVideo()->SaveScreenShot(filenameStream.str());
+        MediaToolkit::GetInstance()->GetVideo()->SaveScreenShot(filenameStream.str());
       }
       break;
     case KEY_F12:
       inputGrabbed = !inputGrabbed;
-      mediaToolkit->GetVideo()->GrabInput(inputGrabbed);
+      MediaToolkit::GetInstance()->GetVideo()->GrabInput(inputGrabbed);
       break;
     default:
       break;
@@ -242,13 +237,13 @@ GameApplication::MouseButtonPressed(const MouseButtonEvent& mbe)
     case MB_RIGHT:
       if (!inputGrabbed) {
         inputGrabbed = true;
-        mediaToolkit->GetVideo()->GrabInput(true);
+        MediaToolkit::GetInstance()->GetVideo()->GrabInput(true);
       }
       break;
     case MB_MIDDLE:
       if (inputGrabbed) {
         inputGrabbed = false;
-        mediaToolkit->GetVideo()->GrabInput(false);
+        MediaToolkit::GetInstance()->GetVideo()->GrabInput(false);
       }
       break;
     default:

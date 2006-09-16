@@ -27,16 +27,13 @@
 #include "MediaToolkit.h"
 #include "SDL.h"
 
-class SDL_Toolkit: public MediaToolkit {
+class SDL_Toolkit
+: public MediaToolkit {
   private:
-    static SDL_Toolkit *instance;
     void HandleEvent(SDL_Event& event);
-  protected:
-    SDL_Toolkit();
   public:
+    SDL_Toolkit();
     ~SDL_Toolkit();
-    static SDL_Toolkit* GetInstance();
-    static void CleanUp();
     void PollEvents();
     void PollEventLoop();
     void WaitEvents();

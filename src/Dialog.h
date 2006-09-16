@@ -35,14 +35,13 @@ class Dialog
 , public KeyboardEventListener
 {
   protected:
-    MediaToolkit *media;
     DialogWindow *window;
     PaletteResource *palette;
     WidgetResources widgetRes;
     unsigned int action;
     bool running;
   public:
-    Dialog(MediaToolkit *mtk);
+    Dialog();
     virtual ~Dialog();
     void SetFont(const std::string &name);
     void SetLabel(const std::string &name);
@@ -68,7 +67,7 @@ class GameDialog
 : public Dialog
 {
   public:
-    GameDialog(MediaToolkit *mtk);
+    GameDialog();
     ~GameDialog();
     void KeyPressed(const KeyboardEvent& kbe);
     void KeyReleased(const KeyboardEvent& kbe);
@@ -78,7 +77,7 @@ class OptionsDialog
 : public Dialog
 {
   public:
-    OptionsDialog(MediaToolkit *mtk);
+    OptionsDialog();
     ~OptionsDialog();
     void KeyPressed(const KeyboardEvent& kbe);
     void KeyReleased(const KeyboardEvent& kbe);

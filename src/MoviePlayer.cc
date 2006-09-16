@@ -19,6 +19,7 @@
 
 #include "Exception.h"
 #include "FileManager.h"
+#include "MediaToolkit.h"
 #include "MousePointerManager.h"
 #include "MoviePlayer.h"
 
@@ -48,29 +49,22 @@ static const unsigned int LOAD_SCREEN        = 0xf010;
 static const unsigned int LOAD_IMAGE         = 0xf020;
 static const unsigned int LOAD_PALETTE       = 0xf050;
 
-MoviePlayer::MoviePlayer(MediaToolkit *mtk)
-: media(mtk)
+MoviePlayer::MoviePlayer()
 {
-  media->AddKeyboardListener(this);
-  media->AddMouseButtonListener(this);
-  media->AddTimerListener(this);
-  media->AddUpdateListener(this);
 }
 
 MoviePlayer::~MoviePlayer()
 {
-  media->RemoveKeyboardListener(this);
-  media->RemoveMouseButtonListener(this);
-  media->RemoveTimerListener(this);
-  media->RemoveUpdateListener(this);
 }
 
 void
 MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
   try {
+    MediaToolkit* media = MediaToolkit::GetInstance();
     tagVec = movie;
     looped = repeat;
     delayed = false;
+    playing = false;
     screenSlot = 0;
     soundSlot = SoundResource::GetInstance();
     memset(imageSlot, 0, sizeof(ImageResource*) * MAX_IMAGE_SLOTS);
@@ -91,8 +85,19 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
     paletteActivated = false;
 
     MousePointerManager::GetInstance()->GetCurrentPointer()->SetVisible(false);
+    media->AddKeyboardListener(this);
+    media->AddMouseButtonListener(this);
+    media->AddTimerListener(this);
+    media->AddUpdateListener(this);
+
     media->ClearEvents();
     media->PollEventLoop();
+
+    media->RemoveKeyboardListener(this);
+    media->RemoveMouseButtonListener(this);
+    media->RemoveTimerListener(this);
+    media->RemoveUpdateListener(this);
+    MousePointerManager::GetInstance()->GetCurrentPointer()->SetVisible(true);
 
     (paletteSlot[currPalette])->FadeOut(media, 0, VIDEO_COLORS, 64, 5);
     if (screenSlot) {
@@ -126,7 +131,7 @@ MoviePlayer::KeyPressed(const KeyboardEvent& kbe) {
     case KEY_ESCAPE:
     case KEY_RETURN:
     case KEY_SPACE:
-      media->TerminateEventLoop();
+      MediaToolkit::GetInstance()->TerminateEventLoop();
       break;
     default:
       break;
@@ -145,7 +150,7 @@ void
 MoviePlayer::MouseButtonPressed(const MouseButtonEvent& mbe) {
   switch (mbe.GetButton()) {
     case MB_LEFT:
-      media->TerminateEventLoop();
+      MediaToolkit::GetInstance()->TerminateEventLoop();
       break;
     default:
       break;
@@ -172,6 +177,7 @@ MoviePlayer::Update(const UpdateEvent& ue) {
   ue.GetTicks();
   if (delayed) return;
   try {
+    MediaToolkit* media = MediaToolkit::GetInstance();
     MovieTag *mt = (*tagVec)[currTag];
     switch (mt->code) {
       case SAVE_BACKGROUND:

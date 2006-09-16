@@ -23,9 +23,8 @@
 #include "MousePointerManager.h"
 #include "WidgetFactory.h"
 
-Dialog::Dialog(MediaToolkit *mtk)
-: media(mtk)
-, window(0)
+Dialog::Dialog()
+: window(0)
 , palette(0)
 , widgetRes()
 , action(0)
@@ -34,9 +33,6 @@ Dialog::Dialog(MediaToolkit *mtk)
   try {
     MousePointerManager::GetInstance()->SetCurrentPointer(NORMAL_POINTER);
     MousePointerManager::GetInstance()->GetCurrentPointer()->SetVisible(true);
-    media->AddKeyboardListener(this);
-    media->AddMouseButtonListener(this);
-    media->AddUpdateListener(this);
     memset(&widgetRes, 0, sizeof(WidgetResources));
     widgetRes.eventListener = this;
   } catch (Exception &e) {
@@ -47,9 +43,6 @@ Dialog::Dialog(MediaToolkit *mtk)
 
 Dialog::~Dialog()
 {
-  media->RemoveUpdateListener(this);
-  media->RemoveMouseButtonListener(this);
-  media->RemoveKeyboardListener(this);
   if (widgetRes.font) {
     delete widgetRes.font;
   }
@@ -227,8 +220,8 @@ Dialog::Enter()
 {
   try {
     window = new DialogWindow(widgetRes);
-    media->GetVideo()->Clear();
-    window->FadeIn(palette, media);
+    MediaToolkit::GetInstance()->GetVideo()->Clear();
+    window->FadeIn(palette, MediaToolkit::GetInstance());
   } catch (Exception &e) {
     e.Print("Dialog::Enter");
     throw;
@@ -239,8 +232,8 @@ void
 Dialog::Leave()
 {
   try {
-    window->FadeOut(palette, media);
-    media->GetVideo()->Clear();
+    window->FadeOut(palette, MediaToolkit::GetInstance());
+    MediaToolkit::GetInstance()->GetVideo()->Clear();
     delete window;
     window = 0;
   } catch (Exception &e) {
@@ -253,9 +246,16 @@ unsigned int
 Dialog::Execute()
 {
   try {
+    MediaToolkit* media = MediaToolkit::GetInstance();
+    media->AddKeyboardListener(this);
+    media->AddMouseButtonListener(this);
+    media->AddUpdateListener(this);
     running = true;
     media->PollEventLoop();
     running = false;
+    media->RemoveUpdateListener(this);
+    media->RemoveMouseButtonListener(this);
+    media->RemoveKeyboardListener(this);
     return action;
   } catch (Exception &e) {
     e.Print("Dialog::Execute");
@@ -268,7 +268,7 @@ Dialog::Update(const UpdateEvent& ue)
 {
   ue.GetTicks();
   if (running) {
-    window->Draw(media->GetVideo());
+    window->Draw(MediaToolkit::GetInstance()->GetVideo());
   }
 }
 
@@ -276,7 +276,7 @@ void
 Dialog::ActionPerformed(const ActionEvent& ae)
 {
   action = ae.GetAction();
-  media->TerminateEventLoop();
+  MediaToolkit::GetInstance()->TerminateEventLoop();
 }
 
 void
@@ -318,8 +318,8 @@ Dialog::MouseButtonReleased(const MouseButtonEvent& mbe)
 }
 
 
-GameDialog::GameDialog(MediaToolkit *mtk)
-: Dialog(mtk)
+GameDialog::GameDialog()
+: Dialog()
 {
 }
 
@@ -333,23 +333,23 @@ GameDialog::KeyPressed(const KeyboardEvent& kbe)
   switch (kbe.GetKey()) {
     case KEY_ESCAPE:
       action = ACT_ESCAPE;
-      media->TerminateEventLoop();
+      MediaToolkit::GetInstance()->TerminateEventLoop();
       break;
     case KEY_UP:
       action = ACT_UP;
-      media->TerminateEventLoop();
+      MediaToolkit::GetInstance()->TerminateEventLoop();
       break;
     case KEY_DOWN:
       action = ACT_DOWN;
-      media->TerminateEventLoop();
+      MediaToolkit::GetInstance()->TerminateEventLoop();
       break;
     case KEY_LEFT:
       action = ACT_LEFT;
-      media->TerminateEventLoop();
+      MediaToolkit::GetInstance()->TerminateEventLoop();
       break;
     case KEY_RIGHT:
       action = ACT_RIGHT;
-      media->TerminateEventLoop();
+      MediaToolkit::GetInstance()->TerminateEventLoop();
       break;
     default:
       break;
@@ -366,8 +366,8 @@ GameDialog::KeyReleased(const KeyboardEvent& kbe)
 }
 
 
-OptionsDialog::OptionsDialog(MediaToolkit *mtk)
-: Dialog(mtk)
+OptionsDialog::OptionsDialog()
+: Dialog()
 {
 }
 
@@ -381,17 +381,17 @@ OptionsDialog::KeyPressed(const KeyboardEvent& kbe)
   switch (kbe.GetKey()) {
     case KEY_ESCAPE:
       action = ACT_ESCAPE;
-      media->TerminateEventLoop();
+      MediaToolkit::GetInstance()->TerminateEventLoop();
       break;
     case KEY_DOWN:
     case KEY_TAB:
       if (running) {
-        window->SelectNextWidget(media->GetVideo());
+        window->SelectNextWidget(MediaToolkit::GetInstance()->GetVideo());
       }
       break;
     case KEY_UP:
       if (running) {
-        window->SelectPreviousWidget(media->GetVideo());
+        window->SelectPreviousWidget(MediaToolkit::GetInstance()->GetVideo());
       }
       break;
     case KEY_RETURN:
