@@ -50,7 +50,7 @@ DialogWindow::Draw(Video *video)
 }
 
 void
-DialogWindow::FadeIn(PaletteResource* pal, MediaToolkit *media)
+DialogWindow::FadeIn(Palette* pal, MediaToolkit *media)
 {
   panel->Draw(media->GetVideo());
   MousePointerManager::GetInstance()->GetCurrentPointer()->Draw(media->GetVideo());
@@ -58,7 +58,7 @@ DialogWindow::FadeIn(PaletteResource* pal, MediaToolkit *media)
 }
 
 void
-DialogWindow::FadeOut(PaletteResource* pal, MediaToolkit *media)
+DialogWindow::FadeOut(Palette* pal, MediaToolkit *media)
 {
   panel->Draw(media->GetVideo());
   MousePointerManager::GetInstance()->GetCurrentPointer()->Draw(media->GetVideo());

@@ -25,26 +25,18 @@
 #endif
 
 #include "MediaToolkit.h"
+#include "Palette.h"
 #include "TaggedResource.h"
 
 class PaletteResource
 : public TaggedResource {
   private:
-    unsigned int size;
-    Color *colors;
+    Palette *palette;
   public:
     PaletteResource();
     virtual ~PaletteResource();
-    unsigned int GetSize() const;
-    Color* GetColors() const;
-    void Fill();
+    Palette* GetPalette() const;
     void Load(FileBuffer *buffer);
-    void Activate(Video *video, const unsigned int first, const unsigned int n);
-    void Retrieve(Video *video, const unsigned int first, const unsigned int n);
-    void FadeFrom(MediaToolkit *media, Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay);
-    void FadeTo(MediaToolkit *media, Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay);
-    void FadeIn(MediaToolkit *media, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay);
-    void FadeOut(MediaToolkit *media, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay);
 };
 
 #endif

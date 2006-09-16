@@ -32,9 +32,8 @@ int main(int argc, char *argv[]) {
     }
     PaletteResource *pal = new PaletteResource;
     FileManager::GetInstance()->Load(pal, argv[1]);
-    Color *c = pal->GetColors();
-    for (unsigned int i = 0; i < pal->GetSize(); i++) {
-      printf("%3d #%02X%02X%02X\n", i, c[i].r, c[i].g, c[i].b);
+    for (unsigned int i = 0; i < pal->GetPalette()->GetSize(); i++) {
+      printf("%3d #%02X%02X%02X\n", i, pal->GetPalette()->GetColor(i).r, pal->GetPalette()->GetColor(i).g, pal->GetPalette()->GetColor(i).b);
     }
     delete pal;
     FileManager::CleanUp();

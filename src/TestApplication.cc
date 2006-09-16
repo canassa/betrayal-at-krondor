@@ -79,8 +79,8 @@ void
 TestApplication::ActivatePalette()
 {
   try {
-    pal.Fill();
-    pal.Activate(MediaToolkit::GetInstance()->GetVideo(), 0, 256);
+    pal.GetPalette()->Fill();
+    pal.GetPalette()->Activate(MediaToolkit::GetInstance()->GetVideo(), 0, 256);
   } catch (Exception &e) {
     e.Print("TestApplication::ActivatePalette");
   }
@@ -91,7 +91,7 @@ TestApplication::ActivatePalette(const std::string& name)
 {
   try {
     FileManager::GetInstance()->Load(&pal, name);
-    pal.Activate(MediaToolkit::GetInstance()->GetVideo(), 0, 256);
+    pal.GetPalette()->Activate(MediaToolkit::GetInstance()->GetVideo(), 0, 256);
   } catch (Exception &e) {
     e.Print("TestApplication::ActivatePalette");
   }

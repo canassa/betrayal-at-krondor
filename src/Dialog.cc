@@ -221,7 +221,7 @@ Dialog::Enter()
   try {
     window = new DialogWindow(widgetRes);
     MediaToolkit::GetInstance()->GetVideo()->Clear();
-    window->FadeIn(palette, MediaToolkit::GetInstance());
+    window->FadeIn(palette->GetPalette(), MediaToolkit::GetInstance());
   } catch (Exception &e) {
     e.Print("Dialog::Enter");
     throw;
@@ -232,7 +232,7 @@ void
 Dialog::Leave()
 {
   try {
-    window->FadeOut(palette, MediaToolkit::GetInstance());
+    window->FadeOut(palette->GetPalette(), MediaToolkit::GetInstance());
     MediaToolkit::GetInstance()->GetVideo()->Clear();
     delete window;
     window = 0;

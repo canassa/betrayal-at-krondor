@@ -94,21 +94,23 @@ void
 Chapter::ShowMap()
 {
   try {
-    ScreenResource scr;
-    FileManager::GetInstance()->Load(&scr, "FULLMAP.SCX");
-    scr.GetImage()->Draw(MediaToolkit::GetInstance()->GetVideo(), 0, 0);
-    PaletteResource pal;
-    FileManager::GetInstance()->Load(&pal, "FULLMAP.PAL");
     MediaToolkit::GetInstance()->AddKeyboardListener(this);
     MediaToolkit::GetInstance()->AddMouseButtonListener(this);
     MediaToolkit::GetInstance()->AddTimerListener(this);
-    pal.FadeIn(MediaToolkit::GetInstance(), 0, VIDEO_COLORS, 64, 5);
+    ScreenResource *scr = new ScreenResource;
+    FileManager::GetInstance()->Load(scr, "FULLMAP.SCX");
+    scr->GetImage()->Draw(MediaToolkit::GetInstance()->GetVideo(), 0, 0);
+    PaletteResource *pal = new PaletteResource;
+    FileManager::GetInstance()->Load(pal, "FULLMAP.PAL");
+    pal->GetPalette()->FadeIn(MediaToolkit::GetInstance(), 0, VIDEO_COLORS, 64, 5);
     MediaToolkit::GetInstance()->GetClock()->StartTimer(TMR_CHAPTER, 4000);
     MediaToolkit::GetInstance()->WaitEventLoop();
-    pal.FadeOut(MediaToolkit::GetInstance(), 0, VIDEO_COLORS, 64, 5);
+    pal->GetPalette()->FadeOut(MediaToolkit::GetInstance(), 0, VIDEO_COLORS, 64, 5);
     MediaToolkit::GetInstance()->RemoveTimerListener(this);
     MediaToolkit::GetInstance()->RemoveMouseButtonListener(this);
     MediaToolkit::GetInstance()->RemoveKeyboardListener(this);
+    delete pal;
+    delete scr;
   } catch (Exception &e) {
     e.Print("Chapter::ShowMap");
   }

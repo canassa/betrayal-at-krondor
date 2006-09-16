@@ -37,6 +37,7 @@ noinst_HEADERS = AnimationResource.h \
                  MovieResource.h \
                  NameResource.h \
                  Orientation.h \
+                 Palette.h \
                  PaletteResource.h \
                  PanelWidget.h \
                  Party.h \
@@ -115,6 +116,8 @@ libguitoolkit_a_SOURCES = ButtonWidget.cc \
                           MousePointerManager.h \
                           MoviePlayer.cc \
                           MoviePlayer.h \
+                          Palette.cc \
+                          Palette.h \
                           PanelWidget.cc \
                           PanelWidget.h \
                           PopUpWidget.cc \
@@ -238,7 +241,8 @@ dumplbl_LDADD   = libresbase.a
 dumppal_SOURCES = PaletteResource.cc \
                   PaletteResource.h \
                   dumppal.cc
-dumppal_LDADD   = libresbase.a \
+dumppal_LDADD   = libguitoolkit.a \
+                  libresbase.a \
                   libsdldriver.a
 dumpreq_SOURCES = RequestResource.cc \
                   RequestResource.h \

@@ -26,6 +26,7 @@
 
 #include "DialogWindow.h"
 #include "EventListener.h"
+#include "PaletteResource.h"
 #include "Party.h"
 
 class Dialog

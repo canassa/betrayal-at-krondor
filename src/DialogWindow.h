@@ -24,14 +24,9 @@
 #include "config.h"
 #endif
 
-#include "FontResource.h"
-#include "ImageResource.h"
-#include "LabelResource.h"
 #include "MediaToolkit.h"
-#include "PaletteResource.h"
+#include "Palette.h"
 #include "PanelWidget.h"
-#include "RequestResource.h"
-#include "ScreenResource.h"
 #include "WidgetFactory.h"
 
 class DialogWindow {
@@ -41,8 +36,8 @@ class DialogWindow {
     DialogWindow(WidgetResources& widgetRes);
     ~DialogWindow();
     void Draw(Video *video);
-    void FadeIn(PaletteResource* pal, MediaToolkit *media);
-    void FadeOut(PaletteResource* pal, MediaToolkit *media);
+    void FadeIn(Palette* pal, MediaToolkit *media);
+    void FadeOut(Palette* pal, MediaToolkit *media);
     void LeftClickWidget(const bool toggle);
     void RightClickWidget(const bool toggle);
     void LeftClickWidget(const bool toggle, const int x, const int y);

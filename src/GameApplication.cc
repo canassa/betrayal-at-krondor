@@ -52,8 +52,8 @@ GameApplication::GameApplication()
   GamePath::GetInstance();
 
   PaletteResource pal;
-  pal.Fill();
-  pal.Activate(media->GetVideo(), 0, VIDEO_COLORS);
+  pal.GetPalette()->Fill();
+  pal.GetPalette()->Activate(media->GetVideo(), 0, VIDEO_COLORS);
   FontResource fnt;
   FileManager::GetInstance()->Load(&fnt, "GAME.FNT");
   TextArea ta(240, 16, fnt);

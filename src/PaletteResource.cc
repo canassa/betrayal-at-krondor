@@ -22,42 +22,21 @@
 
 PaletteResource::PaletteResource()
 : TaggedResource()
-, size(0)
-, colors(0)
 {
+  palette = new Palette(0);
 }
 
 PaletteResource::~PaletteResource()
 {
-  if (colors) {
-    delete[] colors;
+  if (palette) {
+    delete palette;
   }
 }
 
-unsigned int
-PaletteResource::GetSize() const
+Palette *
+PaletteResource::GetPalette() const
 {
-  return size;
-}
-
-Color*
-PaletteResource::GetColors() const
-{
-  return colors;
-}
-
-void
-PaletteResource::Fill()
-{
-  size = VIDEO_COLORS;
-  colors = new Color[size];
-  memset(colors, 0, size * sizeof(Color));
-  colors[0].r = 0;
-  colors[0].g = 0;
-  colors[0].b = 0;
-  colors[15].r = 255;
-  colors[15].g = 255;
-  colors[15].b = 255;
+  return palette;
 }
 
 void
@@ -70,93 +49,21 @@ PaletteResource::Load(FileBuffer *buffer)
       Clear();
       throw DataCorruption(__FILE__, __LINE__);
     }
-    size = vgabuf->GetSize() / 3;
-    colors = new Color[size];
+    unsigned int size = vgabuf->GetSize() / 3;
+    if (palette) {
+      delete palette;
+    }
+    palette = new Palette(size);
     for (unsigned int i = 0; i < size; i++) {
-      colors[i].r = (vgabuf->GetUint8() << 2) + 0x03;
-      colors[i].g = (vgabuf->GetUint8() << 2) + 0x03;
-      colors[i].b = (vgabuf->GetUint8() << 2) + 0x03;
+      Color c;
+      c.r = (vgabuf->GetUint8() << 2) + 0x03;
+      c.g = (vgabuf->GetUint8() << 2) + 0x03;
+      c.b = (vgabuf->GetUint8() << 2) + 0x03;
+      palette->SetColor(i, c);
     }
     Clear();
   } catch (Exception &e) {
     e.Print("PaletteResource::Load");
     Clear();
   }
-}
-
-void
-PaletteResource::Activate(Video *video, const unsigned int first, const unsigned int n)
-{
-  video->SetPalette(colors, first, n);
-}
-
-void
-PaletteResource::Retrieve(Video *video, const unsigned int first, const unsigned int n)
-{
-  if ((colors != 0) && (size < (first + n))) {
-    delete colors;
-    colors = 0;
-  }
-  if (!colors) {
-    size = first + n;
-    colors = new Color[size];
-  }
-  video->GetPalette(colors, first, n);
-}
-
-void
-PaletteResource::FadeFrom(MediaToolkit *media, Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
-{
-  Color* tmp = new Color[VIDEO_COLORS];
-  for (unsigned int i = 0; i <= steps; i++) {
-    float x = (float)i / (float)steps;
-    for (unsigned int j = first; j < first + n; j++) {
-      tmp[j].r = from[j].r + (int)((colors[j].r - from[j].r) * x);
-      tmp[j].g = from[j].g + (int)((colors[j].g - from[j].g) * x);
-      tmp[j].b = from[j].b + (int)((colors[j].b - from[j].b) * x);
-    }
-    media->GetVideo()->SetPalette(&tmp[first], first, n);
-    media->GetVideo()->Refresh();
-    media->GetClock()->Delay(delay);
-    media->PollEvents();
-  }
-  delete[] tmp;
-}
-
-void
-PaletteResource::FadeTo(MediaToolkit *media, Color* to, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
-{
-  Color* tmp = new Color[VIDEO_COLORS];
-  media->GetVideo()->GetPalette(tmp, 0, VIDEO_COLORS);
-  for (unsigned int i = 0; i <= steps; i++) {
-    float x = (float)i / (float)steps;
-    for (unsigned int j = first; j < first + n; j++) {
-      tmp[j].r = colors[j].r + (int)((to[j].r - colors[j].r) * x);
-      tmp[j].g = colors[j].g + (int)((to[j].g - colors[j].g) * x);
-      tmp[j].b = colors[j].b + (int)((to[j].b - colors[j].b) * x);
-    }
-    media->GetVideo()->SetPalette(&tmp[first], first, n);
-    media->GetVideo()->Refresh();
-    media->GetClock()->Delay(delay);
-    media->PollEvents();
-  }
-  delete[] tmp;
-}
-
-void
-PaletteResource::FadeIn(MediaToolkit *media, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
-{
-  Color* from = new Color[VIDEO_COLORS];
-  memset(from, 0, VIDEO_COLORS * sizeof(Color));
-  FadeFrom(media, from, first, n, steps, delay);
-  delete[] from;
-}
-
-void
-PaletteResource::FadeOut(MediaToolkit *media, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
-{
-  Color* to = new Color[VIDEO_COLORS];
-  memset(to, 0, VIDEO_COLORS * sizeof(Color));
-  FadeTo(media, to, first, n, steps, delay);
-  delete[] to;
 }

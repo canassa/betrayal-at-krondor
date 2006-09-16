@@ -68,7 +68,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
     screenSlot = 0;
     soundSlot = SoundResource::GetInstance();
     memset(imageSlot, 0, sizeof(ImageResource*) * MAX_IMAGE_SLOTS);
-    memset(paletteSlot, 0, sizeof(PaletteResource*) * MAX_PALETTE_SLOTS);
+    memset(paletteSlot, 0, sizeof(Palette*) * MAX_PALETTE_SLOTS);
     backgroundImage = 0;
     backgroundImageDrawn = false;
     savedImage = 0;
@@ -81,7 +81,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
     currSound = 0;
     soundMap.clear();
     paletteSlot[currPalette] = new PaletteResource;
-    paletteSlot[currPalette]->Retrieve(media->GetVideo(), 0, VIDEO_COLORS);
+    paletteSlot[currPalette]->GetPalette()->Retrieve(media->GetVideo(), 0, VIDEO_COLORS);
     paletteActivated = false;
 
     MousePointerManager::GetInstance()->GetCurrentPointer()->SetVisible(false);
@@ -99,7 +99,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
     media->RemoveUpdateListener(this);
     MousePointerManager::GetInstance()->GetCurrentPointer()->SetVisible(true);
 
-    (paletteSlot[currPalette])->FadeOut(media, 0, VIDEO_COLORS, 64, 5);
+    paletteSlot[currPalette]->GetPalette()->FadeOut(media, 0, VIDEO_COLORS, 64, 5);
     if (screenSlot) {
       delete screenSlot;
     }
@@ -132,6 +132,7 @@ MoviePlayer::KeyPressed(const KeyboardEvent& kbe) {
     case KEY_RETURN:
     case KEY_SPACE:
       MediaToolkit::GetInstance()->TerminateEventLoop();
+      playing = false;
       break;
     default:
       break;
@@ -151,6 +152,7 @@ MoviePlayer::MouseButtonPressed(const MouseButtonEvent& mbe) {
   switch (mbe.GetButton()) {
     case MB_LEFT:
       MediaToolkit::GetInstance()->TerminateEventLoop();
+      playing = false;
       break;
     default:
       break;
@@ -194,7 +196,7 @@ MoviePlayer::Update(const UpdateEvent& ue) {
         break;
       case END_OF_PAGE:
         if (!paletteActivated) {
-          paletteSlot[currPalette]->Activate(media->GetVideo(), 0, VIDEO_COLORS);
+          paletteSlot[currPalette]->GetPalette()->Activate(media->GetVideo(), 0, VIDEO_COLORS);
           paletteActivated = true;
         }
         media->GetVideo()->Refresh();
@@ -222,12 +224,12 @@ MoviePlayer::Update(const UpdateEvent& ue) {
         currFrame = mt->data[1];
         break;
       case FADE_OUT:
-        (paletteSlot[currPalette])->FadeOut(media, mt->data[0], mt->data[1], 64 << (mt->data[2] & 0x0f), 2 << mt->data[3]);
+        paletteSlot[currPalette]->GetPalette()->FadeOut(media, mt->data[0], mt->data[1], 64 << (mt->data[2] & 0x0f), 2 << mt->data[3]);
         media->GetVideo()->Clear();
         paletteActivated = true;
         break;
       case FADE_IN:
-        (paletteSlot[currPalette])->FadeIn(media, mt->data[0], mt->data[1], 64 << (mt->data[2] & 0x0f), 2 << mt->data[3]);
+        paletteSlot[currPalette]->GetPalette()->FadeIn(media, mt->data[0], mt->data[1], 64 << (mt->data[2] & 0x0f), 2 << mt->data[3]);
         paletteActivated = true;
         break;
       case DRAW_WINDOW:
@@ -236,7 +238,7 @@ MoviePlayer::Update(const UpdateEvent& ue) {
           backgroundImageDrawn = true;
         }
         if (imageSlot[currImage]) {
-          (imageSlot[currImage])->GetImage(currFrame)->Draw(media->GetVideo(), mt->data[0], mt->data[1], 0, 0, mt->data[2], mt->data[3]);
+          imageSlot[currImage]->GetImage(currFrame)->Draw(media->GetVideo(), mt->data[0], mt->data[1], 0, 0, mt->data[2], mt->data[3]);
         }
         break;
       case DRAW_SPRITE3:
@@ -264,7 +266,7 @@ MoviePlayer::Update(const UpdateEvent& ue) {
           savedImageDrawn = true;
         }
         if (imageSlot[mt->data[3]]) {
-          (imageSlot[mt->data[3]])->GetImage(mt->data[2])->Draw(media->GetVideo(), mt->data[0], mt->data[1], 0);
+          imageSlot[mt->data[3]]->GetImage(mt->data[2])->Draw(media->GetVideo(), mt->data[0], mt->data[1], 0);
         }
         break;
       case READ_IMAGE:
@@ -365,6 +367,7 @@ MoviePlayer::Update(const UpdateEvent& ue) {
         }
       } else {
         media->TerminateEventLoop();
+        playing = false;
       }
     }
   } catch (Exception &e) {
