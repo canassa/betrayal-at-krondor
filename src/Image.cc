@@ -19,6 +19,7 @@
 
 #include "Exception.h"
 #include "Image.h"
+#include "MediaToolkit.h"
 
 static const unsigned int FLAG_XYSWAPPED  = 0x20;
 static const unsigned int FLAG_UNKNOWN    = 0x40;
@@ -36,6 +37,7 @@ Image::Image(const int w, const int h)
     height = 0;
     pixel = 0;
   }
+  video = MediaToolkit::GetInstance()->GetVideo();
 }
 
 Image::~Image()
@@ -136,26 +138,25 @@ Image::Load(FileBuffer *buffer, const unsigned int flags)
 }
 
 void
-Image::Read(Video *video, const int x, const int y)
+Image::Read(const int x, const int y)
 {
   video->ReadImage(x, y, width, height, pixel);
 }
 
 void
-Image::Draw(Video *video, const int x, const int y)
+Image::Draw(const int x, const int y)
 {
   video->DrawImage(x, y, width, height, pixel);
 }
 
 void
-Image::Draw(Video *video, const int x, const int y, const int xoff, const int yoff, const int w, const int h)
+Image::Draw(const int x, const int y, const int xoff, const int yoff, const int w, const int h)
 {
   video->DrawImage(x, y, width, height, xoff, yoff, w, h, pixel);
 }
 
 void
-Image::Draw(Video *video, const int x, const int y, const uint8_t transparent)
+Image::Draw(const int x, const int y, const uint8_t transparent)
 {
   video->DrawImage(x, y, width, height, pixel, transparent);
 }
-

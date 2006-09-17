@@ -55,7 +55,7 @@ class LabelWidget: public Widget {
   public:
     LabelWidget(const int x, const int y, const int w, const int h, FontResource *f);
     virtual ~LabelWidget();
-    void Draw(Video *video);
+    void Draw();
     void SetColor(const int c);
     void SetText(const std::string &t);
     void SetShadow(const int s);

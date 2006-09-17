@@ -29,15 +29,13 @@ ChoiceWidget::~ChoiceWidget()
 }
 
 void
-ChoiceWidget::Draw(Video *video)
+ChoiceWidget::Draw()
 {
-  video = video;
 }
 
 void
-ChoiceWidget::Focus(Video *video)
+ChoiceWidget::Focus()
 {
-  video = video;
 }
 
 void

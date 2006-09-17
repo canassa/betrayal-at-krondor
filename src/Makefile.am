@@ -219,7 +219,8 @@ dumpbmx_SOURCES = Image.cc \
                   ImageResource.cc \
                   ImageResource.h \
                   dumpbmx.cc
-dumpbmx_LDADD   = libresbase.a
+dumpbmx_LDADD   = libresbase.a \
+                  libsdldriver.a
 dumpbok_SOURCES = BookResource.cc \
                   BookResource.h \
                   dumpbok.cc
@@ -231,7 +232,8 @@ dumpddx_LDADD   = libresbase.a
 dumpfnt_SOURCES = FontResource.cc \
                   FontResource.h \
                   dumpfnt.cc
-dumpfnt_LDADD   = libresbase.a
+dumpfnt_LDADD   = libresbase.a \
+                  libsdldriver.a
 dumpgam_SOURCES = dumpgam.cc
 dumpgam_LDADD   = libresbase.a
 dumplbl_SOURCES = LabelResource.cc \
@@ -253,7 +255,8 @@ dumpscx_SOURCES = Image.cc \
                   ScreenResource.cc \
                   ScreenResource.h \
                   dumpscx.cc
-dumpscx_LDADD   = libresbase.a
+dumpscx_LDADD   = libresbase.a \
+                  libsdldriver.a
 dumpsnd_SOURCES = Sound.cc \
                   Sound.h \
                   SoundResource.cc \

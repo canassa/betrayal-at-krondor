@@ -53,13 +53,13 @@ GameApplication::GameApplication()
 
   PaletteResource pal;
   pal.GetPalette()->Fill();
-  pal.GetPalette()->Activate(media->GetVideo(), 0, VIDEO_COLORS);
+  pal.GetPalette()->Activate(0, VIDEO_COLORS);
   FontResource fnt;
   FileManager::GetInstance()->Load(&fnt, "GAME.FNT");
   TextArea ta(240, 16, fnt);
   ta.SetText("xBaK: Betrayal at Krondor  A fan-made remake");
   ta.SetColor(15);
-  ta.Draw(media->GetVideo(), 16, 16);
+  ta.Draw(16, 16);
   media->GetVideo()->Refresh();
   media->GetClock()->Delay(500);
 

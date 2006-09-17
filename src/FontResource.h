@@ -27,7 +27,6 @@
 #endif
 
 #include "TaggedResource.h"
-#include "Video.h"
 
 static const unsigned int MAX_FONT_HEIGHT = 16;
 
@@ -53,7 +52,7 @@ class FontResource
     unsigned int GetSize() const;
     FontGlyph* GetGlyph(const unsigned int n);
     void Load(FileBuffer *buffer);
-    void DrawChar(Video *video, const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color, const bool italic);
+    void DrawChar(const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color, const bool italic);
 };
 
 #endif

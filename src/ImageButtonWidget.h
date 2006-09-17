@@ -37,7 +37,7 @@ class ImageButtonWidget
     ImageButtonWidget(const int x, const int y, const int w, const int h, const int a);
     virtual ~ImageButtonWidget();
     void SetImage(Image *normal, Image *press);
-    void Draw(Video *video);
+    void Draw();
     void LeftClick(const bool toggle);
     void RightClick(const bool toggle);
 };

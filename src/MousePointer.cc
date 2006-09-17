@@ -58,10 +58,10 @@ MousePointer::SetVisible(const bool vis)
 }
 
 void
-MousePointer::Draw(Video *video)
+MousePointer::Draw()
 {
   if (visible) {
-    pointerImages.GetImage((int)pointerType)->Draw(video, xPos, yPos, 0);
+    pointerImages.GetImage((int)pointerType)->Draw(xPos, yPos, 0);
   }
 }
 

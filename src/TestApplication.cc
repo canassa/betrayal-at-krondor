@@ -80,7 +80,7 @@ TestApplication::ActivatePalette()
 {
   try {
     pal.GetPalette()->Fill();
-    pal.GetPalette()->Activate(MediaToolkit::GetInstance()->GetVideo(), 0, 256);
+    pal.GetPalette()->Activate(0, 256);
   } catch (Exception &e) {
     e.Print("TestApplication::ActivatePalette");
   }
@@ -91,7 +91,7 @@ TestApplication::ActivatePalette(const std::string& name)
 {
   try {
     FileManager::GetInstance()->Load(&pal, name);
-    pal.GetPalette()->Activate(MediaToolkit::GetInstance()->GetVideo(), 0, 256);
+    pal.GetPalette()->Activate(0, 256);
   } catch (Exception &e) {
     e.Print("TestApplication::ActivatePalette");
   }
@@ -104,7 +104,7 @@ TestApplication::ShowImage(const std::string& name)
     FileManager::GetInstance()->Load(&img, name);
     for (unsigned int i = 0; i < img.GetNumImages(); i++) {
       MediaToolkit::GetInstance()->GetVideo()->Clear();
-      img.GetImage(i)->Draw(MediaToolkit::GetInstance()->GetVideo(), 0, 0);
+      img.GetImage(i)->Draw(0, 0);
       MediaToolkit::GetInstance()->GetVideo()->Refresh();
       MediaToolkit::GetInstance()->GetClock()->StartTimer(TMR_TEST_APP, 2500);
       MediaToolkit::GetInstance()->WaitEventLoop();
@@ -121,7 +121,7 @@ TestApplication::ShowScreen(const std::string& name)
   try {
     FileManager::GetInstance()->Load(&scr, name);
     MediaToolkit::GetInstance()->GetVideo()->Clear();
-    scr.GetImage()->Draw(MediaToolkit::GetInstance()->GetVideo(), 0, 0);
+    scr.GetImage()->Draw(0, 0);
     MediaToolkit::GetInstance()->GetVideo()->Refresh();
     MediaToolkit::GetInstance()->GetClock()->StartTimer(TMR_TEST_APP, 5000);
     MediaToolkit::GetInstance()->WaitEventLoop();
@@ -140,11 +140,11 @@ TestApplication::DrawFont(const std::string& name)
     TextArea ta1(280, 180, fnt);
     ta1.SetText("The quick brown fox jumped over the lazy dog.");
     ta1.SetColor(15);
-    ta1.Draw(MediaToolkit::GetInstance()->GetVideo(), 10, 10, false);
+    ta1.Draw(10, 10, false);
     TextArea ta2(280, 180, fnt);
     ta2.SetText("The quick brown fox jumped over the lazy dog.");
     ta2.SetColor(15);
-    ta2.Draw(MediaToolkit::GetInstance()->GetVideo(), 10, 50, true);
+    ta2.Draw(10, 50, true);
     MediaToolkit::GetInstance()->GetVideo()->Refresh();
     MediaToolkit::GetInstance()->GetClock()->StartTimer(TMR_TEST_APP, 5000);
     MediaToolkit::GetInstance()->WaitEventLoop();

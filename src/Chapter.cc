@@ -59,7 +59,7 @@ Chapter::PlayScene(const int scene)
   try {
     ScreenResource scr;
     FileManager::GetInstance()->Load(&scr, "CFRAME.SCX");
-    scr.GetImage()->Draw(MediaToolkit::GetInstance()->GetVideo(), 0, 0);
+    scr.GetImage()->Draw(0, 0);
     AnimationResource anim;
     std::stringstream filenameStream;
     filenameStream << "C" << number << scene << ".ADS";
@@ -99,13 +99,13 @@ Chapter::ShowMap()
     MediaToolkit::GetInstance()->AddTimerListener(this);
     ScreenResource *scr = new ScreenResource;
     FileManager::GetInstance()->Load(scr, "FULLMAP.SCX");
-    scr->GetImage()->Draw(MediaToolkit::GetInstance()->GetVideo(), 0, 0);
+    scr->GetImage()->Draw(0, 0);
     PaletteResource *pal = new PaletteResource;
     FileManager::GetInstance()->Load(pal, "FULLMAP.PAL");
-    pal->GetPalette()->FadeIn(MediaToolkit::GetInstance(), 0, VIDEO_COLORS, 64, 5);
+    pal->GetPalette()->FadeIn(0, VIDEO_COLORS, 64, 5);
     MediaToolkit::GetInstance()->GetClock()->StartTimer(TMR_CHAPTER, 4000);
     MediaToolkit::GetInstance()->WaitEventLoop();
-    pal->GetPalette()->FadeOut(MediaToolkit::GetInstance(), 0, VIDEO_COLORS, 64, 5);
+    pal->GetPalette()->FadeOut(0, VIDEO_COLORS, 64, 5);
     MediaToolkit::GetInstance()->RemoveTimerListener(this);
     MediaToolkit::GetInstance()->RemoveMouseButtonListener(this);
     MediaToolkit::GetInstance()->RemoveKeyboardListener(this);

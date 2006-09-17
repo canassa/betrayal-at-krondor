@@ -33,7 +33,7 @@ class PanelWidget: public ContainerWidget {
   public:
     PanelWidget(const int x, const int y, const int w, const int h);
     virtual ~PanelWidget();
-    void Draw(Video *video);
+    void Draw();
     void SetBackground(Image *img);
 };
 

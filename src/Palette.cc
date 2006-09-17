@@ -24,6 +24,7 @@ Palette::Palette(const unsigned int n)
 : size(n)
 {
   colors = new Color[size];
+  media = MediaToolkit::GetInstance();
 }
 
 Palette::~Palette()
@@ -69,13 +70,13 @@ Palette::Fill()
 }
 
 void
-Palette::Activate(Video *video, const unsigned int first, const unsigned int n)
+Palette::Activate(const unsigned int first, const unsigned int n)
 {
-  video->SetPalette(colors, first, n);
+  media->GetVideo()->SetPalette(colors, first, n);
 }
 
 void
-Palette::Retrieve(Video *video, const unsigned int first, const unsigned int n)
+Palette::Retrieve(const unsigned int first, const unsigned int n)
 {
   if ((colors != 0) && (size < (first + n))) {
     delete colors;
@@ -85,11 +86,11 @@ Palette::Retrieve(Video *video, const unsigned int first, const unsigned int n)
     size = first + n;
     colors = new Color[size];
   }
-  video->GetPalette(colors, first, n);
+  media->GetVideo()->GetPalette(colors, first, n);
 }
 
 void
-Palette::FadeFrom(MediaToolkit *media, Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
+Palette::FadeFrom(Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
 {
   Color* tmp = new Color[VIDEO_COLORS];
   for (unsigned int i = 0; i <= steps; i++) {
@@ -108,7 +109,7 @@ Palette::FadeFrom(MediaToolkit *media, Color* from, const unsigned int first, co
 }
 
 void
-Palette::FadeTo(MediaToolkit *media, Color* to, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
+Palette::FadeTo(Color* to, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
 {
   Color* tmp = new Color[VIDEO_COLORS];
   media->GetVideo()->GetPalette(tmp, 0, VIDEO_COLORS);
@@ -128,19 +129,19 @@ Palette::FadeTo(MediaToolkit *media, Color* to, const unsigned int first, const 
 }
 
 void
-Palette::FadeIn(MediaToolkit *media, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
+Palette::FadeIn(const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
 {
   Color* from = new Color[VIDEO_COLORS];
   memset(from, 0, VIDEO_COLORS * sizeof(Color));
-  FadeFrom(media, from, first, n, steps, delay);
+  FadeFrom(from, first, n, steps, delay);
   delete[] from;
 }
 
 void
-Palette::FadeOut(MediaToolkit *media, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
+Palette::FadeOut(const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
 {
   Color* to = new Color[VIDEO_COLORS];
   memset(to, 0, VIDEO_COLORS * sizeof(Color));
-  FadeTo(media, to, first, n, steps, delay);
+  FadeTo(to, first, n, steps, delay);
   delete[] to;
 }

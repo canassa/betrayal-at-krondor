@@ -17,6 +17,7 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "MediaToolkit.h"
 #include "PanelWidget.h"
 
 PanelWidget::PanelWidget(const int x, const int y, const int w, const int h)
@@ -36,11 +37,11 @@ PanelWidget::SetBackground(Image *img)
 }
 
 void
-PanelWidget::Draw(Video *video)
+PanelWidget::Draw()
 {
-  video->Clear(xpos, ypos, width, height);
+  MediaToolkit::GetInstance()->GetVideo()->Clear(xpos, ypos, width, height);
   if (background) {
-    background->Draw(video, xpos, ypos);
+    background->Draw(xpos, ypos);
   }
-  DrawWidgets(video);
+  DrawChildWidgets();
 }

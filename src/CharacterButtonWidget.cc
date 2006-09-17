@@ -44,12 +44,12 @@ CharacterButtonWidget::SetImage(Image *selected)
 }
 
 void
-CharacterButtonWidget::Draw(Video *video)
+CharacterButtonWidget::Draw()
 {
   if (character) {
-    character->GetHeadImage()->Draw(video, xpos, ypos, 0);
+    character->GetHeadImage()->Draw(xpos, ypos, 0);
     if (character->IsSelected()) {
-      selectedImage->Draw(video, xpos, ypos, 0);
+      selectedImage->Draw(xpos, ypos, 0);
     }
   }
 }

@@ -38,16 +38,16 @@ ImageButtonWidget::SetImage(Image *normal, Image *press)
 }
 
 void
-ImageButtonWidget::Draw(Video *video)
+ImageButtonWidget::Draw()
 {
   if (IsEnabled()) {
     if (IsPressed()) {
       if (pressedImage) {
-        pressedImage->Draw(video, xpos, ypos + 1, 0);
+        pressedImage->Draw(xpos, ypos + 1, 0);
       }
     } else {
       if (normalImage) {
-        normalImage->Draw(video, xpos, ypos + 1, 0);
+        normalImage->Draw(xpos, ypos + 1, 0);
       }
     }
   }

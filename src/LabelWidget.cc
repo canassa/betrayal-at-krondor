@@ -67,7 +67,7 @@ LabelWidget::SetAlignment(const HorizontalAlignment ha, const VerticalAlignment 
 }
 
 void
-LabelWidget::Draw(Video *video)
+LabelWidget::Draw()
 {
   unsigned int i;
   unsigned int w;
@@ -99,7 +99,7 @@ LabelWidget::Draw(Video *video)
     i = 0;
     w = 0;
     while ((i < text.length()) && (w + font->GetWidth(text[i] - font->GetFirst()) < (unsigned)width)) {
-      font->DrawChar(video, xpos + xoff + w, ypos + yoff + 1, text[i], shadow, false);
+      font->DrawChar(xpos + xoff + w, ypos + yoff + 1, text[i], shadow, false);
       w += font->GetWidth((unsigned int)text[i] - font->GetFirst());
       i++;
     }
@@ -107,7 +107,7 @@ LabelWidget::Draw(Video *video)
   i = 0;
   w = 0;
   while ((i < text.length()) && (w + font->GetWidth(text[i] - font->GetFirst()) < (unsigned)width)) {
-    font->DrawChar(video, xpos + xoff + w, ypos + yoff, text[i], color, false);
+    font->DrawChar(xpos + xoff + w, ypos + yoff, text[i], color, false);
     w += font->GetWidth((unsigned int)text[i] - font->GetFirst());
     i++;
   }

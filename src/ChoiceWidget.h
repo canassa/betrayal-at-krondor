@@ -31,8 +31,8 @@ class ChoiceWidget: public ActiveWidget {
   public:
     ChoiceWidget(const int x, const int y, const int w, const int h, const int a);
     virtual ~ChoiceWidget();
-    void Draw(Video *video);
-    void Focus(Video *video);
+    void Draw();
+    void Focus();
     void Activate();
     void Deactivate();
 };

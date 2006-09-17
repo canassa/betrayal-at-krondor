@@ -31,7 +31,7 @@ class PopUpWidget: public ContainerWidget {
   public:
     PopUpWidget(const int x, const int y, const int w, const int h);
     virtual ~PopUpWidget();
-    void Draw(Video *video);
+    void Draw();
 };
 
 #endif

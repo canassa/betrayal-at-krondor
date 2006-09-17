@@ -42,27 +42,27 @@ DialogWindow::~DialogWindow()
 }
 
 void
-DialogWindow::Draw(Video *video)
+DialogWindow::Draw()
 {
-  panel->Draw(video);
-  MousePointerManager::GetInstance()->GetCurrentPointer()->Draw(video);
-  video->Refresh();
+  panel->Draw();
+  MousePointerManager::GetInstance()->GetCurrentPointer()->Draw();
+  MediaToolkit::GetInstance()->GetVideo()->Refresh();
 }
 
 void
-DialogWindow::FadeIn(Palette* pal, MediaToolkit *media)
+DialogWindow::FadeIn(Palette* pal)
 {
-  panel->Draw(media->GetVideo());
-  MousePointerManager::GetInstance()->GetCurrentPointer()->Draw(media->GetVideo());
-  pal->FadeIn(media, 0, VIDEO_COLORS, 64, 5);
+  panel->Draw();
+  MousePointerManager::GetInstance()->GetCurrentPointer()->Draw();
+  pal->FadeIn(0, VIDEO_COLORS, 64, 5);
 }
 
 void
-DialogWindow::FadeOut(Palette* pal, MediaToolkit *media)
+DialogWindow::FadeOut(Palette* pal)
 {
-  panel->Draw(media->GetVideo());
-  MousePointerManager::GetInstance()->GetCurrentPointer()->Draw(media->GetVideo());
-  pal->FadeOut(media, 0, VIDEO_COLORS, 64, 5);
+  panel->Draw();
+  MousePointerManager::GetInstance()->GetCurrentPointer()->Draw();
+  pal->FadeOut(0, VIDEO_COLORS, 64, 5);
 }
 
 void
@@ -90,13 +90,13 @@ DialogWindow::RightClickWidget(const bool toggle, const int x, const int y)
 }
 
 void
-DialogWindow::SelectNextWidget(Video *video)
+DialogWindow::SelectNextWidget()
 {
-  panel->NextWidget(video);
+  panel->NextWidget();
 }
 
 void
-DialogWindow::SelectPreviousWidget(Video *video)
+DialogWindow::SelectPreviousWidget()
 {
-  panel->PreviousWidget(video);
+  panel->PreviousWidget();
 }

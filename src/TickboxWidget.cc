@@ -29,9 +29,8 @@ TickboxWidget::~TickboxWidget()
 }
 
 void
-TickboxWidget::Draw(Video *video)
+TickboxWidget::Draw()
 {
-  video = video;
 }
 
 void

@@ -34,7 +34,7 @@ class HotspotWidget
     virtual ~HotspotWidget();
     int GetAction() const;
     void GenerateActionEvent(const int a);
-    void Focus(Video *video);
+    void Focus();
     void LeftClick(const bool toggle);
     void RightClick(const bool toggle);
 };

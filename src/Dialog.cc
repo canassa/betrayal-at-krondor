@@ -221,7 +221,7 @@ Dialog::Enter()
   try {
     window = new DialogWindow(widgetRes);
     MediaToolkit::GetInstance()->GetVideo()->Clear();
-    window->FadeIn(palette->GetPalette(), MediaToolkit::GetInstance());
+    window->FadeIn(palette->GetPalette());
   } catch (Exception &e) {
     e.Print("Dialog::Enter");
     throw;
@@ -232,7 +232,7 @@ void
 Dialog::Leave()
 {
   try {
-    window->FadeOut(palette->GetPalette(), MediaToolkit::GetInstance());
+    window->FadeOut(palette->GetPalette());
     MediaToolkit::GetInstance()->GetVideo()->Clear();
     delete window;
     window = 0;
@@ -268,7 +268,7 @@ Dialog::Update(const UpdateEvent& ue)
 {
   ue.GetTicks();
   if (running) {
-    window->Draw(MediaToolkit::GetInstance()->GetVideo());
+    window->Draw();
   }
 }
 
@@ -386,12 +386,12 @@ OptionsDialog::KeyPressed(const KeyboardEvent& kbe)
     case KEY_DOWN:
     case KEY_TAB:
       if (running) {
-        window->SelectNextWidget(MediaToolkit::GetInstance()->GetVideo());
+        window->SelectNextWidget();
       }
       break;
     case KEY_UP:
       if (running) {
-        window->SelectPreviousWidget(MediaToolkit::GetInstance()->GetVideo());
+        window->SelectPreviousWidget();
       }
       break;
     case KEY_RETURN:

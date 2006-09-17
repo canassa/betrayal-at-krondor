@@ -31,7 +31,7 @@ class TickboxWidget: public Widget {
   public:
     TickboxWidget(const int x, const int y, const int w, const int h);
     virtual ~TickboxWidget();
-    void Draw(Video *video);
+    void Draw();
     void Focus(int x, int y);
     void Activate(int x, int y);
 };

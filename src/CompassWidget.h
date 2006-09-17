@@ -38,7 +38,7 @@ class CompassWidget
     virtual ~CompassWidget();
     void SetOrientation(Orientation *orient);
     void SetImage(Image *image);
-    void Draw(Video *video);
+    void Draw();
 };
 
 #endif

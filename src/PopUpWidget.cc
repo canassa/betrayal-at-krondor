@@ -17,6 +17,7 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "MediaToolkit.h"
 #include "PopUpWidget.h"
 
 PopUpWidget::PopUpWidget(const int x, const int y, const int w, const int h)
@@ -29,8 +30,9 @@ PopUpWidget::~PopUpWidget()
 }
 
 void
-PopUpWidget::Draw(Video *video)
+PopUpWidget::Draw()
 {
+  Video *video = MediaToolkit::GetInstance()->GetVideo();
   video->FillRect(xpos + 1, ypos + 1, width - 2, height - 2, POPUP_COLOR);
   video->DrawVLine(xpos, ypos, height, SHADOW_COLOR);
   video->DrawHLine(xpos + 1, ypos, width - 1, LIGHT_COLOR);
@@ -38,5 +40,5 @@ PopUpWidget::Draw(Video *video)
   video->DrawHLine(xpos + 1, ypos + height - 1, width - 1, SHADOW_COLOR);
   video->DrawVLine(xpos - 1, ypos + 1, height, SHADOW_COLOR);
   video->DrawHLine(xpos, ypos + height, width - 1, SHADOW_COLOR);
-  DrawWidgets(video);
+  DrawChildWidgets();
 }

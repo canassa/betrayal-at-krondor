@@ -66,43 +66,43 @@ ContainerWidget::RemoveActiveWidget(ActiveWidget *aw)
 }
 
 void
-ContainerWidget::DrawWidgets(Video *video)
+ContainerWidget::DrawChildWidgets()
 {
   for (std::list<Widget *>::iterator it = widgets.begin(); it != widgets.end(); ++it) {
-    (*it)->Draw(video);
+    (*it)->Draw();
   }
   for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-    (*it)->Draw(video);
+    (*it)->Draw();
   }
 }
 
 void
-ContainerWidget::Draw(Video *video)
+ContainerWidget::Draw()
 {
-  DrawWidgets(video);
+  DrawChildWidgets();
 }
 
 void
-ContainerWidget::NextWidget(Video *video)
+ContainerWidget::NextWidget()
 {
   if (activeWidgets.size() > 0) {
     currentActiveWidget++;
     if (currentActiveWidget == activeWidgets.end()) {
       currentActiveWidget = activeWidgets.begin();
     }
-    (*currentActiveWidget)->Focus(video);
+    (*currentActiveWidget)->Focus();
   }
 }
 
 void
-ContainerWidget::PreviousWidget(Video *video)
+ContainerWidget::PreviousWidget()
 {
   if (activeWidgets.size() > 0) {
     if (currentActiveWidget == activeWidgets.begin()) {
       currentActiveWidget = activeWidgets.end();
     }
     currentActiveWidget--;
-    (*currentActiveWidget)->Focus(video);
+    (*currentActiveWidget)->Focus();
   }
 }
 

@@ -81,7 +81,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
     currSound = 0;
     soundMap.clear();
     paletteSlot[currPalette] = new PaletteResource;
-    paletteSlot[currPalette]->GetPalette()->Retrieve(media->GetVideo(), 0, VIDEO_COLORS);
+    paletteSlot[currPalette]->GetPalette()->Retrieve(0, VIDEO_COLORS);
     paletteActivated = false;
 
     MousePointerManager::GetInstance()->GetCurrentPointer()->SetVisible(false);
@@ -99,7 +99,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
     media->RemoveUpdateListener(this);
     MousePointerManager::GetInstance()->GetCurrentPointer()->SetVisible(true);
 
-    paletteSlot[currPalette]->GetPalette()->FadeOut(media, 0, VIDEO_COLORS, 64, 5);
+    paletteSlot[currPalette]->GetPalette()->FadeOut(0, VIDEO_COLORS, 64, 5);
     if (screenSlot) {
       delete screenSlot;
     }
@@ -186,17 +186,17 @@ MoviePlayer::Update(const UpdateEvent& ue) {
         if (!backgroundImage) {
           backgroundImage = new Image(VIDEO_WIDTH, VIDEO_HEIGHT);
         }
-        backgroundImage->Read(media->GetVideo(), 0, 0);
+        backgroundImage->Read(0, 0);
         break;
       case DRAW_BACKGROUND:
         if (backgroundImage) {
-          backgroundImage->Draw(media->GetVideo(), 0, 0);
+          backgroundImage->Draw(0, 0);
           backgroundImageDrawn = true;
         }
         break;
       case END_OF_PAGE:
         if (!paletteActivated) {
-          paletteSlot[currPalette]->GetPalette()->Activate(media->GetVideo(), 0, VIDEO_COLORS);
+          paletteSlot[currPalette]->GetPalette()->Activate(0, VIDEO_COLORS);
           paletteActivated = true;
         }
         media->GetVideo()->Refresh();
@@ -224,21 +224,21 @@ MoviePlayer::Update(const UpdateEvent& ue) {
         currFrame = mt->data[1];
         break;
       case FADE_OUT:
-        paletteSlot[currPalette]->GetPalette()->FadeOut(media, mt->data[0], mt->data[1], 64 << (mt->data[2] & 0x0f), 2 << mt->data[3]);
+        paletteSlot[currPalette]->GetPalette()->FadeOut(mt->data[0], mt->data[1], 64 << (mt->data[2] & 0x0f), 2 << mt->data[3]);
         media->GetVideo()->Clear();
         paletteActivated = true;
         break;
       case FADE_IN:
-        paletteSlot[currPalette]->GetPalette()->FadeIn(media, mt->data[0], mt->data[1], 64 << (mt->data[2] & 0x0f), 2 << mt->data[3]);
+        paletteSlot[currPalette]->GetPalette()->FadeIn(mt->data[0], mt->data[1], 64 << (mt->data[2] & 0x0f), 2 << mt->data[3]);
         paletteActivated = true;
         break;
       case DRAW_WINDOW:
         if ((backgroundImage) && (!backgroundImageDrawn)) {
-          backgroundImage->Draw(media->GetVideo(), 0, 0);
+          backgroundImage->Draw(0, 0);
           backgroundImageDrawn = true;
         }
         if (imageSlot[currImage]) {
-          imageSlot[currImage]->GetImage(currFrame)->Draw(media->GetVideo(), mt->data[0], mt->data[1], 0, 0, mt->data[2], mt->data[3]);
+          imageSlot[currImage]->GetImage(currFrame)->Draw(mt->data[0], mt->data[1], 0, 0, mt->data[2], mt->data[3]);
         }
         break;
       case DRAW_SPRITE3:
@@ -258,15 +258,15 @@ MoviePlayer::Update(const UpdateEvent& ue) {
         }
       case DRAW_SPRITE0:
         if ((backgroundImage) && (!backgroundImageDrawn)) {
-          backgroundImage->Draw(media->GetVideo(), 0, 0);
+          backgroundImage->Draw(0, 0);
           backgroundImageDrawn = true;
         }
         if ((savedImage) && (!savedImageDrawn)) {
-          savedImage->Draw(media->GetVideo(), 0, 0);
+          savedImage->Draw(0, 0);
           savedImageDrawn = true;
         }
         if (imageSlot[mt->data[3]]) {
-          imageSlot[mt->data[3]]->GetImage(mt->data[2])->Draw(media->GetVideo(), mt->data[0], mt->data[1], 0);
+          imageSlot[mt->data[3]]->GetImage(mt->data[2])->Draw(mt->data[0], mt->data[1], 0);
         }
         break;
       case READ_IMAGE:
@@ -274,7 +274,7 @@ MoviePlayer::Update(const UpdateEvent& ue) {
           delete savedImage;
         }
         savedImage = new Image(mt->data[2], mt->data[3]);
-        savedImage->Read(media->GetVideo(), mt->data[0], mt->data[1]);
+        savedImage->Read(mt->data[0], mt->data[1]);
         savedImageDrawn = false;
         break;
       case LOAD_SOUNDRESOURCE:
@@ -332,7 +332,7 @@ MoviePlayer::Update(const UpdateEvent& ue) {
         mt->name[mt->name.length() - 1] = 'X';
         screenSlot = new ScreenResource;
         FileManager::GetInstance()->Load(screenSlot, mt->name);
-        screenSlot->GetImage()->Draw(media->GetVideo(), 0, 0);
+        screenSlot->GetImage()->Draw(0, 0);
         break;
       case LOAD_IMAGE:
         if (imageSlot[currImage]) {

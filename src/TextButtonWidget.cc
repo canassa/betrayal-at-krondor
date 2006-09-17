@@ -17,6 +17,7 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "MediaToolkit.h"
 #include "TextButtonWidget.h"
 
 TextButtonWidget::TextButtonWidget(const int x, const int y, const int w, const int h, const int a)
@@ -40,15 +41,17 @@ TextButtonWidget::SetLabel(const std::string& s, FontResource* f)
 }
 
 void
-TextButtonWidget::Draw(Video *video)
+TextButtonWidget::Draw()
 {
   if (IsPressed()) {
+    Video *video = MediaToolkit::GetInstance()->GetVideo();
     video->FillRect(xpos + 1, ypos + 1, width - 2, height - 2, BUTTON_COLOR_PRESSED);
     video->DrawVLine(xpos, ypos, height, LIGHT_COLOR);
     video->DrawHLine(xpos + 1, ypos, width - 1, SHADOW_COLOR);
     video->DrawVLine(xpos + width - 1, ypos + 1, height - 2, SHADOW_COLOR);
     video->DrawHLine(xpos + 1, ypos + height - 1, width - 1, LIGHT_COLOR);
   } else {
+    Video *video = MediaToolkit::GetInstance()->GetVideo();
     video->FillRect(xpos + 1, ypos + 1, width - 2, height - 2, BUTTON_COLOR_NORMAL);
     video->DrawVLine(xpos, ypos, height, SHADOW_COLOR);
     video->DrawHLine(xpos + 1, ypos, width - 1, LIGHT_COLOR);
@@ -68,7 +71,7 @@ TextButtonWidget::Draw(Video *video)
       label->SetColor(TEXT_COLOR_DISABLED);
       label->SetShadow(NO_SHADOW);
     }
-    label->Draw(video);
+    label->Draw();
   }
 }
 

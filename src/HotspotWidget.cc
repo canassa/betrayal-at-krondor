@@ -45,9 +45,8 @@ HotspotWidget::GenerateActionEvent(const int a)
 }
 
 void
-HotspotWidget::Focus(Video *video)
+HotspotWidget::Focus()
 {
-  video = video;
 }
 
 void

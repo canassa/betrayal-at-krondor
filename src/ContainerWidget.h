@@ -35,17 +35,17 @@ class ContainerWidget
     std::list<ActiveWidget *> activeWidgets;
     std::list<ActiveWidget *>::iterator currentActiveWidget;
   protected:
-    void DrawWidgets(Video *video);
+    void DrawChildWidgets();
   public:
     ContainerWidget(const int x, const int y, const int w, const int h);
     virtual ~ContainerWidget();
-    virtual void Draw(Video *video);
+    void Draw();
     void AddWidget(Widget *w);
     void RemoveWidget(Widget *w);
     void AddActiveWidget(ActiveWidget *aw);
     void RemoveActiveWidget(ActiveWidget *aw);
-    void NextWidget(Video *video);
-    void PreviousWidget(Video *video);
+    void NextWidget();
+    void PreviousWidget();
     void LeftClickWidget(const bool toggle);
     void RightClickWidget(const bool toggle);
     void LeftClickWidget(const bool toggle, const int x, const int y);

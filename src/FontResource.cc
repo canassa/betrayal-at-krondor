@@ -19,6 +19,7 @@
 
 #include "Exception.h"
 #include "FontResource.h"
+#include "MediaToolkit.h"
 
 FontResource::FontResource()
 : TaggedResource()
@@ -116,8 +117,9 @@ FontResource::Load(FileBuffer *buffer)
 }
 
 void
-FontResource::DrawChar(Video *video, const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color, const bool italic)
+FontResource::DrawChar(const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color, const bool italic)
 {
+  Video *video = MediaToolkit::GetInstance()->GetVideo();
   if ((int)(ch - first) >= 0) {
     if (italic) {
       video->DrawGlyphItalic(x, y, fontGlyphs[ch - first]->width, height, color, fontGlyphs[ch - first]->data);
@@ -126,4 +128,3 @@ FontResource::DrawChar(Video *video, const unsigned int x, const unsigned int y,
     }
   }
 }
-

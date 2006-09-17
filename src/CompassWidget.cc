@@ -48,15 +48,15 @@ CompassWidget::SetImage(Image *image)
 }
 
 void
-CompassWidget::Draw(Video *video)
+CompassWidget::Draw()
 {
   if (compassImage) {
     int heading = orientation->GetHeading();
     int imagewidth = compassImage->GetWidth();
-    compassImage->Draw(video, COMPASS_WIDGET_XPOS - heading, COMPASS_WIDGET_YPOS,
+    compassImage->Draw(COMPASS_WIDGET_XPOS - heading, COMPASS_WIDGET_YPOS,
                        COMPASS_WIDGET_XPOS, COMPASS_WIDGET_YPOS, COMPASS_WIDGET_WIDTH, COMPASS_WIDGET_HEIGHT);
     if ((imagewidth - heading) < COMPASS_WIDGET_WIDTH) {
-      compassImage->Draw(video, COMPASS_WIDGET_XPOS - heading + imagewidth, COMPASS_WIDGET_YPOS,
+      compassImage->Draw(COMPASS_WIDGET_XPOS - heading + imagewidth, COMPASS_WIDGET_YPOS,
                          COMPASS_WIDGET_XPOS, COMPASS_WIDGET_YPOS, COMPASS_WIDGET_WIDTH, COMPASS_WIDGET_HEIGHT);
     }
   }

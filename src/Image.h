@@ -34,9 +34,10 @@ class Image {
     int width;
     int height;
     uint8_t *pixel;
+    Video *video;
   public:
     Image(const int w, const int h);
-    virtual ~Image();
+    ~Image();
     int GetWidth() const;
     int GetHeight() const;
     unsigned int GetSize() const;
@@ -46,10 +47,10 @@ class Image {
     void SetPixels(uint8_t *data, unsigned int size = 0);
     void Fill(const uint8_t color);
     void Load(FileBuffer *buffer, const unsigned int flags);
-    void Read(Video *video, const int x, const int y);
-    void Draw(Video *video, const int x, const int y);
-    void Draw(Video *video, const int x, const int y, const int xoff, const int yoff, const int w, const int h);
-    void Draw(Video *video, const int x, const int y, const uint8_t transparent);
+    void Read(const int x, const int y);
+    void Draw(const int x, const int y);
+    void Draw(const int x, const int y, const int xoff, const int yoff, const int w, const int h);
+    void Draw(const int x, const int y, const uint8_t transparent);
 };
 
 #endif

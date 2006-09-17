@@ -18,6 +18,7 @@
  */
 
 #include "ButtonWidget.h"
+#include "MediaToolkit.h"
 #include "MousePointerManager.h"
 
 ButtonWidget::ButtonWidget(const int x, const int y, const int w, const int h, const int a)
@@ -62,9 +63,9 @@ ButtonWidget::IsPressed() const
 }
 
 void
-ButtonWidget::Focus(Video *video)
+ButtonWidget::Focus()
 {
-  video->SetPointerPosition(xpos + width / 2, ypos + height / 2);
+  MediaToolkit::GetInstance()->GetVideo()->SetPointerPosition(xpos + width / 2, ypos + height / 2);
 }
 
 void

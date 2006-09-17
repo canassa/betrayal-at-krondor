@@ -45,14 +45,14 @@ TextArea::SetColor(const unsigned int c)
 }
 
 void
-TextArea::Draw(Video *video, const unsigned int x, const unsigned int y, const bool italic)
+TextArea::Draw(const unsigned int x, const unsigned int y, const bool italic)
 {
   unsigned int i = 0;
   unsigned int h = 0;
   while ((i < text.length()) && (h + font.GetHeight() < height)) {
     unsigned int w = 0;
     while ((i < text.length()) && (w + font.GetWidth(text[i] - font.GetFirst()) < width)) {
-      font.DrawChar(video, x + w, y + h, text[i], color, italic);
+      font.DrawChar(x + w, y + h, text[i], color, italic);
       w += font.GetWidth((unsigned int)text[i] - font.GetFirst());
       i++;
     }
