@@ -36,19 +36,20 @@ TestApplication::TestApplication()
 , ttm()
 , wld()
 {
-  snd = SoundResource::GetInstance();
-  MediaToolkit::GetInstance()->GetVideo()->SetScaling(2);
-  MediaToolkit::GetInstance()->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
+  MediaToolkit *media = MediaToolkit::GetInstance();
+  media->GetVideo()->SetScaling(2);
+  media->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
   MousePointerManager::GetInstance()->AddPointer("POINTER.BMX");
   MousePointerManager::GetInstance()->Register();
-  MediaToolkit::GetInstance()->AddKeyboardListener(this);
-  MediaToolkit::GetInstance()->AddTimerListener(this);
+  media->AddKeyboardListener(this);
+  media->AddTimerListener(this);
 }
 
 TestApplication::~TestApplication()
 {
-  MediaToolkit::GetInstance()->RemoveKeyboardListener(this);
-  MediaToolkit::GetInstance()->RemoveTimerListener(this);
+  MediaToolkit *media = MediaToolkit::GetInstance();
+  media->RemoveKeyboardListener(this);
+  media->RemoveTimerListener(this);
   MousePointerManager::CleanUp();
   MediaToolkit::CleanUp();
   SoundResource::CleanUp();
@@ -100,14 +101,15 @@ void
 TestApplication::ShowImage(const std::string& name)
 {
   try {
+    MediaToolkit *media = MediaToolkit::GetInstance();
     FileManager::GetInstance()->Load(&img, name);
     for (unsigned int i = 0; i < img.GetNumImages(); i++) {
-      MediaToolkit::GetInstance()->GetVideo()->Clear();
+      media->GetVideo()->Clear();
       img.GetImage(i)->Draw(0, 0);
-      MediaToolkit::GetInstance()->GetVideo()->Refresh();
-      MediaToolkit::GetInstance()->GetClock()->StartTimer(TMR_TEST_APP, 2500);
-      MediaToolkit::GetInstance()->WaitEventLoop();
-      MediaToolkit::GetInstance()->GetClock()->CancelTimer(TMR_TEST_APP);
+      media->GetVideo()->Refresh();
+      media->GetClock()->StartTimer(TMR_TEST_APP, 2500);
+      media->WaitEventLoop();
+      media->GetClock()->CancelTimer(TMR_TEST_APP);
     }
   } catch (Exception &e) {
     e.Print("TestApplication::ShowImage");
@@ -118,13 +120,14 @@ void
 TestApplication::ShowScreen(const std::string& name)
 {
   try {
+    MediaToolkit *media = MediaToolkit::GetInstance();
     FileManager::GetInstance()->Load(&scr, name);
-    MediaToolkit::GetInstance()->GetVideo()->Clear();
+    media->GetVideo()->Clear();
     scr.GetImage()->Draw(0, 0);
-    MediaToolkit::GetInstance()->GetVideo()->Refresh();
-    MediaToolkit::GetInstance()->GetClock()->StartTimer(TMR_TEST_APP, 5000);
-    MediaToolkit::GetInstance()->WaitEventLoop();
-    MediaToolkit::GetInstance()->GetClock()->CancelTimer(TMR_TEST_APP);
+    media->GetVideo()->Refresh();
+    media->GetClock()->StartTimer(TMR_TEST_APP, 5000);
+    media->WaitEventLoop();
+    media->GetClock()->CancelTimer(TMR_TEST_APP);
   } catch (Exception &e) {
     e.Print("TestApplication::ShowScreen");
   }
@@ -134,8 +137,9 @@ void
 TestApplication::DrawFont(const std::string& name)
 {
   try {
+    MediaToolkit *media = MediaToolkit::GetInstance();
     FileManager::GetInstance()->Load(&fnt, name);
-    MediaToolkit::GetInstance()->GetVideo()->Clear();
+    media->GetVideo()->Clear();
     TextArea ta1(280, 180, fnt);
     ta1.SetText("The quick brown fox jumped over the lazy dog.");
     ta1.SetColor(15);
@@ -144,10 +148,10 @@ TestApplication::DrawFont(const std::string& name)
     ta2.SetText("The quick brown fox jumped over the lazy dog.");
     ta2.SetColor(15);
     ta2.Draw(10, 50, true);
-    MediaToolkit::GetInstance()->GetVideo()->Refresh();
-    MediaToolkit::GetInstance()->GetClock()->StartTimer(TMR_TEST_APP, 5000);
-    MediaToolkit::GetInstance()->WaitEventLoop();
-    MediaToolkit::GetInstance()->GetClock()->CancelTimer(TMR_TEST_APP);
+    media->GetVideo()->Refresh();
+    media->GetClock()->StartTimer(TMR_TEST_APP, 5000);
+    media->WaitEventLoop();
+    media->GetClock()->CancelTimer(TMR_TEST_APP);
   } catch (Exception &e) {
     e.Print("TestApplication::DrawFont");
   }
@@ -169,12 +173,13 @@ void
 TestApplication::PlaySound(const unsigned int index)
 {
   try {
-    SoundData data = snd->GetSoundData(index);
+    MediaToolkit *media = MediaToolkit::GetInstance();
+    SoundData data = SoundResource::GetInstance()->GetSoundData(index);
     unsigned int channel = MediaToolkit::GetInstance()->GetAudio()->PlaySound(data.sounds[0]->GetSamples());
-    MediaToolkit::GetInstance()->GetClock()->StartTimer(TMR_TEST_APP, (index < 1000 ? 5000 : 30000));
-    MediaToolkit::GetInstance()->WaitEventLoop();
-    MediaToolkit::GetInstance()->GetClock()->CancelTimer(TMR_TEST_APP);
-    MediaToolkit::GetInstance()->GetAudio()->StopSound(channel);
+    media->GetClock()->StartTimer(TMR_TEST_APP, (index < 1000 ? 5000 : 30000));
+    media->WaitEventLoop();
+    media->GetClock()->CancelTimer(TMR_TEST_APP);
+    media->GetAudio()->StopSound(channel);
   } catch (Exception &e) {
     e.Print("TestApplication::PlaySound");
   }
@@ -184,22 +189,23 @@ void
 TestApplication::WalkWorld(const std::string& zone, const std::string& tile)
 {
   try {
+    MediaToolkit *media = MediaToolkit::GetInstance();
     FileManager::GetInstance()->Load(&img, "Z" + zone + "H.BMX");
     FileManager::GetInstance()->Load(&wld, "T" + zone + tile + ".WLD");
-    MediaToolkit::GetInstance()->GetVideo()->DrawLine(10, 10, 200, 150, 1);
-    MediaToolkit::GetInstance()->GetVideo()->DrawLine(240, 20, 20, 160, 2);
-    MediaToolkit::GetInstance()->GetVideo()->DrawLine(300, 180, 190, 30, 3);
-    MediaToolkit::GetInstance()->GetVideo()->DrawLine(40, 170, 250, 40, 4);
+    media->GetVideo()->DrawLine(10, 10, 200, 150, 1);
+    media->GetVideo()->DrawLine(240, 20, 20, 160, 2);
+    media->GetVideo()->DrawLine(300, 180, 190, 30, 3);
+    media->GetVideo()->DrawLine(40, 170, 250, 40, 4);
     int x[3] = {100, 150, 120};
     int y[3] = {60, 50, 120};
-    MediaToolkit::GetInstance()->GetVideo()->DrawPolygon(x, y, 3, 5);
+    media->GetVideo()->DrawPolygon(x, y, 3, 5);
     int xx[6] = {100, 100, 160, 280, 280, 200};
     int yy[6] = {90, 150, 190, 90, 150, 90};
-    MediaToolkit::GetInstance()->GetVideo()->FillPolygon(xx, yy, 6, 6);
-    MediaToolkit::GetInstance()->GetVideo()->Refresh();
-    MediaToolkit::GetInstance()->GetClock()->StartTimer(TMR_TEST_APP, 5000);
-    MediaToolkit::GetInstance()->WaitEventLoop();
-    MediaToolkit::GetInstance()->GetClock()->CancelTimer(TMR_TEST_APP);
+    media->GetVideo()->FillPolygon(xx, yy, 6, 6);
+    media->GetVideo()->Refresh();
+    media->GetClock()->StartTimer(TMR_TEST_APP, 5000);
+    media->WaitEventLoop();
+    media->GetClock()->CancelTimer(TMR_TEST_APP);
   } catch (Exception &e) {
     e.Print("TestApplication::PlayMovie");
   }
