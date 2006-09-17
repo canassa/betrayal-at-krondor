@@ -28,7 +28,6 @@
 #endif
 
 #include "EventListener.h"
-#include "MediaToolkit.h"
 #include "MousePointer.h"
 
 static const unsigned int NORMAL_POINTER = 0;
@@ -48,7 +47,7 @@ class MousePointerManager
     ~MousePointerManager();
     static MousePointerManager* GetInstance();
     static void CleanUp();
-    void Register(MediaToolkit *media);
+    void Register();
     MousePointer* GetCurrentPointer();
     void SetCurrentPointer(unsigned int n);
     void AddPointer(const std::string& resname);

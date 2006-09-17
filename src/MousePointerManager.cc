@@ -18,6 +18,7 @@
  */
 
 #include "ImageResource.h"
+#include "MediaToolkit.h"
 #include "MousePointerManager.h"
 
 MousePointerManager* MousePointerManager::instance = 0;
@@ -55,8 +56,9 @@ MousePointerManager::CleanUp()
 }
 
 void
-MousePointerManager::Register(MediaToolkit *media)
+MousePointerManager::Register()
 {
+  MediaToolkit *media = MediaToolkit::GetInstance();
   media->AddMouseButtonListener(this);
   media->AddMouseMotionListener(this);
 }

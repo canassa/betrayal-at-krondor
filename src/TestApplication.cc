@@ -36,12 +36,11 @@ TestApplication::TestApplication()
 , ttm()
 , wld()
 {
-  MediaToolkit* media = MediaToolkit::GetInstance();
   snd = SoundResource::GetInstance();
-  media->GetVideo()->SetScaling(2);
-  media->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
+  MediaToolkit::GetInstance()->GetVideo()->SetScaling(2);
+  MediaToolkit::GetInstance()->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
   MousePointerManager::GetInstance()->AddPointer("POINTER.BMX");
-  MousePointerManager::GetInstance()->Register(media);
+  MousePointerManager::GetInstance()->Register();
   MediaToolkit::GetInstance()->AddKeyboardListener(this);
   MediaToolkit::GetInstance()->AddTimerListener(this);
 }
