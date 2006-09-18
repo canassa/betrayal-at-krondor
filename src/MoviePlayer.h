@@ -37,7 +37,6 @@ class MoviePlayer
 : public KeyboardEventListener
 , public MouseButtonEventListener
 , public TimerEventListener
-, public UpdateEventListener
 {
   private:
     std::vector<MovieTag *> *tagVec;
@@ -60,6 +59,7 @@ class MoviePlayer
     bool playing;
     bool looped;
     bool delayed;
+    void PlayTag();
   public:
     MoviePlayer();
     ~MoviePlayer();
@@ -69,7 +69,6 @@ class MoviePlayer
     void MouseButtonPressed(const MouseButtonEvent& mbe);
     void MouseButtonReleased(const MouseButtonEvent& mbe);
     void TimerExpired(const TimerEvent& te);
-    void Update(const UpdateEvent& ue);
 };
 
 #endif
