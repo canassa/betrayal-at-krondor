@@ -273,6 +273,11 @@ Dialog::Update(const UpdateEvent& ue)
 }
 
 void
+Dialog::FadeComplete()
+{
+}
+
+void
 Dialog::ActionPerformed(const ActionEvent& ae)
 {
   action = ae.GetAction();

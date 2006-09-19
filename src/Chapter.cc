@@ -82,8 +82,10 @@ Chapter::ReadBook(const int scene)
     filenameStream << "C" << number << scene << ".BOK";
     FileManager::GetInstance()->Load(&bok, filenameStream.str());
     MediaToolkit::GetInstance()->AddKeyboardListener(this);
+    MediaToolkit::GetInstance()->AddMouseButtonListener(this);
     MediaToolkit::GetInstance()->AddTimerListener(this);
     MediaToolkit::GetInstance()->RemoveTimerListener(this);
+    MediaToolkit::GetInstance()->RemoveMouseButtonListener(this);
     MediaToolkit::GetInstance()->RemoveKeyboardListener(this);
   } catch (Exception &e) {
     e.Print("Chapter::ReadBook");
@@ -166,4 +168,9 @@ Chapter::TimerExpired(const TimerEvent &te)
   if (te.GetID() == TMR_CHAPTER) {
     MediaToolkit::GetInstance()->TerminateEventLoop();
   }
+}
+
+void
+Chapter::FadeComplete()
+{
 }

@@ -129,3 +129,11 @@ ActionEvent::GetAction() const
 {
   return action;
 }
+
+FadeCompleteEvent::FadeCompleteEvent()
+{
+}
+
+FadeCompleteEvent::~FadeCompleteEvent()
+{
+}

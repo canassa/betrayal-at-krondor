@@ -178,6 +178,7 @@ static const unsigned long TMR_TEST_APP     = 1;
 static const unsigned long TMR_GAME_APP     = 2;
 static const unsigned long TMR_CHAPTER      = 3;
 static const unsigned long TMR_MOVIE_PLAYER = 4;
+static const unsigned long TMR_PALETTE      = 5;
 
 
 typedef enum
@@ -246,6 +247,12 @@ class ActionEvent {
     ActionEvent(const int a);
     virtual ~ActionEvent();
     int GetAction() const;
+};
+
+class FadeCompleteEvent {
+  public:
+    FadeCompleteEvent();
+    virtual ~FadeCompleteEvent();
 };
 
 #endif

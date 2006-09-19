@@ -90,7 +90,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
 
     media->ClearEvents();
     PlayTag();
-    media->PollEventLoop();
+    media->WaitEventLoop();
 
     media->RemoveKeyboardListener(this);
     media->RemoveMouseButtonListener(this);
@@ -374,4 +374,9 @@ MoviePlayer::TimerExpired(const TimerEvent& te) {
   if (te.GetID() == TMR_MOVIE_PLAYER) {
     PlayTag();
   }
+}
+
+void
+MoviePlayer::FadeComplete() {
+  PlayTag();
 }
