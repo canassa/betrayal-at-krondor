@@ -239,7 +239,7 @@ GameStateChapter::CleanUp()
 void
 GameStateChapter::Execute()
 {
-  GameApplication::GetInstance()->StartChapter();
+  GameApplication::GetInstance()->GetGame()->GetChapter()->Start();
   ChangeState(GameStateWorld::GetInstance());
 }
 

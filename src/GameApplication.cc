@@ -147,19 +147,6 @@ GameApplication::PlayIntro()
 }
 
 void
-GameApplication::StartChapter()
-{
-  try {
-    game->GetChapter()->PlayIntro();
-    game->GetChapter()->ReadBook(1);
-    game->GetChapter()->PlayScene(1);
-    game->GetChapter()->ShowMap();
-  } catch (Exception &e) {
-    e.Print("GameApplication::StartChapter");
-  }
-}
-
-void
 GameApplication::StartNewGame()
 {
   if (game) {

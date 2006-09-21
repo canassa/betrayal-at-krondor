@@ -51,7 +51,6 @@ class GameApplication
     Game* GetGame();
     GameState* GetPrevState();
     void PlayIntro();
-    void StartChapter();
     void StartNewGame();
     void QuitGame();
     void Run();

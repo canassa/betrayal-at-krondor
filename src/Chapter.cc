@@ -119,6 +119,17 @@ Chapter::ShowMap()
 }
 
 void
+Chapter::Start(const bool maponly)
+{
+  if (!maponly) {
+    PlayIntro();
+    ReadBook(1);
+    PlayScene(1);
+  }
+  ShowMap();
+}
+
+void
 Chapter::KeyPressed(const KeyboardEvent &kbe)
 {
   switch (kbe.GetKey()) {

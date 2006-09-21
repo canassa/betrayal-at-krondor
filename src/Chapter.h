@@ -34,13 +34,14 @@ class Chapter
 {
   private:
     int number;
-  public:
-    Chapter(const int n);
-    ~Chapter();
     void PlayIntro();
     void PlayScene(const int scene);
     void ReadBook(const int scene);
     void ShowMap();
+  public:
+    Chapter(const int n);
+    ~Chapter();
+    void Start(const bool maponly = false);
     void KeyPressed(const KeyboardEvent &kbe);
     void KeyReleased(const KeyboardEvent &kbe);
     void MouseButtonPressed(const MouseButtonEvent &mbe);
