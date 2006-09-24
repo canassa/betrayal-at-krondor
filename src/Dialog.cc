@@ -223,7 +223,6 @@ Dialog::Enter()
     MediaToolkit* media = MediaToolkit::GetInstance();
     media->AddKeyboardListener(this);
     media->AddMouseButtonListener(this);
-    media->AddUpdateListener(this);
     media->GetVideo()->Clear();
     window->FadeIn(palette->GetPalette());
   } catch (Exception &e) {
@@ -239,7 +238,6 @@ Dialog::Leave()
     window->FadeOut(palette->GetPalette());
     MediaToolkit* media = MediaToolkit::GetInstance();
     media->GetVideo()->Clear();
-    media->RemoveUpdateListener(this);
     media->RemoveMouseButtonListener(this);
     media->RemoveKeyboardListener(this);
     delete window;
@@ -255,8 +253,10 @@ Dialog::Execute()
 {
   try {
     running = true;
-    MediaToolkit::GetInstance()->PollEventLoop();
-    running = false;
+    while (running) {
+      MediaToolkit::GetInstance()->PollEvents();
+      window->Draw();
+    }
     return action;
   } catch (Exception &e) {
     e.Print("Dialog::Execute");
@@ -265,17 +265,10 @@ Dialog::Execute()
 }
 
 void
-Dialog::Update(const UpdateEvent& ue)
-{
-  ue.GetTicks();
-  window->Draw();
-}
-
-void
 Dialog::ActionPerformed(const ActionEvent& ae)
 {
   action = ae.GetAction();
-  MediaToolkit::GetInstance()->TerminateEventLoop();
+  running = false;
 }
 
 void
@@ -332,23 +325,23 @@ GameDialog::KeyPressed(const KeyboardEvent& kbe)
   switch (kbe.GetKey()) {
     case KEY_ESCAPE:
       action = ACT_ESCAPE;
-      MediaToolkit::GetInstance()->TerminateEventLoop();
+      running = false;
       break;
     case KEY_UP:
       action = ACT_UP;
-      MediaToolkit::GetInstance()->TerminateEventLoop();
+      running = false;
       break;
     case KEY_DOWN:
       action = ACT_DOWN;
-      MediaToolkit::GetInstance()->TerminateEventLoop();
+      running = false;
       break;
     case KEY_LEFT:
       action = ACT_LEFT;
-      MediaToolkit::GetInstance()->TerminateEventLoop();
+      running = false;
       break;
     case KEY_RIGHT:
       action = ACT_RIGHT;
-      MediaToolkit::GetInstance()->TerminateEventLoop();
+      running = false;
       break;
     default:
       break;
@@ -380,7 +373,7 @@ OptionsDialog::KeyPressed(const KeyboardEvent& kbe)
   switch (kbe.GetKey()) {
     case KEY_ESCAPE:
       action = ACT_ESCAPE;
-      MediaToolkit::GetInstance()->TerminateEventLoop();
+      running = false;
       break;
     case KEY_DOWN:
     case KEY_TAB:

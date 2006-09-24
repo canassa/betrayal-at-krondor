@@ -30,8 +30,7 @@
 #include "Party.h"
 
 class Dialog
-: public UpdateEventListener
-, public ActionEventListener
+: public ActionEventListener
 , public MouseButtonEventListener
 , public KeyboardEventListener
 {
@@ -56,7 +55,6 @@ class Dialog
     void Enter();
     void Leave();
     unsigned int Execute();
-    void Update(const UpdateEvent& ue);
     void ActionPerformed(const ActionEvent& ae);
     void MouseButtonPressed(const MouseButtonEvent& mbe);
     void MouseButtonReleased(const MouseButtonEvent& mbe);
