@@ -92,6 +92,7 @@ Palette::Retrieve(const unsigned int first, const unsigned int n)
 void
 Palette::FadeFrom(Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
 {
+  media->AddTimerListener(this);
   Color* tmp = new Color[VIDEO_COLORS];
   for (unsigned int i = 0; i <= steps; i++) {
     float x = (float)i / (float)steps;
@@ -102,15 +103,20 @@ Palette::FadeFrom(Color* from, const unsigned int first, const unsigned int n, c
     }
     media->GetVideo()->SetPalette(&tmp[first], first, n);
     media->GetVideo()->Refresh();
-    media->GetClock()->Delay(delay);
-    media->PollEvents();
+    media->GetClock()->StartTimer(TMR_PALETTE, delay);
+    delayed = true;
+    while (delayed) {
+      media->PollEvents();
+    }
   }
   delete[] tmp;
+  media->RemoveTimerListener(this);
 }
 
 void
 Palette::FadeTo(Color* to, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay)
 {
+  media->AddTimerListener(this);
   Color* tmp = new Color[VIDEO_COLORS];
   media->GetVideo()->GetPalette(tmp, 0, VIDEO_COLORS);
   for (unsigned int i = 0; i <= steps; i++) {
@@ -122,10 +128,14 @@ Palette::FadeTo(Color* to, const unsigned int first, const unsigned int n, const
     }
     media->GetVideo()->SetPalette(&tmp[first], first, n);
     media->GetVideo()->Refresh();
-    media->GetClock()->Delay(delay);
-    media->PollEvents();
+    media->GetClock()->StartTimer(TMR_PALETTE, delay);
+    delayed = true;
+    while (delayed) {
+      media->PollEvents();
+    }
   }
   delete[] tmp;
+  media->RemoveTimerListener(this);
 }
 
 void
@@ -144,4 +154,12 @@ Palette::FadeOut(const unsigned int first, const unsigned int n, const unsigned 
   memset(to, 0, VIDEO_COLORS * sizeof(Color));
   FadeTo(to, first, n, steps, delay);
   delete[] to;
+}
+
+void
+Palette::TimerExpired(const TimerEvent &te)
+{
+  if (te.GetID() == TMR_PALETTE) {
+    delayed = false;
+  }
 }

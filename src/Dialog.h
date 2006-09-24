@@ -31,7 +31,6 @@
 
 class Dialog
 : public UpdateEventListener
-, public FadeCompleteEventListener
 , public ActionEventListener
 , public MouseButtonEventListener
 , public KeyboardEventListener
@@ -58,7 +57,6 @@ class Dialog
     void Leave();
     unsigned int Execute();
     void Update(const UpdateEvent& ue);
-    void FadeComplete();
     void ActionPerformed(const ActionEvent& ae);
     void MouseButtonPressed(const MouseButtonEvent& mbe);
     void MouseButtonReleased(const MouseButtonEvent& mbe);

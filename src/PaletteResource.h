@@ -24,7 +24,6 @@
 #include "config.h"
 #endif
 
-#include "MediaToolkit.h"
 #include "Palette.h"
 #include "TaggedResource.h"
 

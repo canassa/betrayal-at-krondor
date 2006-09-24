@@ -220,7 +220,11 @@ Dialog::Enter()
 {
   try {
     window = new DialogWindow(widgetRes);
-    MediaToolkit::GetInstance()->GetVideo()->Clear();
+    MediaToolkit* media = MediaToolkit::GetInstance();
+    media->AddKeyboardListener(this);
+    media->AddMouseButtonListener(this);
+    media->AddUpdateListener(this);
+    media->GetVideo()->Clear();
     window->FadeIn(palette->GetPalette());
   } catch (Exception &e) {
     e.Print("Dialog::Enter");
@@ -233,7 +237,11 @@ Dialog::Leave()
 {
   try {
     window->FadeOut(palette->GetPalette());
-    MediaToolkit::GetInstance()->GetVideo()->Clear();
+    MediaToolkit* media = MediaToolkit::GetInstance();
+    media->GetVideo()->Clear();
+    media->RemoveUpdateListener(this);
+    media->RemoveMouseButtonListener(this);
+    media->RemoveKeyboardListener(this);
     delete window;
     window = 0;
   } catch (Exception &e) {
@@ -246,16 +254,9 @@ unsigned int
 Dialog::Execute()
 {
   try {
-    MediaToolkit* media = MediaToolkit::GetInstance();
-    media->AddKeyboardListener(this);
-    media->AddMouseButtonListener(this);
-    media->AddUpdateListener(this);
     running = true;
-    media->PollEventLoop();
+    MediaToolkit::GetInstance()->PollEventLoop();
     running = false;
-    media->RemoveUpdateListener(this);
-    media->RemoveMouseButtonListener(this);
-    media->RemoveKeyboardListener(this);
     return action;
   } catch (Exception &e) {
     e.Print("Dialog::Execute");
@@ -267,14 +268,7 @@ void
 Dialog::Update(const UpdateEvent& ue)
 {
   ue.GetTicks();
-  if (running) {
-    window->Draw();
-  }
-}
-
-void
-Dialog::FadeComplete()
-{
+  window->Draw();
 }
 
 void

@@ -249,10 +249,4 @@ class ActionEvent {
     int GetAction() const;
 };
 
-class FadeCompleteEvent {
-  public:
-    FadeCompleteEvent();
-    virtual ~FadeCompleteEvent();
-};
-
 #endif

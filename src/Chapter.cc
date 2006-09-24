@@ -29,6 +29,7 @@
 
 Chapter::Chapter(const int n)
 : number(n)
+, delayed(false)
 {
 }
 
@@ -81,12 +82,6 @@ Chapter::ReadBook(const int scene)
     std::stringstream filenameStream;
     filenameStream << "C" << number << scene << ".BOK";
     FileManager::GetInstance()->Load(&bok, filenameStream.str());
-    MediaToolkit::GetInstance()->AddKeyboardListener(this);
-    MediaToolkit::GetInstance()->AddMouseButtonListener(this);
-    MediaToolkit::GetInstance()->AddTimerListener(this);
-    MediaToolkit::GetInstance()->RemoveTimerListener(this);
-    MediaToolkit::GetInstance()->RemoveMouseButtonListener(this);
-    MediaToolkit::GetInstance()->RemoveKeyboardListener(this);
   } catch (Exception &e) {
     e.Print("Chapter::ReadBook");
   }
@@ -96,9 +91,6 @@ void
 Chapter::ShowMap()
 {
   try {
-    MediaToolkit::GetInstance()->AddKeyboardListener(this);
-    MediaToolkit::GetInstance()->AddMouseButtonListener(this);
-    MediaToolkit::GetInstance()->AddTimerListener(this);
     ScreenResource *scr = new ScreenResource;
     FileManager::GetInstance()->Load(scr, "FULLMAP.SCX");
     scr->GetImage()->Draw(0, 0);
@@ -106,11 +98,11 @@ Chapter::ShowMap()
     FileManager::GetInstance()->Load(pal, "FULLMAP.PAL");
     pal->GetPalette()->FadeIn(0, VIDEO_COLORS, 64, 5);
     MediaToolkit::GetInstance()->GetClock()->StartTimer(TMR_CHAPTER, 4000);
-    MediaToolkit::GetInstance()->WaitEventLoop();
+    delayed = true;
+    while (delayed) {
+      MediaToolkit::GetInstance()->WaitEvents();
+    }
     pal->GetPalette()->FadeOut(0, VIDEO_COLORS, 64, 5);
-    MediaToolkit::GetInstance()->RemoveTimerListener(this);
-    MediaToolkit::GetInstance()->RemoveMouseButtonListener(this);
-    MediaToolkit::GetInstance()->RemoveKeyboardListener(this);
     delete pal;
     delete scr;
   } catch (Exception &e) {
@@ -121,12 +113,23 @@ Chapter::ShowMap()
 void
 Chapter::Start(const bool maponly)
 {
-  if (!maponly) {
-    PlayIntro();
-    ReadBook(1);
-    PlayScene(1);
+  try {
+    MediaToolkit* media = MediaToolkit::GetInstance();
+    media->AddKeyboardListener(this);
+    media->AddMouseButtonListener(this);
+    media->AddTimerListener(this);
+    if (!maponly) {
+      PlayIntro();
+      ReadBook(1);
+      PlayScene(1);
+    }
+    ShowMap();
+    media->RemoveTimerListener(this);
+    media->RemoveMouseButtonListener(this);
+    media->RemoveKeyboardListener(this);
+  } catch (Exception &e) {
+    e.Print("Chapter::Start");
   }
-  ShowMap();
 }
 
 void
@@ -136,7 +139,7 @@ Chapter::KeyPressed(const KeyboardEvent &kbe)
     case KEY_ESCAPE:
     case KEY_RETURN:
     case KEY_SPACE:
-      MediaToolkit::GetInstance()->TerminateEventLoop();
+      delayed = false;
       break;
     default:
       break;
@@ -157,7 +160,7 @@ Chapter::MouseButtonPressed(const MouseButtonEvent &mbe)
 {
   switch (mbe.GetButton()) {
     case MB_LEFT:
-      MediaToolkit::GetInstance()->TerminateEventLoop();
+      delayed = false;
       break;
     default:
       break;
@@ -177,11 +180,6 @@ void
 Chapter::TimerExpired(const TimerEvent &te)
 {
   if (te.GetID() == TMR_CHAPTER) {
-    MediaToolkit::GetInstance()->TerminateEventLoop();
+    delayed = false;
   }
-}
-
-void
-Chapter::FadeComplete()
-{
 }

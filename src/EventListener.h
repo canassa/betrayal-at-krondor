@@ -70,11 +70,4 @@ class ActionEventListener {
     virtual void ActionPerformed(const ActionEvent &ae) = 0;
 };
 
-class FadeCompleteEventListener {
-  public:
-    FadeCompleteEventListener() {};
-    virtual ~FadeCompleteEventListener() {};
-    virtual void FadeComplete() = 0;
-};
-
 #endif

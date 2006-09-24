@@ -24,12 +24,15 @@
 #include "config.h"
 #endif
 
+#include "EventListener.h"
 #include "MediaToolkit.h"
 
-class Palette {
+class Palette
+: TimerEventListener {
   private:
     unsigned int size;
     Color *colors;
+    bool delayed;
     MediaToolkit *media;
   public:
     Palette(const unsigned int n);
@@ -44,6 +47,7 @@ class Palette {
     void FadeTo(Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay);
     void FadeIn(const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay);
     void FadeOut(const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay);
+    void TimerExpired(const TimerEvent &te);
 };
 
 #endif

@@ -24,6 +24,7 @@
 #include "config.h"
 #endif
 
+#include "MediaToolkit.h"
 #include "MovieResource.h"
 #include "ImageResource.h"
 #include "PaletteResource.h"
@@ -37,7 +38,6 @@ class MoviePlayer
 : public KeyboardEventListener
 , public MouseButtonEventListener
 , public TimerEventListener
-, public FadeCompleteEventListener
 {
   private:
     std::vector<MovieTag *> *tagVec;
@@ -60,7 +60,7 @@ class MoviePlayer
     bool playing;
     bool looped;
     bool delayed;
-    void PlayTag();
+    void PlayTag(MediaToolkit* media);
   public:
     MoviePlayer();
     ~MoviePlayer();
