@@ -37,12 +37,12 @@ class Orientation {
     static double cosTbl[1 << MAX_HEADING_BITS];
     static double sinTbl[1 << MAX_HEADING_BITS];
   public:
-    Orientation();
+    Orientation(const int head);
     ~Orientation();
-    int GetHeading();
+    int GetHeading() const;
     void SetHeading(const int head);
-    double GetCos();
-    double GetSin();
+    double GetCos() const;
+    double GetSin() const;
     void AdjustHeading(const int delta);
 };
 

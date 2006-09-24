@@ -26,6 +26,7 @@ Game::Game()
 : name("")
 , chapter(0)
 , party(0)
+, camera(0)
 {
   try {
     FileManager::GetInstance()->Load(&partyRes, "PARTY.DAT");
@@ -41,6 +42,7 @@ Game::Game()
     party->ActivateMember(0, 0);
     party->ActivateMember(1, 2);
     party->ActivateMember(2, 1);
+    camera = new Camera(0, 0, SOUTH);
   } catch (Exception &e) {
     e.Print("Game::Game");
     throw;
@@ -54,6 +56,9 @@ Game::~Game()
   }
   if (chapter) {
     delete chapter;
+  }
+  if (camera) {
+    delete camera;
   }
 }
 
@@ -73,6 +78,12 @@ Chapter *
 Game::GetChapter()
 {
   return chapter;
+}
+
+Camera *
+Game::GetCamera()
+{
+  return camera;
 }
 
 void

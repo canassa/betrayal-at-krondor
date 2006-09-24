@@ -127,7 +127,7 @@ GameStateCast::GameStateCast()
   dialog->SetRequest("REQ_CAST.DAT");
   dialog->SetHeads("HEADS.BMX");
   dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), SPECIAL_TYPE1);
-  dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetParty()->GetOrientation());
+  dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetCamera()->GetOrientation());
 }
 
 GameStateCast::~GameStateCast()
@@ -450,7 +450,7 @@ GameStateInventory::GameStateInventory()
   dialog->SetRequest("REQ_INV.DAT");
   dialog->SetHeads("HEADS.BMX");
   dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), SPECIAL_TYPE2);
-  dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetParty()->GetOrientation());
+  dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetCamera()->GetOrientation());
 }
 
 GameStateInventory::~GameStateInventory()
@@ -603,7 +603,7 @@ GameStateMap::GameStateMap()
   dialog->SetRequest("REQ_MAP.DAT");
   dialog->SetHeads("HEADS.BMX");
   dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), SPECIAL_TYPE1);
-  dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetParty()->GetOrientation());
+  dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetCamera()->GetOrientation());
 }
 
 GameStateMap::~GameStateMap()
@@ -922,7 +922,7 @@ GameStateWorld::GameStateWorld()
   dialog->SetRequest("REQ_MAIN.DAT");
   dialog->SetHeads("HEADS.BMX");
   dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), SPECIAL_TYPE1);
-  dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetParty()->GetOrientation());
+  dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetCamera()->GetOrientation());
 }
 
 GameStateWorld::~GameStateWorld()
@@ -995,11 +995,11 @@ GameStateWorld::Execute()
       break;
     case ACT_LEFT:
     case MAIN_LEFT:
-      GameApplication::GetInstance()->GetGame()->GetParty()->Turn(TURN_LEFT);
+      GameApplication::GetInstance()->GetGame()->GetCamera()->Turn(TURN_LEFT);
       break;
     case ACT_RIGHT:
     case MAIN_RIGHT:
-      GameApplication::GetInstance()->GetGame()->GetParty()->Turn(TURN_RIGHT);
+      GameApplication::GetInstance()->GetGame()->GetCamera()->Turn(TURN_RIGHT);
       break;
     case ACT_UP:
     case MAIN_UP:

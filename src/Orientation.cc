@@ -28,8 +28,8 @@
 double Orientation::cosTbl[1 << MAX_HEADING_BITS];
 double Orientation::sinTbl[1 << MAX_HEADING_BITS];
 
-Orientation::Orientation()
-: heading(0)
+Orientation::Orientation(const int head)
+: heading(head)
 {
   for (unsigned int i = 0; i < (1 << MAX_HEADING_BITS); i++) {
     cosTbl[i] = cos((double)i * M_PIl / (double)(1 << MAX_HEADING_BITS));
@@ -42,7 +42,7 @@ Orientation::~Orientation()
 }
 
 int
-Orientation::GetHeading()
+Orientation::GetHeading() const
 {
   return heading;
 }
@@ -54,13 +54,13 @@ Orientation::SetHeading(const int head)
 }
 
 double
-Orientation::GetCos()
+Orientation::GetCos() const
 {
   return cosTbl[heading];
 }
 
 double
-Orientation::GetSin()
+Orientation::GetSin() const
 {
   return sinTbl[heading];
 }

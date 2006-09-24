@@ -14,39 +14,56 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
+ * Copyright (C) 2006 Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef GAME_H
-#define GAME_H
-
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
 #include "Camera.h"
-#include "Chapter.h"
-#include "ImageResource.h"
-#include "Party.h"
-#include "PartyResource.h"
 
-class Game {
-  private:
-    std::string name;
-    Chapter *chapter;
-    Party *party;
-    Camera *camera;
-    PartyResource partyRes;
-    ImageResource heads;
-  public:
-    Game();
-    ~Game();
-    std::string& GetName();
-    Party* GetParty();
-    Chapter* GetChapter();
-    Camera* GetCamera();
-    void Load(FileBuffer *buffer);
-};
+Camera::Camera(const int x, const int y, const int heading)
+: xpos(x)
+, ypos(y)
+, orientation(heading)
+{
+}
 
-#endif
+Camera::~Camera()
+{
+}
 
+void
+Camera::GetPosition(int &x, int &y) const
+{
+  x = xpos;
+  y = ypos;
+}
+
+void
+Camera::SetPosition(const int x, const int y)
+{
+  xpos = x;
+  ypos = y;
+}
+
+Orientation&
+Camera::GetOrientation()
+{
+  return orientation;
+}
+
+int
+Camera::GetHeading() const
+{
+  return orientation.GetHeading();
+}
+
+void
+Camera::SetHeading(const int heading)
+{
+  orientation.SetHeading(heading);
+}
+
+void
+Camera::Turn(const int delta)
+{
+  orientation.AdjustHeading(delta);
+}

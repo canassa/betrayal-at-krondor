@@ -2,6 +2,7 @@ noinst_HEADERS = AnimationResource.h \
                  Audio.h \
                  BookResource.h \
                  ButtonWidget.h \
+                 Camera.h \
                  Chapter.h \
                  CharacterButtonWidget.h \
                  ChoiceWidget.h \
@@ -284,7 +285,9 @@ resourcedemo_LDADD = libguitoolkit.a \
                      libresdata.a \
                      libresbase.a \
                      libsdldriver.a
-xbak_SOURCES = Chapter.cc \
+xbak_SOURCES = Camera.cc \
+               Camera.h \
+               Chapter.cc \
                Chapter.h \
                Game.cc \
                Game.h \

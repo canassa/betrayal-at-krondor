@@ -14,44 +14,32 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
+ * Copyright (C) 2006 Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef PARTY_H
-#define PARTY_H
-
-#include <vector>
+#ifndef CAMERA_H
+#define CAMERA_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
 #include "Orientation.h"
-#include "PlayerCharacter.h"
 
-static const int TURN_SIZE  = 2;
-static const int TURN_LEFT  = -1 * TURN_SIZE;
-static const int TURN_RIGHT = +1 * TURN_SIZE;
-
-class Party {
+class Camera {
   private:
-    std::vector<PlayerCharacter *> members;
-    int zone;
-    int xPos;
-    int yPos;
-    int xCell;
-    int yCell;
-    int xLoc;
-    int yLoc;
+    int xpos;
+    int ypos;
+    Orientation orientation;
   public:
-    Party();
-    ~Party();
-    PlayerCharacter* GetMember(const unsigned int n);
-    PlayerCharacter* GetActiveMember(const int order);
-    void AddMember(PlayerCharacter *pc);
-    void ActivateMember(const unsigned int n, const int order);
-    void SelectMember(const int order);
+    Camera(const int x, const int y, const int heading);
+    ~Camera();
+    void GetPosition(int &x, int &y) const;
+    void SetPosition(const int x, const int y);
+    Orientation& GetOrientation();
+    int GetHeading() const;
+    void SetHeading(const int heading);
+    void Turn(const int delta);
 };
 
 #endif
-
