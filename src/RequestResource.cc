@@ -120,7 +120,7 @@ RequestResource::Load(FileBuffer *buffer)
       reqData.image = buffer->GetUint16LE();
       reqData.image = (reqData.image >> 1) + (reqData.image & 1);
       buffer->Skip(2);
-      reqData.special = buffer->GetUint16LE();
+      reqData.group = buffer->GetUint16LE();
       buffer->Skip(2);
       data.push_back(reqData);
     }

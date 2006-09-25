@@ -51,7 +51,8 @@ class Dialog
     void SetCompass(const std::string &name, Orientation &orient);
     void SetHeads(const std::string &name);
     void SetRequest(const std::string &name);
-    void SetMembers(Party *party, const int special);
+    void SetMembers(Party *party, const int group);
+    void SetGameView(Game *game, const int group, const GameViewType type);
     void Enter();
     void Leave();
     unsigned int Execute();

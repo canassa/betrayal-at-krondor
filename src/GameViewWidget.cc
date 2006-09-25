@@ -31,6 +31,9 @@ GameViewWidget::GameViewWidget(const int x, const int y, const int w, const int 
 
 GameViewWidget::~GameViewWidget()
 {
+  if (image) {
+    delete image;
+  }
 }
 
 void

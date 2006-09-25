@@ -126,7 +126,7 @@ GameStateCast::GameStateCast()
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_CAST.DAT");
   dialog->SetHeads("HEADS.BMX");
-  dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), SPECIAL_TYPE1);
+  dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), GROUP2);
   dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetCamera()->GetOrientation());
 }
 
@@ -449,7 +449,7 @@ GameStateInventory::GameStateInventory()
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_INV.DAT");
   dialog->SetHeads("HEADS.BMX");
-  dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), SPECIAL_TYPE2);
+  dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), GROUP3);
   dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetCamera()->GetOrientation());
 }
 
@@ -602,8 +602,9 @@ GameStateMap::GameStateMap()
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_MAP.DAT");
   dialog->SetHeads("HEADS.BMX");
-  dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), SPECIAL_TYPE1);
+  dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), GROUP2);
   dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetCamera()->GetOrientation());
+  dialog->SetGameView(GameApplication::GetInstance()->GetGame(), GROUP3, GVT_MAP);
 }
 
 GameStateMap::~GameStateMap()
@@ -921,8 +922,9 @@ GameStateWorld::GameStateWorld()
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_MAIN.DAT");
   dialog->SetHeads("HEADS.BMX");
-  dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), SPECIAL_TYPE1);
+  dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), GROUP2);
   dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetCamera()->GetOrientation());
+  dialog->SetGameView(GameApplication::GetInstance()->GetGame(), GROUP3, GVT_WORLD);
 }
 
 GameStateWorld::~GameStateWorld()

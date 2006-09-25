@@ -439,15 +439,14 @@ FileBuffer::GetString()
 {
   std::string s;
   if (current) {
-    s = std::string((char *)current);
+    s.append((char *)current);
   }
   if ((current) && (current + s.length() + 1) <= (buffer + size)) {
     current += s.length() + 1;
-    return s;
   } else {
     throw BufferEmpty(__FILE__, __LINE__);
   }
-  return "";
+  return s;
 }
 
 std::string

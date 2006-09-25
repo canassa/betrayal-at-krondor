@@ -28,17 +28,27 @@
 
 #include "CharacterButtonWidget.h"
 #include "ChoiceWidget.h"
+#include "CombatViewWidget.h"
 #include "CompassWidget.h"
+#include "Game.h"
 #include "ImageButtonWidget.h"
 #include "ImageResource.h"
 #include "LabelResource.h"
+#include "MapViewWidget.h"
 #include "PanelWidget.h"
 #include "RequestResource.h"
 #include "ScreenResource.h"
 #include "TextButtonWidget.h"
 #include "TickboxWidget.h"
+#include "WorldViewWidget.h"
 
 static const unsigned int MAX_ACTIVE_MEMBERS = 3;
+
+typedef enum _GameViewType {
+  GVT_WORLD,
+  GVT_MAP,
+  GVT_COMBAT
+} GameViewType;
 
 typedef struct _WidgetResources {
   RequestResource *request;
@@ -51,7 +61,10 @@ typedef struct _WidgetResources {
   Orientation *orient;
   ImageResource *heads;
   PlayerCharacter *members[MAX_ACTIVE_MEMBERS];
-  int special;
+  int playerCharacterGroup;
+  Game *game;
+  int gameViewGroup;
+  GameViewType gameViewType;
   ActionEventListener *eventListener;
 } WidgetResources;
 
@@ -65,6 +78,9 @@ class WidgetFactory {
     ChoiceWidget* CreateChoice();
     TickboxWidget* CreateTickbox();
     CompassWidget* CreateCompass(ImageResource *img, Orientation* orient);
+    CombatViewWidget* CreateCombatView(RequestData& data, Game *game);
+    MapViewWidget* CreateMapView(RequestData& data, Game *game);
+    WorldViewWidget* CreateWorldView(RequestData& data, Game *game);
     LabelWidget* CreateLabel(LabelData& data, FontResource* fnt, const int panelWidth);
     PanelWidget* CreatePanel(WidgetResources& widgetRes);
 };

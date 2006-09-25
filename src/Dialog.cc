@@ -202,14 +202,26 @@ Dialog::SetRequest(const std::string &name)
 }
 
 void
-Dialog::SetMembers(Party *party, const int special)
+Dialog::SetMembers(Party *party, const int group)
 {
   if (party) {
-    widgetRes.special = special;
+    widgetRes.playerCharacterGroup = group;
     for (unsigned int i = 0; i < MAX_ACTIVE_MEMBERS; i++) {
       PlayerCharacter *pc = party->GetActiveMember(i);
       widgetRes.members[i] = pc;
     }
+  } else {
+    throw NullPointer(__FILE__, __LINE__);
+  }
+}
+
+void
+Dialog::SetGameView(Game *game, const int group, const GameViewType type)
+{
+  if (game) {
+    widgetRes.game = game;
+    widgetRes.gameViewGroup = group;
+    widgetRes.gameViewType = type;
   } else {
     throw NullPointer(__FILE__, __LINE__);
   }

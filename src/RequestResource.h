@@ -113,8 +113,10 @@ static const unsigned int SAVE_REMOVE_GAME  = 194;
 static const unsigned int SAVE_SAVE         = 193;
 static const unsigned int SAVE_CANCEL       = 192;
 
-static const int SPECIAL_TYPE1 = 2;
-static const int SPECIAL_TYPE2 = 3;
+static const int GROUP0 = 0;
+static const int GROUP1 = 1;
+static const int GROUP2 = 2;
+static const int GROUP3 = 3;
 
 typedef struct _RequestData {
   unsigned int widget;
@@ -126,7 +128,7 @@ typedef struct _RequestData {
   int height;
   int teleport;
   int image;
-  int special;
+  int group;
   std::string label;
 } RequestData;
 

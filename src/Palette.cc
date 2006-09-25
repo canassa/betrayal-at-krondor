@@ -79,7 +79,7 @@ void
 Palette::Retrieve(const unsigned int first, const unsigned int n)
 {
   if ((colors != 0) && (size < (first + n))) {
-    delete colors;
+    delete[] colors;
     colors = 0;
   }
   if (!colors) {

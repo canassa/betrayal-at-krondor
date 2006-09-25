@@ -46,24 +46,21 @@ void
 SDL_Toolkit::HandleEvent(SDL_Event& event)
 {
   switch (event.type) {
-    case SDL_KEYDOWN:
-      {
+    case SDL_KEYDOWN: {
         KeyboardEvent kbe((Key)event.key.keysym.sym);
         for (std::list<KeyboardEventListener *>::iterator it = keyboardListeners.begin(); it != keyboardListeners.end(); ++it) {
           (*it)->KeyPressed(kbe);
         }
       }
       break;
-    case SDL_KEYUP:
-      {
+    case SDL_KEYUP: {
         KeyboardEvent kbe((Key)event.key.keysym.sym);
         for (std::list<KeyboardEventListener *>::iterator it = keyboardListeners.begin(); it != keyboardListeners.end(); ++it) {
           (*it)->KeyReleased(kbe);
         }
       }
       break;
-    case SDL_MOUSEBUTTONDOWN:
-      {
+    case SDL_MOUSEBUTTONDOWN: {
         MouseButtonEvent mbe((MouseButton)(event.button.button - 1),
                              event.button.x / video->GetScaling(),
                              event.button.y / video->GetScaling());
@@ -72,8 +69,7 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
         }
       }
       break;
-    case SDL_MOUSEBUTTONUP:
-      {
+    case SDL_MOUSEBUTTONUP: {
         MouseButtonEvent mbe((MouseButton)(event.button.button - 1),
                              event.button.x / video->GetScaling(),
                              event.button.y / video->GetScaling());
@@ -82,8 +78,7 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
         }
       }
       break;
-    case SDL_MOUSEMOTION:
-      {
+    case SDL_MOUSEMOTION: {
         MouseMotionEvent mme(event.button.x / video->GetScaling(),
                              event.button.y / video->GetScaling());
         for (std::list<MouseMotionEventListener *>::iterator it = mouseMotionListeners.begin(); it != mouseMotionListeners.end(); ++it) {
@@ -91,9 +86,8 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
         }
       }
       break;
-    case SDL_USEREVENT:
-      // timer event
-      {
+    case SDL_USEREVENT: {
+        // timer event
         clock->CancelTimer((unsigned long)event.user.data1);
         TimerEvent te((unsigned long)event.user.data1);
         for (std::list<TimerEventListener *>::iterator it = timerListeners.begin(); it != timerListeners.end(); ++it) {

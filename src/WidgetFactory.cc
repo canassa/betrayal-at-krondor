@@ -82,6 +82,24 @@ WidgetFactory::CreateCompass(ImageResource *img, Orientation* orient)
   return compass;
 }
 
+CombatViewWidget*
+WidgetFactory::CreateCombatView(RequestData& data, Game *game)
+{
+  return new CombatViewWidget(data.xpos, data.ypos, data.width, data.height, game);
+}
+
+MapViewWidget*
+WidgetFactory::CreateMapView(RequestData& data, Game *game)
+{
+  return new MapViewWidget(data.xpos, data.ypos, data.width, data.height, game);
+}
+
+WorldViewWidget*
+WidgetFactory::CreateWorldView(RequestData& data, Game *game)
+{
+  return new WorldViewWidget(data.xpos, data.ypos, data.width, data.height, game);
+}
+
 LabelWidget*
 WidgetFactory::CreateLabel(LabelData& data, FontResource *fnt, const int panelWidth)
 {
@@ -121,10 +139,25 @@ WidgetFactory::CreatePanel(WidgetResources& widgetRes)
     data.ypos += widgetRes.request->GetYOff();
     switch (data.widget) {
       case REQ_USERDEFINED:
-        if ((data.action >= 0) && (data.special == widgetRes.special)) {
+        if ((data.action >= 0) && (data.group == widgetRes.playerCharacterGroup)) {
           CharacterButtonWidget *button = CreateCharacterButton(data, widgetRes.members[nextMember], widgetRes.heads, widgetRes.eventListener);
           panel->AddActiveWidget(button);
           nextMember++;
+        }
+        if ((data.action >= 0) && (data.group == widgetRes.gameViewGroup)) {
+          GameViewWidget *gameView = 0;
+          switch (widgetRes.gameViewType) {
+            case GVT_WORLD:
+              gameView = CreateWorldView(data, widgetRes.game);
+              break;
+            case GVT_MAP:
+              gameView = CreateMapView(data, widgetRes.game);
+              break;
+            case GVT_COMBAT:
+              gameView = CreateCombatView(data, widgetRes.game);
+              break;
+          }
+          panel->AddWidget(gameView);
         }
         break;
       case REQ_TEXTBUTTON:
