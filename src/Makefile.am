@@ -7,6 +7,7 @@ noinst_HEADERS = AnimationResource.h \
                  CharacterButtonWidget.h \
                  ChoiceWidget.h \
                  Clock.h \
+                 CombatViewWidget.h \
                  CompassWidget.h \
                  ContainerWidget.h \
                  Dialog.h \
@@ -24,6 +25,7 @@ noinst_HEADERS = AnimationResource.h \
                  GameFile.h \
                  GamePath.h \
                  GameState.h \
+                 GameViewWidget.h \
                  GenericFile.h \
                  HotspotWidget.h \
                  Image.h \
@@ -31,6 +33,7 @@ noinst_HEADERS = AnimationResource.h \
                  ImageResource.h \
                  LabelResource.h \
                  LabelWidget.h \
+                 MapViewWidget.h \
                  MediaToolkit.h \
                  MousePointer.h \
                  MousePointerManager.h \
@@ -68,6 +71,7 @@ noinst_HEADERS = AnimationResource.h \
                  Video.h \
                  Widget.h \
                  WidgetFactory.h \
+                 WorldViewWidget.h \
                  ZoneTableResource.h
 noinst_LIBRARIES = libsdldriver.a \
                    libresbase.a \
@@ -95,6 +99,8 @@ libguitoolkit_a_SOURCES = ButtonWidget.cc \
                           CharacterButtonWidget.h \
                           ChoiceWidget.cc \
                           ChoiceWidget.h \
+                          CombatViewWidget.cc \
+                          CombatViewWidget.h \
                           CompassWidget.cc \
                           CompassWidget.h \
                           ContainerWidget.cc \
@@ -103,6 +109,8 @@ libguitoolkit_a_SOURCES = ButtonWidget.cc \
                           Dialog.h \
                           DialogWindow.cc \
                           DialogWindow.h \
+                          GameViewWidget.cc \
+                          GameViewWidget.h \
                           HotspotWidget.cc \
                           HotspotWidget.h \
                           Image.cc \
@@ -111,6 +119,8 @@ libguitoolkit_a_SOURCES = ButtonWidget.cc \
                           ImageButtonWidget.h \
                           LabelWidget.cc \
                           LabelWidget.h \
+                          MapViewWidget.cc \
+                          MapViewWidget.h \
                           MousePointer.cc \
                           MousePointer.h \
                           MousePointerManager.cc \
@@ -134,7 +144,9 @@ libguitoolkit_a_SOURCES = ButtonWidget.cc \
                           Widget.cc \
                           Widget.h \
                           WidgetFactory.cc \
-                          WidgetFactory.h
+                          WidgetFactory.h \
+                          WorldViewWidget.cc \
+                          WorldViewWidget.h
 libresbase_a_SOURCES = Exception.cc \
                        Exception.h \
                        FileBuffer.cc \
