@@ -28,22 +28,15 @@
 #include "Game.h"
 
 class GameViewWidget
-: public ContainerWidget
-, public KeyboardEventListener
-, public MouseButtonEventListener {
-  private:
+: public ContainerWidget {
+  protected:
     Game *game;
-    Image *image;
-    bool cacheValid;
+  private:
     virtual void Redraw() = 0;
   public:
     GameViewWidget(const int x, const int y, const int w, const int h, Game *g);
     virtual ~GameViewWidget();
     void Draw();
-    void KeyPressed(const KeyboardEvent& kbe);
-    void KeyReleased(const KeyboardEvent& kbe);
-    void MouseButtonPressed(const MouseButtonEvent& mbe);
-    void MouseButtonReleased(const MouseButtonEvent& mbe);
 };
 
 #endif

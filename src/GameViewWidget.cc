@@ -23,66 +23,16 @@
 GameViewWidget::GameViewWidget(const int x, const int y, const int w, const int h, Game *g)
 : ContainerWidget(x, y, w, h)
 , game(g)
-, image(0)
-, cacheValid(false)
 {
-  image = new Image(w, h);
 }
 
 GameViewWidget::~GameViewWidget()
 {
-  if (image) {
-    delete image;
-  }
 }
 
 void
 GameViewWidget::Draw()
 {
-  if (cacheValid) {
-    image->Draw(xpos, ypos);
-  } else {
-    Redraw();
-    image->Read(xpos, ypos);
-    cacheValid = true;
-  }
+  Redraw();
   DrawChildWidgets();
-}
-
-void
-GameViewWidget::KeyPressed(const KeyboardEvent& kbe)
-{
-  switch (kbe.GetKey()){
-    default:
-      cacheValid = false;
-      break;
-  }
-}
-
-void
-GameViewWidget::KeyReleased(const KeyboardEvent& kbe)
-{
-  switch (kbe.GetKey()){
-    default:
-      break;
-  }
-}
-
-void
-GameViewWidget::MouseButtonPressed(const MouseButtonEvent& mbe)
-{
-  switch (mbe.GetButton()){
-    default:
-      cacheValid = false;
-      break;
-  }
-}
-
-void
-GameViewWidget::MouseButtonReleased(const MouseButtonEvent& mbe)
-{
-  switch (mbe.GetButton()){
-    default:
-      break;
-  }
 }

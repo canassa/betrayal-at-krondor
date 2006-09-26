@@ -135,8 +135,10 @@ WidgetFactory::CreatePanel(WidgetResources& widgetRes)
   unsigned int nextMember = 0;
   for (unsigned int i = 0; i < widgetRes.request->GetSize(); i++) {
     RequestData data = widgetRes.request->GetRequestData(i);
-    data.xpos += widgetRes.request->GetXOff();
-    data.ypos += widgetRes.request->GetYOff();
+    if (data.widget != REQ_USERDEFINED) {
+      data.xpos += widgetRes.request->GetXOff();
+      data.ypos += widgetRes.request->GetYOff();
+    }
     switch (data.widget) {
       case REQ_USERDEFINED:
         if ((data.action >= 0) && (data.group == widgetRes.playerCharacterGroup)) {

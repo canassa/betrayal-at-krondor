@@ -41,6 +41,8 @@ class Chapter
   public:
     Chapter(const int n);
     ~Chapter();
+    int Get() const;
+    void Next();
     void Start(const bool maponly = false);
     void KeyPressed(const KeyboardEvent &kbe);
     void KeyReleased(const KeyboardEvent &kbe);

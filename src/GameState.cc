@@ -17,6 +17,9 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include <iomanip>
+#include <sstream>
+
 #include "Exception.h"
 #include "GameApplication.h"
 #include "GameState.h"
@@ -916,8 +919,10 @@ GameStateWorld* GameStateWorld::instance = 0;
 
 GameStateWorld::GameStateWorld()
 {
+  std::stringstream name;
+  name << "Z" << std::setw(2) << std::setfill('0') << GameApplication::GetInstance()->GetGame()->GetChapter()->Get() << ".PAL";
   dialog = new GameDialog();
-  dialog->SetPalette("OPTIONS.PAL");
+  dialog->SetPalette(name.str());
   dialog->SetScreen("FRAME.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_MAIN.DAT");

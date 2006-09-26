@@ -51,13 +51,11 @@ void
 CompassWidget::Draw()
 {
   if (compassImage) {
-    int heading = orientation->GetHeading();
+    int offset = -orientation->GetHeading();
     int imagewidth = compassImage->GetWidth();
-    compassImage->Draw(COMPASS_WIDGET_XPOS - heading, COMPASS_WIDGET_YPOS,
-                       COMPASS_WIDGET_XPOS, COMPASS_WIDGET_YPOS, COMPASS_WIDGET_WIDTH, COMPASS_WIDGET_HEIGHT);
-    if ((imagewidth - heading) < COMPASS_WIDGET_WIDTH) {
-      compassImage->Draw(COMPASS_WIDGET_XPOS - heading + imagewidth, COMPASS_WIDGET_YPOS,
-                         COMPASS_WIDGET_XPOS, COMPASS_WIDGET_YPOS, COMPASS_WIDGET_WIDTH, COMPASS_WIDGET_HEIGHT);
+    compassImage->Draw(xpos + offset, ypos, xpos, ypos, width, height);
+    if ((imagewidth + offset) < width) {
+      compassImage->Draw(xpos + offset + imagewidth, ypos, xpos, ypos, width, height);
     }
   }
 }

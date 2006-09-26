@@ -110,6 +110,18 @@ Chapter::ShowMap()
   }
 }
 
+int
+Chapter::Get() const
+{
+  return number;
+}
+
+void
+Chapter::Next()
+{
+  number++;
+}
+
 void
 Chapter::Start(const bool maponly)
 {

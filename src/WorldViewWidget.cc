@@ -17,6 +17,10 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include <iomanip>
+#include <sstream>
+
+#include "FileManager.h"
 #include "WorldViewWidget.h"
 
 WorldViewWidget::WorldViewWidget(const int x, const int y, const int w, const int h, Game *g)
@@ -29,6 +33,29 @@ WorldViewWidget::~WorldViewWidget()
 }
 
 void
+WorldViewWidget::DrawHorizon()
+{
+  static const int HORIZON_TOP_SIZE = 20;
+  int chapter = game->GetChapter()->Get();
+  std::stringstream horizonStream;
+  horizonStream << "Z" << std::setw(2) << std::setfill('0') << chapter << "H.BMX";
+  ImageResource horizon;
+  FileManager::GetInstance()->Load(&horizon, horizonStream.str());
+  int heading = game->GetCamera()->GetHeading();
+  int index = (heading >> 6) & 0x03;
+  int imagewidth = horizon.GetImage(index)->GetWidth();
+  int offset = (width >> 1) - ((heading & 0x3f) << 2);
+  if (offset > 0) {
+    horizon.GetImage((index - 1) & 0x03)->Draw(xpos + offset - imagewidth, ypos + HORIZON_TOP_SIZE, xpos, ypos + HORIZON_TOP_SIZE, width, height);
+  }
+  horizon.GetImage(index)->Draw(xpos + offset, ypos + HORIZON_TOP_SIZE, xpos, ypos + HORIZON_TOP_SIZE, width, height);
+  if (imagewidth + offset < width) {
+    horizon.GetImage((index + 1) & 0x03)->Draw(xpos + offset + imagewidth, ypos + HORIZON_TOP_SIZE, xpos, ypos + HORIZON_TOP_SIZE, width, height);
+  }
+}
+
+void
 WorldViewWidget::Redraw()
 {
+  DrawHorizon();
 }

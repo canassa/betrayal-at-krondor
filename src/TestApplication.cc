@@ -40,7 +40,6 @@ TestApplication::TestApplication()
   media->GetVideo()->SetScaling(2);
   media->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
   MousePointerManager::GetInstance()->AddPointer("POINTER.BMX");
-  MousePointerManager::GetInstance()->Register();
   media->AddKeyboardListener(this);
   media->AddTimerListener(this);
 }

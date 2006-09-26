@@ -27,10 +27,14 @@ MousePointerManager::MousePointerManager()
 : currentPointer(0)
 , pointerVec()
 {
+  MediaToolkit::GetInstance()->AddMouseButtonListener(this);
+  MediaToolkit::GetInstance()->AddMouseMotionListener(this);
 }
 
 MousePointerManager::~MousePointerManager()
 {
+  MediaToolkit::GetInstance()->RemoveMouseButtonListener(this);
+  MediaToolkit::GetInstance()->RemoveMouseMotionListener(this);
   for (unsigned int i = 0; i < pointerVec.size(); i++) {
     delete pointerVec[i];
   }
@@ -53,14 +57,6 @@ MousePointerManager::CleanUp()
     delete instance;
     instance = 0;
   }
-}
-
-void
-MousePointerManager::Register()
-{
-  MediaToolkit *media = MediaToolkit::GetInstance();
-  media->AddMouseButtonListener(this);
-  media->AddMouseMotionListener(this);
 }
 
 MousePointer*

@@ -65,7 +65,6 @@ GameApplication::GameApplication()
 
   MousePointerManager::GetInstance()->AddPointer("POINTER.BMX");
   MousePointerManager::GetInstance()->AddPointer("POINTERG.BMX");
-  MousePointerManager::GetInstance()->Register();
 }
 
 GameApplication::~GameApplication()

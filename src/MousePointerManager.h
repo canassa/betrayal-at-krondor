@@ -47,7 +47,6 @@ class MousePointerManager
     ~MousePointerManager();
     static MousePointerManager* GetInstance();
     static void CleanUp();
-    void Register();
     MousePointer* GetCurrentPointer();
     void SetCurrentPointer(unsigned int n);
     void AddPointer(const std::string& resname);
