@@ -35,16 +35,19 @@ WorldViewWidget::~WorldViewWidget()
 void
 WorldViewWidget::DrawHorizon()
 {
-  static const int HORIZON_TOP_SIZE = 20;
+  static const int HORIZON_TOP_SIZE = 34;
   int chapter = game->GetChapter()->Get();
   std::stringstream horizonStream;
   horizonStream << "Z" << std::setw(2) << std::setfill('0') << chapter << "H.BMX";
   ImageResource horizon;
   FileManager::GetInstance()->Load(&horizon, horizonStream.str());
+  Image top(width, HORIZON_TOP_SIZE);
   int heading = game->GetCamera()->GetHeading();
   int index = (heading >> 6) & 0x03;
   int imagewidth = horizon.GetImage(index)->GetWidth();
-  int offset = (width >> 1) - ((heading & 0x3f) << 2);
+  int offset = imagewidth - xpos - ((heading & 0x3f) << 2);
+  top.Fill(horizon.GetImage(index)->GetPixel(0, 0));
+  top.Draw(xpos, ypos);
   if (offset > 0) {
     horizon.GetImage((index - 1) & 0x03)->Draw(xpos + offset - imagewidth, ypos + HORIZON_TOP_SIZE, xpos, ypos + HORIZON_TOP_SIZE, width, height);
   }
