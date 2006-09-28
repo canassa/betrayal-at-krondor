@@ -7,6 +7,7 @@ AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE
 
 # Checks for programs.
+AC_PROG_AWK
 AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_CXX
@@ -25,19 +26,22 @@ AC_CHECK_TOOL([SDLCONFIG], [sdl-config], AC_MSG_ERROR([sdl-config not found]))
 AC_CHECK_LIB([SDL], [SDL_Init], , AC_MSG_ERROR([SDL not found]))
 AC_CHECK_LIB([SDL_mixer], [Mix_Linked_Version], , AC_MSG_ERROR([SDL_mixer not found]))
 AC_CHECK_LIB([SDL_sound], [Sound_GetLinkedVersion], , AC_MSG_ERROR([SDL_sound not found]))
-SDL_CFLAGS=$(sh sdl-config --cflags)
-SDL_LIBS=$(sh sdl-config --libs)
-LIBS="$LIBS $SDL_LIBS"
+AC_CHECK_LIB([pthread], [pthread_create], , AC_MSG_ERROR([libpthread not found]))
+AC_CHECK_LIB([m], [sin], , AC_MSG_ERROR([libm not found]))
+#SDL_LIBS=$(sh sdl-config --libs)
+#LIBS="$LIBS $SDL_LIBS"
 
 AC_CACHE_SAVE
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdint.h])
+AC_CHECK_HEADERS([unistd.h])
 
 AC_CACHE_SAVE
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_LANG([C++])
+SDL_CFLAGS=$(sh sdl-config --cflags)
 CXXFLAGS="$CXXFLAGS $SDL_CFLAGS -W -Wall -Werror -Wpointer-arith -Wcast-qual -Wwrite-strings -Wshadow -Wcast-align -Winline -ansi -pedantic"
 
 AC_C_CONST

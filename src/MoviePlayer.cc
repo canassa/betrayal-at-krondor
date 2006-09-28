@@ -93,6 +93,9 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
       media->PollEvents();
       PlayTag(media);
     }
+    if (delayed) {
+      media->GetClock()->CancelTimer(TMR_MOVIE_PLAYER);
+    }
     paletteSlot[currPalette]->GetPalette()->FadeOut(0, VIDEO_COLORS, 64, 5);
 
     media->RemoveKeyboardListener(this);
