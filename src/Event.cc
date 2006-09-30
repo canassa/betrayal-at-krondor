@@ -100,17 +100,17 @@ TimerEvent::GetID() const
   return id;
 }
 
-UpdateEvent::UpdateEvent(const int t)
+LoopEvent::LoopEvent(const int t)
 : ticks(t)
 {
 }
 
-UpdateEvent::~UpdateEvent()
+LoopEvent::~LoopEvent()
 {
 }
 
 int
-UpdateEvent::GetTicks() const
+LoopEvent::GetTicks() const
 {
   return ticks;
 }

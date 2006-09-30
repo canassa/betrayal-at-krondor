@@ -32,7 +32,7 @@ MediaToolkit::MediaToolkit()
 , mouseButtonListeners()
 , mouseMotionListeners()
 , timerListeners()
-, updateListeners()
+, loopListeners()
 {
 }
 
@@ -42,7 +42,7 @@ MediaToolkit::~MediaToolkit()
   mouseButtonListeners.clear();
   mouseMotionListeners.clear();
   timerListeners.clear();
-  updateListeners.clear();
+  loopListeners.clear();
 }
 
 MediaToolkit*
@@ -134,15 +134,15 @@ MediaToolkit::RemoveTimerListener(TimerEventListener *tel)
 }
 
 void
-MediaToolkit::AddUpdateListener(UpdateEventListener *uel)
+MediaToolkit::AddUpdateListener(LoopEventListener *lel)
 {
-  updateListeners.push_back(uel);
+  loopListeners.push_back(lel);
 }
 
 void
-MediaToolkit::RemoveUpdateListener(UpdateEventListener *uel)
+MediaToolkit::RemoveUpdateListener(LoopEventListener *lel)
 {
-  updateListeners.remove(uel);
+  loopListeners.remove(lel);
 }
 
 void

@@ -231,12 +231,12 @@ class TimerEvent {
     unsigned long GetID() const;
 };
 
-class UpdateEvent {
+class LoopEvent {
   private:
     int ticks;
   public:
-    UpdateEvent(const int t);
-    virtual ~UpdateEvent();
+    LoopEvent(const int t);
+    virtual ~LoopEvent();
     int GetTicks() const;
 };
 

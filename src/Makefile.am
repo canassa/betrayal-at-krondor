@@ -40,6 +40,7 @@ noinst_HEADERS = AnimationResource.h \
                  MoviePlayer.h \
                  MovieResource.h \
                  NameResource.h \
+                 Observer.h \
                  Orientation.h \
                  Palette.h \
                  PaletteResource.h \
@@ -61,6 +62,7 @@ noinst_HEADERS = AnimationResource.h \
                  ScreenResource.h \
                  Sound.h \
                  SoundResource.h \
+                 Subject.h \
                  TaggedResource.h \
                  TestApplication.h \
                  TextArea.h \
@@ -307,12 +309,15 @@ xbak_SOURCES = Camera.cc \
                GameApplication.h \
                GameState.cc \
                GameState.h \
+               Observer.h \
                Orientation.cc \
                Orientation.h \
                Party.cc \
                Party.h \
                PlayerCharacter.cc \
                PlayerCharacter.h \
+               Subject.cc \
+               Subject.h \
                xbak.cc
 xbak_LDADD = libguitoolkit.a \
              libresdata.a \

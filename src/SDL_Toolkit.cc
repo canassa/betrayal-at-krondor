@@ -119,9 +119,9 @@ SDL_Toolkit::PollEventLoop()
   while (eventLoopRunning) {
     PollEvents();
     currentTicks = SDL_GetTicks();
-    UpdateEvent ue(currentTicks - previousTicks);
-    for (std::list<UpdateEventListener *>::iterator it = updateListeners.begin(); it != updateListeners.end(); ++it) {
-      (*it)->Update(ue);
+    LoopEvent le(currentTicks - previousTicks);
+    for (std::list<LoopEventListener *>::iterator it = loopListeners.begin(); it != loopListeners.end(); ++it) {
+      (*it)->LoopComplete(le);
     }
     previousTicks = currentTicks;
   }
@@ -139,9 +139,18 @@ SDL_Toolkit::WaitEvents()
 void
 SDL_Toolkit::WaitEventLoop()
 {
+  int currentTicks;
+  int previousTicks = SDL_GetTicks();
+
   eventLoopRunning = true;
   while (eventLoopRunning) {
     WaitEvents();
+    currentTicks = SDL_GetTicks();
+    LoopEvent le(currentTicks - previousTicks);
+    for (std::list<LoopEventListener *>::iterator it = loopListeners.begin(); it != loopListeners.end(); ++it) {
+      (*it)->LoopComplete(le);
+    }
+    previousTicks = currentTicks;
   }
 }
 
@@ -159,4 +168,3 @@ SDL_Toolkit::GetMousePosition(int *x, int *y)
 {
   SDL_GetMouseState(x, y);
 }
-

@@ -56,11 +56,11 @@ class TimerEventListener {
     virtual void TimerExpired(const TimerEvent &te) = 0;
 };
 
-class UpdateEventListener {
+class LoopEventListener {
   public:
-    UpdateEventListener() {};
-    virtual ~UpdateEventListener() {};
-    virtual void Update(const UpdateEvent &ue) = 0;
+    LoopEventListener() {};
+    virtual ~LoopEventListener() {};
+    virtual void LoopComplete(const LoopEvent &le) = 0;
 };
 
 class ActionEventListener {
