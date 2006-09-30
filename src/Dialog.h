@@ -48,7 +48,8 @@ class Dialog
     void SetPalette(const std::string &name);
     void SetScreen(const std::string &name);
     void SetIcons(const std::string &normalName, const std::string &pressedName);
-    void SetCompass(const std::string &name, Orientation &orient);
+    void SetCamera(Camera *cam);
+    void SetCompass(const std::string &name);
     void SetHeads(const std::string &name);
     void SetRequest(const std::string &name);
     void SetMembers(Party *party, const int group);

@@ -25,8 +25,10 @@
 #endif
 
 #include "Orientation.h"
+#include "Subject.h"
 
-class Camera {
+class Camera
+: public Subject {
   private:
     int xpos;
     int ypos;

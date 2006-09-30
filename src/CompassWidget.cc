@@ -24,38 +24,45 @@ static const int COMPASS_WIDGET_YPOS   = 121;
 static const int COMPASS_WIDGET_WIDTH  = 32;
 static const int COMPASS_WIDGET_HEIGHT = 11;
 
-CompassWidget::CompassWidget()
+CompassWidget::CompassWidget(Camera *cam, Image *img)
 : Widget(COMPASS_WIDGET_XPOS, COMPASS_WIDGET_YPOS, COMPASS_WIDGET_WIDTH, COMPASS_WIDGET_HEIGHT)
-, orientation(0)
-, compassImage(0)
+, camera(cam)
+, compassImage(img)
+, cachedImage(0)
 {
+  cachedImage = new Image(COMPASS_WIDGET_WIDTH, COMPASS_WIDGET_HEIGHT);
+  camera->Attach(this);
+  Update();
 }
 
 CompassWidget::~CompassWidget()
 {
-}
-
-void
-CompassWidget::SetOrientation(Orientation *orient)
-{
-  orientation = orient;
-}
-
-void
-CompassWidget::SetImage(Image *image)
-{
-  compassImage = image;
+  camera->Detach(this);
+  if (cachedImage) {
+    delete cachedImage;
+  }
 }
 
 void
 CompassWidget::Draw()
 {
+  if (cachedImage){
+    cachedImage->Draw(xpos, ypos);
+  }
+}
+
+void
+CompassWidget::Update()
+{
   if (compassImage) {
-    int offset = -orientation->GetHeading();
+    int offset = -camera->GetHeading();
     int imagewidth = compassImage->GetWidth();
     compassImage->Draw(xpos + offset, ypos, xpos, ypos, width, height);
     if ((imagewidth + offset) < width) {
       compassImage->Draw(xpos + offset + imagewidth, ypos, xpos, ypos, width, height);
     }
+  }
+  if (cachedImage){
+    cachedImage->Read(xpos, ypos);
   }
 }

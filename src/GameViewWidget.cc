@@ -23,16 +23,32 @@
 GameViewWidget::GameViewWidget(const int x, const int y, const int w, const int h, Game *g)
 : ContainerWidget(x, y, w, h)
 , game(g)
+, cachedImage(0)
 {
+  cachedImage = new Image(w, h);
 }
 
 GameViewWidget::~GameViewWidget()
 {
+  if (cachedImage) {
+    delete cachedImage;
+  }
 }
 
 void
 GameViewWidget::Draw()
 {
-  Redraw();
+  if (cachedImage) {
+    cachedImage->Draw(xpos, ypos);
+  }
   DrawChildWidgets();
+}
+
+void
+GameViewWidget::Update()
+{
+  Redraw();
+  if (cachedImage) {
+    cachedImage->Read(xpos, ypos);
+  }
 }

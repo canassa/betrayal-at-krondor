@@ -26,18 +26,21 @@
 
 #include "ContainerWidget.h"
 #include "Game.h"
+#include "Observer.h"
 
 class GameViewWidget
-: public ContainerWidget {
-  protected:
-    Game *game;
+: public ContainerWidget
+, public Observer {
   private:
     virtual void Redraw() = 0;
+  protected:
+    Game *game;
+    Image *cachedImage;
   public:
     GameViewWidget(const int x, const int y, const int w, const int h, Game *g);
     virtual ~GameViewWidget();
     void Draw();
+    void Update();
 };
 
 #endif
-

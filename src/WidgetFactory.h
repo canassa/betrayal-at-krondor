@@ -58,7 +58,7 @@ typedef struct _WidgetResources {
   ImageResource *normal;
   ImageResource *pressed;
   ImageResource *compass;
-  Orientation *orient;
+  Camera *camera;
   ImageResource *heads;
   PlayerCharacter *members[MAX_ACTIVE_MEMBERS];
   int playerCharacterGroup;
@@ -77,7 +77,7 @@ class WidgetFactory {
     CharacterButtonWidget* CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource *img, ActionEventListener *ael);
     ChoiceWidget* CreateChoice();
     TickboxWidget* CreateTickbox();
-    CompassWidget* CreateCompass(ImageResource *img, Orientation* orient);
+    CompassWidget* CreateCompass(Camera *cam, ImageResource *img);
     CombatViewWidget* CreateCombatView(RequestData& data, Game *game);
     MapViewWidget* CreateMapView(RequestData& data, Game *game);
     WorldViewWidget* CreateWorldView(RequestData& data, Game *game);

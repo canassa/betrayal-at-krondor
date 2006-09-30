@@ -24,21 +24,23 @@
 #include "config.h"
 #endif
 
+#include "Camera.h"
 #include "Image.h"
-#include "Orientation.h"
+#include "Observer.h"
 #include "Widget.h"
 
 class CompassWidget
-: public Widget {
+: public Observer
+, public Widget {
   private:
-    Orientation *orientation;
+    Camera *camera;
     Image *compassImage;
+    Image *cachedImage;
   public:
-    CompassWidget();
+    CompassWidget(Camera *cam, Image *img);
     virtual ~CompassWidget();
-    void SetOrientation(Orientation *orient);
-    void SetImage(Image *image);
     void Draw();
+    void Update();
 };
 
 #endif

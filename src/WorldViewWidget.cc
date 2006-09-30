@@ -21,26 +21,29 @@
 #include <sstream>
 
 #include "FileManager.h"
+#include "MediaToolkit.h"
 #include "WorldViewWidget.h"
 
 WorldViewWidget::WorldViewWidget(const int x, const int y, const int w, const int h, Game *g)
 : GameViewWidget(x, y, w, h, g)
 {
+  game->GetCamera()->Attach(this);
+  Update();
 }
 
 WorldViewWidget::~WorldViewWidget()
 {
+  game->GetCamera()->Detach(this);
 }
 
 void
 WorldViewWidget::DrawHorizon()
 {
   static const int HORIZON_TOP_SIZE = 34;
-  int chapter = game->GetChapter()->Get();
-  std::stringstream horizonStream;
-  horizonStream << "Z" << std::setw(2) << std::setfill('0') << chapter << "H.BMX";
+  std::stringstream stream;
+  stream << "Z" << std::setw(2) << std::setfill('0') << game->GetChapter()->Get() << "H.BMX";
   ImageResource horizon;
-  FileManager::GetInstance()->Load(&horizon, horizonStream.str());
+  FileManager::GetInstance()->Load(&horizon, stream.str());
   Image top(width, HORIZON_TOP_SIZE);
   int heading = game->GetCamera()->GetHeading();
   int index = (heading >> 6) & 0x03;
@@ -58,7 +61,14 @@ WorldViewWidget::DrawHorizon()
 }
 
 void
+WorldViewWidget::DrawTerrain()
+{
+}
+
+void
 WorldViewWidget::Redraw()
 {
+  MediaToolkit::GetInstance()->GetVideo()->Clear(xpos, ypos, width, height);
   DrawHorizon();
+  DrawTerrain();
 }

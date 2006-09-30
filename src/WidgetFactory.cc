@@ -74,11 +74,9 @@ WidgetFactory::CreateTickbox()
 }
 
 CompassWidget*
-WidgetFactory::CreateCompass(ImageResource *img, Orientation* orient)
+WidgetFactory::CreateCompass(Camera *cam, ImageResource *img)
 {
-  CompassWidget *compass = new CompassWidget();
-  compass->SetOrientation(orient);
-  compass->SetImage(img->GetImage(0));
+  CompassWidget *compass = new CompassWidget(cam, img->GetImage(0));
   return compass;
 }
 
@@ -190,7 +188,7 @@ WidgetFactory::CreatePanel(WidgetResources& widgetRes)
     }
   }
   if (widgetRes.compass) {
-    CompassWidget *compass = CreateCompass(widgetRes.compass, widgetRes.orient);
+    CompassWidget *compass = CreateCompass(widgetRes.camera, widgetRes.compass);
     panel->AddWidget(compass);
   }
   return panel;

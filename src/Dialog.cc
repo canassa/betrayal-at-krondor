@@ -156,7 +156,17 @@ Dialog::SetIcons(const std::string &normalName, const std::string &pressedName)
 }
 
 void
-Dialog::SetCompass(const std::string &name, Orientation &orient)
+Dialog::SetCamera(Camera *cam)
+{
+  if (cam) {
+    widgetRes.camera = cam;
+  } else {
+    throw NullPointer(__FILE__, __LINE__);
+  }
+}
+
+void
+Dialog::SetCompass(const std::string &name)
 {
   try {
     if (widgetRes.compass) {
@@ -164,7 +174,6 @@ Dialog::SetCompass(const std::string &name, Orientation &orient)
     }
     widgetRes.compass = new ImageResource();
     FileManager::GetInstance()->Load(widgetRes.compass, name);
-    widgetRes.orient = &orient;
   } catch (Exception &e) {
     e.Print("Dialog::SetCompass");
     throw;

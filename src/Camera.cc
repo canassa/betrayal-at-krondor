@@ -42,6 +42,7 @@ Camera::SetPosition(const int x, const int y)
 {
   xpos = x;
   ypos = y;
+  Notify();
 }
 
 Orientation&
@@ -60,10 +61,12 @@ void
 Camera::SetHeading(const int heading)
 {
   orientation.SetHeading(heading);
+  Notify();
 }
 
 void
 Camera::Turn(const int delta)
 {
   orientation.AdjustHeading(delta);
+  Notify();
 }

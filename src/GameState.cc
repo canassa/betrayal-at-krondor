@@ -130,7 +130,8 @@ GameStateCast::GameStateCast()
   dialog->SetRequest("REQ_CAST.DAT");
   dialog->SetHeads("HEADS.BMX");
   dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), GROUP2);
-  dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetCamera()->GetOrientation());
+  dialog->SetCamera(GameApplication::GetInstance()->GetGame()->GetCamera());
+  dialog->SetCompass("COMPASS.BMX");
 }
 
 GameStateCast::~GameStateCast()
@@ -453,7 +454,8 @@ GameStateInventory::GameStateInventory()
   dialog->SetRequest("REQ_INV.DAT");
   dialog->SetHeads("HEADS.BMX");
   dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), GROUP3);
-  dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetCamera()->GetOrientation());
+  dialog->SetCamera(GameApplication::GetInstance()->GetGame()->GetCamera());
+  dialog->SetCompass("COMPASS.BMX");
 }
 
 GameStateInventory::~GameStateInventory()
@@ -606,7 +608,8 @@ GameStateMap::GameStateMap()
   dialog->SetRequest("REQ_MAP.DAT");
   dialog->SetHeads("HEADS.BMX");
   dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), GROUP2);
-  dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetCamera()->GetOrientation());
+  dialog->SetCamera(GameApplication::GetInstance()->GetGame()->GetCamera());
+  dialog->SetCompass("COMPASS.BMX");
   dialog->SetGameView(GameApplication::GetInstance()->GetGame(), GROUP3, GVT_MAP);
 }
 
@@ -928,7 +931,8 @@ GameStateWorld::GameStateWorld()
   dialog->SetRequest("REQ_MAIN.DAT");
   dialog->SetHeads("HEADS.BMX");
   dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), GROUP2);
-  dialog->SetCompass("COMPASS.BMX", GameApplication::GetInstance()->GetGame()->GetCamera()->GetOrientation());
+  dialog->SetCamera(GameApplication::GetInstance()->GetGame()->GetCamera());
+  dialog->SetCompass("COMPASS.BMX");
   dialog->SetGameView(GameApplication::GetInstance()->GetGame(), GROUP3, GVT_WORLD);
 }
 
