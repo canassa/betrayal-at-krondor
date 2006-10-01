@@ -106,7 +106,7 @@ Palette::FadeFrom(Color* from, const unsigned int first, const unsigned int n, c
     media->GetClock()->StartTimer(TMR_PALETTE, delay);
     delayed = true;
     while (delayed) {
-      media->PollEvents();
+      media->WaitEvents();
     }
   }
   delete[] tmp;
@@ -131,7 +131,7 @@ Palette::FadeTo(Color* to, const unsigned int first, const unsigned int n, const
     media->GetClock()->StartTimer(TMR_PALETTE, delay);
     delayed = true;
     while (delayed) {
-      media->PollEvents();
+      media->WaitEvents();
     }
   }
   delete[] tmp;

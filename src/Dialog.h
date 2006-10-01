@@ -33,6 +33,7 @@ class Dialog
 : public ActionEventListener
 , public MouseButtonEventListener
 , public KeyboardEventListener
+, public Observer
 {
   protected:
     DialogWindow *window;
@@ -57,6 +58,7 @@ class Dialog
     void Enter();
     void Leave();
     unsigned int Execute();
+    void Update();
     void ActionPerformed(const ActionEvent& ae);
     void MouseButtonPressed(const MouseButtonEvent& mbe);
     void MouseButtonReleased(const MouseButtonEvent& mbe);

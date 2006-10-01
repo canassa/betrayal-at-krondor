@@ -245,6 +245,7 @@ Dialog::Enter()
     media->AddKeyboardListener(this);
     media->AddMouseButtonListener(this);
     media->GetVideo()->Clear();
+    MousePointerManager::GetInstance()->GetCurrentPointer()->Attach(this);
     window->FadeIn(palette->GetPalette());
   } catch (Exception &e) {
     e.Print("Dialog::Enter");
@@ -257,6 +258,7 @@ Dialog::Leave()
 {
   try {
     window->FadeOut(palette->GetPalette());
+    MousePointerManager::GetInstance()->GetCurrentPointer()->Detach(this);
     MediaToolkit* media = MediaToolkit::GetInstance();
     media->GetVideo()->Clear();
     media->RemoveMouseButtonListener(this);
@@ -275,14 +277,19 @@ Dialog::Execute()
   try {
     running = true;
     while (running) {
-      MediaToolkit::GetInstance()->PollEvents();
-      window->Draw();
+      MediaToolkit::GetInstance()->WaitEvents();
     }
     return action;
   } catch (Exception &e) {
     e.Print("Dialog::Execute");
     throw;
   }
+}
+
+void
+Dialog::Update()
+{
+  window->Draw();
 }
 
 void
@@ -309,6 +316,7 @@ Dialog::MouseButtonPressed(const MouseButtonEvent& mbe)
     default:
       break;
   }
+  window->Draw();
 }
 
 void
@@ -328,6 +336,7 @@ Dialog::MouseButtonReleased(const MouseButtonEvent& mbe)
     default:
       break;
   }
+  window->Draw();
 }
 
 
@@ -367,6 +376,7 @@ GameDialog::KeyPressed(const KeyboardEvent& kbe)
     default:
       break;
   }
+  window->Draw();
 }
 
 void
@@ -416,6 +426,7 @@ OptionsDialog::KeyPressed(const KeyboardEvent& kbe)
     default:
       break;
   }
+  window->Draw();
 }
 
 void
@@ -431,4 +442,5 @@ OptionsDialog::KeyReleased(const KeyboardEvent& kbe)
     default:
       break;
   }
+  window->Draw();
 }

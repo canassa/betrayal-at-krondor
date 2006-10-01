@@ -25,7 +25,8 @@
 #include "MousePointer.h"
 
 MousePointer::MousePointer(const std::string &resname)
-: visible(false)
+: Subject()
+, visible(false)
 , xPos(0)
 , yPos(0)
 , pointerType(MP_SWORD)
@@ -42,6 +43,7 @@ void
 MousePointer::SetPointerType(MousePointerType mpt)
 {
   pointerType = mpt;
+  Notify();
 }
 
 void
@@ -49,12 +51,14 @@ MousePointer::SetPosition(const int x, const int y)
 {
   xPos = x;
   yPos = y;
+  Notify();
 }
 
 void
 MousePointer::SetVisible(const bool vis)
 {
   visible = vis;
+  Notify();
 }
 
 void
@@ -64,4 +68,3 @@ MousePointer::Draw()
     pointerImages.GetImage((int)pointerType)->Draw(xPos, yPos, 0);
   }
 }
-

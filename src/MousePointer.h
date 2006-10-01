@@ -25,6 +25,7 @@
 #endif
 
 #include "ImageResource.h"
+#include "Subject.h"
 #include "Video.h"
 
 typedef enum _MousePointerType {
@@ -57,7 +58,8 @@ typedef enum _MousePointerType {
   MP_INNKEEPER = 26
 } MousePointerType;
 
-class MousePointer {
+class MousePointer
+: public Subject {
   private:
     bool visible;
     int xPos;

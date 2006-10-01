@@ -90,8 +90,10 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat) {
     media->AddTimerListener(this);
 
     while (playing) {
-      media->PollEvents();
       PlayTag(media);
+      if (playing) {
+        media->WaitEvents();
+      }
     }
     if (delayed) {
       media->GetClock()->CancelTimer(TMR_MOVIE_PLAYER);
