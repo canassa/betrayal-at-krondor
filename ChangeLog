@@ -1,5 +1,7 @@
-2006-09-xx, xbak-0.0.11:
-* Added the compass.
+2006-10-xx, xbak-0.0.11:
+* Added the compass and the horizon in the main game view.
+* Added sevaral GUI widgets for the main game view.
+* Improved event handling.
 * Dialogs are now more flexible.
 * Plugged a memory leak.
 * Several bug fixes.
