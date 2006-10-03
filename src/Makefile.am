@@ -103,8 +103,6 @@ libbase_a_SOURCES = Event.cc \
                     Exception.h \
                     FileBuffer.cc \
                     FileBuffer.h \
-                    FileManager.cc \
-                    FileManager.h \
                     GenericFile.cc \
                     GenericFile.h \
                     Observer.h \
@@ -164,7 +162,9 @@ libguitoolkit_a_SOURCES = ButtonWidget.cc \
                           WidgetFactory.h \
                           WorldViewWidget.cc \
                           WorldViewWidget.h
-libresbase_a_SOURCES = GameData.cc \
+libresbase_a_SOURCES = FileManager.cc \
+                       FileManager.h \
+                       GameData.cc \
                        GameData.h \
                        GameFile.cc \
                        GameFile.h \
