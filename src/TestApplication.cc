@@ -106,7 +106,7 @@ TestApplication::ShowImage(const std::string& name)
       media->GetVideo()->Clear();
       img.GetImage(i)->Draw(0, 0);
       media->GetVideo()->Refresh();
-      media->GetClock()->StartTimer(TMR_TEST_APP, 2500);
+      media->GetClock()->StartTimer(TMR_TEST_APP, 5000);
       media->WaitEventLoop();
       media->GetClock()->CancelTimer(TMR_TEST_APP);
     }
@@ -124,7 +124,7 @@ TestApplication::ShowScreen(const std::string& name)
     media->GetVideo()->Clear();
     scr.GetImage()->Draw(0, 0);
     media->GetVideo()->Refresh();
-    media->GetClock()->StartTimer(TMR_TEST_APP, 5000);
+    media->GetClock()->StartTimer(TMR_TEST_APP, 10000);
     media->WaitEventLoop();
     media->GetClock()->CancelTimer(TMR_TEST_APP);
   } catch (Exception &e) {
