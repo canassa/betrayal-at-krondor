@@ -50,6 +50,12 @@ PlayerCharacter::GetSkillsImage() const
   return skillsImage;
 }
 
+CharacterClass
+PlayerCharacter::GetCharacterClass() const
+{
+  return charClass;
+}
+
 ConditionType
 PlayerCharacter::GetCondition() const
 {

@@ -26,7 +26,11 @@
 
 #include "Image.h"
 
-typedef enum _Condition {
+typedef enum _CharacterClass {
+  FIGHTER, SPELLCASTER
+} CharacterClass;
+
+typedef enum _ConditionType {
   NORMAL, POISENED
 } ConditionType;
 
@@ -61,6 +65,7 @@ class PlayerCharacter {
     Image *skillsImage;
     int order;
     bool selected;
+    CharacterClass charClass;
     RatingSet ratings;
     ConditionType condition;
     SkillSet skills;
@@ -72,6 +77,7 @@ class PlayerCharacter {
     Image* GetSkillsImage() const;
     int GetOrder() const;
     bool IsSelected() const;
+    CharacterClass GetCharacterClass() const;
     ConditionType GetCondition() const;
     RatingSet& GetRatings();
     SkillSet& GetSkills();
