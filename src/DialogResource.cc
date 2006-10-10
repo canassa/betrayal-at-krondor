@@ -20,6 +20,22 @@
 #include "Exception.h"
 #include "DialogResource.h"
 
+DialogData::DialogData()
+: childDialogs(0)
+, text()
+, childData()
+{
+}
+
+DialogData::~DialogData()
+{
+  text.clear();
+  for (unsigned int i = 0; i < childData.size(); i++) {
+    delete childData[i];
+  }
+  childData.clear();
+}
+
 DialogResource::DialogResource()
 : dialogMap()
 {
@@ -28,12 +44,7 @@ DialogResource::DialogResource()
 DialogResource::~DialogResource()
 {
   for (std::map<const unsigned int, DialogData*>::iterator it = dialogMap.begin(); it != dialogMap.end(); ++it) {
-    DialogData* data = it->second;
-    data->text.clear();
-    for (unsigned int i = 0; i < data->subdata.size(); i++) {
-      delete data->subdata[i];
-    }
-    data->subdata.clear();
+    delete it->second;
   }
   dialogMap.clear();
 }
@@ -44,7 +55,7 @@ DialogResource::GetSize() const {
 }
 
 bool
-DialogResource::Find(const unsigned int n, DialogData*& data) {
+DialogResource::Find(const unsigned int n, DialogData* data) {
   std::map<const unsigned int, DialogData*>::iterator it = dialogMap.find(n);
   if (it != dialogMap.end()) {
     data = it->second;
@@ -63,11 +74,11 @@ DialogResource::ReadDialogData(FileBuffer *buffer, DialogData *data)
 {
   try {
     buffer->Skip(5);
-    data->subdialogs = buffer->GetUint8();
+    data->childDialogs = buffer->GetUint8();
     unsigned int n = buffer->GetUint8();
     buffer->Skip(2);
     std::vector<DialogPageOffset> pageOffset;
-    for (unsigned int i = 0; i < data->subdialogs; i++) {
+    for (unsigned int i = 0; i < data->childDialogs; i++) {
       DialogPageOffset dpo;
       buffer->Skip(4);
       dpo.type = buffer->GetSint16LE();
@@ -75,12 +86,12 @@ DialogResource::ReadDialogData(FileBuffer *buffer, DialogData *data)
       pageOffset.push_back(dpo);
     }
     bool done = false;
-    for (unsigned int i = 0; i < data->subdialogs; i++) {
+    for (unsigned int i = 0; i < data->childDialogs; i++) {
       if (pageOffset[i].type >= 0) {
         buffer->Seek(pageOffset[i].offset);
-        DialogData* sub = new DialogData;
-        ReadDialogData(buffer, sub);
-        data->subdata.push_back(sub);
+        DialogData* child = new DialogData;
+        ReadDialogData(buffer, child);
+        data->childData.push_back(child);
         done = true;
       }
     }
@@ -88,7 +99,7 @@ DialogResource::ReadDialogData(FileBuffer *buffer, DialogData *data)
       for (unsigned int j = 0; j < n; j++) {
         buffer->Skip(10);
       }
-      for (unsigned int i = 0; i < data->subdialogs; i++) {
+      for (unsigned int i = 0; i < data->childDialogs; i++) {
         std::string s = buffer->GetString();
         data->text.push_back(s);
         done = true;

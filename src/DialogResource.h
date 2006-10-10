@@ -29,11 +29,14 @@
 
 #include "ResourceData.h"
 
-typedef struct _DialogData {
-  unsigned int subdialogs;
-  std::vector<std::string> text;
-  std::vector<struct _DialogData *> subdata;
-} DialogData;
+class DialogData {
+  public:
+    unsigned int childDialogs;
+    std::vector<std::string> text;
+    std::vector<DialogData*> childData;
+    DialogData();
+    virtual ~DialogData();
+};
 
 class DialogResource
 : public ResourceData {
@@ -44,7 +47,7 @@ class DialogResource
     DialogResource();
     virtual ~DialogResource();
     unsigned int GetSize() const;
-    bool Find(const unsigned int n, DialogData*& data);
+    bool Find(const unsigned int n, DialogData* data);
     void Load(FileBuffer *buffer);
 };
 

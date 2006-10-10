@@ -28,15 +28,15 @@ void dumpDialogData(unsigned int n, DialogData *data, unsigned int depth) {
   for (unsigned int d = 0; d < depth; d++) {
     printf("\t");
   }
-  printf("%d\t%d\n", n, data->subdialogs);
+  printf("%d\t%d\n", n, data->childDialogs);
   for (unsigned int i = 0; i < data->text.size(); i++) {
     for (unsigned int d = 0; d < depth; d++) {
       printf("\t");
     }
     printf("\t%d: %s\n", i, data->text[i].c_str());
   }
-  for (unsigned int i = 0; i < data->subdata.size(); i++) {
-    dumpDialogData(i, data->subdata[i], depth+1);
+  for (unsigned int i = 0; i < data->childData.size(); i++) {
+    dumpDialogData(i, data->childData[i], depth+1);
   }
 }
 
@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
     DialogResource *ddx = new DialogResource;
     FileManager::GetInstance()->Load(ddx, argv[1]);
     printf("Size: %d\n", ddx->GetSize());
-    DialogData* data;
+    DialogData* data = 0;
     for (unsigned int i = 0; i < 512; i++) {
       if (ddx->Find(i, data)) {
         dumpDialogData(i, data, 0);
