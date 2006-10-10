@@ -197,19 +197,16 @@ MoviePlayer::PlayTag(MediaToolkit* media)
           }
           break;
         case DRAW_SPRITE3:
-          if ((currDelay > 0) && (!delayed)) {
-            delayed = true;
-            media->GetClock()->StartTimer(TMR_MOVIE_PLAYER, 3 * currDelay);
+          if (currDelay > 0) {
+            media->GetClock()->Delay(currDelay);
           }
         case DRAW_SPRITE2:
-          if ((currDelay > 0) && (!delayed)) {
-            delayed = true;
-            media->GetClock()->StartTimer(TMR_MOVIE_PLAYER, 2 * currDelay);
+          if (currDelay > 0) {
+            media->GetClock()->Delay(currDelay);
           }
         case DRAW_SPRITE1:
-          if ((currDelay > 0) && (!delayed)) {
-            delayed = true;
-            media->GetClock()->StartTimer(TMR_MOVIE_PLAYER, currDelay);
+          if (currDelay > 0) {
+            media->GetClock()->Delay(currDelay);
           }
         case DRAW_SPRITE0:
           if ((backgroundImage) && (!backgroundImageDrawn)) {
