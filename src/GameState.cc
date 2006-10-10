@@ -449,13 +449,11 @@ GameStateInventory::GameStateInventory()
   dialog = new GameDialog();
   dialog->SetFont("GAME.FNT");
   dialog->SetPalette("OPTIONS.PAL");
-  dialog->SetScreen("FRAME.SCX");
+  dialog->SetScreen("INVENTOR.SCX");
   dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
   dialog->SetRequest("REQ_INV.DAT");
   dialog->SetHeads("HEADS.BMX");
   dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), GROUP3);
-  dialog->SetCamera(GameApplication::GetInstance()->GetGame()->GetCamera());
-  dialog->SetCompass("COMPASS.BMX");
 }
 
 GameStateInventory::~GameStateInventory()
