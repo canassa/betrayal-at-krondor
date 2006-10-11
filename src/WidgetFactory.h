@@ -69,9 +69,7 @@ typedef struct _WidgetResources {
 } WidgetResources;
 
 class WidgetFactory {
-  public:
-    WidgetFactory();
-    virtual ~WidgetFactory();
+  private:
     TextButtonWidget* CreateTextButton(RequestData& data, FontResource* fnt, ActionEventListener *ael);
     ImageButtonWidget* CreateImageButton(RequestData& data, ImageResource *normal, ImageResource *pressed, ActionEventListener *ael);
     CharacterButtonWidget* CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource *img, ActionEventListener *ael);
@@ -82,6 +80,9 @@ class WidgetFactory {
     MapViewWidget* CreateMapView(RequestData& data, Game *game);
     WorldViewWidget* CreateWorldView(RequestData& data, Game *game);
     LabelWidget* CreateLabel(LabelData& data, FontResource* fnt, const int panelWidth);
+  public:
+    WidgetFactory();
+    virtual ~WidgetFactory();
     PanelWidget* CreatePanel(WidgetResources& widgetRes);
 };
 
