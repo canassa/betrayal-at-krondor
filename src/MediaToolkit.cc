@@ -49,11 +49,7 @@ MediaToolkit*
 MediaToolkit::GetInstance()
 {
   if (!instance) {
-#ifdef HAVE_LIBSDL
     instance = new SDL_Toolkit();
-#else
-    throw Exception(__FILE__, __LINE__, "No media toolkit available!");
-#endif
   }
   return instance;
 }
