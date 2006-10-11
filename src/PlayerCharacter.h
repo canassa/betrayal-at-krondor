@@ -35,10 +35,8 @@ typedef enum _ConditionType {
 } ConditionType;
 
 typedef struct _RatingSet {
-  int curHealth;
-  int maxHealth;
-  int curStamina;
-  int maxStamina;
+  int health;
+  int stamina;
   int speed;
   int strength;
 } RatingSet;
@@ -66,9 +64,11 @@ class PlayerCharacter {
     int order;
     bool selected;
     CharacterClass charClass;
-    RatingSet ratings;
     ConditionType condition;
-    SkillSet skills;
+    RatingSet currentRatings;
+    RatingSet normalRatings;
+    SkillSet currentSkills;
+    SkillSet normalSkills;
   public:
     PlayerCharacter(const std::string& s);
     ~PlayerCharacter();
@@ -79,8 +79,10 @@ class PlayerCharacter {
     bool IsSelected() const;
     CharacterClass GetCharacterClass() const;
     ConditionType GetCondition() const;
-    RatingSet& GetRatings();
-    SkillSet& GetSkills();
+    RatingSet& GetCurrentRatings();
+    RatingSet& GetNormalRatings();
+    SkillSet& GetCurrentSkills();
+    SkillSet& GetNormalSkills();
     void SetHeadImage(Image *img);
     void SetSkillsImage(Image *img);
     void SetOrder(const int n);

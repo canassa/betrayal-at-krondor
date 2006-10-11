@@ -75,15 +75,27 @@ PlayerCharacter::IsSelected() const
 }
 
 RatingSet&
-PlayerCharacter::GetRatings()
+PlayerCharacter::GetCurrentRatings()
 {
-  return ratings;
+  return currentRatings;
+}
+
+RatingSet&
+PlayerCharacter::GetNormalRatings()
+{
+  return normalRatings;
 }
 
 SkillSet&
-PlayerCharacter::GetSkills()
+PlayerCharacter::GetCurrentSkills()
 {
-  return skills;
+  return currentSkills;
+}
+
+SkillSet&
+PlayerCharacter::GetNormalSkills()
+{
+  return normalSkills;
 }
 
 void
