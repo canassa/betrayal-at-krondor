@@ -29,6 +29,7 @@ GameData::GameData()
 , xloc(0)
 , yloc(0)
 , orientation(0)
+, member()
 {
 }
 
@@ -90,6 +91,12 @@ GameData::GetOrientation() const
   return orientation;
 }
 
+std::string&
+GameData::GetMember(const unsigned int n)
+{
+  return member[n];
+}
+
 void
 GameData::Load(FileBuffer *buffer)
 {
@@ -107,6 +114,10 @@ GameData::Load(FileBuffer *buffer)
     yloc = buffer->GetUint32LE();
     buffer->Skip(5);
     orientation = buffer->GetUint16LE();
+    buffer->Skip(23);
+    for (unsigned int i = 0; i < 6; i++) {
+      member[i] = buffer->GetString(10);
+    }
   } catch (Exception &e) {
     e.Print("GameData::Load");
   }

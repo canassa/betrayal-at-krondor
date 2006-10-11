@@ -35,6 +35,9 @@ int main(int argc, char *argv[]) {
     printf("%s  (%d, %d)\n", gam->GetName().c_str(), gam->GetXPos(), gam->GetYPos());
     printf("z: %d  c: (%d, %d)  l: (%d, %d)  o: %d\n",
            gam->GetZone(), gam->GetXCell(), gam->GetYCell(), gam->GetXLoc(), gam->GetYLoc(), gam->GetOrientation());
+    for (unsigned int i = 0; i < 6; i++) {
+      printf("%s\n", gam->GetMember(i).c_str());
+    }
     delete gam;
     FileManager::CleanUp();
     GamePath::CleanUp();

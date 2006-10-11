@@ -75,11 +75,12 @@ noinst_HEADERS = AnimationResource.h \
                  WidgetFactory.h \
                  WorldViewWidget.h \
                  ZoneTableResource.h
-noinst_LIBRARIES = libsdldriver.a \
+noinst_LIBRARIES = libbase.a \
                    libresbase.a \
                    libresdata.a \
+                   libgame.a \
                    libguitoolkit.a \
-                   libbase.a
+                   libsdldriver.a
 noinst_PROGRAMS = dumpads \
                   dumpbmx \
                   dumpbok \
@@ -108,6 +109,18 @@ libbase_a_SOURCES = Event.cc \
                     Observer.h \
                     Subject.cc \
                     Subject.h
+libgame_a_SOURCES = Camera.cc \
+                    Camera.h \
+                    Chapter.cc \
+                    Chapter.h \
+                    Game.cc \
+                    Game.h \
+                    Orientation.cc \
+                    Orientation.h \
+                    Party.cc \
+                    Party.h \
+                    PlayerCharacter.cc \
+                    PlayerCharacter.h
 libguitoolkit_a_SOURCES = ButtonWidget.cc \
                           ButtonWidget.h \
                           CharacterButtonWidget.cc \
@@ -259,7 +272,8 @@ dumpfnt_LDADD   = libresbase.a \
                   libsdldriver.a \
                   libbase.a
 dumpgam_SOURCES = dumpgam.cc
-dumpgam_LDADD   = libresbase.a \
+dumpgam_LDADD   = libgame.a \
+                  libresbase.a \
                   libbase.a
 dumplbl_SOURCES = LabelResource.cc \
                   LabelResource.h \
@@ -318,24 +332,13 @@ resourcedemo_LDADD = libguitoolkit.a \
                      libresbase.a \
                      libsdldriver.a \
                      libbase.a
-xbak_SOURCES = Camera.cc \
-               Camera.h \
-               Chapter.cc \
-               Chapter.h \
-               Game.cc \
-               Game.h \
-               GameApplication.cc \
+xbak_SOURCES = GameApplication.cc \
                GameApplication.h \
                GameState.cc \
                GameState.h \
-               Orientation.cc \
-               Orientation.h \
-               Party.cc \
-               Party.h \
-               PlayerCharacter.cc \
-               PlayerCharacter.h \
                xbak.cc
-xbak_LDADD = libguitoolkit.a \
+xbak_LDADD = libgame.a \
+             libguitoolkit.a \
              libresdata.a \
              libresbase.a \
              libsdldriver.a \

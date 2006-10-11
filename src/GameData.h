@@ -37,6 +37,7 @@ class GameData {
     unsigned int xloc;
     unsigned int yloc;
     unsigned int orientation;
+    std::string member[6];
   public:
     GameData();
     virtual ~GameData();
@@ -49,6 +50,7 @@ class GameData {
     unsigned int GetXLoc() const;
     unsigned int GetYLoc() const;
     unsigned int GetOrientation() const;
+    std::string& GetMember(const unsigned int n);
     void Load(FileBuffer *buffer);
 };
 
