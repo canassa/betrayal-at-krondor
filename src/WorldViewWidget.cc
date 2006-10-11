@@ -21,6 +21,7 @@
 #include <sstream>
 
 #include "FileManager.h"
+#include "ImageResource.h"
 #include "MediaToolkit.h"
 #include "WorldViewWidget.h"
 
