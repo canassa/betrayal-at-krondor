@@ -29,7 +29,8 @@ GameData::GameData()
 , xloc(0)
 , yloc(0)
 , orientation(0)
-, member()
+, memberName()
+, memberData()
 {
 }
 
@@ -92,9 +93,15 @@ GameData::GetOrientation() const
 }
 
 std::string&
-GameData::GetMember(const unsigned int n)
+GameData::GetMemberName(const unsigned int m)
 {
-  return member[n];
+  return memberName[m];
+}
+
+unsigned int
+GameData::GetMemberData(const unsigned int m, const unsigned int i, const unsigned int j)
+{
+  return memberData[(m * 16 + i) * 5 + j];
 }
 
 void
@@ -115,8 +122,17 @@ GameData::Load(FileBuffer *buffer)
     buffer->Skip(5);
     orientation = buffer->GetUint16LE();
     buffer->Skip(23);
-    for (unsigned int i = 0; i < 6; i++) {
-      member[i] = buffer->GetString(10);
+    for (unsigned int m = 0; m < 6; m++) {
+      memberName.push_back(buffer->GetString(10));
+    }
+    for (unsigned int m = 0; m < 6; m++) {
+      buffer->Skip(8);
+      for (unsigned int i = 0; i < 16; i++) {
+        for (unsigned int j = 0; j < 5; j++) {
+          memberData.push_back(buffer->GetUint8());
+        }
+      }
+      buffer->Skip(7);
     }
   } catch (Exception &e) {
     e.Print("GameData::Load");

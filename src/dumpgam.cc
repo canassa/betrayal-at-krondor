@@ -35,8 +35,12 @@ int main(int argc, char *argv[]) {
     printf("%s  (%d, %d)\n", gam->GetName().c_str(), gam->GetXPos(), gam->GetYPos());
     printf("z: %d  c: (%d, %d)  l: (%d, %d)  o: %d\n",
            gam->GetZone(), gam->GetXCell(), gam->GetYCell(), gam->GetXLoc(), gam->GetYLoc(), gam->GetOrientation());
-    for (unsigned int i = 0; i < 6; i++) {
-      printf("%s\n", gam->GetMember(i).c_str());
+    for (unsigned int m = 0; m < 6; m++) {
+      printf("%10s:", gam->GetMemberName(m).c_str());
+      for (unsigned int i = 0; i < 16; i++) {
+        printf(" %3d (%3d)", gam->GetMemberData(m, i, 0), gam->GetMemberData(m, i, 1));
+      }
+      printf("\n");
     }
     delete gam;
     FileManager::CleanUp();

@@ -24,6 +24,9 @@
 #include "config.h"
 #endif
 
+#include <string>
+#include <vector>
+
 #include "FileBuffer.h"
 
 class GameData {
@@ -37,7 +40,8 @@ class GameData {
     unsigned int xloc;
     unsigned int yloc;
     unsigned int orientation;
-    std::string member[6];
+    std::vector<std::string> memberName;
+    std::vector<unsigned int> memberData;
   public:
     GameData();
     virtual ~GameData();
@@ -50,7 +54,8 @@ class GameData {
     unsigned int GetXLoc() const;
     unsigned int GetYLoc() const;
     unsigned int GetOrientation() const;
-    std::string& GetMember(const unsigned int n);
+    std::string& GetMemberName(const unsigned int m);
+    unsigned int GetMemberData(const unsigned int m, const unsigned int i, const unsigned int j);
     void Load(FileBuffer *buffer);
 };
 
