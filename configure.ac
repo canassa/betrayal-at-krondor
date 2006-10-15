@@ -38,7 +38,7 @@ AC_CACHE_SAVE
 # Checks for typedefs, structures, and compiler characteristics.
 AC_LANG([C++])
 SDL_CFLAGS=$(sh sdl-config --cflags)
-CXXFLAGS="$CXXFLAGS $SDL_CFLAGS -W -Wall -Werror -Wpointer-arith -Wcast-qual -Wwrite-strings -Wshadow -Wcast-align -Winline -ansi -pedantic"
+CXXFLAGS="$CXXFLAGS $SDL_CFLAGS -Wall -Werror -Wpointer-arith -Wcast-qual -Wwrite-strings -Wshadow -Wcast-align -Winline -ansi -pedantic"
 
 AC_C_CONST
 AC_FUNC_STAT
@@ -47,13 +47,10 @@ AC_HEADER_STDBOOL
 AC_TYPE_SIZE_T
 
 AC_CHECK_SIZEOF([char])
-AC_CHECK_SIZEOF([unsigned char])
-AC_CHECK_SIZEOF([short int])
-AC_CHECK_SIZEOF([unsigned short int])
+AC_CHECK_SIZEOF([short])
 AC_CHECK_SIZEOF([int])
-AC_CHECK_SIZEOF([unsigned int])
-AC_CHECK_SIZEOF([long int])
-AC_CHECK_SIZEOF([unsigned long int])
+AC_CHECK_SIZEOF([long])
+AC_CHECK_SIZEOF([long long])
 AC_CHECK_SIZEOF([void*])
 
 AC_CACHE_SAVE
