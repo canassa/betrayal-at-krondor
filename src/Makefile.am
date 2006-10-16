@@ -11,6 +11,7 @@ noinst_HEADERS = AnimationResource.h \
                  CompassWidget.h \
                  ContainerWidget.h \
                  Dialog.h \
+                 DialogFactory.h \
                  DialogResource.h \
                  DialogWindow.h \
                  Event.h \
@@ -135,6 +136,8 @@ libguitoolkit_a_SOURCES = ButtonWidget.cc \
                           ContainerWidget.h \
                           Dialog.cc \
                           Dialog.h \
+                          DialogFactory.cc \
+                          DialogFactory.h \
                           DialogWindow.cc \
                           DialogWindow.h \
                           GameViewWidget.cc \

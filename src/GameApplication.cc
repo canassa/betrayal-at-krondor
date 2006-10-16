@@ -98,7 +98,9 @@ GameApplication::CleanUp()
   GameStateCombat::CleanUp();
   GameStateContents::CleanUp();
   GameStateFullMap::CleanUp();
+  GameStateInitialOptions::CleanUp();
   GameStateIntro::CleanUp();
+  GameStateInventory::CleanUp();
   GameStateLoad::CleanUp();
   GameStateMap::CleanUp();
   GameStateOptions::CleanUp();

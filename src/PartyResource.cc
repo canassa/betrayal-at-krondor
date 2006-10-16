@@ -23,14 +23,11 @@
 PartyResource::PartyResource()
 : data()
 {
+  Clear();
 }
 
 PartyResource::~PartyResource()
 {
-  for (unsigned int i = 0; i < data.size(); i++) {
-    delete data[i];
-  }
-  data.clear();
 }
 
 unsigned int
@@ -46,9 +43,19 @@ PartyResource::GetData(const unsigned int n)
 }
 
 void
+PartyResource::Clear()
+{
+  for (unsigned int i = 0; i < data.size(); i++) {
+    delete data[i];
+  }
+  data.clear();
+}
+
+void
 PartyResource::Load(FileBuffer *buffer)
 {
   try {
+    Clear();
     unsigned int offset[PARTY_SIZE];
     for (unsigned int i = 0; i < PARTY_SIZE; i++) {
       offset[i] = buffer->GetUint16LE();

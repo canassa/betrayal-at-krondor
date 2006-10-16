@@ -19,7 +19,7 @@
 
 #include "LabelWidget.h"
 
-LabelWidget::LabelWidget(const int x, const int y, const int w, const int h, FontResource *f)
+LabelWidget::LabelWidget(const int x, const int y, const int w, const int h, FontResource& f)
 : Widget(x, y, w, h)
 , font(f)
 , text("")
@@ -37,14 +37,14 @@ LabelWidget::~LabelWidget()
 }
 
 void
-LabelWidget::SetText(const std::string &t)
+LabelWidget::SetText(const std::string &s)
 {
-  text = t;
+  text = s;
   textWidth = 0;
   for (unsigned int i = 0; i < text.length(); i++) {
-    textWidth += font->GetWidth(text[i] - font->GetFirst());
+    textWidth += font.GetWidth(text[i] - font.GetFirst());
   }
-  textHeight = font->GetHeight();
+  textHeight = font.GetHeight();
 }
 
 void
@@ -98,17 +98,17 @@ LabelWidget::Draw()
   if (shadow > NO_SHADOW) {
     i = 0;
     w = 0;
-    while ((i < text.length()) && (w + font->GetWidth(text[i] - font->GetFirst()) < (unsigned)width)) {
-      font->DrawChar(xpos + xoff + w, ypos + yoff + 1, text[i], shadow, false);
-      w += font->GetWidth((unsigned int)text[i] - font->GetFirst());
+    while ((i < text.length()) && (w + font.GetWidth(text[i] - font.GetFirst()) < (unsigned)width)) {
+      font.DrawChar(xpos + xoff + w, ypos + yoff + 1, text[i], shadow, false);
+      w += font.GetWidth((unsigned int)text[i] - font.GetFirst());
       i++;
     }
   }
   i = 0;
   w = 0;
-  while ((i < text.length()) && (w + font->GetWidth(text[i] - font->GetFirst()) < (unsigned)width)) {
-    font->DrawChar(xpos + xoff + w, ypos + yoff, text[i], color, false);
-    w += font->GetWidth((unsigned int)text[i] - font->GetFirst());
+  while ((i < text.length()) && (w + font.GetWidth(text[i] - font.GetFirst()) < (unsigned)width)) {
+    font.DrawChar(xpos + xoff + w, ypos + yoff, text[i], color, false);
+    w += font.GetWidth((unsigned int)text[i] - font.GetFirst());
     i++;
   }
 }

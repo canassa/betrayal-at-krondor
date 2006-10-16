@@ -48,6 +48,7 @@ class DialogResource
     virtual ~DialogResource();
     unsigned int GetSize() const;
     bool Find(const unsigned int n, DialogData* data);
+    void Clear();
     void Load(FileBuffer *buffer);
 };
 

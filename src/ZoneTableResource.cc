@@ -29,11 +29,7 @@ ZoneTableResource::ZoneTableResource()
 
 ZoneTableResource::~ZoneTableResource()
 {
-  mapItems.clear();
-  for (unsigned int i = 0; i < appItems.size(); i++) {
-    delete[] appItems[i].data;
-  }
-  appItems.clear();
+  Clear();
 }
 
 unsigned int
@@ -61,9 +57,20 @@ ZoneTableResource::GetAppItem(const unsigned int i)
 }
 
 void
+ZoneTableResource::Clear()
+{
+  mapItems.clear();
+  for (unsigned int i = 0; i < appItems.size(); i++) {
+    delete[] appItems[i].data;
+  }
+  appItems.clear();
+}
+
+void
 ZoneTableResource::Load(FileBuffer *buffer)
 {
   try {
+    Clear();
     Split(buffer);
     FileBuffer *mapbuf;
     FileBuffer *appbuf;
@@ -73,7 +80,7 @@ ZoneTableResource::Load(FileBuffer *buffer)
         !Find(TAG_APP, appbuf) ||
         !Find(TAG_GID, gidbuf) ||
         !Find(TAG_DAT, datbuf)) {
-      Clear();
+      ClearTags();
       throw DataCorruption(__FILE__, __LINE__);
     }
     mapbuf->Skip(2);
@@ -98,7 +105,7 @@ ZoneTableResource::Load(FileBuffer *buffer)
       appbuf->GetData(item.data, item.size);
       appItems.push_back(item);
     }
-    Clear();
+    ClearTags();
   } catch (Exception &e) {
     e.Print("ZoneTableResource::Load");
   }

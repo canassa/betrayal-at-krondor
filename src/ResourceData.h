@@ -30,6 +30,7 @@ class ResourceData {
   public:
     ResourceData() {};
     virtual ~ResourceData() {};
+    virtual void Clear() = 0;
     virtual void Load(FileBuffer *buffer) = 0;
 };
 

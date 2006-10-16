@@ -25,10 +25,12 @@
 #endif
 
 #include "Dialog.h"
+#include "DialogFactory.h"
 
 class GameState
 {
   protected:
+    DialogFactory dialogFactory;
     void ChangeState(GameState *state);
   public:
     GameState();
@@ -134,6 +136,23 @@ class GameStateFullMap
     void Execute();
 };
 
+class GameStateInitialOptions
+: public GameState
+{
+  private:
+    Dialog *dialog;
+    static GameStateInitialOptions *instance;
+  protected:
+    GameStateInitialOptions();
+  public:
+    ~GameStateInitialOptions();
+    static GameStateInitialOptions* GetInstance();
+    static void CleanUp();
+    void Enter();
+    void Leave();
+    void Execute();
+};
+
 class GameStateIntro
 : public GameState
 {
@@ -203,7 +222,6 @@ class GameStateOptions
 : public GameState
 {
   private:
-    bool firstTime;
     Dialog *dialog;
     static GameStateOptions *instance;
   protected:

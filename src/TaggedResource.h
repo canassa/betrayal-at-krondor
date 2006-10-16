@@ -55,7 +55,7 @@ class TaggedResource
   public:
     TaggedResource();
     virtual ~TaggedResource();
-    void Clear();
+    void ClearTags();
     void Split(FileBuffer *buffer);
     bool Find(const unsigned label, FileBuffer* &buffer);
 };

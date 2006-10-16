@@ -28,7 +28,7 @@ WidgetFactory::~WidgetFactory()
 }
 
 TextButtonWidget*
-WidgetFactory::CreateTextButton(RequestData& data, FontResource *fnt, ActionEventListener *ael)
+WidgetFactory::CreateTextButton(RequestData& data, FontResource &fnt, ActionEventListener *ael)
 {
   TextButtonWidget *button = new TextButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
   button->SetLabel(data.label, fnt);
@@ -37,14 +37,14 @@ WidgetFactory::CreateTextButton(RequestData& data, FontResource *fnt, ActionEven
 }
 
 ImageButtonWidget*
-WidgetFactory::CreateImageButton(RequestData& data, ImageResource *normal, ImageResource *pressed, ActionEventListener *ael)
+WidgetFactory::CreateImageButton(RequestData& data, ImageResource& normal, ImageResource& pressed, ActionEventListener *ael)
 {
   ImageButtonWidget *button = new ImageButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
   Image *normalImage = 0;
   Image *pressedImage = 0;
   if (data.image >= 0) {
-    normalImage = normal->GetImage(data.image);
-    pressedImage = pressed->GetImage(data.image);
+    normalImage = normal.GetImage(data.image);
+    pressedImage = pressed.GetImage(data.image);
   }
   button->SetImage(normalImage, pressedImage);
   button->AddActionListener(ael);
@@ -52,11 +52,11 @@ WidgetFactory::CreateImageButton(RequestData& data, ImageResource *normal, Image
 }
 
 CharacterButtonWidget*
-WidgetFactory::CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource *img, ActionEventListener *ael)
+WidgetFactory::CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource& img, ActionEventListener *ael)
 {
   CharacterButtonWidget *button = new CharacterButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
   button->SetCharacter(pc);
-  button->SetImage(img->GetImage(SELECTED_IMAGE));
+  button->SetImage(img.GetImage(SELECTED_IMAGE));
   button->AddActionListener(ael);
   return button;
 }
@@ -74,9 +74,9 @@ WidgetFactory::CreateTickbox()
 }
 
 CompassWidget*
-WidgetFactory::CreateCompass(Camera *cam, ImageResource *img)
+WidgetFactory::CreateCompass(Camera *cam, Image *img)
 {
-  CompassWidget *compass = new CompassWidget(cam, img->GetImage(0));
+  CompassWidget *compass = new CompassWidget(cam, img);
   return compass;
 }
 
@@ -99,13 +99,13 @@ WidgetFactory::CreateWorldView(RequestData& data, Game *game)
 }
 
 LabelWidget*
-WidgetFactory::CreateLabel(LabelData& data, FontResource *fnt, const int panelWidth)
+WidgetFactory::CreateLabel(LabelData& data, FontResource& fnt, const int panelWidth)
 {
   unsigned int width = 1;
   switch (data.type) {
     case LBL_STANDARD:
       for (unsigned int i = 0; i < data.label.length(); i++) {
-        width += fnt->GetWidth((unsigned int)data.label[i] - fnt->GetFirst());
+        width += fnt.GetWidth((unsigned int)data.label[i] - fnt.GetFirst());
       }
       break;
     case LBL_TITLE:
@@ -114,7 +114,7 @@ WidgetFactory::CreateLabel(LabelData& data, FontResource *fnt, const int panelWi
     default:
       break;
   }
-  LabelWidget *label = new LabelWidget(data.xpos, data.ypos, width, fnt->GetHeight() + 1, fnt);
+  LabelWidget *label = new LabelWidget(data.xpos, data.ypos, width, fnt.GetHeight() + 1, fnt);
   label->SetText(data.label);
   label->SetColor(data.color);
   if (data.type == LBL_TITLE) {
@@ -125,71 +125,9 @@ WidgetFactory::CreateLabel(LabelData& data, FontResource *fnt, const int panelWi
 }
 
 PanelWidget*
-WidgetFactory::CreatePanel(WidgetResources& widgetRes)
+WidgetFactory::CreatePanel(const int x, const int y, const int w, const int h, Image *img)
 {
-  PanelWidget *panel = new PanelWidget(widgetRes.request->GetXPos(), widgetRes.request->GetYPos(),
-                                       widgetRes.request->GetWidth(), widgetRes.request->GetHeight());
-  panel->SetBackground(widgetRes.screen->GetImage());
-  unsigned int nextMember = 0;
-  for (unsigned int i = 0; i < widgetRes.request->GetSize(); i++) {
-    RequestData data = widgetRes.request->GetRequestData(i);
-    if (data.widget != REQ_USERDEFINED) {
-      data.xpos += widgetRes.request->GetXOff();
-      data.ypos += widgetRes.request->GetYOff();
-    }
-    switch (data.widget) {
-      case REQ_USERDEFINED:
-        if ((data.action >= 0) && (data.group == widgetRes.playerCharacterGroup)) {
-          CharacterButtonWidget *button = CreateCharacterButton(data, widgetRes.members[nextMember], widgetRes.heads, widgetRes.eventListener);
-          panel->AddActiveWidget(button);
-          nextMember++;
-        }
-        if ((data.action >= 0) && (data.group == widgetRes.gameViewGroup)) {
-          GameViewWidget *gameView = 0;
-          switch (widgetRes.gameViewType) {
-            case GVT_WORLD:
-              gameView = CreateWorldView(data, widgetRes.game);
-              break;
-            case GVT_MAP:
-              gameView = CreateMapView(data, widgetRes.game);
-              break;
-            case GVT_COMBAT:
-              gameView = CreateCombatView(data, widgetRes.game);
-              break;
-          }
-          panel->AddWidget(gameView);
-        }
-        break;
-      case REQ_TEXTBUTTON:
-        if (data.visible) {
-          TextButtonWidget *button = CreateTextButton(data, widgetRes.font, widgetRes.eventListener);
-          panel->AddActiveWidget(button);
-        }
-        break;
-      case REQ_IMAGEBUTTON:
-        if (data.visible) {
-          ImageButtonWidget *button = CreateImageButton(data, widgetRes.normal, widgetRes.pressed, widgetRes.eventListener);
-          panel->AddActiveWidget(button);
-        }
-        break;
-      case REQ_SELECT:
-        break;
-      default:
-        break;
-    }
-  }
-  if (widgetRes.label) {
-    for (unsigned int i = 0; i < widgetRes.label->GetSize(); i++) {
-                  LabelData data = widgetRes.label->GetLabelData(i);
-      int panelWidth = (widgetRes.request->GetWidth() > widgetRes.screen->GetImage()->GetWidth() ?
-                        widgetRes.request->GetWidth() : widgetRes.screen->GetImage()->GetWidth());
-      LabelWidget *label = CreateLabel(data, widgetRes.font, panelWidth);
-      panel->AddWidget(label);
-    }
-  }
-  if (widgetRes.compass) {
-    CompassWidget *compass = CreateCompass(widgetRes.camera, widgetRes.compass);
-    panel->AddWidget(compass);
-  }
+  PanelWidget *panel = new PanelWidget(x, y, w, h);
+  panel->SetBackground(img);
   return panel;
 }

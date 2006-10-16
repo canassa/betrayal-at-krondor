@@ -26,14 +26,11 @@ TaggedResource::TaggedResource()
 
 TaggedResource::~TaggedResource()
 {
-  for (std::map<const unsigned int, FileBuffer*>::iterator it = bufferMap.begin(); it != bufferMap.end(); ++it) {
-    delete (*it).second;
-  }
-  bufferMap.clear();
+  ClearTags();
 }
 
 void
-TaggedResource::Clear()
+TaggedResource::ClearTags()
 {
   for (std::map<const unsigned int, FileBuffer*>::iterator it = bufferMap.begin(); it != bufferMap.end(); ++it) {
     delete (*it).second;
@@ -103,4 +100,3 @@ TaggedResource::Find(const unsigned int label, FileBuffer* &buffer)
   }
   return (buffer != 0);
 }
-

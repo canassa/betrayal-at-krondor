@@ -57,11 +57,7 @@ GameStateCamp* GameStateCamp::instance = 0;
 
 GameStateCamp::GameStateCamp()
 {
-  dialog = new GameDialog();
-  dialog->SetPalette("OPTIONS.PAL");
-  dialog->SetScreen("ENCAMP.SCX");
-  dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
-  dialog->SetRequest("REQ_CAMP.DAT");
+  dialog = dialogFactory.CreateCampDialog();
 }
 
 GameStateCamp::~GameStateCamp()
@@ -123,15 +119,7 @@ GameStateCast* GameStateCast::instance = 0;
 
 GameStateCast::GameStateCast()
 {
-  dialog = new GameDialog();
-  dialog->SetPalette("OPTIONS.PAL");
-  dialog->SetScreen("FRAME.SCX");
-  dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
-  dialog->SetRequest("REQ_CAST.DAT");
-  dialog->SetHeads("HEADS.BMX");
-  dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), GROUP2);
-  dialog->SetCamera(GameApplication::GetInstance()->GetGame()->GetCamera());
-  dialog->SetCompass("COMPASS.BMX");
+  dialog = dialogFactory.CreateCastDialog();
 }
 
 GameStateCast::~GameStateCast()
@@ -285,11 +273,7 @@ GameStateContents* GameStateContents::instance = 0;
 
 GameStateContents::GameStateContents()
 {
-  dialog = new OptionsDialog();
-  dialog->SetPalette("CONTENTS.PAL");
-  dialog->SetScreen("CONT2.SCX");
-  dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
-  dialog->SetRequest("CONTENTS.DAT");
+  dialog = dialogFactory.CreateContentsDialog();
 }
 
 GameStateContents::~GameStateContents()
@@ -348,11 +332,7 @@ GameStateFullMap* GameStateFullMap::instance = 0;
 
 GameStateFullMap::GameStateFullMap()
 {
-  dialog = new GameDialog();
-  dialog->SetPalette("FULLMAP.PAL");
-  dialog->SetScreen("FULLMAP.SCX");
-  dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
-  dialog->SetRequest("REQ_FMAP.DAT");
+  dialog = dialogFactory.CreateFullMapDialog();
 }
 
 GameStateFullMap::~GameStateFullMap()
@@ -407,6 +387,78 @@ GameStateFullMap::Execute()
   }
 }
 
+GameStateInitialOptions* GameStateInitialOptions::instance = 0;
+
+GameStateInitialOptions::GameStateInitialOptions()
+{
+  dialog = dialogFactory.CreateOptionsDialog(true);
+}
+
+GameStateInitialOptions::~GameStateInitialOptions()
+{
+  if (dialog) {
+    delete dialog;
+  }
+}
+
+GameStateInitialOptions*
+GameStateInitialOptions::GetInstance()
+{
+  if (!instance) {
+    instance = new GameStateInitialOptions();
+  }
+  return instance;
+}
+
+void
+GameStateInitialOptions::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
+}
+
+void
+GameStateInitialOptions::Enter()
+{
+  dialog->Enter();
+}
+
+void
+GameStateInitialOptions::Leave()
+{
+  dialog->Leave();
+}
+
+void
+GameStateInitialOptions::Execute()
+{
+  unsigned int action = dialog->Execute();
+  switch (action) {
+    case ACT_ESCAPE:
+    case OPT_QUIT:
+      GameApplication::GetInstance()->QuitGame();
+      break;
+    case OPT_NEW_GAME:
+      GameApplication::GetInstance()->StartNewGame();
+      ChangeState(GameStateChapter::GetInstance());
+      break;
+    case OPT_CONTENTS:
+      ChangeState(GameStateContents::GetInstance());
+      break;
+    case OPT_PREFERENCES:
+      ChangeState(GameStatePreferences::GetInstance());
+      break;
+    case OPT_RESTORE:
+      ChangeState(GameStateLoad::GetInstance());
+      break;
+    default:
+      throw UnexpectedValue(__FILE__, __LINE__, action);
+      break;
+  }
+}
+
 GameStateIntro* GameStateIntro::instance = 0;
 
 GameStateIntro::GameStateIntro()
@@ -439,21 +491,14 @@ void
 GameStateIntro::Execute()
 {
   GameApplication::GetInstance()->PlayIntro();
-  ChangeState(GameStateOptions::GetInstance());
+  ChangeState(GameStateInitialOptions::GetInstance());
 }
 
 GameStateInventory* GameStateInventory::instance = 0;
 
 GameStateInventory::GameStateInventory()
 {
-  dialog = new GameDialog();
-  dialog->SetFont("GAME.FNT");
-  dialog->SetPalette("OPTIONS.PAL");
-  dialog->SetScreen("INVENTOR.SCX");
-  dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
-  dialog->SetRequest("REQ_INV.DAT");
-  dialog->SetHeads("HEADS.BMX");
-  dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), GROUP3);
+  dialog = dialogFactory.CreateInventoryDialog();
 }
 
 GameStateInventory::~GameStateInventory()
@@ -532,12 +577,7 @@ GameStateLoad* GameStateLoad::instance = 0;
 
 GameStateLoad::GameStateLoad()
 {
-  dialog = new OptionsDialog();
-  dialog->SetFont("GAME.FNT");
-  dialog->SetLabel("LBL_LOAD.DAT");
-  dialog->SetPalette("OPTIONS.PAL");
-  dialog->SetScreen("OPTIONS2.SCX");
-  dialog->SetRequest("REQ_LOAD.DAT");
+  dialog = dialogFactory.CreateLoadDialog();
 }
 
 GameStateLoad::~GameStateLoad()
@@ -599,16 +639,7 @@ GameStateMap* GameStateMap::instance = 0;
 
 GameStateMap::GameStateMap()
 {
-  dialog = new GameDialog();
-  dialog->SetPalette("OPTIONS.PAL");
-  dialog->SetScreen("FRAME.SCX");
-  dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
-  dialog->SetRequest("REQ_MAP.DAT");
-  dialog->SetHeads("HEADS.BMX");
-  dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), GROUP2);
-  dialog->SetCamera(GameApplication::GetInstance()->GetGame()->GetCamera());
-  dialog->SetCompass("COMPASS.BMX");
-  dialog->SetGameView(GameApplication::GetInstance()->GetGame(), GROUP3, GVT_MAP);
+  dialog = dialogFactory.CreateMapDialog();
 }
 
 GameStateMap::~GameStateMap()
@@ -690,11 +721,8 @@ GameStateMap::Execute()
 GameStateOptions* GameStateOptions::instance = 0;
 
 GameStateOptions::GameStateOptions()
-: firstTime(true)
 {
-  dialog = new OptionsDialog();
-  dialog->SetFont("GAME.FNT");
-  dialog->SetPalette("OPTIONS.PAL");
+  dialog = dialogFactory.CreateOptionsDialog(false);
 }
 
 GameStateOptions::~GameStateOptions()
@@ -725,13 +753,6 @@ GameStateOptions::CleanUp()
 void
 GameStateOptions::Enter()
 {
-  if (firstTime) {
-    dialog->SetScreen("OPTIONS0.SCX");
-    dialog->SetRequest("REQ_OPT0.DAT");
-  } else {
-    dialog->SetScreen("OPTIONS1.SCX");
-    dialog->SetRequest("REQ_OPT1.DAT");
-  }
   dialog->Enter();
 }
 
@@ -752,7 +773,6 @@ GameStateOptions::Execute()
       break;
     case OPT_NEW_GAME:
       GameApplication::GetInstance()->StartNewGame();
-      firstTime = false;
       ChangeState(GameStateChapter::GetInstance());
       break;
     case OPT_CANCEL:
@@ -780,12 +800,7 @@ GameStatePreferences* GameStatePreferences::instance = 0;
 
 GameStatePreferences::GameStatePreferences()
 {
-  dialog = new OptionsDialog();
-  dialog->SetFont("GAME.FNT");
-  dialog->SetLabel("LBL_PREF.DAT");
-  dialog->SetPalette("OPTIONS.PAL");
-  dialog->SetScreen("OPTIONS2.SCX");
-  dialog->SetRequest("REQ_PREF.DAT");
+  dialog = dialogFactory.CreatePreferencesDialog();
 }
 
 GameStatePreferences::~GameStatePreferences()
@@ -849,12 +864,7 @@ GameStateSave* GameStateSave::instance = 0;
 
 GameStateSave::GameStateSave()
 {
-  dialog = new OptionsDialog();
-  dialog->SetFont("GAME.FNT");
-  dialog->SetLabel("LBL_SAVE.DAT");
-  dialog->SetPalette("OPTIONS.PAL");
-  dialog->SetScreen("OPTIONS2.SCX");
-  dialog->SetRequest("REQ_SAVE.DAT");
+  dialog = dialogFactory.CreateSaveDialog();
 }
 
 GameStateSave::~GameStateSave()
@@ -920,18 +930,7 @@ GameStateWorld* GameStateWorld::instance = 0;
 
 GameStateWorld::GameStateWorld()
 {
-  std::stringstream name;
-  name << "Z" << std::setw(2) << std::setfill('0') << GameApplication::GetInstance()->GetGame()->GetChapter()->Get() << ".PAL";
-  dialog = new GameDialog();
-  dialog->SetPalette(name.str());
-  dialog->SetScreen("FRAME.SCX");
-  dialog->SetIcons("BICONS1.BMX", "BICONS2.BMX");
-  dialog->SetRequest("REQ_MAIN.DAT");
-  dialog->SetHeads("HEADS.BMX");
-  dialog->SetMembers(GameApplication::GetInstance()->GetGame()->GetParty(), GROUP2);
-  dialog->SetCamera(GameApplication::GetInstance()->GetGame()->GetCamera());
-  dialog->SetCompass("COMPASS.BMX");
-  dialog->SetGameView(GameApplication::GetInstance()->GetGame(), GROUP3, GVT_WORLD);
+  dialog = dialogFactory.CreateWorldDialog();
 }
 
 GameStateWorld::~GameStateWorld()

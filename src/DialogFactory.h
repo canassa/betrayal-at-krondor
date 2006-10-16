@@ -17,29 +17,43 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef NAME_RESOURCE_H
-#define NAME_RESOURCE_H
-
-#include <vector>
+#ifndef DIALOG_FACTORY_H
+#define DIALOG_FACTORY_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "ResourceData.h"
+#include "Dialog.h"
+#include "PaletteResource.h"
+#include "WidgetFactory.h"
 
-class NameResource
-: public ResourceData {
+class DialogFactory {
   private:
-    std::vector<std::string> name;
+    RequestResource request;
+    PaletteResource palette;
+    ScreenResource screen;
+    ImageResource normal;
+    ImageResource pressed;
+    ImageResource heads;
+    ImageResource compass;
+    FontResource font;
+    LabelResource label;
+    WidgetFactory widgetFactory;
   public:
-    NameResource();
-    virtual ~NameResource();
-    unsigned int GetSize() const;
-    std::string GetName(unsigned int n) const;
-    void Clear();
-    void Load(FileBuffer *buffer);
+    DialogFactory();
+    virtual ~DialogFactory();
+    Dialog* CreateCampDialog();
+    Dialog* CreateCastDialog();
+    Dialog* CreateContentsDialog();
+    Dialog* CreateFullMapDialog();
+    Dialog* CreateInventoryDialog();
+    Dialog* CreateLoadDialog();
+    Dialog* CreateMapDialog();
+    Dialog* CreateOptionsDialog(const bool firstTime);
+    Dialog* CreatePreferencesDialog();
+    Dialog* CreateSaveDialog();
+    Dialog* CreateWorldDialog();
 };
 
 #endif
-

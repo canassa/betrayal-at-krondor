@@ -24,6 +24,18 @@
 
 static const unsigned int MAX_NUM_SFX = 1000;
 
+SoundData::SoundData()
+: name()
+, type(0)
+, sounds()
+{
+}
+
+SoundData::~SoundData()
+{
+  sounds.clear();
+}
+
 SoundResource* SoundResource::instance = 0;
 
 SoundResource::SoundResource()
@@ -34,13 +46,7 @@ SoundResource::SoundResource()
 
 SoundResource::~SoundResource()
 {
-  for (std::map<unsigned int, SoundData>::iterator it = soundMap.begin(); it != soundMap.end(); ++it) {
-    SoundData data = (*it).second;
-    for (std::vector<Sound *>::iterator it2 = data.sounds.begin(); it2 != data.sounds.end(); ++it2) {
-      delete (*it2);
-    }
-  }
-  soundMap.clear();
+  Clear();
 }
 
 SoundResource*
@@ -69,15 +75,28 @@ SoundResource::GetSoundData(unsigned int id)
 }
 
 void
+SoundResource::Clear()
+{
+  for (std::map<unsigned int, SoundData>::iterator it = soundMap.begin(); it != soundMap.end(); ++it) {
+    SoundData data = (*it).second;
+    for (std::vector<Sound *>::iterator it2 = data.sounds.begin(); it2 != data.sounds.end(); ++it2) {
+      delete (*it2);
+    }
+  }
+  soundMap.clear();
+}
+
+void
 SoundResource::Load(FileBuffer *buffer)
 {
   try {
+    Clear();
     Split(buffer);
     FileBuffer *infbuf;
     FileBuffer *tagbuf;
     if (!Find(TAG_INF, infbuf) ||
         !Find(TAG_TAG, tagbuf)) {
-      Clear();
+      ClearTags();
       throw DataCorruption(__FILE__, __LINE__);
     }
     infbuf->Skip(2);
@@ -92,7 +111,7 @@ SoundResource::Load(FileBuffer *buffer)
       if (tags.Find(id, name)) {
         buffer->Seek(offset + 8);
         if (id != buffer->GetUint16LE()) {
-          Clear();
+          ClearTags();
           throw DataCorruption(__FILE__, __LINE__);
         }
         SoundData data;
@@ -132,10 +151,10 @@ SoundResource::Load(FileBuffer *buffer)
         throw DataCorruption(__FILE__, __LINE__);
       }
     }
-    Clear();
+    ClearTags();
   } catch (Exception &e) {
     e.Print("SoundResource::Load");
-    Clear();
+    ClearTags();
   }
 }
 

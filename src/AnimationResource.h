@@ -42,6 +42,7 @@ class AnimationResource: public TaggedResource {
     std::string &GetVersion();
     FileBuffer * GetScript() const;
     AnimationData &GetAnimationData(unsigned int id);
+    void Clear();
     void Load(FileBuffer *buffer);
 };
 

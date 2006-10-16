@@ -35,6 +35,7 @@ class PaletteResource
     PaletteResource();
     virtual ~PaletteResource();
     Palette* GetPalette() const;
+    void Clear();
     void Load(FileBuffer *buffer);
 };
 

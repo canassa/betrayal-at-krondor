@@ -20,8 +20,6 @@
 #ifndef WIDGET_FACTORY_H
 #define WIDGET_FACTORY_H
 
-#include <deque>
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -42,48 +40,21 @@
 #include "TickboxWidget.h"
 #include "WorldViewWidget.h"
 
-static const unsigned int MAX_ACTIVE_MEMBERS = 3;
-
-typedef enum _GameViewType {
-  GVT_WORLD,
-  GVT_MAP,
-  GVT_COMBAT
-} GameViewType;
-
-typedef struct _WidgetResources {
-  RequestResource *request;
-  ScreenResource *screen;
-  LabelResource *label;
-  FontResource *font;
-  ImageResource *normal;
-  ImageResource *pressed;
-  ImageResource *compass;
-  Camera *camera;
-  ImageResource *heads;
-  PlayerCharacter *members[MAX_ACTIVE_MEMBERS];
-  int playerCharacterGroup;
-  Game *game;
-  int gameViewGroup;
-  GameViewType gameViewType;
-  ActionEventListener *eventListener;
-} WidgetResources;
-
 class WidgetFactory {
-  private:
-    TextButtonWidget* CreateTextButton(RequestData& data, FontResource* fnt, ActionEventListener *ael);
-    ImageButtonWidget* CreateImageButton(RequestData& data, ImageResource *normal, ImageResource *pressed, ActionEventListener *ael);
-    CharacterButtonWidget* CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource *img, ActionEventListener *ael);
-    ChoiceWidget* CreateChoice();
-    TickboxWidget* CreateTickbox();
-    CompassWidget* CreateCompass(Camera *cam, ImageResource *img);
-    CombatViewWidget* CreateCombatView(RequestData& data, Game *game);
-    MapViewWidget* CreateMapView(RequestData& data, Game *game);
-    WorldViewWidget* CreateWorldView(RequestData& data, Game *game);
-    LabelWidget* CreateLabel(LabelData& data, FontResource* fnt, const int panelWidth);
   public:
     WidgetFactory();
     virtual ~WidgetFactory();
-    PanelWidget* CreatePanel(WidgetResources& widgetRes);
+    TextButtonWidget* CreateTextButton(RequestData& data, FontResource& fnt, ActionEventListener *ael);
+    ImageButtonWidget* CreateImageButton(RequestData& data, ImageResource& normal, ImageResource& pressed, ActionEventListener *ael);
+    CharacterButtonWidget* CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource& img, ActionEventListener *ael);
+    ChoiceWidget* CreateChoice();
+    TickboxWidget* CreateTickbox();
+    CompassWidget* CreateCompass(Camera *cam, Image *img);
+    CombatViewWidget* CreateCombatView(RequestData& data, Game *game);
+    MapViewWidget* CreateMapView(RequestData& data, Game *game);
+    WorldViewWidget* CreateWorldView(RequestData& data, Game *game);
+    LabelWidget* CreateLabel(LabelData& data, FontResource& fnt, const int panelWidth);
+    PanelWidget* CreatePanel(const int x, const int y, const int w, const int h, Image *img);
 };
 
 #endif

@@ -34,7 +34,7 @@ RequestResource::RequestResource()
 
 RequestResource::~RequestResource()
 {
-  data.clear();
+  Clear();
 }
 
 bool
@@ -83,9 +83,16 @@ RequestResource::GetRequestData(const unsigned int n) const {
 }
 
 void
+RequestResource::Clear()
+{
+  data.clear();
+}
+
+void
 RequestResource::Load(FileBuffer *buffer)
 {
   try {
+    Clear();
     buffer->Skip(2);
     popup = (buffer->GetSint16LE() != 0);
     buffer->Skip(2);

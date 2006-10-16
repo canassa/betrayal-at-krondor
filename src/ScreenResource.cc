@@ -27,9 +27,7 @@ ScreenResource::ScreenResource()
 
 ScreenResource::~ScreenResource()
 {
-  if (image) {
-    delete image;
-  }
+  Clear();
 }
 
 Image *
@@ -39,9 +37,19 @@ ScreenResource::GetImage()
 }
 
 void
+ScreenResource::Clear()
+{
+  if (image) {
+    delete image;
+    image = 0;
+  }
+}
+
+void
 ScreenResource::Load(FileBuffer *buffer)
 {
   try {
+    Clear();
     if (buffer->GetUint16LE() != 0x27b6) {
       buffer->Rewind();
     }

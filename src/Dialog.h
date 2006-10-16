@@ -26,8 +26,8 @@
 
 #include "DialogWindow.h"
 #include "EventListener.h"
-#include "PaletteResource.h"
-#include "Party.h"
+#include "Observer.h"
+#include "Palette.h"
 
 class Dialog
 : public ActionEventListener
@@ -37,24 +37,12 @@ class Dialog
 {
   protected:
     DialogWindow *window;
-    PaletteResource *palette;
-    WidgetResources widgetRes;
+    Palette *palette;
     unsigned int action;
     bool running;
   public:
-    Dialog();
+    Dialog(Palette *pal, DialogWindow *dialogwin);
     virtual ~Dialog();
-    void SetFont(const std::string &name);
-    void SetLabel(const std::string &name);
-    void SetPalette(const std::string &name);
-    void SetScreen(const std::string &name);
-    void SetIcons(const std::string &normalName, const std::string &pressedName);
-    void SetCamera(Camera *cam);
-    void SetCompass(const std::string &name);
-    void SetHeads(const std::string &name);
-    void SetRequest(const std::string &name);
-    void SetMembers(Party *party, const int group);
-    void SetGameView(Game *game, const int group, const GameViewType type);
     void Enter();
     void Leave();
     unsigned int Execute();
@@ -70,7 +58,7 @@ class GameDialog
 : public Dialog
 {
   public:
-    GameDialog();
+    GameDialog(Palette *pal, DialogWindow *dialogwin);
     ~GameDialog();
     void KeyPressed(const KeyboardEvent& kbe);
     void KeyReleased(const KeyboardEvent& kbe);
@@ -80,7 +68,7 @@ class OptionsDialog
 : public Dialog
 {
   public:
-    OptionsDialog();
+    OptionsDialog(Palette *pal, DialogWindow *dialogwin);
     ~OptionsDialog();
     void KeyPressed(const KeyboardEvent& kbe);
     void KeyReleased(const KeyboardEvent& kbe);

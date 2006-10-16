@@ -29,11 +29,14 @@
 #include "Sound.h"
 #include "TaggedResource.h"
 
-typedef struct _SoundData {
-  std::string name;
-  unsigned int type;
-  std::vector<Sound *> sounds;
-} SoundData;
+class SoundData {
+  public:
+    SoundData();
+    ~SoundData();
+    std::string name;
+    unsigned int type;
+    std::vector<Sound *> sounds;
+};
 
 class SoundResource
 : public TaggedResource {
@@ -46,6 +49,7 @@ class SoundResource
     ~SoundResource();
     static SoundResource* GetInstance();
     static void CleanUp();
+    void Clear();
     void Load(FileBuffer *buffer);
     SoundData& GetSoundData(unsigned int id);
 };

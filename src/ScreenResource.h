@@ -38,6 +38,7 @@ class ScreenResource
     ScreenResource();
     virtual ~ScreenResource();
     Image* GetImage();
+    void Clear();
     void Load(FileBuffer *buffer);
 };
 

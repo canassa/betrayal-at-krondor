@@ -27,7 +27,7 @@ BookResource::BookResource()
 
 BookResource::~BookResource()
 {
-  paragraphs.clear();
+  Clear();
 }
 
 unsigned int
@@ -43,9 +43,16 @@ BookResource::GetParagraph(const unsigned int i)
 }
 
 void
+BookResource::Clear()
+{
+  paragraphs.clear();
+}
+
+void
 BookResource::Load(FileBuffer *buffer)
 {
   try {
+    Clear();
     buffer->Skip(4);
     for (unsigned int i = 0; i < buffer->GetUint16LE(); i++) {
       buffer->Skip(4);

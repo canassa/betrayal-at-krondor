@@ -155,6 +155,7 @@ class RequestResource
     int GetYOff() const;
     unsigned int GetSize() const;
     RequestData GetRequestData(const unsigned int n) const;
+    void Clear();
     void Load(FileBuffer *buffer);
 };
 

@@ -29,10 +29,7 @@ FontResource::FontResource()
 
 FontResource::~FontResource()
 {
-  for (unsigned int i = 0; i < fontGlyphs.size(); i++) {
-    delete fontGlyphs[i];
-  }
-  fontGlyphs.clear();
+  Clear();
 }
 
 unsigned int
@@ -50,7 +47,11 @@ FontResource::GetHeight() const
 unsigned int
 FontResource::GetWidth(const unsigned int n) const
 {
-  return fontGlyphs[n]->width;
+  if (n < fontGlyphs.size()) {
+    return fontGlyphs[n]->width;
+  } else {
+    throw IndexOutOfRange(__FILE__, __LINE__);
+  }
 }
 
 unsigned int
@@ -62,17 +63,31 @@ FontResource::GetSize() const
 FontGlyph*
 FontResource::GetGlyph(const unsigned int n)
 {
-  return fontGlyphs[n];
+  if (n < fontGlyphs.size()) {
+    return fontGlyphs[n];
+  } else {
+    throw IndexOutOfRange(__FILE__, __LINE__);
+  }
+}
+
+void
+FontResource::Clear()
+{
+  for (unsigned int i = 0; i < fontGlyphs.size(); i++) {
+    delete fontGlyphs[i];
+  }
+  fontGlyphs.clear();
 }
 
 void
 FontResource::Load(FileBuffer *buffer)
 {
   try {
+    Clear();
     Split(buffer);
     FileBuffer *fntbuf;
     if (!Find(TAG_FNT, fntbuf)) {
-      Clear();
+      ClearTags();
       throw DataCorruption(__FILE__, __LINE__);
     }
     fntbuf->Skip(2);
@@ -82,7 +97,7 @@ FontResource::Load(FileBuffer *buffer)
     unsigned int numChars = (unsigned int)fntbuf->GetUint8();
     fntbuf->Skip(2);
     if (fntbuf->GetUint8() != 0x01) {
-      Clear();
+      ClearTags();
       throw CompressionError(__FILE__, __LINE__);
     }
     unsigned int size = (unsigned int)fntbuf->GetUint32LE();
@@ -109,10 +124,10 @@ FontResource::Load(FileBuffer *buffer)
     }
     delete[] glyphOffset;
     delete glyphbuf;
-    Clear();
+    ClearTags();
   } catch (Exception &e) {
     e.Print("FontResource::Load");
-    Clear();
+    ClearTags();
   }
 }
 

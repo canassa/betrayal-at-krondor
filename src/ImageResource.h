@@ -42,6 +42,7 @@ class ImageResource
     virtual ~ImageResource();
     unsigned int GetNumImages() const;
     Image * GetImage(unsigned int n) const;
+    void Clear();
     void Load(FileBuffer *buffer);
 };
 

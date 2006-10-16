@@ -30,7 +30,7 @@
 
 static const unsigned int MAX_FONT_HEIGHT = 16;
 
-typedef uint16_t GlyphData[MAX_FONT_HEIGHT]; 
+typedef uint16_t GlyphData[MAX_FONT_HEIGHT];
 
 typedef struct _FontGlyph {
   unsigned int width;
@@ -51,6 +51,7 @@ class FontResource
     unsigned int GetWidth(const unsigned int n) const;
     unsigned int GetSize() const;
     FontGlyph* GetGlyph(const unsigned int n);
+    void Clear();
     void Load(FileBuffer *buffer);
     void DrawChar(const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color, const bool italic);
 };

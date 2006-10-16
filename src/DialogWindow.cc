@@ -17,21 +17,12 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#include "Exception.h"
 #include "DialogWindow.h"
-#include "FileManager.h"
 #include "MousePointerManager.h"
 
-DialogWindow::DialogWindow(WidgetResources& widgetRes)
-: panel(0)
+DialogWindow::DialogWindow(PanelWidget *panelwidget)
+: panel(panelwidget)
 {
-  try{
-    WidgetFactory wf;
-    panel = wf.CreatePanel(widgetRes);
-  } catch (Exception &e) {
-    e.Print("DialogWindow::DialogWindow");
-    throw;
-  }
 }
 
 DialogWindow::~DialogWindow()

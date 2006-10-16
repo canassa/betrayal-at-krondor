@@ -31,10 +31,7 @@ AnimationResource::AnimationResource()
 
 AnimationResource::~AnimationResource()
 {
-  animationMap.clear();
-  if (script) {
-    delete script;
-  }
+  Clear();
 }
 
 std::string&
@@ -56,9 +53,20 @@ AnimationResource::GetAnimationData(unsigned int id)
 }
 
 void
+AnimationResource::Clear()
+{
+  animationMap.clear();
+  if (script) {
+    delete script;
+    script = 0;
+  }
+}
+
+void
 AnimationResource::Load(FileBuffer *buffer)
 {
   try {
+    Clear();
     Split(buffer);
     FileBuffer *verbuf;
     FileBuffer *resbuf;
@@ -68,12 +76,12 @@ AnimationResource::Load(FileBuffer *buffer)
         !Find(TAG_RES, resbuf) ||
         !Find(TAG_SCR, scrbuf) ||
         !Find(TAG_TAG, tagbuf)) {
-      Clear();
+      ClearTags();
       throw DataCorruption(__FILE__, __LINE__);
     }
     version = verbuf->GetString();
     if (scrbuf->GetUint8() != 0x02) {
-      Clear();
+      ClearTags();
       throw DataCorruption(__FILE__, __LINE__);
     }
     script = new FileBuffer(scrbuf->GetUint32LE());
@@ -94,10 +102,10 @@ AnimationResource::Load(FileBuffer *buffer)
         throw DataCorruption(__FILE__, __LINE__);
       }
     }
-    Clear();
+    ClearTags();
   } catch (Exception &e) {
     e.Print("AnimationResource::Load");
-    Clear();
+    ClearTags();
   }
 }
 

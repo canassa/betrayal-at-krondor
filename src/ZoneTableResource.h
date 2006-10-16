@@ -45,6 +45,7 @@ class ZoneTableResource
     std::string& GetMapItem(const unsigned int i);
     unsigned int GetAppSize() const;
     AppData& GetAppItem(const unsigned int i);
+    void Clear();
     void Load(FileBuffer *buffer);
 };
 

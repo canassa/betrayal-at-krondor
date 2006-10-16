@@ -46,6 +46,7 @@ class MovieResource
     std::string& GetVersion();
     unsigned int GetPages() const;
     std::vector<MovieTag *> & GetMovieTags();
+    void Clear();
     void Load(FileBuffer *buffer);
 };
 

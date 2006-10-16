@@ -27,10 +27,7 @@ ImageResource::ImageResource()
 
 ImageResource::~ImageResource()
 {
-  for (std::vector<Image*>::iterator it = images.begin(); it != images.end(); ++it) {
-    delete (*it);
-  }
-  images.clear();
+  Clear();
 }
 
 unsigned int
@@ -46,9 +43,19 @@ ImageResource::GetImage(unsigned int n) const
 }
 
 void
+ImageResource::Clear()
+{
+  for (std::vector<Image*>::iterator it = images.begin(); it != images.end(); ++it) {
+    delete (*it);
+  }
+  images.clear();
+}
+
+void
 ImageResource::Load(FileBuffer *buffer)
 {
   try {
+    Clear();
     if (buffer->GetUint16LE() != 0x1066 ) {
       throw DataCorruption(__FILE__, __LINE__);
     }

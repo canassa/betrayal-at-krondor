@@ -44,7 +44,7 @@ typedef enum  {
 class LabelWidget: public Widget {
   private:
     std::vector<Widget> widgetVec;
-    FontResource *font;
+    FontResource& font;
     std::string text;
     int textWidth;
     int textHeight;
@@ -53,11 +53,11 @@ class LabelWidget: public Widget {
     HorizontalAlignment horAlign;
     VerticalAlignment vertAlign;
   public:
-    LabelWidget(const int x, const int y, const int w, const int h, FontResource *f);
+    LabelWidget(const int x, const int y, const int w, const int h, FontResource& f);
     virtual ~LabelWidget();
     void Draw();
     void SetColor(const int c);
-    void SetText(const std::string &t);
+    void SetText(const std::string& s);
     void SetShadow(const int s);
     void SetAlignment(const HorizontalAlignment ha, const VerticalAlignment va);
 };

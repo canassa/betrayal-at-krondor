@@ -55,6 +55,7 @@ class TileWorldResource
     unsigned int GetMaxY() const;
     unsigned int GetSize() const;
     TileWorldItem& GetItem(unsigned int i);
+    void Clear();
     void Load(FileBuffer *buffer);
 };
 

@@ -26,7 +26,7 @@ NameResource::NameResource()
 
 NameResource::~NameResource()
 {
-  name.clear();
+  Clear();
 }
 
 unsigned int
@@ -40,9 +40,16 @@ NameResource::GetName(unsigned int n) const {
 }
 
 void
+NameResource::Clear()
+{
+  name.clear();
+}
+
+void
 NameResource::Load(FileBuffer *buffer)
 {
   try {
+    Clear();
     unsigned int n = buffer->GetUint16LE();
     unsigned int *offset = new unsigned int[n];
     for (unsigned int i = 0; i < n; i++) {

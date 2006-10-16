@@ -27,7 +27,7 @@ LabelResource::LabelResource()
 
 LabelResource::~LabelResource()
 {
-  data.clear();
+  Clear();
 }
 
 unsigned int
@@ -41,9 +41,16 @@ LabelResource::GetLabelData(const unsigned int n) const {
 }
 
 void
+LabelResource::Clear()
+{
+  data.clear();
+}
+
+void
 LabelResource::Load(FileBuffer *buffer)
 {
   try {
+    Clear();
     unsigned int numRecords = buffer->GetUint16LE();
     int *offset = new int[numRecords];
     for (unsigned int i = 0; i < numRecords; i++) {

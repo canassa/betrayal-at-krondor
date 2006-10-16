@@ -34,11 +34,7 @@ MovieResource::MovieResource()
 
 MovieResource::~MovieResource()
 {
-  for (unsigned int i = 0; i < movieTags.size(); i++) {
-    movieTags[i]->data.clear();
-    delete movieTags[i];
-  }
-  movieTags.clear();
+  Clear();
 }
 
 std::string&
@@ -60,9 +56,20 @@ MovieResource::GetMovieTags()
 }
 
 void
+MovieResource::Clear()
+{
+  for (unsigned int i = 0; i < movieTags.size(); i++) {
+    movieTags[i]->data.clear();
+    delete movieTags[i];
+  }
+  movieTags.clear();
+}
+
+void
 MovieResource::Load(FileBuffer *buffer)
 {
   try {
+    Clear();
     Split(buffer);
     FileBuffer *verbuf;
     FileBuffer *pagbuf;
@@ -72,7 +79,7 @@ MovieResource::Load(FileBuffer *buffer)
         !Find(TAG_PAG, pagbuf) ||
         !Find(TAG_TT3, tt3buf) ||
         !Find(TAG_TAG, tagbuf)) {
-      Clear();
+      ClearTags();
       throw DataCorruption(__FILE__, __LINE__);
     }
     version = verbuf->GetString();
@@ -94,7 +101,7 @@ MovieResource::Load(FileBuffer *buffer)
         std::string name;
         if (tags.Find(id, name)) {
           mt->name = name;
-        } 
+        }
       } else if (size == 15) {
         mt->name = tmpbuf->GetString();
         transform(mt->name.begin(), mt->name.end(), mt->name.begin(), toupper);
@@ -109,10 +116,10 @@ MovieResource::Load(FileBuffer *buffer)
       movieTags.push_back(mt);
     }
     delete tmpbuf;
-    Clear();
+    ClearTags();
   } catch (Exception &e) {
     e.Print("MovieResource::Load");
-    Clear();
+    ClearTags();
   }
 }
 

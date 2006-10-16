@@ -49,6 +49,7 @@ class PartyResource
     virtual ~PartyResource();
     unsigned int GetSize() const;
     PartyData* GetData(const unsigned int n);
+    void Clear();
     void Load(FileBuffer *buffer);
 };
 

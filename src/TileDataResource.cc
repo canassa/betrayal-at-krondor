@@ -26,12 +26,19 @@ TileDataResource::TileDataResource()
 
 TileDataResource::~TileDataResource()
 {
+  Clear();
+}
+
+void
+TileDataResource::Clear()
+{
 }
 
 void
 TileDataResource::Load(FileBuffer *buffer)
 {
   try {
+    Clear();
     while (!buffer->AtEnd()) {
       buffer->Skip(4);
     }

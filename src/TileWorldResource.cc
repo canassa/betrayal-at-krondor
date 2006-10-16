@@ -29,7 +29,7 @@ TileWorldResource::TileWorldResource()
 
 TileWorldResource::~TileWorldResource()
 {
-  items.clear();
+  Clear();
 }
 
 unsigned int
@@ -69,9 +69,16 @@ TileWorldResource::GetItem(unsigned int i)
 }
 
 void
+TileWorldResource::Clear()
+{
+  items.clear();
+}
+
+void
 TileWorldResource::Load(FileBuffer *buffer)
 {
   try {
+    Clear();
     while (!buffer->AtEnd()) {
       TileWorldItem twi;
       twi.type = buffer->GetUint32LE();

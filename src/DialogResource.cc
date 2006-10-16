@@ -43,10 +43,7 @@ DialogResource::DialogResource()
 
 DialogResource::~DialogResource()
 {
-  for (std::map<const unsigned int, DialogData*>::iterator it = dialogMap.begin(); it != dialogMap.end(); ++it) {
-    delete it->second;
-  }
-  dialogMap.clear();
+  Clear();
 }
 
 unsigned int
@@ -62,6 +59,15 @@ DialogResource::Find(const unsigned int n, DialogData* data) {
     return true;
   }
   return false;
+}
+
+void
+DialogResource::Clear()
+{
+  for (std::map<const unsigned int, DialogData*>::iterator it = dialogMap.begin(); it != dialogMap.end(); ++it) {
+    delete it->second;
+  }
+  dialogMap.clear();
 }
 
 typedef struct _DialogPageOffset {
@@ -119,6 +125,7 @@ void
 DialogResource::Load(FileBuffer *buffer)
 {
   try {
+    Clear();
     unsigned int n = buffer->GetUint16LE();
     std::map<const unsigned int, unsigned int> offset;
     for (unsigned int i = 0; i < n; i++) {

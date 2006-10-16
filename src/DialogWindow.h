@@ -26,13 +26,12 @@
 
 #include "Palette.h"
 #include "PanelWidget.h"
-#include "WidgetFactory.h"
 
 class DialogWindow {
   private:
     PanelWidget *panel;
   public:
-    DialogWindow(WidgetResources& widgetRes);
+    DialogWindow(PanelWidget *panelwidget);
     ~DialogWindow();
     void Draw();
     void FadeIn(Palette* pal);
