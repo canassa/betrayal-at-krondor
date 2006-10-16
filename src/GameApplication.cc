@@ -42,7 +42,6 @@ GameApplication::GameApplication()
 , inputGrabbed(false)
 , game(0)
 , state(GameStateIntro::GetInstance())
-, prevState(0)
 , screenSaveCount(0)
 {
   MediaToolkit* media = MediaToolkit::GetInstance();
@@ -98,6 +97,7 @@ GameApplication::CleanUp()
   GameStateCombat::CleanUp();
   GameStateContents::CleanUp();
   GameStateFullMap::CleanUp();
+  GameStateInfo::CleanUp();
   GameStateInitialOptions::CleanUp();
   GameStateIntro::CleanUp();
   GameStateInventory::CleanUp();
@@ -119,16 +119,9 @@ GameApplication::GetGame()
   return game;
 }
 
-GameState *
-GameApplication::GetPrevState()
-{
-  return prevState;
-}
-
 void
 GameApplication::SetState(GameState *st)
 {
-  prevState = state;
   state = st;
 }
 

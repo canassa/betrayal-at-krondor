@@ -31,7 +31,8 @@ class GameState
 {
   protected:
     DialogFactory dialogFactory;
-    void ChangeState(GameState *state);
+    GameState *prevState;
+    void ChangeState(GameState *state, const bool savePreviousState = false);
   public:
     GameState();
     virtual ~GameState();
@@ -246,6 +247,23 @@ class GameStatePreferences
   public:
     ~GameStatePreferences();
     static GameStatePreferences* GetInstance();
+    static void CleanUp();
+    void Enter();
+    void Leave();
+    void Execute();
+};
+
+class GameStateInfo
+: public GameState
+{
+  private:
+    Dialog *dialog;
+    static GameStateInfo *instance;
+  protected:
+    GameStateInfo();
+  public:
+    ~GameStateInfo();
+    static GameStateInfo* GetInstance();
     static void CleanUp();
     void Enter();
     void Leave();

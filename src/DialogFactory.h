@@ -47,6 +47,7 @@ class DialogFactory {
     Dialog* CreateCastDialog();
     Dialog* CreateContentsDialog();
     Dialog* CreateFullMapDialog();
+    Dialog* CreateInfoDialog();
     Dialog* CreateInventoryDialog();
     Dialog* CreateLoadDialog();
     Dialog* CreateMapDialog();

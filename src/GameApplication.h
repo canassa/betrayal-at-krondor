@@ -38,7 +38,6 @@ class GameApplication
     bool inputGrabbed;
     Game *game;
     GameState *state;
-    GameState *prevState;
     int screenSaveCount;
     static GameApplication *instance;
     void SetState(GameState *st);
@@ -49,7 +48,6 @@ class GameApplication
     static GameApplication* GetInstance();
     static void CleanUp();
     Game* GetGame();
-    GameState* GetPrevState();
     void PlayIntro();
     void StartNewGame();
     void QuitGame();

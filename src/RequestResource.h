@@ -104,6 +104,9 @@ static const unsigned int OPT_QUIT          = 32;
 static const unsigned int OPT_RESTORE       = 19;
 static const unsigned int OPT_SAVE          = 31;
 
+static const unsigned int INFO_EXIT         = 1;
+static const unsigned int INFO_SPELLS       = 31;
+
 static const unsigned int PREF_CANCEL       = 46;
 static const unsigned int PREF_DEFAULTS     = 32;
 static const unsigned int PREF_OK           = 24;

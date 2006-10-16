@@ -180,6 +180,36 @@ DialogFactory::CreateFullMapDialog()
 }
 
 Dialog *
+DialogFactory::CreateInfoDialog()
+{
+  try {
+    FileManager::GetInstance()->Load(&request, "REQ_INFO.DAT");
+    FileManager::GetInstance()->Load(&palette, "OPTIONS.PAL");
+    FileManager::GetInstance()->Load(&screen, "DIALOG.SCX");
+    FileManager::GetInstance()->Load(&font, "GAME.FNT");
+
+    PanelWidget *panel = widgetFactory.CreatePanel(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight(), screen.GetImage());
+    Dialog *dialog = new GameDialog(palette.GetPalette(), new DialogWindow(panel));
+    for (unsigned int i = 0; i < request.GetSize(); i++) {
+      RequestData data = request.GetRequestData(i);
+      switch (data.widget) {
+        case REQ_TEXTBUTTON:
+          if (data.visible) {
+            panel->AddActiveWidget(widgetFactory.CreateTextButton(data, font, dialog));
+          }
+          break;
+        default:
+          break;
+      }
+    }
+    return dialog;
+  } catch (Exception &e) {
+    e.Print("DialogFactory::CreateInventoryDialog");
+    throw;
+  }
+}
+
+Dialog *
 DialogFactory::CreateInventoryDialog()
 {
   try {

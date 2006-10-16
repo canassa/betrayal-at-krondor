@@ -25,6 +25,8 @@
 #include "GameState.h"
 
 GameState::GameState()
+: dialogFactory()
+, prevState(0)
 {
 }
 
@@ -33,8 +35,11 @@ GameState::~GameState()
 }
 
 void
-GameState::ChangeState(GameState *state)
+GameState::ChangeState(GameState *state, const bool savePreviousState)
 {
+  if (savePreviousState) {
+    state->prevState = this;
+  }
   GameApplication::GetInstance()->SetState(state);
 }
 
@@ -104,7 +109,7 @@ GameStateCamp::Execute()
   switch (action) {
     case ACT_ESCAPE:
     case CAMP_EXIT:
-      ChangeState(GameApplication::GetInstance()->GetPrevState());
+      ChangeState(prevState);
       break;
     case CAMP_UNTIL_HEALED:
     case CAMP_STOP:
@@ -171,7 +176,7 @@ GameStateCast::Execute()
       break;
     case CAST_CAMP1:
     case CAST_CAMP2:
-      ChangeState(GameStateCamp::GetInstance());
+      ChangeState(GameStateCamp::GetInstance(), true);
       break;
     case CAST_MEMBER1:
       GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(0);
@@ -182,6 +187,18 @@ GameStateCast::Execute()
     case CAST_MEMBER3:
       GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(2);
       break;
+    case CAST_MEMBER1 + RIGHT_CLICK_OFFSET:
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(0);
+      ChangeState(GameStateInfo::GetInstance(), true);
+      break;
+    case CAST_MEMBER2 + RIGHT_CLICK_OFFSET:
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(1);
+      ChangeState(GameStateInfo::GetInstance(), true);
+      break;
+    case CAST_MEMBER3 + RIGHT_CLICK_OFFSET:
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(2);
+      ChangeState(GameStateInfo::GetInstance(), true);
+      break;
     case ACT_UP:
     case ACT_DOWN:
     case ACT_LEFT:
@@ -190,9 +207,6 @@ GameStateCast::Execute()
     case CAST_SQUARE:
     case CAST_CAST:
     case CAST_BOOKMARK:
-    case CAST_MEMBER1 + RIGHT_CLICK_OFFSET:
-    case CAST_MEMBER2 + RIGHT_CLICK_OFFSET:
-    case CAST_MEMBER3 + RIGHT_CLICK_OFFSET:
       break;
     default:
       throw UnexpectedValue(__FILE__, __LINE__, action);
@@ -320,7 +334,7 @@ GameStateContents::Execute()
   switch (action) {
     case ACT_ESCAPE:
     case CONT_EXIT:
-      ChangeState(GameApplication::GetInstance()->GetPrevState());
+      ChangeState(prevState);
       break;
     default:
       throw UnexpectedValue(__FILE__, __LINE__, action);
@@ -387,6 +401,72 @@ GameStateFullMap::Execute()
   }
 }
 
+GameStateInfo* GameStateInfo::instance = 0;
+
+GameStateInfo::GameStateInfo()
+{
+  dialog = dialogFactory.CreateInfoDialog();
+}
+
+GameStateInfo::~GameStateInfo()
+{
+  if (dialog) {
+    delete dialog;
+  }
+}
+
+GameStateInfo*
+GameStateInfo::GetInstance()
+{
+  if (!instance) {
+    instance = new GameStateInfo();
+  }
+  return instance;
+}
+
+void
+GameStateInfo::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
+}
+
+void
+GameStateInfo::Enter()
+{
+  dialog->Enter();
+}
+
+void
+GameStateInfo::Leave()
+{
+  dialog->Leave();
+}
+
+void
+GameStateInfo::Execute()
+{
+  unsigned int action = dialog->Execute();
+  switch (action) {
+    case ACT_ESCAPE:
+    case INFO_EXIT:
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(-1);
+      ChangeState(prevState);
+      break;
+    case ACT_UP:
+    case ACT_DOWN:
+    case ACT_LEFT:
+    case ACT_RIGHT:
+    case INFO_SPELLS:
+      break;
+    default:
+      throw UnexpectedValue(__FILE__, __LINE__, action);
+      break;
+  }
+}
+
 GameStateInitialOptions* GameStateInitialOptions::instance = 0;
 
 GameStateInitialOptions::GameStateInitialOptions()
@@ -445,13 +525,13 @@ GameStateInitialOptions::Execute()
       ChangeState(GameStateChapter::GetInstance());
       break;
     case OPT_CONTENTS:
-      ChangeState(GameStateContents::GetInstance());
+      ChangeState(GameStateContents::GetInstance(), true);
       break;
     case OPT_PREFERENCES:
-      ChangeState(GameStatePreferences::GetInstance());
+      ChangeState(GameStatePreferences::GetInstance(), true);
       break;
     case OPT_RESTORE:
-      ChangeState(GameStateLoad::GetInstance());
+      ChangeState(GameStateLoad::GetInstance(), true);
       break;
     default:
       throw UnexpectedValue(__FILE__, __LINE__, action);
@@ -546,7 +626,7 @@ GameStateInventory::Execute()
     case ACT_ESCAPE:
     case INV_EXIT:
       GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(-1);
-      ChangeState(GameApplication::GetInstance()->GetPrevState());
+      ChangeState(prevState);
       break;
     case INV_MEMBER1:
       GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(0);
@@ -557,15 +637,24 @@ GameStateInventory::Execute()
     case INV_MEMBER3:
       GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(2);
       break;
+    case INV_MEMBER1 + RIGHT_CLICK_OFFSET:
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(0);
+      ChangeState(GameStateInfo::GetInstance(), true);
+      break;
+    case INV_MEMBER2 + RIGHT_CLICK_OFFSET:
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(1);
+      ChangeState(GameStateInfo::GetInstance(), true);
+      break;
+    case INV_MEMBER3 + RIGHT_CLICK_OFFSET:
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(2);
+      ChangeState(GameStateInfo::GetInstance(), true);
+      break;
     case ACT_UP:
     case ACT_DOWN:
     case ACT_LEFT:
     case ACT_RIGHT:
     case INV_UNKNOWN:
     case INV_MORE_INFO:
-    case INV_MEMBER1 + RIGHT_CLICK_OFFSET:
-    case INV_MEMBER2 + RIGHT_CLICK_OFFSET:
-    case INV_MEMBER3 + RIGHT_CLICK_OFFSET:
       break;
     default:
       throw UnexpectedValue(__FILE__, __LINE__, action);
@@ -624,10 +713,10 @@ GameStateLoad::Execute()
   switch (action) {
     case ACT_ESCAPE:
     case LOAD_CANCEL:
-      ChangeState(GameApplication::GetInstance()->GetPrevState());
+      ChangeState(prevState);
       break;
     case LOAD_RESTORE:
-      ChangeState(GameApplication::GetInstance()->GetPrevState());
+      ChangeState(prevState);
       break;
     default:
       throw UnexpectedValue(__FILE__, __LINE__, action);
@@ -689,10 +778,34 @@ GameStateMap::Execute()
       ChangeState(GameStateWorld::GetInstance());
       break;
     case MAP_CAMP:
-      ChangeState(GameStateCamp::GetInstance());
+      ChangeState(GameStateCamp::GetInstance(), true);
       break;
     case MAP_FULLMAP:
       ChangeState(GameStateFullMap::GetInstance());
+      break;
+    case MAP_MEMBER1:
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(0);
+      ChangeState(GameStateInventory::GetInstance(), true);
+      break;
+    case MAP_MEMBER2:
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(1);
+      ChangeState(GameStateInventory::GetInstance(), true);
+      break;
+    case MAP_MEMBER3:
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(2);
+      ChangeState(GameStateInventory::GetInstance(), true);
+      break;
+    case MAP_MEMBER1 + RIGHT_CLICK_OFFSET:
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(0);
+      ChangeState(GameStateInfo::GetInstance(), true);
+      break;
+    case MAP_MEMBER2 + RIGHT_CLICK_OFFSET:
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(0);
+      ChangeState(GameStateInfo::GetInstance(), true);
+      break;
+    case MAP_MEMBER3 + RIGHT_CLICK_OFFSET:
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(0);
+      ChangeState(GameStateInfo::GetInstance(), true);
       break;
     case ACT_UP:
     case MAP_UP:
@@ -705,12 +818,6 @@ GameStateMap::Execute()
     case MAP_ZOOMIN:
     case MAP_ZOOMOUT:
     case MAP_UNKNOWN:
-    case MAP_MEMBER1:
-    case MAP_MEMBER2:
-    case MAP_MEMBER3:
-    case MAP_MEMBER1 + RIGHT_CLICK_OFFSET:
-    case MAP_MEMBER2 + RIGHT_CLICK_OFFSET:
-    case MAP_MEMBER3 + RIGHT_CLICK_OFFSET:
       break;
     default:
       throw UnexpectedValue(__FILE__, __LINE__, action);
@@ -779,16 +886,16 @@ GameStateOptions::Execute()
       ChangeState(GameStateWorld::GetInstance());
       break;
     case OPT_CONTENTS:
-      ChangeState(GameStateContents::GetInstance());
+      ChangeState(GameStateContents::GetInstance(), true);
       break;
     case OPT_PREFERENCES:
-      ChangeState(GameStatePreferences::GetInstance());
+      ChangeState(GameStatePreferences::GetInstance(), true);
       break;
     case OPT_RESTORE:
-      ChangeState(GameStateLoad::GetInstance());
+      ChangeState(GameStateLoad::GetInstance(), true);
       break;
     case OPT_SAVE:
-      ChangeState(GameStateSave::GetInstance());
+      ChangeState(GameStateSave::GetInstance(), true);
       break;
     default:
       throw UnexpectedValue(__FILE__, __LINE__, action);
@@ -847,10 +954,10 @@ GameStatePreferences::Execute()
   switch (action) {
     case ACT_ESCAPE:
     case PREF_CANCEL:
-      ChangeState(GameApplication::GetInstance()->GetPrevState());
+      ChangeState(prevState);
       break;
     case PREF_OK:
-      ChangeState(GameApplication::GetInstance()->GetPrevState());
+      ChangeState(prevState);
       break;
     case PREF_DEFAULTS:
       break;
@@ -911,10 +1018,10 @@ GameStateSave::Execute()
   switch (action) {
     case ACT_ESCAPE:
     case SAVE_CANCEL:
-      ChangeState(GameApplication::GetInstance()->GetPrevState());
+      ChangeState(prevState);
       break;
     case SAVE_SAVE:
-      ChangeState(GameApplication::GetInstance()->GetPrevState());
+      ChangeState(prevState);
       break;
     case SAVE_REMOVE_GAME:
       break;
@@ -980,7 +1087,7 @@ GameStateWorld::Execute()
       ChangeState(GameStateOptions::GetInstance());
       break;
     case MAIN_CAMP:
-      ChangeState(GameStateCamp::GetInstance());
+      ChangeState(GameStateCamp::GetInstance(), true);
       break;
     case MAIN_CAST:
       GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(0);
@@ -991,15 +1098,27 @@ GameStateWorld::Execute()
       break;
     case MAIN_MEMBER1:
       GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(0);
-      ChangeState(GameStateInventory::GetInstance());
+      ChangeState(GameStateInventory::GetInstance(), true);
       break;
     case MAIN_MEMBER2:
       GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(1);
-      ChangeState(GameStateInventory::GetInstance());
+      ChangeState(GameStateInventory::GetInstance(), true);
       break;
     case MAIN_MEMBER3:
       GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(2);
-      ChangeState(GameStateInventory::GetInstance());
+      ChangeState(GameStateInventory::GetInstance(), true);
+      break;
+    case MAIN_MEMBER1 + RIGHT_CLICK_OFFSET:
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(0);
+      ChangeState(GameStateInfo::GetInstance(), true);
+      break;
+    case MAIN_MEMBER2 + RIGHT_CLICK_OFFSET:
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(1);
+      ChangeState(GameStateInfo::GetInstance(), true);
+      break;
+    case MAIN_MEMBER3 + RIGHT_CLICK_OFFSET:
+      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(2);
+      ChangeState(GameStateInfo::GetInstance(), true);
       break;
     case ACT_LEFT:
     case MAIN_LEFT:
@@ -1015,9 +1134,6 @@ GameStateWorld::Execute()
     case MAIN_DOWN:
     case MAIN_BOOKMARK:
     case MAIN_UNKNOWN:
-    case MAIN_MEMBER1 + RIGHT_CLICK_OFFSET:
-    case MAIN_MEMBER2 + RIGHT_CLICK_OFFSET:
-    case MAIN_MEMBER3 + RIGHT_CLICK_OFFSET:
       break;
     default:
       throw UnexpectedValue(__FILE__, __LINE__, action);
