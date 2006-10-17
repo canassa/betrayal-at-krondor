@@ -37,6 +37,7 @@ class Image {
     Video *video;
   public:
     Image(const int w, const int h);
+    Image(Image *img);
     ~Image();
     int GetWidth() const;
     int GetHeight() const;
@@ -45,6 +46,8 @@ class Image {
     uint8_t * GetPixels() const;
     void SetPixel(const int x, const int y, const uint8_t color);
     void SetPixels(uint8_t *data, unsigned int size = 0);
+    void HorizontalFlip();
+    void VerticalFlip();
     void Fill(const uint8_t color);
     void Load(FileBuffer *buffer, const unsigned int flags);
     void Read(const int x, const int y);

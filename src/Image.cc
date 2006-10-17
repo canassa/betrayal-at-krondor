@@ -28,6 +28,8 @@ static const unsigned int FLAG_COMPRESSED = 0x80;
 Image::Image(const int w, const int h)
 : width(w)
 , height(h)
+, pixel(0)
+, video(MediaToolkit::GetInstance()->GetVideo())
 {
   if ((width > 0) && (height > 0)) {
     pixel = new uint8_t[width * height];
@@ -35,9 +37,22 @@ Image::Image(const int w, const int h)
   } else {
     width = 0;
     height = 0;
-    pixel = 0;
   }
-  video = MediaToolkit::GetInstance()->GetVideo();
+}
+
+Image::Image(Image *img)
+: width(img->width)
+, height(img->height)
+, pixel(0)
+, video(MediaToolkit::GetInstance()->GetVideo())
+{
+  if ((width > 0) && (height > 0)) {
+    pixel = new uint8_t[width * height];
+    memcpy(pixel, img->pixel, width * height);
+  } else {
+    width = 0;
+    height = 0;
+  }
 }
 
 Image::~Image()
@@ -105,6 +120,30 @@ Image::Fill(const uint8_t color)
   if (pixel) {
     memset(pixel, color, width * height);
   }
+}
+
+void
+Image::HorizontalFlip()
+{
+  for (int y = 0; y < height; y++) {
+    for (int x = 0; x < width; x++) {
+      uint8_t h = pixel[x + width * y];
+      pixel[x + width * y] = pixel[width - x - 1 + width * y];
+      pixel[width - x - 1 + width * y] = h;
+    }
+  }
+}
+
+void
+Image::VerticalFlip()
+{
+  uint8_t *row = new uint8_t[width];
+  for (int y = 0; y < height / 2; y++) {
+    memcpy(row, pixel + y * width, width);
+    memcpy(pixel + y * width, pixel + (height - y - 1) * width, width);
+    memcpy(pixel + (height - y - 1) * width, row, width);
+  }
+  delete[] row;
 }
 
 void
