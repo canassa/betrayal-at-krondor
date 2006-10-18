@@ -186,10 +186,14 @@ DialogFactory::CreateInfoDialog()
     FileManager::GetInstance()->Load(&request, "REQ_INFO.DAT");
     FileManager::GetInstance()->Load(&palette, "OPTIONS.PAL");
     FileManager::GetInstance()->Load(&screen, "DIALOG.SCX");
+    FileManager::GetInstance()->Load(&icons, "INVSHP1.BMX");
+    FileManager::GetInstance()->Load(&images, "INVSHP2.BMX");
     FileManager::GetInstance()->Load(&font, "GAME.FNT");
 
     PanelWidget *panel = widgetFactory.CreatePanel(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight(), screen.GetImage());
     Dialog *dialog = new GameDialog(palette.GetPalette(), new DialogWindow(panel));
+    panel->AddWidget(widgetFactory.CreateImage(2, 107, 122, 91, images.GetImage(24)));
+    panel->AddWidget(widgetFactory.CreateImage(188, 107, 122, 91, images.GetImage(24), HORIZONTAL));
     for (unsigned int i = 0; i < request.GetSize(); i++) {
       RequestData data = request.GetRequestData(i);
       switch (data.widget) {
@@ -204,7 +208,7 @@ DialogFactory::CreateInfoDialog()
     }
     return dialog;
   } catch (Exception &e) {
-    e.Print("DialogFactory::CreateInventoryDialog");
+    e.Print("DialogFactory::CreateInfoDialog");
     throw;
   }
 }
@@ -218,8 +222,10 @@ DialogFactory::CreateInventoryDialog()
     FileManager::GetInstance()->Load(&screen, "INVENTOR.SCX");
     FileManager::GetInstance()->Load(&normal, "BICONS1.BMX");
     FileManager::GetInstance()->Load(&pressed, "BICONS2.BMX");
-    FileManager::GetInstance()->Load(&font, "GAME.FNT");
+    FileManager::GetInstance()->Load(&icons, "INVSHP1.BMX");
+    FileManager::GetInstance()->Load(&images, "INVSHP2.BMX");
     FileManager::GetInstance()->Load(&heads, "HEADS.BMX");
+    FileManager::GetInstance()->Load(&font, "GAME.FNT");
 
     PanelWidget *panel = widgetFactory.CreatePanel(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight(), screen.GetImage());
     Dialog *dialog = new GameDialog(palette.GetPalette(), new DialogWindow(panel));

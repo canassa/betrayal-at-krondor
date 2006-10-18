@@ -24,6 +24,8 @@
 #include "config.h"
 #endif
 
+#include <vector>
+
 #include "Dialog.h"
 #include "PaletteResource.h"
 #include "WidgetFactory.h"
@@ -37,6 +39,8 @@ class DialogFactory {
     ImageResource pressed;
     ImageResource heads;
     ImageResource compass;
+    ImageResource icons;
+    ImageResource images;
     FontResource font;
     LabelResource label;
     WidgetFactory widgetFactory;

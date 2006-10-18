@@ -124,6 +124,23 @@ WidgetFactory::CreateLabel(LabelData& data, FontResource& fnt, const int panelWi
   return label;
 }
 
+ImageWidget*
+WidgetFactory::CreateImage(const int x, const int y, const int w, const int h, Image *img, const Flipping flip)
+{
+  ImageWidget *image = new ImageWidget(x, y, w, h, img);
+  switch (flip) {
+    case HORIZONTAL:
+      image->HorizontalFlip();
+      break;
+    case VERTICAL:
+      image->VerticalFlip();
+      break;
+    default:
+      break;
+  }
+  return image;
+}
+
 PanelWidget*
 WidgetFactory::CreatePanel(const int x, const int y, const int w, const int h, Image *img)
 {

@@ -59,9 +59,12 @@ class SDL_Video
     void FillRect(const int x, const int y, const int w, const int h, const unsigned int c);
     void ReadImage(const int x, const int y, const int w, const int h, uint8_t *p);
     void DrawImage(const int x, const int y, const int w, const int h, uint8_t *p);
+    void DrawImage(const int x, const int y, const int w, const int h, uint8_t *p, const uint8_t transparant);
     void DrawImage(const int x, const int y, const int w, const int h,
                    const int xx, const int yy, const int ww, const int hh, uint8_t *p);
-    void DrawImage(const int x, const int y, const int w, const int h, uint8_t *p, const uint8_t transparant);
+    void DrawImage(const int x, const int y, const int w, const int h,
+                   const int xx, const int yy, const int ww, const int hh,
+                   uint8_t *p, const uint8_t transparant);
     void DrawGlyph(const int x, const int y, const int w, const int h, const uint8_t c, uint16_t*p);
     void DrawGlyphItalic(const int x, const int y, const int w, const int h, const uint8_t c, uint16_t*p);
     void GetPalette(Color *color, const unsigned int first, const unsigned int n);

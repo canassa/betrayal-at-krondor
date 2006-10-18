@@ -17,49 +17,30 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef LABEL_WIDGET_H
-#define LABEL_WIDGET_H
+#ifndef IMAGE_WIDGET_H
+#define IMAGE_WIDGET_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include <string>
-
-#include "FontResource.h"
+#include "Image.h"
 #include "Widget.h"
 
-typedef enum {
-  HA_LEFT,
-  HA_CENTER,
-  HA_RIGHT
-} HorizontalAlignment;
+typedef enum _Flipping {
+  NONE, HORIZONTAL, VERTICAL
+} Flipping;
 
-typedef enum  {
-  VA_TOP,
-  VA_CENTER,
-  VA_BOTTOM
-} VerticalAlignment;
-
-class LabelWidget
+class ImageWidget
 : public Widget {
   private:
-    FontResource& font;
-    std::string text;
-    int textWidth;
-    int textHeight;
-    int color;
-    int shadow;
-    HorizontalAlignment horAlign;
-    VerticalAlignment vertAlign;
+    Image *image;
   public:
-    LabelWidget(const int x, const int y, const int w, const int h, FontResource& f);
-    virtual ~LabelWidget();
+    ImageWidget(const int x, const int y, const int w, const int h, Image *img);
+    virtual ~ImageWidget();
+    void HorizontalFlip();
+    void VerticalFlip();
     void Draw();
-    void SetColor(const int c);
-    void SetText(const std::string& s);
-    void SetShadow(const int s);
-    void SetAlignment(const HorizontalAlignment ha, const VerticalAlignment va);
 };
 
 #endif

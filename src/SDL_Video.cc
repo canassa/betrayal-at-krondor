@@ -289,6 +289,19 @@ SDL_Video::DrawImage(const int x, const int y, const int w, const int h, uint8_t
 }
 
 void
+SDL_Video::DrawImage(const int x, const int y, const int w, const int h, uint8_t *p, const uint8_t transparant)
+{
+  for (int j = y; j < y + h; j++) {
+    for (int i = x; i < x + w; i++) {
+      if (*p != transparant) {
+        PutPixel(i, j, *p);
+      }
+      p++;
+    }
+  }
+}
+
+void
 SDL_Video::DrawImage(const int x, const int y, const int w, const int h,
                      const int xx, const int yy, const int ww, const int hh, uint8_t *p)
 {
@@ -303,11 +316,13 @@ SDL_Video::DrawImage(const int x, const int y, const int w, const int h,
 }
 
 void
-SDL_Video::DrawImage(const int x, const int y, const int w, const int h, uint8_t *p, const uint8_t transparant)
+SDL_Video::DrawImage(const int x, const int y, const int w, const int h,
+                     const int xx, const int yy, const int ww, const int hh,
+                     uint8_t *p, const uint8_t transparant)
 {
   for (int j = y; j < y + h; j++) {
     for (int i = x; i < x + w; i++) {
-      if (*p != transparant) {
+      if ((i >= xx) && (i < (xx + ww)) && (j >= yy) && (j < (yy + hh)) && (*p != transparant)) {
         PutPixel(i, j, *p);
       }
       p++;

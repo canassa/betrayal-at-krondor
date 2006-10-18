@@ -126,7 +126,7 @@ void
 Image::HorizontalFlip()
 {
   for (int y = 0; y < height; y++) {
-    for (int x = 0; x < width; x++) {
+    for (int x = 0; x < width / 2; x++) {
       uint8_t h = pixel[x + width * y];
       pixel[x + width * y] = pixel[width - x - 1 + width * y];
       pixel[width - x - 1 + width * y] = h;
@@ -139,9 +139,9 @@ Image::VerticalFlip()
 {
   uint8_t *row = new uint8_t[width];
   for (int y = 0; y < height / 2; y++) {
-    memcpy(row, pixel + y * width, width);
-    memcpy(pixel + y * width, pixel + (height - y - 1) * width, width);
-    memcpy(pixel + (height - y - 1) * width, row, width);
+    memcpy(row, pixel + width * y, width);
+    memcpy(pixel + width * y, pixel + width * (height - y - 1), width);
+    memcpy(pixel + width * (height - y - 1), row, width);
   }
   delete[] row;
 }
@@ -189,13 +189,19 @@ Image::Draw(const int x, const int y)
 }
 
 void
+Image::Draw(const int x, const int y, const uint8_t transparent)
+{
+  video->DrawImage(x, y, width, height, pixel, transparent);
+}
+
+void
 Image::Draw(const int x, const int y, const int xoff, const int yoff, const int w, const int h)
 {
   video->DrawImage(x, y, width, height, xoff, yoff, w, h, pixel);
 }
 
 void
-Image::Draw(const int x, const int y, const uint8_t transparent)
+Image::Draw(const int x, const int y, const int xoff, const int yoff, const int w, const int h, const uint8_t transparent)
 {
-  video->DrawImage(x, y, width, height, pixel, transparent);
+  video->DrawImage(x, y, width, height, xoff, yoff, w, h, pixel, transparent);
 }

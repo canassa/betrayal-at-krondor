@@ -32,6 +32,7 @@ noinst_HEADERS = AnimationResource.h \
                  Image.h \
                  ImageButtonWidget.h \
                  ImageResource.h \
+                 ImageWidget.h \
                  LabelResource.h \
                  LabelWidget.h \
                  MapViewWidget.h \
@@ -148,6 +149,8 @@ libguitoolkit_a_SOURCES = ButtonWidget.cc \
                           Image.h \
                           ImageButtonWidget.cc \
                           ImageButtonWidget.h \
+                          ImageWidget.cc \
+                          ImageWidget.h \
                           LabelWidget.cc \
                           LabelWidget.h \
                           MapViewWidget.cc \

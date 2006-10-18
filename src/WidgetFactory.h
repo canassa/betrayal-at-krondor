@@ -31,6 +31,7 @@
 #include "Game.h"
 #include "ImageButtonWidget.h"
 #include "ImageResource.h"
+#include "ImageWidget.h"
 #include "LabelResource.h"
 #include "MapViewWidget.h"
 #include "PanelWidget.h"
@@ -54,6 +55,7 @@ class WidgetFactory {
     MapViewWidget* CreateMapView(RequestData& data, Game *game);
     WorldViewWidget* CreateWorldView(RequestData& data, Game *game);
     LabelWidget* CreateLabel(LabelData& data, FontResource& fnt, const int panelWidth);
+    ImageWidget* CreateImage(const int x, const int y, const int w, const int h, Image *img, const Flipping flip = NONE);
     PanelWidget* CreatePanel(const int x, const int y, const int w, const int h, Image *img);
 };
 
