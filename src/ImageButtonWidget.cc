@@ -40,14 +40,16 @@ ImageButtonWidget::SetImage(Image *normal, Image *press)
 void
 ImageButtonWidget::Draw()
 {
-  if (IsEnabled()) {
-    if (IsPressed()) {
-      if (pressedImage) {
-        pressedImage->Draw(xpos, ypos + 1, 0);
-      }
-    } else {
-      if (normalImage) {
-        normalImage->Draw(xpos, ypos + 1, 0);
+  if (IsVisible()) {
+    if (IsEnabled()) {
+      if (IsPressed()) {
+        if (pressedImage) {
+          pressedImage->Draw(xpos, ypos + 1, 0);
+        }
+      } else {
+        if (normalImage) {
+          normalImage->Draw(xpos, ypos + 1, 0);
+        }
       }
     }
   }
@@ -56,15 +58,19 @@ ImageButtonWidget::Draw()
 void
 ImageButtonWidget::LeftClick(const bool toggle)
 {
-  SetPressed(toggle);
-  if (toggle) {
-    GenerateActionEvent(GetAction());
+  if (IsVisible()) {
+    SetPressed(toggle);
+    if (toggle) {
+      GenerateActionEvent(GetAction());
+    }
   }
 }
 
 void
 ImageButtonWidget::RightClick(const bool toggle)
 {
-  if (toggle) {
+  if (IsVisible()) {
+    if (toggle) {
+    }
   }
 }

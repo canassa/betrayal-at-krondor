@@ -88,6 +88,13 @@ ActiveWidget::~ActiveWidget()
 }
 
 void
+ActiveWidget::SetPosition(const int x, const int y)
+{
+  xpos = x;
+  ypos = y;
+}
+
+void
 ActiveWidget::AddActionListener(ActionEventListener *ael)
 {
   actionListeners.push_back(ael);

@@ -50,12 +50,9 @@ DialogFactory::CreateCampDialog()
       RequestData data = request.GetRequestData(i);
       switch (data.widget) {
         case REQ_IMAGEBUTTON:
-          if (data.visible) {
-            data.xpos += request.GetXOff();
-            data.ypos += request.GetYOff();
-            ImageButtonWidget *button = widgetFactory.CreateImageButton(data, normal, pressed, dialog);
-            panel->AddActiveWidget(button);
-          }
+          data.xpos += request.GetXOff();
+          data.ypos += request.GetYOff();
+          panel->AddActiveWidget(widgetFactory.CreateImageButton(data, normal, pressed, dialog));
           break;
         default:
           break;
@@ -93,11 +90,9 @@ DialogFactory::CreateCastDialog()
           }
           break;
         case REQ_IMAGEBUTTON:
-          if (data.visible) {
-            data.xpos += request.GetXOff();
-            data.ypos += request.GetYOff();
-            panel->AddActiveWidget(widgetFactory.CreateImageButton(data, normal, pressed, dialog));
-          }
+          data.xpos += request.GetXOff();
+          data.ypos += request.GetYOff();
+          panel->AddActiveWidget(widgetFactory.CreateImageButton(data, normal, pressed, dialog));
           break;
         default:
           break;
@@ -127,12 +122,9 @@ DialogFactory::CreateContentsDialog()
       RequestData data = request.GetRequestData(i);
       switch (data.widget) {
         case REQ_IMAGEBUTTON:
-          if (data.visible) {
-            data.xpos += request.GetXOff();
-            data.ypos += request.GetYOff();
-            ImageButtonWidget *button = widgetFactory.CreateImageButton(data, normal, pressed, dialog);
-            panel->AddActiveWidget(button);
-          }
+          data.xpos += request.GetXOff();
+          data.ypos += request.GetYOff();
+          panel->AddActiveWidget(widgetFactory.CreateImageButton(data, normal, pressed, dialog));
           break;
         default:
           break;
@@ -161,12 +153,9 @@ DialogFactory::CreateFullMapDialog()
       RequestData data = request.GetRequestData(i);
       switch (data.widget) {
         case REQ_IMAGEBUTTON:
-          if (data.visible) {
-            data.xpos += request.GetXOff();
-            data.ypos += request.GetYOff();
-            ImageButtonWidget *button = widgetFactory.CreateImageButton(data, normal, pressed, dialog);
-            panel->AddActiveWidget(button);
-          }
+          data.xpos += request.GetXOff();
+          data.ypos += request.GetYOff();
+          panel->AddActiveWidget(widgetFactory.CreateImageButton(data, normal, pressed, dialog));
           break;
         default:
           break;
@@ -198,9 +187,7 @@ DialogFactory::CreateInfoDialog()
       RequestData data = request.GetRequestData(i);
       switch (data.widget) {
         case REQ_TEXTBUTTON:
-          if (data.visible) {
-            panel->AddActiveWidget(widgetFactory.CreateTextButton(data, font, dialog));
-          }
+          panel->AddActiveWidget(widgetFactory.CreateTextButton(data, font, dialog));
           break;
         default:
           break;
@@ -240,16 +227,13 @@ DialogFactory::CreateInventoryDialog()
           }
           break;
         case REQ_IMAGEBUTTON:
-          if (data.visible) {
-            data.xpos += request.GetXOff();
-            data.ypos += request.GetYOff();
-            panel->AddActiveWidget(widgetFactory.CreateImageButton(data, normal, pressed, dialog));
-          }
+          data.xpos += request.GetXOff();
+          data.ypos += request.GetYOff();
+          panel->AddActiveWidget(widgetFactory.CreateImageButton(data, normal, pressed, dialog));
           break;
         case REQ_TEXTBUTTON:
-          if (data.visible) {
-            panel->AddActiveWidget(widgetFactory.CreateTextButton(data, font, dialog));
-          }
+          data.visible = false;
+          panel->AddActiveWidget(widgetFactory.CreateTextButton(data, font, dialog));
           break;
         default:
           break;
@@ -278,9 +262,7 @@ DialogFactory::CreateLoadDialog()
       RequestData data = request.GetRequestData(i);
       switch (data.widget) {
         case REQ_TEXTBUTTON:
-          if (data.visible) {
-            panel->AddActiveWidget(widgetFactory.CreateTextButton(data, font, dialog));
-          }
+          panel->AddActiveWidget(widgetFactory.CreateTextButton(data, font, dialog));
           break;
         default:
           break;
@@ -325,11 +307,9 @@ DialogFactory::CreateMapDialog()
           }
           break;
         case REQ_IMAGEBUTTON:
-          if (data.visible) {
-            data.xpos += request.GetXOff();
-            data.ypos += request.GetYOff();
-            panel->AddActiveWidget(widgetFactory.CreateImageButton(data, normal, pressed, dialog));
-          }
+          data.xpos += request.GetXOff();
+          data.ypos += request.GetYOff();
+          panel->AddActiveWidget(widgetFactory.CreateImageButton(data, normal, pressed, dialog));
           break;
         default:
           break;
@@ -358,9 +338,7 @@ DialogFactory::CreateOptionsDialog(const bool firstTime)
       RequestData data = request.GetRequestData(i);
       switch (data.widget) {
         case REQ_TEXTBUTTON:
-          if (data.visible) {
-            panel->AddActiveWidget(widgetFactory.CreateTextButton(data, font, dialog));
-          }
+          panel->AddActiveWidget(widgetFactory.CreateTextButton(data, font, dialog));
           break;
         default:
           break;
@@ -389,9 +367,7 @@ DialogFactory::CreatePreferencesDialog()
       RequestData data = request.GetRequestData(i);
       switch (data.widget) {
         case REQ_TEXTBUTTON:
-          if (data.visible) {
-            panel->AddActiveWidget(widgetFactory.CreateTextButton(data, font, dialog));
-          }
+          panel->AddActiveWidget(widgetFactory.CreateTextButton(data, font, dialog));
           break;
         default:
           break;
@@ -424,9 +400,7 @@ DialogFactory::CreateSaveDialog()
       RequestData data = request.GetRequestData(i);
       switch (data.widget) {
         case REQ_TEXTBUTTON:
-          if (data.visible) {
-            panel->AddActiveWidget(widgetFactory.CreateTextButton(data, font, dialog));
-          }
+          panel->AddActiveWidget(widgetFactory.CreateTextButton(data, font, dialog));
           break;
         default:
           break;
@@ -473,11 +447,9 @@ DialogFactory::CreateWorldDialog()
           }
           break;
         case REQ_IMAGEBUTTON:
-          if (data.visible) {
-            data.xpos += request.GetXOff();
-            data.ypos += request.GetYOff();
-            panel->AddActiveWidget(widgetFactory.CreateImageButton(data, normal, pressed, dialog));
-          }
+          data.xpos += request.GetXOff();
+          data.ypos += request.GetYOff();
+          panel->AddActiveWidget(widgetFactory.CreateImageButton(data, normal, pressed, dialog));
           break;
         default:
           break;

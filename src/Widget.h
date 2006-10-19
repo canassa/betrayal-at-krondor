@@ -59,13 +59,15 @@ class Widget {
     virtual void Draw() = 0;
 };
 
-class ActiveWidget: public Widget {
+class ActiveWidget
+: public Widget {
   protected:
     int action;
     std::list<ActionEventListener *> actionListeners;
   public:
     ActiveWidget(const int x, const int y, const int w, const int h, const int a);
     ~ActiveWidget();
+    void SetPosition(const int x, const int y);
     void AddActionListener(ActionEventListener *ael);
     void RemoveActionListener(ActionEventListener *ael);
     virtual void Focus() = 0;

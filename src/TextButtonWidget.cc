@@ -43,50 +43,56 @@ TextButtonWidget::SetLabel(const std::string& s, FontResource& f)
 void
 TextButtonWidget::Draw()
 {
-  if (IsPressed()) {
-    Video *video = MediaToolkit::GetInstance()->GetVideo();
-    video->FillRect(xpos + 1, ypos + 1, width - 2, height - 2, BUTTON_COLOR_PRESSED);
-    video->DrawVLine(xpos, ypos, height, LIGHT_COLOR);
-    video->DrawHLine(xpos + 1, ypos, width - 1, SHADOW_COLOR);
-    video->DrawVLine(xpos + width - 1, ypos + 1, height - 2, SHADOW_COLOR);
-    video->DrawHLine(xpos + 1, ypos + height - 1, width - 1, LIGHT_COLOR);
-  } else {
-    Video *video = MediaToolkit::GetInstance()->GetVideo();
-    video->FillRect(xpos + 1, ypos + 1, width - 2, height - 2, BUTTON_COLOR_NORMAL);
-    video->DrawVLine(xpos, ypos, height, SHADOW_COLOR);
-    video->DrawHLine(xpos + 1, ypos, width - 1, LIGHT_COLOR);
-    video->DrawVLine(xpos + width - 1, ypos + 1, height - 2, LIGHT_COLOR);
-    video->DrawHLine(xpos + 1, ypos + height - 1, width - 1, SHADOW_COLOR);
-  }
-  if (label) {
-    if (IsEnabled()) {
-      if (IsPressed()) {
-        label->SetColor(TEXT_COLOR_PRESSED);
-        label->SetShadow(SHADOW_COLOR);
-      } else {
-        label->SetColor(TEXT_COLOR_NORMAL);
-        label->SetShadow(SHADOW_COLOR);
-      }
+  if (IsVisible()) {
+    if (IsPressed()) {
+      Video *video = MediaToolkit::GetInstance()->GetVideo();
+      video->FillRect(xpos + 1, ypos + 1, width - 2, height - 2, BUTTON_COLOR_PRESSED);
+      video->DrawVLine(xpos, ypos, height, LIGHT_COLOR);
+      video->DrawHLine(xpos + 1, ypos, width - 1, SHADOW_COLOR);
+      video->DrawVLine(xpos + width - 1, ypos + 1, height - 2, SHADOW_COLOR);
+      video->DrawHLine(xpos + 1, ypos + height - 1, width - 1, LIGHT_COLOR);
     } else {
-      label->SetColor(TEXT_COLOR_DISABLED);
-      label->SetShadow(NO_SHADOW);
+      Video *video = MediaToolkit::GetInstance()->GetVideo();
+      video->FillRect(xpos + 1, ypos + 1, width - 2, height - 2, BUTTON_COLOR_NORMAL);
+      video->DrawVLine(xpos, ypos, height, SHADOW_COLOR);
+      video->DrawHLine(xpos + 1, ypos, width - 1, LIGHT_COLOR);
+      video->DrawVLine(xpos + width - 1, ypos + 1, height - 2, LIGHT_COLOR);
+      video->DrawHLine(xpos + 1, ypos + height - 1, width - 1, SHADOW_COLOR);
     }
-    label->Draw();
+    if (label) {
+      if (IsEnabled()) {
+        if (IsPressed()) {
+          label->SetColor(TEXT_COLOR_PRESSED);
+          label->SetShadow(SHADOW_COLOR);
+        } else {
+          label->SetColor(TEXT_COLOR_NORMAL);
+          label->SetShadow(SHADOW_COLOR);
+        }
+      } else {
+        label->SetColor(TEXT_COLOR_DISABLED);
+        label->SetShadow(NO_SHADOW);
+      }
+      label->Draw();
+    }
   }
 }
 
 void
 TextButtonWidget::LeftClick(const bool toggle)
 {
-  SetPressed(toggle);
-  if (toggle) {
-    GenerateActionEvent(GetAction());
+  if (IsVisible()) {
+    SetPressed(toggle);
+    if (toggle) {
+      GenerateActionEvent(GetAction());
+    }
   }
 }
 
 void
 TextButtonWidget::RightClick(const bool toggle)
 {
-  if (toggle) {
+  if (IsVisible()) {
+    if (toggle) {
+    }
   }
 }

@@ -30,12 +30,15 @@ class ButtonWidget
 : public ActiveWidget
 {
   private:
+    bool visible;
     bool enabled;
     bool pressed;
   public:
     ButtonWidget(const int x, const int y, const int w, const int h, const int a);
     virtual ~ButtonWidget();
     int GetAction() const;
+    void SetVisible(const bool toggle);
+    bool IsVisible() const;
     void SetEnabled(const bool toggle);
     bool IsEnabled() const;
     void SetPressed(const bool toggle);

@@ -46,10 +46,12 @@ CharacterButtonWidget::SetImage(Image *selected)
 void
 CharacterButtonWidget::Draw()
 {
-  if (character) {
-    character->GetHeadImage()->Draw(xpos, ypos, 0);
-    if (character->IsSelected()) {
-      selectedImage->Draw(xpos, ypos, 0);
+  if (IsVisible()) {
+    if (character) {
+      character->GetHeadImage()->Draw(xpos, ypos, 0);
+      if (character->IsSelected()) {
+        selectedImage->Draw(xpos, ypos, 0);
+      }
     }
   }
 }
@@ -57,15 +59,19 @@ CharacterButtonWidget::Draw()
 void
 CharacterButtonWidget::LeftClick(const bool toggle)
 {
-  if (toggle) {
-    GenerateActionEvent(GetAction());
+  if (IsVisible()) {
+    if (toggle) {
+      GenerateActionEvent(GetAction());
+    }
   }
 }
 
 void
 CharacterButtonWidget::RightClick(const bool toggle)
 {
-  if (toggle) {
-    GenerateActionEvent(GetAction() + RIGHT_CLICK_OFFSET);
+  if (IsVisible()) {
+    if (toggle) {
+      GenerateActionEvent(GetAction() + RIGHT_CLICK_OFFSET);
+    }
   }
 }

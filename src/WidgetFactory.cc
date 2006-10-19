@@ -31,6 +31,7 @@ TextButtonWidget*
 WidgetFactory::CreateTextButton(RequestData& data, FontResource &fnt, ActionEventListener *ael)
 {
   TextButtonWidget *button = new TextButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
+  button->SetVisible(data.visible);
   button->SetLabel(data.label, fnt);
   button->AddActionListener(ael);
   return button;
@@ -40,6 +41,7 @@ ImageButtonWidget*
 WidgetFactory::CreateImageButton(RequestData& data, ImageResource& normal, ImageResource& pressed, ActionEventListener *ael)
 {
   ImageButtonWidget *button = new ImageButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
+  button->SetVisible(data.visible);
   Image *normalImage = 0;
   Image *pressedImage = 0;
   if (data.image >= 0) {
@@ -55,6 +57,7 @@ CharacterButtonWidget*
 WidgetFactory::CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource& img, ActionEventListener *ael)
 {
   CharacterButtonWidget *button = new CharacterButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
+  button->SetVisible(true);
   button->SetCharacter(pc);
   button->SetImage(img.GetImage(SELECTED_IMAGE));
   button->AddActionListener(ael);
