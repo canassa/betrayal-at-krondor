@@ -20,8 +20,6 @@
 #ifndef VIDEO_H
 #define VIDEO_H
 
-#include <string>
-
 #ifdef HAVE_CONFIG
 #include "config.h"
 #endif
@@ -32,10 +30,18 @@
 #include "alt_stdint.h"
 #endif
 
+#include <string>
+
 static const unsigned int VIDEO_WIDTH  = 320;
 static const unsigned int VIDEO_HEIGHT = 200;
 static const unsigned int VIDEO_COLORS = 256;
 static const unsigned int VIDEO_BPP    = 8;
+
+#ifdef PACKAGE_STRING
+static const char WINDOW_TITLE[] = PACKAGE_STRING;
+#else
+static const char WINDOW_TITLE[] = "xbak";
+#endif
 
 typedef struct _Color {
   uint8_t r;
