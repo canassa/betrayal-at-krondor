@@ -51,6 +51,8 @@ noinst_HEADERS = AnimationResource.h \
                  PartyResource.h \
                  PlayerCharacter.h \
                  PopUpWidget.h \
+                 PortraitWidget.h \
+                 RatingsWidget.h \
                  RequestResource.h \
                  ResourceArchive.h \
                  ResourceData.h \
@@ -62,6 +64,7 @@ noinst_HEADERS = AnimationResource.h \
                  SDL_Toolkit.h \
                  SDL_Video.h \
                  ScreenResource.h \
+                 SkillsWidget.h \
                  Sound.h \
                  SoundResource.h \
                  Subject.h \
@@ -167,6 +170,12 @@ libguitoolkit_a_SOURCES = ButtonWidget.cc \
                           PanelWidget.h \
                           PopUpWidget.cc \
                           PopUpWidget.h \
+                          PortraitWidget.cc \
+                          PortraitWidget.h \
+                          RatingsWidget.cc \
+                          RatingsWidget.h \
+                          SkillsWidget.cc \
+                          SkillsWidget.h \
                           Sound.cc \
                           Sound.h \
                           TextArea.cc \

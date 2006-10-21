@@ -144,6 +144,29 @@ WidgetFactory::CreateImage(const int x, const int y, const int w, const int h, I
   return image;
 }
 
+PortraitWidget*
+WidgetFactory::CreatePortrait(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb)
+{
+  PortraitWidget *portrait = new PortraitWidget(x, y, w, h, pc);
+  portrait->SetBorders(hb, vb);
+  return portrait;
+}
+
+RatingsWidget*
+WidgetFactory::CreateRatings(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb)
+{
+  RatingsWidget *ratings = new RatingsWidget(x, y, w, h, pc);
+  ratings->SetBorders(hb, vb);
+  return ratings;
+}
+
+SkillsWidget*
+WidgetFactory::CreateSkills(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *sw, Image *bl)
+{
+  SkillsWidget *skills = new SkillsWidget(x, y, w, h, pc, sw, bl);
+  return skills;
+}
+
 PanelWidget*
 WidgetFactory::CreatePanel(const int x, const int y, const int w, const int h, Image *img)
 {

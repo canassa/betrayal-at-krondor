@@ -35,8 +35,11 @@
 #include "LabelResource.h"
 #include "MapViewWidget.h"
 #include "PanelWidget.h"
+#include "PortraitWidget.h"
+#include "RatingsWidget.h"
 #include "RequestResource.h"
 #include "ScreenResource.h"
+#include "SkillsWidget.h"
 #include "TextButtonWidget.h"
 #include "TickboxWidget.h"
 #include "WorldViewWidget.h"
@@ -56,6 +59,9 @@ class WidgetFactory {
     WorldViewWidget* CreateWorldView(RequestData& data, Game *game);
     LabelWidget* CreateLabel(LabelData& data, FontResource& fnt, const int panelWidth);
     ImageWidget* CreateImage(const int x, const int y, const int w, const int h, Image *img, const Flipping flip = NONE);
+    PortraitWidget* CreatePortrait(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb);
+    RatingsWidget* CreateRatings(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb);
+    SkillsWidget* CreateSkills(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *sw, Image *bl);
     PanelWidget* CreatePanel(const int x, const int y, const int w, const int h, Image *img);
 };
 

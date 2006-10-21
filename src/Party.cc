@@ -42,13 +42,24 @@ PlayerCharacter *
 Party::GetActiveMember(const int order)
 {
   unsigned int i = 0;
-  bool found = false;
-  while (!found && (i < members.size())) {
-    found = (order == members[i]->GetOrder());
+  while (i < members.size()) {
+    if (order == members[i]->GetOrder()) {
+      return members[i];
+    }
     i++;
   }
-  if (found) {
-    return members[i-1];
+  return 0;
+}
+
+PlayerCharacter *
+Party::GetSelectedMember()
+{
+  unsigned int i = 0;
+  while (i < members.size()) {
+    if (members[i]->IsSelected()) {
+      return members[i];
+    }
+    i++;
   }
   return 0;
 }

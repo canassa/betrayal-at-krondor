@@ -17,42 +17,28 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef PARTY_H
-#define PARTY_H
-
-#include <vector>
+#ifndef RATINGS_WIDGET_H
+#define RATINGS_WIDGET_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "Orientation.h"
+#include "Image.h"
 #include "PlayerCharacter.h"
+#include "Widget.h"
 
-static const int TURN_SIZE  = 2;
-static const int TURN_LEFT  = -1 * TURN_SIZE;
-static const int TURN_RIGHT = +1 * TURN_SIZE;
-
-class Party {
+class RatingsWidget
+: public Widget {
   private:
-    std::vector<PlayerCharacter *> members;
-    int zone;
-    int xPos;
-    int yPos;
-    int xCell;
-    int yCell;
-    int xLoc;
-    int yLoc;
+    PlayerCharacter *playerCharacter;
+    Image *horizontalBorder;
+    Image *verticalBorder;
   public:
-    Party();
-    ~Party();
-    PlayerCharacter* GetMember(const unsigned int n);
-    PlayerCharacter* GetActiveMember(const int order);
-    PlayerCharacter* GetSelectedMember();
-    void AddMember(PlayerCharacter *pc);
-    void ActivateMember(const unsigned int n, const int order);
-    void SelectMember(const int order);
+    RatingsWidget(const int x, const int y, const int w, const int h, PlayerCharacter *pc);
+    virtual ~RatingsWidget();
+    void SetBorders(Image *hb, Image *vb);
+    void Draw();
 };
 
 #endif
-
