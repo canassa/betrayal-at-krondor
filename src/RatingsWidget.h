@@ -25,6 +25,7 @@
 #endif
 
 #include "Image.h"
+#include "LabelWidget.h"
 #include "PlayerCharacter.h"
 #include "Widget.h"
 
@@ -34,8 +35,16 @@ class RatingsWidget
     PlayerCharacter *playerCharacter;
     Image *horizontalBorder;
     Image *verticalBorder;
+    LabelWidget *ratingsLabel;
+    LabelWidget *conditionLabel;
+    LabelWidget *healthLabel;
+    LabelWidget *staminaLabel;
+    LabelWidget *speedLabel;
+    LabelWidget *strengthLabel;
+    LabelWidget *healthOfLabel;
+    LabelWidget *staminaOfLabel;
   public:
-    RatingsWidget(const int x, const int y, const int w, const int h, PlayerCharacter *pc);
+    RatingsWidget(const int x, const int y, const int w, const int h, PlayerCharacter *pc, FontResource& fnt);
     virtual ~RatingsWidget();
     void SetBorders(Image *hb, Image *vb);
     void Draw();

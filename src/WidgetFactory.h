@@ -62,7 +62,7 @@ class WidgetFactory {
     BadgeWidget* CreateBadge(const int x, const int y, const int w, const int h, const std::string& s, FontResource& fnt);
     ImageWidget* CreateImage(const int x, const int y, const int w, const int h, Image *img, const Flipping flip = NONE);
     PortraitWidget* CreatePortrait(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb);
-    RatingsWidget* CreateRatings(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb);
+    RatingsWidget* CreateRatings(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb, FontResource& fnt);
     SkillsWidget* CreateSkills(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *sw, Image *bl);
     PanelWidget* CreatePanel(const int x, const int y, const int w, const int h, Image *img);
 };

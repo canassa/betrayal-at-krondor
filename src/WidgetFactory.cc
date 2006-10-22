@@ -161,9 +161,9 @@ WidgetFactory::CreatePortrait(const int x, const int y, const int w, const int h
 }
 
 RatingsWidget*
-WidgetFactory::CreateRatings(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb)
+WidgetFactory::CreateRatings(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb, FontResource& fnt)
 {
-  RatingsWidget *ratings = new RatingsWidget(x, y, w, h, pc);
+  RatingsWidget *ratings = new RatingsWidget(x, y, w, h, pc, fnt);
   ratings->SetBorders(hb, vb);
   return ratings;
 }

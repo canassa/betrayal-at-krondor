@@ -173,7 +173,7 @@ DialogFactory::CreateInfoDialog()
 {
   try {
     FileManager::GetInstance()->Load(&request, "REQ_INFO.DAT");
-    FileManager::GetInstance()->Load(&palette, "OPTIONS.PAL");
+    FileManager::GetInstance()->Load(&palette, "INVENTOR.PAL");
     FileManager::GetInstance()->Load(&screen, "DIALOG.SCX");
     FileManager::GetInstance()->Load(&icons, "INVSHP1.BMX");
     FileManager::GetInstance()->Load(&images, "INVSHP2.BMX");
@@ -186,7 +186,7 @@ DialogFactory::CreateInfoDialog()
     panel->AddWidget(widgetFactory.CreateImage(188, 107, 122, 91, images.GetImage(24), HORIZONTAL));
     panel->AddWidget(widgetFactory.CreatePortrait(7, 9, 71, 71, pc, images.GetImage(26), images.GetImage(25)));
     panel->AddWidget(widgetFactory.CreateBadge(23, 71, 42, 12, pc->GetName(), font));
-    panel->AddWidget(widgetFactory.CreateRatings(84, 9, 222, 71, pc, images.GetImage(26), images.GetImage(25)));
+    panel->AddWidget(widgetFactory.CreateRatings(84, 9, 222, 71, pc, images.GetImage(26), images.GetImage(25), font));
     for (unsigned int i = 0; i < request.GetSize(); i++) {
       RequestData data = request.GetRequestData(i);
       switch (data.widget) {
@@ -209,7 +209,7 @@ DialogFactory::CreateInventoryDialog()
 {
   try {
     FileManager::GetInstance()->Load(&request, "REQ_INV.DAT");
-    FileManager::GetInstance()->Load(&palette, "OPTIONS.PAL");
+    FileManager::GetInstance()->Load(&palette, "INVENTOR.PAL");
     FileManager::GetInstance()->Load(&screen, "INVENTOR.SCX");
     FileManager::GetInstance()->Load(&normal, "BICONS1.BMX");
     FileManager::GetInstance()->Load(&pressed, "BICONS2.BMX");
