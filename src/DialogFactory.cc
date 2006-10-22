@@ -179,12 +179,14 @@ DialogFactory::CreateInfoDialog()
     FileManager::GetInstance()->Load(&images, "INVSHP2.BMX");
     FileManager::GetInstance()->Load(&font, "GAME.FNT");
 
+    PlayerCharacter *pc = GameApplication::GetInstance()->GetGame()->GetParty()->GetSelectedMember();
     PanelWidget *panel = widgetFactory.CreatePanel(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight(), screen.GetImage());
     Dialog *dialog = new GameDialog(palette.GetPalette(), new DialogWindow(panel));
     panel->AddWidget(widgetFactory.CreateImage(2, 107, 122, 91, images.GetImage(24)));
     panel->AddWidget(widgetFactory.CreateImage(188, 107, 122, 91, images.GetImage(24), HORIZONTAL));
-    panel->AddWidget(widgetFactory.CreatePortrait(7, 9, 71, 71, GameApplication::GetInstance()->GetGame()->GetParty()->GetSelectedMember(), images.GetImage(26), images.GetImage(25)));
-    panel->AddWidget(widgetFactory.CreateRatings(84, 9, 222, 71, GameApplication::GetInstance()->GetGame()->GetParty()->GetSelectedMember(), images.GetImage(26), images.GetImage(25)));
+    panel->AddWidget(widgetFactory.CreatePortrait(7, 9, 71, 71, pc, images.GetImage(26), images.GetImage(25)));
+    panel->AddWidget(widgetFactory.CreateBadge(23, 71, 42, 12, pc->GetName(), font));
+    panel->AddWidget(widgetFactory.CreateRatings(84, 9, 222, 71, pc, images.GetImage(26), images.GetImage(25)));
     for (unsigned int i = 0; i < request.GetSize(); i++) {
       RequestData data = request.GetRequestData(i);
       switch (data.widget) {

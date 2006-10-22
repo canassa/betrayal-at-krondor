@@ -1,5 +1,6 @@
 noinst_HEADERS = AnimationResource.h \
                  Audio.h \
+                 BadgeWidget.h \
                  BookResource.h \
                  ButtonWidget.h \
                  Camera.h \
@@ -126,7 +127,9 @@ libgame_a_SOURCES = Camera.cc \
                     Party.h \
                     PlayerCharacter.cc \
                     PlayerCharacter.h
-libguitoolkit_a_SOURCES = ButtonWidget.cc \
+libguitoolkit_a_SOURCES = BadgeWidget.cc \
+                          BadgeWidget.h \
+                          ButtonWidget.cc \
                           ButtonWidget.h \
                           CharacterButtonWidget.cc \
                           CharacterButtonWidget.h \

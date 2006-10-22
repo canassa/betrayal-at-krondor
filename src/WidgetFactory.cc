@@ -127,6 +127,14 @@ WidgetFactory::CreateLabel(LabelData& data, FontResource& fnt, const int panelWi
   return label;
 }
 
+BadgeWidget*
+WidgetFactory::CreateBadge(const int x, const int y, const int w, const int h, const std::string& s, FontResource& fnt)
+{
+  BadgeWidget *badge = new BadgeWidget(x, y, w, h);
+  badge->SetLabel(s, fnt);
+  return badge;
+}
+
 ImageWidget*
 WidgetFactory::CreateImage(const int x, const int y, const int w, const int h, Image *img, const Flipping flip)
 {

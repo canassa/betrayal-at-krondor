@@ -404,8 +404,8 @@ GameStateFullMap::Execute()
 GameStateInfo* GameStateInfo::instance = 0;
 
 GameStateInfo::GameStateInfo()
+: dialog(0)
 {
-  dialog = dialogFactory.CreateInfoDialog();
 }
 
 GameStateInfo::~GameStateInfo()
@@ -436,6 +436,7 @@ GameStateInfo::CleanUp()
 void
 GameStateInfo::Enter()
 {
+  dialog = dialogFactory.CreateInfoDialog();
   dialog->Enter();
 }
 
@@ -443,6 +444,8 @@ void
 GameStateInfo::Leave()
 {
   dialog->Leave();
+  delete dialog;
+  dialog = 0;
 }
 
 void
@@ -577,8 +580,8 @@ GameStateIntro::Execute()
 GameStateInventory* GameStateInventory::instance = 0;
 
 GameStateInventory::GameStateInventory()
+: dialog(0)
 {
-  dialog = dialogFactory.CreateInventoryDialog();
 }
 
 GameStateInventory::~GameStateInventory()
@@ -609,6 +612,7 @@ GameStateInventory::CleanUp()
 void
 GameStateInventory::Enter()
 {
+  dialog = dialogFactory.CreateInventoryDialog();
   dialog->Enter();
 }
 
@@ -616,6 +620,8 @@ void
 GameStateInventory::Leave()
 {
   dialog->Leave();
+  delete dialog;
+  dialog = 0;
 }
 
 void
