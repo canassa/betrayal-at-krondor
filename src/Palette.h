@@ -24,11 +24,9 @@
 #include "config.h"
 #endif
 
-#include "EventListener.h"
 #include "MediaToolkit.h"
 
-class Palette
-: TimerEventListener {
+class Palette {
   private:
     unsigned int size;
     Color *colors;
