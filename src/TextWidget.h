@@ -17,8 +17,8 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef LABEL_WIDGET_H
-#define LABEL_WIDGET_H
+#ifndef TEXT_WIDGET_H
+#define TEXT_WIDGET_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -41,7 +41,7 @@ typedef enum  {
   VA_BOTTOM
 } VerticalAlignment;
 
-class LabelWidget
+class TextWidget
 : public Widget {
   private:
     FontResource& font;
@@ -53,8 +53,8 @@ class LabelWidget
     HorizontalAlignment horAlign;
     VerticalAlignment vertAlign;
   public:
-    LabelWidget(const int x, const int y, const int w, const int h, FontResource& f);
-    virtual ~LabelWidget();
+    TextWidget(const int x, const int y, const int w, const int h, FontResource& f);
+    virtual ~TextWidget();
     void Draw();
     void SetColor(const int c);
     void SetText(const std::string& s);

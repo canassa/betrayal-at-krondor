@@ -35,7 +35,6 @@ noinst_HEADERS = AnimationResource.h \
                  ImageResource.h \
                  ImageWidget.h \
                  LabelResource.h \
-                 LabelWidget.h \
                  MapViewWidget.h \
                  MediaToolkit.h \
                  MousePointer.h \
@@ -73,6 +72,7 @@ noinst_HEADERS = AnimationResource.h \
                  TestApplication.h \
                  TextArea.h \
                  TextButtonWidget.h \
+                 TextWidget.h \
                  TickboxWidget.h \
                  TileDataResource.h \
                  TileWorldResource.h \
@@ -157,8 +157,6 @@ libguitoolkit_a_SOURCES = BadgeWidget.cc \
                           ImageButtonWidget.h \
                           ImageWidget.cc \
                           ImageWidget.h \
-                          LabelWidget.cc \
-                          LabelWidget.h \
                           MapViewWidget.cc \
                           MapViewWidget.h \
                           MousePointer.cc \
@@ -185,6 +183,8 @@ libguitoolkit_a_SOURCES = BadgeWidget.cc \
                           TextArea.h \
                           TextButtonWidget.cc \
                           TextButtonWidget.h \
+                          TextWidget.cc \
+                          TextWidget.h \
                           TickboxWidget.cc \
                           TickboxWidget.h \
                           Widget.cc \

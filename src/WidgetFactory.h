@@ -42,6 +42,7 @@
 #include "ScreenResource.h"
 #include "SkillsWidget.h"
 #include "TextButtonWidget.h"
+#include "TextWidget.h"
 #include "TickboxWidget.h"
 #include "WorldViewWidget.h"
 
@@ -58,7 +59,7 @@ class WidgetFactory {
     CombatViewWidget* CreateCombatView(RequestData& data, Game *game);
     MapViewWidget* CreateMapView(RequestData& data, Game *game);
     WorldViewWidget* CreateWorldView(RequestData& data, Game *game);
-    LabelWidget* CreateLabel(LabelData& data, FontResource& fnt, const int panelWidth);
+    TextWidget* CreateLabel(LabelData& data, FontResource& fnt, const int panelWidth);
     BadgeWidget* CreateBadge(const int x, const int y, const int w, const int h, const std::string& s, FontResource& fnt);
     ImageWidget* CreateImage(const int x, const int y, const int w, const int h, Image *img, const Flipping flip = NONE);
     PortraitWidget* CreatePortrait(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb);

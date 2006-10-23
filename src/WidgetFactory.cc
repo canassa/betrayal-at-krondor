@@ -101,7 +101,7 @@ WidgetFactory::CreateWorldView(RequestData& data, Game *game)
   return new WorldViewWidget(data.xpos, data.ypos, data.width, data.height, game);
 }
 
-LabelWidget*
+TextWidget*
 WidgetFactory::CreateLabel(LabelData& data, FontResource& fnt, const int panelWidth)
 {
   unsigned int width = 1;
@@ -117,7 +117,7 @@ WidgetFactory::CreateLabel(LabelData& data, FontResource& fnt, const int panelWi
     default:
       break;
   }
-  LabelWidget *label = new LabelWidget(data.xpos, data.ypos, width, fnt.GetHeight() + 1, fnt);
+  TextWidget *label = new TextWidget(data.xpos, data.ypos, width, fnt.GetHeight() + 1, fnt);
   label->SetText(data.label);
   label->SetColor(data.color);
   if (data.type == LBL_TITLE) {

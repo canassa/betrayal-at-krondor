@@ -24,13 +24,13 @@
 #include "config.h"
 #endif
 
-#include "LabelWidget.h"
+#include "TextWidget.h"
 
 class BadgeWidget
 : public Widget
 {
   private:
-    LabelWidget* label;
+    TextWidget* label;
   public:
     BadgeWidget(const int x, const int y, const int w, const int h);
     virtual ~BadgeWidget();

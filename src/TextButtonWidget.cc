@@ -36,7 +36,7 @@ TextButtonWidget::~TextButtonWidget()
 void
 TextButtonWidget::SetLabel(const std::string& s, FontResource& f)
 {
-  label = new LabelWidget(xpos + 2, ypos + 2, width - 4, height - 4, f);
+  label = new TextWidget(xpos + 2, ypos + 2, width - 4, height - 4, f);
   label->SetText(s);
 }
 

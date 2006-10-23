@@ -25,13 +25,13 @@
 #endif
 
 #include "ButtonWidget.h"
-#include "LabelWidget.h"
+#include "TextWidget.h"
 
 class TextButtonWidget
 : public ButtonWidget
 {
   private:
-    LabelWidget* label;
+    TextWidget* label;
   public:
     TextButtonWidget(const int x, const int y, const int w, const int h, const int a);
     virtual ~TextButtonWidget();

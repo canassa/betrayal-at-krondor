@@ -17,9 +17,9 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#include "LabelWidget.h"
+#include "TextWidget.h"
 
-LabelWidget::LabelWidget(const int x, const int y, const int w, const int h, FontResource& f)
+TextWidget::TextWidget(const int x, const int y, const int w, const int h, FontResource& f)
 : Widget(x, y, w, h)
 , font(f)
 , text("")
@@ -32,12 +32,12 @@ LabelWidget::LabelWidget(const int x, const int y, const int w, const int h, Fon
 {
 }
 
-LabelWidget::~LabelWidget()
+TextWidget::~TextWidget()
 {
 }
 
 void
-LabelWidget::SetText(const std::string &s)
+TextWidget::SetText(const std::string &s)
 {
   text = s;
   textWidth = 0;
@@ -48,26 +48,26 @@ LabelWidget::SetText(const std::string &s)
 }
 
 void
-LabelWidget::SetColor(const int c)
+TextWidget::SetColor(const int c)
 {
   color = c;
 }
 
 void
-LabelWidget::SetShadow(const int s)
+TextWidget::SetShadow(const int s)
 {
   shadow = s;
 }
 
 void
-LabelWidget::SetAlignment(const HorizontalAlignment ha, const VerticalAlignment va)
+TextWidget::SetAlignment(const HorizontalAlignment ha, const VerticalAlignment va)
 {
   horAlign = ha;
   vertAlign = va;
 }
 
 void
-LabelWidget::Draw()
+TextWidget::Draw()
 {
   unsigned int i;
   unsigned int w;
