@@ -91,11 +91,19 @@ void
 Chapter::ShowMap()
 {
   try {
+    PaletteResource *pal = new PaletteResource;
+    FileManager::GetInstance()->Load(pal, "FULLMAP.PAL");
     ScreenResource *scr = new ScreenResource;
     FileManager::GetInstance()->Load(scr, "FULLMAP.SCX");
     scr->GetImage()->Draw(0, 0);
-    PaletteResource *pal = new PaletteResource;
-    FileManager::GetInstance()->Load(pal, "FULLMAP.PAL");
+    Video *video = MediaToolkit::GetInstance()->GetVideo();
+    video->FillRect(14, 161, 157, 27, BUTTON_COLOR_NORMAL);
+    video->DrawVLine(13, 161, 29, SHADOW_COLOR);
+    video->DrawHLine(13, 160, 160, LIGHT_COLOR);
+    video->DrawVLine(171, 161, 28, LIGHT_COLOR);
+    video->DrawHLine(14, 188, 157, SHADOW_COLOR);
+    video->DrawVLine(12, 162, 26, COLOR_BLACK);
+    video->DrawHLine(12, 189, 157, COLOR_BLACK);
     pal->GetPalette()->FadeIn(0, VIDEO_COLORS, 64, 5);
     MediaToolkit::GetInstance()->GetClock()->StartTimer(TMR_CHAPTER, 4000);
     delayed = true;
