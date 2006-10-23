@@ -17,6 +17,9 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include <iomanip>
+#include <sstream>
+
 #include "MediaToolkit.h"
 #include "RatingsWidget.h"
 
@@ -33,6 +36,13 @@ RatingsWidget::RatingsWidget(const int x, const int y, const int w, const int h,
 , strengthLabel(0)
 , healthOfLabel(0)
 , staminaOfLabel(0)
+, currentHealth(0)
+, currentStamina(0)
+, currentSpeed(0)
+, currentStrength(0)
+, maximumHealth(0)
+, maximumStamina(0)
+, currentCondition(0)
 {
   ratingsLabel = new TextWidget(x + 11, y + 5, 40, 11, f);
   ratingsLabel->SetText("Ratings:");
@@ -74,6 +84,64 @@ RatingsWidget::RatingsWidget(const int x, const int y, const int w, const int h,
   staminaOfLabel->SetAlignment(HA_LEFT, VA_TOP);
   staminaOfLabel->SetColor(RATINGS_TEXT_COLOR);
   staminaOfLabel->SetShadow(COLOR_BLACK);
+
+  std::stringstream stream;
+  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().health;
+  currentHealth = new TextWidget(x + 68, y + 19, 12, 11, f);
+  currentHealth->SetText(stream.str());
+  currentHealth->SetAlignment(HA_RIGHT, VA_TOP);
+  currentHealth->SetColor(RATINGS_TEXT_COLOR);
+  currentHealth->SetShadow(COLOR_BLACK);
+  stream.ignore(16);
+  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().stamina;
+  currentStamina = new TextWidget(x + 68, y + 30, 12, 11, f);
+  currentStamina->SetText(stream.str());
+  currentStamina->SetAlignment(HA_RIGHT, VA_TOP);
+  currentStamina->SetColor(RATINGS_TEXT_COLOR);
+  currentStamina->SetShadow(COLOR_BLACK);
+  stream.ignore(16);
+  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().speed;
+  currentSpeed = new TextWidget(x + 68, y + 41, 12, 11, f);
+  currentSpeed->SetText(stream.str());
+  currentSpeed->SetAlignment(HA_RIGHT, VA_TOP);
+  currentSpeed->SetColor(RATINGS_TEXT_COLOR);
+  currentSpeed->SetShadow(COLOR_BLACK);
+  stream.ignore(16);
+  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().strength;
+  currentStrength = new TextWidget(x + 68, y + 52, 12, 11, f);
+  currentStrength->SetText(stream.str());
+  currentStrength->SetAlignment(HA_RIGHT, VA_TOP);
+  currentStrength->SetColor(RATINGS_TEXT_COLOR);
+  currentStrength->SetShadow(COLOR_BLACK);
+  stream.ignore(16);
+  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().health;
+  maximumHealth = new TextWidget(x + 98, y + 19, 12, 11, f);
+  maximumHealth->SetText(stream.str());
+  maximumHealth->SetAlignment(HA_RIGHT, VA_TOP);
+  maximumHealth->SetColor(RATINGS_TEXT_COLOR);
+  maximumHealth->SetShadow(COLOR_BLACK);
+  stream.ignore(16);
+  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().stamina;
+  maximumStamina = new TextWidget(x + 98, y + 30, 12, 11, f);
+  maximumStamina->SetText(stream.str());
+  maximumStamina->SetAlignment(HA_RIGHT, VA_TOP);
+  maximumStamina->SetColor(RATINGS_TEXT_COLOR);
+  maximumStamina->SetShadow(COLOR_BLACK);
+  currentCondition = new TextWidget(x + 136, y + 19, 60, 11, f);
+  switch (playerCharacter->GetCondition()) {
+    case NORMAL:
+      currentCondition->SetText("Normal");
+      break;
+    case POISONED:
+      currentCondition->SetText("Poisoned");
+      break;
+    default:
+      currentCondition->SetText("");
+      break;
+  }
+  currentCondition->SetAlignment(HA_LEFT, VA_TOP);
+  currentCondition->SetColor(RATINGS_TEXT_COLOR);
+  currentCondition->SetShadow(COLOR_BLACK);
 }
 
 RatingsWidget::~RatingsWidget()
@@ -101,6 +169,27 @@ RatingsWidget::~RatingsWidget()
   }
   if (staminaOfLabel) {
     delete staminaOfLabel;
+  }
+  if (currentHealth) {
+    delete currentHealth;
+  }
+  if (currentStamina) {
+    delete currentStamina;
+  }
+  if (currentSpeed) {
+    delete currentSpeed;
+  }
+  if (currentStrength) {
+    delete currentStrength;
+  }
+  if (maximumHealth) {
+    delete maximumHealth;
+  }
+  if (maximumStamina) {
+    delete maximumStamina;
+  }
+  if (currentCondition) {
+    delete currentCondition;
   }
 }
 
@@ -143,4 +232,11 @@ RatingsWidget::Draw()
   strengthLabel->Draw();
   healthOfLabel->Draw();
   staminaOfLabel->Draw();
+  currentHealth->Draw();
+  currentStamina->Draw();
+  currentSpeed->Draw();
+  currentStrength->Draw();
+  maximumHealth->Draw();
+  maximumStamina->Draw();
+  currentCondition->Draw();
 }

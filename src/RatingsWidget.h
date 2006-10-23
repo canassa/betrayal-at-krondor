@@ -43,6 +43,13 @@ class RatingsWidget
     TextWidget *strengthLabel;
     TextWidget *healthOfLabel;
     TextWidget *staminaOfLabel;
+    TextWidget *currentHealth;
+    TextWidget *currentStamina;
+    TextWidget *currentSpeed;
+    TextWidget *currentStrength;
+    TextWidget *maximumHealth;
+    TextWidget *maximumStamina;
+    TextWidget *currentCondition;
   public:
     RatingsWidget(const int x, const int y, const int w, const int h, PlayerCharacter *pc, FontResource& fnt);
     virtual ~RatingsWidget();

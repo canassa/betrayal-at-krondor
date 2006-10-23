@@ -26,6 +26,12 @@ PlayerCharacter::PlayerCharacter(const std::string& s)
 , order(-1)
 , selected(false)
 {
+  charClass = WARRIOR;
+  condition = NORMAL;
+  memset(&currentRatings, 0, sizeof(RatingSet));
+  memset(&normalRatings, 0, sizeof(RatingSet));
+  memset(&currentSkills, 0, sizeof(SkillSet));
+  memset(&normalSkills, 0, sizeof(SkillSet));
 }
 
 PlayerCharacter::~PlayerCharacter()
