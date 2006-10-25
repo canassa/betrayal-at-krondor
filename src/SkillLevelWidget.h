@@ -17,43 +17,36 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef SKILLS_WIDGET_H
-#define SKILLS_WIDGET_H
+#ifndef SKILL_LEVEL_WIDGET_H
+#define SKILL_LEVEL_WIDGET_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
+#include <string>
+
 #include "FontResource.h"
 #include "Image.h"
-#include "PlayerCharacter.h"
-#include "SkillLevelWidget.h"
+#include "TextWidget.h"
 #include "Widget.h"
 
-class SkillsWidget
+typedef enum _Side {
+  LEFT_SIDE, RIGHT_SIDE
+} Side;
+
+class SkillLevelWidget
 : public Widget {
   private:
-    PlayerCharacter *playerCharacter;
-    FontResource& font;
-    Image *leftSword;
-    Image *leftBlood;
-    Image *rightSword;
-    Image *rightBlood;
-    SkillLevelWidget *defense;
-    SkillLevelWidget *crossbowAccuracy;
-    SkillLevelWidget *meleeAccuracy;
-    SkillLevelWidget *castingAccuracy;
-    SkillLevelWidget *assessment;
-    SkillLevelWidget *armorcraft;
-    SkillLevelWidget *weaponcraft;
-    SkillLevelWidget *barding;
-    SkillLevelWidget *haggling;
-    SkillLevelWidget *lockpick;
-    SkillLevelWidget *scouting;
-    SkillLevelWidget *stealth;
+    Side side;
+    Image *sword;
+    Image *blood;
+    TextWidget *skill;
+    TextWidget *level;
   public:
-    SkillsWidget(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *sw, Image *bl, FontResource &f);
-    virtual ~SkillsWidget();
+    SkillLevelWidget(const int x, const int y, const int w, const int h, const Side s, Image *sw, Image *bl, FontResource &f);
+    virtual ~SkillLevelWidget();
+    void SetLevel(const std::string& s, const int x);
     void Draw();
 };
 

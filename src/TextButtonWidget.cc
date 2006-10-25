@@ -63,14 +63,14 @@ TextButtonWidget::Draw()
       if (IsEnabled()) {
         if (IsPressed()) {
           label->SetColor(TEXT_COLOR_PRESSED);
-          label->SetShadow(SHADOW_COLOR);
+          label->SetShadow(SHADOW_COLOR, 0, 1);
         } else {
           label->SetColor(TEXT_COLOR_NORMAL);
-          label->SetShadow(SHADOW_COLOR);
+          label->SetShadow(SHADOW_COLOR, 0, 1);
         }
       } else {
         label->SetColor(TEXT_COLOR_DISABLED);
-        label->SetShadow(NO_SHADOW);
+        label->SetShadow(NO_SHADOW, 0, 0);
       }
       label->Draw();
     }

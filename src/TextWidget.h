@@ -50,6 +50,8 @@ class TextWidget
     int textHeight;
     int color;
     int shadow;
+    int shadowXoff;
+    int shadowYoff;
     HorizontalAlignment horAlign;
     VerticalAlignment vertAlign;
   public:
@@ -58,7 +60,7 @@ class TextWidget
     void Draw();
     void SetColor(const int c);
     void SetText(const std::string& s);
-    void SetShadow(const int s);
+    void SetShadow(const int s, const int xoff, const int yoff);
     void SetAlignment(const HorizontalAlignment ha, const VerticalAlignment va);
 };
 

@@ -27,11 +27,19 @@
 #include "Image.h"
 
 typedef enum _CharacterClass {
-  WARRIOR, SPELLCASTER
+  CLASS_WARRIOR,
+  CLASS_SPELLCASTER
 } CharacterClass;
 
 typedef enum _ConditionType {
-  NORMAL, POISONED
+  COND_NORMAL,
+  COND_SICK,
+  COND_PLAGUED,
+  COND_POISONED,
+  COND_DRUNK,
+  COND_HEALING,
+  COND_STARVING,
+  COND_NEAR_DEATH
 } ConditionType;
 
 typedef struct _RatingSet {

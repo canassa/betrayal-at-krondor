@@ -38,6 +38,8 @@ BadgeWidget::SetLabel(const std::string& s, FontResource& f)
 {
   label = new TextWidget(xpos + 2, ypos + 2, width - 4, height - 4, f);
   label->SetText(s);
+  label->SetColor(TEXT_COLOR_NORMAL);
+  label->SetShadow(SHADOW_COLOR, 0, 1);
 }
 
 void
@@ -50,8 +52,6 @@ BadgeWidget::Draw()
   video->DrawVLine(xpos + width - 1, ypos + 1, height - 2, LIGHT_COLOR);
   video->DrawHLine(xpos + 1, ypos + height - 1, width - 1, SHADOW_COLOR);
   if (label) {
-    label->SetColor(TEXT_COLOR_NORMAL);
-    label->SetShadow(SHADOW_COLOR);
     label->Draw();
   }
 }

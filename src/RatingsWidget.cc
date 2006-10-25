@@ -48,42 +48,42 @@ RatingsWidget::RatingsWidget(const int x, const int y, const int w, const int h,
   ratingsLabel->SetText("Ratings:");
   ratingsLabel->SetAlignment(HA_LEFT, VA_TOP);
   ratingsLabel->SetColor(RATINGS_TEXT_COLOR);
-  ratingsLabel->SetShadow(COLOR_BLACK);
+  ratingsLabel->SetShadow(COLOR_BLACK, 1, 1);
   conditionLabel = new TextWidget(x + 126, y + 5, 50, 11, f);
   conditionLabel->SetText("Condition:");
   conditionLabel->SetAlignment(HA_LEFT, VA_TOP);
   conditionLabel->SetColor(RATINGS_TEXT_COLOR);
-  conditionLabel->SetShadow(COLOR_BLACK);
+  conditionLabel->SetShadow(COLOR_BLACK, 1, 1);
   healthLabel = new TextWidget(x + 21, y + 19, 40, 11, f);
   healthLabel->SetText("Health");
   healthLabel->SetAlignment(HA_LEFT, VA_TOP);
   healthLabel->SetColor(RATINGS_TEXT_COLOR);
-  healthLabel->SetShadow(COLOR_BLACK);
+  healthLabel->SetShadow(COLOR_BLACK, 1, 1);
   staminaLabel = new TextWidget(x + 21, y + 30, 40, 11, f);
   staminaLabel->SetText("Stamina");
   staminaLabel->SetAlignment(HA_LEFT, VA_TOP);
   staminaLabel->SetColor(RATINGS_TEXT_COLOR);
-  staminaLabel->SetShadow(COLOR_BLACK);
+  staminaLabel->SetShadow(COLOR_BLACK, 1, 1);
   speedLabel = new TextWidget(x + 21, y + 41, 40, 11, f);
   speedLabel->SetText("Speed");
   speedLabel->SetAlignment(HA_LEFT, VA_TOP);
   speedLabel->SetColor(RATINGS_TEXT_COLOR);
-  speedLabel->SetShadow(COLOR_BLACK);
+  speedLabel->SetShadow(COLOR_BLACK, 1, 1);
   strengthLabel = new TextWidget(x + 21, y + 52, 40, 11, f);
   strengthLabel->SetText("Strength");
   strengthLabel->SetAlignment(HA_LEFT, VA_TOP);
   strengthLabel->SetColor(RATINGS_TEXT_COLOR);
-  strengthLabel->SetShadow(COLOR_BLACK);
+  strengthLabel->SetShadow(COLOR_BLACK, 1, 1);
   healthOfLabel = new TextWidget(x + 86, y + 19, 12, 11, f);
   healthOfLabel->SetText("of");
   healthOfLabel->SetAlignment(HA_LEFT, VA_TOP);
   healthOfLabel->SetColor(RATINGS_TEXT_COLOR);
-  healthOfLabel->SetShadow(COLOR_BLACK);
+  healthOfLabel->SetShadow(COLOR_BLACK, 1, 1);
   staminaOfLabel = new TextWidget(x + 86, y + 30, 12, 11, f);
   staminaOfLabel->SetText("of");
   staminaOfLabel->SetAlignment(HA_LEFT, VA_TOP);
   staminaOfLabel->SetColor(RATINGS_TEXT_COLOR);
-  staminaOfLabel->SetShadow(COLOR_BLACK);
+  staminaOfLabel->SetShadow(COLOR_BLACK, 1, 1);
 
   std::stringstream stream;
   stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().health;
@@ -91,49 +91,67 @@ RatingsWidget::RatingsWidget(const int x, const int y, const int w, const int h,
   currentHealth->SetText(stream.str());
   currentHealth->SetAlignment(HA_RIGHT, VA_TOP);
   currentHealth->SetColor(RATINGS_TEXT_COLOR);
-  currentHealth->SetShadow(COLOR_BLACK);
+  currentHealth->SetShadow(COLOR_BLACK, 1, 1);
   stream.ignore(16);
   stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().stamina;
   currentStamina = new TextWidget(x + 68, y + 30, 12, 11, f);
   currentStamina->SetText(stream.str());
   currentStamina->SetAlignment(HA_RIGHT, VA_TOP);
   currentStamina->SetColor(RATINGS_TEXT_COLOR);
-  currentStamina->SetShadow(COLOR_BLACK);
+  currentStamina->SetShadow(COLOR_BLACK, 1, 1);
   stream.ignore(16);
   stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().speed;
   currentSpeed = new TextWidget(x + 68, y + 41, 12, 11, f);
   currentSpeed->SetText(stream.str());
   currentSpeed->SetAlignment(HA_RIGHT, VA_TOP);
   currentSpeed->SetColor(RATINGS_TEXT_COLOR);
-  currentSpeed->SetShadow(COLOR_BLACK);
+  currentSpeed->SetShadow(COLOR_BLACK, 1, 1);
   stream.ignore(16);
   stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().strength;
   currentStrength = new TextWidget(x + 68, y + 52, 12, 11, f);
   currentStrength->SetText(stream.str());
   currentStrength->SetAlignment(HA_RIGHT, VA_TOP);
   currentStrength->SetColor(RATINGS_TEXT_COLOR);
-  currentStrength->SetShadow(COLOR_BLACK);
+  currentStrength->SetShadow(COLOR_BLACK, 1, 1);
   stream.ignore(16);
   stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().health;
   maximumHealth = new TextWidget(x + 98, y + 19, 12, 11, f);
   maximumHealth->SetText(stream.str());
   maximumHealth->SetAlignment(HA_RIGHT, VA_TOP);
   maximumHealth->SetColor(RATINGS_TEXT_COLOR);
-  maximumHealth->SetShadow(COLOR_BLACK);
+  maximumHealth->SetShadow(COLOR_BLACK, 1, 1);
   stream.ignore(16);
   stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().stamina;
   maximumStamina = new TextWidget(x + 98, y + 30, 12, 11, f);
   maximumStamina->SetText(stream.str());
   maximumStamina->SetAlignment(HA_RIGHT, VA_TOP);
   maximumStamina->SetColor(RATINGS_TEXT_COLOR);
-  maximumStamina->SetShadow(COLOR_BLACK);
+  maximumStamina->SetShadow(COLOR_BLACK, 1, 1);
   currentCondition = new TextWidget(x + 136, y + 19, 60, 11, f);
   switch (playerCharacter->GetCondition()) {
-    case NORMAL:
+    case COND_NORMAL:
       currentCondition->SetText("Normal");
       break;
-    case POISONED:
+    case COND_SICK:
+      currentCondition->SetText("Sick");
+      break;
+    case COND_PLAGUED:
+      currentCondition->SetText("Plagued");
+      break;
+    case COND_POISONED:
       currentCondition->SetText("Poisoned");
+      break;
+    case COND_DRUNK:
+      currentCondition->SetText("Drunk");
+      break;
+    case COND_HEALING:
+      currentCondition->SetText("Healing");
+      break;
+    case COND_STARVING:
+      currentCondition->SetText("Starving");
+      break;
+    case COND_NEAR_DEATH:
+      currentCondition->SetText("Near-death");
       break;
     default:
       currentCondition->SetText("");
@@ -141,7 +159,7 @@ RatingsWidget::RatingsWidget(const int x, const int y, const int w, const int h,
   }
   currentCondition->SetAlignment(HA_LEFT, VA_TOP);
   currentCondition->SetColor(RATINGS_TEXT_COLOR);
-  currentCondition->SetShadow(COLOR_BLACK);
+  currentCondition->SetShadow(COLOR_BLACK, 1, 1);
 }
 
 RatingsWidget::~RatingsWidget()

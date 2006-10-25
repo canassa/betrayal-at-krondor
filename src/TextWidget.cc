@@ -27,6 +27,8 @@ TextWidget::TextWidget(const int x, const int y, const int w, const int h, FontR
 , textHeight(0)
 , color(0)
 , shadow(NO_SHADOW)
+, shadowXoff(0)
+, shadowYoff(0)
 , horAlign(HA_CENTER)
 , vertAlign(VA_CENTER)
 {
@@ -54,9 +56,11 @@ TextWidget::SetColor(const int c)
 }
 
 void
-TextWidget::SetShadow(const int s)
+TextWidget::SetShadow(const int s, const int xoff, const int yoff)
 {
   shadow = s;
+  shadowXoff = xoff;
+  shadowYoff = yoff;
 }
 
 void
@@ -95,11 +99,11 @@ TextWidget::Draw()
       yoff = height - textHeight;
       break;
   }
-  if (shadow > NO_SHADOW) {
+  if ((shadow > NO_SHADOW) && ((shadowXoff != 0) || (shadowYoff != 0))) {
     i = 0;
     w = 0;
     while ((i < text.length()) && (w + font.GetWidth(text[i] - font.GetFirst()) < (unsigned)width)) {
-      font.DrawChar(xpos + xoff + w, ypos + yoff + 1, text[i], shadow, false);
+      font.DrawChar(xpos + xoff + shadowXoff + w, ypos + yoff + shadowYoff, text[i], shadow, false);
       w += font.GetWidth((unsigned int)text[i] - font.GetFirst());
       i++;
     }

@@ -121,7 +121,7 @@ WidgetFactory::CreateLabel(LabelData& data, FontResource& fnt, const int panelWi
   label->SetText(data.label);
   label->SetColor(data.color);
   if (data.type == LBL_TITLE) {
-    label->SetShadow(data.shadow);
+    label->SetShadow(data.shadow, 0, 1);
     label->SetAlignment(HA_CENTER, VA_TOP);
   }
   return label;
@@ -169,9 +169,9 @@ WidgetFactory::CreateRatings(const int x, const int y, const int w, const int h,
 }
 
 SkillsWidget*
-WidgetFactory::CreateSkills(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *sw, Image *bl)
+WidgetFactory::CreateSkills(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *sw, Image *bl, FontResource& fnt)
 {
-  SkillsWidget *skills = new SkillsWidget(x, y, w, h, pc, sw, bl);
+  SkillsWidget *skills = new SkillsWidget(x, y, w, h, pc, sw, bl, fnt);
   return skills;
 }
 

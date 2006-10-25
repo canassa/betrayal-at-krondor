@@ -64,6 +64,7 @@ noinst_HEADERS = AnimationResource.h \
                  SDL_Toolkit.h \
                  SDL_Video.h \
                  ScreenResource.h \
+                 SkillLevelWidget.h \
                  SkillsWidget.h \
                  Sound.h \
                  SoundResource.h \
@@ -175,6 +176,8 @@ libguitoolkit_a_SOURCES = BadgeWidget.cc \
                           PortraitWidget.h \
                           RatingsWidget.cc \
                           RatingsWidget.h \
+                          SkillLevelWidget.cc \
+                          SkillLevelWidget.h \
                           SkillsWidget.cc \
                           SkillsWidget.h \
                           Sound.cc \
