@@ -43,6 +43,7 @@ class SkillLevelWidget
     Image *blood;
     TextWidget *skill;
     TextWidget *level;
+    int value;
   public:
     SkillLevelWidget(const int x, const int y, const int w, const int h, const Side s, Image *sw, Image *bl, FontResource &f);
     virtual ~SkillLevelWidget();

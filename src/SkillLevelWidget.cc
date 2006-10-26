@@ -29,13 +29,14 @@ SkillLevelWidget::SkillLevelWidget(const int x, const int y, const int w, const 
 , blood(bl)
 , skill(0)
 , level(0)
+, value(0)
 {
   if (side == LEFT_SIDE) {
     skill = new TextWidget(xpos + 34, ypos, 72, 12, f);
     skill->SetAlignment(HA_LEFT, VA_TOP);
     skill->SetColor(TEXT_COLOR_NORMAL);
     skill->SetShadow(SHADOW_COLOR, 1, 1);
-    level = new TextWidget(xpos + 110, ypos, 20, 12, f);
+    level = new TextWidget(xpos + 107, ypos, 20, 12, f);
     level->SetAlignment(HA_RIGHT, VA_TOP);
     level->SetColor(TEXT_COLOR_NORMAL);
     level->SetShadow(SHADOW_COLOR, 1, 1);
@@ -44,7 +45,7 @@ SkillLevelWidget::SkillLevelWidget(const int x, const int y, const int w, const 
     skill->SetAlignment(HA_LEFT, VA_TOP);
     skill->SetColor(TEXT_COLOR_NORMAL);
     skill->SetShadow(SHADOW_COLOR, 1, 1);
-    level = new TextWidget(xpos + 82, ypos, 20, 12, f);
+    level = new TextWidget(xpos + 79, ypos, 20, 12, f);
     level->SetAlignment(HA_RIGHT, VA_TOP);
     level->SetColor(TEXT_COLOR_NORMAL);
     level->SetShadow(SHADOW_COLOR, 1, 1);
@@ -65,9 +66,10 @@ void
 SkillLevelWidget::SetLevel(const std::string& s, const int x)
 {
   skill->SetText(s);
-  if (x > 0) {
+  value = x;
+  if (value > 0) {
     std::stringstream stream;
-    stream << std::setw(2) << std::setfill(' ') << x << '%';
+    stream << std::setw(2) << std::setfill(' ') << value << '%';
     level->SetText(stream.str());
   } else {
     level->SetText("N/A");
@@ -80,4 +82,10 @@ SkillLevelWidget::Draw()
   skill->Draw();
   level->Draw();
   sword->Draw(xpos, ypos + 2, 0);
+  int w = (int)(blood->GetWidth() * value / 100.0f);
+  if (side == LEFT_SIDE) {
+    blood->Draw(xpos + 31, ypos + 10, xpos + 31 + blood->GetWidth() - w, ypos + 10, w, blood->GetHeight(), 0);
+  } else {
+    blood->Draw(xpos, ypos + 10, xpos, ypos + 10, w, blood->GetHeight(), 0);
+  }
 }
