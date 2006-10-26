@@ -1,4 +1,7 @@
 2006-11-xx, xbak-0.0.12:
+* Added the character info dialog.
+* Major refactoring around Dialog class.
+* Fixed compilation errors.
 * Several bug fixes.
 
 2006-10-02, xbak-0.0.11:
