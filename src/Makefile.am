@@ -42,6 +42,7 @@ noinst_HEADERS = AnimationResource.h \
                  MoviePlayer.h \
                  MovieResource.h \
                  NameResource.h \
+                 Null_Audio.h \
                  Observer.h \
                  Orientation.h \
                  Palette.h \
@@ -253,6 +254,8 @@ libsdldriver_a_SOURCES = Audio.h \
                          Clock.h \
                          MediaToolkit.cc \
                          MediaToolkit.h \
+                         Null_Audio.cc \
+                         Null_Audio.h \
                          SDL_Audio.cc \
                          SDL_Audio.h \
                          SDL_Clock.cc \

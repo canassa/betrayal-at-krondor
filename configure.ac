@@ -21,16 +21,18 @@ AC_CACHE_SAVE
 # Checks for libraries.
 SDL_VERSION=1.2.8
 AM_PATH_SDL($SDL_VERSION,,AC_MSG_ERROR([SDL $SDL_VERSION not found!]))
-AC_CHECK_LIB([SDL_mixer], [Mix_Linked_Version], , AC_MSG_ERROR([SDL_mixer not found]))
-AC_CHECK_LIB([SDL_sound], [Sound_GetLinkedVersion], , AC_MSG_ERROR([SDL_sound not found]))
-AC_CHECK_LIB([m], [sin], , AC_MSG_ERROR([libm not found]))
+AC_CHECK_LIB([SDL_mixer], [Mix_Linked_Version])
+AC_CHECK_LIB([SDL_sound], [Sound_GetLinkedVersion])
 SDL_LIBS=$(sh sdl-config --libs)
 LIBS="$LIBS $SDL_LIBS"
 
 AC_CACHE_SAVE
 
 # Checks for header files.
+AC_CHECK_HEADERS([math.h])
 AC_CHECK_HEADERS([stdint.h])
+AC_CHECK_HEADERS([stdlib.h])
+AC_CHECK_HEADERS([string.h])
 AC_CHECK_HEADERS([unistd.h])
 
 AC_CACHE_SAVE
@@ -56,9 +58,14 @@ AC_CHECK_SIZEOF([void*])
 AC_CACHE_SAVE
 
 # Checks for library functions.
+AC_CHECK_FUNCS([getenv])
 AC_CHECK_FUNCS([memcpy])
 AC_CHECK_FUNCS([memset])
 AC_CHECK_FUNCS([mkdir])
+AC_CHECK_FUNCS([stat])
+AC_CHECK_FUNCS([strncmp])
+AC_CHECK_FUNCS([cos])
+AC_CHECK_FUNCS([sin])
 
 AC_CACHE_SAVE
 
