@@ -39,24 +39,36 @@ class GameData {
     unsigned int ycell;
     unsigned int xloc;
     unsigned int yloc;
-    unsigned int orientation;
+    unsigned int heading;
     std::vector<std::string> memberName;
     std::vector<unsigned int> memberData;
   public:
     GameData();
     virtual ~GameData();
     std::string& GetName();
+    void SetName(const std::string& s);
     unsigned int GetXPos() const;
+    void SetXPos(const unsigned int x);
     unsigned int GetYPos() const;
+    void SetYPos(const unsigned int y);
     unsigned int GetZone() const;
+    void SetZone(const unsigned int z);
     unsigned int GetXCell() const;
+    void SetXCell(const unsigned int x);
     unsigned int GetYCell() const;
+    void SetYCell(const unsigned int y);
     unsigned int GetXLoc() const;
+    void SetXLoc(const unsigned int x);
     unsigned int GetYLoc() const;
-    unsigned int GetOrientation() const;
+    void SetYLoc(const unsigned int y);
+    unsigned int GetHeading() const;
+    void SetHeading(const unsigned int h);
     std::string& GetMemberName(const unsigned int m);
+    void SetMemberName(const unsigned int m, const std::string& s);
     unsigned int GetMemberData(const unsigned int m, const unsigned int i, const unsigned int j);
+    void SetMemberData(const unsigned int m, const unsigned int i, const unsigned int j, const unsigned int v);
     void Load(FileBuffer *buffer);
+    void Save(FileBuffer *buffer);
 };
 
 #endif

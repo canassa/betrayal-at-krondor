@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
     FileManager::GetInstance()->Load(gam, argv[1]);
     printf("%s  (%d, %d)\n", gam->GetName().c_str(), gam->GetXPos(), gam->GetYPos());
     printf("z: %d  c: (%d, %d)  l: (%d, %d)  o: %d\n",
-           gam->GetZone(), gam->GetXCell(), gam->GetYCell(), gam->GetXLoc(), gam->GetYLoc(), gam->GetOrientation());
+           gam->GetZone(), gam->GetXCell(), gam->GetYCell(), gam->GetXLoc(), gam->GetYLoc(), gam->GetHeading());
     for (unsigned int m = 0; m < 6; m++) {
       printf("%10s:", gam->GetMemberName(m).c_str());
       for (unsigned int i = 0; i < 16; i++) {

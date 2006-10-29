@@ -95,6 +95,7 @@ class FileBuffer {
     void PutSint32LE(const int32_t x);
     void PutSint32BE(const int32_t x);
     void PutString(const std::string s);
+    void PutString(const std::string s, const unsigned int len);
     void PutData(void * data, const unsigned int n);
     void PutData(const uint8_t x, const unsigned int n);
 };

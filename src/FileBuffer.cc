@@ -437,23 +437,23 @@ FileBuffer::GetSint32BE()
 std::string
 FileBuffer::GetString()
 {
-  std::string s;
   if (current) {
-    s.append((char *)current);
+    std::string s((char *)current);
+    if ((current + s.length() + 1) <= (buffer + size)) {
+      current += s.length() + 1;
+      return s;
+    } else {
+      throw BufferEmpty(__FILE__, __LINE__);
+    }
   }
-  if ((current) && (current + s.length() + 1) <= (buffer + size)) {
-    current += s.length() + 1;
-  } else {
-    throw BufferEmpty(__FILE__, __LINE__);
-  }
-  return s;
+  return "";
 }
 
 std::string
 FileBuffer::GetString(const unsigned int len)
 {
   if ((current) && (current + len <= buffer + size)) {
-    std::string s = std::string((char *)current);
+    std::string s((char *)current);
     current += len;
     return s;
   } else {
@@ -609,9 +609,20 @@ void
 FileBuffer::PutString(const std::string s)
 {
   if ((current) && (current + s.length() + 1 <= buffer + size)) {
-    memcpy(current, s.data(), s.length());
-    current += s.length();
-    *current++ = 0;
+    strncpy((char *)current, s.c_str(), s.length() + 1);
+    current += s.length() + 1;
+  } else {
+    throw BufferFull(__FILE__, __LINE__);
+  }
+}
+
+void
+FileBuffer::PutString(const std::string s, const unsigned int len)
+{
+  if ((current) && (current + len <= buffer + size)) {
+    memset(current, 0, len);
+    strncpy((char *)current, s.c_str(), len);
+    current += len;
   } else {
     throw BufferFull(__FILE__, __LINE__);
   }

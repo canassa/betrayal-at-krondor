@@ -64,6 +64,7 @@ AC_CHECK_FUNCS([memset])
 AC_CHECK_FUNCS([mkdir])
 AC_CHECK_FUNCS([stat])
 AC_CHECK_FUNCS([strncmp])
+AC_CHECK_FUNCS([strncpy])
 AC_CHECK_FUNCS([cos])
 AC_CHECK_FUNCS([sin])
 
