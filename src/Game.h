@@ -36,8 +36,8 @@ class Game {
     Chapter *chapter;
     Party *party;
     Camera *camera;
-    PartyResource partyRes;
-    ImageResource heads;
+    PartyResource *partyRes;
+    ImageResource *buttonImages;
   public:
     Game();
     ~Game();

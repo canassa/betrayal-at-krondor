@@ -23,11 +23,11 @@
 PartyResource::PartyResource()
 : data()
 {
-  Clear();
 }
 
 PartyResource::~PartyResource()
 {
+  Clear();
 }
 
 unsigned int

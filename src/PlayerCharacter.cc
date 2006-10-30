@@ -21,8 +21,8 @@
 
 PlayerCharacter::PlayerCharacter(const std::string& s)
 : name(s)
-, headImage(0)
-, skillsImage(0)
+, buttonImage(0)
+, portraitImage(0)
 , order(-1)
 , selected(false)
 {
@@ -45,15 +45,15 @@ PlayerCharacter::GetName()
 }
 
 Image *
-PlayerCharacter::GetHeadImage() const
+PlayerCharacter::GetButtonImage() const
 {
-  return headImage;
+  return buttonImage;
 }
 
 Image *
-PlayerCharacter::GetSkillsImage() const
+PlayerCharacter::GetPortraitImage() const
 {
-  return skillsImage;
+  return portraitImage;
 }
 
 CharacterClass
@@ -105,15 +105,15 @@ PlayerCharacter::GetNormalSkills()
 }
 
 void
-PlayerCharacter::SetHeadImage(Image *img)
+PlayerCharacter::SetButtonImage(Image *img)
 {
-  headImage = img;
+  buttonImage = img;
 }
 
 void
-PlayerCharacter::SetSkillsImage(Image *img)
+PlayerCharacter::SetPortraitImage(Image *img)
 {
-  skillsImage = img;
+  portraitImage = img;
 }
 
 void

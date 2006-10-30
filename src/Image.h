@@ -27,14 +27,12 @@
 #endif
 
 #include "FileBuffer.h"
-#include "Video.h"
 
 class Image {
   private:
     int width;
     int height;
     uint8_t *pixel;
-    Video *video;
   public:
     Image(const int w, const int h);
     Image(Image *img);
@@ -58,4 +56,3 @@ class Image {
 };
 
 #endif
-

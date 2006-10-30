@@ -27,16 +27,20 @@ Game::Game()
 , chapter(0)
 , party(0)
 , camera(0)
+, partyRes(0)
+, buttonImages(0)
 {
   try {
-    FileManager::GetInstance()->Load(&partyRes, "PARTY.DAT");
-    FileManager::GetInstance()->Load(&heads, "HEADS.BMX");
+    partyRes = new PartyResource;
+    FileManager::GetInstance()->Load(partyRes, "PARTY.DAT");
+    buttonImages = new ImageResource;
+    FileManager::GetInstance()->Load(buttonImages, "HEADS.BMX");
     chapter = new Chapter(1);
-    party = new Party();
-    for (unsigned int i = 0; i < partyRes.GetSize(); i++) {
-      PartyData *pd = partyRes.GetData(i);
+    party = new Party;
+    for (unsigned int i = 0; i < partyRes->GetSize(); i++) {
+      PartyData *pd = partyRes->GetData(i);
       PlayerCharacter *pc = new PlayerCharacter(pd->name);
-      pc->SetHeadImage(heads.GetImage(i));
+      pc->SetButtonImage(buttonImages->GetImage(i));
       party->AddMember(pc);
     }
     party->ActivateMember(0, 0);
@@ -59,6 +63,12 @@ Game::~Game()
   }
   if (camera) {
     delete camera;
+  }
+  if (buttonImages) {
+    delete buttonImages;
+  }
+  if (partyRes) {
+    delete partyRes;
   }
 }
 

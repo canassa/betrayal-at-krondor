@@ -29,7 +29,6 @@ Image::Image(const int w, const int h)
 : width(w)
 , height(h)
 , pixel(0)
-, video(MediaToolkit::GetInstance()->GetVideo())
 {
   if ((width > 0) && (height > 0)) {
     pixel = new uint8_t[width * height];
@@ -44,7 +43,6 @@ Image::Image(Image *img)
 : width(img->width)
 , height(img->height)
 , pixel(0)
-, video(MediaToolkit::GetInstance()->GetVideo())
 {
   if ((width > 0) && (height > 0)) {
     pixel = new uint8_t[width * height];
@@ -179,29 +177,29 @@ Image::Load(FileBuffer *buffer, const unsigned int flags)
 void
 Image::Read(const int x, const int y)
 {
-  video->ReadImage(x, y, width, height, pixel);
+  MediaToolkit::GetInstance()->GetVideo()->ReadImage(x, y, width, height, pixel);
 }
 
 void
 Image::Draw(const int x, const int y)
 {
-  video->DrawImage(x, y, width, height, pixel);
+  MediaToolkit::GetInstance()->GetVideo()->DrawImage(x, y, width, height, pixel);
 }
 
 void
 Image::Draw(const int x, const int y, const uint8_t transparent)
 {
-  video->DrawImage(x, y, width, height, pixel, transparent);
+  MediaToolkit::GetInstance()->GetVideo()->DrawImage(x, y, width, height, pixel, transparent);
 }
 
 void
 Image::Draw(const int x, const int y, const int xoff, const int yoff, const int w, const int h)
 {
-  video->DrawImage(x, y, width, height, xoff, yoff, w, h, pixel);
+  MediaToolkit::GetInstance()->GetVideo()->DrawImage(x, y, width, height, xoff, yoff, w, h, pixel);
 }
 
 void
 Image::Draw(const int x, const int y, const int xoff, const int yoff, const int w, const int h, const uint8_t transparent)
 {
-  video->DrawImage(x, y, width, height, xoff, yoff, w, h, pixel, transparent);
+  MediaToolkit::GetInstance()->GetVideo()->DrawImage(x, y, width, height, xoff, yoff, w, h, pixel, transparent);
 }

@@ -67,8 +67,8 @@ typedef struct _SkillSet {
 class PlayerCharacter {
   private:
     std::string name;
-    Image *headImage;
-    Image *skillsImage;
+    Image *buttonImage;
+    Image *portraitImage;
     int order;
     bool selected;
     CharacterClass charClass;
@@ -81,20 +81,20 @@ class PlayerCharacter {
     PlayerCharacter(const std::string& s);
     ~PlayerCharacter();
     std::string& GetName();
-    Image* GetHeadImage() const;
-    Image* GetSkillsImage() const;
+    Image* GetButtonImage() const;
+    void SetButtonImage(Image *img);
+    Image* GetPortraitImage() const;
+    void SetPortraitImage(Image *img);
     int GetOrder() const;
+    void SetOrder(const int n);
     bool IsSelected() const;
+    void Select(const bool toggle);
     CharacterClass GetCharacterClass() const;
     ConditionType GetCondition() const;
     RatingSet& GetCurrentRatings();
     RatingSet& GetNormalRatings();
     SkillSet& GetCurrentSkills();
     SkillSet& GetNormalSkills();
-    void SetHeadImage(Image *img);
-    void SetSkillsImage(Image *img);
-    void SetOrder(const int n);
-    void Select(const bool toggle);
 };
 
 #endif

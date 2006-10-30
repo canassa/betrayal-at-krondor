@@ -60,4 +60,5 @@ PortraitWidget::Draw()
     xoff = verticalBorder->GetWidth();
     yoff = horizontalBorder->GetHeight();
   }
+  // playerCharacter->GetPortraitImage()->Draw(xpos +xoff, ypos + yoff, 0);
 }
