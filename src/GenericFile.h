@@ -29,18 +29,21 @@
 class GenericFile {
   private:
     std::ifstream ifs;
+    std::ofstream ofs;
   public:
     GenericFile();
     virtual ~GenericFile();
     virtual std::string GetDefaultPath() const;
     virtual std::string GetAlternatePath() const;
     virtual std::string GetLastResortPath() const;
-    void Open(const std::string &name);
+    virtual std::string GetStoragePath() const;
+    void Open(const std::string &name, const bool writable);
     void Close();
     void Seek(const std::streamoff offset);
     void SeekEnd(const std::streamoff offset);
     std::streamsize Size();
     void Load(FileBuffer &buffer);
+    void Save(FileBuffer &buffer);
 };
 
 #endif

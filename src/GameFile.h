@@ -34,6 +34,7 @@ class GameFile
     std::string GetDefaultPath() const;
     std::string GetAlternatePath() const;
     std::string GetLastResortPath() const;
+    std::string GetStoragePath() const;
 };
 
 #endif

@@ -51,6 +51,7 @@ class SoundResource
     static void CleanUp();
     void Clear();
     void Load(FileBuffer *buffer);
+    void Save(FileBuffer *buffer);
     SoundData& GetSoundData(unsigned int id);
 };
 

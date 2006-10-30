@@ -118,6 +118,7 @@ DialogResource::ReadDialogData(FileBuffer *buffer, DialogData *data)
     pageOffset.clear();
   } catch (Exception &e) {
     e.Print("DialogResource::ReadDialogData");
+    throw;
   }
 }
 
@@ -142,6 +143,18 @@ DialogResource::Load(FileBuffer *buffer)
     offset.clear();
   } catch (Exception &e) {
     e.Print("DialogResource::Load");
+    throw;
   }
 }
 
+void
+DialogResource::Save(FileBuffer *buffer)
+{
+  try {
+    // TODO
+    buffer = buffer;
+  } catch (Exception &e) {
+    e.Print("DialogResource::Save");
+    throw;
+  }
+}

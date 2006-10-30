@@ -44,6 +44,7 @@ class ImageResource
     Image * GetImage(unsigned int n) const;
     void Clear();
     void Load(FileBuffer *buffer);
+    void Save(FileBuffer *buffer);
 };
 
 #endif

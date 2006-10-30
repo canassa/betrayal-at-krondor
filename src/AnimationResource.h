@@ -44,6 +44,7 @@ class AnimationResource: public TaggedResource {
     AnimationData &GetAnimationData(unsigned int id);
     void Clear();
     void Load(FileBuffer *buffer);
+    void Save(FileBuffer *buffer);
 };
 
 #endif

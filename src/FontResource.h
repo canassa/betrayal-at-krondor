@@ -53,6 +53,7 @@ class FontResource
     FontGlyph* GetGlyph(const unsigned int n);
     void Clear();
     void Load(FileBuffer *buffer);
+    void Save(FileBuffer *buffer);
     void DrawChar(const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color, const bool italic);
 };
 

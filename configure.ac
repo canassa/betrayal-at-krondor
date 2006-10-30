@@ -29,6 +29,7 @@ LIBS="$LIBS $SDL_LIBS"
 AC_CACHE_SAVE
 
 # Checks for header files.
+AC_CHECK_HEADERS([errno.h])
 AC_CHECK_HEADERS([math.h])
 AC_CHECK_HEADERS([stdint.h])
 AC_CHECK_HEADERS([stdlib.h])

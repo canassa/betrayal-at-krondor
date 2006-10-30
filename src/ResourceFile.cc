@@ -38,3 +38,9 @@ ResourceFile::GetAlternatePath() const
 {
   return ResourcePath::GetInstance()->GetOverridePath();
 }
+
+std::string
+ResourceFile::GetStoragePath() const
+{
+  return ResourcePath::GetInstance()->GetOverridePath();
+}

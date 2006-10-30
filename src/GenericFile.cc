@@ -45,20 +45,34 @@ GenericFile::GetLastResortPath() const
   return std::string("");
 }
 
+std::string
+GenericFile::GetStoragePath() const
+{
+  return std::string("");
+}
+
 void
-GenericFile::Open(const std::string &name) {
-  std::string filename = GetDefaultPath() + name;
-  ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
-  if (ifs.fail()) {
-    ifs.clear();
-    filename = GetAlternatePath() + name;
+GenericFile::Open(const std::string &name, const bool writable) {
+  if (writable) {
+    std::string filename = GetStoragePath() + name;
+    ofs.open(filename.c_str(), std::ios::out | std::ios::binary);
+    if (ofs.fail()) {
+      throw OpenError(__FILE__, __LINE__, "(" + filename + ")");
+    }
+  } else {
+    std::string filename = GetDefaultPath() + name;
     ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
     if (ifs.fail()) {
       ifs.clear();
-      filename = GetLastResortPath() + name;
+      filename = GetAlternatePath() + name;
       ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
       if (ifs.fail()) {
-        throw OpenError(__FILE__, __LINE__, "(" + filename + ")");
+        ifs.clear();
+        filename = GetLastResortPath() + name;
+        ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
+        if (ifs.fail()) {
+          throw OpenError(__FILE__, __LINE__, "(" + filename + ")");
+        }
       }
     }
   }
@@ -68,6 +82,9 @@ void
 GenericFile::Close() {
   if (ifs.is_open()) {
     ifs.close();
+  }
+  if (ofs.is_open()) {
+    ofs.close();
   }
 }
 
@@ -79,6 +96,12 @@ GenericFile::Seek(const std::streamoff offset) {
       throw IOError(__FILE__, __LINE__);
     }
   }
+  if (ofs.is_open()) {
+    ofs.seekp(offset, std::ios::beg);
+    if (ofs.fail()) {
+      throw IOError(__FILE__, __LINE__);
+    }
+  }
 }
 
 void
@@ -86,6 +109,12 @@ GenericFile::SeekEnd(const std::streamoff offset) {
   if (ifs.is_open()) {
     ifs.seekg(offset, std::ios::end);
     if (ifs.fail()) {
+      throw IOError(__FILE__, __LINE__);
+    }
+  }
+  if (ofs.is_open()) {
+    ofs.seekp(offset, std::ios::end);
+    if (ofs.fail()) {
       throw IOError(__FILE__, __LINE__);
     }
   }
@@ -100,6 +129,13 @@ GenericFile::Size() {
     }
     return ifs.tellg();
   }
+  if (ofs.is_open()) {
+    ofs.seekp(0, std::ios::end);
+    if (ofs.fail()) {
+      throw IOError(__FILE__, __LINE__);
+    }
+    return ofs.tellp();
+  }
   return 0;
 }
 
@@ -110,6 +146,17 @@ GenericFile::Load(FileBuffer &buffer)
     buffer.Load(ifs);
   } catch (Exception &e) {
     e.Print("GenericFile::Load");
+    throw;
+  }
+}
+
+void
+GenericFile::Save(FileBuffer &buffer)
+{
+  try {
+    buffer.Save(ofs);
+  } catch (Exception &e) {
+    e.Print("GenericFile::Save");
     throw;
   }
 }

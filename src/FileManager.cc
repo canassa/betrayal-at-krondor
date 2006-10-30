@@ -27,7 +27,7 @@ FileManager* FileManager::instance = 0;
 FileManager::FileManager()
 {
   resIndex.Init("krondor.rmf");
-  resArchive.Open(resIndex.GetResourceFilename());
+  resArchive.Open(resIndex.GetResourceFilename(), false);
 }
 
 FileManager::~FileManager()
@@ -58,7 +58,7 @@ FileManager::LoadGame(const std::string &name)
 {
   try {
     GameFile gamfile;
-    gamfile.Open(name);
+    gamfile.Open(name, false);
     FileBuffer *buffer = new FileBuffer(gamfile.Size());
     gamfile.Seek(0);
     gamfile.Load(*buffer);
@@ -70,12 +70,25 @@ FileManager::LoadGame(const std::string &name)
   return 0;
 }
 
+void
+FileManager::SaveGame(const std::string &name, FileBuffer* buffer)
+{
+  try {
+    GameFile gamfile;
+    gamfile.Open(name, true);
+    gamfile.Save(*buffer);
+    gamfile.Close();
+  } catch (Exception &e) {
+    throw FileNotFound(__FILE__, __LINE__, name);
+  }
+}
+
 FileBuffer*
 FileManager::LoadResource(const std::string &name)
 {
   try {
     ResourceFile resfile;
-    resfile.Open(name);
+    resfile.Open(name, false);
     FileBuffer *buffer = new FileBuffer(resfile.Size());
     resfile.Seek(0);
     resfile.Load(*buffer);
@@ -100,6 +113,19 @@ FileManager::LoadResource(const std::string &name)
 }
 
 void
+FileManager::SaveResource(const std::string &name, FileBuffer* buffer)
+{
+  try {
+    ResourceFile resfile;
+    resfile.Open(name, true);
+    resfile.Save(*buffer);
+    resfile.Close();
+  } catch (Exception &e) {
+    throw FileNotFound(__FILE__, __LINE__, name);
+  }
+}
+
+void
 FileManager::Load(GameData *gam, const std::string &name)
 {
   try {
@@ -109,6 +135,20 @@ FileManager::Load(GameData *gam, const std::string &name)
     delete buffer;
   } catch (Exception &e) {
     e.Print("FileManager::Load");
+    throw;
+  }
+}
+
+void
+FileManager::Save(GameData *gam, const std::string &name)
+{
+  try {
+    FileBuffer *buffer = new FileBuffer(400000);
+    gam->Save(buffer);
+    SaveGame(name, buffer);
+    delete buffer;
+  } catch (Exception &e) {
+    e.Print("FileManager::Save");
     throw;
   }
 }
@@ -127,3 +167,16 @@ FileManager::Load(ResourceData *res, const std::string &name)
   }
 }
 
+void
+FileManager::Save(ResourceData *res, const std::string &name)
+{
+  try {
+    FileBuffer *buffer = new FileBuffer(100000);
+    res->Save(buffer);
+    SaveResource(name, buffer);
+    delete buffer;
+  } catch (Exception &e) {
+    e.Print("FileManager::Save");
+    throw;
+  }
+}

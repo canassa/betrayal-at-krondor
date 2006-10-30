@@ -96,5 +96,18 @@ BookResource::Load(FileBuffer *buffer)
     }
   } catch (Exception &e) {
     e.Print("BookResource::Load");
+    throw;
+  }
+}
+
+void
+BookResource::Save(FileBuffer *buffer)
+{
+  try {
+    // TODO
+    buffer = buffer;
+  } catch (Exception &e) {
+    e.Print("BookResource::Save");
+    throw;
   }
 }

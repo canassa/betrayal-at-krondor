@@ -51,6 +51,7 @@ class LabelResource
     LabelData GetLabelData(const unsigned int n) const;
     void Clear();
     void Load(FileBuffer *buffer);
+    void Save(FileBuffer *buffer);
 };
 
 #endif

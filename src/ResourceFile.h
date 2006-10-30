@@ -33,6 +33,7 @@ class ResourceFile
     virtual ~ResourceFile();
     std::string GetDefaultPath() const;
     std::string GetAlternatePath() const;
+    std::string GetStoragePath() const;
 };
 
 #endif

@@ -155,6 +155,18 @@ SoundResource::Load(FileBuffer *buffer)
   } catch (Exception &e) {
     e.Print("SoundResource::Load");
     ClearTags();
+    throw;
   }
 }
 
+void
+SoundResource::Save(FileBuffer *buffer)
+{
+  try {
+    // TODO
+    buffer = buffer;
+  } catch (Exception &e) {
+    e.Print("SoundResource::Save");
+    throw;
+  }
+}

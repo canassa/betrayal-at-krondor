@@ -34,6 +34,7 @@ class TileDataResource
     virtual ~TileDataResource();
     void Clear();
     void Load(FileBuffer *buffer);
+    void Save(FileBuffer *buffer);
 };
 
 #endif

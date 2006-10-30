@@ -40,6 +40,7 @@ class ScreenResource
     Image* GetImage();
     void Clear();
     void Load(FileBuffer *buffer);
+    void Save(FileBuffer *buffer);
 };
 
 #endif

@@ -142,5 +142,18 @@ RequestResource::Load(FileBuffer *buffer)
     delete[] offset;
   } catch (Exception &e) {
     e.Print("RequestResource::Load");
+    throw;
+  }
+}
+
+void
+RequestResource::Save(FileBuffer *buffer)
+{
+  try {
+    // TODO
+    buffer = buffer;
+  } catch (Exception &e) {
+    e.Print("RequestResource::Save");
+    throw;
   }
 }

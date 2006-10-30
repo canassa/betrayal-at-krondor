@@ -88,6 +88,18 @@ ImageResource::Load(FileBuffer *buffer)
     delete[] imageSize;
   } catch (Exception &e) {
     e.Print("ImageResource::Load");
+    throw;
   }
 }
 
+void
+ImageResource::Save(FileBuffer *buffer)
+{
+  try {
+    // TODO
+    buffer = buffer;
+  } catch (Exception &e) {
+    e.Print("ImageResource::Save");
+    throw;
+  }
+}

@@ -74,3 +74,15 @@ PartyResource::Load(FileBuffer *buffer)
     throw;
   }
 }
+
+void
+PartyResource::Save(FileBuffer *buffer)
+{
+  try {
+    // TODO
+    buffer = buffer;
+  } catch (Exception &e) {
+    e.Print("PartyResource::Save");
+    throw;
+  }
+}

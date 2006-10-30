@@ -48,6 +48,7 @@ class MovieResource
     std::vector<MovieTag *> & GetMovieTags();
     void Clear();
     void Load(FileBuffer *buffer);
+    void Save(FileBuffer *buffer);
 };
 
 #endif

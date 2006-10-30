@@ -57,6 +57,7 @@ class TileWorldResource
     TileWorldItem& GetItem(unsigned int i);
     void Clear();
     void Load(FileBuffer *buffer);
+    void Save(FileBuffer *buffer);
 };
 
 #endif

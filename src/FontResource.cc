@@ -128,6 +128,19 @@ FontResource::Load(FileBuffer *buffer)
   } catch (Exception &e) {
     e.Print("FontResource::Load");
     ClearTags();
+    throw;
+  }
+}
+
+void
+FontResource::Save(FileBuffer *buffer)
+{
+  try {
+    // TODO
+    buffer = buffer;
+  } catch (Exception &e) {
+    e.Print("FontResource::Save");
+    throw;
   }
 }
 

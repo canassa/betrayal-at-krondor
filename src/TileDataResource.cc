@@ -44,6 +44,18 @@ TileDataResource::Load(FileBuffer *buffer)
     }
   } catch (Exception &e) {
     e.Print("TileDataResource::Load");
+    throw;
   }
 }
 
+void
+TileDataResource::Save(FileBuffer *buffer)
+{
+  try {
+    // TODO
+    buffer = buffer;
+  } catch (Exception &e) {
+    e.Print("TileDataResource::Load");
+    throw;
+  }
+}

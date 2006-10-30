@@ -37,7 +37,7 @@ ResourceIndex::Init(const std::string &filename)
 {
   try {
     ResourceFile rmf;
-    rmf.Open(filename);
+    rmf.Open(filename, false);
     FileBuffer rmfBuffer(rmf.Size());
     rmf.Seek(0);
     rmf.Load(rmfBuffer);
@@ -49,7 +49,7 @@ ResourceIndex::Init(const std::string &filename)
     numResources = rmfBuffer.GetUint16LE();
 
     ResourceFile res;
-    res.Open(resourceFilename);
+    res.Open(resourceFilename, false);
     FileBuffer resBuffer(RES_FILENAME_LEN + 4);
     for (unsigned int i = 0; i < numResources; i++) {
       /* skip the hashkey */

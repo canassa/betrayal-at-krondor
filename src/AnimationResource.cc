@@ -106,6 +106,18 @@ AnimationResource::Load(FileBuffer *buffer)
   } catch (Exception &e) {
     e.Print("AnimationResource::Load");
     ClearTags();
+    throw;
   }
 }
 
+void
+AnimationResource::Save(FileBuffer *buffer)
+{
+  try {
+    // TODO
+    buffer = buffer;
+  } catch (Exception &e) {
+    e.Print("AnimationResource::Save");
+    throw;
+  }
+}

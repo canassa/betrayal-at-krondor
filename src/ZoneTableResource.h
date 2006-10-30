@@ -47,7 +47,7 @@ class ZoneTableResource
     AppData& GetAppItem(const unsigned int i);
     void Clear();
     void Load(FileBuffer *buffer);
+    void Save(FileBuffer *buffer);
 };
 
 #endif
-

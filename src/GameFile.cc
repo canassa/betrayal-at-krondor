@@ -44,3 +44,9 @@ GameFile::GetLastResortPath() const
 {
   return GamePath::GetInstance()->GetResourcePath();
 }
+
+std::string
+GameFile::GetStoragePath() const
+{
+  return GamePath::GetInstance()->GetPath();
+}

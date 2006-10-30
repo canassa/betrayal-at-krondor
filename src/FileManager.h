@@ -34,7 +34,9 @@ class FileManager {
     ResourceIndex resIndex;
     ResourceArchive resArchive;
     FileBuffer* LoadGame(const std::string &name);
+    void SaveGame(const std::string &name, FileBuffer* buffer);
     FileBuffer* LoadResource(const std::string &name);
+    void SaveResource(const std::string &name, FileBuffer* buffer);
     static FileManager *instance;
   protected:
     FileManager();
@@ -43,7 +45,9 @@ class FileManager {
     static FileManager* GetInstance();
     static void CleanUp();
     void Load(GameData *gam, const std::string &name);
+    void Save(GameData *gam, const std::string &name);
     void Load(ResourceData *res, const std::string &name);
+    void Save(ResourceData *res, const std::string &name);
 };
 
 #endif

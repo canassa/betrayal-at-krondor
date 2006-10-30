@@ -70,5 +70,18 @@ PaletteResource::Load(FileBuffer *buffer)
   } catch (Exception &e) {
     e.Print("PaletteResource::Load");
     ClearTags();
+    throw;
+  }
+}
+
+void
+PaletteResource::Save(FileBuffer *buffer)
+{
+  try {
+    // TODO
+    buffer = buffer;
+  } catch (Exception &e) {
+    e.Print("PaletteResource::Save");
+    throw;
   }
 }

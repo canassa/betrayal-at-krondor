@@ -63,5 +63,18 @@ ScreenResource::Load(FileBuffer *buffer)
     delete decompressed;
   } catch (Exception &e) {
     e.Print("ScreenResource::Load");
+    throw;
+  }
+}
+
+void
+ScreenResource::Save(FileBuffer *buffer)
+{
+  try {
+    // TODO
+    buffer = buffer;
+  } catch (Exception &e) {
+    e.Print("ScreenResource::Save");
+    throw;
   }
 }

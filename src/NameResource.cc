@@ -64,6 +64,18 @@ NameResource::Load(FileBuffer *buffer)
     delete[] offset;
   } catch (Exception &e) {
     e.Print("NameResource::Load");
+    throw;
   }
 }
 
+void
+NameResource::Save(FileBuffer *buffer)
+{
+  try {
+    // TODO
+    buffer = buffer;
+  } catch (Exception &e) {
+    e.Print("NameResource::Save");
+    throw;
+  }
+}

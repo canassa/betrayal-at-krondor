@@ -37,6 +37,7 @@ class PaletteResource
     Palette* GetPalette() const;
     void Clear();
     void Load(FileBuffer *buffer);
+    void Save(FileBuffer *buffer);
 };
 
 #endif

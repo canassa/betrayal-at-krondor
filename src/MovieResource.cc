@@ -120,6 +120,18 @@ MovieResource::Load(FileBuffer *buffer)
   } catch (Exception &e) {
     e.Print("MovieResource::Load");
     ClearTags();
+    throw;
   }
 }
 
+void
+MovieResource::Save(FileBuffer *buffer)
+{
+  try {
+    // TODO
+    buffer = buffer;
+  } catch (Exception &e) {
+    e.Print("MovieResource::Save");
+    throw;
+  }
+}

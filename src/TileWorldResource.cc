@@ -94,6 +94,18 @@ TileWorldResource::Load(FileBuffer *buffer)
     }
   } catch (Exception &e) {
     e.Print("TileWorldResource::Load");
+    throw;
   }
 }
 
+void
+TileWorldResource::Save(FileBuffer *buffer)
+{
+  try {
+    // TODO
+    buffer = buffer;
+  } catch (Exception &e) {
+    e.Print("TileWorldResource::Save");
+    throw;
+  }
+}

@@ -108,6 +108,19 @@ ZoneTableResource::Load(FileBuffer *buffer)
     ClearTags();
   } catch (Exception &e) {
     e.Print("ZoneTableResource::Load");
+    ClearTags();
+    throw;
   }
 }
 
+void
+ZoneTableResource::Save(FileBuffer *buffer)
+{
+  try {
+    // TODO
+    buffer = buffer;
+  } catch (Exception &e) {
+    e.Print("ZoneTableResource::Save");
+    throw;
+  }
+}
