@@ -21,8 +21,8 @@ AC_CACHE_SAVE
 # Checks for libraries.
 SDL_VERSION=1.2.8
 AM_PATH_SDL($SDL_VERSION,,AC_MSG_ERROR([SDL $SDL_VERSION not found!]))
-AC_CHECK_LIB([SDL_mixer], [Mix_Linked_Version])
-AC_CHECK_LIB([SDL_sound], [Sound_GetLinkedVersion])
+AC_CHECK_LIB([SDL_mixer],[Mix_Linked_Version])
+AC_CHECK_LIB([SDL_sound],[Sound_GetLinkedVersion])
 SDL_LIBS=$(sh sdl-config --libs)
 LIBS="$LIBS $SDL_LIBS"
 
@@ -40,6 +40,7 @@ AC_CACHE_SAVE
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_LANG([C++])
+CPPFLAGS="$CPPFLAGS -DDATADIR=\"$datadir\""
 SDL_CFLAGS=$(sh sdl-config --cflags)
 CXXFLAGS="$CXXFLAGS $SDL_CFLAGS -Wall -Werror -Wpointer-arith -Wcast-qual -Wwrite-strings -Wshadow -Wcast-align -Winline -ansi -pedantic"
 
