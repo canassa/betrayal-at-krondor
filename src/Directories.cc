@@ -119,7 +119,7 @@ Directories::SearchResources() const
   while (SEARCH_RESOURCE_PATH[i] != "") {
     try {
       std::string path = SEARCH_RESOURCE_PATH[i];
-      std::string filename = resourcePath + SEARCH_RESOURCE_FILE;
+      std::string filename = path + SEARCH_RESOURCE_FILE;
       std::ifstream ifs;
       ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
       if (ifs.is_open()) {
