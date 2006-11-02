@@ -21,6 +21,7 @@
 #include <sstream>
 
 #include "AnimationResource.h"
+#include "Directories.h"
 #include "Exception.h"
 #include "FileManager.h"
 #include "FontResource.h"
@@ -183,6 +184,7 @@ GameApplication::KeyPressed(const KeyboardEvent& kbe)
       {
         screenSaveCount++;
         std::stringstream filenameStream;
+        filenameStream << Directories::GetInstance()->GetCapturePath();
         filenameStream << "xbak_" << std::setw(3) << std::setfill('0') << screenSaveCount << ".bmp";
         MediaToolkit::GetInstance()->GetVideo()->SaveScreenShot(filenameStream.str());
       }
