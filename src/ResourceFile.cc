@@ -17,9 +17,9 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "Directories.h"
 #include "Exception.h"
 #include "ResourceFile.h"
-#include "ResourcePath.h"
 
 ResourceFile::ResourceFile() {
 }
@@ -30,17 +30,17 @@ ResourceFile::~ResourceFile() {
 std::string
 ResourceFile::GetDefaultPath() const
 {
-  return ResourcePath::GetInstance()->GetPath();
+  return Directories::GetInstance()->GetSharedPath();
 }
 
 std::string
 ResourceFile::GetAlternatePath() const
 {
-  return ResourcePath::GetInstance()->GetOverridePath();
+  return Directories::GetInstance()->GetResourcePath();
 }
 
 std::string
 ResourceFile::GetStoragePath() const
 {
-  return ResourcePath::GetInstance()->GetOverridePath();
+  return Directories::GetInstance()->GetUserPath();
 }

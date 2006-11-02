@@ -19,9 +19,9 @@
 
 #include <iostream>
 
+#include "Directories.h"
 #include "Exception.h"
 #include "FileManager.h"
-#include "ResourcePath.h"
 #include "TileWorldResource.h"
 
 static const unsigned int MAP_SIZE_X = 64;
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
     delete map;
     delete wld;
     FileManager::CleanUp();
-    ResourcePath::CleanUp();
+    Directories::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

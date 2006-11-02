@@ -40,7 +40,7 @@ AC_CACHE_SAVE
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_LANG([C++])
-CPPFLAGS="$CPPFLAGS -DDATADIR=\"$datadir\""
+CPPFLAGS="$CPPFLAGS -DDATADIR='\"$datadir\"'"
 SDL_CFLAGS=$(sh sdl-config --cflags)
 CXXFLAGS="$CXXFLAGS $SDL_CFLAGS -Wall -Werror -Wpointer-arith -Wcast-qual -Wwrite-strings -Wshadow -Wcast-align -Winline -ansi -pedantic"
 

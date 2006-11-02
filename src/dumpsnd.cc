@@ -20,9 +20,9 @@
 #include <iostream>
 #include <sstream>
 
+#include "Directories.h"
 #include "Exception.h"
 #include "FileManager.h"
-#include "ResourcePath.h"
 #include "Sound.h"
 #include "SoundResource.h"
 
@@ -40,25 +40,11 @@ int main(int argc, char *argv[]) {
       printf("%d: %d %d %d\n", i, sound->GetType(),sound->GetChannel(), sound->GetFormat());
       FileBuffer *buf = sound->GetSamples();
       buf->Dump();
-/*
-      buf->Rewind();
-      std::stringstream ss;
-      ss << "sound_" << i;
-      if (sound->GetFormat() == SF_WAVE) {
-        ss << ".wav";
-      } else if (sound->GetFormat() == SF_MIDI) {
-        ss << ".mid";
-      }
-      std::ofstream ofs;
-      ofs.open(ss.str().c_str(), std::ios::binary);
-      buf->Save(ofs);
-      ofs.close();
-*/
     }
     delete snd;
     SoundResource::CleanUp();
     FileManager::CleanUp();
-    ResourcePath::CleanUp();
+    Directories::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

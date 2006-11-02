@@ -15,6 +15,7 @@ noinst_HEADERS = AnimationResource.h \
                  DialogFactory.h \
                  DialogResource.h \
                  DialogWindow.h \
+                 Directories.h \
                  Event.h \
                  EventListener.h \
                  Exception.h \
@@ -25,7 +26,6 @@ noinst_HEADERS = AnimationResource.h \
                  GameApplication.h \
                  GameData.h \
                  GameFile.h \
-                 GamePath.h \
                  GameState.h \
                  GameViewWidget.h \
                  GenericFile.h \
@@ -59,7 +59,6 @@ noinst_HEADERS = AnimationResource.h \
                  ResourceData.h \
                  ResourceFile.h \
                  ResourceIndex.h \
-                 ResourcePath.h \
                  ResourceTag.h \
                  SDL_Clock.h \
                  SDL_Toolkit.h \
@@ -197,14 +196,14 @@ libguitoolkit_a_SOURCES = BadgeWidget.cc \
                           WidgetFactory.h \
                           WorldViewWidget.cc \
                           WorldViewWidget.h
-libresbase_a_SOURCES = FileManager.cc \
+libresbase_a_SOURCES = Directories.cc \
+                       Directories.h \
+                       FileManager.cc \
                        FileManager.h \
                        GameData.cc \
                        GameData.h \
                        GameFile.cc \
                        GameFile.h \
-                       GamePath.cc \
-                       GamePath.h \
                        ResourceArchive.cc \
                        ResourceArchive.h \
                        ResourceData.h \
@@ -212,8 +211,6 @@ libresbase_a_SOURCES = FileManager.cc \
                        ResourceFile.h \
                        ResourceIndex.cc \
                        ResourceIndex.h \
-                       ResourcePath.cc \
-                       ResourcePath.h \
                        ResourceTag.cc \
                        ResourceTag.h \
                        TaggedResource.cc \

@@ -20,9 +20,9 @@
 #include <iostream>
 
 #include "DialogResource.h"
+#include "Directories.h"
 #include "Exception.h"
 #include "FileManager.h"
-#include "ResourcePath.h"
 
 void dumpDialogData(unsigned int n, DialogData *data, unsigned int depth) {
   for (unsigned int d = 0; d < depth; d++) {
@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
     }
     delete ddx;
     FileManager::CleanUp();
-    ResourcePath::CleanUp();
+    Directories::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

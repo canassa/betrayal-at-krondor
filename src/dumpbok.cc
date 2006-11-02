@@ -20,9 +20,9 @@
 #include <iostream>
 
 #include "BookResource.h"
+#include "Directories.h"
 #include "Exception.h"
 #include "FileManager.h"
-#include "ResourcePath.h"
 
 int main(int argc, char *argv[]) {
   try {
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
     }
     delete bok;
     FileManager::CleanUp();
-    ResourcePath::CleanUp();
+    Directories::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

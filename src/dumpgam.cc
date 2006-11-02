@@ -19,10 +19,10 @@
 
 #include <iostream>
 
+#include "Directories.h"
 #include "Exception.h"
 #include "FileManager.h"
 #include "GameData.h"
-#include "GamePath.h"
 
 int main(int argc, char *argv[]) {
   try {
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
     }
     delete gam;
     FileManager::CleanUp();
-    GamePath::CleanUp();
+    Directories::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

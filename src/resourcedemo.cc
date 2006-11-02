@@ -20,6 +20,7 @@
 #include <iostream>
 #include <cstring>
 
+#include "Directories.h"
 #include "Exception.h"
 #include "TestApplication.h"
 
@@ -119,6 +120,7 @@ int main(int argc, char **argv)
         break;
     }
     TestApplication::CleanUp();
+    Directories::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

@@ -19,9 +19,9 @@
 
 #include <iostream>
 
+#include "Directories.h"
 #include "Exception.h"
 #include "FileManager.h"
-#include "ResourcePath.h"
 #include "ZoneTableResource.h"
 
 int main(int argc, char *argv[]) {
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
     }
     delete tbl;
     FileManager::CleanUp();
-    ResourcePath::CleanUp();
+    Directories::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

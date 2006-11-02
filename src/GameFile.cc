@@ -19,7 +19,7 @@
 
 #include "Exception.h"
 #include "GameFile.h"
-#include "GamePath.h"
+#include "Directories.h"
 
 GameFile::GameFile() {
 }
@@ -30,23 +30,23 @@ GameFile::~GameFile() {
 std::string
 GameFile::GetDefaultPath() const
 {
-  return GamePath::GetInstance()->GetPath();
+  return Directories::GetInstance()->GetGamesPath();
 }
 
 std::string
 GameFile::GetAlternatePath() const
 {
-  return GamePath::GetInstance()->GetOriginalPath();
+  return Directories::GetInstance()->GetUserPath();
 }
 
 std::string
 GameFile::GetLastResortPath() const
 {
-  return GamePath::GetInstance()->GetResourcePath();
+  return Directories::GetInstance()->GetResourcePath();
 }
 
 std::string
 GameFile::GetStoragePath() const
 {
-  return GamePath::GetInstance()->GetPath();
+  return Directories::GetInstance()->GetGamesPath();
 }

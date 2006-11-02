@@ -25,12 +25,10 @@
 #include "FileManager.h"
 #include "FontResource.h"
 #include "GameApplication.h"
-#include "GamePath.h"
 #include "MousePointerManager.h"
 #include "MoviePlayer.h"
 #include "MovieResource.h"
 #include "PaletteResource.h"
-#include "ResourcePath.h"
 #include "ScreenResource.h"
 #include "SDL_Toolkit.h"
 #include "TextArea.h"
@@ -48,7 +46,6 @@ GameApplication::GameApplication()
   media->GetVideo()->SetScaling(2);
   media->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
   media->GetVideo()->Clear();
-  GamePath::GetInstance();
 
   PaletteResource pal;
   pal.GetPalette()->Fill();
@@ -75,8 +72,6 @@ GameApplication::~GameApplication()
   MediaToolkit::CleanUp();
   SoundResource::CleanUp();
   FileManager::CleanUp();
-  ResourcePath::CleanUp();
-  GamePath::CleanUp();
 }
 
 GameApplication*

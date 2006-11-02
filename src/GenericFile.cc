@@ -17,9 +17,9 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "Directories.h"
 #include "Exception.h"
 #include "GenericFile.h"
-#include "ResourcePath.h"
 
 GenericFile::GenericFile() {
 }

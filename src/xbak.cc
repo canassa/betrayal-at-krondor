@@ -19,13 +19,13 @@
 
 #include <iostream>
 
+#include "Directories.h"
 #include "Exception.h"
 #include "GameApplication.h"
-#include "ResourcePath.h"
 
 int main(int argc, char **argv) {
   if (argc > 1) {
-    ResourcePath::GetInstance()->SetPath(std::string(argv[1]));
+    Directories::GetInstance()->SetResourcePath(std::string(argv[1]));
   }
   try {
     GameApplication::GetInstance()->Run();
@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     /* every exception should have been handled before */
     std::cerr << "Unhandled exception" << std::endl;
   }
-  ResourcePath::CleanUp();
+  Directories::CleanUp();
   return 0;
 }
 

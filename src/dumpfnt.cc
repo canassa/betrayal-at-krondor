@@ -19,10 +19,10 @@
 
 #include <iostream>
 
+#include "Directories.h"
 #include "Exception.h"
 #include "FileManager.h"
 #include "FontResource.h"
-#include "ResourcePath.h"
 
 int main(int argc, char *argv[]) {
   try {
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
     }
     delete fnt;
     FileManager::CleanUp();
-    ResourcePath::CleanUp();
+    Directories::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

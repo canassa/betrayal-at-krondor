@@ -20,9 +20,9 @@
 #include <iostream>
 
 #include "AnimationResource.h"
+#include "Directories.h"
 #include "Exception.h"
 #include "FileManager.h"
-#include "ResourcePath.h"
 
 int main(int argc, char *argv[]) {
   try {
@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
     }
     delete anim;
     FileManager::CleanUp();
-    ResourcePath::CleanUp();
+    Directories::CleanUp();
   } catch (Exception &e) {
     e.Print("main");
   } catch (...) {

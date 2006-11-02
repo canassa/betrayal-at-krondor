@@ -21,7 +21,6 @@
 #include "FileManager.h"
 #include "MousePointerManager.h"
 #include "MoviePlayer.h"
-#include "ResourcePath.h"
 #include "SDL_Toolkit.h"
 #include "TestApplication.h"
 #include "TextArea.h"
@@ -53,7 +52,6 @@ TestApplication::~TestApplication()
   MediaToolkit::CleanUp();
   SoundResource::CleanUp();
   FileManager::CleanUp();
-  ResourcePath::CleanUp();
 }
 
 TestApplication*

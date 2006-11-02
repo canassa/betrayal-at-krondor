@@ -17,8 +17,8 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef GAME_PATH_H
-#define GAME_PATH_H
+#ifndef DIRECTORIES_H
+#define DIRECTORIES_H
 
 #include <string>
 
@@ -26,25 +26,29 @@
 #include "config.h"
 #endif
 
-class GamePath
+class Directories
 {
   private:
-    std::string path;
-    std::string original;
-    std::string resource;
-    static GamePath *instance;
+    std::string resourcePath;
+    std::string sharedPath;
+    std::string userPath;
+    std::string gamesPath;
+    std::string capturePath;
+    static Directories *instance;
+    void CreatePath(const std::string& path);
+    std::string SearchResources() const;
   protected:
-    GamePath();
+    Directories();
   public:
-    ~GamePath();
-    static GamePath* GetInstance();
+    ~Directories();
+    static Directories* GetInstance();
     static void CleanUp();
-    std::string GetPath() const;
-    std::string GetOriginalPath() const;
     std::string GetResourcePath() const;
-    void SetPath(const std::string &s);
-    void SetOriginalPath(const std::string &s);
-    void SetResourcePath(const std::string &s);
+    std::string GetSharedPath() const;
+    std::string GetUserPath() const;
+    std::string GetGamesPath() const;
+    std::string GetCapturePath() const;
+    void SetResourcePath(const std::string &path);
 };
 
 #endif
