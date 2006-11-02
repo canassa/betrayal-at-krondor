@@ -2,6 +2,8 @@ xBaK is licensed under the GPL version 2. See COPYING for more information.
 
 Required tools and software (minimum version is listed):
 * SDL-1.2.8       ("http://www.libsdl.org/")
+
+Optional tools and software (minimum version is listed):
 * SDL_mixer-1.2.6 ("http://www.libsdl.org/projects/SDL_mixer/")
 * SDL_sound-1.0.1 ("http://icculus.org/SDL_sound/")
 SDL_sound also requires a GUS compatible set of sound patches.
@@ -24,16 +26,23 @@ Notes for running the xBaK game:
   - krondor.rmf
   - krondor.001
   - frp.sx
+  - startup.gam
   Note that the filenames are in lower case. You might need to rename them.
   These original data files must be stored in one of the following
   directories:
    - /opt/krondor/
    - /opt/share/krondor/
-   - /usr/share/krondor/
-   - /usr/local/share/krondor/
    - /krondor/
    - ./krondor/
    - ../krondor/
+* Other files
+  On Linux/BSD/Unix platforms xbak will create its own directory structure
+  for user specific data on startup. The directory structure is as follows:
+    ~/.xbak           # for user data
+    ~/.xbak/capture   # for screenshots
+    ~/.xbak/games     # for saved games
+  On other platforms the current directory is used for everything, except
+  the original Betrayal at Krondor data files mentioned above.
 * Grabbing keyboard and mouse
   Initially the keyboard and mouse are not grabbed. Grabbing the input
   can be toggled by pressing the F12 key. Or, if the input is not grabbed,
@@ -42,9 +51,10 @@ Notes for running the xBaK game:
   pressing the middle mouse button will release the grab on input.
 * Screenshots
   Screenshots can be made using the F11 key. The screenshots will be saved
-  in the current directory. The images are stored in BMP format. The
-  filenames have the following form: xbak_<nnn>.bmp, with <nnn> ranging
-  from 001 to 999. Pre-existing screenshot files will be overwritten.
+  in the dedicated screenshot directory mentioned earlier. The images are
+  stored in BMP format. The filenames have the following form:
+  xbak_<nnn>.bmp, with <nnn> ranging from 001 to 999. Pre-existing screenshot
+  files will be overwritten.
 
 Please report errors or bugs using the bug tracker provided on the project
 website.
