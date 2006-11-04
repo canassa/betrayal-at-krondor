@@ -38,7 +38,10 @@ int main(int argc, char *argv[]) {
     for (unsigned int m = 0; m < 6; m++) {
       printf("%10s:", gam->GetMemberName(m).c_str());
       for (unsigned int i = 0; i < 16; i++) {
-        printf(" %3d (%3d)", gam->GetMemberData(m, i, 0), gam->GetMemberData(m, i, 1));
+        printf("\n\t");
+        for (unsigned int j = 0; j < 5; j++) {
+          printf(" %3d", gam->GetMemberData(m, i, j));
+        }
       }
       printf("\n");
     }
