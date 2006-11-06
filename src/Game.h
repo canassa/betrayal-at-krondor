@@ -42,10 +42,10 @@ class Game {
     Game();
     ~Game();
     std::string& GetName();
+    void SetName(const std::string& s);
     Party* GetParty();
     Chapter* GetChapter();
     Camera* GetCamera();
-    void Load(FileBuffer *buffer);
 };
 
 #endif

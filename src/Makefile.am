@@ -26,6 +26,7 @@ noinst_HEADERS = AnimationResource.h \
                  GameApplication.h \
                  GameData.h \
                  GameFile.h \
+                 GameResource.h \
                  GameState.h \
                  GameViewWidget.h \
                  GenericFile.h \
@@ -87,7 +88,7 @@ noinst_LIBRARIES = libbase.a \
                    libresdata.a \
                    libgame.a \
                    libguitoolkit.a \
-                   libsdldriver.a
+                   libdriver.a
 noinst_PROGRAMS = dumpads \
                   dumpbmx \
                   dumpbok \
@@ -122,6 +123,8 @@ libgame_a_SOURCES = Camera.cc \
                     Chapter.h \
                     Game.cc \
                     Game.h \
+                    GameResource.cc \
+                    GameResource.h \
                     Orientation.cc \
                     Orientation.h \
                     Party.cc \
@@ -200,7 +203,6 @@ libresbase_a_SOURCES = Directories.cc \
                        Directories.h \
                        FileManager.cc \
                        FileManager.h \
-                       GameData.cc \
                        GameData.h \
                        GameFile.cc \
                        GameFile.h \
@@ -247,22 +249,22 @@ libresdata_a_SOURCES = AnimationResource.cc \
                        TileWorldResource.h \
                        ZoneTableResource.cc \
                        ZoneTableResource.h
-libsdldriver_a_SOURCES = Audio.h \
-                         Clock.h \
-                         MediaToolkit.cc \
-                         MediaToolkit.h \
-                         Null_Audio.cc \
-                         Null_Audio.h \
-                         SDL_Audio.cc \
-                         SDL_Audio.h \
-                         SDL_Clock.cc \
-                         SDL_Clock.h \
-                         SDL_Toolkit.cc \
-                         SDL_Toolkit.h \
-                         SDL_Video.cc \
-                         SDL_Video.h \
-                         Video.cc \
-                         Video.h
+libdriver_a_SOURCES = Audio.h \
+                      Clock.h \
+                      MediaToolkit.cc \
+                      MediaToolkit.h \
+                      Null_Audio.cc \
+                      Null_Audio.h \
+                      SDL_Audio.cc \
+                      SDL_Audio.h \
+                      SDL_Clock.cc \
+                      SDL_Clock.h \
+                      SDL_Toolkit.cc \
+                      SDL_Toolkit.h \
+                      SDL_Video.cc \
+                      SDL_Video.h \
+                      Video.cc \
+                      Video.h
 dumpads_SOURCES = AnimationResource.cc \
                   AnimationResource.h \
                   dumpads.cc
@@ -274,7 +276,7 @@ dumpbmx_SOURCES = Image.cc \
                   ImageResource.h \
                   dumpbmx.cc
 dumpbmx_LDADD   = libresbase.a \
-                  libsdldriver.a \
+                  libdriver.a \
                   libbase.a
 dumpbok_SOURCES = BookResource.cc \
                   BookResource.h \
@@ -290,11 +292,14 @@ dumpfnt_SOURCES = FontResource.cc \
                   FontResource.h \
                   dumpfnt.cc
 dumpfnt_LDADD   = libresbase.a \
-                  libsdldriver.a \
+                  libdriver.a \
                   libbase.a
 dumpgam_SOURCES = dumpgam.cc
 dumpgam_LDADD   = libgame.a \
+                  libguitoolkit.a \
+                  libresdata.a \
                   libresbase.a \
+                  libdriver.a \
                   libbase.a
 dumplbl_SOURCES = LabelResource.cc \
                   LabelResource.h \
@@ -306,7 +311,7 @@ dumppal_SOURCES = PaletteResource.cc \
                   dumppal.cc
 dumppal_LDADD   = libguitoolkit.a \
                   libresbase.a \
-                  libsdldriver.a \
+                  libdriver.a \
                   libbase.a
 dumpreq_SOURCES = RequestResource.cc \
                   RequestResource.h \
@@ -319,7 +324,7 @@ dumpscx_SOURCES = Image.cc \
                   ScreenResource.h \
                   dumpscx.cc
 dumpscx_LDADD   = libresbase.a \
-                  libsdldriver.a \
+                  libdriver.a \
                   libbase.a
 dumpsnd_SOURCES = Sound.cc \
                   Sound.h \
@@ -351,7 +356,7 @@ resourcedemo_SOURCES = TestApplication.cc \
 resourcedemo_LDADD = libguitoolkit.a \
                      libresdata.a \
                      libresbase.a \
-                     libsdldriver.a \
+                     libdriver.a \
                      libbase.a
 xbak_SOURCES = GameApplication.cc \
                GameApplication.h \
@@ -362,5 +367,5 @@ xbak_LDADD = libgame.a \
              libguitoolkit.a \
              libresdata.a \
              libresbase.a \
-             libsdldriver.a \
+             libdriver.a \
              libbase.a

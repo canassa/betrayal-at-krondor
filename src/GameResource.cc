@@ -18,10 +18,10 @@
  */
 
 #include "Exception.h"
-#include "GameData.h"
+#include "GameResource.h"
 
-GameData::GameData()
-: name("")
+GameResource::GameResource()
+: game(0)
 , xpos(0)
 , ypos(0)
 , xcell(0)
@@ -31,151 +31,167 @@ GameData::GameData()
 , heading(0)
 , memberName()
 , memberData()
+, activeMember()
 {
 }
 
-GameData::~GameData()
+GameResource::~GameResource()
 {
 }
 
-std::string&
-GameData::GetName()
+Game *
+GameResource::GetGame()
 {
-  return name;
+  return game;
 }
-
 
 void
-GameData::SetName(const std::string& s)
+GameResource::SetGame(Game *g)
 {
-  name = s;
+  game = g;
 }
 
 unsigned int
-GameData::GetXPos() const
+GameResource::GetXPos() const
 {
   return xpos;
 }
 
 void
-GameData::SetXPos(const unsigned int x)
+GameResource::SetXPos(const unsigned int x)
 {
   xpos = x;
 }
 
 unsigned int
-GameData::GetYPos() const
+GameResource::GetYPos() const
 {
   return ypos;
 }
 
 void
-GameData::SetYPos(const unsigned int y)
+GameResource::SetYPos(const unsigned int y)
 {
   ypos = y;
 }
 
 unsigned int
-GameData::GetZone() const
+GameResource::GetZone() const
 {
   return zone;
 }
 
 void
-GameData::SetZone(const unsigned int z)
+GameResource::SetZone(const unsigned int z)
 {
   zone = z;
 }
 
 unsigned int
-GameData::GetXCell() const
+GameResource::GetXCell() const
 {
   return xcell;
 }
 
 void
-GameData::SetXCell(const unsigned int x)
+GameResource::SetXCell(const unsigned int x)
 {
   xcell = x;
 }
 
 unsigned int
-GameData::GetYCell() const
+GameResource::GetYCell() const
 {
   return ycell;
 }
 
 void
-GameData::SetYCell(const unsigned int y)
+GameResource::SetYCell(const unsigned int y)
 {
   ycell = y;
 }
 
 unsigned int
-GameData::GetXLoc() const
+GameResource::GetXLoc() const
 {
   return xloc;
 }
 
 void
-GameData::SetXLoc(const unsigned int x)
+GameResource::SetXLoc(const unsigned int x)
 {
   xloc = x;
 }
 
 unsigned int
-GameData::GetYLoc() const
+GameResource::GetYLoc() const
 {
   return yloc;
 }
 
 void
-GameData::SetYLoc(const unsigned int y)
+GameResource::SetYLoc(const unsigned int y)
 {
   yloc = y;
 }
 
 unsigned int
-GameData::GetHeading() const
+GameResource::GetHeading() const
 {
   return heading;
 }
 
 void
-GameData::SetHeading(const unsigned int h)
+GameResource::SetHeading(const unsigned int h)
 {
   heading = h;
 }
 
 std::string&
-GameData::GetMemberName(const unsigned int m)
+GameResource::GetMemberName(const unsigned int m)
 {
   return memberName[m];
 }
 
 void
-GameData::SetMemberName(const unsigned int m, const std::string& s)
+GameResource::SetMemberName(const unsigned int m, const std::string& s)
 {
   memberName[m] = s;
 }
 
 unsigned int
-GameData::GetMemberData(const unsigned int m, const unsigned int i, const unsigned int j)
+GameResource::GetMemberData(const unsigned int m, const unsigned int i, const unsigned int j)
 {
   return memberData[(m * 16 + i) * 5 + j];
 }
 
 void
-GameData::SetMemberData(const unsigned int m, const unsigned int i, const unsigned int j, const unsigned int v)
+GameResource::SetMemberData(const unsigned int m, const unsigned int i, const unsigned int j, const unsigned int v)
 {
   memberData[(m * 16 + i) * 5 + j] = v;
 }
 
+unsigned int
+GameResource::GetActiveMember(const unsigned int i)
+{
+  return activeMember[i];
+}
+
 void
-GameData::Load(FileBuffer *buffer)
+GameResource::SetActiveMember(const unsigned int i, const unsigned int v)
+{
+  activeMember[i] = v;
+}
+
+void
+GameResource::Load(FileBuffer *buffer)
 {
   try {
-    name = buffer->GetString();
+    if (game){
+      delete game;
+    }
+    game = new Game();
+    game->SetName(buffer->GetString());
     buffer->Seek(90);
     buffer->Skip(16);
     ypos = buffer->GetUint32LE();
@@ -201,17 +217,24 @@ GameData::Load(FileBuffer *buffer)
       }
       buffer->Skip(7);
     }
+    unsigned int n = buffer->GetUint8();
+    for (unsigned int i = 0; i < n; i++) {
+      activeMember.push_back(buffer->GetUint8());
+    }
   } catch (Exception &e) {
-    e.Print("GameData::Load");
+    e.Print("GameResource::Load");
   }
 }
 
 void
-GameData::Save(FileBuffer *buffer)
+GameResource::Save(FileBuffer *buffer)
 {
+  if (!game) {
+    throw NullPointer(__FILE__, __LINE__, "game");
+  }
   try {
     buffer->Rewind();
-    buffer->PutString(name);
+    buffer->PutString(game->GetName());
     buffer->Seek(90);
     buffer->Skip(16);
     buffer->PutUint32LE(ypos);
@@ -235,9 +258,14 @@ GameData::Save(FileBuffer *buffer)
           buffer->PutUint8(memberData[(m * 16 + i) * 5 + j]);
         }
       }
-      buffer->Skip(7);
+      buffer->PutUint8(m + 1);
+      buffer->Skip(6);
+    }
+    buffer->PutUint8(activeMember.size());
+    for (unsigned int i = 0; i < activeMember.size(); i++) {
+      buffer->PutUint8(activeMember[i]);
     }
   } catch (Exception &e) {
-    e.Print("GameData::Load");
+    e.Print("GameResource::Load");
   }
 }

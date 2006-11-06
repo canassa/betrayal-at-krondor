@@ -22,7 +22,7 @@
 #include "Directories.h"
 #include "Exception.h"
 #include "FileManager.h"
-#include "GameData.h"
+#include "GameResource.h"
 
 int main(int argc, char *argv[]) {
   try {
@@ -30,9 +30,10 @@ int main(int argc, char *argv[]) {
       std::cerr << "Usage: " << argv[0] << " <GAM-file>" << std::endl;
       return 1;
     }
-    GameData *gam = new GameData;
+    GameResource *gam = new GameResource;
     FileManager::GetInstance()->Load(gam, argv[1]);
-    printf("%s  (%d, %d)\n", gam->GetName().c_str(), gam->GetXPos(), gam->GetYPos());
+    Game *game = gam->GetGame();
+    printf("%s  (%d, %d)\n", game->GetName().c_str(), gam->GetXPos(), gam->GetYPos());
     printf("z: %d  c: (%d, %d)  l: (%d, %d)  o: %d\n",
            gam->GetZone(), gam->GetXCell(), gam->GetYCell(), gam->GetXLoc(), gam->GetYLoc(), gam->GetHeading());
     for (unsigned int m = 0; m < 6; m++) {
@@ -45,6 +46,10 @@ int main(int argc, char *argv[]) {
       }
       printf("\n");
     }
+    printf("active: %s %s %s\n",
+           gam->GetMemberName(gam->GetActiveMember(0)).c_str(),
+           gam->GetMemberName(gam->GetActiveMember(1)).c_str(),
+           gam->GetMemberName(gam->GetActiveMember(2)).c_str());
     delete gam;
     FileManager::CleanUp();
     Directories::CleanUp();

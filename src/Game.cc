@@ -43,10 +43,7 @@ Game::Game()
       pc->SetButtonImage(buttonImages->GetImage(i));
       party->AddMember(pc);
     }
-    party->ActivateMember(0, 0);
-    party->ActivateMember(1, 2);
-    party->ActivateMember(2, 1);
-    camera = new Camera(0, 0, SOUTH);
+    camera = new Camera(0, 0, 0);
   } catch (Exception &e) {
     e.Print("Game::Game");
     throw;
@@ -78,6 +75,12 @@ Game::GetName()
   return name;
 }
 
+void
+Game::SetName(const std::string& s)
+{
+  name = s;
+}
+
 Party *
 Game::GetParty()
 {
@@ -94,14 +97,4 @@ Camera *
 Game::GetCamera()
 {
   return camera;
-}
-
-void
-Game::Load(FileBuffer *buffer)
-{
-  try {
-    name = buffer->GetString();
-  } catch (Exception &e) {
-    e.Print("Game::Load");
-  }
 }

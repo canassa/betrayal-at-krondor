@@ -143,6 +143,10 @@ GameApplication::StartNewGame()
     delete game;
   }
   game = new Game();
+  game->GetParty()->ActivateMember(0, 0);
+  game->GetParty()->ActivateMember(1, 2);
+  game->GetParty()->ActivateMember(2, 1);
+  game->GetCamera()->SetHeading(SOUTH);
 }
 
 void
