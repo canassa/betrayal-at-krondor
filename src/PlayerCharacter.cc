@@ -44,10 +44,22 @@ PlayerCharacter::GetName()
   return name;
 }
 
+void
+PlayerCharacter::SetName(const std::string& s)
+{
+  name = s;
+}
+
 Image *
 PlayerCharacter::GetButtonImage() const
 {
   return buttonImage;
+}
+
+void
+PlayerCharacter::SetButtonImage(Image *img)
+{
+  buttonImage = img;
 }
 
 Image *
@@ -56,10 +68,22 @@ PlayerCharacter::GetPortraitImage() const
   return portraitImage;
 }
 
+void
+PlayerCharacter::SetPortraitImage(Image *img)
+{
+  portraitImage = img;
+}
+
 CharacterClass
 PlayerCharacter::GetCharacterClass() const
 {
   return charClass;
+}
+
+void
+PlayerCharacter::SetCharacterClass(const CharacterClass cc)
+{
+  charClass = cc;
 }
 
 ConditionType
@@ -68,16 +92,34 @@ PlayerCharacter::GetCondition() const
   return condition;
 }
 
+void
+PlayerCharacter::SetCondition(const ConditionType ct)
+{
+  condition = ct;
+}
+
 int
 PlayerCharacter::GetOrder() const
 {
   return order;
 }
 
+void
+PlayerCharacter::SetOrder(const int n)
+{
+  order = n;
+}
+
 bool
 PlayerCharacter::IsSelected() const
 {
   return selected;
+}
+
+void
+PlayerCharacter::Select(const bool toggle)
+{
+  selected = toggle;
 }
 
 RatingSet&
@@ -102,28 +144,4 @@ SkillSet&
 PlayerCharacter::GetNormalSkills()
 {
   return normalSkills;
-}
-
-void
-PlayerCharacter::SetButtonImage(Image *img)
-{
-  buttonImage = img;
-}
-
-void
-PlayerCharacter::SetPortraitImage(Image *img)
-{
-  portraitImage = img;
-}
-
-void
-PlayerCharacter::SetOrder(const int n)
-{
-  order = n;
-}
-
-void
-PlayerCharacter::Select(const bool toggle)
-{
-  selected = toggle;
 }

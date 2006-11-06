@@ -81,6 +81,7 @@ class PlayerCharacter {
     PlayerCharacter(const std::string& s);
     ~PlayerCharacter();
     std::string& GetName();
+    void SetName(const std::string& s);
     Image* GetButtonImage() const;
     void SetButtonImage(Image *img);
     Image* GetPortraitImage() const;
@@ -90,7 +91,9 @@ class PlayerCharacter {
     bool IsSelected() const;
     void Select(const bool toggle);
     CharacterClass GetCharacterClass() const;
+    void SetCharacterClass(const CharacterClass cc);
     ConditionType GetCondition() const;
+    void SetCondition(const ConditionType ct);
     RatingSet& GetCurrentRatings();
     RatingSet& GetNormalRatings();
     SkillSet& GetCurrentSkills();
