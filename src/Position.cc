@@ -18,12 +18,11 @@
  */
 
 #include "Position.h"
-
-static const int CELL_SIZE = 64000;
+#include "TileWorldResource.h"
 
 Position::Position(const int x, const int y)
-: xCell(x / CELL_SIZE)
-, yCell(y / CELL_SIZE)
+: xCell(x / TILE_SIZE)
+, yCell(y / TILE_SIZE)
 , xPos(x)
 , yPos(y)
 {
@@ -69,16 +68,16 @@ void
 Position::SetPos(const int x, const int y)
 {
   xPos = x;
-  xCell = xPos / CELL_SIZE;
+  xCell = xPos / TILE_SIZE;
   yPos = y;
-  yCell = yPos / CELL_SIZE;
+  yCell = yPos / TILE_SIZE;
 }
 
 void
 Position::Adjust(const int deltaX, const int deltaY)
 {
   xPos += deltaX;
-  xCell = xPos / CELL_SIZE;
+  xCell = xPos / TILE_SIZE;
   yPos += deltaY;
-  yCell = yPos / CELL_SIZE;
+  yCell = yPos / TILE_SIZE;
 }
