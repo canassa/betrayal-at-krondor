@@ -19,7 +19,7 @@
 
 #include "Position.h"
 
-static const int CELL_SIZE = 640000;
+static const int CELL_SIZE = 64000;
 
 Position::Position(const int x, const int y)
 : xCell(x / CELL_SIZE)

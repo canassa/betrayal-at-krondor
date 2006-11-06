@@ -33,9 +33,10 @@ int main(int argc, char *argv[]) {
     GameResource *gam = new GameResource;
     FileManager::GetInstance()->Load(gam, argv[1]);
     Game *game = gam->GetGame();
-    printf("%s  (%d, %d)\n", game->GetName().c_str(), gam->GetXPos(), gam->GetYPos());
-    printf("z: %d  c: (%d, %d)  l: (%d, %d)  o: %d\n",
-           gam->GetZone(), gam->GetXCell(), gam->GetYCell(), gam->GetXLoc(), gam->GetYLoc(), gam->GetHeading());
+    printf("%s  l: (%d, %d) z: %d  c: (%d, %d)  p: (%d, %d)  o: %d\n",
+           game->GetName().c_str(), gam->GetXLoc(), gam->GetYLoc(), gam->GetZone(),
+           game->GetCamera()->GetPosition().GetXCell(), game->GetCamera()->GetPosition().GetYCell(),
+           game->GetCamera()->GetXPos(), game->GetCamera()->GetYPos(), game->GetCamera()->GetHeading());
     for (unsigned int m = 0; m < 6; m++) {
       printf("%10s:", gam->GetMemberName(m).c_str());
       for (unsigned int i = 0; i < 16; i++) {

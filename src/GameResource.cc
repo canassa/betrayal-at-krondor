@@ -22,13 +22,8 @@
 
 GameResource::GameResource()
 : game(0)
-, xpos(0)
-, ypos(0)
-, xcell(0)
-, ycell(0)
 , xloc(0)
 , yloc(0)
-, heading(0)
 , memberName()
 , memberData()
 , activeMember()
@@ -52,30 +47,6 @@ GameResource::SetGame(Game *g)
 }
 
 unsigned int
-GameResource::GetXPos() const
-{
-  return xpos;
-}
-
-void
-GameResource::SetXPos(const unsigned int x)
-{
-  xpos = x;
-}
-
-unsigned int
-GameResource::GetYPos() const
-{
-  return ypos;
-}
-
-void
-GameResource::SetYPos(const unsigned int y)
-{
-  ypos = y;
-}
-
-unsigned int
 GameResource::GetZone() const
 {
   return zone;
@@ -85,30 +56,6 @@ void
 GameResource::SetZone(const unsigned int z)
 {
   zone = z;
-}
-
-unsigned int
-GameResource::GetXCell() const
-{
-  return xcell;
-}
-
-void
-GameResource::SetXCell(const unsigned int x)
-{
-  xcell = x;
-}
-
-unsigned int
-GameResource::GetYCell() const
-{
-  return ycell;
-}
-
-void
-GameResource::SetYCell(const unsigned int y)
-{
-  ycell = y;
 }
 
 unsigned int
@@ -133,18 +80,6 @@ void
 GameResource::SetYLoc(const unsigned int y)
 {
   yloc = y;
-}
-
-unsigned int
-GameResource::GetHeading() const
-{
-  return heading;
-}
-
-void
-GameResource::SetHeading(const unsigned int h)
-{
-  heading = h;
 }
 
 std::string&
@@ -194,16 +129,21 @@ GameResource::Load(FileBuffer *buffer)
     game->SetName(buffer->GetString());
     buffer->Seek(90);
     buffer->Skip(16);
-    ypos = buffer->GetUint32LE();
-    xpos = buffer->GetUint32LE();
+    yloc = buffer->GetUint32LE();
+    xloc = buffer->GetUint32LE();
     buffer->Skip(4);
     zone = buffer->GetUint8();
-    xcell = buffer->GetUint8();
-    ycell = buffer->GetUint8();
-    xloc = buffer->GetUint32LE();
-    yloc = buffer->GetUint32LE();
+    int xcell = buffer->GetUint8();
+    int ycell = buffer->GetUint8();
+    int xpos = buffer->GetUint32LE();
+    int ypos = buffer->GetUint32LE();
+    game->GetCamera()->SetPosition(xpos, ypos);
+    if ((game->GetCamera()->GetPosition().GetXCell() != xcell) ||
+        (game->GetCamera()->GetPosition().GetYCell() != ycell)) {
+      throw DataCorruption(__FILE__, __LINE__, "cell != position");
+    }
     buffer->Skip(5);
-    heading = buffer->GetUint16LE();
+    game->GetCamera()->SetHeading(buffer->GetUint16LE());
     buffer->Skip(23);
     for (unsigned int m = 0; m < 6; m++) {
       memberName.push_back(buffer->GetString(10));
@@ -223,6 +163,7 @@ GameResource::Load(FileBuffer *buffer)
     }
   } catch (Exception &e) {
     e.Print("GameResource::Load");
+    throw;
   }
 }
 
@@ -237,16 +178,16 @@ GameResource::Save(FileBuffer *buffer)
     buffer->PutString(game->GetName());
     buffer->Seek(90);
     buffer->Skip(16);
-    buffer->PutUint32LE(ypos);
-    buffer->PutUint32LE(xpos);
+    buffer->PutUint32LE(yloc);
+    buffer->PutUint32LE(xloc);
     buffer->Skip(4);
     buffer->PutUint8(zone);
-    buffer->PutUint8(xcell);
-    buffer->PutUint8(ycell);
-    buffer->PutUint32LE(xloc);
-    buffer->PutUint32LE(yloc);
+    buffer->PutUint8(game->GetCamera()->GetPosition().GetXCell());
+    buffer->PutUint8(game->GetCamera()->GetPosition().GetYCell());
+    buffer->PutUint32LE(game->GetCamera()->GetXPos());
+    buffer->PutUint32LE(game->GetCamera()->GetYPos());
     buffer->Skip(5);
-    buffer->PutUint16LE(heading);
+    buffer->PutUint16LE(game->GetCamera()->GetHeading());
     buffer->Skip(23);
     for (unsigned int m = 0; m < 6; m++) {
       buffer->PutString(memberName[m], 10);
@@ -266,6 +207,7 @@ GameResource::Save(FileBuffer *buffer)
       buffer->PutUint8(activeMember[i]);
     }
   } catch (Exception &e) {
-    e.Print("GameResource::Load");
+    e.Print("GameResource::Save");
+    throw;
   }
 }

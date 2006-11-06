@@ -35,14 +35,9 @@ class GameResource
 : public GameData {
   private:
     Game *game;
-    unsigned int xpos;
-    unsigned int ypos;
     unsigned int zone;
-    unsigned int xcell;
-    unsigned int ycell;
     unsigned int xloc;
     unsigned int yloc;
-    unsigned int heading;
     std::vector<std::string> memberName;
     std::vector<unsigned int> memberData;
     std::vector<unsigned int> activeMember;
@@ -51,22 +46,12 @@ class GameResource
     virtual ~GameResource();
     Game * GetGame();
     void SetGame(Game *g);
-    unsigned int GetXPos() const;
-    void SetXPos(const unsigned int x);
-    unsigned int GetYPos() const;
-    void SetYPos(const unsigned int y);
     unsigned int GetZone() const;
     void SetZone(const unsigned int z);
-    unsigned int GetXCell() const;
-    void SetXCell(const unsigned int x);
-    unsigned int GetYCell() const;
-    void SetYCell(const unsigned int y);
     unsigned int GetXLoc() const;
     void SetXLoc(const unsigned int x);
     unsigned int GetYLoc() const;
     void SetYLoc(const unsigned int y);
-    unsigned int GetHeading() const;
-    void SetHeading(const unsigned int h);
     std::string& GetMemberName(const unsigned int m);
     void SetMemberName(const unsigned int m, const std::string& s);
     unsigned int GetMemberData(const unsigned int m, const unsigned int i, const unsigned int j);
