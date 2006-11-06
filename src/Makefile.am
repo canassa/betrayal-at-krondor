@@ -54,6 +54,7 @@ noinst_HEADERS = AnimationResource.h \
                  PlayerCharacter.h \
                  PopUpWidget.h \
                  PortraitWidget.h \
+                 Position.h \
                  RatingsWidget.h \
                  RequestResource.h \
                  ResourceArchive.h \
@@ -130,7 +131,9 @@ libgame_a_SOURCES = Camera.cc \
                     Party.cc \
                     Party.h \
                     PlayerCharacter.cc \
-                    PlayerCharacter.h
+                    PlayerCharacter.h \
+                    Position.cc \
+                    Position.h
 libguitoolkit_a_SOURCES = BadgeWidget.cc \
                           BadgeWidget.h \
                           ButtonWidget.cc \

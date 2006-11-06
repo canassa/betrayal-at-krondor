@@ -14,37 +14,32 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * Copyright (C) 2006 Guido de Jong <guidoj@users.sf.net>
+ * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef POSITION_H
+#define POSITION_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "Orientation.h"
-#include "Position.h"
-#include "Subject.h"
-
-class Camera
-: public Subject {
+class Position {
   private:
-    Position position;
-    Orientation orientation;
+    int xCell;
+    int yCell;
+    int xPos;
+    int yPos;
   public:
-    Camera(const int x, const int y, const int heading);
-    ~Camera();
-    Position& GetPosition();
+    Position(const int x, const int y);
+    Position(const int xc, const int yc, const int xp, const int yp);
+    ~Position();
+    int GetXCell() const;
+    int GetYCell() const;
     int GetXPos() const;
     int GetYPos() const;
-    void SetPosition(const int x, const int y);
-    Orientation& GetOrientation();
-    int GetHeading() const;
-    void SetHeading(const int heading);
-    void Move(const int delta);
-    void Turn(const int delta);
+    void SetPos(const int x, const int y);
+    void Adjust(const int deltaX, const int deltaY);
 };
 
 #endif

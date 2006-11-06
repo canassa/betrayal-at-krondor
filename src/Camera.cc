@@ -20,8 +20,7 @@
 #include "Camera.h"
 
 Camera::Camera(const int x, const int y, const int heading)
-: xpos(x)
-, ypos(y)
+: position(x, y)
 , orientation(heading)
 {
 }
@@ -30,18 +29,28 @@ Camera::~Camera()
 {
 }
 
-void
-Camera::GetPosition(int &x, int &y) const
+Position&
+Camera::GetPosition()
 {
-  x = xpos;
-  y = ypos;
+  return position;
+}
+
+int
+Camera::GetXPos() const
+{
+  return position.GetXPos();
+}
+
+int
+Camera::GetYPos() const
+{
+  return position.GetYPos();
 }
 
 void
 Camera::SetPosition(const int x, const int y)
 {
-  xpos = x;
-  ypos = y;
+  position.SetPos(x, y);
   Notify();
 }
 
@@ -61,6 +70,14 @@ void
 Camera::SetHeading(const int heading)
 {
   orientation.SetHeading(heading);
+  Notify();
+}
+
+void
+Camera::Move(const int delta)
+{
+  position.Adjust((int)((double)delta * orientation.GetSin()),
+                  (int)((double)delta * orientation.GetCos()));
   Notify();
 }
 
