@@ -25,6 +25,7 @@
 #endif
 
 #include "Image.h"
+#include "Statistics.h"
 
 typedef enum _CharacterClass {
   CLASS_WARRIOR,
@@ -42,46 +43,22 @@ typedef enum _ConditionType {
   COND_NEAR_DEATH
 } ConditionType;
 
-typedef struct _RatingSet {
-  int health;
-  int stamina;
-  int speed;
-  int strength;
-} RatingSet;
-
-typedef struct _SkillSet {
-  int defense;
-  int crossbowAccuracy;
-  int meleeAccuracy;
-  int castingAccuracy;
-  int assessment;
-  int armorcraft;
-  int weaponcraft;
-  int barding;
-  int haggling;
-  int lockpick;
-  int scouting;
-  int stealth;
-} SkillSet;
-
 class PlayerCharacter {
   private:
     std::string name;
+    Statistics statistics;
     Image *buttonImage;
     Image *portraitImage;
     int order;
     bool selected;
     CharacterClass charClass;
     ConditionType condition;
-    RatingSet currentRatings;
-    RatingSet normalRatings;
-    SkillSet currentSkills;
-    SkillSet normalSkills;
   public:
     PlayerCharacter(const std::string& s);
     ~PlayerCharacter();
     std::string& GetName();
     void SetName(const std::string& s);
+    Statistics& GetStatistics();
     Image* GetButtonImage() const;
     void SetButtonImage(Image *img);
     Image* GetPortraitImage() const;
@@ -94,10 +71,6 @@ class PlayerCharacter {
     void SetCharacterClass(const CharacterClass cc);
     ConditionType GetCondition() const;
     void SetCondition(const ConditionType ct);
-    RatingSet& GetCurrentRatings();
-    RatingSet& GetNormalRatings();
-    SkillSet& GetCurrentSkills();
-    SkillSet& GetNormalSkills();
 };
 
 #endif

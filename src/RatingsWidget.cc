@@ -36,13 +36,13 @@ RatingsWidget::RatingsWidget(const int x, const int y, const int w, const int h,
 , strengthLabel(0)
 , healthOfLabel(0)
 , staminaOfLabel(0)
-, currentHealth(0)
-, currentStamina(0)
-, currentSpeed(0)
-, currentStrength(0)
+, actualHealth(0)
+, actualStamina(0)
+, actualSpeed(0)
+, actualStrength(0)
 , maximumHealth(0)
 , maximumStamina(0)
-, currentCondition(0)
+, condition(0)
 {
   ratingsLabel = new TextWidget(x + 11, y + 5, 40, 11, f);
   ratingsLabel->SetText("Ratings:");
@@ -86,80 +86,80 @@ RatingsWidget::RatingsWidget(const int x, const int y, const int w, const int h,
   staminaOfLabel->SetShadow(COLOR_BLACK, 1, 1);
 
   std::stringstream stream;
-  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().health;
-  currentHealth = new TextWidget(x + 68, y + 19, 12, 11, f);
-  currentHealth->SetText(stream.str());
-  currentHealth->SetAlignment(HA_RIGHT, VA_TOP);
-  currentHealth->SetColor(RATINGS_TEXT_COLOR);
-  currentHealth->SetShadow(COLOR_BLACK, 1, 1);
+  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetStatistics().Get(STAT_HEALTH, STAT_ACTUAL);
+  actualHealth = new TextWidget(x + 68, y + 19, 12, 11, f);
+  actualHealth->SetText(stream.str());
+  actualHealth->SetAlignment(HA_RIGHT, VA_TOP);
+  actualHealth->SetColor(RATINGS_TEXT_COLOR);
+  actualHealth->SetShadow(COLOR_BLACK, 1, 1);
   stream.ignore(16);
-  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().stamina;
-  currentStamina = new TextWidget(x + 68, y + 30, 12, 11, f);
-  currentStamina->SetText(stream.str());
-  currentStamina->SetAlignment(HA_RIGHT, VA_TOP);
-  currentStamina->SetColor(RATINGS_TEXT_COLOR);
-  currentStamina->SetShadow(COLOR_BLACK, 1, 1);
+  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetStatistics().Get(STAT_STAMINA, STAT_ACTUAL);
+  actualStamina = new TextWidget(x + 68, y + 30, 12, 11, f);
+  actualStamina->SetText(stream.str());
+  actualStamina->SetAlignment(HA_RIGHT, VA_TOP);
+  actualStamina->SetColor(RATINGS_TEXT_COLOR);
+  actualStamina->SetShadow(COLOR_BLACK, 1, 1);
   stream.ignore(16);
-  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().speed;
-  currentSpeed = new TextWidget(x + 68, y + 41, 12, 11, f);
-  currentSpeed->SetText(stream.str());
-  currentSpeed->SetAlignment(HA_RIGHT, VA_TOP);
-  currentSpeed->SetColor(RATINGS_TEXT_COLOR);
-  currentSpeed->SetShadow(COLOR_BLACK, 1, 1);
+  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetStatistics().Get(STAT_SPEED, STAT_ACTUAL);
+  actualSpeed = new TextWidget(x + 68, y + 41, 12, 11, f);
+  actualSpeed->SetText(stream.str());
+  actualSpeed->SetAlignment(HA_RIGHT, VA_TOP);
+  actualSpeed->SetColor(RATINGS_TEXT_COLOR);
+  actualSpeed->SetShadow(COLOR_BLACK, 1, 1);
   stream.ignore(16);
-  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().strength;
-  currentStrength = new TextWidget(x + 68, y + 52, 12, 11, f);
-  currentStrength->SetText(stream.str());
-  currentStrength->SetAlignment(HA_RIGHT, VA_TOP);
-  currentStrength->SetColor(RATINGS_TEXT_COLOR);
-  currentStrength->SetShadow(COLOR_BLACK, 1, 1);
+  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetStatistics().Get(STAT_STRENGTH, STAT_ACTUAL);
+  actualStrength = new TextWidget(x + 68, y + 52, 12, 11, f);
+  actualStrength->SetText(stream.str());
+  actualStrength->SetAlignment(HA_RIGHT, VA_TOP);
+  actualStrength->SetColor(RATINGS_TEXT_COLOR);
+  actualStrength->SetShadow(COLOR_BLACK, 1, 1);
   stream.ignore(16);
-  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().health;
+  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetStatistics().Get(STAT_HEALTH, STAT_MAXIMUM);
   maximumHealth = new TextWidget(x + 98, y + 19, 12, 11, f);
   maximumHealth->SetText(stream.str());
   maximumHealth->SetAlignment(HA_RIGHT, VA_TOP);
   maximumHealth->SetColor(RATINGS_TEXT_COLOR);
   maximumHealth->SetShadow(COLOR_BLACK, 1, 1);
   stream.ignore(16);
-  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetCurrentRatings().stamina;
+  stream << std::setw(2) << std::setfill(' ') << playerCharacter->GetStatistics().Get(STAT_STAMINA, STAT_MAXIMUM);
   maximumStamina = new TextWidget(x + 98, y + 30, 12, 11, f);
   maximumStamina->SetText(stream.str());
   maximumStamina->SetAlignment(HA_RIGHT, VA_TOP);
   maximumStamina->SetColor(RATINGS_TEXT_COLOR);
   maximumStamina->SetShadow(COLOR_BLACK, 1, 1);
-  currentCondition = new TextWidget(x + 136, y + 19, 60, 11, f);
+  condition = new TextWidget(x + 136, y + 19, 60, 11, f);
   switch (playerCharacter->GetCondition()) {
     case COND_NORMAL:
-      currentCondition->SetText("Normal");
+      condition->SetText("Normal");
       break;
     case COND_SICK:
-      currentCondition->SetText("Sick");
+      condition->SetText("Sick");
       break;
     case COND_PLAGUED:
-      currentCondition->SetText("Plagued");
+      condition->SetText("Plagued");
       break;
     case COND_POISONED:
-      currentCondition->SetText("Poisoned");
+      condition->SetText("Poisoned");
       break;
     case COND_DRUNK:
-      currentCondition->SetText("Drunk");
+      condition->SetText("Drunk");
       break;
     case COND_HEALING:
-      currentCondition->SetText("Healing");
+      condition->SetText("Healing");
       break;
     case COND_STARVING:
-      currentCondition->SetText("Starving");
+      condition->SetText("Starving");
       break;
     case COND_NEAR_DEATH:
-      currentCondition->SetText("Near-death");
+      condition->SetText("Near-death");
       break;
     default:
-      currentCondition->SetText("");
+      condition->SetText("");
       break;
   }
-  currentCondition->SetAlignment(HA_LEFT, VA_TOP);
-  currentCondition->SetColor(RATINGS_TEXT_COLOR);
-  currentCondition->SetShadow(COLOR_BLACK, 1, 1);
+  condition->SetAlignment(HA_LEFT, VA_TOP);
+  condition->SetColor(RATINGS_TEXT_COLOR);
+  condition->SetShadow(COLOR_BLACK, 1, 1);
 }
 
 RatingsWidget::~RatingsWidget()
@@ -188,17 +188,17 @@ RatingsWidget::~RatingsWidget()
   if (staminaOfLabel) {
     delete staminaOfLabel;
   }
-  if (currentHealth) {
-    delete currentHealth;
+  if (actualHealth) {
+    delete actualHealth;
   }
-  if (currentStamina) {
-    delete currentStamina;
+  if (actualStamina) {
+    delete actualStamina;
   }
-  if (currentSpeed) {
-    delete currentSpeed;
+  if (actualSpeed) {
+    delete actualSpeed;
   }
-  if (currentStrength) {
-    delete currentStrength;
+  if (actualStrength) {
+    delete actualStrength;
   }
   if (maximumHealth) {
     delete maximumHealth;
@@ -206,8 +206,8 @@ RatingsWidget::~RatingsWidget()
   if (maximumStamina) {
     delete maximumStamina;
   }
-  if (currentCondition) {
-    delete currentCondition;
+  if (condition) {
+    delete condition;
   }
 }
 
@@ -250,11 +250,11 @@ RatingsWidget::Draw()
   strengthLabel->Draw();
   healthOfLabel->Draw();
   staminaOfLabel->Draw();
-  currentHealth->Draw();
-  currentStamina->Draw();
-  currentSpeed->Draw();
-  currentStrength->Draw();
+  actualHealth->Draw();
+  actualStamina->Draw();
+  actualSpeed->Draw();
+  actualStrength->Draw();
   maximumHealth->Draw();
   maximumStamina->Draw();
-  currentCondition->Draw();
+  condition->Draw();
 }

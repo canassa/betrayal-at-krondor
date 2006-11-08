@@ -58,18 +58,18 @@ SkillsWidget::SkillsWidget(const int x, const int y, const int w, const int h, P
   lockpick = new SkillLevelWidget(xpos + 145, ypos + 48, 132, 25, RIGHT_SIDE, rightSword, rightBlood, f);
   scouting = new SkillLevelWidget(xpos + 145, ypos + 64, 132, 25, RIGHT_SIDE, rightSword, rightBlood, f);
   stealth = new SkillLevelWidget(xpos + 145, ypos + 80, 132, 25, RIGHT_SIDE, rightSword, rightBlood, f);
-  defense->SetLevel("Defense", pc->GetCurrentSkills().defense);
-  crossbowAccuracy->SetLevel("Accy: Crossbow", pc->GetCurrentSkills().crossbowAccuracy);
-  meleeAccuracy->SetLevel("Accy: Melee", pc->GetCurrentSkills().meleeAccuracy);
-  castingAccuracy->SetLevel("Accy: Casting", pc->GetCurrentSkills().castingAccuracy);
-  assessment->SetLevel("Assessment", pc->GetCurrentSkills().assessment);
-  armorcraft->SetLevel("Armorcraft", pc->GetCurrentSkills().armorcraft);
-  weaponcraft->SetLevel("Weaponcraft", pc->GetCurrentSkills().weaponcraft);
-  barding->SetLevel("Barding", pc->GetCurrentSkills().barding);
-  haggling->SetLevel("Haggling", pc->GetCurrentSkills().haggling);
-  lockpick->SetLevel("Lockpick", pc->GetCurrentSkills().lockpick);
-  scouting->SetLevel("Scouting", pc->GetCurrentSkills().scouting);
-  stealth->SetLevel("Stealth", pc->GetCurrentSkills().stealth);
+  defense->SetLevel("Defense", pc->GetStatistics().Get(STAT_DEFENSE, STAT_ACTUAL));
+  crossbowAccuracy->SetLevel("Accy: Crossbow", pc->GetStatistics().Get(STAT_CROSSBOW_ACCURACY, STAT_ACTUAL));
+  meleeAccuracy->SetLevel("Accy: Melee", pc->GetStatistics().Get(STAT_MELEE_ACCURACY, STAT_ACTUAL));
+  castingAccuracy->SetLevel("Accy: Casting", pc->GetStatistics().Get(STAT_CASTING_ACCURACY, STAT_ACTUAL));
+  assessment->SetLevel("Assessment", pc->GetStatistics().Get(STAT_ASSESSMENT, STAT_ACTUAL));
+  armorcraft->SetLevel("Armorcraft", pc->GetStatistics().Get(STAT_ARMORCRAFT, STAT_ACTUAL));
+  weaponcraft->SetLevel("Weaponcraft", pc->GetStatistics().Get(STAT_WEAPONCRAFT, STAT_ACTUAL));
+  barding->SetLevel("Barding", pc->GetStatistics().Get(STAT_BARDING, STAT_ACTUAL));
+  haggling->SetLevel("Haggling", pc->GetStatistics().Get(STAT_HAGGLING, STAT_ACTUAL));
+  lockpick->SetLevel("Lockpick", pc->GetStatistics().Get(STAT_LOCKPICK, STAT_ACTUAL));
+  scouting->SetLevel("Scouting", pc->GetStatistics().Get(STAT_SCOUTING, STAT_ACTUAL));
+  stealth->SetLevel("Stealth", pc->GetStatistics().Get(STAT_STEALTH, STAT_ACTUAL));
 }
 
 SkillsWidget::~SkillsWidget()

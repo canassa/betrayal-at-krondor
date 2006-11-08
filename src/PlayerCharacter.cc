@@ -21,6 +21,7 @@
 
 PlayerCharacter::PlayerCharacter(const std::string& s)
 : name(s)
+, statistics()
 , buttonImage(0)
 , portraitImage(0)
 , order(-1)
@@ -28,10 +29,6 @@ PlayerCharacter::PlayerCharacter(const std::string& s)
 {
   charClass = CLASS_WARRIOR;
   condition = COND_NORMAL;
-  memset(&currentRatings, 0, sizeof(RatingSet));
-  memset(&normalRatings, 0, sizeof(RatingSet));
-  memset(&currentSkills, 0, sizeof(SkillSet));
-  memset(&normalSkills, 0, sizeof(SkillSet));
 }
 
 PlayerCharacter::~PlayerCharacter()
@@ -48,6 +45,12 @@ void
 PlayerCharacter::SetName(const std::string& s)
 {
   name = s;
+}
+
+Statistics&
+PlayerCharacter::GetStatistics()
+{
+  return statistics;
 }
 
 Image *
@@ -120,28 +123,4 @@ void
 PlayerCharacter::Select(const bool toggle)
 {
   selected = toggle;
-}
-
-RatingSet&
-PlayerCharacter::GetCurrentRatings()
-{
-  return currentRatings;
-}
-
-RatingSet&
-PlayerCharacter::GetNormalRatings()
-{
-  return normalRatings;
-}
-
-SkillSet&
-PlayerCharacter::GetCurrentSkills()
-{
-  return currentSkills;
-}
-
-SkillSet&
-PlayerCharacter::GetNormalSkills()
-{
-  return normalSkills;
 }

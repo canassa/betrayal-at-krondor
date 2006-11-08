@@ -70,6 +70,7 @@ noinst_HEADERS = AnimationResource.h \
                  SkillsWidget.h \
                  Sound.h \
                  SoundResource.h \
+                 Statistics.h \
                  Subject.h \
                  TaggedResource.h \
                  TestApplication.h \
@@ -133,7 +134,9 @@ libgame_a_SOURCES = Camera.cc \
                     PlayerCharacter.cc \
                     PlayerCharacter.h \
                     Position.cc \
-                    Position.h
+                    Position.h \
+                    Statistics.cc \
+                    Statistics.h
 libguitoolkit_a_SOURCES = BadgeWidget.cc \
                           BadgeWidget.h \
                           ButtonWidget.cc \
