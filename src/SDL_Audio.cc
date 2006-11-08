@@ -17,12 +17,14 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "Exception.h"
+#include "SDL_Audio.h"
+
+#if defined(HAVE_LIBSDL_MIXER) && defined(HAVE_LIBSDL_SOUND)
+
 #include "SDL.h"
 #include "SDL_mixer.h"
 #include "SDL_sound.h"
-
-#include "Exception.h"
-#include "SDL_Audio.h"
 
 static const unsigned int AUDIO_FREQUENCY       = 11025;
 static const unsigned int AUDIO_FORMAT          = AUDIO_U8;
@@ -120,3 +122,5 @@ SDL_Audio::StopSound(const int channel)
 {
   Mix_HaltChannel(channel);
 }
+
+#endif
