@@ -39,7 +39,7 @@ GameApplication* GameApplication::instance = 0;
 GameApplication::GameApplication()
 : done(false)
 , inputGrabbed(false)
-, game(0)
+, game()
 , state(GameStateIntro::GetInstance())
 , screenSaveCount(0)
 {
@@ -60,16 +60,17 @@ GameApplication::GameApplication()
   media->GetVideo()->Refresh();
   media->GetClock()->Delay(500);
 
+  game = new GameResource;
   MousePointerManager::GetInstance()->AddPointer("POINTER.BMX");
   MousePointerManager::GetInstance()->AddPointer("POINTERG.BMX");
 }
 
 GameApplication::~GameApplication()
 {
-  MousePointerManager::CleanUp();
   if (game) {
     delete game;
   }
+  MousePointerManager::CleanUp();
   MediaToolkit::CleanUp();
   SoundResource::CleanUp();
   FileManager::CleanUp();
@@ -112,7 +113,7 @@ GameApplication::CleanUp()
 Game *
 GameApplication::GetGame()
 {
-  return game;
+  return game->GetGame();
 }
 
 void
@@ -139,14 +140,11 @@ GameApplication::PlayIntro()
 void
 GameApplication::StartNewGame()
 {
-  if (game) {
-    delete game;
-  }
-  game = new Game();
-  game->GetParty()->ActivateMember(0, 0);
-  game->GetParty()->ActivateMember(1, 2);
-  game->GetParty()->ActivateMember(2, 1);
-  game->GetCamera()->SetHeading(SOUTH);
+  FileManager::GetInstance()->Load(game, "startup.gam");
+  game->GetGame()->GetParty()->ActivateMember(0, 0);
+  game->GetGame()->GetParty()->ActivateMember(1, 2);
+  game->GetGame()->GetParty()->ActivateMember(2, 1);
+  game->GetGame()->GetCamera()->SetHeading(SOUTH);
 }
 
 void

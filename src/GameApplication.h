@@ -25,7 +25,7 @@
 #endif
 
 #include "EventListener.h"
-#include "Game.h"
+#include "GameResource.h"
 #include "GameState.h"
 
 class GameApplication
@@ -36,7 +36,7 @@ class GameApplication
     friend class GameState;
     bool done;
     bool inputGrabbed;
-    Game *game;
+    GameResource *game;
     GameState *state;
     int screenSaveCount;
     static GameApplication *instance;
@@ -59,4 +59,3 @@ class GameApplication
 };
 
 #endif
-

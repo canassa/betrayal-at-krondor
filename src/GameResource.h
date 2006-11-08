@@ -38,9 +38,6 @@ class GameResource
     unsigned int zone;
     unsigned int xloc;
     unsigned int yloc;
-    std::vector<std::string> memberName;
-    std::vector<unsigned int> memberData;
-    std::vector<unsigned int> activeMember;
   public:
     GameResource();
     virtual ~GameResource();
@@ -52,12 +49,6 @@ class GameResource
     void SetXLoc(const unsigned int x);
     unsigned int GetYLoc() const;
     void SetYLoc(const unsigned int y);
-    std::string& GetMemberName(const unsigned int m);
-    void SetMemberName(const unsigned int m, const std::string& s);
-    unsigned int GetMemberData(const unsigned int m, const unsigned int i, const unsigned int j);
-    void SetMemberData(const unsigned int m, const unsigned int i, const unsigned int j, const unsigned int v);
-    unsigned int GetActiveMember(const unsigned int i);
-    void SetActiveMember(const unsigned int i, const unsigned int v);
     void Load(FileBuffer *buffer);
     void Save(FileBuffer *buffer);
 };

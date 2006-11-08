@@ -21,6 +21,7 @@
 
 Party::Party()
 : members()
+, numActiveMembers(0)
 {
 }
 
@@ -32,23 +33,45 @@ Party::~Party()
   members.clear();
 }
 
+unsigned int
+Party::GetNumMembers() const
+{
+  return members.size();
+}
+
 PlayerCharacter *
 Party::GetMember(const unsigned int n)
 {
   return members[n];
 }
 
+unsigned int
+Party::GetNumActiveMembers() const
+{
+  return numActiveMembers;
+}
+
 PlayerCharacter *
 Party::GetActiveMember(const int order)
+{
+  unsigned int n = GetActiveMemberIndex(order);
+  if (n < members.size()) {
+    return members[n];
+  }
+  return 0;
+}
+
+unsigned int
+Party::GetActiveMemberIndex(const int order) const
 {
   unsigned int i = 0;
   while (i < members.size()) {
     if (order == members[i]->GetOrder()) {
-      return members[i];
+      return i;
     }
     i++;
   }
-  return 0;
+  return members.size();
 }
 
 PlayerCharacter *
@@ -76,8 +99,10 @@ Party::ActivateMember(const unsigned int n, const int order)
   PlayerCharacter *pc = GetActiveMember(order);
   if (pc) {
     pc->SetOrder(-1);
+    numActiveMembers--;
   }
   members[n]->SetOrder(order);
+  numActiveMembers++;
 }
 
 void

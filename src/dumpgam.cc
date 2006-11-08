@@ -37,20 +37,21 @@ int main(int argc, char *argv[]) {
            game->GetName().c_str(), gam->GetXLoc(), gam->GetYLoc(), gam->GetZone(),
            game->GetCamera()->GetPosition().GetXCell(), game->GetCamera()->GetPosition().GetYCell(),
            game->GetCamera()->GetXPos(), game->GetCamera()->GetYPos(), game->GetCamera()->GetHeading());
-    for (unsigned int m = 0; m < 6; m++) {
-      printf("%10s:", gam->GetMemberName(m).c_str());
-      for (unsigned int i = 0; i < 16; i++) {
+    for (unsigned int m = 0; m < game->GetParty()->GetNumMembers(); m++) {
+      printf("%10s:", game->GetParty()->GetMember(m)->GetName().c_str());
+      for (unsigned int i = 0; i < NUM_STATS; i++) {
         printf("\n\t");
-        for (unsigned int j = 0; j < 5; j++) {
-          printf(" %3d", gam->GetMemberData(m, i, j));
+        for (unsigned int j = 0; j < NUM_STAT_VALUES; j++) {
+          printf(" %3d", game->GetParty()->GetMember(m)->GetStatistics().Get(i, j));
         }
       }
       printf("\n");
     }
-    printf("active: %s %s %s\n",
-           gam->GetMemberName(gam->GetActiveMember(0)).c_str(),
-           gam->GetMemberName(gam->GetActiveMember(1)).c_str(),
-           gam->GetMemberName(gam->GetActiveMember(2)).c_str());
+    printf("active:");
+    for (unsigned int i = 0; i < game->GetParty()->GetNumActiveMembers(); i++) {
+      printf(" %s", game->GetParty()->GetActiveMember(i)->GetName().c_str());
+    }
+    printf("\n");
     delete gam;
     FileManager::CleanUp();
     Directories::CleanUp();

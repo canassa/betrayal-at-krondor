@@ -36,21 +36,18 @@ static const int TURN_RIGHT = +1 * TURN_SIZE;
 class Party {
   private:
     std::vector<PlayerCharacter *> members;
-    int zone;
-    int xPos;
-    int yPos;
-    int xCell;
-    int yCell;
-    int xLoc;
-    int yLoc;
+    unsigned int numActiveMembers;
   public:
     Party();
     ~Party();
+    unsigned int GetNumMembers() const;
     PlayerCharacter* GetMember(const unsigned int n);
-    PlayerCharacter* GetActiveMember(const int order);
-    PlayerCharacter* GetSelectedMember();
     void AddMember(PlayerCharacter *pc);
+    unsigned int GetNumActiveMembers() const;
+    PlayerCharacter* GetActiveMember(const int order);
+    unsigned int GetActiveMemberIndex(const int order) const;
     void ActivateMember(const unsigned int n, const int order);
+    PlayerCharacter* GetSelectedMember();
     void SelectMember(const int order);
 };
 

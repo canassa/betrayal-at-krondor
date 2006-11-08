@@ -43,7 +43,10 @@ void
 Statistics::Set(const unsigned int stat, const unsigned int type, const unsigned int value)
 {
   if ((stat < NUM_STATS) && (type < NUM_STAT_VALUES)) {
-    statMatrix[stat][type] = value;
+    if (type != STAT_ACTUAL) {
+      statMatrix[stat][type] = value;
+      statMatrix[stat][STAT_ACTUAL] = statMatrix[stat][STAT_CURRENT] + statMatrix[stat][STAT_MODIFIER];
+    }
   } else {
     throw IndexOutOfRange(__FILE__, __LINE__, "statMatrix");
   }

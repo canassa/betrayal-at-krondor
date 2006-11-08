@@ -43,8 +43,8 @@ static const unsigned int STAT_STEALTH           = 15;
 static const unsigned int NUM_STATS              = 16;
 
 static const unsigned int STAT_MAXIMUM    = 0;
-static const unsigned int STAT_ACTUAL     = 1;
-static const unsigned int STAT_CURRENT    = 2;
+static const unsigned int STAT_CURRENT    = 1;
+static const unsigned int STAT_ACTUAL     = 2;
 static const unsigned int STAT_EXPERIENCE = 3;
 static const unsigned int STAT_MODIFIER   = 4;
 static const unsigned int NUM_STAT_VALUES = 5;

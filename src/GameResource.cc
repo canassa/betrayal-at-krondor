@@ -24,14 +24,14 @@ GameResource::GameResource()
 : game(0)
 , xloc(0)
 , yloc(0)
-, memberName()
-, memberData()
-, activeMember()
 {
 }
 
 GameResource::~GameResource()
 {
+  if (game) {
+    delete game;
+  }
 }
 
 Game *
@@ -82,42 +82,6 @@ GameResource::SetYLoc(const unsigned int y)
   yloc = y;
 }
 
-std::string&
-GameResource::GetMemberName(const unsigned int m)
-{
-  return memberName[m];
-}
-
-void
-GameResource::SetMemberName(const unsigned int m, const std::string& s)
-{
-  memberName[m] = s;
-}
-
-unsigned int
-GameResource::GetMemberData(const unsigned int m, const unsigned int i, const unsigned int j)
-{
-  return memberData[(m * 16 + i) * 5 + j];
-}
-
-void
-GameResource::SetMemberData(const unsigned int m, const unsigned int i, const unsigned int j, const unsigned int v)
-{
-  memberData[(m * 16 + i) * 5 + j] = v;
-}
-
-unsigned int
-GameResource::GetActiveMember(const unsigned int i)
-{
-  return activeMember[i];
-}
-
-void
-GameResource::SetActiveMember(const unsigned int i, const unsigned int v)
-{
-  activeMember[i] = v;
-}
-
 void
 GameResource::Load(FileBuffer *buffer)
 {
@@ -145,21 +109,24 @@ GameResource::Load(FileBuffer *buffer)
     buffer->Skip(5);
     game->GetCamera()->SetHeading(buffer->GetUint16LE());
     buffer->Skip(23);
-    for (unsigned int m = 0; m < 6; m++) {
-      memberName.push_back(buffer->GetString(10));
+    for (unsigned int m = 0; m < game->GetParty()->GetNumMembers(); m++) {
+      game->GetParty()->GetMember(m)->SetName(buffer->GetString(10));
     }
-    for (unsigned int m = 0; m < 6; m++) {
+    for (unsigned int m = 0; m < game->GetParty()->GetNumMembers(); m++) {
       buffer->Skip(8);
-      for (unsigned int i = 0; i < 16; i++) {
-        for (unsigned int j = 0; j < 5; j++) {
-          memberData.push_back(buffer->GetUint8());
+      for (unsigned int i = 0; i < NUM_STATS; i++) {
+        for (unsigned int j = 0; j < NUM_STAT_VALUES; j++) {
+          game->GetParty()->GetMember(m)->GetStatistics().Set(i, j, buffer->GetUint8());
         }
       }
       buffer->Skip(7);
     }
     unsigned int n = buffer->GetUint8();
     for (unsigned int i = 0; i < n; i++) {
-      activeMember.push_back(buffer->GetUint8());
+      game->GetParty()->ActivateMember(buffer->GetUint8(), i);
+    }
+    if (game->GetParty()->GetNumActiveMembers() != n) {
+      throw DataCorruption(__FILE__, __LINE__, "active members");
     }
   } catch (Exception &e) {
     e.Print("GameResource::Load");
@@ -189,22 +156,22 @@ GameResource::Save(FileBuffer *buffer)
     buffer->Skip(5);
     buffer->PutUint16LE(game->GetCamera()->GetHeading());
     buffer->Skip(23);
-    for (unsigned int m = 0; m < 6; m++) {
-      buffer->PutString(memberName[m], 10);
+    for (unsigned int m = 0; m < game->GetParty()->GetNumMembers(); m++) {
+      buffer->PutString(game->GetParty()->GetMember(m)->GetName(), 10);
     }
-    for (unsigned int m = 0; m < 6; m++) {
+    for (unsigned int m = 0; m < game->GetParty()->GetNumMembers(); m++) {
       buffer->Skip(8);
-      for (unsigned int i = 0; i < 16; i++) {
-        for (unsigned int j = 0; j < 5; j++) {
-          buffer->PutUint8(memberData[(m * 16 + i) * 5 + j]);
+      for (unsigned int i = 0; i < NUM_STATS; i++) {
+        for (unsigned int j = 0; j < NUM_STAT_VALUES; j++) {
+          buffer->PutUint8(game->GetParty()->GetMember(m)->GetStatistics().Get(i, j));
         }
       }
       buffer->PutUint8(m + 1);
       buffer->Skip(6);
     }
-    buffer->PutUint8(activeMember.size());
-    for (unsigned int i = 0; i < activeMember.size(); i++) {
-      buffer->PutUint8(activeMember[i]);
+    buffer->PutUint8(game->GetParty()->GetNumActiveMembers());
+    for (unsigned int i = 0; i < game->GetParty()->GetNumActiveMembers(); i++) {
+      buffer->PutUint8(game->GetParty()->GetActiveMemberIndex(i));
     }
   } catch (Exception &e) {
     e.Print("GameResource::Save");
