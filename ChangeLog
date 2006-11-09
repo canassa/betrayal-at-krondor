@@ -1,8 +1,9 @@
 2006-11-xx, xbak-0.0.12:
 * Added the character info dialog.
+* Character stats are loaded from the startup game file.
 * Added a dummy audio driver.
 * Major refactoring around Dialog class.
-* Initial implementation for saving data.
+* Framework implementation for saving data.
 * Fixed compilation errors.
 * Several bug fixes.
 
