@@ -159,6 +159,9 @@ GameDialog::KeyPressed(const KeyboardEvent& kbe)
         action = ACT_ESCAPE;
         running = false;
         break;
+      case KEY_TAB:
+        window->SelectNextWidget();
+        break;
       case KEY_UP:
         action = ACT_UP;
         running = false;
@@ -213,7 +216,7 @@ OptionsDialog::KeyPressed(const KeyboardEvent& kbe)
       case KEY_DOWN:
       case KEY_TAB:
         window->SelectNextWidget();
-      break;
+        break;
       case KEY_UP:
         window->SelectPreviousWidget();
         break;
