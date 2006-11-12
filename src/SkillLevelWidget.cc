@@ -79,13 +79,15 @@ SkillLevelWidget::SetLevel(const std::string& s, const int x)
 void
 SkillLevelWidget::Draw()
 {
-  skill->Draw();
-  level->Draw();
-  sword->Draw(xpos, ypos + 2, 0);
-  int w = (int)(blood->GetWidth() * value / 100.0f);
-  if (side == LEFT_SIDE) {
-    blood->Draw(xpos + 31, ypos + 10, xpos + 31 + blood->GetWidth() - w, ypos + 10, w, blood->GetHeight(), 0);
-  } else {
-    blood->Draw(xpos, ypos + 10, xpos, ypos + 10, w, blood->GetHeight(), 0);
+  if (IsVisible()) {
+    skill->Draw();
+    level->Draw();
+    sword->Draw(xpos, ypos + 2, 0);
+    int w = (int)(blood->GetWidth() * value / 100.0f);
+    if (side == LEFT_SIDE) {
+      blood->Draw(xpos + 31, ypos + 10, xpos + 31 + blood->GetWidth() - w, ypos + 10, w, blood->GetHeight(), 0);
+    } else {
+      blood->Draw(xpos, ypos + 10, xpos, ypos + 10, w, blood->GetHeight(), 0);
+    }
   }
 }

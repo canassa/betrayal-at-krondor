@@ -48,6 +48,7 @@ class Widget {
     int ypos;
     int width;
     int height;
+    bool visible;
   public:
     Widget(const int x, const int y, const int w, const int h);
     virtual ~Widget();
@@ -58,6 +59,8 @@ class Widget {
     int GetYCenter() const;
     int GetWidth() const;
     int GetHeight() const;
+    void SetVisible(const bool toggle);
+    bool IsVisible() const;
     virtual void Draw() = 0;
 };
 

@@ -73,46 +73,48 @@ TextWidget::SetAlignment(const HorizontalAlignment ha, const VerticalAlignment v
 void
 TextWidget::Draw()
 {
-  unsigned int i;
-  unsigned int w;
-  int xoff = 0;
-  int yoff = 0;
-  switch (horAlign) {
-    case HA_LEFT:
-      xoff = 0;
-      break;
-    case HA_CENTER:
-      xoff = (width - textWidth) / 2;
-      break;
-    case HA_RIGHT:
-      xoff = width - textWidth;
-      break;
-  }
-  switch (vertAlign) {
-    case VA_TOP:
-      yoff = 0;
-      break;
-    case VA_CENTER:
-      yoff = (height - textHeight) / 2;
-      break;
-    case VA_BOTTOM:
-      yoff = height - textHeight;
-      break;
-  }
-  if ((shadow > NO_SHADOW) && ((shadowXoff != 0) || (shadowYoff != 0))) {
+  if (IsVisible()) {
+    unsigned int i;
+    unsigned int w;
+    int xoff = 0;
+    int yoff = 0;
+      switch (horAlign) {
+      case HA_LEFT:
+        xoff = 0;
+        break;
+      case HA_CENTER:
+        xoff = (width - textWidth) / 2;
+        break;
+      case HA_RIGHT:
+        xoff = width - textWidth;
+        break;
+    }
+    switch (vertAlign) {
+      case VA_TOP:
+        yoff = 0;
+        break;
+      case VA_CENTER:
+        yoff = (height - textHeight) / 2;
+        break;
+      case VA_BOTTOM:
+        yoff = height - textHeight;
+        break;
+    }
+    if ((shadow > NO_SHADOW) && ((shadowXoff != 0) || (shadowYoff != 0))) {
+      i = 0;
+      w = 0;
+      while ((i < text.length()) && (w + font.GetWidth(text[i] - font.GetFirst()) < (unsigned)width)) {
+        font.DrawChar(xpos + xoff + shadowXoff + w, ypos + yoff + shadowYoff, text[i], shadow, false);
+        w += font.GetWidth((unsigned int)text[i] - font.GetFirst());
+        i++;
+      }
+    }
     i = 0;
     w = 0;
     while ((i < text.length()) && (w + font.GetWidth(text[i] - font.GetFirst()) < (unsigned)width)) {
-      font.DrawChar(xpos + xoff + shadowXoff + w, ypos + yoff + shadowYoff, text[i], shadow, false);
+      font.DrawChar(xpos + xoff + w, ypos + yoff, text[i], color, false);
       w += font.GetWidth((unsigned int)text[i] - font.GetFirst());
       i++;
     }
-  }
-  i = 0;
-  w = 0;
-  while ((i < text.length()) && (w + font.GetWidth(text[i] - font.GetFirst()) < (unsigned)width)) {
-    font.DrawChar(xpos + xoff + w, ypos + yoff, text[i], color, false);
-    w += font.GetWidth((unsigned int)text[i] - font.GetFirst());
-    i++;
   }
 }

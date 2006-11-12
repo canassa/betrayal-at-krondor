@@ -39,9 +39,11 @@ PanelWidget::SetBackground(Image *img)
 void
 PanelWidget::Draw()
 {
-  MediaToolkit::GetInstance()->GetVideo()->Clear(xpos, ypos, width, height);
-  if (background) {
-    background->Draw(xpos, ypos);
+  if (IsVisible()) {
+    MediaToolkit::GetInstance()->GetVideo()->Clear(xpos, ypos, width, height);
+    if (background) {
+      background->Draw(xpos, ypos);
+    }
+    DrawChildWidgets();
   }
-  DrawChildWidgets();
 }

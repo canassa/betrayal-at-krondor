@@ -24,6 +24,7 @@ Widget::Widget(const int x, const int y, const int w, const int h)
 , ypos(y)
 , width(w)
 , height(h)
+, visible(true)
 {
 }
 
@@ -72,6 +73,18 @@ int
 Widget::GetHeight() const
 {
   return height;
+}
+
+void
+Widget::SetVisible(const bool toggle)
+{
+  visible = toggle;
+}
+
+bool
+Widget::IsVisible() const
+{
+  return visible;
 }
 
 

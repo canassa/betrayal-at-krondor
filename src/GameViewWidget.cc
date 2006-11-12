@@ -38,10 +38,12 @@ GameViewWidget::~GameViewWidget()
 void
 GameViewWidget::Draw()
 {
-  if (cachedImage) {
-    cachedImage->Draw(xpos, ypos);
+  if (IsVisible()) {
+    if (cachedImage) {
+      cachedImage->Draw(xpos, ypos);
+    }
+    DrawChildWidgets();
   }
-  DrawChildWidgets();
 }
 
 void

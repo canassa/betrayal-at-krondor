@@ -31,6 +31,8 @@ ChoiceWidget::~ChoiceWidget()
 void
 ChoiceWidget::Draw()
 {
+  if (IsVisible()) {
+  }
 }
 
 void

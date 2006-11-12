@@ -67,6 +67,7 @@ Dialog::Leave()
   try {
     MediaToolkit* media = MediaToolkit::GetInstance();
     window->FadeOut(palette);
+    window->MouseOverWidget(VIDEO_WIDTH, VIDEO_HEIGHT);
     media->RemoveMouseButtonListener(this);
     media->RemoveKeyboardListener(this);
     MousePointerManager::GetInstance()->GetCurrentPointer()->Detach(this);

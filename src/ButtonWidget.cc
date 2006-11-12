@@ -23,7 +23,6 @@
 
 ButtonWidget::ButtonWidget(const int x, const int y, const int w, const int h, const int a)
 : ActiveWidget(x, y, w, h, a)
-, visible(true)
 , enabled(true)
 , pressed(false)
 {
@@ -37,18 +36,6 @@ int
 ButtonWidget::GetAction() const
 {
   return action;
-}
-
-void
-ButtonWidget::SetVisible(const bool toggle)
-{
-  visible = toggle;
-}
-
-bool
-ButtonWidget::IsVisible() const
-{
-  return visible;
 }
 
 void

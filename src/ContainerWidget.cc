@@ -49,7 +49,7 @@ void
 ContainerWidget::AddActiveWidget(ActiveWidget *aw)
 {
   activeWidgets.push_back(aw);
-  currentActiveWidget = activeWidgets.begin();
+  currentActiveWidget = activeWidgets.end();
 }
 
 void
@@ -62,7 +62,7 @@ void
 ContainerWidget::RemoveActiveWidget(ActiveWidget *aw)
 {
   activeWidgets.remove(aw);
-  currentActiveWidget = activeWidgets.begin();
+  currentActiveWidget = activeWidgets.end();
 }
 
 void
@@ -79,17 +79,23 @@ ContainerWidget::DrawChildWidgets()
 void
 ContainerWidget::Draw()
 {
-  DrawChildWidgets();
+  if (IsVisible()) {
+    DrawChildWidgets();
+  }
 }
 
 void
 ContainerWidget::NextWidget()
 {
   if (activeWidgets.size() > 0) {
-    currentActiveWidget++;
-    if (currentActiveWidget == activeWidgets.end()) {
-      currentActiveWidget = activeWidgets.begin();
-    }
+    do {
+      if (currentActiveWidget != activeWidgets.end()) {
+        currentActiveWidget++;
+      }
+      if (currentActiveWidget == activeWidgets.end()) {
+        currentActiveWidget = activeWidgets.begin();
+      }
+    } while (!((*currentActiveWidget)->IsVisible()));
     (*currentActiveWidget)->Focus();
   }
 }
@@ -98,10 +104,12 @@ void
 ContainerWidget::PreviousWidget()
 {
   if (activeWidgets.size() > 0) {
-    if (currentActiveWidget == activeWidgets.begin()) {
-      currentActiveWidget = activeWidgets.end();
-    }
-    currentActiveWidget--;
+    do {
+      if (currentActiveWidget == activeWidgets.begin()) {
+        currentActiveWidget = activeWidgets.end();
+      }
+      currentActiveWidget--;
+    } while (!((*currentActiveWidget)->IsVisible()));
     (*currentActiveWidget)->Focus();
   }
 }
@@ -109,7 +117,7 @@ ContainerWidget::PreviousWidget()
 void
 ContainerWidget::LeftClickWidget(const bool toggle)
 {
-  if (activeWidgets.size() > 0) {
+  if ((activeWidgets.size() > 0) && (currentActiveWidget != activeWidgets.end())) {
     (*currentActiveWidget)->LeftClick(toggle);
   }
 }
@@ -117,7 +125,7 @@ ContainerWidget::LeftClickWidget(const bool toggle)
 void
 ContainerWidget::RightClickWidget(const bool toggle)
 {
-  if (activeWidgets.size() > 0) {
+  if ((activeWidgets.size() > 0) && (currentActiveWidget != activeWidgets.end())) {
     (*currentActiveWidget)->RightClick(toggle);
   }
 }
@@ -138,6 +146,16 @@ ContainerWidget::RightClickWidget(const bool toggle, const int x, const int y)
   for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
     if ((*it)->Covers(x, y)) {
       (*it)->RightClick(toggle);
+    }
+  }
+}
+
+void
+ContainerWidget::MouseOverWidget(const int x, const int y)
+{
+  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
+    if (!(*it)->Covers(x, y)) {
+      (*it)->LeftClick(false);
     }
   }
 }

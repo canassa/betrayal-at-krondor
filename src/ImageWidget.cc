@@ -46,5 +46,7 @@ ImageWidget::VerticalFlip()
 void
 ImageWidget::Draw()
 {
-  image->Draw(xpos, ypos, xpos, ypos, width, height, 0);
+  if (IsVisible()) {
+    image->Draw(xpos, ypos, xpos, ypos, width, height, 0);
+  }
 }

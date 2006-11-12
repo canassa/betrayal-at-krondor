@@ -57,7 +57,6 @@ CharacterButtonWidget*
 WidgetFactory::CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource& img, ActionEventListener *ael)
 {
   CharacterButtonWidget *button = new CharacterButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
-  button->SetVisible(true);
   button->SetCharacter(pc);
   button->SetImage(img.GetImage(SELECTED_IMAGE));
   button->AddActionListener(ael);

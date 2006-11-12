@@ -221,40 +221,42 @@ RatingsWidget::SetBorders(Image *hb, Image *vb)
 void
 RatingsWidget::Draw()
 {
-  int xoff = 0;
-  int yoff = 0;
-  if (horizontalBorder && verticalBorder)
-  {
-    horizontalBorder->Draw(xpos + verticalBorder->GetWidth(), ypos,
-                           xpos + verticalBorder->GetWidth(), ypos,
-                           width - 2 * verticalBorder->GetWidth(), horizontalBorder->GetHeight());
-    horizontalBorder->Draw(xpos + verticalBorder->GetWidth(), ypos + height - horizontalBorder->GetHeight(),
-                           xpos + verticalBorder->GetWidth(), ypos + height - horizontalBorder->GetHeight(),
-                           width - 2 * verticalBorder->GetWidth(), horizontalBorder->GetHeight());
-    verticalBorder->Draw(xpos, ypos,
-                         xpos, ypos,
-                         verticalBorder->GetWidth(), height);
-    verticalBorder->Draw(xpos + width - verticalBorder->GetWidth(), ypos,
-                         xpos + width - verticalBorder->GetWidth(), ypos,
-                         verticalBorder->GetWidth(), height);
-    xoff = verticalBorder->GetWidth();
-    yoff = horizontalBorder->GetHeight();
+  if (IsVisible()) {
+    int xoff = 0;
+    int yoff = 0;
+    if (horizontalBorder && verticalBorder)
+    {
+      horizontalBorder->Draw(xpos + verticalBorder->GetWidth(), ypos,
+                            xpos + verticalBorder->GetWidth(), ypos,
+                            width - 2 * verticalBorder->GetWidth(), horizontalBorder->GetHeight());
+      horizontalBorder->Draw(xpos + verticalBorder->GetWidth(), ypos + height - horizontalBorder->GetHeight(),
+                            xpos + verticalBorder->GetWidth(), ypos + height - horizontalBorder->GetHeight(),
+                            width - 2 * verticalBorder->GetWidth(), horizontalBorder->GetHeight());
+      verticalBorder->Draw(xpos, ypos,
+                          xpos, ypos,
+                          verticalBorder->GetWidth(), height);
+      verticalBorder->Draw(xpos + width - verticalBorder->GetWidth(), ypos,
+                          xpos + width - verticalBorder->GetWidth(), ypos,
+                          verticalBorder->GetWidth(), height);
+      xoff = verticalBorder->GetWidth();
+      yoff = horizontalBorder->GetHeight();
+    }
+    Video *video = MediaToolkit::GetInstance()->GetVideo();
+    video->FillRect(xpos + xoff, ypos + yoff, width - 2 * xoff, height - 2 * yoff, 168);
+    ratingsLabel->Draw();
+    conditionLabel->Draw();
+    healthLabel->Draw();
+    staminaLabel->Draw();
+    speedLabel->Draw();
+    strengthLabel->Draw();
+    healthOfLabel->Draw();
+    staminaOfLabel->Draw();
+    actualHealth->Draw();
+    actualStamina->Draw();
+    actualSpeed->Draw();
+    actualStrength->Draw();
+    maximumHealth->Draw();
+    maximumStamina->Draw();
+    condition->Draw();
   }
-  Video *video = MediaToolkit::GetInstance()->GetVideo();
-  video->FillRect(xpos + xoff, ypos + yoff, width - 2 * xoff, height - 2 * yoff, 168);
-  ratingsLabel->Draw();
-  conditionLabel->Draw();
-  healthLabel->Draw();
-  staminaLabel->Draw();
-  speedLabel->Draw();
-  strengthLabel->Draw();
-  healthOfLabel->Draw();
-  staminaOfLabel->Draw();
-  actualHealth->Draw();
-  actualStamina->Draw();
-  actualSpeed->Draw();
-  actualStrength->Draw();
-  maximumHealth->Draw();
-  maximumStamina->Draw();
-  condition->Draw();
 }

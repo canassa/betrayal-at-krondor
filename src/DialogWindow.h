@@ -40,6 +40,7 @@ class DialogWindow {
     void RightClickWidget(const bool toggle);
     void LeftClickWidget(const bool toggle, const int x, const int y);
     void RightClickWidget(const bool toggle, const int x, const int y);
+    void MouseOverWidget(const int x, const int y);
     void SelectNextWidget();
     void SelectPreviousWidget();
 };

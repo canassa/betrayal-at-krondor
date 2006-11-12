@@ -83,16 +83,18 @@ SkillsWidget::~SkillsWidget()
 void
 SkillsWidget::Draw()
 {
-  defense->Draw();
-  crossbowAccuracy->Draw();
-  meleeAccuracy->Draw();
-  castingAccuracy->Draw();
-  assessment->Draw();
-  armorcraft->Draw();
-  weaponcraft->Draw();
-  barding->Draw();
-  haggling->Draw();
-  lockpick->Draw();
-  scouting->Draw();
-  stealth->Draw();
+  if (IsVisible()) {
+    defense->Draw();
+    crossbowAccuracy->Draw();
+    meleeAccuracy->Draw();
+    castingAccuracy->Draw();
+    assessment->Draw();
+    armorcraft->Draw();
+    weaponcraft->Draw();
+    barding->Draw();
+    haggling->Draw();
+    lockpick->Draw();
+    scouting->Draw();
+    stealth->Draw();
+  }
 }

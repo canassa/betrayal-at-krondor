@@ -46,8 +46,10 @@ CompassWidget::~CompassWidget()
 void
 CompassWidget::Draw()
 {
-  if (cachedImage){
-    cachedImage->Draw(xpos, ypos);
+  if (IsVisible()) {
+    if (cachedImage){
+      cachedImage->Draw(xpos, ypos);
+    }
   }
 }
 

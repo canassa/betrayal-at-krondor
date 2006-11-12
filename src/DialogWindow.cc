@@ -81,6 +81,12 @@ DialogWindow::RightClickWidget(const bool toggle, const int x, const int y)
 }
 
 void
+DialogWindow::MouseOverWidget(const int x, const int y)
+{
+  panel->MouseOverWidget(x, y);
+}
+
+void
 DialogWindow::SelectNextWidget()
 {
   panel->NextWidget();

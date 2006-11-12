@@ -31,6 +31,8 @@ TickboxWidget::~TickboxWidget()
 void
 TickboxWidget::Draw()
 {
+  if (IsVisible()) {
+  }
 }
 
 void

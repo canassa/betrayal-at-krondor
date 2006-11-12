@@ -45,13 +45,15 @@ BadgeWidget::SetLabel(const std::string& s, FontResource& f)
 void
 BadgeWidget::Draw()
 {
-  Video *video = MediaToolkit::GetInstance()->GetVideo();
-  video->FillRect(xpos + 1, ypos + 1, width - 2, height - 2, BUTTON_COLOR_NORMAL);
-  video->DrawVLine(xpos, ypos, height, SHADOW_COLOR);
-  video->DrawHLine(xpos + 1, ypos, width - 1, LIGHT_COLOR);
-  video->DrawVLine(xpos + width - 1, ypos + 1, height - 2, LIGHT_COLOR);
-  video->DrawHLine(xpos + 1, ypos + height - 1, width - 1, SHADOW_COLOR);
-  if (label) {
-    label->Draw();
+  if (IsVisible()) {
+    Video *video = MediaToolkit::GetInstance()->GetVideo();
+    video->FillRect(xpos + 1, ypos + 1, width - 2, height - 2, BUTTON_COLOR_NORMAL);
+    video->DrawVLine(xpos, ypos, height, SHADOW_COLOR);
+    video->DrawHLine(xpos + 1, ypos, width - 1, LIGHT_COLOR);
+    video->DrawVLine(xpos + width - 1, ypos + 1, height - 2, LIGHT_COLOR);
+    video->DrawHLine(xpos + 1, ypos + height - 1, width - 1, SHADOW_COLOR);
+    if (label) {
+      label->Draw();
+    }
   }
 }
