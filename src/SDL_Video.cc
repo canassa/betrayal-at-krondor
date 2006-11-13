@@ -409,5 +409,6 @@ SDL_Video::GrabInput(const bool toggle)
 void
 SDL_Video::SaveScreenShot(const std::string& filename)
 {
+  SDL_UpdateRect(buffer, 0, 0, 0, 0);
   SDL_SaveBMP(buffer, filename.c_str());
 }
