@@ -1,4 +1,4 @@
-/*
+  /*
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or (at
@@ -28,10 +28,6 @@
 
 #include "Orientation.h"
 #include "PlayerCharacter.h"
-
-static const int TURN_SIZE  = 2;
-static const int TURN_LEFT  = -1 * TURN_SIZE;
-static const int TURN_RIGHT = +1 * TURN_SIZE;
 
 class Party {
   private:

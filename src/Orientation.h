@@ -31,6 +31,10 @@ static const int EAST  = 64;
 static const int SOUTH = 128;
 static const int WEST  = 192;
 
+static const int TURN_SIZE  = 2;
+static const int TURN_LEFT  = -1 * TURN_SIZE;
+static const int TURN_RIGHT = +1 * TURN_SIZE;
+
 class Orientation {
   private:
     int heading;
