@@ -20,8 +20,6 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
-#include <vector>
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -35,6 +33,7 @@ class Image {
     uint8_t *pixel;
   public:
     Image(const int w, const int h);
+    Image(const int w, const int h, const uint8_t *p);
     Image(Image *img);
     ~Image();
     int GetWidth() const;

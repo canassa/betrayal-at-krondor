@@ -23,6 +23,7 @@
 #include "FileManager.h"
 #include "ImageResource.h"
 #include "MediaToolkit.h"
+#include "ScreenResource.h"
 #include "WorldViewWidget.h"
 
 WorldViewWidget::WorldViewWidget(const int x, const int y, const int w, const int h, Game *g)
@@ -64,6 +65,23 @@ WorldViewWidget::DrawHorizon()
 void
 WorldViewWidget::DrawTerrain()
 {
+  static const int TERRAIN_HEIGHT = 38;
+  static const int TERRAIN_YOFFSET = -82;
+  static const int TERRAIN_IMAGE_WIDTH = 172;
+  static const int TERRAIN_IMAGE_HEIGHT = 130;
+  std::stringstream stream;
+  stream << "Z" << std::setw(2) << std::setfill('0') << game->GetChapter()->Get() << "L.SCX";
+  ScreenResource terrain;
+  FileManager::GetInstance()->Load(&terrain, stream.str());
+  Image *terrainImage = new Image(TERRAIN_IMAGE_WIDTH, TERRAIN_IMAGE_HEIGHT, terrain.GetImage()->GetPixels());
+  int offset = TERRAIN_IMAGE_WIDTH - xpos - ((game->GetCamera()->GetHeading() * 16) % TERRAIN_IMAGE_WIDTH);
+  if (offset > 0) {
+    terrainImage->Draw(xpos + offset - TERRAIN_IMAGE_WIDTH, ypos + 1 + height - TERRAIN_HEIGHT + TERRAIN_YOFFSET, xpos, ypos + height - TERRAIN_HEIGHT, width, TERRAIN_HEIGHT);
+  }
+  terrainImage->Draw(xpos + offset, ypos + height - TERRAIN_HEIGHT + TERRAIN_YOFFSET, xpos, ypos + height - TERRAIN_HEIGHT, width, TERRAIN_HEIGHT);
+  if ((TERRAIN_IMAGE_WIDTH + offset) < width) {
+    terrainImage->Draw(xpos + offset + TERRAIN_IMAGE_WIDTH, ypos - 1 + height - TERRAIN_HEIGHT + TERRAIN_YOFFSET, xpos, ypos + height - TERRAIN_HEIGHT, width, TERRAIN_HEIGHT);
+  }
 }
 
 void

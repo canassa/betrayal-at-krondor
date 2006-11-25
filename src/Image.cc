@@ -39,6 +39,20 @@ Image::Image(const int w, const int h)
   }
 }
 
+Image::Image(const int w, const int h, const uint8_t *p)
+: width(w)
+, height(h)
+, pixel(0)
+{
+  if ((width > 0) && (height > 0)) {
+    pixel = new uint8_t[width * height];
+    memcpy(pixel, p, width * height);
+  } else {
+    width = 0;
+    height = 0;
+  }
+}
+
 Image::Image(Image *img)
 : width(img->width)
 , height(img->height)
