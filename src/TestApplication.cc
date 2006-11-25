@@ -217,6 +217,9 @@ TestApplication::KeyPressed(const KeyboardEvent &kbe)
     case KEY_SPACE:
       MediaToolkit::GetInstance()->TerminateEventLoop();
       break;
+    case KEY_F11:
+      MediaToolkit::GetInstance()->GetVideo()->SaveScreenShot("screenshot.bmp");
+      break;
     default:
       break;
   }
