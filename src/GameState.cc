@@ -1136,8 +1136,12 @@ GameStateWorld::Execute()
       break;
     case ACT_UP:
     case MAIN_UP:
+      GameApplication::GetInstance()->GetGame()->GetCamera()->Move(MOVE_FORWARD);
+      break;
     case ACT_DOWN:
     case MAIN_DOWN:
+      GameApplication::GetInstance()->GetGame()->GetCamera()->Move(MOVE_BACKWARD);
+      break;
     case MAIN_BOOKMARK:
     case MAIN_UNKNOWN:
       break;

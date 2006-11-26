@@ -74,7 +74,8 @@ WorldViewWidget::DrawTerrain()
   ScreenResource terrain;
   FileManager::GetInstance()->Load(&terrain, stream.str());
   Image *terrainImage = new Image(TERRAIN_IMAGE_WIDTH, TERRAIN_IMAGE_HEIGHT, terrain.GetImage()->GetPixels());
-  int offset = TERRAIN_IMAGE_WIDTH - xpos - ((game->GetCamera()->GetHeading() * 16) % TERRAIN_IMAGE_WIDTH);
+  int offset = TERRAIN_IMAGE_WIDTH - xpos -
+               (((game->GetCamera()->GetHeading() * 16) + ((game->GetCamera()->GetXPos() + game->GetCamera()->GetYPos()) / 100)) % TERRAIN_IMAGE_WIDTH);
   if (offset > 0) {
     terrainImage->Draw(xpos + offset - TERRAIN_IMAGE_WIDTH, ypos + 1 + height - TERRAIN_HEIGHT + TERRAIN_YOFFSET, xpos, ypos + height - TERRAIN_HEIGHT, width, TERRAIN_HEIGHT);
   }
