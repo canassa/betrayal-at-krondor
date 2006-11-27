@@ -46,18 +46,14 @@ PortraitWidget::Draw()
     int yoff = 0;
     if (horizontalBorder && verticalBorder)
     {
-      horizontalBorder->Draw(xpos + verticalBorder->GetWidth(), ypos,
-                            xpos + verticalBorder->GetWidth(), ypos,
-                            width - 2 * verticalBorder->GetWidth(), horizontalBorder->GetHeight());
-      horizontalBorder->Draw(xpos + verticalBorder->GetWidth(), ypos + height - horizontalBorder->GetHeight(),
-                            xpos + verticalBorder->GetWidth(), ypos + height - horizontalBorder->GetHeight(),
-                            width - 2 * verticalBorder->GetWidth(), horizontalBorder->GetHeight());
-      verticalBorder->Draw(xpos, ypos,
-                          xpos, ypos,
-                          verticalBorder->GetWidth(), height);
-      verticalBorder->Draw(xpos + width - verticalBorder->GetWidth(), ypos,
-                          xpos + width - verticalBorder->GetWidth(), ypos,
-                          verticalBorder->GetWidth(), height);
+      horizontalBorder->Draw(xpos + verticalBorder->GetWidth(), ypos, 0, 0,
+                             width - 2 * verticalBorder->GetWidth(), horizontalBorder->GetHeight());
+      horizontalBorder->Draw(xpos + verticalBorder->GetWidth(), ypos + height - horizontalBorder->GetHeight(), 0, 0,
+                             width - 2 * verticalBorder->GetWidth(), horizontalBorder->GetHeight());
+      verticalBorder->Draw(xpos, ypos, 0, 0,
+                           verticalBorder->GetWidth(), height);
+      verticalBorder->Draw(xpos + width - verticalBorder->GetWidth(), ypos, 0, 0,
+                           verticalBorder->GetWidth(), height);
       xoff = verticalBorder->GetWidth();
       yoff = horizontalBorder->GetHeight();
     }

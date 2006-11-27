@@ -50,15 +50,16 @@ WorldViewWidget::DrawHorizon()
   int heading = game->GetCamera()->GetHeading();
   int index = (heading >> 6) & 0x03;
   int imagewidth = horizon.GetImage(index)->GetWidth();
-  int offset = imagewidth - xpos - ((heading & 0x3f) << 2);
+  int imageheight = horizon.GetImage(index)->GetHeight();
+  int offset = imagewidth - ((heading & 0x3f) << 2);
   top.Fill(horizon.GetImage(index)->GetPixel(0, 0));
   top.Draw(xpos, ypos);
   if (offset > 0) {
-    horizon.GetImage((index - 1) & 0x03)->Draw(xpos + offset - imagewidth, ypos + HORIZON_TOP_SIZE, xpos, ypos + HORIZON_TOP_SIZE, width, height);
+    horizon.GetImage((index - 1) & 0x03)->Draw(xpos + offset - imagewidth, ypos + HORIZON_TOP_SIZE, imagewidth - offset, 0, offset, imageheight);
   }
-  horizon.GetImage(index)->Draw(xpos + offset, ypos + HORIZON_TOP_SIZE, xpos, ypos + HORIZON_TOP_SIZE, width, height);
+  horizon.GetImage(index)->Draw(xpos + offset, ypos + HORIZON_TOP_SIZE, 0, 0, imagewidth, imageheight);
   if (imagewidth + offset < width) {
-    horizon.GetImage((index + 1) & 0x03)->Draw(xpos + offset + imagewidth, ypos + HORIZON_TOP_SIZE, xpos, ypos + HORIZON_TOP_SIZE, width, height);
+    horizon.GetImage((index + 1) & 0x03)->Draw(xpos + offset + imagewidth, ypos + HORIZON_TOP_SIZE, 0, 0, width - offset - imagewidth, imageheight);
   }
 }
 
@@ -66,7 +67,7 @@ void
 WorldViewWidget::DrawTerrain()
 {
   static const int TERRAIN_HEIGHT = 38;
-  static const int TERRAIN_YOFFSET = -82;
+  static const int TERRAIN_YOFFSET = 82;
   static const int TERRAIN_IMAGE_WIDTH = 172;
   static const int TERRAIN_IMAGE_HEIGHT = 130;
   std::stringstream stream;
@@ -74,14 +75,17 @@ WorldViewWidget::DrawTerrain()
   ScreenResource terrain;
   FileManager::GetInstance()->Load(&terrain, stream.str());
   Image *terrainImage = new Image(TERRAIN_IMAGE_WIDTH, TERRAIN_IMAGE_HEIGHT, terrain.GetImage()->GetPixels());
-  int offset = TERRAIN_IMAGE_WIDTH - xpos -
+  int offset = TERRAIN_IMAGE_WIDTH -
                (((game->GetCamera()->GetHeading() * 16) + ((game->GetCamera()->GetXPos() + game->GetCamera()->GetYPos()) / 100)) % TERRAIN_IMAGE_WIDTH);
   if (offset > 0) {
-    terrainImage->Draw(xpos + offset - TERRAIN_IMAGE_WIDTH, ypos + 1 + height - TERRAIN_HEIGHT + TERRAIN_YOFFSET, xpos, ypos + height - TERRAIN_HEIGHT, width, TERRAIN_HEIGHT);
+    terrainImage->Draw(xpos + offset - TERRAIN_IMAGE_WIDTH, ypos + height - TERRAIN_HEIGHT - TERRAIN_YOFFSET + 1,
+                       TERRAIN_IMAGE_WIDTH - offset, TERRAIN_YOFFSET - 1, offset, TERRAIN_HEIGHT);
   }
-  terrainImage->Draw(xpos + offset, ypos + height - TERRAIN_HEIGHT + TERRAIN_YOFFSET, xpos, ypos + height - TERRAIN_HEIGHT, width, TERRAIN_HEIGHT);
+  terrainImage->Draw(xpos + offset, ypos + height - TERRAIN_HEIGHT - TERRAIN_YOFFSET,
+                     0, TERRAIN_YOFFSET, TERRAIN_IMAGE_WIDTH, TERRAIN_HEIGHT);
   if ((TERRAIN_IMAGE_WIDTH + offset) < width) {
-    terrainImage->Draw(xpos + offset + TERRAIN_IMAGE_WIDTH, ypos - 1 + height - TERRAIN_HEIGHT + TERRAIN_YOFFSET, xpos, ypos + height - TERRAIN_HEIGHT, width, TERRAIN_HEIGHT);
+    terrainImage->Draw(xpos + offset + TERRAIN_IMAGE_WIDTH, ypos + height - TERRAIN_HEIGHT - TERRAIN_YOFFSET - 1,
+                       0, TERRAIN_YOFFSET + 1, width - offset - TERRAIN_IMAGE_WIDTH, TERRAIN_HEIGHT);
   }
 }
 

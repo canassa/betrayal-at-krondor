@@ -57,11 +57,11 @@ void
 CompassWidget::Update()
 {
   if (compassImage) {
-    int offset = -camera->GetHeading();
+    int offset = camera->GetHeading();
     int imagewidth = compassImage->GetWidth();
-    compassImage->Draw(xpos + offset, ypos, xpos, ypos, width, height);
-    if ((imagewidth + offset) < width) {
-      compassImage->Draw(xpos + offset + imagewidth, ypos, xpos, ypos, width, height);
+    compassImage->Draw(xpos - offset, ypos, offset, 0, width, height);
+    if ((imagewidth - offset) < width) {
+      compassImage->Draw(xpos - offset + imagewidth, ypos, 0, 0, width - imagewidth + offset, height);
     }
   }
   if (cachedImage){

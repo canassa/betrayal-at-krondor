@@ -47,6 +47,6 @@ void
 ImageWidget::Draw()
 {
   if (IsVisible()) {
-    image->Draw(xpos, ypos, xpos, ypos, width, height, 0);
+    image->Draw(xpos, ypos, 0, 0, width, height, 0);
   }
 }
