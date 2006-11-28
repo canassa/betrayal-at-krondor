@@ -1129,18 +1129,22 @@ GameStateWorld::Execute()
     case ACT_LEFT:
     case MAIN_LEFT:
       GameApplication::GetInstance()->GetGame()->GetCamera()->Turn(TURN_LEFT);
+      dialog->Update();
       break;
     case ACT_RIGHT:
     case MAIN_RIGHT:
       GameApplication::GetInstance()->GetGame()->GetCamera()->Turn(TURN_RIGHT);
+      dialog->Update();
       break;
     case ACT_UP:
     case MAIN_UP:
       GameApplication::GetInstance()->GetGame()->GetCamera()->Move(MOVE_FORWARD);
+      dialog->Update();
       break;
     case ACT_DOWN:
     case MAIN_DOWN:
       GameApplication::GetInstance()->GetGame()->GetCamera()->Move(MOVE_BACKWARD);
+      dialog->Update();
       break;
     case MAIN_BOOKMARK:
     case MAIN_UNKNOWN:
