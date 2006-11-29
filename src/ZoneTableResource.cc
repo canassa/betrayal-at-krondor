@@ -84,11 +84,12 @@ ZoneTableResource::Load(FileBuffer *buffer)
       throw DataCorruption(__FILE__, __LINE__);
     }
     mapbuf->Skip(2);
-    unsigned int numMapItems = mapbuf->GetUint16LE() + 1;
+    unsigned int numMapItems = mapbuf->GetUint16LE();
     unsigned int *mapOffset = new unsigned int [numMapItems];
     for (unsigned int i = 0; i < numMapItems; i++) {
       mapOffset[i] = mapbuf->GetUint16LE();
     }
+    mapbuf->Skip(2);
     unsigned int mapDataStart = mapbuf->GetBytesDone();
     for (unsigned int i = 0; i < numMapItems; i++) {
       mapbuf->Seek(mapDataStart + mapOffset[i]);
