@@ -25,15 +25,15 @@
 
 #include "Orientation.h"
 
-double Orientation::cosTbl[1 << MAX_HEADING_BITS];
-double Orientation::sinTbl[1 << MAX_HEADING_BITS];
+float Orientation::cosTbl[1 << MAX_HEADING_BITS];
+float Orientation::sinTbl[1 << MAX_HEADING_BITS];
 
 Orientation::Orientation(const int head)
 : heading(head)
 {
   for (unsigned int i = 0; i < (1 << MAX_HEADING_BITS); i++) {
-    cosTbl[i] = cos((double)i * M_PIl / (double)(1 << MAX_HEADING_BITS));
-    sinTbl[i] = sin((double)i * M_PIl / (double)(1 << MAX_HEADING_BITS));
+    cosTbl[i] = cos((float)i * M_PIl / (float)(1 << MAX_HEADING_BITS));
+    sinTbl[i] = sin((float)i * M_PIl / (float)(1 << MAX_HEADING_BITS));
   }
 }
 
@@ -53,13 +53,13 @@ Orientation::SetHeading(const int head)
   heading = head & ~(1 << MAX_HEADING_BITS);
 }
 
-double
+float
 Orientation::GetCos() const
 {
   return cosTbl[heading];
 }
 
-double
+float
 Orientation::GetSin() const
 {
   return sinTbl[heading];

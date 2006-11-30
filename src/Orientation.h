@@ -38,15 +38,15 @@ static const int TURN_RIGHT = +1 * TURN_SIZE;
 class Orientation {
   private:
     int heading;
-    static double cosTbl[1 << MAX_HEADING_BITS];
-    static double sinTbl[1 << MAX_HEADING_BITS];
+    static float cosTbl[1 << MAX_HEADING_BITS];
+    static float sinTbl[1 << MAX_HEADING_BITS];
   public:
     Orientation(const int head);
     ~Orientation();
     int GetHeading() const;
     void SetHeading(const int head);
-    double GetCos() const;
-    double GetSin() const;
+    float GetCos() const;
+    float GetSin() const;
     void AdjustHeading(const int delta);
 };
 
