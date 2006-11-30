@@ -67,6 +67,28 @@ Image::Image(Image *img)
   }
 }
 
+Image::Image(const int w, const int h, Image *img)
+: width(w)
+, height(h)
+, pixel(0)
+{
+  if ((width > 0) && (height > 0)) {
+    pixel = new uint8_t[width * height];
+    uint8_t *p = pixel;
+    float fx = (float)img->width / (float)width;
+    float fy = (float)img->height / (float)height;
+    for (int y = 0; y < height; y++) {
+      uint8_t *prow = img->pixel + (int)(y * fy);
+      for (int x = 0; x < width; x++) {
+        *p++ = *(prow + (int)(x * fx));
+      }
+    }
+  } else {
+    width = 0;
+    height = 0;
+  }
+}
+
 Image::~Image()
 {
   if (pixel) {

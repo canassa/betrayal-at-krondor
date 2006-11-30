@@ -35,6 +35,7 @@ class Image {
     Image(const int w, const int h);
     Image(const int w, const int h, const uint8_t *p);
     Image(Image *img);
+    Image(const int w, const int h, Image *img);
     ~Image();
     int GetWidth() const;
     int GetHeight() const;
