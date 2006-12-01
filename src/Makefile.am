@@ -44,6 +44,7 @@ noinst_HEADERS = AnimationResource.h \
                  MovieResource.h \
                  NameResource.h \
                  Null_Audio.h \
+                 ObjectResource.h \
                  Observer.h \
                  Orientation.h \
                  Palette.h \
@@ -239,6 +240,8 @@ libresdata_a_SOURCES = AnimationResource.cc \
                        MovieResource.h \
                        NameResource.cc \
                        NameResource.h \
+                       ObjectResource.cc \
+                       ObjectResource.h \
                        PaletteResource.cc \
                        PaletteResource.h \
                        PartyResource.cc \
