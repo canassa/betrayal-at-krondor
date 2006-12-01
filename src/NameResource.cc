@@ -21,6 +21,7 @@
 #include "NameResource.h"
 
 NameResource::NameResource()
+: name()
 {
 }
 
