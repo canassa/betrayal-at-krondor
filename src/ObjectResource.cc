@@ -35,17 +35,14 @@ ObjectResource::GetSize() const {
   return data.size();
 }
 
-ObjectInfo *
-ObjectResource::GetData(unsigned int n) const {
+ObjectInfo
+ObjectResource::GetObjectInfo(unsigned int n) const {
   return data[n];
 }
 
 void
 ObjectResource::Clear()
 {
-  for (unsigned int i = 0; i < data.size(); i++){
-    delete data[i];
-  }
   data.clear();
 }
 
@@ -54,15 +51,30 @@ ObjectResource::Load(FileBuffer *buffer)
 {
   try {
     Clear();
-    while (buffer->GetBytesLeft() > 80) {
-      ObjectInfo *obj = new ObjectInfo;
-      obj->name = buffer->GetString(32);
-      buffer->Skip(8);
-      obj->strengthSwing = buffer->GetSint16LE();
-      obj->strengthThrust = buffer->GetSint16LE();
-      obj->accuracySwing = buffer->GetSint16LE();
-      obj->accuracyThrust = buffer->GetSint16LE();
-      buffer->Skip(32);
+    for (unsigned int i = 0; i < 138; i++) {
+      ObjectInfo obj;
+      obj.name = buffer->GetString(30);
+      buffer->Skip(2);
+      obj.flags = buffer->GetUint16LE();
+      buffer->Skip(2);
+      obj.level = buffer->GetSint16LE();
+      obj.value = buffer->GetSint16LE();
+      obj.strengthSwing = buffer->GetSint16LE();
+      obj.strengthThrust = buffer->GetSint16LE();
+      obj.accuracySwing = buffer->GetSint16LE();
+      obj.accuracyThrust = buffer->GetSint16LE();
+      buffer->Skip(2);
+      obj.group = buffer->GetSint16LE();
+      buffer->Skip(4);
+      obj.race = (Race)(buffer->GetUint16LE());
+      buffer->Skip(2);
+      obj.type = (ObjectType)(buffer->GetUint16LE());
+      obj.effectmask = buffer->GetUint16LE();
+      obj.effect = buffer->GetSint16LE();
+      buffer->Skip(4);
+      obj.modifiermask = buffer->GetUint16LE();
+      obj.modifier = buffer->GetSint16LE();
+      buffer->Skip(6);
       data.push_back(obj);
     }
   } catch (Exception &e) {

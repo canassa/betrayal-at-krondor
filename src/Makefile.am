@@ -99,6 +99,7 @@ noinst_PROGRAMS = dumpads \
                   dumpfnt \
                   dumpgam \
                   dumplbl \
+                  dumpobj \
                   dumppal \
                   dumpreq \
                   dumpscx \
@@ -314,6 +315,11 @@ dumplbl_SOURCES = LabelResource.cc \
                   LabelResource.h \
                   dumplbl.cc
 dumplbl_LDADD   = libresbase.a \
+                  libbase.a
+dumpobj_SOURCES = ObjectResource.cc \
+                  ObjectResource.h \
+                  dumpobj.cc
+dumpobj_LDADD   = libresbase.a \
                   libbase.a
 dumppal_SOURCES = PaletteResource.cc \
                   PaletteResource.h \

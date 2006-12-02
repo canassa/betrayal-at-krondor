@@ -28,23 +28,70 @@
 
 #include "ResourceData.h"
 
+typedef enum _Race {
+  RC_NONE,
+  RC_TSURANI,
+  RC_ELF,
+  RC_HUMAN,
+  RC_DWARF
+} Race;
+
+typedef enum _ObjectType {
+  OT_UNSPECIFIED,
+  OT_SWORD,
+  OT_CROSSBOW,
+  OT_STAFF,
+  OT_ARMOR,
+  OT_UNKNOWN5,
+  OT_UNKNOWN6,
+  OT_KEY,
+  OT_TOOL,
+  OT_WEAPON_OIL,
+  OT_ARMOR_OIL,
+  OT_SPECIAL_OIL,
+  OT_BOWSTRING,
+  OT_SCROLL,
+  OT_UNKNOWN14,
+  OT_UNKNOWN15,
+  OT_NOTE,
+  OT_BOOK,
+  OT_OTHER_POTION,
+  OT_RESTORATIVES,
+  OT_CONTAINER,
+  OT_LIGHTER,
+  OT_INGREDIENT,
+  OT_RATION,
+  OT_FOOD,
+  OT_OTHER
+} ObjectType;
+
 typedef struct _ObjectInfo {
   std::string name;
+  unsigned int flags;
+  int level;
+  int value;
   int strengthSwing;
   int accuracySwing;
   int strengthThrust;
   int accuracyThrust;
+  int group;
+  Race race;
+  ObjectType type;
+  unsigned int effectmask;
+  int effect;
+  unsigned int modifiermask;
+  int modifier;
 } ObjectInfo;
 
 class ObjectResource
 : public ResourceData {
   private:
-    std::vector<ObjectInfo *> data;
+    std::vector<ObjectInfo> data;
   public:
     ObjectResource();
     virtual ~ObjectResource();
     unsigned int GetSize() const;
-    ObjectInfo* GetData(unsigned int n) const;
+    ObjectInfo GetObjectInfo(unsigned int n) const;
     void Clear();
     void Load(FileBuffer *buffer);
     void Save(FileBuffer *buffer);
