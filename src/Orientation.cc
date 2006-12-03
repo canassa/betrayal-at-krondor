@@ -32,8 +32,8 @@ Orientation::Orientation(const int head)
 : heading(head)
 {
   for (unsigned int i = 0; i < (1 << MAX_HEADING_BITS); i++) {
-    cosTbl[i] = cos((float)i * M_PIl / (float)(1 << MAX_HEADING_BITS));
-    sinTbl[i] = sin((float)i * M_PIl / (float)(1 << MAX_HEADING_BITS));
+    cosTbl[i] = cos((float)i * 2.0 * M_PIl / (float)(1 << MAX_HEADING_BITS));
+    sinTbl[i] = sin((float)i * 2.0 * M_PIl / (float)(1 << MAX_HEADING_BITS));
   }
 }
 
