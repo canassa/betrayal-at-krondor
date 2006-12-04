@@ -35,8 +35,8 @@ ObjectResource::GetSize() const {
   return data.size();
 }
 
-ObjectInfo
-ObjectResource::GetObjectInfo(unsigned int n) const {
+ObjectInfo&
+ObjectResource::GetObjectInfo(unsigned int n) {
   return data[n];
 }
 

@@ -91,7 +91,7 @@ class ObjectResource
     ObjectResource();
     virtual ~ObjectResource();
     unsigned int GetSize() const;
-    ObjectInfo GetObjectInfo(unsigned int n) const;
+    ObjectInfo& GetObjectInfo(unsigned int n);
     void Clear();
     void Load(FileBuffer *buffer);
     void Save(FileBuffer *buffer);

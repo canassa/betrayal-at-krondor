@@ -35,8 +35,8 @@ LabelResource::GetSize() const {
   return data.size();
 }
 
-LabelData
-LabelResource::GetLabelData(const unsigned int n) const {
+LabelData&
+LabelResource::GetLabelData(const unsigned int n) {
   return data[n];
 }
 
