@@ -28,23 +28,41 @@
 
 #include "TaggedResource.h"
 
-typedef struct _AppData {
+typedef struct _AppInfo {
   unsigned int size;
   uint8_t *data;
-} AppData;
+} AppInfo;
+
+typedef struct _GidInfo {
+  unsigned int xsize;
+  unsigned int ysize;
+  bool more;
+  unsigned int flags;
+} GidInfo;
+
+typedef struct _DatInfo {
+  unsigned int type;
+  bool more;
+} DatInfo;
 
 class ZoneTableResource
 : public TaggedResource {
   private:
     std::vector<std::string> mapItems;
-    std::vector<AppData> appItems;
+    std::vector<AppInfo> appItems;
+    std::vector<DatInfo> datItems;
+    std::vector<GidInfo> gidItems;
   public:
     ZoneTableResource();
     virtual ~ZoneTableResource();
     unsigned int GetMapSize() const;
     std::string& GetMapItem(const unsigned int i);
     unsigned int GetAppSize() const;
-    AppData& GetAppItem(const unsigned int i);
+    AppInfo& GetAppItem(const unsigned int i);
+    unsigned int GetDatSize() const;
+    DatInfo& GetDatItem(const unsigned int i);
+    unsigned int GetGidSize() const;
+    GidInfo& GetGidItem(const unsigned int i);
     void Clear();
     void Load(FileBuffer *buffer);
     void Save(FileBuffer *buffer);

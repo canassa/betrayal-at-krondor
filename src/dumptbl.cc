@@ -33,7 +33,8 @@ int main(int argc, char *argv[]) {
     ZoneTableResource *tbl = new ZoneTableResource;
     FileManager::GetInstance()->Load(tbl, argv[1]);
     for (unsigned int i = 0; i < tbl->GetMapSize(); i++) {
-      printf("%3d %s\n", i, tbl->GetMapItem(i).c_str());
+      GidInfo gid = tbl->GetGidItem(i);
+      printf("%3d: %-8s %6d %6d\n", i, tbl->GetMapItem(i).c_str(), gid.xsize, gid.ysize);
     }
     delete tbl;
     FileManager::CleanUp();

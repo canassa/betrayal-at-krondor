@@ -50,10 +50,34 @@ ZoneTableResource::GetAppSize() const
   return appItems.size();
 }
 
-AppData&
+AppInfo&
 ZoneTableResource::GetAppItem(const unsigned int i)
 {
   return appItems[i];
+}
+
+unsigned int
+ZoneTableResource::GetDatSize() const
+{
+  return datItems.size();
+}
+
+DatInfo&
+ZoneTableResource::GetDatItem(const unsigned int i)
+{
+  return datItems[i];
+}
+
+unsigned int
+ZoneTableResource::GetGidSize() const
+{
+  return gidItems.size();
+}
+
+GidInfo&
+ZoneTableResource::GetGidItem(const unsigned int i)
+{
+  return gidItems[i];
 }
 
 void
@@ -64,6 +88,7 @@ ZoneTableResource::Clear()
     delete[] appItems[i].data;
   }
   appItems.clear();
+  gidItems.clear();
 }
 
 void
@@ -97,15 +122,52 @@ ZoneTableResource::Load(FileBuffer *buffer)
       mapItems.push_back(item);
     }
     delete[] mapOffset;
+
     unsigned int numAppItems = appbuf->GetUint16LE();
     unsigned int appDataSize = appbuf->GetUint16LE();
     for (unsigned int i = 0; i< numAppItems; i++) {
-      AppData item;
+      AppInfo item;
       item.size = appDataSize;
       item.data = new uint8_t[appDataSize];
       appbuf->GetData(item.data, item.size);
       appItems.push_back(item);
     }
+
+    unsigned int *gidOffset = new unsigned int [numMapItems];
+    for (unsigned int i = 0; i < numMapItems; i++) {
+      gidOffset[i] = (gidbuf->GetUint16LE() & 0x000f) + (gidbuf->GetUint16LE() << 4);
+    }
+    for (unsigned int i = 0; i < numMapItems; i++) {
+      gidbuf->Seek(gidOffset[i]);
+      GidInfo item;
+      item.xsize = gidbuf->GetUint16LE();
+      item.ysize = gidbuf->GetUint16LE();
+      item.more = gidbuf->GetUint16LE() > 0;
+      item.flags = gidbuf->GetUint16LE();
+      if (item.more) {
+        // TODO
+      }
+      gidItems.push_back(item);
+    }
+    delete[] gidOffset;
+
+    unsigned int *datOffset = new unsigned int [numMapItems];
+    for (unsigned int i = 0; i < numMapItems; i++) {
+      datOffset[i] = (datbuf->GetUint16LE() & 0x000f) + (datbuf->GetUint16LE() << 4);
+    }
+    for (unsigned int i = 0; i < numMapItems; i++) {
+      datbuf->Seek(datOffset[i]);
+      DatInfo item;
+      item.type = datbuf->GetUint32LE();
+      datbuf->Skip(4);
+      item.more = datbuf->GetUint16LE() > 0;
+      datbuf->Skip(4);
+      if (item.more) {
+        // TODO
+      }
+    }
+    delete[] datOffset;
+
     ClearTags();
   } catch (Exception &e) {
     e.Print("ZoneTableResource::Load");
