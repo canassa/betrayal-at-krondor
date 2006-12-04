@@ -22,7 +22,7 @@
 #include "Directories.h"
 #include "Exception.h"
 #include "FileManager.h"
-#include "ZoneTableResource.h"
+#include "TableResource.h"
 
 int main(int argc, char *argv[]) {
   try {
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
       std::cerr << "Usage: " << argv[0] << " <TBL-file>" << std::endl;
       return 1;
     }
-    ZoneTableResource *tbl = new ZoneTableResource;
+    TableResource *tbl = new TableResource;
     FileManager::GetInstance()->Load(tbl, argv[1]);
     for (unsigned int i = 0; i < tbl->GetMapSize(); i++) {
       GidInfo gid = tbl->GetGidItem(i);

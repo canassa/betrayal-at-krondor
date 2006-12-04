@@ -73,6 +73,7 @@ noinst_HEADERS = AnimationResource.h \
                  SoundResource.h \
                  Statistics.h \
                  Subject.h \
+                 TableResource.h \
                  TaggedResource.h \
                  TestApplication.h \
                  TextArea.h \
@@ -84,8 +85,7 @@ noinst_HEADERS = AnimationResource.h \
                  Video.h \
                  Widget.h \
                  WidgetFactory.h \
-                 WorldViewWidget.h \
-                 ZoneTableResource.h
+                 WorldViewWidget.h
 noinst_LIBRARIES = libbase.a \
                    libresbase.a \
                    libresdata.a \
@@ -253,12 +253,12 @@ libresdata_a_SOURCES = AnimationResource.cc \
                        ScreenResource.h \
                        SoundResource.cc \
                        SoundResource.h \
+                       TableResource.cc \
+                       TableResource.h \
                        TileDataResource.cc \
                        TileDataResource.h \
                        TileWorldResource.cc \
-                       TileWorldResource.h \
-                       ZoneTableResource.cc \
-                       ZoneTableResource.h
+                       TileWorldResource.h
 libdriver_a_SOURCES = Audio.h \
                       Clock.h \
                       MediaToolkit.cc \
@@ -348,8 +348,8 @@ dumpsnd_SOURCES = Sound.cc \
                   dumpsnd.cc
 dumpsnd_LDADD   = libresbase.a \
                   libbase.a
-dumptbl_SOURCES = ZoneTableResource.cc \
-                  ZoneTableResource.h \
+dumptbl_SOURCES = TableResource.cc \
+                  TableResource.h \
                   dumptbl.cc
 dumptbl_LDADD   = libresbase.a \
                   libbase.a

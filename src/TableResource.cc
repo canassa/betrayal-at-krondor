@@ -18,70 +18,70 @@
  */
 
 #include "Exception.h"
-#include "ZoneTableResource.h"
+#include "TableResource.h"
 
-ZoneTableResource::ZoneTableResource()
+TableResource::TableResource()
 : TaggedResource()
 , mapItems()
 , appItems()
 {
 }
 
-ZoneTableResource::~ZoneTableResource()
+TableResource::~TableResource()
 {
   Clear();
 }
 
 unsigned int
-ZoneTableResource::GetMapSize() const
+TableResource::GetMapSize() const
 {
   return mapItems.size();
 }
 
 std::string&
-ZoneTableResource::GetMapItem(const unsigned int i)
+TableResource::GetMapItem(const unsigned int i)
 {
   return mapItems[i];
 }
 
 unsigned int
-ZoneTableResource::GetAppSize() const
+TableResource::GetAppSize() const
 {
   return appItems.size();
 }
 
 AppInfo&
-ZoneTableResource::GetAppItem(const unsigned int i)
+TableResource::GetAppItem(const unsigned int i)
 {
   return appItems[i];
 }
 
 unsigned int
-ZoneTableResource::GetDatSize() const
+TableResource::GetDatSize() const
 {
   return datItems.size();
 }
 
 DatInfo&
-ZoneTableResource::GetDatItem(const unsigned int i)
+TableResource::GetDatItem(const unsigned int i)
 {
   return datItems[i];
 }
 
 unsigned int
-ZoneTableResource::GetGidSize() const
+TableResource::GetGidSize() const
 {
   return gidItems.size();
 }
 
 GidInfo&
-ZoneTableResource::GetGidItem(const unsigned int i)
+TableResource::GetGidItem(const unsigned int i)
 {
   return gidItems[i];
 }
 
 void
-ZoneTableResource::Clear()
+TableResource::Clear()
 {
   mapItems.clear();
   for (unsigned int i = 0; i < appItems.size(); i++) {
@@ -92,7 +92,7 @@ ZoneTableResource::Clear()
 }
 
 void
-ZoneTableResource::Load(FileBuffer *buffer)
+TableResource::Load(FileBuffer *buffer)
 {
   try {
     Clear();
@@ -170,20 +170,20 @@ ZoneTableResource::Load(FileBuffer *buffer)
 
     ClearTags();
   } catch (Exception &e) {
-    e.Print("ZoneTableResource::Load");
+    e.Print("TableResource::Load");
     ClearTags();
     throw;
   }
 }
 
 void
-ZoneTableResource::Save(FileBuffer *buffer)
+TableResource::Save(FileBuffer *buffer)
 {
   try {
     // TODO
     buffer = buffer;
   } catch (Exception &e) {
-    e.Print("ZoneTableResource::Save");
+    e.Print("TableResource::Save");
     throw;
   }
 }

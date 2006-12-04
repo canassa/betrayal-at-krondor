@@ -17,8 +17,8 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef ZONE_TABLE_RESOURCE_H
-#define ZONE_TABLE_RESOURCE_H
+#ifndef TABLE_RESOURCE_H
+#define TABLE_RESOURCE_H
 
 #include <vector>
 
@@ -45,7 +45,7 @@ typedef struct _DatInfo {
   bool more;
 } DatInfo;
 
-class ZoneTableResource
+class TableResource
 : public TaggedResource {
   private:
     std::vector<std::string> mapItems;
@@ -53,8 +53,8 @@ class ZoneTableResource
     std::vector<DatInfo> datItems;
     std::vector<GidInfo> gidItems;
   public:
-    ZoneTableResource();
-    virtual ~ZoneTableResource();
+    TableResource();
+    virtual ~TableResource();
     unsigned int GetMapSize() const;
     std::string& GetMapItem(const unsigned int i);
     unsigned int GetAppSize() const;
