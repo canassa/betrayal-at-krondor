@@ -46,7 +46,7 @@ class Sound {
     unsigned int channel;
     SoundFormat format;
     FileBuffer *buffer;
-    std::multimap<unsigned int, MidiEvent *> midiEvents;
+    std::multimap<unsigned int, MidiEvent> midiEvents;
     void PutVariableLength(FileBuffer *buf, unsigned int n);
     void CreateWaveSamples(FileBuffer *buf);
     void CreateMidiEvents(FileBuffer *buf);

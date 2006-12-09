@@ -32,9 +32,6 @@ Sound::Sound(const unsigned int t)
 Sound::~Sound()
 {
   delete buffer;
-  for (std::multimap<unsigned int, MidiEvent*>::iterator it= midiEvents.begin(); it != midiEvents.end(); ++it) {
-    delete it->second;
-  }
   midiEvents.clear();
 }
 
@@ -188,37 +185,38 @@ Sound::CreateMidiEvents(FileBuffer *buf)
       buf->Skip(-1);
     }
     if (mode != MIDI_SEQ_END) {
-      MidiEvent *me = new MidiEvent;
-      me->data[0] = mode;
+      MidiEvent me;
+      memset(&me, 0, sizeof(MidiEvent));
+      me.data[0] = mode;
       switch (mode & 0xf0) {
         case MIDI_NOTE_ON:
-          me->data[1] = buf->GetUint8();
-          me->data[2] = buf->GetUint8();
-          if (me->data[2] == 0) {
-            me->data[0] = MIDI_NOTE_OFF | channel;
+          me.data[1] = buf->GetUint8();
+          me.data[2] = buf->GetUint8();
+          if (me.data[2] == 0) {
+            me.data[0] = MIDI_NOTE_OFF | channel;
           }
-          me->size = 3;
+          me.size = 3;
           break;
         case MIDI_CONTROL:
         case MIDI_PITCH:
-          me->data[1] = buf->GetUint8();
-          me->data[2] = buf->GetUint8();
-          me->size = 3;
+          me.data[1] = buf->GetUint8();
+          me.data[2] = buf->GetUint8();
+          me.size = 3;
           break;
         case MIDI_PATCH:
-          me->data[1] = buf->GetUint8();
-          me->size = 2;
+          me.data[1] = buf->GetUint8();
+          me.size = 2;
           break;
         default:
           if (mode == MIDI_SEQ_END) {
-            me->size = 1;
+            me.size = 1;
           } else {
             throw DataCorruption(__FILE__, __LINE__);
           }
           break;
       }
       tick += delta;
-      midiEvents.insert(std::pair<unsigned int, MidiEvent *>(tick, me));
+      midiEvents.insert(std::pair<unsigned int, MidiEvent>(tick, me));
     }
   }
 }
@@ -228,20 +226,20 @@ Sound::GenerateMidi()
 {
   unsigned int size = 0;
   unsigned int tick = 0;
-  for (std::multimap<unsigned int, MidiEvent *>::iterator it = midiEvents.begin(); it != midiEvents.end(); ++it) {
-    MidiEvent *me = (*it).second;
-    me->delta = (*it).first - tick;
+  for (std::multimap<unsigned int, MidiEvent>::iterator it = midiEvents.begin(); it != midiEvents.end(); ++it) {
+    MidiEvent& me = (*it).second;
+    me.delta = (*it).first - tick;
     size += 1;
-    if (me->delta >= (1 << 7)) {
+    if (me.delta >= (1 << 7)) {
       size += 1;
     }
-    if (me->delta >= (1 << 14)) {
+    if (me.delta >= (1 << 14)) {
       size += 1;
     }
-    if (me->delta >= (1 << 21)) {
+    if (me.delta >= (1 << 21)) {
       size += 1;
     }
-    size += me->size;
+    size += me.size;
     tick = (*it).first;
   }
   buffer = new FileBuffer(8 + SMF_HEADER_SIZE + 8 + size + 4);
@@ -252,13 +250,12 @@ Sound::GenerateMidi()
   buffer->PutUint16BE(SMF_PPQN);
   buffer->PutUint32LE(SMF_TRACK);
   buffer->PutUint32BE(size);
-  for (std::multimap<unsigned int, MidiEvent *>::iterator it = midiEvents.begin(); it != midiEvents.end(); ++it) {
-    MidiEvent *me = (*it).second;
-    PutVariableLength(buffer, me->delta);
-    for (unsigned int i = 0; i < me->size; i++) {
-      buffer->PutUint8(me->data[i]);
+  for (std::multimap<unsigned int, MidiEvent>::iterator it = midiEvents.begin(); it != midiEvents.end(); ++it) {
+    MidiEvent& me = (*it).second;
+    PutVariableLength(buffer, me.delta);
+    for (unsigned int i = 0; i < me.size; i++) {
+      buffer->PutUint8(me.data[i]);
     }
-    delete (*it).second;
   }
   midiEvents.clear();
   buffer->PutUint8(0);
