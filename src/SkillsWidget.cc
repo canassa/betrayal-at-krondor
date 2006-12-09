@@ -74,6 +74,18 @@ SkillsWidget::SkillsWidget(const int x, const int y, const int w, const int h, P
 
 SkillsWidget::~SkillsWidget()
 {
+  delete defense;
+  delete crossbowAccuracy;
+  delete meleeAccuracy;
+  delete castingAccuracy;
+  delete assessment;
+  delete armorcraft;
+  delete weaponcraft;
+  delete barding;
+  delete haggling;
+  delete lockpick;
+  delete scouting;
+  delete stealth;
   delete leftSword;
   delete leftBlood;
   delete rightSword;
