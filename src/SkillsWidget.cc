@@ -19,7 +19,7 @@
 
 #include "SkillsWidget.h"
 
-SkillsWidget::SkillsWidget(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *sw, Image *bl, FontResource &f)
+SkillsWidget::SkillsWidget(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *sw, Image *bl, Font *f)
 : Widget(x, y, w, h)
 , playerCharacter(pc)
 , font(f)

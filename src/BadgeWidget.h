@@ -34,7 +34,7 @@ class BadgeWidget
   public:
     BadgeWidget(const int x, const int y, const int w, const int h);
     virtual ~BadgeWidget();
-    void SetLabel(const std::string& s, FontResource& f);
+    void SetLabel(const std::string& s, Font *f);
     void Draw();
 };
 

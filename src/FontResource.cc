@@ -23,8 +23,7 @@
 
 FontResource::FontResource()
 : TaggedResource()
-, first(0)
-, height(0) {
+, font(0) {
 }
 
 FontResource::~FontResource()
@@ -32,51 +31,16 @@ FontResource::~FontResource()
   Clear();
 }
 
-unsigned int
-FontResource::GetFirst() const
+Font*
+FontResource::GetFont() const
 {
-  return first;
-}
-
-unsigned int
-FontResource::GetHeight() const
-{
-  return height;
-}
-
-unsigned int
-FontResource::GetWidth(const unsigned int n) const
-{
-  if (n < fontGlyphs.size()) {
-    return fontGlyphs[n]->width;
-  } else {
-    throw IndexOutOfRange(__FILE__, __LINE__);
-  }
-}
-
-unsigned int
-FontResource::GetSize() const
-{
-  return fontGlyphs.size();
-}
-
-FontGlyph*
-FontResource::GetGlyph(const unsigned int n)
-{
-  if (n < fontGlyphs.size()) {
-    return fontGlyphs[n];
-  } else {
-    throw IndexOutOfRange(__FILE__, __LINE__);
-  }
+  return font;
 }
 
 void
 FontResource::Clear()
 {
-  for (unsigned int i = 0; i < fontGlyphs.size(); i++) {
-    delete fontGlyphs[i];
-  }
-  fontGlyphs.clear();
+  delete font;
 }
 
 void
@@ -90,10 +54,11 @@ FontResource::Load(FileBuffer *buffer)
       ClearTags();
       throw DataCorruption(__FILE__, __LINE__);
     }
+    font = new Font;
     fntbuf->Skip(2);
-    height = (unsigned int)fntbuf->GetUint8();
+    font->SetHeight((unsigned int)fntbuf->GetUint8());
     fntbuf->Skip(1);
-    first = (unsigned int)fntbuf->GetUint8();
+    font->SetFirst((unsigned int)fntbuf->GetUint8());
     unsigned int numChars = (unsigned int)fntbuf->GetUint8();
     fntbuf->Skip(2);
     if (fntbuf->GetUint8() != 0x01) {
@@ -107,20 +72,19 @@ FontResource::Load(FileBuffer *buffer)
     for (unsigned int i = 0; i < numChars; i++) {
       glyphOffset[i] = glyphbuf->GetUint16LE();
     }
-    for (unsigned int i = 0; i < numChars; i++) {
-      FontGlyph *glyph = new FontGlyph;
-      glyph->width = (unsigned int)glyphbuf->GetUint8();
-      fontGlyphs.push_back(glyph);
-    }
     unsigned int glyphDataStart = glyphbuf->GetBytesDone();
     for (unsigned int i = 0; i < numChars; i++) {
-      glyphbuf->Seek(glyphDataStart + glyphOffset[i]);
-      for (unsigned int j = 0; j < height; j++) {
-        fontGlyphs[i]->data[j] = (uint16_t)glyphbuf->GetUint8() << 8;
-        if (fontGlyphs[i]->width > 8) {
-          fontGlyphs[i]->data[j] += (uint16_t)glyphbuf->GetUint8();
+      FontGlyph glyph;
+      glyphbuf->Seek(glyphDataStart + i);
+      glyph.width = (unsigned int)glyphbuf->GetUint8();
+      glyphbuf->Seek(glyphDataStart + numChars + glyphOffset[i]);
+      for (unsigned int j = 0; j < font->GetHeight(); j++) {
+        glyph.data[j] = (uint16_t)glyphbuf->GetUint8() << 8;
+        if (glyph.width > 8) {
+          glyph.data[j] += (uint16_t)glyphbuf->GetUint8();
         }
       }
+      font->AddGlyph(glyph);
     }
     delete[] glyphOffset;
     delete glyphbuf;
@@ -141,18 +105,5 @@ FontResource::Save(FileBuffer *buffer)
   } catch (Exception &e) {
     e.Print("FontResource::Save");
     throw;
-  }
-}
-
-void
-FontResource::DrawChar(const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color, const bool italic)
-{
-  Video *video = MediaToolkit::GetInstance()->GetVideo();
-  if ((int)(ch - first) >= 0) {
-    if (italic) {
-      video->DrawGlyphItalic(x, y, fontGlyphs[ch - first]->width, height, color, fontGlyphs[ch - first]->data);
-    } else {
-      video->DrawGlyph(x, y, fontGlyphs[ch - first]->width, height, color, fontGlyphs[ch - first]->data);
-    }
   }
 }

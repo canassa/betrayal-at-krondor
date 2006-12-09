@@ -23,7 +23,7 @@
 #include "MediaToolkit.h"
 #include "RatingsWidget.h"
 
-RatingsWidget::RatingsWidget(const int x, const int y, const int w, const int h, PlayerCharacter *pc, FontResource &f)
+RatingsWidget::RatingsWidget(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Font *f)
 : Widget(x, y, w, h)
 , playerCharacter(pc)
 , horizontalBorder(0)

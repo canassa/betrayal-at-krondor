@@ -26,7 +26,6 @@
 
 #include <string>
 
-#include "FontResource.h"
 #include "Image.h"
 #include "TextWidget.h"
 #include "Widget.h"
@@ -45,7 +44,7 @@ class SkillLevelWidget
     TextWidget *level;
     int value;
   public:
-    SkillLevelWidget(const int x, const int y, const int w, const int h, const Side s, Image *sw, Image *bl, FontResource &f);
+    SkillLevelWidget(const int x, const int y, const int w, const int h, const Side s, Image *sw, Image *bl, Font *f);
     virtual ~SkillLevelWidget();
     void SetLevel(const std::string& s, const int x);
     void Draw();

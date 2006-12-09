@@ -26,35 +26,20 @@
 #include "config.h"
 #endif
 
+#include "Font.h"
 #include "TaggedResource.h"
-
-static const unsigned int MAX_FONT_HEIGHT = 16;
-
-typedef uint16_t GlyphData[MAX_FONT_HEIGHT];
-
-typedef struct _FontGlyph {
-  unsigned int width;
-  GlyphData data;
-} FontGlyph;
 
 class FontResource
 : public TaggedResource {
   private:
-    unsigned int first;
-    unsigned int height;
-    std::vector<FontGlyph*> fontGlyphs;
+    Font *font;
   public:
     FontResource();
     virtual ~FontResource();
-    unsigned int GetFirst() const;
-    unsigned int GetHeight() const;
-    unsigned int GetWidth(const unsigned int n) const;
-    unsigned int GetSize() const;
-    FontGlyph* GetGlyph(const unsigned int n);
+    Font* GetFont() const;
     void Clear();
     void Load(FileBuffer *buffer);
     void Save(FileBuffer *buffer);
-    void DrawChar(const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color, const bool italic);
 };
 
 #endif

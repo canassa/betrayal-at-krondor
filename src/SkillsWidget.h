@@ -24,7 +24,7 @@
 #include "config.h"
 #endif
 
-#include "FontResource.h"
+#include "Font.h"
 #include "Image.h"
 #include "PlayerCharacter.h"
 #include "SkillLevelWidget.h"
@@ -34,7 +34,7 @@ class SkillsWidget
 : public Widget {
   private:
     PlayerCharacter *playerCharacter;
-    FontResource& font;
+    Font *font;
     Image *leftSword;
     Image *leftBlood;
     Image *rightSword;
@@ -52,7 +52,7 @@ class SkillsWidget
     SkillLevelWidget *scouting;
     SkillLevelWidget *stealth;
   public:
-    SkillsWidget(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *sw, Image *bl, FontResource &f);
+    SkillsWidget(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *sw, Image *bl, Font *f);
     virtual ~SkillsWidget();
     void Draw();
 };

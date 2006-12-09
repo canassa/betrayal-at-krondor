@@ -29,6 +29,7 @@
 #include "ChoiceWidget.h"
 #include "CombatViewWidget.h"
 #include "CompassWidget.h"
+#include "FontResource.h"
 #include "Game.h"
 #include "ImageButtonWidget.h"
 #include "ImageResource.h"
@@ -60,11 +61,11 @@ class WidgetFactory {
     MapViewWidget* CreateMapView(RequestData& data, Game *game);
     WorldViewWidget* CreateWorldView(RequestData& data, Game *game);
     TextWidget* CreateLabel(LabelData& data, FontResource& fnt, const int panelWidth);
-    BadgeWidget* CreateBadge(const int x, const int y, const int w, const int h, const std::string& s, FontResource& fnt);
+    BadgeWidget* CreateBadge(const int x, const int y, const int w, const int h, const std::string& s, Font *f);
     ImageWidget* CreateImage(const int x, const int y, const int w, const int h, Image *img, const Flipping flip = NONE);
     PortraitWidget* CreatePortrait(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb);
-    RatingsWidget* CreateRatings(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb, FontResource& fnt);
-    SkillsWidget* CreateSkills(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *sw, Image *bl, FontResource& fnt);
+    RatingsWidget* CreateRatings(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb, Font *f);
+    SkillsWidget* CreateSkills(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *sw, Image *bl, Font *f);
     PanelWidget* CreatePanel(const int x, const int y, const int w, const int h, Image *img);
 };
 

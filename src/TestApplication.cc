@@ -137,11 +137,11 @@ TestApplication::DrawFont(const std::string& name)
     MediaToolkit *media = MediaToolkit::GetInstance();
     FileManager::GetInstance()->Load(&fnt, name);
     media->GetVideo()->Clear();
-    TextArea ta1(280, 180, fnt);
+    TextArea ta1(280, 180, fnt.GetFont());
     ta1.SetText("The quick brown fox jumped over the lazy dog.");
     ta1.SetColor(15);
     ta1.Draw(10, 10, false);
-    TextArea ta2(280, 180, fnt);
+    TextArea ta2(280, 180, fnt.GetFont());
     ta2.SetText("The quick brown fox jumped over the lazy dog.");
     ta2.SetColor(15);
     ta2.Draw(10, 50, true);

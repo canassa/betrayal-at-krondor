@@ -22,7 +22,7 @@
 
 #include "SkillLevelWidget.h"
 
-SkillLevelWidget::SkillLevelWidget(const int x, const int y, const int w, const int h, const Side s, Image *sw, Image *bl, FontResource &f)
+SkillLevelWidget::SkillLevelWidget(const int x, const int y, const int w, const int h, const Side s, Image *sw, Image *bl, Font *f)
 : Widget(x, y, w, h)
 , side(s)
 , sword(sw)

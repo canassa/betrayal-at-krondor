@@ -32,12 +32,13 @@ int main(int argc, char *argv[]) {
     }
     FontResource *fnt = new FontResource;
     FileManager::GetInstance()->Load(fnt, argv[1]);
-    for (unsigned int i = 0; i < fnt->GetSize(); i++) {
-      printf("%2d: '%c' (%d)\n", i, i + fnt->GetFirst(), fnt->GetWidth(i));
-      FontGlyph *glyph = fnt->GetGlyph(i);
-      for (unsigned int j = 0; j < fnt->GetHeight(); j++) {
-        for (unsigned int k = 0; k < glyph->width; k++) {
-          printf("%c", glyph->data[j] & (0x8000 >> k) ? '*' : '.');
+    Font *font = fnt->GetFont();
+    for (unsigned int i = 0; i < font->GetSize(); i++) {
+      printf("%2d: '%c' (%d)\n", i, i + font->GetFirst(), font->GetWidth(i));
+      FontGlyph glyph = font->GetGlyph(i);
+      for (unsigned int j = 0; j < font->GetHeight(); j++) {
+        for (unsigned int k = 0; k < glyph.width; k++) {
+          printf("%c", glyph.data[j] & (0x8000 >> k) ? '*' : '.');
         }
         printf("\n");
       }

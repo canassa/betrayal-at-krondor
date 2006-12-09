@@ -19,7 +19,7 @@
 
 #include "TextWidget.h"
 
-TextWidget::TextWidget(const int x, const int y, const int w, const int h, FontResource& f)
+TextWidget::TextWidget(const int x, const int y, const int w, const int h, Font *f)
 : Widget(x, y, w, h)
 , font(f)
 , text("")
@@ -44,9 +44,9 @@ TextWidget::SetText(const std::string &s)
   text = s;
   textWidth = 0;
   for (unsigned int i = 0; i < text.length(); i++) {
-    textWidth += font.GetWidth(text[i] - font.GetFirst());
+    textWidth += font->GetWidth(text[i] - font->GetFirst());
   }
-  textHeight = font.GetHeight();
+  textHeight = font->GetHeight();
 }
 
 void
@@ -103,17 +103,17 @@ TextWidget::Draw()
     if ((shadow > NO_SHADOW) && ((shadowXoff != 0) || (shadowYoff != 0))) {
       i = 0;
       w = 0;
-      while ((i < text.length()) && (w + font.GetWidth(text[i] - font.GetFirst()) < (unsigned)width)) {
-        font.DrawChar(xpos + xoff + shadowXoff + w, ypos + yoff + shadowYoff, text[i], shadow, false);
-        w += font.GetWidth((unsigned int)text[i] - font.GetFirst());
+      while ((i < text.length()) && (w + font->GetWidth(text[i] - font->GetFirst()) < (unsigned)width)) {
+        font->DrawChar(xpos + xoff + shadowXoff + w, ypos + yoff + shadowYoff, text[i], shadow, false);
+        w += font->GetWidth((unsigned int)text[i] - font->GetFirst());
         i++;
       }
     }
     i = 0;
     w = 0;
-    while ((i < text.length()) && (w + font.GetWidth(text[i] - font.GetFirst()) < (unsigned)width)) {
-      font.DrawChar(xpos + xoff + w, ypos + yoff, text[i], color, false);
-      w += font.GetWidth((unsigned int)text[i] - font.GetFirst());
+    while ((i < text.length()) && (w + font->GetWidth(text[i] - font->GetFirst()) < (unsigned)width)) {
+      font->DrawChar(xpos + xoff + w, ypos + yoff, text[i], color, false);
+      w += font->GetWidth((unsigned int)text[i] - font->GetFirst());
       i++;
     }
   }

@@ -17,28 +17,41 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef TEXT_BUTTON_WIDGET_H
-#define TEXT_BUTTON_WIDGET_H
+#ifndef FONT_H
+#define FONT_H
+
+#include <vector>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "ButtonWidget.h"
-#include "TextWidget.h"
+static const unsigned int MAX_FONT_HEIGHT = 16;
 
-class TextButtonWidget
-: public ButtonWidget
-{
+typedef uint16_t GlyphData[MAX_FONT_HEIGHT];
+
+typedef struct _FontGlyph {
+  unsigned int width;
+  GlyphData data;
+} FontGlyph;
+
+class Font {
   private:
-    TextWidget* label;
+    unsigned int first;
+    unsigned int height;
+    std::vector<FontGlyph> fontGlyphs;
   public:
-    TextButtonWidget(const int x, const int y, const int w, const int h, const int a);
-    virtual ~TextButtonWidget();
-    void SetLabel(const std::string& s, Font *f);
-    void Draw();
-    void LeftClick(const bool toggle);
-    void RightClick(const bool toggle);
+    Font();
+    virtual ~Font();
+    unsigned int GetFirst() const;
+    void SetFirst(const unsigned int n);
+    unsigned int GetHeight() const;
+    void SetHeight(const unsigned int h);
+    unsigned int GetWidth(const unsigned int n) const;
+    unsigned int GetSize() const;
+    FontGlyph& GetGlyph(const unsigned int n);
+    void AddGlyph(FontGlyph& glyph);
+    void DrawChar(const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color, const bool italic);
 };
 
 #endif

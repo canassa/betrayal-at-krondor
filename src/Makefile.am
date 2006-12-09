@@ -21,6 +21,7 @@ noinst_HEADERS = AnimationResource.h \
                  Exception.h \
                  FileBuffer.h \
                  FileManager.h \
+                 Font.h \
                  FontResource.h \
                  Game.h \
                  GameApplication.h \
@@ -159,6 +160,8 @@ libguitoolkit_a_SOURCES = BadgeWidget.cc \
                           DialogFactory.h \
                           DialogWindow.cc \
                           DialogWindow.h \
+                          Font.cc \
+                          Font.h \
                           GameViewWidget.cc \
                           GameViewWidget.h \
                           HotspotWidget.cc \
@@ -298,7 +301,9 @@ dumpddx_SOURCES = DialogResource.cc \
                   dumpddx.cc
 dumpddx_LDADD   = libresbase.a \
                   libbase.a
-dumpfnt_SOURCES = FontResource.cc \
+dumpfnt_SOURCES = Font.cc \
+                  Font.h \
+                  FontResource.cc \
                   FontResource.h \
                   dumpfnt.cc
 dumpfnt_LDADD   = libresbase.a \

@@ -32,7 +32,7 @@ WidgetFactory::CreateTextButton(RequestData& data, FontResource &fnt, ActionEven
 {
   TextButtonWidget *button = new TextButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
   button->SetVisible(data.visible);
-  button->SetLabel(data.label, fnt);
+  button->SetLabel(data.label, fnt.GetFont());
   button->AddActionListener(ael);
   return button;
 }
@@ -107,7 +107,7 @@ WidgetFactory::CreateLabel(LabelData& data, FontResource& fnt, const int panelWi
   switch (data.type) {
     case LBL_STANDARD:
       for (unsigned int i = 0; i < data.label.length(); i++) {
-        width += fnt.GetWidth((unsigned int)data.label[i] - fnt.GetFirst());
+        width += fnt.GetFont()->GetWidth((unsigned int)data.label[i] - fnt.GetFont()->GetFirst());
       }
       break;
     case LBL_TITLE:
@@ -116,7 +116,7 @@ WidgetFactory::CreateLabel(LabelData& data, FontResource& fnt, const int panelWi
     default:
       break;
   }
-  TextWidget *label = new TextWidget(data.xpos, data.ypos, width, fnt.GetHeight() + 1, fnt);
+  TextWidget *label = new TextWidget(data.xpos, data.ypos, width, fnt.GetFont()->GetHeight() + 1, fnt.GetFont());
   label->SetText(data.label);
   label->SetColor(data.color);
   if (data.type == LBL_TITLE) {
@@ -127,10 +127,10 @@ WidgetFactory::CreateLabel(LabelData& data, FontResource& fnt, const int panelWi
 }
 
 BadgeWidget*
-WidgetFactory::CreateBadge(const int x, const int y, const int w, const int h, const std::string& s, FontResource& fnt)
+WidgetFactory::CreateBadge(const int x, const int y, const int w, const int h, const std::string& s, Font *f)
 {
   BadgeWidget *badge = new BadgeWidget(x, y, w, h);
-  badge->SetLabel(s, fnt);
+  badge->SetLabel(s, f);
   return badge;
 }
 
@@ -160,17 +160,17 @@ WidgetFactory::CreatePortrait(const int x, const int y, const int w, const int h
 }
 
 RatingsWidget*
-WidgetFactory::CreateRatings(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb, FontResource& fnt)
+WidgetFactory::CreateRatings(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb, Font *f)
 {
-  RatingsWidget *ratings = new RatingsWidget(x, y, w, h, pc, fnt);
+  RatingsWidget *ratings = new RatingsWidget(x, y, w, h, pc, f);
   ratings->SetBorders(hb, vb);
   return ratings;
 }
 
 SkillsWidget*
-WidgetFactory::CreateSkills(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *sw, Image *bl, FontResource& fnt)
+WidgetFactory::CreateSkills(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *sw, Image *bl, Font *f)
 {
-  SkillsWidget *skills = new SkillsWidget(x, y, w, h, pc, sw, bl, fnt);
+  SkillsWidget *skills = new SkillsWidget(x, y, w, h, pc, sw, bl, f);
   return skills;
 }
 

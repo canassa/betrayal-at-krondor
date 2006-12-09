@@ -24,18 +24,18 @@
 #include "config.h"
 #endif
 
-#include "FontResource.h"
+#include "Font.h"
 #include "Video.h"
 
 class TextArea {
   private:
     unsigned int width;
     unsigned int height;
-    FontResource &font;
+    Font *font;
     std::string text;
     unsigned int color;
   public:
-    TextArea(const unsigned int w, const unsigned int h, FontResource &fnt);
+    TextArea(const unsigned int w, const unsigned int h, Font *f);
     virtual ~TextArea();
     void SetText(const std::string &s);
     void SetColor(const unsigned int c);

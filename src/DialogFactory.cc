@@ -185,9 +185,9 @@ DialogFactory::CreateInfoDialog()
     panel->AddWidget(widgetFactory.CreateImage(2, 107, 122, 91, images.GetImage(24)));
     panel->AddWidget(widgetFactory.CreateImage(188, 107, 122, 91, images.GetImage(24), HORIZONTAL));
     panel->AddWidget(widgetFactory.CreatePortrait(7, 9, 71, 71, pc, images.GetImage(26), images.GetImage(25)));
-    panel->AddWidget(widgetFactory.CreateBadge(23, 71, 42, 12, pc->GetName(), font));
-    panel->AddWidget(widgetFactory.CreateRatings(84, 9, 222, 71, pc, images.GetImage(26), images.GetImage(25), font));
-    panel->AddWidget(widgetFactory.CreateSkills(16, 86, 276, 105, pc, images.GetImage(21), images.GetImage(22), font));
+    panel->AddWidget(widgetFactory.CreateBadge(23, 71, 42, 12, pc->GetName(), font.GetFont()));
+    panel->AddWidget(widgetFactory.CreateRatings(84, 9, 222, 71, pc, images.GetImage(26), images.GetImage(25), font.GetFont()));
+    panel->AddWidget(widgetFactory.CreateSkills(16, 86, 276, 105, pc, images.GetImage(21), images.GetImage(22), font.GetFont()));
     for (unsigned int i = 0; i < request.GetSize(); i++) {
       RequestData data = request.GetRequestData(i);
       switch (data.widget) {

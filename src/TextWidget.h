@@ -26,7 +26,7 @@
 
 #include <string>
 
-#include "FontResource.h"
+#include "Font.h"
 #include "Widget.h"
 
 typedef enum {
@@ -44,7 +44,7 @@ typedef enum  {
 class TextWidget
 : public Widget {
   private:
-    FontResource& font;
+    Font *font;
     std::string text;
     int textWidth;
     int textHeight;
@@ -55,7 +55,7 @@ class TextWidget
     HorizontalAlignment horAlign;
     VerticalAlignment vertAlign;
   public:
-    TextWidget(const int x, const int y, const int w, const int h, FontResource& f);
+    TextWidget(const int x, const int y, const int w, const int h, Font *f);
     virtual ~TextWidget();
     void Draw();
     void SetColor(const int c);
