@@ -17,41 +17,25 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef CHAPTER_H
-#define CHAPTER_H
+#ifndef ZONE_H
+#define ZONE_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "EventListener.h"
-#include "Zone.h"
+#include "ImageResource.h"
 
-class Chapter
-: public KeyboardEventListener
-, public MouseButtonEventListener
-, public TimerEventListener
-{
+class Zone {
   private:
-    int number;
-    bool delayed;
-    Zone zone;
-    void PlayIntro();
-    void PlayScene(const int scene);
-    void ReadBook(const int scene);
-    void ShowMap();
+    ImageResource horizon;
+    Image *terrain;
   public:
-    Chapter(const int n);
-    ~Chapter();
-    int Get() const;
-    Zone& GetZone();
-    void Next();
-    void Start(const bool maponly = false);
-    void KeyPressed(const KeyboardEvent &kbe);
-    void KeyReleased(const KeyboardEvent &kbe);
-    void MouseButtonPressed(const MouseButtonEvent &mbe);
-    void MouseButtonReleased(const MouseButtonEvent &mbe);
-    void TimerExpired(const TimerEvent &te);
+    Zone();
+    ~Zone();
+    void Load(const unsigned int n);
+    Image* GetHorizon(const unsigned int n);
+    Image* GetTerrain();
 };
 
 #endif

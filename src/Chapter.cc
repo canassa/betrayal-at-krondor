@@ -30,7 +30,9 @@
 Chapter::Chapter(const int n)
 : number(n)
 , delayed(false)
+, zone()
 {
+  zone.Load(number);
 }
 
 Chapter::~Chapter()
@@ -124,10 +126,17 @@ Chapter::Get() const
   return number;
 }
 
+Zone&
+Chapter::GetZone()
+{
+  return zone;
+}
+
 void
 Chapter::Next()
 {
   number++;
+  zone.Load(number);
 }
 
 void

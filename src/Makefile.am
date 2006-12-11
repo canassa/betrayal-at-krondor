@@ -86,7 +86,8 @@ noinst_HEADERS = AnimationResource.h \
                  Video.h \
                  Widget.h \
                  WidgetFactory.h \
-                 WorldViewWidget.h
+                 WorldViewWidget.h \
+                 Zone.h
 noinst_LIBRARIES = libbase.a \
                    libresbase.a \
                    libresdata.a \
@@ -139,7 +140,9 @@ libgame_a_SOURCES = Camera.cc \
                     Position.cc \
                     Position.h \
                     Statistics.cc \
-                    Statistics.h
+                    Statistics.h \
+                    Zone.cc \
+                    Zone.h
 libguitoolkit_a_SOURCES = BadgeWidget.cc \
                           BadgeWidget.h \
                           ButtonWidget.cc \
