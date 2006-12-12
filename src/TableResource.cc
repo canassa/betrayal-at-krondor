@@ -165,6 +165,7 @@ TableResource::Load(FileBuffer *buffer)
       if (item.more) {
         // TODO
       }
+      datItems.push_back(item);
     }
     delete[] datOffset;
 

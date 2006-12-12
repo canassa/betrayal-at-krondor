@@ -22,6 +22,7 @@
 
 #include "FileManager.h"
 #include "ScreenResource.h"
+#include "TableResource.h"
 #include "Zone.h"
 
 Zone::Zone()
@@ -40,6 +41,11 @@ Zone::~Zone()
 void
 Zone::Load(const unsigned int n)
 {
+  std::stringstream tableStream;
+  tableStream << "Z" << std::setw(2) << std::setfill('0') << n << ".TBL";
+  TableResource table;
+  FileManager::GetInstance()->Load(&table, tableStream.str());
+
   std::stringstream horizonStream;
   horizonStream << "Z" << std::setw(2) << std::setfill('0') << n << "H.BMX";
   FileManager::GetInstance()->Load(&horizon, horizonStream.str());

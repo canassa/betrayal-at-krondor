@@ -34,7 +34,8 @@ int main(int argc, char *argv[]) {
     FileManager::GetInstance()->Load(tbl, argv[1]);
     for (unsigned int i = 0; i < tbl->GetMapSize(); i++) {
       GidInfo gid = tbl->GetGidItem(i);
-      printf("%3d: %-8s %6d %6d\n", i, tbl->GetMapItem(i).c_str(), gid.xsize, gid.ysize);
+      DatInfo dat = tbl->GetDatItem(i);
+      printf("%3d: %-8s %6d %6d %04x %08x\n", i, tbl->GetMapItem(i).c_str(), gid.xsize, gid.ysize, gid.flags, dat.type);
     }
     delete tbl;
     FileManager::CleanUp();
