@@ -158,7 +158,10 @@ TableResource::Load(FileBuffer *buffer)
     for (unsigned int i = 0; i < numMapItems; i++) {
       datbuf->Seek(datOffset[i]);
       DatInfo item;
-      item.type = datbuf->GetUint32LE();
+      item.objectClass = datbuf->GetUint8();
+      item.objectType = datbuf->GetUint8();
+      item.terrainClass = datbuf->GetUint8();
+      item.terrainType = datbuf->GetUint8();
       datbuf->Skip(4);
       item.more = datbuf->GetUint16LE() > 0;
       datbuf->Skip(4);

@@ -28,6 +28,42 @@
 
 #include "TaggedResource.h"
 
+/* Object Class */
+static const unsigned int OC_TERRAIN      = 0x00;
+static const unsigned int OC_LARGE_OBJECT = 0x40;
+static const unsigned int OC_SMALL_OBJECT = 0x60;
+
+/* Object Type */
+static const unsigned int OT_TERRAIN   =  0;
+static const unsigned int OT_EXTERIOR  =  1;
+static const unsigned int OT_BRIDGE    =  2;
+static const unsigned int OT_INTERIOR  =  3;
+static const unsigned int OT_LANDSCAPE =  4;
+static const unsigned int OT_TREE      =  5;
+static const unsigned int OT_CHEST     =  6;
+static const unsigned int OT_DEADBODY  =  7;
+static const unsigned int OT_FENCE     =  8;
+static const unsigned int OT_BUILDING  = 10;
+static const unsigned int OT_TOMBSTONE = 12;
+static const unsigned int OT_SIGN      = 13;
+static const unsigned int OT_DEADBODY2 = 16;
+static const unsigned int OT_DIRTPILE  = 17;
+static const unsigned int OT_CORN      = 18;
+static const unsigned int OT_FIRE      = 19;
+static const unsigned int OT_ENTRANCE  = 20;
+static const unsigned int OT_BAG       = 41;
+
+/* Terrain Class */
+static const unsigned int TC_NULL      = 0;
+static const unsigned int TC_MAP       = 1;
+static const unsigned int TC_LANDSCAPE = 1;
+
+/* Terrain Type */
+static const unsigned int TT_NULL      = 0;
+static const unsigned int TT_INTERIOR  = 6;
+static const unsigned int TT_EXTERIOR  = 7;
+static const unsigned int TT_LANDSCAPE = 8;
+
 typedef struct _AppInfo {
   unsigned int size;
   uint8_t *data;
@@ -41,7 +77,10 @@ typedef struct _GidInfo {
 } GidInfo;
 
 typedef struct _DatInfo {
-  unsigned int type;
+  unsigned int objectClass;
+  unsigned int objectType;
+  unsigned int terrainClass;
+  unsigned int terrainType;
   bool more;
 } DatInfo;
 
