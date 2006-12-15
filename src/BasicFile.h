@@ -26,13 +26,13 @@
 
 #include "FileBuffer.h"
 
-class GenericFile {
+class BasicFile {
   private:
     std::ifstream ifs;
     std::ofstream ofs;
   public:
-    GenericFile();
-    virtual ~GenericFile();
+    BasicFile();
+    virtual ~BasicFile();
     virtual std::string GetDefaultPath() const;
     virtual std::string GetAlternatePath() const;
     virtual std::string GetLastResortPath() const;

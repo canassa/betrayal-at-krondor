@@ -19,40 +19,40 @@
 
 #include "Directories.h"
 #include "Exception.h"
-#include "GenericFile.h"
+#include "BasicFile.h"
 
-GenericFile::GenericFile() {
+BasicFile::BasicFile() {
 }
 
-GenericFile::~GenericFile() {
+BasicFile::~BasicFile() {
 }
 
 std::string
-GenericFile::GetDefaultPath() const
+BasicFile::GetDefaultPath() const
 {
   return std::string("");
 }
 
 std::string
-GenericFile::GetAlternatePath() const
+BasicFile::GetAlternatePath() const
 {
   return std::string("");
 }
 
 std::string
-GenericFile::GetLastResortPath() const
+BasicFile::GetLastResortPath() const
 {
   return std::string("");
 }
 
 std::string
-GenericFile::GetStoragePath() const
+BasicFile::GetStoragePath() const
 {
   return std::string("");
 }
 
 void
-GenericFile::Open(const std::string &name, const bool writable) {
+BasicFile::Open(const std::string &name, const bool writable) {
   if (writable) {
     std::string filename = GetStoragePath() + name;
     ofs.open(filename.c_str(), std::ios::out | std::ios::binary);
@@ -79,7 +79,7 @@ GenericFile::Open(const std::string &name, const bool writable) {
 }
 
 void
-GenericFile::Close() {
+BasicFile::Close() {
   if (ifs.is_open()) {
     ifs.close();
   }
@@ -89,7 +89,7 @@ GenericFile::Close() {
 }
 
 void
-GenericFile::Seek(const std::streamoff offset) {
+BasicFile::Seek(const std::streamoff offset) {
   if (ifs.is_open()) {
     ifs.seekg(offset, std::ios::beg);
     if (ifs.fail()) {
@@ -105,7 +105,7 @@ GenericFile::Seek(const std::streamoff offset) {
 }
 
 void
-GenericFile::SeekEnd(const std::streamoff offset) {
+BasicFile::SeekEnd(const std::streamoff offset) {
   if (ifs.is_open()) {
     ifs.seekg(offset, std::ios::end);
     if (ifs.fail()) {
@@ -121,7 +121,7 @@ GenericFile::SeekEnd(const std::streamoff offset) {
 }
 
 std::streamsize
-GenericFile::Size() {
+BasicFile::Size() {
   if (ifs.is_open()) {
     ifs.seekg(0, std::ios::end);
     if (ifs.fail()) {
@@ -140,23 +140,23 @@ GenericFile::Size() {
 }
 
 void
-GenericFile::Load(FileBuffer &buffer)
+BasicFile::Load(FileBuffer &buffer)
 {
   try {
     buffer.Load(ifs);
   } catch (Exception &e) {
-    e.Print("GenericFile::Load");
+    e.Print("BasicFile::Load");
     throw;
   }
 }
 
 void
-GenericFile::Save(FileBuffer &buffer)
+BasicFile::Save(FileBuffer &buffer)
 {
   try {
     buffer.Save(ofs);
   } catch (Exception &e) {
-    e.Print("GenericFile::Save");
+    e.Print("BasicFile::Save");
     throw;
   }
 }

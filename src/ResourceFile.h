@@ -24,10 +24,10 @@
 #include "config.h"
 #endif
 
-#include "GenericFile.h"
+#include "BasicFile.h"
 
 class ResourceFile
-: public GenericFile {
+: public BasicFile {
   public:
     ResourceFile();
     virtual ~ResourceFile();

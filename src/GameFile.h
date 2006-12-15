@@ -24,10 +24,10 @@
 #include "config.h"
 #endif
 
-#include "GenericFile.h"
+#include "BasicFile.h"
 
 class GameFile
-: public GenericFile {
+: public BasicFile {
   public:
     GameFile();
     virtual ~GameFile();

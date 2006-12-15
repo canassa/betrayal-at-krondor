@@ -1,6 +1,7 @@
 noinst_HEADERS = AnimationResource.h \
                  Audio.h \
                  BadgeWidget.h \
+                 BasicFile.h \
                  BookResource.h \
                  ButtonWidget.h \
                  Camera.h \
@@ -30,7 +31,6 @@ noinst_HEADERS = AnimationResource.h \
                  GameResource.h \
                  GameState.h \
                  GameViewWidget.h \
-                 GenericFile.h \
                  HotspotWidget.h \
                  Image.h \
                  ImageButtonWidget.h \
@@ -111,15 +111,15 @@ noinst_PROGRAMS = dumpads \
                   dumpwld \
                   resourcedemo
 bin_PROGRAMS = xbak
-libbase_a_SOURCES = Event.cc \
+libbase_a_SOURCES = BasicFile.cc \
+                    BasicFile.h \
+                    Event.cc \
                     Event.h \
                     EventListener.h \
                     Exception.cc \
                     Exception.h \
                     FileBuffer.cc \
                     FileBuffer.h \
-                    GenericFile.cc \
-                    GenericFile.h \
                     Observer.h \
                     Subject.cc \
                     Subject.h
