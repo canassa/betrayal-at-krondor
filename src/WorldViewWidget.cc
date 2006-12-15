@@ -17,13 +17,8 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
-#include <iomanip>
-#include <sstream>
-
-#include "FileManager.h"
-#include "ImageResource.h"
+#include "Image.h"
 #include "MediaToolkit.h"
-#include "ScreenResource.h"
 #include "WorldViewWidget.h"
 
 WorldViewWidget::WorldViewWidget(const int x, const int y, const int w, const int h, Game *g)
