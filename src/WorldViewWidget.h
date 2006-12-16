@@ -29,8 +29,6 @@
 class WorldViewWidget
 : public GameViewWidget {
   private:
-    void DrawHorizon();
-    void DrawTerrain();
     void Redraw();
   public:
     WorldViewWidget(const int x, const int y, const int w, const int h, Game *g);

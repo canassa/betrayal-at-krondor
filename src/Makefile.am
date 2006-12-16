@@ -31,6 +31,7 @@ noinst_HEADERS = AnimationResource.h \
                  GameResource.h \
                  GameState.h \
                  GameViewWidget.h \
+                 GenericObject.h \
                  HotspotWidget.h \
                  Image.h \
                  ImageButtonWidget.h \
@@ -39,6 +40,7 @@ noinst_HEADERS = AnimationResource.h \
                  LabelResource.h \
                  MapViewWidget.h \
                  MediaToolkit.h \
+                 MeshedObject.h \
                  MousePointer.h \
                  MousePointerManager.h \
                  MoviePlayer.h \
@@ -67,15 +69,18 @@ noinst_HEADERS = AnimationResource.h \
                  SDL_Clock.h \
                  SDL_Toolkit.h \
                  SDL_Video.h \
+                 Scene.h \
                  ScreenResource.h \
                  SkillLevelWidget.h \
                  SkillsWidget.h \
                  Sound.h \
                  SoundResource.h \
+                 SpritedObject.h \
                  Statistics.h \
                  Subject.h \
                  TableResource.h \
                  TaggedResource.h \
+                 TerrainObject.h \
                  TestApplication.h \
                  TextArea.h \
                  TextButtonWidget.h \
@@ -131,6 +136,10 @@ libgame_a_SOURCES = Camera.cc \
                     Game.h \
                     GameResource.cc \
                     GameResource.h \
+                    GenericObject.cc \
+                    GenericObject.h \
+                    MeshedObject.cc \
+                    MeshedObject.h \
                     Orientation.cc \
                     Orientation.h \
                     Party.cc \
@@ -139,8 +148,14 @@ libgame_a_SOURCES = Camera.cc \
                     PlayerCharacter.h \
                     Position.cc \
                     Position.h \
+                    Scene.cc \
+                    Scene.h \
+                    SpritedObject.cc \
+                    SpritedObject.h \
                     Statistics.cc \
                     Statistics.h \
+                    TerrainObject.cc \
+                    TerrainObject.h \
                     Zone.cc \
                     Zone.h
 libguitoolkit_a_SOURCES = BadgeWidget.cc \

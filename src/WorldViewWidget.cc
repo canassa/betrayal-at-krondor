@@ -34,54 +34,8 @@ WorldViewWidget::~WorldViewWidget()
 }
 
 void
-WorldViewWidget::DrawHorizon()
-{
-  static const int HORIZON_TOP_SIZE = 34;
-  Image top(width, HORIZON_TOP_SIZE);
-  int heading = game->GetCamera()->GetHeading();
-  int index = (heading >> 6) & 0x03;
-  int imagewidth = game->GetChapter()->GetZone().GetHorizon(index)->GetWidth();
-  int imageheight = game->GetChapter()->GetZone().GetHorizon(index)->GetHeight();
-  int offset = imagewidth - ((heading & 0x3f) << 2);
-  top.Fill(game->GetChapter()->GetZone().GetHorizon(index)->GetPixel(0, 0));
-  top.Draw(xpos, ypos);
-  if (offset > 0) {
-    game->GetChapter()->GetZone().GetHorizon((index - 1) & 0x03)->Draw(xpos + offset - imagewidth, ypos + HORIZON_TOP_SIZE,
-                                                                       imagewidth - offset, 0, offset, imageheight);
-  }
-  game->GetChapter()->GetZone().GetHorizon(index)->Draw(xpos + offset, ypos + HORIZON_TOP_SIZE,
-                                                        0, 0, imagewidth, imageheight);
-  if (imagewidth + offset < width) {
-    game->GetChapter()->GetZone().GetHorizon((index + 1) & 0x03)->Draw(xpos + offset + imagewidth, ypos + HORIZON_TOP_SIZE,
-                                                                       0, 0, width - offset - imagewidth, imageheight);
-  }
-}
-
-void
-WorldViewWidget::DrawTerrain()
-{
-  static const int TERRAIN_HEIGHT = 38;
-  static const int TERRAIN_YOFFSET = 82;
-  Image *terrain = game->GetChapter()->GetZone().GetTerrain();
-  int imagewidth = terrain->GetWidth();
-  int offset = imagewidth -
-               (((game->GetCamera()->GetHeading() * 16) + ((game->GetCamera()->GetXPos() + game->GetCamera()->GetYPos()) / 100)) % imagewidth);
-  if (offset > 0) {
-    terrain->Draw(xpos + offset - imagewidth, ypos + height - TERRAIN_HEIGHT - TERRAIN_YOFFSET + 1,
-                  imagewidth - offset, TERRAIN_YOFFSET - 1, offset, TERRAIN_HEIGHT);
-  }
-  terrain->Draw(xpos + offset, ypos + height - TERRAIN_HEIGHT - TERRAIN_YOFFSET,
-                0, TERRAIN_YOFFSET, imagewidth, TERRAIN_HEIGHT);
-  if ((imagewidth + offset) < width) {
-    terrain->Draw(xpos + offset + imagewidth, ypos + height - TERRAIN_HEIGHT - TERRAIN_YOFFSET - 1,
-                  0, TERRAIN_YOFFSET + 1, width - offset - imagewidth, TERRAIN_HEIGHT);
-  }
-}
-
-void
 WorldViewWidget::Redraw()
 {
   MediaToolkit::GetInstance()->GetVideo()->Clear(xpos, ypos, width, height);
-  DrawHorizon();
-  DrawTerrain();
+  game->GetScene()->DrawFirstPerson(xpos, ypos, width, height, game->GetCamera());
 }

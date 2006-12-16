@@ -14,25 +14,25 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
+ * Copyright (C) 2006 Guido de Jong <guidoj@users.sf.net>
  */
 
-#include "MapViewWidget.h"
+#include "SpritedObject.h"
 
-MapViewWidget::MapViewWidget(const int x, const int y, const int w, const int h, Game *g)
-: GameViewWidget(x, y, w, h, g)
+SpritedObject::SpritedObject()
 {
-  game->GetCamera()->Attach(this);
-  Update();
 }
 
-MapViewWidget::~MapViewWidget()
+SpritedObject::~SpritedObject()
 {
-  game->GetCamera()->Detach(this);
 }
 
 void
-MapViewWidget::Redraw()
+SpritedObject::DrawFirstPerson()
 {
-  game->GetScene()->DrawTopDown();
+}
+
+void
+SpritedObject::DrawTopDown()
+{
 }

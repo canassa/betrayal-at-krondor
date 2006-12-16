@@ -14,25 +14,25 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
+ * Copyright (C) 2006 Guido de Jong <guidoj@users.sf.net>
  */
 
-#include "MapViewWidget.h"
+#ifndef SPRITED_OBJECT_H
+#define SPRITED_OBJECT_H
 
-MapViewWidget::MapViewWidget(const int x, const int y, const int w, const int h, Game *g)
-: GameViewWidget(x, y, w, h, g)
-{
-  game->GetCamera()->Attach(this);
-  Update();
-}
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
-MapViewWidget::~MapViewWidget()
-{
-  game->GetCamera()->Detach(this);
-}
+#include "GenericObject.h"
 
-void
-MapViewWidget::Redraw()
-{
-  game->GetScene()->DrawTopDown();
-}
+class SpritedObject
+: GenericObject {
+  public:
+    SpritedObject();
+    ~SpritedObject();
+    void DrawFirstPerson();
+    void DrawTopDown();
+};
+
+#endif

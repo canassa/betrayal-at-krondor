@@ -26,6 +26,7 @@ Game::Game()
 : name("")
 , chapter(0)
 , party(0)
+, scene(0)
 , camera(0)
 , partyRes(0)
 , buttonImages(0)
@@ -43,6 +44,7 @@ Game::Game()
       pc->SetButtonImage(buttonImages->GetImage(i));
       party->AddMember(pc);
     }
+    scene = new Scene(chapter->GetZone());
     camera = new Camera(0, 0, 0);
   } catch (Exception &e) {
     e.Print("Game::Game");
@@ -52,14 +54,17 @@ Game::Game()
 
 Game::~Game()
 {
+  if (camera) {
+    delete camera;
+  }
+  if (scene) {
+    delete scene;
+  }
   if (party) {
     delete party;
   }
   if (chapter) {
     delete chapter;
-  }
-  if (camera) {
-    delete camera;
   }
   if (buttonImages) {
     delete buttonImages;
@@ -82,19 +87,25 @@ Game::SetName(const std::string& s)
 }
 
 Party *
-Game::GetParty()
+Game::GetParty() const
 {
   return party;
 }
 
 Chapter *
-Game::GetChapter()
+Game::GetChapter() const
 {
   return chapter;
 }
 
 Camera *
-Game::GetCamera()
+Game::GetCamera() const
 {
   return camera;
+}
+
+Scene *
+Game::GetScene() const
+{
+  return scene;
 }

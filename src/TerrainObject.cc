@@ -14,25 +14,25 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
+ * Copyright (C) 2006 Guido de Jong <guidoj@users.sf.net>
  */
 
-#include "MapViewWidget.h"
+#include "TerrainObject.h"
 
-MapViewWidget::MapViewWidget(const int x, const int y, const int w, const int h, Game *g)
-: GameViewWidget(x, y, w, h, g)
+TerrainObject::TerrainObject()
 {
-  game->GetCamera()->Attach(this);
-  Update();
 }
 
-MapViewWidget::~MapViewWidget()
+TerrainObject::~TerrainObject()
 {
-  game->GetCamera()->Detach(this);
 }
 
 void
-MapViewWidget::Redraw()
+TerrainObject::DrawFirstPerson()
 {
-  game->GetScene()->DrawTopDown();
+}
+
+void
+TerrainObject::DrawTopDown()
+{
 }
