@@ -17,24 +17,19 @@
  * Copyright (C) 2006 Guido de Jong <guidoj@users.sf.net>
  */
 
-#include "SpritedObject.h"
+#include "SceneFactory.h"
 
-SpritedObject::SpritedObject(Image *img)
-: GenericObject()
-, sprite(img)
+SceneFactory::SceneFactory()
 {
 }
 
-SpritedObject::~SpritedObject()
+SceneFactory::~SceneFactory()
 {
 }
 
-void
-SpritedObject::DrawFirstPerson()
+Scene *
+SceneFactory::CreateScene(Zone& zone)
 {
-}
-
-void
-SpritedObject::DrawTopDown()
-{
+  Scene *scene = new Scene(zone);
+  return scene;
 }

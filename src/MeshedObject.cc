@@ -20,6 +20,7 @@
 #include "MeshedObject.h"
 
 MeshedObject::MeshedObject()
+: GenericObject()
 {
 }
 

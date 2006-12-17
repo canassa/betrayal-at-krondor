@@ -21,6 +21,7 @@
 #include "FileManager.h"
 #include "Game.h"
 #include "PlayerCharacter.h"
+#include "SceneFactory.h"
 
 Game::Game()
 : name("")
@@ -44,7 +45,8 @@ Game::Game()
       pc->SetButtonImage(buttonImages->GetImage(i));
       party->AddMember(pc);
     }
-    scene = new Scene(chapter->GetZone());
+    SceneFactory sf;
+    scene = sf.CreateScene(chapter->GetZone());
     camera = new Camera(0, 0, 0);
   } catch (Exception &e) {
     e.Print("Game::Game");

@@ -25,11 +25,14 @@
 #endif
 
 #include "GenericObject.h"
+#include "Image.h"
 
 class SpritedObject
 : GenericObject {
+  private:
+    Image *sprite;
   public:
-    SpritedObject();
+    SpritedObject(Image *img);
     ~SpritedObject();
     void DrawFirstPerson();
     void DrawTopDown();

@@ -20,6 +20,7 @@
 #include "TerrainObject.h"
 
 TerrainObject::TerrainObject()
+: GenericObject()
 {
 }
 

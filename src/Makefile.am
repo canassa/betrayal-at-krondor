@@ -70,6 +70,7 @@ noinst_HEADERS = AnimationResource.h \
                  SDL_Toolkit.h \
                  SDL_Video.h \
                  Scene.h \
+                 SceneFactory.h \
                  ScreenResource.h \
                  SkillLevelWidget.h \
                  SkillsWidget.h \
@@ -150,6 +151,8 @@ libgame_a_SOURCES = Camera.cc \
                     Position.h \
                     Scene.cc \
                     Scene.h \
+                    SceneFactory.cc \
+                    SceneFactory.h \
                     SpritedObject.cc \
                     SpritedObject.h \
                     Statistics.cc \
