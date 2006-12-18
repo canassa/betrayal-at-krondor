@@ -25,17 +25,20 @@
 #endif
 
 #include "ImageResource.h"
+#include "TableResource.h"
 
 class Zone {
   private:
     ImageResource horizon;
     Image *terrain;
+    TableResource table;
   public:
     Zone();
     ~Zone();
     void Load(const unsigned int n);
     Image* GetHorizon(const unsigned int n);
-    Image* GetTerrain();
+    Image* GetTerrain() const;
+    TableResource& GetTable();
 };
 
 #endif

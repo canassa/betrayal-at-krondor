@@ -22,12 +22,12 @@
 
 #include "FileManager.h"
 #include "ScreenResource.h"
-#include "TableResource.h"
 #include "Zone.h"
 
 Zone::Zone()
 : horizon()
 , terrain(0)
+, table()
 {
 }
 
@@ -43,7 +43,6 @@ Zone::Load(const unsigned int n)
 {
   std::stringstream tableStream;
   tableStream << "Z" << std::setw(2) << std::setfill('0') << n << ".TBL";
-  TableResource table;
   FileManager::GetInstance()->Load(&table, tableStream.str());
 
   std::stringstream horizonStream;
@@ -69,7 +68,13 @@ Zone::GetHorizon(const unsigned int n)
 }
 
 Image *
-Zone::GetTerrain()
+Zone::GetTerrain() const
 {
   return terrain;
+}
+
+TableResource&
+Zone::GetTable()
+{
+  return table;
 }
