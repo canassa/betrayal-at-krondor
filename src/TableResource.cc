@@ -166,7 +166,55 @@ TableResource::Load(FileBuffer *buffer)
       item.more = datbuf->GetUint16LE() > 0;
       datbuf->Skip(4);
       if (item.more) {
-        // TODO
+        switch (item.objectType) {
+          case OT_TREE:
+          case OT_TOMBSTONE:
+          case OT_SIGN:
+          case OT_DEADBODY2:
+          case OT_DIRTPILE:
+          case OT_FIRE:
+          case OT_FERN:
+          case OT_ROCKPILE:
+          case OT_BUSH1:
+          case OT_BUSH2:
+          case OT_BUSH3:
+          case OT_SLAB:
+          case OT_STUMP:
+          case OT_WELL:
+          case OT_ENGINE:
+          case OT_SCARECROW:
+          case OT_TRAP:
+          case OT_COLUMN:
+          case OT_BAG:
+          case OT_LADDER:
+            // TODO
+            break;
+          case OT_TERRAIN:
+          case OT_EXTERIOR:
+          case OT_BRIDGE:
+          case OT_INTERIOR:
+          case OT_LANDSCAPE1:
+          case OT_CHEST:
+          case OT_DEADBODY1:
+          case OT_FENCE:
+          case OT_GATE:
+          case OT_BUILDING:
+          case OT_ROOM:
+          case OT_PIT:
+          case OT_CORN:
+          case OT_ENTRANCE:
+          case OT_GROVE:
+          case OT_DOOR:
+          case OT_CRYST:
+          case OT_CATAPULT:
+          case OT_LANDSCAPE2:
+          case OT_MOUNTAIN:
+            // TODO
+            break;
+          default:
+            throw DataCorruption(__FILE__, __LINE__);
+            break;
+        }
       }
       datItems.push_back(item);
     }
