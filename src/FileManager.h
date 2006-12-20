@@ -44,8 +44,10 @@ class FileManager {
     ~FileManager();
     static FileManager* GetInstance();
     static void CleanUp();
+    bool GameExists(const std::string &name);
     void Load(GameData *gam, const std::string &name);
     void Save(GameData *gam, const std::string &name);
+    bool ResourceExists(const std::string &name);
     void Load(ResourceData *res, const std::string &name);
     void Save(ResourceData *res, const std::string &name);
 };

@@ -125,6 +125,20 @@ FileManager::SaveResource(const std::string &name, FileBuffer* buffer)
   }
 }
 
+bool
+FileManager::GameExists(const std::string &name)
+{
+  try {
+    GameFile gamfile;
+    gamfile.Open(name, false);
+    gamfile.Close();
+    return true;
+  } catch (Exception &e) {
+    return false;
+  }
+  return false;
+}
+
 void
 FileManager::Load(GameData *gam, const std::string &name)
 {
@@ -151,6 +165,21 @@ FileManager::Save(GameData *gam, const std::string &name)
     e.Print("FileManager::Save");
     throw;
   }
+}
+
+bool
+FileManager::ResourceExists(const std::string &name)
+{
+  try {
+    ResourceFile resfile;
+    resfile.Open(name, false);
+    resfile.Close();
+    return true;
+  } catch (Exception &e1) {
+    ResourceIndexData resIdxData = {0, 0};
+    return (resIndex.Find(name, resIdxData) && (resIdxData.size != 0));
+  }
+  return false;
 }
 
 void
