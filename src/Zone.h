@@ -24,6 +24,8 @@
 #include "config.h"
 #endif
 
+#include <vector>
+
 #include "ImageResource.h"
 #include "TableResource.h"
 
@@ -31,12 +33,14 @@ class Zone {
   private:
     ImageResource horizon;
     Image *terrain;
+    std::vector<Image *> sprites;
     TableResource table;
   public:
     Zone();
     ~Zone();
     void Load(const unsigned int n);
     Image* GetHorizon(const unsigned int n);
+    Image* GetSprite(const unsigned int n);
     Image* GetTerrain() const;
     TableResource& GetTable();
 };
