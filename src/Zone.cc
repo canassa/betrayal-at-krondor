@@ -72,15 +72,30 @@ Zone::Load(const unsigned int n)
     while (found) {
       std::stringstream spriteStream;
       spriteStream << "Z" << std::setw(2) << std::setfill('0') << n << "SLOT" << std::setw(1) << i << ".BMX";
-      ImageResource spriteSlot;
       found = FileManager::GetInstance()->ResourceExists(spriteStream.str());
       if (found) {
+        ImageResource spriteSlot;
         FileManager::GetInstance()->Load(&spriteSlot, spriteStream.str());
         for (unsigned int j = 0; j < spriteSlot.GetNumImages(); j++) {
           Image *img = new Image(spriteSlot.GetImage(j));
           sprites.push_back(img);
         }
         i++;
+      }
+    }
+
+    for (int y = 1; y <= 32; y++) {
+      for (int x = 1; x <= 32; x++) {
+        std::stringstream tileStream;
+        tileStream << "T" << std::setw(2) << std::setfill('0') << n
+                          << std::setw(2) << std::setfill('0') << x
+                          << std::setw(2) << std::setfill('0') << y << ".WLD";
+        if (FileManager::GetInstance()->ResourceExists(tileStream.str())) {
+          TileWorldResource *tile = new TileWorldResource;
+          FileManager::GetInstance()->Load(tile, tileStream.str());
+          std::pair<int, int> coord(x, y);
+          tiles.insert(std::pair<const std::pair<int, int>, TileWorldResource *>(coord, tile));
+        }
       }
     }
   } catch (Exception &e) {
@@ -96,6 +111,12 @@ Zone::GetHorizon(const unsigned int n)
 }
 
 Image *
+Zone::GetTerrain() const
+{
+  return terrain;
+}
+
+Image *
 Zone::GetSprite(const unsigned int n)
 {
   if (n < sprites.size()) {
@@ -105,10 +126,15 @@ Zone::GetSprite(const unsigned int n)
   }
 }
 
-Image *
-Zone::GetTerrain() const
+TileWorldResource *
+Zone::GetTile(const int x, const int y)
 {
-  return terrain;
+  std::pair<int, int> coord(x, y);
+  std::map<const std::pair<int, int>, TileWorldResource *>::iterator it = tiles.find(coord);
+  if (it != tiles.end()) {
+    return it->second;
+  }
+  return 0;
 }
 
 TableResource&

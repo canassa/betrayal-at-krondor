@@ -24,24 +24,28 @@
 #include "config.h"
 #endif
 
+#include <map>
 #include <vector>
 
 #include "ImageResource.h"
 #include "TableResource.h"
+#include "TileWorldResource.h"
 
 class Zone {
   private:
     ImageResource horizon;
     Image *terrain;
     std::vector<Image *> sprites;
+    std::map<const std::pair<int, int>, TileWorldResource *> tiles;
     TableResource table;
   public:
     Zone();
     ~Zone();
     void Load(const unsigned int n);
     Image* GetHorizon(const unsigned int n);
-    Image* GetSprite(const unsigned int n);
     Image* GetTerrain() const;
+    Image* GetSprite(const unsigned int n);
+    TileWorldResource* GetTile(const int x, const int y);
     TableResource& GetTable();
 };
 
