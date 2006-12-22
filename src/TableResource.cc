@@ -23,7 +23,6 @@
 TableResource::TableResource()
 : TaggedResource()
 , mapItems()
-, appItems()
 {
 }
 
@@ -42,18 +41,6 @@ std::string&
 TableResource::GetMapItem(const unsigned int i)
 {
   return mapItems[i];
-}
-
-unsigned int
-TableResource::GetAppSize() const
-{
-  return appItems.size();
-}
-
-AppInfo&
-TableResource::GetAppItem(const unsigned int i)
-{
-  return appItems[i];
 }
 
 unsigned int
@@ -84,7 +71,6 @@ void
 TableResource::Clear()
 {
   mapItems.clear();
-  appItems.clear();
   gidItems.clear();
 }
 
@@ -123,10 +109,7 @@ TableResource::Load(FileBuffer *buffer)
     unsigned int numAppItems = appbuf->GetUint16LE();
     unsigned int appDataSize = appbuf->GetUint16LE();
     for (unsigned int i = 0; i< numAppItems; i++) {
-      AppInfo item;
-      item.size = appDataSize;
-      appbuf->GetData(item.data, item.size);
-      appItems.push_back(item);
+      appbuf->Skip(appDataSize);
     }
 
     unsigned int *gidOffset = new unsigned int [numMapItems];
@@ -138,9 +121,9 @@ TableResource::Load(FileBuffer *buffer)
       GidInfo item;
       item.xsize = gidbuf->GetUint16LE();
       item.ysize = gidbuf->GetUint16LE();
-      item.more = gidbuf->GetUint16LE() > 0;
+      bool more = gidbuf->GetUint16LE() > 0;
       item.flags = gidbuf->GetUint16LE();
-      if (item.more) {
+      if (more) {
         // TODO
       }
       gidItems.push_back(item);
@@ -159,9 +142,9 @@ TableResource::Load(FileBuffer *buffer)
       item.terrainClass = datbuf->GetUint8();
       item.terrainType = datbuf->GetUint8();
       datbuf->Skip(4);
-      item.more = datbuf->GetUint16LE() > 0;
+      bool more = datbuf->GetUint16LE() > 0;
       datbuf->Skip(4);
-      if (item.more) {
+      if (more) {
         switch (item.objectType) {
           case OT_TREE:
           case OT_TOMBSTONE:

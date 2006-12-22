@@ -86,32 +86,26 @@ static const unsigned int TT_INTERIOR  = 6;
 static const unsigned int TT_EXTERIOR  = 7;
 static const unsigned int TT_LANDSCAPE = 8;
 
-typedef struct _AppInfo {
-  unsigned int size;
-  uint8_t data[8];
-} AppInfo;
+class GidInfo {
+  public:
+    unsigned int xsize;
+    unsigned int ysize;
+    unsigned int flags;
+};
 
-typedef struct _GidInfo {
-  unsigned int xsize;
-  unsigned int ysize;
-  bool more;
-  unsigned int flags;
-} GidInfo;
-
-typedef struct _DatInfo {
-  unsigned int objectClass;
-  unsigned int objectType;
-  unsigned int terrainClass;
-  unsigned int terrainType;
-  bool more;
-  unsigned int sprite;
-} DatInfo;
+class DatInfo {
+  public:
+    unsigned int objectClass;
+    unsigned int objectType;
+    unsigned int terrainClass;
+    unsigned int terrainType;
+    unsigned int sprite;
+};
 
 class TableResource
 : public TaggedResource {
   private:
     std::vector<std::string> mapItems;
-    std::vector<AppInfo> appItems;
     std::vector<DatInfo> datItems;
     std::vector<GidInfo> gidItems;
   public:
@@ -119,8 +113,6 @@ class TableResource
     virtual ~TableResource();
     unsigned int GetMapSize() const;
     std::string& GetMapItem(const unsigned int i);
-    unsigned int GetAppSize() const;
-    AppInfo& GetAppItem(const unsigned int i);
     unsigned int GetDatSize() const;
     DatInfo& GetDatItem(const unsigned int i);
     unsigned int GetGidSize() const;

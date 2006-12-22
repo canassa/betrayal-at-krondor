@@ -29,11 +29,17 @@ Zone::Zone()
 : horizon()
 , terrain(0)
 , sprites()
-, table()
+, table(0)
 {
 }
 
 Zone::~Zone()
+{
+  Clear();
+}
+
+void
+Zone::Clear()
 {
   for (unsigned int i = 0; i < sprites.size(); i++) {
     delete sprites[i];
@@ -42,15 +48,16 @@ Zone::~Zone()
   if (terrain) {
     delete terrain;
   }
+  if (table) {
+    delete table;
+  }
 }
 
 void
 Zone::Load(const unsigned int n)
 {
   try {
-    std::stringstream tableStream;
-    tableStream << "Z" << std::setw(2) << std::setfill('0') << n << ".TBL";
-    FileManager::GetInstance()->Load(&table, tableStream.str());
+    Clear();
 
     std::stringstream horizonStream;
     horizonStream << "Z" << std::setw(2) << std::setfill('0') << n << "H.BMX";
@@ -98,6 +105,10 @@ Zone::Load(const unsigned int n)
         }
       }
     }
+
+    std::stringstream tableStream;
+    tableStream << "Z" << std::setw(2) << std::setfill('0') << n << ".TBL";
+    FileManager::GetInstance()->Load(table, tableStream.str());
   } catch (Exception &e) {
     e.Print("Zone::Load");
     throw;
@@ -137,7 +148,7 @@ Zone::GetTile(const unsigned int x, const unsigned int y)
   return 0;
 }
 
-TableResource&
+TableResource *
 Zone::GetTable()
 {
   return table;
