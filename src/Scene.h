@@ -34,14 +34,14 @@ class Scene {
   private:
     Zone& zone;
     std::list<GenericObject *> objects;
-    void DrawHorizon(const int xpos, const int ypos, const int width, const int height, const int heading);
-    void DrawGround(const int xpos, const int ypos, const int width, const int height, Camera *cam);
+    void DrawHorizon(const int x, const int y, const int w, const int h, const int heading);
+    void DrawGround(const int x, const int y, const int w, const int h, Camera *cam);
   public:
     Scene(Zone& z);
     ~Scene();
     void AddObject(GenericObject *obj);
     void RemoveObject(GenericObject *obj);
-    void DrawFirstPerson(const int xpos, const int ypos, const int width, const int height, Camera *cam);
+    void DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam);
     void DrawTopDown();
 };
 

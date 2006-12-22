@@ -25,11 +25,16 @@
 #endif
 
 class GenericObject {
+  private:
+    int xpos;
+    int ypos;
+    int width;
+    int height;
   public:
-    GenericObject();
+    GenericObject(const int x, const int y, const int w, const int h);
     virtual ~GenericObject();
     virtual void DrawFirstPerson() = 0;
-    virtual void DrawopDown() = 0;
+    virtual void DrawTopDown() = 0;
 };
 
 #endif

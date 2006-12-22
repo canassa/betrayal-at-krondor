@@ -84,9 +84,6 @@ void
 TableResource::Clear()
 {
   mapItems.clear();
-  for (unsigned int i = 0; i < appItems.size(); i++) {
-    delete[] appItems[i].data;
-  }
   appItems.clear();
   gidItems.clear();
 }
@@ -128,7 +125,6 @@ TableResource::Load(FileBuffer *buffer)
     for (unsigned int i = 0; i< numAppItems; i++) {
       AppInfo item;
       item.size = appDataSize;
-      item.data = new uint8_t[appDataSize];
       appbuf->GetData(item.data, item.size);
       appItems.push_back(item);
     }
@@ -187,7 +183,9 @@ TableResource::Load(FileBuffer *buffer)
           case OT_COLUMN:
           case OT_BAG:
           case OT_LADDER:
-            // TODO
+            datbuf->Skip(22);
+            item.sprite = datbuf->GetUint16LE();
+            datbuf->Skip(4);
             break;
           case OT_TERRAIN:
           case OT_EXTERIOR:
@@ -209,6 +207,7 @@ TableResource::Load(FileBuffer *buffer)
           case OT_CATAPULT:
           case OT_LANDSCAPE2:
           case OT_MOUNTAIN:
+            item.sprite = (unsigned int) -1;
             // TODO
             break;
           default:

@@ -19,7 +19,11 @@
 
 #include "GenericObject.h"
 
-GenericObject::GenericObject()
+GenericObject::GenericObject(const int x, const int y, const int w, const int h)
+: xpos(x)
+, ypos(y)
+, width(w)
+, height(h)
 {
 }
 

@@ -84,8 +84,8 @@ Zone::Load(const unsigned int n)
       }
     }
 
-    for (int y = 1; y <= 32; y++) {
-      for (int x = 1; x <= 32; x++) {
+    for (unsigned int y = 1; y <= MAX_TILES; y++) {
+      for (unsigned int x = 1; x <= MAX_TILES; x++) {
         std::stringstream tileStream;
         tileStream << "T" << std::setw(2) << std::setfill('0') << n
                           << std::setw(2) << std::setfill('0') << x
@@ -93,8 +93,8 @@ Zone::Load(const unsigned int n)
         if (FileManager::GetInstance()->ResourceExists(tileStream.str())) {
           TileWorldResource *tile = new TileWorldResource;
           FileManager::GetInstance()->Load(tile, tileStream.str());
-          std::pair<int, int> coord(x, y);
-          tiles.insert(std::pair<const std::pair<int, int>, TileWorldResource *>(coord, tile));
+          std::pair<unsigned int, unsigned int> coord(x, y);
+          tiles.insert(std::pair<const std::pair<unsigned int, unsigned int>, TileWorldResource *>(coord, tile));
         }
       }
     }
@@ -127,10 +127,10 @@ Zone::GetSprite(const unsigned int n)
 }
 
 TileWorldResource *
-Zone::GetTile(const int x, const int y)
+Zone::GetTile(const unsigned int x, const unsigned int y)
 {
-  std::pair<int, int> coord(x, y);
-  std::map<const std::pair<int, int>, TileWorldResource *>::iterator it = tiles.find(coord);
+  std::pair<unsigned int, unsigned int> coord(x, y);
+  std::map<const std::pair<unsigned int, unsigned int>, TileWorldResource *>::iterator it = tiles.find(coord);
   if (it != tiles.end()) {
     return it->second;
   }

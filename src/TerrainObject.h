@@ -27,9 +27,9 @@
 #include "GenericObject.h"
 
 class TerrainObject
-: GenericObject {
+: public GenericObject {
   public:
-    TerrainObject();
+    TerrainObject(const int x, const int y, const int w, const int h);
     ~TerrainObject();
     void DrawFirstPerson();
     void DrawTopDown();

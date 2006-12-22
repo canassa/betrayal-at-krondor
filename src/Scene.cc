@@ -43,30 +43,30 @@ Scene::RemoveObject(GenericObject *obj)
 }
 
 void
-Scene::DrawHorizon(const int xpos, const int ypos, const int width, const int height, const int heading)
+Scene::DrawHorizon(const int x, const int y, const int w, const int h, const int heading)
 {
   static const int HORIZON_TOP_SIZE = 34;
-  Image top(width, HORIZON_TOP_SIZE);
+  Image top(w, HORIZON_TOP_SIZE);
   int index = (heading >> 6) & 0x03;
   int imagewidth = zone.GetHorizon(index)->GetWidth();
   int imageheight = zone.GetHorizon(index)->GetHeight();
   int offset = imagewidth - ((heading & 0x3f) << 2);
   top.Fill(zone.GetHorizon(index)->GetPixel(0, 0));
-  top.Draw(xpos, ypos);
+  top.Draw(x, y);
   if (offset > 0) {
-    zone.GetHorizon((index - 1) & 0x03)->Draw(xpos + offset - imagewidth, ypos + HORIZON_TOP_SIZE,
-                                               imagewidth - offset, 0, offset, imageheight);
+    zone.GetHorizon((index - 1) & 0x03)->Draw(x + offset - imagewidth, y + HORIZON_TOP_SIZE,
+                                              imagewidth - offset, 0, offset, imageheight);
   }
-  zone.GetHorizon(index)->Draw(xpos + offset, ypos + HORIZON_TOP_SIZE,
-                                0, 0, imagewidth, imageheight);
-  if (imagewidth + offset < width) {
-    zone.GetHorizon((index + 1) & 0x03)->Draw(xpos + offset + imagewidth, ypos + HORIZON_TOP_SIZE,
-                                               0, 0, width - offset - imagewidth, imageheight);
+  zone.GetHorizon(index)->Draw(x + offset, y + HORIZON_TOP_SIZE,
+                               0, 0, imagewidth, imageheight);
+  if (imagewidth + offset < w) {
+    zone.GetHorizon((index + 1) & 0x03)->Draw(x + offset + imagewidth, y + HORIZON_TOP_SIZE,
+                                              0, 0, w - offset - imagewidth, imageheight);
   }
 }
 
 void
-Scene::DrawGround(const int xpos, const int ypos, const int width, const int height, Camera *cam)
+Scene::DrawGround(const int x, const int y, const int w, const int h, Camera *cam)
 {
   static const int TERRAIN_HEIGHT = 38;
   static const int TERRAIN_YOFFSET = 82;
@@ -74,22 +74,22 @@ Scene::DrawGround(const int xpos, const int ypos, const int width, const int hei
   int imagewidth = terrain->GetWidth();
   int offset = imagewidth - (((cam->GetHeading() * 16) + ((cam->GetXPos() + cam->GetYPos()) / 100)) % imagewidth);
   if (offset > 0) {
-    terrain->Draw(xpos + offset - imagewidth, ypos + height - TERRAIN_HEIGHT - TERRAIN_YOFFSET + 1,
+    terrain->Draw(x + offset - imagewidth, y + h - TERRAIN_HEIGHT - TERRAIN_YOFFSET + 1,
                   imagewidth - offset, TERRAIN_YOFFSET - 1, offset, TERRAIN_HEIGHT);
   }
-  terrain->Draw(xpos + offset, ypos + height - TERRAIN_HEIGHT - TERRAIN_YOFFSET,
+  terrain->Draw(x + offset, y + h - TERRAIN_HEIGHT - TERRAIN_YOFFSET,
                 0, TERRAIN_YOFFSET, imagewidth, TERRAIN_HEIGHT);
-  if ((imagewidth + offset) < width) {
-    terrain->Draw(xpos + offset + imagewidth, ypos + height - TERRAIN_HEIGHT - TERRAIN_YOFFSET - 1,
-                  0, TERRAIN_YOFFSET + 1, width - offset - imagewidth, TERRAIN_HEIGHT);
+  if ((imagewidth + offset) < w) {
+    terrain->Draw(x + offset + imagewidth, y + h - TERRAIN_HEIGHT - TERRAIN_YOFFSET - 1,
+                  0, TERRAIN_YOFFSET + 1, w - offset - imagewidth, TERRAIN_HEIGHT);
   }
 }
 
 void
-Scene::DrawFirstPerson(const int xpos, const int ypos, const int width, const int height, Camera *cam)
+Scene::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
 {
-  DrawHorizon(xpos, ypos, width, height, cam->GetHeading());
-  DrawGround(xpos, ypos, width, height, cam);
+  DrawHorizon(x, y, w, h, cam->GetHeading());
+  DrawGround(x, y, w, h, cam);
 }
 
 void

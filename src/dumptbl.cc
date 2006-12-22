@@ -35,9 +35,10 @@ int main(int argc, char *argv[]) {
     for (unsigned int i = 0; i < tbl->GetMapSize(); i++) {
       GidInfo gid = tbl->GetGidItem(i);
       DatInfo dat = tbl->GetDatItem(i);
-      printf("%3d: %-8s %6d %6d %04x %02x %2d %2d %2d\n", i, tbl->GetMapItem(i).c_str(),
+      printf("%3d: %-8s %6d %6d %04x %02x %2d %2d %2d %2d\n", i, tbl->GetMapItem(i).c_str(),
              gid.xsize, gid.ysize, gid.flags,
-             dat.objectClass, dat.objectType, dat.terrainClass, dat.terrainType);
+             dat.objectClass, dat.objectType, dat.terrainClass, dat.terrainType,
+             dat.sprite);
     }
     delete tbl;
     FileManager::CleanUp();

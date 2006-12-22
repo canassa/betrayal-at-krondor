@@ -88,7 +88,7 @@ static const unsigned int TT_LANDSCAPE = 8;
 
 typedef struct _AppInfo {
   unsigned int size;
-  uint8_t *data;
+  uint8_t data[8];
 } AppInfo;
 
 typedef struct _GidInfo {
@@ -104,6 +104,7 @@ typedef struct _DatInfo {
   unsigned int terrainClass;
   unsigned int terrainType;
   bool more;
+  unsigned int sprite;
 } DatInfo;
 
 class TableResource
