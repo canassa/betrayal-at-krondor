@@ -47,6 +47,6 @@ void
 ImageWidget::Draw()
 {
   if (IsVisible()) {
-    image->Draw(xpos, ypos, 0, 0, width, height, 0);
+    image->Draw(rect.GetXPos(), rect.GetYPos(), 0, 0, rect.GetWidth(), rect.GetHeight(), 0);
   }
 }

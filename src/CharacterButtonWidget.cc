@@ -48,9 +48,9 @@ CharacterButtonWidget::Draw()
 {
   if (IsVisible()) {
     if (character) {
-      character->GetButtonImage()->Draw(xpos, ypos, 0);
+      character->GetButtonImage()->Draw(rect.GetXPos(), rect.GetYPos(), 0);
       if (character->IsSelected()) {
-        selectedImage->Draw(xpos, ypos, 0);
+        selectedImage->Draw(rect.GetXPos(), rect.GetYPos(), 0);
       }
     }
   }

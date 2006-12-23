@@ -48,7 +48,7 @@ CompassWidget::Draw()
 {
   if (IsVisible()) {
     if (cachedImage){
-      cachedImage->Draw(xpos, ypos);
+      cachedImage->Draw(rect.GetXPos(), rect.GetYPos());
     }
   }
 }
@@ -59,12 +59,12 @@ CompassWidget::Update()
   if (compassImage) {
     int offset = camera->GetHeading();
     int imagewidth = compassImage->GetWidth();
-    compassImage->Draw(xpos - offset, ypos, offset, 0, width, height);
-    if ((imagewidth - offset) < width) {
-      compassImage->Draw(xpos - offset + imagewidth, ypos, 0, 0, width - imagewidth + offset, height);
+    compassImage->Draw(rect.GetXPos() - offset, rect.GetYPos(), offset, 0, rect.GetWidth(), rect.GetHeight());
+    if ((imagewidth - offset) < rect.GetWidth()) {
+      compassImage->Draw(rect.GetXPos() - offset + imagewidth, rect.GetYPos(), 0, 0, rect.GetWidth() - imagewidth + offset, rect.GetHeight());
     }
   }
   if (cachedImage){
-    cachedImage->Read(xpos, ypos);
+    cachedImage->Read(rect.GetXPos(), rect.GetYPos());
   }
 }

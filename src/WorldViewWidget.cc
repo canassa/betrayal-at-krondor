@@ -36,6 +36,6 @@ WorldViewWidget::~WorldViewWidget()
 void
 WorldViewWidget::Redraw()
 {
-  MediaToolkit::GetInstance()->GetVideo()->Clear(xpos, ypos, width, height);
-  game->GetScene()->DrawFirstPerson(xpos, ypos, width, height, game->GetCamera());
+  MediaToolkit::GetInstance()->GetVideo()->Clear(rect.GetXPos(), rect.GetYPos(), rect.GetWidth(), rect.GetHeight());
+  game->GetScene()->DrawFirstPerson(rect.GetXPos(), rect.GetYPos(), rect.GetWidth(), rect.GetHeight(), game->GetCamera());
 }

@@ -134,7 +134,8 @@ void
 ContainerWidget::LeftClickWidget(const bool toggle, const int x, const int y)
 {
   for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-    if ((*it)->Covers(x, y)) {
+    Point2D p(x, y);
+    if ((*it)->GetRectangle().IsInside(p)) {
       (*it)->LeftClick(toggle);
     }
   }
@@ -144,7 +145,8 @@ void
 ContainerWidget::RightClickWidget(const bool toggle, const int x, const int y)
 {
   for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-    if ((*it)->Covers(x, y)) {
+    Point2D p(x, y);
+    if ((*it)->GetRectangle().IsInside(p)) {
       (*it)->RightClick(toggle);
     }
   }
@@ -154,7 +156,8 @@ void
 ContainerWidget::MouseOverWidget(const int x, const int y)
 {
   for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-    if (!(*it)->Covers(x, y)) {
+    Point2D p(x, y);
+    if (!(*it)->GetRectangle().IsInside(p)) {
       (*it)->LeftClick(false);
     }
   }

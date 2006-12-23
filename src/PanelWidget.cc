@@ -40,9 +40,9 @@ void
 PanelWidget::Draw()
 {
   if (IsVisible()) {
-    MediaToolkit::GetInstance()->GetVideo()->Clear(xpos, ypos, width, height);
+    MediaToolkit::GetInstance()->GetVideo()->Clear(rect.GetXPos(), rect.GetYPos(), rect.GetWidth(), rect.GetHeight());
     if (background) {
-      background->Draw(xpos, ypos);
+      background->Draw(rect.GetXPos(), rect.GetYPos());
     }
     DrawChildWidgets();
   }

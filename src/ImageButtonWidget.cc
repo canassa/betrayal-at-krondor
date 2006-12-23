@@ -44,11 +44,11 @@ ImageButtonWidget::Draw()
     if (IsEnabled()) {
       if (IsPressed()) {
         if (pressedImage) {
-          pressedImage->Draw(xpos, ypos + 1, 0);
+          pressedImage->Draw(rect.GetXPos(), rect.GetYPos() + 1, 0);
         }
       } else {
         if (normalImage) {
-          normalImage->Draw(xpos, ypos + 1, 0);
+          normalImage->Draw(rect.GetXPos(), rect.GetYPos() + 1, 0);
         }
       }
     }

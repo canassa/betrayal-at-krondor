@@ -36,7 +36,7 @@ TextButtonWidget::~TextButtonWidget()
 void
 TextButtonWidget::SetLabel(const std::string& s, Font *f)
 {
-  label = new TextWidget(xpos + 2, ypos + 2, width - 4, height - 4, f);
+  label = new TextWidget(rect.GetXPos() + 2, rect.GetYPos() + 2, rect.GetWidth() - 4, rect.GetHeight() - 4, f);
   label->SetText(s);
 }
 
@@ -46,18 +46,18 @@ TextButtonWidget::Draw()
   if (IsVisible()) {
     if (IsPressed()) {
       Video *video = MediaToolkit::GetInstance()->GetVideo();
-      video->FillRect(xpos + 1, ypos + 1, width - 2, height - 2, BUTTON_COLOR_PRESSED);
-      video->DrawVLine(xpos, ypos, height, LIGHT_COLOR);
-      video->DrawHLine(xpos + 1, ypos, width - 1, SHADOW_COLOR);
-      video->DrawVLine(xpos + width - 1, ypos + 1, height - 2, SHADOW_COLOR);
-      video->DrawHLine(xpos + 1, ypos + height - 1, width - 1, LIGHT_COLOR);
+      video->FillRect(rect.GetXPos() + 1, rect.GetYPos() + 1, rect.GetWidth() - 2, rect.GetHeight() - 2, BUTTON_COLOR_PRESSED);
+      video->DrawVLine(rect.GetXPos(), rect.GetYPos(), rect.GetHeight(), LIGHT_COLOR);
+      video->DrawHLine(rect.GetXPos() + 1, rect.GetYPos(), rect.GetWidth() - 1, SHADOW_COLOR);
+      video->DrawVLine(rect.GetXPos() + rect.GetWidth() - 1, rect.GetYPos() + 1, rect.GetHeight() - 2, SHADOW_COLOR);
+      video->DrawHLine(rect.GetXPos() + 1, rect.GetYPos() + rect.GetHeight() - 1, rect.GetWidth() - 1, LIGHT_COLOR);
     } else {
       Video *video = MediaToolkit::GetInstance()->GetVideo();
-      video->FillRect(xpos + 1, ypos + 1, width - 2, height - 2, BUTTON_COLOR_NORMAL);
-      video->DrawVLine(xpos, ypos, height, SHADOW_COLOR);
-      video->DrawHLine(xpos + 1, ypos, width - 1, LIGHT_COLOR);
-      video->DrawVLine(xpos + width - 1, ypos + 1, height - 2, LIGHT_COLOR);
-      video->DrawHLine(xpos + 1, ypos + height - 1, width - 1, SHADOW_COLOR);
+      video->FillRect(rect.GetXPos() + 1, rect.GetYPos() + 1, rect.GetWidth() - 2, rect.GetHeight() - 2, BUTTON_COLOR_NORMAL);
+      video->DrawVLine(rect.GetXPos(), rect.GetYPos(), rect.GetHeight(), SHADOW_COLOR);
+      video->DrawHLine(rect.GetXPos() + 1, rect.GetYPos(), rect.GetWidth() - 1, LIGHT_COLOR);
+      video->DrawVLine(rect.GetXPos() + rect.GetWidth() - 1, rect.GetYPos() + 1, rect.GetHeight() - 2, LIGHT_COLOR);
+      video->DrawHLine(rect.GetXPos() + 1, rect.GetYPos() + rect.GetHeight() - 1, rect.GetWidth() - 1, SHADOW_COLOR);
     }
     if (label) {
       if (IsEnabled()) {

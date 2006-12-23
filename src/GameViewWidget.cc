@@ -40,7 +40,7 @@ GameViewWidget::Draw()
 {
   if (IsVisible()) {
     if (cachedImage) {
-      cachedImage->Draw(xpos, ypos);
+      cachedImage->Draw(rect.GetXPos(), rect.GetYPos());
     }
     DrawChildWidgets();
   }
@@ -51,6 +51,6 @@ GameViewWidget::Update()
 {
   Redraw();
   if (cachedImage) {
-    cachedImage->Read(xpos, ypos);
+    cachedImage->Read(rect.GetXPos(), rect.GetYPos());
   }
 }

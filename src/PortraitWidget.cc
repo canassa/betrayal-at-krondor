@@ -46,17 +46,17 @@ PortraitWidget::Draw()
     int yoff = 0;
     if (horizontalBorder && verticalBorder)
     {
-      horizontalBorder->Draw(xpos + verticalBorder->GetWidth(), ypos, 0, 0,
-                             width - 2 * verticalBorder->GetWidth(), horizontalBorder->GetHeight());
-      horizontalBorder->Draw(xpos + verticalBorder->GetWidth(), ypos + height - horizontalBorder->GetHeight(), 0, 0,
-                             width - 2 * verticalBorder->GetWidth(), horizontalBorder->GetHeight());
-      verticalBorder->Draw(xpos, ypos, 0, 0,
-                           verticalBorder->GetWidth(), height);
-      verticalBorder->Draw(xpos + width - verticalBorder->GetWidth(), ypos, 0, 0,
-                           verticalBorder->GetWidth(), height);
+      horizontalBorder->Draw(rect.GetXPos() + verticalBorder->GetWidth(), rect.GetYPos(), 0, 0,
+                             rect.GetWidth() - 2 * verticalBorder->GetWidth(), horizontalBorder->GetHeight());
+      horizontalBorder->Draw(rect.GetXPos() + verticalBorder->GetWidth(), rect.GetYPos() + rect.GetHeight() - horizontalBorder->GetHeight(), 0, 0,
+                             rect.GetWidth() - 2 * verticalBorder->GetWidth(), horizontalBorder->GetHeight());
+      verticalBorder->Draw(rect.GetXPos(), rect.GetYPos(), 0, 0,
+                           verticalBorder->GetWidth(), rect.GetHeight());
+      verticalBorder->Draw(rect.GetXPos() + rect.GetWidth() - verticalBorder->GetWidth(), rect.GetYPos(), 0, 0,
+                           verticalBorder->GetWidth(), rect.GetHeight());
       xoff = verticalBorder->GetWidth();
       yoff = horizontalBorder->GetHeight();
     }
-    // playerCharacter->GetPortraitImage()->Draw(xpos +xoff, ypos + yoff, 0);
+    // playerCharacter->GetPortraitImage()->Draw(rect.GetXPos() +xoff, rect.GetYPos() + yoff, 0);
   }
 }

@@ -20,10 +20,7 @@
 #include "Widget.h"
 
 Widget::Widget(const int x, const int y, const int w, const int h)
-: xpos(x)
-, ypos(y)
-, width(w)
-, height(h)
+: rect(x, y, w, h)
 , visible(true)
 {
 }
@@ -32,47 +29,10 @@ Widget::~Widget()
 {
 }
 
-bool
-Widget::Covers(const int x, const int y) const
+Rectangle2D&
+Widget::GetRectangle()
 {
-  return ((xpos <= x) && (x < xpos + width) &&
-          (ypos <= y) && (y < ypos + height));
-}
-
-int
-Widget::GetXPos() const
-{
-  return xpos;
-}
-
-int
-Widget::GetYPos() const
-{
-  return ypos;
-}
-
-int
-Widget::GetXCenter() const
-{
-  return xpos + width / 2;
-}
-
-int
-Widget::GetYCenter() const
-{
-  return ypos + height / 2;
-}
-
-int
-Widget::GetWidth() const
-{
-  return width;
-}
-
-int
-Widget::GetHeight() const
-{
-  return height;
+  return rect;
 }
 
 void
@@ -103,8 +63,8 @@ ActiveWidget::~ActiveWidget()
 void
 ActiveWidget::SetPosition(const int x, const int y)
 {
-  xpos = x;
-  ypos = y;
+  rect.SetXPos(x);
+  rect.SetYPos(y);
 }
 
 void

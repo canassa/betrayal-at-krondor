@@ -83,10 +83,10 @@ TextWidget::Draw()
         xoff = 0;
         break;
       case HA_CENTER:
-        xoff = (width - textWidth) / 2;
+        xoff = (rect.GetWidth() - textWidth) / 2;
         break;
       case HA_RIGHT:
-        xoff = width - textWidth;
+        xoff = rect.GetWidth() - textWidth;
         break;
     }
     switch (vertAlign) {
@@ -94,25 +94,25 @@ TextWidget::Draw()
         yoff = 0;
         break;
       case VA_CENTER:
-        yoff = (height - textHeight) / 2;
+        yoff = (rect.GetHeight() - textHeight) / 2;
         break;
       case VA_BOTTOM:
-        yoff = height - textHeight;
+        yoff = rect.GetHeight() - textHeight;
         break;
     }
     if ((shadow > NO_SHADOW) && ((shadowXoff != 0) || (shadowYoff != 0))) {
       i = 0;
       w = 0;
-      while ((i < text.length()) && (w + font->GetWidth(text[i] - font->GetFirst()) < (unsigned)width)) {
-        font->DrawChar(xpos + xoff + shadowXoff + w, ypos + yoff + shadowYoff, text[i], shadow, false);
+      while ((i < text.length()) && (w + font->GetWidth(text[i] - font->GetFirst()) < (unsigned)rect.GetWidth())) {
+        font->DrawChar(rect.GetXPos() + xoff + shadowXoff + w, rect.GetYPos() + yoff + shadowYoff, text[i], shadow, false);
         w += font->GetWidth((unsigned int)text[i] - font->GetFirst());
         i++;
       }
     }
     i = 0;
     w = 0;
-    while ((i < text.length()) && (w + font->GetWidth(text[i] - font->GetFirst()) < (unsigned)width)) {
-      font->DrawChar(xpos + xoff + w, ypos + yoff, text[i], color, false);
+    while ((i < text.length()) && (w + font->GetWidth(text[i] - font->GetFirst()) < (unsigned)rect.GetWidth())) {
+      font->DrawChar(rect.GetXPos() + xoff + w, rect.GetYPos() + yoff, text[i], color, false);
       w += font->GetWidth((unsigned int)text[i] - font->GetFirst());
       i++;
     }

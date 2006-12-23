@@ -108,6 +108,7 @@ Zone::Load(const unsigned int n)
 
     std::stringstream tableStream;
     tableStream << "Z" << std::setw(2) << std::setfill('0') << n << ".TBL";
+    table = new TableResource;
     FileManager::GetInstance()->Load(table, tableStream.str());
   } catch (Exception &e) {
     e.Print("Zone::Load");

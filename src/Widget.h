@@ -27,6 +27,7 @@
 #endif
 
 #include "EventListener.h"
+#include "Geometry.h"
 
 static const int NO_SHADOW            = -1;
 static const int COLOR_BLACK          = 0;
@@ -44,21 +45,12 @@ static const int RIGHT_CLICK_OFFSET   = 256;
 
 class Widget {
   protected:
-    int xpos;
-    int ypos;
-    int width;
-    int height;
+    Rectangle2D rect;
     bool visible;
   public:
     Widget(const int x, const int y, const int w, const int h);
     virtual ~Widget();
-    bool Covers(const int x, const int y) const;
-    int GetXPos() const;
-    int GetYPos() const;
-    int GetXCenter() const;
-    int GetYCenter() const;
-    int GetWidth() const;
-    int GetHeight() const;
+    Rectangle2D& GetRectangle();
     void SetVisible(const bool toggle);
     bool IsVisible() const;
     virtual void Draw() = 0;
@@ -81,4 +73,3 @@ class ActiveWidget
 };
 
 #endif
-

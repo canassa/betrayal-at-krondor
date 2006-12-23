@@ -226,19 +226,19 @@ RatingsWidget::Draw()
     int yoff = 0;
     if (horizontalBorder && verticalBorder)
     {
-      horizontalBorder->Draw(xpos + verticalBorder->GetWidth(), ypos, 0, 0,
-                             width - 2 * verticalBorder->GetWidth(), horizontalBorder->GetHeight());
-      horizontalBorder->Draw(xpos + verticalBorder->GetWidth(), ypos + height - horizontalBorder->GetHeight(), 0, 0,
-                             width - 2 * verticalBorder->GetWidth(), horizontalBorder->GetHeight());
-      verticalBorder->Draw(xpos, ypos, 0, 0,
-                           verticalBorder->GetWidth(), height);
-      verticalBorder->Draw(xpos + width - verticalBorder->GetWidth(), ypos, 0, 0,
-                           verticalBorder->GetWidth(), height);
+      horizontalBorder->Draw(rect.GetXPos() + verticalBorder->GetWidth(), rect.GetYPos(), 0, 0,
+                             rect.GetWidth() - 2 * verticalBorder->GetWidth(), horizontalBorder->GetHeight());
+      horizontalBorder->Draw(rect.GetXPos() + verticalBorder->GetWidth(), rect.GetYPos() + rect.GetHeight() - horizontalBorder->GetHeight(), 0, 0,
+                             rect.GetWidth() - 2 * verticalBorder->GetWidth(), horizontalBorder->GetHeight());
+      verticalBorder->Draw(rect.GetXPos(), rect.GetYPos(), 0, 0,
+                           verticalBorder->GetWidth(), rect.GetHeight());
+      verticalBorder->Draw(rect.GetXPos() + rect.GetWidth() - verticalBorder->GetWidth(), rect.GetYPos(), 0, 0,
+                           verticalBorder->GetWidth(), rect.GetHeight());
       xoff = verticalBorder->GetWidth();
       yoff = horizontalBorder->GetHeight();
     }
     Video *video = MediaToolkit::GetInstance()->GetVideo();
-    video->FillRect(xpos + xoff, ypos + yoff, width - 2 * xoff, height - 2 * yoff, 168);
+    video->FillRect(rect.GetXPos() + xoff, rect.GetYPos() + yoff, rect.GetWidth() - 2 * xoff, rect.GetHeight() - 2 * yoff, 168);
     ratingsLabel->Draw();
     conditionLabel->Draw();
     healthLabel->Draw();
