@@ -31,6 +31,7 @@ noinst_HEADERS = AnimationResource.h \
                  GameResource.h \
                  GameState.h \
                  GameViewWidget.h \
+                 Geometry.h \
                  GenericObject.h \
                  HotspotWidget.h \
                  Image.h \
@@ -126,6 +127,8 @@ libbase_a_SOURCES = BasicFile.cc \
                     Exception.h \
                     FileBuffer.cc \
                     FileBuffer.h \
+                    Geometry.cc \
+                    Geometry.h \
                     Observer.h \
                     Subject.cc \
                     Subject.h
