@@ -20,12 +20,12 @@
 #include "GameViewWidget.h"
 #include "MediaToolkit.h"
 
-GameViewWidget::GameViewWidget(const int x, const int y, const int w, const int h, Game *g)
-: ContainerWidget(x, y, w, h)
+GameViewWidget::GameViewWidget(const Rectangle2D &r, Game *g)
+: ContainerWidget(r)
 , game(g)
 , cachedImage(0)
 {
-  cachedImage = new Image(w, h);
+  cachedImage = new Image(rect.GetWidth(), rect.GetHeight());
 }
 
 GameViewWidget::~GameViewWidget()

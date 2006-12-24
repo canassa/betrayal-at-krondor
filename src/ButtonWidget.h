@@ -33,7 +33,7 @@ class ButtonWidget
     bool enabled;
     bool pressed;
   public:
-    ButtonWidget(const int x, const int y, const int w, const int h, const int a);
+    ButtonWidget(const Rectangle2D &r, const int a);
     virtual ~ButtonWidget();
     int GetAction() const;
     void SetEnabled(const bool toggle);

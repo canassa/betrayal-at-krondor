@@ -24,8 +24,10 @@ static const int COMPASS_WIDGET_YPOS   = 121;
 static const int COMPASS_WIDGET_WIDTH  = 32;
 static const int COMPASS_WIDGET_HEIGHT = 11;
 
+static const Rectangle2D COMPASS_WIDGET_RECTANGLE = Rectangle2D(COMPASS_WIDGET_XPOS, COMPASS_WIDGET_YPOS, COMPASS_WIDGET_WIDTH, COMPASS_WIDGET_HEIGHT);
+
 CompassWidget::CompassWidget(Camera *cam, Image *img)
-: Widget(COMPASS_WIDGET_XPOS, COMPASS_WIDGET_YPOS, COMPASS_WIDGET_WIDTH, COMPASS_WIDGET_HEIGHT)
+: Widget(COMPASS_WIDGET_RECTANGLE)
 , camera(cam)
 , compassImage(img)
 , cachedImage(0)

@@ -20,8 +20,8 @@
 #include "MediaToolkit.h"
 #include "PanelWidget.h"
 
-PanelWidget::PanelWidget(const int x, const int y, const int w, const int h)
-: ContainerWidget(x, y, w, h)
+PanelWidget::PanelWidget(const Rectangle2D &r)
+: ContainerWidget(r)
 , background(0)
 {
 }

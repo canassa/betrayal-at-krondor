@@ -51,7 +51,7 @@ class RatingsWidget
     TextWidget *maximumStamina;
     TextWidget *condition;
   public:
-    RatingsWidget(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Font *f);
+    RatingsWidget(const Rectangle2D &r, PlayerCharacter *pc, Font *f);
     virtual ~RatingsWidget();
     void SetBorders(Image *hb, Image *vb);
     void Draw();

@@ -29,7 +29,7 @@
 class ChoiceWidget: public ActiveWidget {
   private:
   public:
-    ChoiceWidget(const int x, const int y, const int w, const int h, const int a);
+    ChoiceWidget(const Rectangle2D &r, const int a);
     virtual ~ChoiceWidget();
     void Draw();
     void Focus();

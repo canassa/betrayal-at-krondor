@@ -19,8 +19,8 @@
 
 #include "TickboxWidget.h"
 
-TickboxWidget::TickboxWidget(const int x, const int y, const int w, const int h)
-: Widget(x, y, w, h)
+TickboxWidget::TickboxWidget(const Rectangle2D &r)
+: Widget(r)
 {
 }
 

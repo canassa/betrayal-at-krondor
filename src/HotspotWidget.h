@@ -30,7 +30,7 @@ class HotspotWidget
 : public ActiveWidget
 {
   public:
-    HotspotWidget(const int x, const int y, const int w, const int h, const int a);
+    HotspotWidget(const Rectangle2D &r, const int a);
     virtual ~HotspotWidget();
     int GetAction() const;
     void GenerateActionEvent(const int a);

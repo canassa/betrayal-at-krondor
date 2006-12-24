@@ -19,8 +19,8 @@
 
 #include "ImageWidget.h"
 
-ImageWidget::ImageWidget(const int x, const int y, const int w, const int h, Image *img)
-: Widget(x, y, w, h)
+ImageWidget::ImageWidget(const Rectangle2D &r, Image *img)
+: Widget(r)
 , image(0)
 {
   image = new Image(img);

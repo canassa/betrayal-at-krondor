@@ -37,7 +37,7 @@ class ContainerWidget
   protected:
     void DrawChildWidgets();
   public:
-    ContainerWidget(const int x, const int y, const int w, const int h);
+    ContainerWidget(const Rectangle2D &r);
     virtual ~ContainerWidget();
     void Draw();
     void AddWidget(Widget *w);

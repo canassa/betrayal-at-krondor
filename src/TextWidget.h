@@ -55,7 +55,7 @@ class TextWidget
     HorizontalAlignment horAlign;
     VerticalAlignment vertAlign;
   public:
-    TextWidget(const int x, const int y, const int w, const int h, Font *f);
+    TextWidget(const Rectangle2D &r, Font *f);
     virtual ~TextWidget();
     void Draw();
     void SetColor(const int c);

@@ -20,8 +20,8 @@
 #include "MediaToolkit.h"
 #include "BadgeWidget.h"
 
-BadgeWidget::BadgeWidget(const int x, const int y, const int w, const int h)
-: Widget(x, y, w, h)
+BadgeWidget::BadgeWidget(const Rectangle2D &r)
+: Widget(r)
 , label(0)
 {
 }
@@ -36,7 +36,7 @@ BadgeWidget::~BadgeWidget()
 void
 BadgeWidget::SetLabel(const std::string& s, Font *f)
 {
-  label = new TextWidget(rect.GetXPos() + 2, rect.GetYPos() + 2, rect.GetWidth() - 4, rect.GetHeight() - 4, f);
+  label = new TextWidget(Rectangle2D(rect.GetXPos() + 2, rect.GetYPos() + 2, rect.GetWidth() - 4, rect.GetHeight() - 4), f);
   label->SetText(s);
   label->SetColor(TEXT_COLOR_NORMAL);
   label->SetShadow(SHADOW_COLOR, 0, 1);

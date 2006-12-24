@@ -36,7 +36,7 @@ class ImageWidget
   private:
     Image *image;
   public:
-    ImageWidget(const int x, const int y, const int w, const int h, Image *img);
+    ImageWidget(const Rectangle2D &r, Image *img);
     virtual ~ImageWidget();
     void HorizontalFlip();
     void VerticalFlip();

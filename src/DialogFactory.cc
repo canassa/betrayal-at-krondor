@@ -44,7 +44,7 @@ DialogFactory::CreateCampDialog()
     FileManager::GetInstance()->Load(&normal, "BICONS1.BMX");
     FileManager::GetInstance()->Load(&pressed, "BICONS2.BMX");
 
-    PanelWidget *panel = widgetFactory.CreatePanel(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight(), screen.GetImage());
+    PanelWidget *panel = widgetFactory.CreatePanel(Rectangle2D(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight()), screen.GetImage());
     Dialog *dialog = new GameDialog(palette.GetPalette(), new DialogWindow(panel));
     for (unsigned int i = 0; i < request.GetSize(); i++) {
       RequestData data = request.GetRequestData(i);
@@ -77,7 +77,7 @@ DialogFactory::CreateCastDialog()
     FileManager::GetInstance()->Load(&heads, "HEADS.BMX");
     FileManager::GetInstance()->Load(&compass, "COMPASS.BMX");
 
-    PanelWidget *panel = widgetFactory.CreatePanel(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight(), screen.GetImage());
+    PanelWidget *panel = widgetFactory.CreatePanel(Rectangle2D(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight()), screen.GetImage());
     Dialog *dialog = new GameDialog(palette.GetPalette(), new DialogWindow(panel));
     unsigned int nextMember = 0;
     for (unsigned int i = 0; i < request.GetSize(); i++) {
@@ -116,7 +116,7 @@ DialogFactory::CreateContentsDialog()
     FileManager::GetInstance()->Load(&normal, "BICONS1.BMX");
     FileManager::GetInstance()->Load(&pressed, "BICONS2.BMX");
 
-    PanelWidget *panel = widgetFactory.CreatePanel(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight(), screen.GetImage());
+    PanelWidget *panel = widgetFactory.CreatePanel(Rectangle2D(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight()), screen.GetImage());
     Dialog *dialog = new OptionsDialog(palette.GetPalette(), new DialogWindow(panel));
     for (unsigned int i = 0; i < request.GetSize(); i++) {
       RequestData data = request.GetRequestData(i);
@@ -147,7 +147,7 @@ DialogFactory::CreateFullMapDialog()
     FileManager::GetInstance()->Load(&normal, "BICONS1.BMX");
     FileManager::GetInstance()->Load(&pressed, "BICONS2.BMX");
 
-    PanelWidget *panel = widgetFactory.CreatePanel(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight(), screen.GetImage());
+    PanelWidget *panel = widgetFactory.CreatePanel(Rectangle2D(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight()), screen.GetImage());
     Dialog *dialog = new GameDialog(palette.GetPalette(), new DialogWindow(panel));
     for (unsigned int i = 0; i < request.GetSize(); i++) {
       RequestData data = request.GetRequestData(i);
@@ -180,14 +180,14 @@ DialogFactory::CreateInfoDialog()
     FileManager::GetInstance()->Load(&font, "GAME.FNT");
 
     PlayerCharacter *pc = GameApplication::GetInstance()->GetGame()->GetParty()->GetSelectedMember();
-    PanelWidget *panel = widgetFactory.CreatePanel(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight(), screen.GetImage());
+    PanelWidget *panel = widgetFactory.CreatePanel(Rectangle2D(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight()), screen.GetImage());
     Dialog *dialog = new GameDialog(palette.GetPalette(), new DialogWindow(panel));
-    panel->AddWidget(widgetFactory.CreateImage(2, 107, 122, 91, images.GetImage(24)));
-    panel->AddWidget(widgetFactory.CreateImage(188, 107, 122, 91, images.GetImage(24), HORIZONTAL));
-    panel->AddWidget(widgetFactory.CreatePortrait(7, 9, 71, 71, pc, images.GetImage(26), images.GetImage(25)));
-    panel->AddWidget(widgetFactory.CreateBadge(23, 71, 42, 12, pc->GetName(), font.GetFont()));
-    panel->AddWidget(widgetFactory.CreateRatings(84, 9, 222, 71, pc, images.GetImage(26), images.GetImage(25), font.GetFont()));
-    panel->AddWidget(widgetFactory.CreateSkills(16, 86, 276, 105, pc, images.GetImage(21), images.GetImage(22), font.GetFont()));
+    panel->AddWidget(widgetFactory.CreateImage(Rectangle2D(2, 107, 122, 91), images.GetImage(24)));
+    panel->AddWidget(widgetFactory.CreateImage(Rectangle2D(188, 107, 122, 91), images.GetImage(24), HORIZONTAL));
+    panel->AddWidget(widgetFactory.CreatePortrait(Rectangle2D(7, 9, 71, 71), pc, images.GetImage(26), images.GetImage(25)));
+    panel->AddWidget(widgetFactory.CreateBadge(Rectangle2D(23, 71, 42, 12), pc->GetName(), font.GetFont()));
+    panel->AddWidget(widgetFactory.CreateRatings(Rectangle2D(84, 9, 222, 71), pc, images.GetImage(26), images.GetImage(25), font.GetFont()));
+    panel->AddWidget(widgetFactory.CreateSkills(Rectangle2D(16, 86, 276, 105), pc, images.GetImage(21), images.GetImage(22), font.GetFont()));
     for (unsigned int i = 0; i < request.GetSize(); i++) {
       RequestData data = request.GetRequestData(i);
       switch (data.widget) {
@@ -219,7 +219,7 @@ DialogFactory::CreateInventoryDialog()
     FileManager::GetInstance()->Load(&heads, "HEADS.BMX");
     FileManager::GetInstance()->Load(&font, "GAME.FNT");
 
-    PanelWidget *panel = widgetFactory.CreatePanel(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight(), screen.GetImage());
+    PanelWidget *panel = widgetFactory.CreatePanel(Rectangle2D(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight()), screen.GetImage());
     Dialog *dialog = new GameDialog(palette.GetPalette(), new DialogWindow(panel));
     unsigned int nextMember = 0;
     for (unsigned int i = 0; i < request.GetSize(); i++) {
@@ -261,7 +261,7 @@ DialogFactory::CreateLoadDialog()
     FileManager::GetInstance()->Load(&font, "GAME.FNT");
     FileManager::GetInstance()->Load(&label, "LBL_LOAD.DAT");
 
-    PanelWidget *panel = widgetFactory.CreatePanel(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight(), screen.GetImage());
+    PanelWidget *panel = widgetFactory.CreatePanel(Rectangle2D(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight()), screen.GetImage());
     Dialog *dialog = new OptionsDialog(palette.GetPalette(), new DialogWindow(panel));
     for (unsigned int i = 0; i < request.GetSize(); i++) {
       RequestData data = request.GetRequestData(i);
@@ -296,7 +296,7 @@ DialogFactory::CreateMapDialog()
     FileManager::GetInstance()->Load(&heads, "HEADS.BMX");
     FileManager::GetInstance()->Load(&compass, "COMPASS.BMX");
 
-    PanelWidget *panel = widgetFactory.CreatePanel(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight(), screen.GetImage());
+    PanelWidget *panel = widgetFactory.CreatePanel(Rectangle2D(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight()), screen.GetImage());
     Dialog *dialog = new GameDialog(palette.GetPalette(), new DialogWindow(panel));
     unsigned int nextMember = 0;
     for (unsigned int i = 0; i < request.GetSize(); i++) {
@@ -337,7 +337,7 @@ DialogFactory::CreateOptionsDialog(const bool firstTime)
     FileManager::GetInstance()->Load(&screen, firstTime ? "OPTIONS0.SCX" : "OPTIONS1.SCX");
     FileManager::GetInstance()->Load(&font, "GAME.FNT");
 
-    PanelWidget *panel = widgetFactory.CreatePanel(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight(), screen.GetImage());
+    PanelWidget *panel = widgetFactory.CreatePanel(Rectangle2D(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight()), screen.GetImage());
     Dialog *dialog = new OptionsDialog(palette.GetPalette(), new DialogWindow(panel));
     for (unsigned int i = 0; i < request.GetSize(); i++) {
       RequestData data = request.GetRequestData(i);
@@ -366,7 +366,7 @@ DialogFactory::CreatePreferencesDialog()
     FileManager::GetInstance()->Load(&font, "GAME.FNT");
     FileManager::GetInstance()->Load(&label, "LBL_PREF.DAT");
 
-    PanelWidget *panel = widgetFactory.CreatePanel(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight(), screen.GetImage());
+    PanelWidget *panel = widgetFactory.CreatePanel(Rectangle2D(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight()), screen.GetImage());
     Dialog *dialog = new OptionsDialog(palette.GetPalette(), new DialogWindow(panel));
     for (unsigned int i = 0; i < request.GetSize(); i++) {
       RequestData data = request.GetRequestData(i);
@@ -399,7 +399,7 @@ DialogFactory::CreateSaveDialog()
     FileManager::GetInstance()->Load(&font, "GAME.FNT");
     FileManager::GetInstance()->Load(&label, "LBL_SAVE.DAT");
 
-    PanelWidget *panel = widgetFactory.CreatePanel(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight(), screen.GetImage());
+    PanelWidget *panel = widgetFactory.CreatePanel(Rectangle2D(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight()), screen.GetImage());
     Dialog *dialog = new OptionsDialog(palette.GetPalette(), new DialogWindow(panel));
     for (unsigned int i = 0; i < request.GetSize(); i++) {
       RequestData data = request.GetRequestData(i);
@@ -436,7 +436,7 @@ DialogFactory::CreateWorldDialog()
     FileManager::GetInstance()->Load(&heads, "HEADS.BMX");
     FileManager::GetInstance()->Load(&compass, "COMPASS.BMX");
 
-    PanelWidget *panel = widgetFactory.CreatePanel(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight(), screen.GetImage());
+    PanelWidget *panel = widgetFactory.CreatePanel(Rectangle2D(request.GetXPos(), request.GetYPos(), request.GetWidth(), request.GetHeight()), screen.GetImage());
     Dialog *dialog = new GameDialog(palette.GetPalette(), new DialogWindow(panel));
     unsigned int nextMember = 0;
     for (unsigned int i = 0; i < request.GetSize(); i++) {

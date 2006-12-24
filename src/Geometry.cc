@@ -25,7 +25,7 @@ Point2D::Point2D(const int x, const int y)
 {
 }
 
-Point2D::Point2D(Point2D &p)
+Point2D::Point2D(const Point2D &p)
 : xCoord(p.xCoord)
 , yCoord(p.yCoord)
 {
@@ -36,7 +36,7 @@ Point2D::~Point2D()
 }
 
 Point2D&
-Point2D::operator=(Point2D &p)
+Point2D::operator=(const Point2D &p)
 {
   xCoord = p.xCoord;
   yCoord = p.yCoord;
@@ -44,7 +44,7 @@ Point2D::operator=(Point2D &p)
 }
 
 bool
-Point2D::operator==(Point2D &p)
+Point2D::operator==(const Point2D &p)
 {
   return (xCoord == p.xCoord) && (yCoord == p.yCoord);
 }
@@ -80,7 +80,7 @@ Point3D::Point3D(const int x, const int y, const int z)
 {
 }
 
-Point3D::Point3D(Point3D &p)
+Point3D::Point3D(const Point3D &p)
 : xCoord(p.xCoord)
 , yCoord(p.yCoord)
 , zCoord(p.zCoord)
@@ -92,7 +92,7 @@ Point3D::~Point3D()
 }
 
 Point3D&
-Point3D::operator=(Point3D &p)
+Point3D::operator=(const Point3D &p)
 {
   xCoord = p.xCoord;
   yCoord = p.yCoord;
@@ -101,7 +101,7 @@ Point3D::operator=(Point3D &p)
 }
 
 bool
-Point3D::operator==(Point3D &p)
+Point3D::operator==(const Point3D &p)
 {
   return (xCoord == p.xCoord) && (yCoord == p.yCoord) && (zCoord == p.zCoord);
 }
@@ -150,7 +150,7 @@ Rectangle2D::Rectangle2D(const int x, const int y, const int w, const int h)
 {
 }
 
-Rectangle2D::Rectangle2D(Rectangle2D &r)
+Rectangle2D::Rectangle2D(const Rectangle2D &r)
 : xpos(r.xpos)
 , ypos(r.ypos)
 , width(r.width)
@@ -163,7 +163,7 @@ Rectangle2D::~Rectangle2D()
 }
 
 Rectangle2D&
-Rectangle2D::operator=(Rectangle2D &r)
+Rectangle2D::operator=(const Rectangle2D &r)
 {
   xpos = r.xpos;
   ypos = r.ypos;
@@ -173,7 +173,7 @@ Rectangle2D::operator=(Rectangle2D &r)
 }
 
 bool
-Rectangle2D::operator==(Rectangle2D &r)
+Rectangle2D::operator==(const Rectangle2D &r)
 {
   return (xpos == r.xpos) && (ypos == r.ypos) && (width == r.width) && (height == r.height);
 }

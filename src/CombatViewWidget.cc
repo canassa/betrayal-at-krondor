@@ -19,8 +19,8 @@
 
 #include "CombatViewWidget.h"
 
-CombatViewWidget::CombatViewWidget(const int x, const int y, const int w, const int h, Game *g)
-: GameViewWidget(x, y, w, h, g)
+CombatViewWidget::CombatViewWidget(const Rectangle2D &r, Game *g)
+: GameViewWidget(r, g)
 {
 }
 

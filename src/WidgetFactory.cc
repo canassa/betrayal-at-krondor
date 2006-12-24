@@ -30,7 +30,7 @@ WidgetFactory::~WidgetFactory()
 TextButtonWidget*
 WidgetFactory::CreateTextButton(RequestData& data, FontResource &fnt, ActionEventListener *ael)
 {
-  TextButtonWidget *button = new TextButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
+  TextButtonWidget *button = new TextButtonWidget(Rectangle2D(data.xpos, data.ypos, data.width, data.height), data.action);
   button->SetVisible(data.visible);
   button->SetLabel(data.label, fnt.GetFont());
   button->AddActionListener(ael);
@@ -40,7 +40,7 @@ WidgetFactory::CreateTextButton(RequestData& data, FontResource &fnt, ActionEven
 ImageButtonWidget*
 WidgetFactory::CreateImageButton(RequestData& data, ImageResource& normal, ImageResource& pressed, ActionEventListener *ael)
 {
-  ImageButtonWidget *button = new ImageButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
+  ImageButtonWidget *button = new ImageButtonWidget(Rectangle2D(data.xpos, data.ypos, data.width, data.height), data.action);
   button->SetVisible(data.visible);
   Image *normalImage = 0;
   Image *pressedImage = 0;
@@ -56,7 +56,7 @@ WidgetFactory::CreateImageButton(RequestData& data, ImageResource& normal, Image
 CharacterButtonWidget*
 WidgetFactory::CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource& img, ActionEventListener *ael)
 {
-  CharacterButtonWidget *button = new CharacterButtonWidget(data.xpos, data.ypos, data.width, data.height, data.action);
+  CharacterButtonWidget *button = new CharacterButtonWidget(Rectangle2D(data.xpos, data.ypos, data.width, data.height), data.action);
   button->SetCharacter(pc);
   button->SetImage(img.GetImage(SELECTED_IMAGE));
   button->AddActionListener(ael);
@@ -85,19 +85,19 @@ WidgetFactory::CreateCompass(Camera *cam, Image *img)
 CombatViewWidget*
 WidgetFactory::CreateCombatView(RequestData& data, Game *game)
 {
-  return new CombatViewWidget(data.xpos, data.ypos, data.width, data.height, game);
+  return new CombatViewWidget(Rectangle2D(data.xpos, data.ypos, data.width, data.height), game);
 }
 
 MapViewWidget*
 WidgetFactory::CreateMapView(RequestData& data, Game *game)
 {
-  return new MapViewWidget(data.xpos, data.ypos, data.width, data.height, game);
+  return new MapViewWidget(Rectangle2D(data.xpos, data.ypos, data.width, data.height), game);
 }
 
 WorldViewWidget*
 WidgetFactory::CreateWorldView(RequestData& data, Game *game)
 {
-  return new WorldViewWidget(data.xpos, data.ypos, data.width, data.height, game);
+  return new WorldViewWidget(Rectangle2D(data.xpos, data.ypos, data.width, data.height), game);
 }
 
 TextWidget*
@@ -116,7 +116,7 @@ WidgetFactory::CreateLabel(LabelData& data, FontResource& fnt, const int panelWi
     default:
       break;
   }
-  TextWidget *label = new TextWidget(data.xpos, data.ypos, width, fnt.GetFont()->GetHeight() + 1, fnt.GetFont());
+  TextWidget *label = new TextWidget(Rectangle2D(data.xpos, data.ypos, width, fnt.GetFont()->GetHeight() + 1), fnt.GetFont());
   label->SetText(data.label);
   label->SetColor(data.color);
   if (data.type == LBL_TITLE) {
@@ -127,17 +127,17 @@ WidgetFactory::CreateLabel(LabelData& data, FontResource& fnt, const int panelWi
 }
 
 BadgeWidget*
-WidgetFactory::CreateBadge(const int x, const int y, const int w, const int h, const std::string& s, Font *f)
+WidgetFactory::CreateBadge(const Rectangle2D &r, const std::string& s, Font *f)
 {
-  BadgeWidget *badge = new BadgeWidget(x, y, w, h);
+  BadgeWidget *badge = new BadgeWidget(r);
   badge->SetLabel(s, f);
   return badge;
 }
 
 ImageWidget*
-WidgetFactory::CreateImage(const int x, const int y, const int w, const int h, Image *img, const Flipping flip)
+WidgetFactory::CreateImage(const Rectangle2D &r, Image *img, const Flipping flip)
 {
-  ImageWidget *image = new ImageWidget(x, y, w, h, img);
+  ImageWidget *image = new ImageWidget(r, img);
   switch (flip) {
     case HORIZONTAL:
       image->HorizontalFlip();
@@ -152,32 +152,32 @@ WidgetFactory::CreateImage(const int x, const int y, const int w, const int h, I
 }
 
 PortraitWidget*
-WidgetFactory::CreatePortrait(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb)
+WidgetFactory::CreatePortrait(const Rectangle2D &r, PlayerCharacter *pc, Image *hb, Image *vb)
 {
-  PortraitWidget *portrait = new PortraitWidget(x, y, w, h, pc);
+  PortraitWidget *portrait = new PortraitWidget(r, pc);
   portrait->SetBorders(hb, vb);
   return portrait;
 }
 
 RatingsWidget*
-WidgetFactory::CreateRatings(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *hb, Image *vb, Font *f)
+WidgetFactory::CreateRatings(const Rectangle2D &r, PlayerCharacter *pc, Image *hb, Image *vb, Font *f)
 {
-  RatingsWidget *ratings = new RatingsWidget(x, y, w, h, pc, f);
+  RatingsWidget *ratings = new RatingsWidget(r, pc, f);
   ratings->SetBorders(hb, vb);
   return ratings;
 }
 
 SkillsWidget*
-WidgetFactory::CreateSkills(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *sw, Image *bl, Font *f)
+WidgetFactory::CreateSkills(const Rectangle2D &r, PlayerCharacter *pc, Image *sw, Image *bl, Font *f)
 {
-  SkillsWidget *skills = new SkillsWidget(x, y, w, h, pc, sw, bl, f);
+  SkillsWidget *skills = new SkillsWidget(r, pc, sw, bl, f);
   return skills;
 }
 
 PanelWidget*
-WidgetFactory::CreatePanel(const int x, const int y, const int w, const int h, Image *img)
+WidgetFactory::CreatePanel(const Rectangle2D &r, Image *img)
 {
-  PanelWidget *panel = new PanelWidget(x, y, w, h);
+  PanelWidget *panel = new PanelWidget(r);
   panel->SetBackground(img);
   return panel;
 }

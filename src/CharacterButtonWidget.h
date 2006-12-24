@@ -36,7 +36,7 @@ class CharacterButtonWidget
     PlayerCharacter *character;
     static Image *selectedImage;
   public:
-    CharacterButtonWidget(const int x, const int y, const int w, const int h, const int a);
+    CharacterButtonWidget(const Rectangle2D &r, const int a);
     virtual ~CharacterButtonWidget();
     void SetCharacter(PlayerCharacter *pc);
     void SetImage(Image *selected);

@@ -30,10 +30,10 @@ class Point2D {
     int yCoord;
   public:
     Point2D(const int x, const int y);
-    Point2D(Point2D &p);
+    Point2D(const Point2D &p);
     virtual ~Point2D();
-    Point2D& operator=(Point2D &p);
-    bool operator==(Point2D &p);
+    Point2D& operator=(const Point2D &p);
+    bool operator==(const Point2D &p);
     int GetX() const;
     int GetY() const;
     void SetX(int x);
@@ -47,10 +47,10 @@ class Point3D {
     int zCoord;
   public:
     Point3D(const int x, const int y, const int z);
-    Point3D(Point3D &p);
+    Point3D(const Point3D &p);
     virtual ~Point3D();
-    Point3D& operator=(Point3D &p);
-    bool operator==(Point3D &p);
+    Point3D& operator=(const Point3D &p);
+    bool operator==(const Point3D &p);
     int GetX() const;
     int GetY() const;
     int GetZ() const;
@@ -67,10 +67,10 @@ class Rectangle2D {
     int height;
   public:
     Rectangle2D(const int x, const int y, const int w, const int h);
-    Rectangle2D(Rectangle2D &r);
+    Rectangle2D(const Rectangle2D &r);
     virtual ~Rectangle2D();
-    Rectangle2D& operator=(Rectangle2D &r);
-    bool operator==(Rectangle2D &r);
+    Rectangle2D& operator=(const Rectangle2D &r);
+    bool operator==(const Rectangle2D &r);
     int GetXPos() const;
     int GetYPos() const;
     int GetXCenter() const;

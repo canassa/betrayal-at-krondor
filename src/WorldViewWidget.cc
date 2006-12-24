@@ -21,8 +21,8 @@
 #include "MediaToolkit.h"
 #include "WorldViewWidget.h"
 
-WorldViewWidget::WorldViewWidget(const int x, const int y, const int w, const int h, Game *g)
-: GameViewWidget(x, y, w, h, g)
+WorldViewWidget::WorldViewWidget(const Rectangle2D &r, Game *g)
+: GameViewWidget(r, g)
 {
   game->GetCamera()->Attach(this);
   Update();

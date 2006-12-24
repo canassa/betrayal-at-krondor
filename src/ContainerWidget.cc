@@ -19,8 +19,8 @@
 
 #include "ContainerWidget.h"
 
-ContainerWidget::ContainerWidget(const int x, const int y, const int w, const int h)
-: Widget(x, y, w, h)
+ContainerWidget::ContainerWidget(const Rectangle2D &r)
+: Widget(r)
 , widgets()
 , activeWidgets()
 , currentActiveWidget()

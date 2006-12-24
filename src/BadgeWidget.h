@@ -32,7 +32,7 @@ class BadgeWidget
   private:
     TextWidget* label;
   public:
-    BadgeWidget(const int x, const int y, const int w, const int h);
+    BadgeWidget(const Rectangle2D &r);
     virtual ~BadgeWidget();
     void SetLabel(const std::string& s, Font *f);
     void Draw();

@@ -31,7 +31,7 @@ class CombatViewWidget
   private:
     void Redraw();
   public:
-    CombatViewWidget(const int x, const int y, const int w, const int h, Game *g);
+    CombatViewWidget(const Rectangle2D &r, Game *g);
     virtual ~CombatViewWidget();
 };
 

@@ -35,7 +35,7 @@ class PortraitWidget
     Image *horizontalBorder;
     Image *verticalBorder;
   public:
-    PortraitWidget(const int x, const int y, const int w, const int h, PlayerCharacter *pc);
+    PortraitWidget(const Rectangle2D &r, PlayerCharacter *pc);
     virtual ~PortraitWidget();
     void SetBorders(Image *hb, Image *vb);
     void Draw();

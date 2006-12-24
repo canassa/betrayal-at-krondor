@@ -31,7 +31,7 @@ class WorldViewWidget
   private:
     void Redraw();
   public:
-    WorldViewWidget(const int x, const int y, const int w, const int h, Game *g);
+    WorldViewWidget(const Rectangle2D &r, Game *g);
     virtual ~WorldViewWidget();
 };
 

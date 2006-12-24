@@ -19,8 +19,8 @@
 
 #include "Widget.h"
 
-Widget::Widget(const int x, const int y, const int w, const int h)
-: rect(x, y, w, h)
+Widget::Widget(const Rectangle2D &r)
+: rect(r)
 , visible(true)
 {
 }
@@ -48,8 +48,8 @@ Widget::IsVisible() const
 }
 
 
-ActiveWidget::ActiveWidget(const int x, const int y, const int w, const int h, const int a)
-: Widget(x, y, w, h)
+ActiveWidget::ActiveWidget(const Rectangle2D &r, const int a)
+: Widget(r)
 , action(a)
 , actionListeners()
 {

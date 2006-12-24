@@ -31,7 +31,7 @@ class MapViewWidget
   private:
     void Redraw();
   public:
-    MapViewWidget(const int x, const int y, const int w, const int h, Game *g);
+    MapViewWidget(const Rectangle2D &r, Game *g);
     virtual ~MapViewWidget();
 };
 

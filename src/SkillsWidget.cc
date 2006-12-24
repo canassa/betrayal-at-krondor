@@ -19,8 +19,8 @@
 
 #include "SkillsWidget.h"
 
-SkillsWidget::SkillsWidget(const int x, const int y, const int w, const int h, PlayerCharacter *pc, Image *sw, Image *bl, Font *f)
-: Widget(x, y, w, h)
+SkillsWidget::SkillsWidget(const Rectangle2D &r, PlayerCharacter *pc, Image *sw, Image *bl, Font *f)
+: Widget(r)
 , playerCharacter(pc)
 , font(f)
 , leftSword(0)
@@ -46,18 +46,18 @@ SkillsWidget::SkillsWidget(const int x, const int y, const int w, const int h, P
   rightBlood = new Image(bl);
   rightSword->HorizontalFlip();
   rightBlood->HorizontalFlip();
-  defense = new SkillLevelWidget(x, y, 132, 25, LEFT_SIDE, leftSword, leftBlood, f);
-  crossbowAccuracy = new SkillLevelWidget(x, y + 16, 132, 25, LEFT_SIDE, leftSword, leftBlood, f);
-  meleeAccuracy = new SkillLevelWidget(x, y + 32, 132, 25, LEFT_SIDE, leftSword, leftBlood, f);
-  castingAccuracy = new SkillLevelWidget(x, y + 48, 132, 25, LEFT_SIDE, leftSword, leftBlood, f);
-  assessment = new SkillLevelWidget(x, y + 64, 132, 25, LEFT_SIDE, leftSword, leftBlood, f);
-  armorcraft = new SkillLevelWidget(x, y + 80, 132, 25, LEFT_SIDE, leftSword, leftBlood, f);
-  weaponcraft = new SkillLevelWidget(x + 145, y, 132, 25, RIGHT_SIDE, rightSword, rightBlood, f);
-  barding = new SkillLevelWidget(x + 145, y + 16, 132, 25, RIGHT_SIDE, rightSword, rightBlood, f);
-  haggling = new SkillLevelWidget(x + 145, y + 32, 132, 25, RIGHT_SIDE, rightSword, rightBlood, f);
-  lockpick = new SkillLevelWidget(x + 145, y + 48, 132, 25, RIGHT_SIDE, rightSword, rightBlood, f);
-  scouting = new SkillLevelWidget(x + 145, y + 64, 132, 25, RIGHT_SIDE, rightSword, rightBlood, f);
-  stealth = new SkillLevelWidget(x + 145, y + 80, 132, 25, RIGHT_SIDE, rightSword, rightBlood, f);
+  defense = new SkillLevelWidget(Rectangle2D(rect.GetXPos(), rect.GetYPos(), 132, 25), LEFT_SIDE, leftSword, leftBlood, f);
+  crossbowAccuracy = new SkillLevelWidget(Rectangle2D(rect.GetXPos(), rect.GetYPos() + 16, 132, 25), LEFT_SIDE, leftSword, leftBlood, f);
+  meleeAccuracy = new SkillLevelWidget(Rectangle2D(rect.GetXPos(), rect.GetYPos() + 32, 132, 25), LEFT_SIDE, leftSword, leftBlood, f);
+  castingAccuracy = new SkillLevelWidget(Rectangle2D(rect.GetXPos(), rect.GetYPos() + 48, 132, 25), LEFT_SIDE, leftSword, leftBlood, f);
+  assessment = new SkillLevelWidget(Rectangle2D(rect.GetXPos(), rect.GetYPos() + 64, 132, 25), LEFT_SIDE, leftSword, leftBlood, f);
+  armorcraft = new SkillLevelWidget(Rectangle2D(rect.GetXPos(), rect.GetYPos() + 80, 132, 25), LEFT_SIDE, leftSword, leftBlood, f);
+  weaponcraft = new SkillLevelWidget(Rectangle2D(rect.GetXPos() + 145, rect.GetYPos(), 132, 25), RIGHT_SIDE, rightSword, rightBlood, f);
+  barding = new SkillLevelWidget(Rectangle2D(rect.GetXPos() + 145, rect.GetYPos() + 16, 132, 25), RIGHT_SIDE, rightSword, rightBlood, f);
+  haggling = new SkillLevelWidget(Rectangle2D(rect.GetXPos() + 145, rect.GetYPos() + 32, 132, 25), RIGHT_SIDE, rightSword, rightBlood, f);
+  lockpick = new SkillLevelWidget(Rectangle2D(rect.GetXPos() + 145, rect.GetYPos() + 48, 132, 25), RIGHT_SIDE, rightSword, rightBlood, f);
+  scouting = new SkillLevelWidget(Rectangle2D(rect.GetXPos() + 145, rect.GetYPos() + 64, 132, 25), RIGHT_SIDE, rightSword, rightBlood, f);
+  stealth = new SkillLevelWidget(Rectangle2D(rect.GetXPos() + 145, rect.GetYPos() + 80, 132, 25), RIGHT_SIDE, rightSword, rightBlood, f);
   defense->SetLevel("Defense", pc->GetStatistics().Get(STAT_DEFENSE, STAT_ACTUAL));
   crossbowAccuracy->SetLevel("Accy: Crossbow", pc->GetStatistics().Get(STAT_CROSSBOW_ACCURACY, STAT_ACTUAL));
   meleeAccuracy->SetLevel("Accy: Melee", pc->GetStatistics().Get(STAT_MELEE_ACCURACY, STAT_ACTUAL));

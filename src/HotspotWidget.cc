@@ -20,8 +20,8 @@
 #include "HotspotWidget.h"
 #include "MousePointerManager.h"
 
-HotspotWidget::HotspotWidget(const int x, const int y, const int w, const int h, const int a)
-: ActiveWidget(x, y, w, h, a)
+HotspotWidget::HotspotWidget(const Rectangle2D &r, const int a)
+: ActiveWidget(r, a)
 {
 }
 

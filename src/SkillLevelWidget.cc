@@ -22,8 +22,8 @@
 
 #include "SkillLevelWidget.h"
 
-SkillLevelWidget::SkillLevelWidget(const int x, const int y, const int w, const int h, const Side s, Image *sw, Image *bl, Font *f)
-: Widget(x, y, w, h)
+SkillLevelWidget::SkillLevelWidget(const Rectangle2D &r, const Side s, Image *sw, Image *bl, Font *f)
+: Widget(r)
 , side(s)
 , sword(sw)
 , blood(bl)
@@ -32,20 +32,20 @@ SkillLevelWidget::SkillLevelWidget(const int x, const int y, const int w, const 
 , value(0)
 {
   if (side == LEFT_SIDE) {
-    skill = new TextWidget(x + 34, y, 72, 12, f);
+    skill = new TextWidget(Rectangle2D(rect.GetXPos() + 34, rect.GetYPos(), 72, 12), f);
     skill->SetAlignment(HA_LEFT, VA_TOP);
     skill->SetColor(TEXT_COLOR_NORMAL);
     skill->SetShadow(SHADOW_COLOR, 1, 1);
-    level = new TextWidget(x + 107, y, 20, 12, f);
+    level = new TextWidget(Rectangle2D(rect.GetXPos() + 107, rect.GetYPos(), 20, 12), f);
     level->SetAlignment(HA_RIGHT, VA_TOP);
     level->SetColor(TEXT_COLOR_NORMAL);
     level->SetShadow(SHADOW_COLOR, 1, 1);
   } else {
-    skill = new TextWidget(x + 6, y, 72, 12, f);
+    skill = new TextWidget(Rectangle2D(rect.GetXPos() + 6, rect.GetYPos(), 72, 12), f);
     skill->SetAlignment(HA_LEFT, VA_TOP);
     skill->SetColor(TEXT_COLOR_NORMAL);
     skill->SetShadow(SHADOW_COLOR, 1, 1);
-    level = new TextWidget(x + 79, y, 20, 12, f);
+    level = new TextWidget(Rectangle2D(rect.GetXPos() + 79, rect.GetYPos(), 20, 12), f);
     level->SetAlignment(HA_RIGHT, VA_TOP);
     level->SetColor(TEXT_COLOR_NORMAL);
     level->SetShadow(SHADOW_COLOR, 1, 1);
@@ -63,10 +63,10 @@ SkillLevelWidget::~SkillLevelWidget()
 }
 
 void
-SkillLevelWidget::SetLevel(const std::string& s, const int x)
+SkillLevelWidget::SetLevel(const std::string& s, const int v)
 {
   skill->SetText(s);
-  value = x;
+  value = v;
   if (value > 0) {
     std::stringstream stream;
     stream << std::setw(2) << std::setfill(' ') << value << '%';

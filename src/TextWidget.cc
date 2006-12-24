@@ -19,8 +19,8 @@
 
 #include "TextWidget.h"
 
-TextWidget::TextWidget(const int x, const int y, const int w, const int h, Font *f)
-: Widget(x, y, w, h)
+TextWidget::TextWidget(const Rectangle2D &r, Font *f)
+: Widget(r)
 , font(f)
 , text("")
 , textWidth(0)

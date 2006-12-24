@@ -19,8 +19,8 @@
 
 #include "ChoiceWidget.h"
 
-ChoiceWidget::ChoiceWidget(const int x, const int y, const int w, const int h, const int a)
-: ActiveWidget(x, y, w, h, a)
+ChoiceWidget::ChoiceWidget(const Rectangle2D &r, const int a)
+: ActiveWidget(r, a)
 {
 }
 

@@ -48,7 +48,7 @@ class Widget {
     Rectangle2D rect;
     bool visible;
   public:
-    Widget(const int x, const int y, const int w, const int h);
+    Widget(const Rectangle2D &r);
     virtual ~Widget();
     Rectangle2D& GetRectangle();
     void SetVisible(const bool toggle);
@@ -62,7 +62,7 @@ class ActiveWidget
     int action;
     std::list<ActionEventListener *> actionListeners;
   public:
-    ActiveWidget(const int x, const int y, const int w, const int h, const int a);
+    ActiveWidget(const Rectangle2D &r, const int a);
     ~ActiveWidget();
     void SetPosition(const int x, const int y);
     void AddActionListener(ActionEventListener *ael);
