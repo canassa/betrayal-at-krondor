@@ -26,6 +26,7 @@
 #include "config.h"
 #endif
 
+#include "Geometry.h"
 #include "ResourceData.h"
 
 static const unsigned int REQ_USERDEFINED   = 0;
@@ -139,10 +140,7 @@ class RequestResource
 : public ResourceData {
   private:
     bool popup;
-    int xpos;
-    int ypos;
-    int width;
-    int height;
+    Rectangle2D rect;
     int xoff;
     int yoff;
     std::vector<RequestData> data;
@@ -150,10 +148,7 @@ class RequestResource
     RequestResource();
     virtual ~RequestResource();
     bool IsPopup() const;
-    int GetXPos() const;
-    int GetYPos() const;
-    int GetWidth() const;
-    int GetHeight() const;
+    Rectangle2D& GetRectangle();
     int GetXOff() const;
     int GetYOff() const;
     unsigned int GetSize() const;

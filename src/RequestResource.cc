@@ -22,10 +22,7 @@
 
 RequestResource::RequestResource()
 : popup(false)
-, xpos(0)
-, ypos(0)
-, width(0)
-, height(0)
+, rect(0, 0, 0, 0)
 , xoff(0)
 , yoff(0)
 , data()
@@ -42,24 +39,9 @@ RequestResource::IsPopup() const {
   return popup;
 }
 
-int
-RequestResource::GetXPos() const {
-  return xpos;
-}
-
-int
-RequestResource::GetYPos() const {
-  return ypos;
-}
-
-int
-RequestResource::GetWidth() const {
-  return width;
-}
-
-int
-RequestResource::GetHeight() const {
-  return height;
+Rectangle2D &
+RequestResource::GetRectangle() {
+  return rect;
 }
 
 int
@@ -96,10 +78,10 @@ RequestResource::Load(FileBuffer *buffer)
     buffer->Skip(2);
     popup = (buffer->GetSint16LE() != 0);
     buffer->Skip(2);
-    xpos = buffer->GetSint16LE();
-    ypos = buffer->GetSint16LE();
-    width = buffer->GetUint16LE();
-    height = buffer->GetUint16LE();
+    rect.SetXPos(buffer->GetSint16LE());
+    rect.SetYPos(buffer->GetSint16LE());
+    rect.SetWidth(buffer->GetSint16LE());
+    rect.SetHeight(buffer->GetSint16LE());
     buffer->Skip(2);
     xoff = buffer->GetSint16LE();
     yoff = buffer->GetSint16LE();
