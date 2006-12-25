@@ -24,33 +24,33 @@
 #include "config.h"
 #endif
 
-class Point2D {
+class Vector2D {
   private:
     int xCoord;
     int yCoord;
   public:
-    Point2D(const int x, const int y);
-    Point2D(const Point2D &p);
-    virtual ~Point2D();
-    Point2D& operator=(const Point2D &p);
-    bool operator==(const Point2D &p);
+    Vector2D(const int x, const int y);
+    Vector2D(const Vector2D &p);
+    virtual ~Vector2D();
+    Vector2D& operator=(const Vector2D &p);
+    bool operator==(const Vector2D &p);
     int GetX() const;
     int GetY() const;
     void SetX(int x);
     void SetY(int y);
 };
 
-class Point3D {
+class Vector3D {
   private:
     int xCoord;
     int yCoord;
     int zCoord;
   public:
-    Point3D(const int x, const int y, const int z);
-    Point3D(const Point3D &p);
-    virtual ~Point3D();
-    Point3D& operator=(const Point3D &p);
-    bool operator==(const Point3D &p);
+    Vector3D(const int x, const int y, const int z);
+    Vector3D(const Vector3D &p);
+    virtual ~Vector3D();
+    Vector3D& operator=(const Vector3D &p);
+    bool operator==(const Vector3D &p);
     int GetX() const;
     int GetY() const;
     int GetZ() const;
@@ -81,7 +81,7 @@ class Rectangle2D {
     void SetYPos(int x);
     void SetWidth(int w);
     void SetHeight(int h);
-    bool IsInside(Point2D &p);
+    bool IsInside(const Vector2D &p);
 };
 
 #endif

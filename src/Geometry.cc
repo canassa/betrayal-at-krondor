@@ -19,24 +19,24 @@
 
 #include "Geometry.h"
 
-Point2D::Point2D(const int x, const int y)
+Vector2D::Vector2D(const int x, const int y)
 : xCoord(x)
 , yCoord(y)
 {
 }
 
-Point2D::Point2D(const Point2D &p)
+Vector2D::Vector2D(const Vector2D &p)
 : xCoord(p.xCoord)
 , yCoord(p.yCoord)
 {
 }
 
-Point2D::~Point2D()
+Vector2D::~Vector2D()
 {
 }
 
-Point2D&
-Point2D::operator=(const Point2D &p)
+Vector2D&
+Vector2D::operator=(const Vector2D &p)
 {
   xCoord = p.xCoord;
   yCoord = p.yCoord;
@@ -44,55 +44,55 @@ Point2D::operator=(const Point2D &p)
 }
 
 bool
-Point2D::operator==(const Point2D &p)
+Vector2D::operator==(const Vector2D &p)
 {
   return (xCoord == p.xCoord) && (yCoord == p.yCoord);
 }
 
 int
-Point2D::GetX() const
+Vector2D::GetX() const
 {
   return xCoord;
 }
 
 int
-Point2D::GetY() const
+Vector2D::GetY() const
 {
   return yCoord;
 }
 
 void
-Point2D::SetX(int x)
+Vector2D::SetX(int x)
 {
   xCoord = x;
 }
 
 void
-Point2D::SetY(int y)
+Vector2D::SetY(int y)
 {
   yCoord = y;
 }
 
-Point3D::Point3D(const int x, const int y, const int z)
+Vector3D::Vector3D(const int x, const int y, const int z)
 : xCoord(x)
 , yCoord(y)
 , zCoord(z)
 {
 }
 
-Point3D::Point3D(const Point3D &p)
+Vector3D::Vector3D(const Vector3D &p)
 : xCoord(p.xCoord)
 , yCoord(p.yCoord)
 , zCoord(p.zCoord)
 {
 }
 
-Point3D::~Point3D()
+Vector3D::~Vector3D()
 {
 }
 
-Point3D&
-Point3D::operator=(const Point3D &p)
+Vector3D&
+Vector3D::operator=(const Vector3D &p)
 {
   xCoord = p.xCoord;
   yCoord = p.yCoord;
@@ -101,43 +101,43 @@ Point3D::operator=(const Point3D &p)
 }
 
 bool
-Point3D::operator==(const Point3D &p)
+Vector3D::operator==(const Vector3D &p)
 {
   return (xCoord == p.xCoord) && (yCoord == p.yCoord) && (zCoord == p.zCoord);
 }
 
 int
-Point3D::GetX() const
+Vector3D::GetX() const
 {
   return xCoord;
 }
 
 int
-Point3D::GetY() const
+Vector3D::GetY() const
 {
   return yCoord;
 }
 
 int
-Point3D::GetZ() const
+Vector3D::GetZ() const
 {
   return zCoord;
 }
 
 void
-Point3D::SetX(int x)
+Vector3D::SetX(int x)
 {
   xCoord = x;
 }
 
 void
-Point3D::SetY(int y)
+Vector3D::SetY(int y)
 {
   yCoord = y;
 }
 
 void
-Point3D::SetZ(int z)
+Vector3D::SetZ(int z)
 {
   zCoord = z;
 }
@@ -239,7 +239,7 @@ Rectangle2D::SetHeight(int h)
 }
 
 bool
-Rectangle2D::IsInside(Point2D &p)
+Rectangle2D::IsInside(const Vector2D &p)
 {
   return ((xpos <= p.GetX()) && (p.GetX() < xpos + width) &&
           (ypos <= p.GetY()) && (p.GetY() < ypos + height));

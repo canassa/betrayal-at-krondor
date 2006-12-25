@@ -38,15 +38,13 @@ TickboxWidget::Draw()
 void
 TickboxWidget::Focus(int x, int y)
 {
-  Point2D p(x, y);
-  if (GetRectangle().IsInside(p)) {
+  if (GetRectangle().IsInside(Vector2D(x, y))) {
   }
 }
 
 void
 TickboxWidget::Activate(int x, int y)
 {
-  Point2D p(x, y);
-  if (GetRectangle().IsInside(p)) {
+  if (GetRectangle().IsInside(Vector2D(x, y))) {
   }
 }
