@@ -20,19 +20,15 @@
 #include "Position.h"
 #include "TileWorldResource.h"
 
-Position::Position(const int x, const int y)
-: xCell(x / TILE_SIZE)
-, yCell(y / TILE_SIZE)
-, xPos(x)
-, yPos(y)
+Position::Position(const Vector2D &p)
+: pos(p)
+, cell(p.GetX() / TILE_SIZE, p.GetY() / TILE_SIZE)
 {
 }
 
-Position::Position(const int xc, const int yc, const int xp, const int yp)
-: xCell(xc)
-, yCell(yc)
-, xPos(xp)
-, yPos(yp)
+Position::Position(const Vector2D &p, const Vector2D &c)
+: pos(p)
+, cell(c)
 {
 }
 
@@ -40,44 +36,35 @@ Position::~Position()
 {
 }
 
-int
-Position::GetXCell() const
+Vector2D &
+Position::GetCell()
 {
-  return xCell;
+  return cell;
 }
 
-int
-Position::GetYCell() const
+Vector2D &
+Position::GetPos()
 {
-  return yCell;
-}
-
-int
-Position::GetXPos() const
-{
-  return xPos;
-}
-
-int
-Position::GetYPos() const
-{
-  return yPos;
+  return pos;
 }
 
 void
-Position::SetPos(const int x, const int y)
+Position::SetPos(const Vector2D &p)
 {
-  xPos = x;
-  xCell = xPos / TILE_SIZE;
-  yPos = y;
-  yCell = yPos / TILE_SIZE;
+  pos = p;
+  cell = pos / TILE_SIZE;
+}
+
+void
+Position::Adjust(const Vector2D &delta)
+{
+  pos += delta;
+  cell = pos / TILE_SIZE;
 }
 
 void
 Position::Adjust(const int deltaX, const int deltaY)
 {
-  xPos += deltaX;
-  xCell = xPos / TILE_SIZE;
-  yPos += deltaY;
-  yCell = yPos / TILE_SIZE;
+  pos += Vector2D(deltaX, deltaY);
+  cell = pos / TILE_SIZE;
 }

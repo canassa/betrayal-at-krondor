@@ -34,12 +34,11 @@ class Camera
     Position position;
     Orientation orientation;
   public:
-    Camera(const int x, const int y, const int heading);
+    Camera(const Vector2D &p, const int heading);
     ~Camera();
     Position& GetPosition();
-    int GetXPos() const;
-    int GetYPos() const;
-    void SetPosition(const int x, const int y);
+    Vector2D& GetPos();
+    void SetPosition(const Vector2D &p);
     Orientation& GetOrientation();
     int GetHeading() const;
     void SetHeading(const int heading);

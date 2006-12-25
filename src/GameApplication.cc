@@ -144,7 +144,7 @@ GameApplication::StartNewGame()
   game->GetGame()->GetParty()->ActivateMember(0, 0);
   game->GetGame()->GetParty()->ActivateMember(1, 2);
   game->GetGame()->GetParty()->ActivateMember(2, 1);
-  game->GetGame()->GetCamera()->SetPosition(669600, 1064800);
+  game->GetGame()->GetCamera()->SetPosition(Vector2D(669600, 1064800));
   game->GetGame()->GetCamera()->SetHeading(SOUTH);
 }
 

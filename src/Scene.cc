@@ -72,7 +72,7 @@ Scene::DrawGround(const int x, const int y, const int w, const int h, Camera *ca
   static const int TERRAIN_YOFFSET = 82;
   Image *terrain = zone.GetTerrain();
   int imagewidth = terrain->GetWidth();
-  int offset = imagewidth - (((cam->GetHeading() * 16) + ((cam->GetXPos() + cam->GetYPos()) / 100)) % imagewidth);
+  int offset = imagewidth - (((cam->GetHeading() * 16) + ((cam->GetPos().GetX() + cam->GetPos().GetY()) / 100)) % imagewidth);
   if (offset > 0) {
     terrain->Draw(x + offset - imagewidth, y + h - TERRAIN_HEIGHT - TERRAIN_YOFFSET + 1,
                   imagewidth - offset, TERRAIN_YOFFSET - 1, offset, TERRAIN_HEIGHT);

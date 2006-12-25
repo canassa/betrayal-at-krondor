@@ -47,7 +47,7 @@ Game::Game()
     }
     SceneFactory sf;
     scene = sf.CreateScene(chapter->GetZone());
-    camera = new Camera(0, 0, 0);
+    camera = new Camera(Vector2D(0, 0), 0);
   } catch (Exception &e) {
     e.Print("Game::Game");
     throw;

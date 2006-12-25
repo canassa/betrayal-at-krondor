@@ -43,10 +43,79 @@ Vector2D::operator=(const Vector2D &p)
   return *this;
 }
 
+Vector2D&
+Vector2D::operator+=(const Vector2D &p)
+{
+  xCoord += p.xCoord;
+  yCoord += p.yCoord;
+  return *this;
+}
+
+Vector2D&
+Vector2D::operator-=(const Vector2D &p)
+{
+  xCoord -= p.xCoord;
+  yCoord -= p.yCoord;
+  return *this;
+}
+
+Vector2D&
+Vector2D::operator*=(const int f)
+{
+  xCoord *= f;
+  yCoord *= f;
+  return *this;
+}
+
+Vector2D&
+Vector2D::operator/=(const int f)
+{
+  xCoord /= f;
+  yCoord /= f;
+  return *this;
+}
+
+Vector2D
+Vector2D::operator+(const Vector2D &p)
+{
+  return Vector2D(xCoord + p.xCoord, yCoord + p.yCoord);
+}
+
+Vector2D
+Vector2D::operator-(const Vector2D &p)
+{
+  return Vector2D(xCoord - p.xCoord, yCoord - p.yCoord);
+}
+
+Vector2D
+Vector2D::operator*(const int f)
+{
+  return Vector2D(xCoord * f, yCoord * f);
+}
+
+Vector2D
+Vector2D::operator/(const int f)
+{
+  return Vector2D(xCoord / f, yCoord / f);
+}
+
 bool
 Vector2D::operator==(const Vector2D &p)
 {
   return (xCoord == p.xCoord) && (yCoord == p.yCoord);
+}
+
+bool
+Vector2D::operator!=(const Vector2D &p)
+{
+  return (xCoord != p.xCoord) || (yCoord != p.yCoord);
+}
+
+bool
+Vector2D::operator<(const Vector2D &p)
+{
+  return (xCoord < p.xCoord) ||
+         ((xCoord == p.xCoord) && (yCoord < p.yCoord));
 }
 
 int
@@ -100,10 +169,84 @@ Vector3D::operator=(const Vector3D &p)
   return *this;
 }
 
+Vector3D&
+Vector3D::operator+=(const Vector3D &p)
+{
+  xCoord += p.xCoord;
+  yCoord += p.yCoord;
+  zCoord += p.zCoord;
+  return *this;
+}
+
+Vector3D&
+Vector3D::operator-=(const Vector3D &p)
+{
+  xCoord -= p.xCoord;
+  yCoord -= p.yCoord;
+  zCoord -= p.zCoord;
+  return *this;
+}
+
+Vector3D&
+Vector3D::operator*=(const int f)
+{
+  xCoord *= f;
+  yCoord *= f;
+  zCoord *= f;
+  return *this;
+}
+
+Vector3D&
+Vector3D::operator/=(const int f)
+{
+  xCoord /= f;
+  yCoord /= f;
+  zCoord /= f;
+  return *this;
+}
+
+Vector3D
+Vector3D::operator+(const Vector3D &p)
+{
+  return Vector3D(xCoord + p.xCoord, yCoord + p.yCoord, zCoord + p.zCoord);
+}
+
+Vector3D
+Vector3D::operator-(const Vector3D &p)
+{
+  return Vector3D(xCoord - p.xCoord, yCoord - p.yCoord, zCoord - p.zCoord);
+}
+
+Vector3D
+Vector3D::operator*(const int f)
+{
+  return Vector3D(xCoord * f, yCoord * f, zCoord * f);
+}
+
+Vector3D
+Vector3D::operator/(const int f)
+{
+  return Vector3D(xCoord / f, yCoord / f, zCoord / f);
+}
+
 bool
 Vector3D::operator==(const Vector3D &p)
 {
   return (xCoord == p.xCoord) && (yCoord == p.yCoord) && (zCoord == p.zCoord);
+}
+
+bool
+Vector3D::operator!=(const Vector3D &p)
+{
+  return (xCoord != p.xCoord) || (yCoord != p.yCoord) || (zCoord != p.zCoord);
+}
+
+bool
+Vector3D::operator<(const Vector3D &p)
+{
+  return (xCoord < p.xCoord) ||
+         ((xCoord == p.xCoord) && ((yCoord < p.yCoord) ||
+                                   ((yCoord == p.yCoord) && (zCoord < p.zCoord))));
 }
 
 int
@@ -176,6 +319,12 @@ bool
 Rectangle2D::operator==(const Rectangle2D &r)
 {
   return (xpos == r.xpos) && (ypos == r.ypos) && (width == r.width) && (height == r.height);
+}
+
+bool
+Rectangle2D::operator!=(const Rectangle2D &r)
+{
+  return (xpos != r.xpos) || (ypos != r.ypos) || (width != r.width) || (height != r.height);
 }
 
 int

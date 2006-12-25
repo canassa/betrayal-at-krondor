@@ -101,9 +101,8 @@ GameResource::Load(FileBuffer *buffer)
     int ycell = buffer->GetUint8();
     int xpos = buffer->GetUint32LE();
     int ypos = buffer->GetUint32LE();
-    game->GetCamera()->SetPosition(xpos, ypos);
-    if ((game->GetCamera()->GetPosition().GetXCell() != xcell) ||
-        (game->GetCamera()->GetPosition().GetYCell() != ycell)) {
+    game->GetCamera()->SetPosition(Vector2D(xpos, ypos));
+    if (game->GetCamera()->GetPosition().GetCell() != Vector2D(xcell, ycell)) {
       throw DataCorruption(__FILE__, __LINE__, "cell != position");
     }
     buffer->Skip(5);
@@ -149,10 +148,10 @@ GameResource::Save(FileBuffer *buffer)
     buffer->PutUint32LE(xloc);
     buffer->Skip(4);
     buffer->PutUint8(zone);
-    buffer->PutUint8(game->GetCamera()->GetPosition().GetXCell());
-    buffer->PutUint8(game->GetCamera()->GetPosition().GetYCell());
-    buffer->PutUint32LE(game->GetCamera()->GetXPos());
-    buffer->PutUint32LE(game->GetCamera()->GetYPos());
+    buffer->PutUint8(game->GetCamera()->GetPosition().GetCell().GetX());
+    buffer->PutUint8(game->GetCamera()->GetPosition().GetCell().GetY());
+    buffer->PutUint32LE(game->GetCamera()->GetPos().GetX());
+    buffer->PutUint32LE(game->GetCamera()->GetPos().GetY());
     buffer->Skip(5);
     buffer->PutUint16LE(game->GetCamera()->GetHeading());
     buffer->Skip(23);

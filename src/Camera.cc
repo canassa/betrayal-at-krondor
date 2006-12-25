@@ -19,8 +19,8 @@
 
 #include "Camera.h"
 
-Camera::Camera(const int x, const int y, const int heading)
-: position(x, y)
+Camera::Camera(const Vector2D &p, const int heading)
+: position(p)
 , orientation(heading)
 {
 }
@@ -35,22 +35,16 @@ Camera::GetPosition()
   return position;
 }
 
-int
-Camera::GetXPos() const
+Vector2D &
+Camera::GetPos()
 {
-  return position.GetXPos();
-}
-
-int
-Camera::GetYPos() const
-{
-  return position.GetYPos();
+  return position.GetPos();
 }
 
 void
-Camera::SetPosition(const int x, const int y)
+Camera::SetPosition(const Vector2D &p)
 {
-  position.SetPos(x, y);
+  position.SetPos(p);
   Notify();
 }
 

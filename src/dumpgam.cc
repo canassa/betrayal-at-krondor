@@ -35,8 +35,8 @@ int main(int argc, char *argv[]) {
     Game *game = gam->GetGame();
     printf("%s  l: (%d, %d) z: %d  c: (%d, %d)  p: (%d, %d)  o: %d\n",
            game->GetName().c_str(), gam->GetXLoc(), gam->GetYLoc(), gam->GetZone(),
-           game->GetCamera()->GetPosition().GetXCell(), game->GetCamera()->GetPosition().GetYCell(),
-           game->GetCamera()->GetXPos(), game->GetCamera()->GetYPos(), game->GetCamera()->GetHeading());
+           game->GetCamera()->GetPosition().GetCell().GetX(), game->GetCamera()->GetPosition().GetCell().GetY(),
+           game->GetCamera()->GetPos().GetX(), game->GetCamera()->GetPos().GetY(), game->GetCamera()->GetHeading());
     for (unsigned int m = 0; m < game->GetParty()->GetNumMembers(); m++) {
       printf("%10s:", game->GetParty()->GetMember(m)->GetName().c_str());
       for (unsigned int i = 0; i < NUM_STATS; i++) {

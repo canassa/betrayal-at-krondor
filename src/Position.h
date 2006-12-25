@@ -24,25 +24,24 @@
 #include "config.h"
 #endif
 
+#include "Geometry.h"
+
 static const int MOVE_SIZE     = 400;
 static const int MOVE_FORWARD  = +1 * MOVE_SIZE;
 static const int MOVE_BACKWARD = -1 * MOVE_SIZE;
 
 class Position {
   private:
-    int xCell;
-    int yCell;
-    int xPos;
-    int yPos;
+    Vector2D pos;
+    Vector2D cell;
   public:
-    Position(const int x, const int y);
-    Position(const int xc, const int yc, const int xp, const int yp);
+    Position(const Vector2D &p);
+    Position(const Vector2D &p, const Vector2D &c);
     ~Position();
-    int GetXCell() const;
-    int GetYCell() const;
-    int GetXPos() const;
-    int GetYPos() const;
-    void SetPos(const int x, const int y);
+    Vector2D& GetCell();
+    Vector2D& GetPos();
+    void SetPos(const Vector2D &p);
+    void Adjust(const Vector2D &delta);
     void Adjust(const int deltaX, const int deltaY);
 };
 
