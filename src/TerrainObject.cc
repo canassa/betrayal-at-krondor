@@ -19,8 +19,8 @@
 
 #include "TerrainObject.h"
 
-TerrainObject::TerrainObject(const int x, const int y, const int w, const int h)
-: GenericObject(x, y, w, h)
+TerrainObject::TerrainObject(const Rectangle &r)
+: GenericObject(r)
 {
 }
 

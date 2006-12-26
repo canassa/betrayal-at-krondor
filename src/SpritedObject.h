@@ -32,7 +32,7 @@ class SpritedObject
   private:
     Image *sprite;
   public:
-    SpritedObject(const int x, const int y, const int w, const int h, Image *img);
+    SpritedObject(const Rectangle &r, Image *img);
     ~SpritedObject();
     void DrawFirstPerson();
     void DrawTopDown();

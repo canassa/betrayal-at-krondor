@@ -24,14 +24,13 @@
 #include "config.h"
 #endif
 
+#include "Geometry.h"
+
 class GenericObject {
   private:
-    int xpos;
-    int ypos;
-    int width;
-    int height;
+    Rectangle rect;
   public:
-    GenericObject(const int x, const int y, const int w, const int h);
+    GenericObject(const Rectangle &r);
     virtual ~GenericObject();
     virtual void DrawFirstPerson() = 0;
     virtual void DrawTopDown() = 0;

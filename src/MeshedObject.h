@@ -29,7 +29,7 @@
 class MeshedObject
 : public GenericObject {
   public:
-    MeshedObject(const int x, const int y, const int w, const int h);
+    MeshedObject(const Rectangle &r);
     ~MeshedObject();
     void DrawFirstPerson();
     void DrawTopDown();

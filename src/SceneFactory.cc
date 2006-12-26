@@ -64,7 +64,7 @@ SceneFactory::CreateScene(Zone& zone)
             case OT_COLUMN:
             case OT_BAG:
             case OT_LADDER:
-              scene->AddObject(new SpritedObject(item.xloc, item.yloc, gid.xsize, gid.ysize, zone.GetSprite(dat.sprite)));
+              scene->AddObject(new SpritedObject(Rectangle(item.xloc, item.yloc, gid.xsize, gid.ysize), zone.GetSprite(dat.sprite)));
               break;
             default:
               break;

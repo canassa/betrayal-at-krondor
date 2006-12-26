@@ -19,8 +19,8 @@
 
 #include "MeshedObject.h"
 
-MeshedObject::MeshedObject(const int x, const int y, const int w, const int h)
-: GenericObject(x, y, w, h)
+MeshedObject::MeshedObject(const Rectangle &r)
+: GenericObject(r)
 {
 }
 
