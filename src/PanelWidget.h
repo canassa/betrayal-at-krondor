@@ -31,7 +31,7 @@ class PanelWidget: public ContainerWidget {
   private:
     Image *background;
   public:
-    PanelWidget(const Rectangle2D &r);
+    PanelWidget(const Rectangle &r);
     virtual ~PanelWidget();
     void Draw();
     void SetBackground(Image *img);

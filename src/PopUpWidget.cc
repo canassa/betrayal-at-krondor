@@ -20,7 +20,7 @@
 #include "MediaToolkit.h"
 #include "PopUpWidget.h"
 
-PopUpWidget::PopUpWidget(const Rectangle2D &r)
+PopUpWidget::PopUpWidget(const Rectangle &r)
 : ContainerWidget(r)
 {
 }

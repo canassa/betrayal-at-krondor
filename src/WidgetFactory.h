@@ -61,12 +61,12 @@ class WidgetFactory {
     MapViewWidget* CreateMapView(RequestData& data, Game *game);
     WorldViewWidget* CreateWorldView(RequestData& data, Game *game);
     TextWidget* CreateLabel(LabelData& data, FontResource& fnt, const int panelWidth);
-    BadgeWidget* CreateBadge(const Rectangle2D &r, const std::string& s, Font *f);
-    ImageWidget* CreateImage(const Rectangle2D &r, Image *img, const Flipping flip = NONE);
-    PortraitWidget* CreatePortrait(const Rectangle2D &r, PlayerCharacter *pc, Image *hb, Image *vb);
-    RatingsWidget* CreateRatings(const Rectangle2D &r, PlayerCharacter *pc, Image *hb, Image *vb, Font *f);
-    SkillsWidget* CreateSkills(const Rectangle2D &r, PlayerCharacter *pc, Image *sw, Image *bl, Font *f);
-    PanelWidget* CreatePanel(const Rectangle2D &r, Image *img);
+    BadgeWidget* CreateBadge(const Rectangle &r, const std::string& s, Font *f);
+    ImageWidget* CreateImage(const Rectangle &r, Image *img, const Flipping flip = NONE);
+    PortraitWidget* CreatePortrait(const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb);
+    RatingsWidget* CreateRatings(const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb, Font *f);
+    SkillsWidget* CreateSkills(const Rectangle &r, PlayerCharacter *pc, Image *sw, Image *bl, Font *f);
+    PanelWidget* CreatePanel(const Rectangle &r, Image *img);
 };
 
 #endif

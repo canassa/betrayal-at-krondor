@@ -33,7 +33,7 @@ class TextButtonWidget
   private:
     TextWidget* label;
   public:
-    TextButtonWidget(const Rectangle2D &r, const int a);
+    TextButtonWidget(const Rectangle &r, const int a);
     virtual ~TextButtonWidget();
     void SetLabel(const std::string& s, Font *f);
     void Draw();

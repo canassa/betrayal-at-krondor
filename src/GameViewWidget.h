@@ -37,7 +37,7 @@ class GameViewWidget
     Game *game;
     Image *cachedImage;
   public:
-    GameViewWidget(const Rectangle2D &r, Game *g);
+    GameViewWidget(const Rectangle &r, Game *g);
     virtual ~GameViewWidget();
     void Draw();
     void Update();

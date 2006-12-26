@@ -21,7 +21,7 @@
 
 Image* CharacterButtonWidget::selectedImage = 0;
 
-CharacterButtonWidget::CharacterButtonWidget(const Rectangle2D &r, const int a)
+CharacterButtonWidget::CharacterButtonWidget(const Rectangle &r, const int a)
 : ButtonWidget(r, a)
 , character(0)
 {

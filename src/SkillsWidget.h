@@ -52,7 +52,7 @@ class SkillsWidget
     SkillLevelWidget *scouting;
     SkillLevelWidget *stealth;
   public:
-    SkillsWidget(const Rectangle2D &r, PlayerCharacter *pc, Image *sw, Image *bl, Font *f);
+    SkillsWidget(const Rectangle &r, PlayerCharacter *pc, Image *sw, Image *bl, Font *f);
     virtual ~SkillsWidget();
     void Draw();
 };

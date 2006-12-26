@@ -44,7 +44,7 @@ class SkillLevelWidget
     TextWidget *level;
     int value;
   public:
-    SkillLevelWidget(const Rectangle2D &r, const Side s, Image *sw, Image *bl, Font *f);
+    SkillLevelWidget(const Rectangle &r, const Side s, Image *sw, Image *bl, Font *f);
     virtual ~SkillLevelWidget();
     void SetLevel(const std::string& s, const int v);
     void Draw();

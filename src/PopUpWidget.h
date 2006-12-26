@@ -29,7 +29,7 @@
 class PopUpWidget: public ContainerWidget {
   private:
   public:
-    PopUpWidget(const Rectangle2D &r);
+    PopUpWidget(const Rectangle &r);
     virtual ~PopUpWidget();
     void Draw();
 };

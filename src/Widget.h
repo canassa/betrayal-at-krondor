@@ -45,12 +45,12 @@ static const int RIGHT_CLICK_OFFSET   = 256;
 
 class Widget {
   protected:
-    Rectangle2D rect;
+    Rectangle rect;
     bool visible;
   public:
-    Widget(const Rectangle2D &r);
+    Widget(const Rectangle &r);
     virtual ~Widget();
-    Rectangle2D& GetRectangle();
+    Rectangle& GetRectangle();
     void SetVisible(const bool toggle);
     bool IsVisible() const;
     virtual void Draw() = 0;
@@ -62,7 +62,7 @@ class ActiveWidget
     int action;
     std::list<ActionEventListener *> actionListeners;
   public:
-    ActiveWidget(const Rectangle2D &r, const int a);
+    ActiveWidget(const Rectangle &r, const int a);
     ~ActiveWidget();
     void SetPosition(const int x, const int y);
     void AddActionListener(ActionEventListener *ael);

@@ -19,7 +19,7 @@
 
 #include "ImageButtonWidget.h"
 
-ImageButtonWidget::ImageButtonWidget(const Rectangle2D &r, const int a)
+ImageButtonWidget::ImageButtonWidget(const Rectangle &r, const int a)
 : ButtonWidget(r, a)
 , normalImage(0)
 , pressedImage(0)

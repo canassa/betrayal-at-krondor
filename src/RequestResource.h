@@ -140,7 +140,7 @@ class RequestResource
 : public ResourceData {
   private:
     bool popup;
-    Rectangle2D rect;
+    Rectangle rect;
     int xoff;
     int yoff;
     std::vector<RequestData> data;
@@ -148,7 +148,7 @@ class RequestResource
     RequestResource();
     virtual ~RequestResource();
     bool IsPopup() const;
-    Rectangle2D& GetRectangle();
+    Rectangle& GetRectangle();
     int GetXOff() const;
     int GetYOff() const;
     unsigned int GetSize() const;

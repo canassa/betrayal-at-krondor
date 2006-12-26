@@ -182,12 +182,12 @@ DialogFactory::CreateInfoDialog()
     PlayerCharacter *pc = GameApplication::GetInstance()->GetGame()->GetParty()->GetSelectedMember();
     PanelWidget *panel = widgetFactory.CreatePanel(request.GetRectangle(), screen.GetImage());
     Dialog *dialog = new GameDialog(palette.GetPalette(), new DialogWindow(panel));
-    panel->AddWidget(widgetFactory.CreateImage(Rectangle2D(2, 107, 122, 91), images.GetImage(24)));
-    panel->AddWidget(widgetFactory.CreateImage(Rectangle2D(188, 107, 122, 91), images.GetImage(24), HORIZONTAL));
-    panel->AddWidget(widgetFactory.CreatePortrait(Rectangle2D(7, 9, 71, 71), pc, images.GetImage(26), images.GetImage(25)));
-    panel->AddWidget(widgetFactory.CreateBadge(Rectangle2D(23, 71, 42, 12), pc->GetName(), font.GetFont()));
-    panel->AddWidget(widgetFactory.CreateRatings(Rectangle2D(84, 9, 222, 71), pc, images.GetImage(26), images.GetImage(25), font.GetFont()));
-    panel->AddWidget(widgetFactory.CreateSkills(Rectangle2D(16, 86, 276, 105), pc, images.GetImage(21), images.GetImage(22), font.GetFont()));
+    panel->AddWidget(widgetFactory.CreateImage(Rectangle(2, 107, 122, 91), images.GetImage(24)));
+    panel->AddWidget(widgetFactory.CreateImage(Rectangle(188, 107, 122, 91), images.GetImage(24), HORIZONTAL));
+    panel->AddWidget(widgetFactory.CreatePortrait(Rectangle(7, 9, 71, 71), pc, images.GetImage(26), images.GetImage(25)));
+    panel->AddWidget(widgetFactory.CreateBadge(Rectangle(23, 71, 42, 12), pc->GetName(), font.GetFont()));
+    panel->AddWidget(widgetFactory.CreateRatings(Rectangle(84, 9, 222, 71), pc, images.GetImage(26), images.GetImage(25), font.GetFont()));
+    panel->AddWidget(widgetFactory.CreateSkills(Rectangle(16, 86, 276, 105), pc, images.GetImage(21), images.GetImage(22), font.GetFont()));
     for (unsigned int i = 0; i < request.GetSize(); i++) {
       RequestData data = request.GetRequestData(i);
       switch (data.widget) {

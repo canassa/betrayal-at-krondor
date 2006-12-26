@@ -22,7 +22,7 @@
 
 #include "SkillLevelWidget.h"
 
-SkillLevelWidget::SkillLevelWidget(const Rectangle2D &r, const Side s, Image *sw, Image *bl, Font *f)
+SkillLevelWidget::SkillLevelWidget(const Rectangle &r, const Side s, Image *sw, Image *bl, Font *f)
 : Widget(r)
 , side(s)
 , sword(sw)
@@ -32,20 +32,20 @@ SkillLevelWidget::SkillLevelWidget(const Rectangle2D &r, const Side s, Image *sw
 , value(0)
 {
   if (side == LEFT_SIDE) {
-    skill = new TextWidget(Rectangle2D(rect.GetXPos() + 34, rect.GetYPos(), 72, 12), f);
+    skill = new TextWidget(Rectangle(rect.GetXPos() + 34, rect.GetYPos(), 72, 12), f);
     skill->SetAlignment(HA_LEFT, VA_TOP);
     skill->SetColor(TEXT_COLOR_NORMAL);
     skill->SetShadow(SHADOW_COLOR, 1, 1);
-    level = new TextWidget(Rectangle2D(rect.GetXPos() + 107, rect.GetYPos(), 20, 12), f);
+    level = new TextWidget(Rectangle(rect.GetXPos() + 107, rect.GetYPos(), 20, 12), f);
     level->SetAlignment(HA_RIGHT, VA_TOP);
     level->SetColor(TEXT_COLOR_NORMAL);
     level->SetShadow(SHADOW_COLOR, 1, 1);
   } else {
-    skill = new TextWidget(Rectangle2D(rect.GetXPos() + 6, rect.GetYPos(), 72, 12), f);
+    skill = new TextWidget(Rectangle(rect.GetXPos() + 6, rect.GetYPos(), 72, 12), f);
     skill->SetAlignment(HA_LEFT, VA_TOP);
     skill->SetColor(TEXT_COLOR_NORMAL);
     skill->SetShadow(SHADOW_COLOR, 1, 1);
-    level = new TextWidget(Rectangle2D(rect.GetXPos() + 79, rect.GetYPos(), 20, 12), f);
+    level = new TextWidget(Rectangle(rect.GetXPos() + 79, rect.GetYPos(), 20, 12), f);
     level->SetAlignment(HA_RIGHT, VA_TOP);
     level->SetColor(TEXT_COLOR_NORMAL);
     level->SetShadow(SHADOW_COLOR, 1, 1);

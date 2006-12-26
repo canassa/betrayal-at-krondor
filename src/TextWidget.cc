@@ -19,7 +19,7 @@
 
 #include "TextWidget.h"
 
-TextWidget::TextWidget(const Rectangle2D &r, Font *f)
+TextWidget::TextWidget(const Rectangle &r, Font *f)
 : Widget(r)
 , font(f)
 , text("")

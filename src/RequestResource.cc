@@ -39,7 +39,7 @@ RequestResource::IsPopup() const {
   return popup;
 }
 
-Rectangle2D &
+Rectangle &
 RequestResource::GetRectangle() {
   return rect;
 }

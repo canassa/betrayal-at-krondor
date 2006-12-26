@@ -34,7 +34,7 @@ class ImageButtonWidget
     Image *normalImage;
     Image *pressedImage;
   public:
-    ImageButtonWidget(const Rectangle2D &r, const int a);
+    ImageButtonWidget(const Rectangle &r, const int a);
     virtual ~ImageButtonWidget();
     void SetImage(Image *normal, Image *press);
     void Draw();

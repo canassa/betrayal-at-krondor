@@ -21,7 +21,7 @@
 #include "MediaToolkit.h"
 #include "MousePointerManager.h"
 
-ButtonWidget::ButtonWidget(const Rectangle2D &r, const int a)
+ButtonWidget::ButtonWidget(const Rectangle &r, const int a)
 : ActiveWidget(r, a)
 , enabled(true)
 , pressed(false)

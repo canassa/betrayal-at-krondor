@@ -20,7 +20,7 @@
 #include "MediaToolkit.h"
 #include "TextButtonWidget.h"
 
-TextButtonWidget::TextButtonWidget(const Rectangle2D &r, const int a)
+TextButtonWidget::TextButtonWidget(const Rectangle &r, const int a)
 : ButtonWidget(r, a)
 , label(0)
 {
@@ -36,7 +36,7 @@ TextButtonWidget::~TextButtonWidget()
 void
 TextButtonWidget::SetLabel(const std::string& s, Font *f)
 {
-  label = new TextWidget(Rectangle2D(rect.GetXPos() + 2, rect.GetYPos() + 2, rect.GetWidth() - 4, rect.GetHeight() - 4), f);
+  label = new TextWidget(Rectangle(rect.GetXPos() + 2, rect.GetYPos() + 2, rect.GetWidth() - 4, rect.GetHeight() - 4), f);
   label->SetText(s);
 }
 

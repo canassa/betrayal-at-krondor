@@ -19,7 +19,7 @@
 
 #include "ImageWidget.h"
 
-ImageWidget::ImageWidget(const Rectangle2D &r, Image *img)
+ImageWidget::ImageWidget(const Rectangle &r, Image *img)
 : Widget(r)
 , image(0)
 {

@@ -79,19 +79,19 @@ class Vector3D {
     void SetZ(int z);
 };
 
-class Rectangle2D {
+class Rectangle {
   private:
     int xpos;
     int ypos;
     int width;
     int height;
   public:
-    Rectangle2D(const int x, const int y, const int w, const int h);
-    Rectangle2D(const Rectangle2D &r);
-    virtual ~Rectangle2D();
-    Rectangle2D& operator=(const Rectangle2D &r);
-    bool operator==(const Rectangle2D &r);
-    bool operator!=(const Rectangle2D &r);
+    Rectangle(const int x, const int y, const int w, const int h);
+    Rectangle(const Rectangle &r);
+    virtual ~Rectangle();
+    Rectangle& operator=(const Rectangle &r);
+    bool operator==(const Rectangle &r);
+    bool operator!=(const Rectangle &r);
     int GetXPos() const;
     int GetYPos() const;
     int GetXCenter() const;

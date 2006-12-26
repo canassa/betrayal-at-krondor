@@ -23,7 +23,7 @@
 #include "MediaToolkit.h"
 #include "RatingsWidget.h"
 
-RatingsWidget::RatingsWidget(const Rectangle2D &r, PlayerCharacter *pc, Font *f)
+RatingsWidget::RatingsWidget(const Rectangle &r, PlayerCharacter *pc, Font *f)
 : Widget(r)
 , playerCharacter(pc)
 , horizontalBorder(0)
@@ -44,42 +44,42 @@ RatingsWidget::RatingsWidget(const Rectangle2D &r, PlayerCharacter *pc, Font *f)
 , maximumStamina(0)
 , condition(0)
 {
-  ratingsLabel = new TextWidget(Rectangle2D(rect.GetXPos() + 11, rect.GetYPos() + 5, 40, 11), f);
+  ratingsLabel = new TextWidget(Rectangle(rect.GetXPos() + 11, rect.GetYPos() + 5, 40, 11), f);
   ratingsLabel->SetText("Ratings:");
   ratingsLabel->SetAlignment(HA_LEFT, VA_TOP);
   ratingsLabel->SetColor(RATINGS_TEXT_COLOR);
   ratingsLabel->SetShadow(COLOR_BLACK, 1, 1);
-  conditionLabel = new TextWidget(Rectangle2D(rect.GetXPos() + 126, rect.GetYPos() + 5, 50, 11), f);
+  conditionLabel = new TextWidget(Rectangle(rect.GetXPos() + 126, rect.GetYPos() + 5, 50, 11), f);
   conditionLabel->SetText("Condition:");
   conditionLabel->SetAlignment(HA_LEFT, VA_TOP);
   conditionLabel->SetColor(RATINGS_TEXT_COLOR);
   conditionLabel->SetShadow(COLOR_BLACK, 1, 1);
-  healthLabel = new TextWidget(Rectangle2D(rect.GetXPos() + 21, rect.GetYPos() + 19, 40, 11), f);
+  healthLabel = new TextWidget(Rectangle(rect.GetXPos() + 21, rect.GetYPos() + 19, 40, 11), f);
   healthLabel->SetText("Health");
   healthLabel->SetAlignment(HA_LEFT, VA_TOP);
   healthLabel->SetColor(RATINGS_TEXT_COLOR);
   healthLabel->SetShadow(COLOR_BLACK, 1, 1);
-  staminaLabel = new TextWidget(Rectangle2D(rect.GetXPos() + 21, rect.GetYPos() + 30, 40, 11), f);
+  staminaLabel = new TextWidget(Rectangle(rect.GetXPos() + 21, rect.GetYPos() + 30, 40, 11), f);
   staminaLabel->SetText("Stamina");
   staminaLabel->SetAlignment(HA_LEFT, VA_TOP);
   staminaLabel->SetColor(RATINGS_TEXT_COLOR);
   staminaLabel->SetShadow(COLOR_BLACK, 1, 1);
-  speedLabel = new TextWidget(Rectangle2D(rect.GetXPos() + 21, rect.GetYPos() + 41, 40, 11), f);
+  speedLabel = new TextWidget(Rectangle(rect.GetXPos() + 21, rect.GetYPos() + 41, 40, 11), f);
   speedLabel->SetText("Speed");
   speedLabel->SetAlignment(HA_LEFT, VA_TOP);
   speedLabel->SetColor(RATINGS_TEXT_COLOR);
   speedLabel->SetShadow(COLOR_BLACK, 1, 1);
-  strengthLabel = new TextWidget(Rectangle2D(rect.GetXPos() + 21, rect.GetYPos() + 52, 40, 11), f);
+  strengthLabel = new TextWidget(Rectangle(rect.GetXPos() + 21, rect.GetYPos() + 52, 40, 11), f);
   strengthLabel->SetText("Strength");
   strengthLabel->SetAlignment(HA_LEFT, VA_TOP);
   strengthLabel->SetColor(RATINGS_TEXT_COLOR);
   strengthLabel->SetShadow(COLOR_BLACK, 1, 1);
-  healthOfLabel = new TextWidget(Rectangle2D(rect.GetXPos() + 86, rect.GetYPos() + 19, 12, 11), f);
+  healthOfLabel = new TextWidget(Rectangle(rect.GetXPos() + 86, rect.GetYPos() + 19, 12, 11), f);
   healthOfLabel->SetText("of");
   healthOfLabel->SetAlignment(HA_LEFT, VA_TOP);
   healthOfLabel->SetColor(RATINGS_TEXT_COLOR);
   healthOfLabel->SetShadow(COLOR_BLACK, 1, 1);
-  staminaOfLabel = new TextWidget(Rectangle2D(rect.GetXPos() + 86, rect.GetYPos() + 30, 12, 11), f);
+  staminaOfLabel = new TextWidget(Rectangle(rect.GetXPos() + 86, rect.GetYPos() + 30, 12, 11), f);
   staminaOfLabel->SetText("of");
   staminaOfLabel->SetAlignment(HA_LEFT, VA_TOP);
   staminaOfLabel->SetColor(RATINGS_TEXT_COLOR);
@@ -87,47 +87,47 @@ RatingsWidget::RatingsWidget(const Rectangle2D &r, PlayerCharacter *pc, Font *f)
 
   std::stringstream actualHealthStream;
   actualHealthStream << std::setw(2) << std::setfill(' ') << playerCharacter->GetStatistics().Get(STAT_HEALTH, STAT_ACTUAL);
-  actualHealth = new TextWidget(Rectangle2D(rect.GetXPos() + 68, rect.GetYPos() + 19, 12, 11), f);
+  actualHealth = new TextWidget(Rectangle(rect.GetXPos() + 68, rect.GetYPos() + 19, 12, 11), f);
   actualHealth->SetText(actualHealthStream.str());
   actualHealth->SetAlignment(HA_RIGHT, VA_TOP);
   actualHealth->SetColor(RATINGS_TEXT_COLOR);
   actualHealth->SetShadow(COLOR_BLACK, 1, 1);
   std::stringstream actualStaminaStream;
   actualStaminaStream << std::setw(2) << std::setfill(' ') << playerCharacter->GetStatistics().Get(STAT_STAMINA, STAT_ACTUAL);
-  actualStamina = new TextWidget(Rectangle2D(rect.GetXPos() + 68, rect.GetYPos() + 30, 12, 11), f);
+  actualStamina = new TextWidget(Rectangle(rect.GetXPos() + 68, rect.GetYPos() + 30, 12, 11), f);
   actualStamina->SetText(actualStaminaStream.str());
   actualStamina->SetAlignment(HA_RIGHT, VA_TOP);
   actualStamina->SetColor(RATINGS_TEXT_COLOR);
   actualStamina->SetShadow(COLOR_BLACK, 1, 1);
   std::stringstream actualSpeedStream;
   actualSpeedStream << std::setw(2) << std::setfill(' ') << playerCharacter->GetStatistics().Get(STAT_SPEED, STAT_ACTUAL);
-  actualSpeed = new TextWidget(Rectangle2D(rect.GetXPos() + 68, rect.GetYPos() + 41, 12, 11), f);
+  actualSpeed = new TextWidget(Rectangle(rect.GetXPos() + 68, rect.GetYPos() + 41, 12, 11), f);
   actualSpeed->SetText(actualSpeedStream.str());
   actualSpeed->SetAlignment(HA_RIGHT, VA_TOP);
   actualSpeed->SetColor(RATINGS_TEXT_COLOR);
   actualSpeed->SetShadow(COLOR_BLACK, 1, 1);
   std::stringstream actualStrengthStream;
   actualStrengthStream << std::setw(2) << std::setfill(' ') << playerCharacter->GetStatistics().Get(STAT_STRENGTH, STAT_ACTUAL);
-  actualStrength = new TextWidget(Rectangle2D(rect.GetXPos() + 68, rect.GetYPos() + 52, 12, 11), f);
+  actualStrength = new TextWidget(Rectangle(rect.GetXPos() + 68, rect.GetYPos() + 52, 12, 11), f);
   actualStrength->SetText(actualStrengthStream.str());
   actualStrength->SetAlignment(HA_RIGHT, VA_TOP);
   actualStrength->SetColor(RATINGS_TEXT_COLOR);
   actualStrength->SetShadow(COLOR_BLACK, 1, 1);
   std::stringstream maximumHealthStream;
   maximumHealthStream << std::setw(2) << std::setfill(' ') << playerCharacter->GetStatistics().Get(STAT_HEALTH, STAT_MAXIMUM);
-  maximumHealth = new TextWidget(Rectangle2D(rect.GetXPos() + 98, rect.GetYPos() + 19, 12, 11), f);
+  maximumHealth = new TextWidget(Rectangle(rect.GetXPos() + 98, rect.GetYPos() + 19, 12, 11), f);
   maximumHealth->SetText(maximumHealthStream.str());
   maximumHealth->SetAlignment(HA_RIGHT, VA_TOP);
   maximumHealth->SetColor(RATINGS_TEXT_COLOR);
   maximumHealth->SetShadow(COLOR_BLACK, 1, 1);
   std::stringstream maximumStaminaStream;
   maximumStaminaStream << std::setw(2) << std::setfill(' ') << playerCharacter->GetStatistics().Get(STAT_STAMINA, STAT_MAXIMUM);
-  maximumStamina = new TextWidget(Rectangle2D(rect.GetXPos() + 98, rect.GetYPos() + 30, 12, 11), f);
+  maximumStamina = new TextWidget(Rectangle(rect.GetXPos() + 98, rect.GetYPos() + 30, 12, 11), f);
   maximumStamina->SetText(maximumStaminaStream.str());
   maximumStamina->SetAlignment(HA_RIGHT, VA_TOP);
   maximumStamina->SetColor(RATINGS_TEXT_COLOR);
   maximumStamina->SetShadow(COLOR_BLACK, 1, 1);
-  condition = new TextWidget(Rectangle2D(rect.GetXPos() + 136, rect.GetYPos() + 19, 60, 11), f);
+  condition = new TextWidget(Rectangle(rect.GetXPos() + 136, rect.GetYPos() + 19, 60, 11), f);
   switch (playerCharacter->GetCondition()) {
     case COND_NORMAL:
       condition->SetText("Normal");

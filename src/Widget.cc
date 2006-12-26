@@ -19,7 +19,7 @@
 
 #include "Widget.h"
 
-Widget::Widget(const Rectangle2D &r)
+Widget::Widget(const Rectangle &r)
 : rect(r)
 , visible(true)
 {
@@ -29,7 +29,7 @@ Widget::~Widget()
 {
 }
 
-Rectangle2D&
+Rectangle&
 Widget::GetRectangle()
 {
   return rect;
@@ -48,7 +48,7 @@ Widget::IsVisible() const
 }
 
 
-ActiveWidget::ActiveWidget(const Rectangle2D &r, const int a)
+ActiveWidget::ActiveWidget(const Rectangle &r, const int a)
 : Widget(r)
 , action(a)
 , actionListeners()

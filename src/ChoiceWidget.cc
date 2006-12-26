@@ -19,7 +19,7 @@
 
 #include "ChoiceWidget.h"
 
-ChoiceWidget::ChoiceWidget(const Rectangle2D &r, const int a)
+ChoiceWidget::ChoiceWidget(const Rectangle &r, const int a)
 : ActiveWidget(r, a)
 {
 }

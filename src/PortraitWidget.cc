@@ -19,7 +19,7 @@
 
 #include "PortraitWidget.h"
 
-PortraitWidget::PortraitWidget(const Rectangle2D &r, PlayerCharacter *pc)
+PortraitWidget::PortraitWidget(const Rectangle &r, PlayerCharacter *pc)
 : Widget(r)
 , playerCharacter(pc)
 , horizontalBorder(0)

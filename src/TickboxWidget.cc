@@ -19,7 +19,7 @@
 
 #include "TickboxWidget.h"
 
-TickboxWidget::TickboxWidget(const Rectangle2D &r)
+TickboxWidget::TickboxWidget(const Rectangle &r)
 : Widget(r)
 {
 }

@@ -285,7 +285,7 @@ Vector3D::SetZ(int z)
   zCoord = z;
 }
 
-Rectangle2D::Rectangle2D(const int x, const int y, const int w, const int h)
+Rectangle::Rectangle(const int x, const int y, const int w, const int h)
 : xpos(x)
 , ypos(y)
 , width(w)
@@ -293,7 +293,7 @@ Rectangle2D::Rectangle2D(const int x, const int y, const int w, const int h)
 {
 }
 
-Rectangle2D::Rectangle2D(const Rectangle2D &r)
+Rectangle::Rectangle(const Rectangle &r)
 : xpos(r.xpos)
 , ypos(r.ypos)
 , width(r.width)
@@ -301,12 +301,12 @@ Rectangle2D::Rectangle2D(const Rectangle2D &r)
 {
 }
 
-Rectangle2D::~Rectangle2D()
+Rectangle::~Rectangle()
 {
 }
 
-Rectangle2D&
-Rectangle2D::operator=(const Rectangle2D &r)
+Rectangle&
+Rectangle::operator=(const Rectangle &r)
 {
   xpos = r.xpos;
   ypos = r.ypos;
@@ -316,79 +316,79 @@ Rectangle2D::operator=(const Rectangle2D &r)
 }
 
 bool
-Rectangle2D::operator==(const Rectangle2D &r)
+Rectangle::operator==(const Rectangle &r)
 {
   return (xpos == r.xpos) && (ypos == r.ypos) && (width == r.width) && (height == r.height);
 }
 
 bool
-Rectangle2D::operator!=(const Rectangle2D &r)
+Rectangle::operator!=(const Rectangle &r)
 {
   return (xpos != r.xpos) || (ypos != r.ypos) || (width != r.width) || (height != r.height);
 }
 
 int
-Rectangle2D::GetXPos() const
+Rectangle::GetXPos() const
 {
   return xpos;
 }
 
 int
-Rectangle2D::GetYPos() const
+Rectangle::GetYPos() const
 {
   return ypos;
 }
 
 int
-Rectangle2D::GetXCenter() const
+Rectangle::GetXCenter() const
 {
   return xpos + width / 2;
 }
 
 int
-Rectangle2D::GetYCenter() const
+Rectangle::GetYCenter() const
 {
   return ypos + height / 2;
 }
 
 int
-Rectangle2D::GetWidth() const
+Rectangle::GetWidth() const
 {
   return width;
 }
 
 int
-Rectangle2D::GetHeight() const
+Rectangle::GetHeight() const
 {
   return height;
 }
 
 void
-Rectangle2D::SetXPos(int x)
+Rectangle::SetXPos(int x)
 {
   xpos = x;
 }
 
 void
-Rectangle2D::SetYPos(int y)
+Rectangle::SetYPos(int y)
 {
   ypos = y;
 }
 
 void
-Rectangle2D::SetWidth(int w)
+Rectangle::SetWidth(int w)
 {
   width = w;
 }
 
 void
-Rectangle2D::SetHeight(int h)
+Rectangle::SetHeight(int h)
 {
   height = h;
 }
 
 bool
-Rectangle2D::IsInside(const Vector2D &p)
+Rectangle::IsInside(const Vector2D &p)
 {
   return ((xpos <= p.GetX()) && (p.GetX() < xpos + width) &&
           (ypos <= p.GetY()) && (p.GetY() < ypos + height));

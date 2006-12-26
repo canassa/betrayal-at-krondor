@@ -19,7 +19,7 @@
 
 #include "ContainerWidget.h"
 
-ContainerWidget::ContainerWidget(const Rectangle2D &r)
+ContainerWidget::ContainerWidget(const Rectangle &r)
 : Widget(r)
 , widgets()
 , activeWidgets()

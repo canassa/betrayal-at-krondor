@@ -29,7 +29,7 @@
 class TickboxWidget: public Widget {
   private:
   public:
-    TickboxWidget(const Rectangle2D &r);
+    TickboxWidget(const Rectangle &r);
     virtual ~TickboxWidget();
     void Draw();
     void Focus(int x, int y);

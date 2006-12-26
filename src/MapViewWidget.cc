@@ -19,7 +19,7 @@
 
 #include "MapViewWidget.h"
 
-MapViewWidget::MapViewWidget(const Rectangle2D &r, Game *g)
+MapViewWidget::MapViewWidget(const Rectangle &r, Game *g)
 : GameViewWidget(r, g)
 {
   game->GetCamera()->Attach(this);

@@ -20,7 +20,7 @@
 #include "GameViewWidget.h"
 #include "MediaToolkit.h"
 
-GameViewWidget::GameViewWidget(const Rectangle2D &r, Game *g)
+GameViewWidget::GameViewWidget(const Rectangle &r, Game *g)
 : ContainerWidget(r)
 , game(g)
 , cachedImage(0)
