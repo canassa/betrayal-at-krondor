@@ -19,15 +19,22 @@
 
 #include "Scene.h"
 
+static const int LOWER_ANGLE_OF_VIEW = 32;
+static const int UPPER_ANGLE_OF_VIEW = 224;
+
+static const unsigned int VIEW_DISTANCE = 8000 * 8000;
+
 Scene::Scene(Zone& z)
 : zone(z)
 , objects()
+, zBuffer()
 {
 }
 
 Scene::~Scene()
 {
   objects.clear();
+  zBuffer.clear();
 }
 
 void
@@ -40,6 +47,18 @@ void
 Scene::RemoveObject(GenericObject *obj)
 {
   objects.remove(obj);
+}
+
+void
+Scene::FillZBuffer(Camera *cam)
+{
+  for (std::list<GenericObject *>::iterator it = objects.begin(); it != objects.end(); it++) {
+    int angle = (*it)->GetAngle(cam->GetHeading());
+    unsigned int distance = (*it)->GetDistance(cam->GetPosition().GetPos());
+    if (((angle <= LOWER_ANGLE_OF_VIEW) || (angle >= UPPER_ANGLE_OF_VIEW)) && (distance < VIEW_DISTANCE)) {
+      zBuffer.insert(std::pair<int, GenericObject *>(distance, *it));
+    }
+  }
 }
 
 void
@@ -86,10 +105,21 @@ Scene::DrawGround(const int x, const int y, const int w, const int h, Camera *ca
 }
 
 void
+Scene::DrawZBuffer(const int x, const int y, const int w, const int h)
+{
+  if (x && y && w && h) {
+  }
+  for (std::map<int, GenericObject *>::reverse_iterator it = zBuffer.rbegin(); it != zBuffer.rend(); it++) {
+  }
+}
+
+void
 Scene::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
 {
+  FillZBuffer(cam);
   DrawHorizon(x, y, w, h, cam->GetHeading());
   DrawGround(x, y, w, h, cam);
+  DrawZBuffer(x, y, w, h);
 }
 
 void

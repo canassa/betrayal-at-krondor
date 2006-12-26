@@ -25,6 +25,7 @@
 #endif
 
 #include <list>
+#include <map>
 
 #include "Camera.h"
 #include "GenericObject.h"
@@ -34,8 +35,11 @@ class Scene {
   private:
     Zone& zone;
     std::list<GenericObject *> objects;
+    std::map<int, GenericObject *> zBuffer;
+    void FillZBuffer(Camera *cam);
     void DrawHorizon(const int x, const int y, const int w, const int h, const int heading);
     void DrawGround(const int x, const int y, const int w, const int h, Camera *cam);
+    void DrawZBuffer(const int x, const int y, const int w, const int h);
   public:
     Scene(Zone& z);
     ~Scene();

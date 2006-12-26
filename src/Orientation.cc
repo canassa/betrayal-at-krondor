@@ -18,11 +18,8 @@
  */
 
 #include <cstdio>
-#include <cmath>
-#ifndef M_PIl
-#define M_PIl 3.1415926535897932384626433832795029L
-#endif
 
+#include "Geometry.h"
 #include "Orientation.h"
 
 float Orientation::cosTbl[1 << MAX_HEADING_BITS];
@@ -32,8 +29,8 @@ Orientation::Orientation(const int head)
 : heading(head)
 {
   for (unsigned int i = 0; i < (1 << MAX_HEADING_BITS); i++) {
-    cosTbl[i] = cos((float)i * 2.0 * M_PIl / (float)(1 << MAX_HEADING_BITS));
-    sinTbl[i] = sin((float)i * 2.0 * M_PIl / (float)(1 << MAX_HEADING_BITS));
+    cosTbl[i] = cos((float)i * PI2 / (float)(1 << MAX_HEADING_BITS));
+    sinTbl[i] = sin((float)i * PI2 / (float)(1 << MAX_HEADING_BITS));
   }
 }
 

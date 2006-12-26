@@ -24,6 +24,13 @@
 #include "config.h"
 #endif
 
+#include <cmath>
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+static const float PI  = M_PI;
+static const float PI2 = M_PI + M_PI;
+
 class Vector2D {
   private:
     int xCoord;
@@ -48,6 +55,8 @@ class Vector2D {
     int GetY() const;
     void SetX(int x);
     void SetY(int y);
+    unsigned int GetRhoSqr() const;
+    float GetTheta() const;
 };
 
 class Vector3D {
@@ -77,6 +86,8 @@ class Vector3D {
     void SetX(int x);
     void SetY(int y);
     void SetZ(int z);
+    unsigned int GetRhoSqr() const;
+    float GetTheta() const;
 };
 
 class Rectangle {

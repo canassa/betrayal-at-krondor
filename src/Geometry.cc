@@ -142,6 +142,19 @@ Vector2D::SetY(int y)
   yCoord = y;
 }
 
+unsigned int
+Vector2D::GetRhoSqr() const
+{
+  return (unsigned int)((xCoord * xCoord) + (yCoord * yCoord));
+}
+
+float
+Vector2D::GetTheta() const
+{
+  return atan(yCoord / xCoord);
+}
+
+
 Vector3D::Vector3D(const int x, const int y, const int z)
 : xCoord(x)
 , yCoord(y)
@@ -284,6 +297,19 @@ Vector3D::SetZ(int z)
 {
   zCoord = z;
 }
+
+unsigned int
+Vector3D::GetRhoSqr() const
+{
+  return (unsigned int)((xCoord * xCoord) + (yCoord * yCoord) + (zCoord * zCoord));
+}
+
+float
+Vector3D::GetTheta() const
+{
+  return atan(yCoord / xCoord);
+}
+
 
 Rectangle::Rectangle(const int x, const int y, const int w, const int h)
 : xpos(x)
