@@ -151,7 +151,15 @@ Vector2D::GetRhoSqr() const
 float
 Vector2D::GetTheta() const
 {
-  return atan(yCoord / xCoord);
+  if (xCoord == 0) {
+    if (yCoord >= 0) {
+      return PI;
+    } else {
+      return -PI;
+    }
+  } else {
+    return atan(yCoord / xCoord);
+  }
 }
 
 

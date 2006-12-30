@@ -39,7 +39,7 @@ GenericObject::CalculateRelativePosition(const Vector2D &p)
 }
 
 unsigned int
-GenericObject::GetDistance()
+GenericObject::GetDistance() const
 {
   return relpos.GetRhoSqr();
 }
@@ -47,5 +47,5 @@ GenericObject::GetDistance()
 int
 GenericObject::GetAngle(const int heading) const
 {
-  return ((int)(relpos.GetTheta() * (float)(1 << MAX_HEADING_BITS) / PI2) - heading) & ~(1 << MAX_HEADING_BITS);
+  return ((int)((PI2 + relpos.GetTheta()) * (float)(1 << MAX_HEADING_BITS) / PI2) - heading) & ~(1 << MAX_HEADING_BITS);
 }

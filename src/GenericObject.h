@@ -36,7 +36,7 @@ class GenericObject {
     GenericObject(const Vector2D &p, int w, int h);
     virtual ~GenericObject();
     void CalculateRelativePosition(const Vector2D &p);
-    unsigned int GetDistance();
+    unsigned int GetDistance() const;
     int GetAngle(const int heading) const;
     virtual void DrawFirstPerson() = 0;
     virtual void DrawTopDown() = 0;
