@@ -32,14 +32,20 @@ GenericObject::~GenericObject()
 {
 }
 
-unsigned int
-GenericObject::GetDistance(const Vector2D &p)
+void
+GenericObject::CalculateRelativePosition(const Vector2D &p)
 {
-  return (pos - p).GetRhoSqr();
+  relpos = pos - p;
+}
+
+unsigned int
+GenericObject::GetDistance()
+{
+  return relpos.GetRhoSqr();
 }
 
 int
 GenericObject::GetAngle(const int heading) const
 {
-  return ((int)(pos.GetTheta() * (float)(1 << MAX_HEADING_BITS) / PI2) - heading) & ~(1 << MAX_HEADING_BITS);
+  return ((int)(relpos.GetTheta() * (float)(1 << MAX_HEADING_BITS) / PI2) - heading) & ~(1 << MAX_HEADING_BITS);
 }

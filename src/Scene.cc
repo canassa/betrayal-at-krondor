@@ -53,8 +53,9 @@ void
 Scene::FillZBuffer(Camera *cam)
 {
   for (std::list<GenericObject *>::iterator it = objects.begin(); it != objects.end(); it++) {
+    (*it)->CalculateRelativePosition(cam->GetPosition().GetPos());
     int angle = (*it)->GetAngle(cam->GetHeading());
-    unsigned int distance = (*it)->GetDistance(cam->GetPosition().GetPos());
+    unsigned int distance = (*it)->GetDistance();
     if (((angle <= LOWER_ANGLE_OF_VIEW) || (angle >= UPPER_ANGLE_OF_VIEW)) && (distance < VIEW_DISTANCE)) {
       zBuffer.insert(std::pair<int, GenericObject *>(distance, *it));
     }
