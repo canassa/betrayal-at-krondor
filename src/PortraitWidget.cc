@@ -17,6 +17,7 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "Exception.h"
 #include "PortraitWidget.h"
 
 PortraitWidget::PortraitWidget(const Rectangle &r, PlayerCharacter *pc)
@@ -34,6 +35,9 @@ PortraitWidget::~PortraitWidget()
 void
 PortraitWidget::SetBorders(Image *hb, Image *vb)
 {
+  if ((!hb) || (!vb)) {
+    throw NullPointer(__FILE__, __LINE__);
+  }
   horizontalBorder = hb;
   verticalBorder = vb;
 }

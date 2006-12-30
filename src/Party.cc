@@ -31,6 +31,7 @@ Party::~Party()
     delete members[i];
   }
   members.clear();
+  numActiveMembers = 0;
 }
 
 unsigned int

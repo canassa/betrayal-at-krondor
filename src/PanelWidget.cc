@@ -17,6 +17,7 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "Exception.h"
 #include "MediaToolkit.h"
 #include "PanelWidget.h"
 
@@ -33,6 +34,9 @@ PanelWidget::~PanelWidget()
 void
 PanelWidget::SetBackground(Image *img)
 {
+  if (!img) {
+    throw NullPointer(__FILE__, __LINE__);
+  }
   background = img;
 }
 

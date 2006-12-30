@@ -17,6 +17,7 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "Exception.h"
 #include "PlayerCharacter.h"
 
 PlayerCharacter::PlayerCharacter(const std::string& s)
@@ -62,6 +63,9 @@ PlayerCharacter::GetButtonImage() const
 void
 PlayerCharacter::SetButtonImage(Image *img)
 {
+  if (!img) {
+    throw NullPointer(__FILE__, __LINE__);
+  }
   buttonImage = img;
 }
 
@@ -74,6 +78,9 @@ PlayerCharacter::GetPortraitImage() const
 void
 PlayerCharacter::SetPortraitImage(Image *img)
 {
+  if (!img) {
+    throw NullPointer(__FILE__, __LINE__);
+  }
   portraitImage = img;
 }
 

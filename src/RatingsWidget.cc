@@ -20,6 +20,7 @@
 #include <iomanip>
 #include <sstream>
 
+#include "Exception.h"
 #include "MediaToolkit.h"
 #include "RatingsWidget.h"
 
@@ -214,6 +215,9 @@ RatingsWidget::~RatingsWidget()
 void
 RatingsWidget::SetBorders(Image *hb, Image *vb)
 {
+  if ((!hb) || (!vb)) {
+    throw NullPointer(__FILE__, __LINE__);
+  }
   horizontalBorder = hb;
   verticalBorder = vb;
 }

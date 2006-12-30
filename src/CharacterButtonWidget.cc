@@ -18,6 +18,7 @@
  */
 
 #include "CharacterButtonWidget.h"
+#include "Exception.h"
 
 Image* CharacterButtonWidget::selectedImage = 0;
 
@@ -34,12 +35,18 @@ CharacterButtonWidget::~CharacterButtonWidget()
 void
 CharacterButtonWidget::SetCharacter(PlayerCharacter *pc)
 {
+  if (!pc) {
+    throw NullPointer(__FILE__, __LINE__);
+  }
   character = pc;
 }
 
 void
 CharacterButtonWidget::SetImage(Image *selected)
 {
+  if (!selected) {
+    throw NullPointer(__FILE__, __LINE__);
+  }
   selectedImage = selected;
 }
 
