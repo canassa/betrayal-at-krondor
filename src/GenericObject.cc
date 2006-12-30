@@ -20,8 +20,11 @@
 #include "GenericObject.h"
 #include "Orientation.h"
 
-GenericObject::GenericObject(const Rectangle &r)
-: rect(r)
+GenericObject::GenericObject(const Vector2D &p, int w, int h)
+: pos(p)
+, relpos(0, 0)
+, width(w)
+, height(h)
 {
 }
 
@@ -30,13 +33,13 @@ GenericObject::~GenericObject()
 }
 
 unsigned int
-GenericObject::GetDistance(const Vector2D &p) const
+GenericObject::GetDistance(const Vector2D &p)
 {
-  return (Vector2D(rect.GetXPos(), rect.GetYPos()) - p).GetRhoSqr();
+  return (pos - p).GetRhoSqr();
 }
 
 int
 GenericObject::GetAngle(const int heading) const
 {
-  return ((int)(Vector2D(rect.GetXPos(), rect.GetYPos()).GetTheta() * (float)(1 << MAX_HEADING_BITS) / PI2) - heading) & ~(1 << MAX_HEADING_BITS);
+  return ((int)(pos.GetTheta() * (float)(1 << MAX_HEADING_BITS) / PI2) - heading) & ~(1 << MAX_HEADING_BITS);
 }

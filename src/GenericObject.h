@@ -28,11 +28,14 @@
 
 class GenericObject {
   private:
-    Rectangle rect;
+    Vector2D pos;
+    Vector2D relpos;
+    int width;
+    int height;
   public:
-    GenericObject(const Rectangle &r);
+    GenericObject(const Vector2D &p, int w, int h);
     virtual ~GenericObject();
-    unsigned int GetDistance(const Vector2D &p) const;
+    unsigned int GetDistance(const Vector2D &p);
     int GetAngle(const int heading) const;
     virtual void DrawFirstPerson() = 0;
     virtual void DrawTopDown() = 0;

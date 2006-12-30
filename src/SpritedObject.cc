@@ -19,8 +19,8 @@
 
 #include "SpritedObject.h"
 
-SpritedObject::SpritedObject(const Rectangle &r, Image *img)
-: GenericObject(r)
+SpritedObject::SpritedObject(const Vector2D &p, int w, int h, Image *img)
+: GenericObject(p, w, h)
 , sprite(img)
 {
 }

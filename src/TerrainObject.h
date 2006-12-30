@@ -29,7 +29,7 @@
 class TerrainObject
 : public GenericObject {
   public:
-    TerrainObject(const Rectangle &r);
+    TerrainObject(const Vector2D &p, int w, int h);
     ~TerrainObject();
     void DrawFirstPerson();
     void DrawTopDown();
