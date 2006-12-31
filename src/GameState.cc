@@ -124,7 +124,6 @@ GameStateCast* GameStateCast::instance = 0;
 
 GameStateCast::GameStateCast()
 {
-  dialog = dialogFactory.CreateCastDialog();
 }
 
 GameStateCast::~GameStateCast()
@@ -155,6 +154,7 @@ GameStateCast::CleanUp()
 void
 GameStateCast::Enter()
 {
+  dialog = dialogFactory.CreateCastDialog();
   dialog->Enter();
 }
 
@@ -162,6 +162,8 @@ void
 GameStateCast::Leave()
 {
   dialog->Leave();
+  delete dialog;
+  dialog = 0;
 }
 
 void
@@ -734,7 +736,6 @@ GameStateMap* GameStateMap::instance = 0;
 
 GameStateMap::GameStateMap()
 {
-  dialog = dialogFactory.CreateMapDialog();
 }
 
 GameStateMap::~GameStateMap()
@@ -765,6 +766,7 @@ GameStateMap::CleanUp()
 void
 GameStateMap::Enter()
 {
+  dialog = dialogFactory.CreateMapDialog();
   dialog->Enter();
 }
 
@@ -772,6 +774,8 @@ void
 GameStateMap::Leave()
 {
   dialog->Leave();
+  delete dialog;
+  dialog = 0;
 }
 
 void
@@ -1043,7 +1047,6 @@ GameStateWorld* GameStateWorld::instance = 0;
 
 GameStateWorld::GameStateWorld()
 {
-  dialog = dialogFactory.CreateWorldDialog();
 }
 
 GameStateWorld::~GameStateWorld()
@@ -1074,6 +1077,7 @@ GameStateWorld::CleanUp()
 void
 GameStateWorld::Enter()
 {
+  dialog = dialogFactory.CreateWorldDialog();
   dialog->Enter();
 }
 
@@ -1081,6 +1085,8 @@ void
 GameStateWorld::Leave()
 {
   dialog->Leave();
+  delete dialog;
+  dialog = 0;
 }
 
 void
