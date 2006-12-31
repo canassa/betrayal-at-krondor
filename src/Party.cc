@@ -102,6 +102,9 @@ Party::ActivateMember(const unsigned int n, const int order)
     pc->SetOrder(-1);
     numActiveMembers--;
   }
+  if (members[n]->GetOrder() >= 0) {
+    numActiveMembers--;
+  }
   members[n]->SetOrder(order);
   numActiveMembers++;
 }
