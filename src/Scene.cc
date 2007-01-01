@@ -38,26 +38,21 @@ Scene::~Scene()
 }
 
 void
-Scene::AddObject(GenericObject *obj)
+Scene::AddObject(const Vector2D &cell, GenericObject *obj)
 {
-  objects.push_back(obj);
-}
-
-void
-Scene::RemoveObject(GenericObject *obj)
-{
-  objects.remove(obj);
+  objects.insert(std::pair<const Vector2D, GenericObject *>(cell, obj));
 }
 
 void
 Scene::FillZBuffer(Camera *cam)
 {
-  for (std::list<GenericObject *>::iterator it = objects.begin(); it != objects.end(); it++) {
-    (*it)->CalculateRelativePosition(cam->GetPosition().GetPos());
-    int angle = (*it)->GetAngle(cam->GetHeading());
-    unsigned int distance = (*it)->GetDistance();
+  Vector2D cell = cam->GetPosition().GetCell();
+  for (std::multimap<const Vector2D, GenericObject *>::iterator it = objects.lower_bound(cell); it != objects.upper_bound(cell); it++) {
+    (*it).second->CalculateRelativePosition(cam->GetPosition().GetPos());
+    int angle = (*it).second->GetAngle(cam->GetHeading());
+    unsigned int distance = (*it).second->GetDistance();
     if (((angle <= LOWER_ANGLE_OF_VIEW) || (angle >= UPPER_ANGLE_OF_VIEW)) && (distance < VIEW_DISTANCE)) {
-      zBuffer.insert(std::pair<int, GenericObject *>(distance, *it));
+      zBuffer.insert(std::pair<int, GenericObject *>(distance, (*it).second));
     }
   }
 }
@@ -110,7 +105,8 @@ Scene::DrawZBuffer(const int x, const int y, const int w, const int h)
 {
   if (x && y && w && h) {
   }
-  for (std::map<int, GenericObject *>::reverse_iterator it = zBuffer.rbegin(); it != zBuffer.rend(); it++) {
+  for (std::multimap<const unsigned int, GenericObject *>::reverse_iterator it = zBuffer.rbegin(); it != zBuffer.rend(); it++) {
+    (*it).second->DrawFirstPerson();
   }
 }
 

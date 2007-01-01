@@ -48,9 +48,9 @@ class Vector2D {
     Vector2D operator-(const Vector2D &p);
     Vector2D operator*(const int f);
     Vector2D operator/(const int f);
-    bool operator==(const Vector2D &p);
-    bool operator!=(const Vector2D &p);
-    bool operator<(const Vector2D &p);
+    bool operator==(const Vector2D &p) const;
+    bool operator!=(const Vector2D &p) const;
+    bool operator<(const Vector2D &p) const;
     int GetX() const;
     int GetY() const;
     void SetX(int x);
@@ -77,9 +77,9 @@ class Vector3D {
     Vector3D operator-(const Vector3D &p);
     Vector3D operator*(const int f);
     Vector3D operator/(const int f);
-    bool operator==(const Vector3D &p);
-    bool operator!=(const Vector3D &p);
-    bool operator<(const Vector3D &p);
+    bool operator==(const Vector3D &p) const;
+    bool operator!=(const Vector3D &p) const;
+    bool operator<(const Vector3D &p) const;
     int GetX() const;
     int GetY() const;
     int GetZ() const;

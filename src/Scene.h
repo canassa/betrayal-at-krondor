@@ -34,8 +34,8 @@
 class Scene {
   private:
     Zone& zone;
-    std::list<GenericObject *> objects;
-    std::map<int, GenericObject *> zBuffer;
+    std::multimap<const Vector2D, GenericObject *> objects;
+    std::multimap<const unsigned int, GenericObject *> zBuffer;
     void FillZBuffer(Camera *cam);
     void DrawHorizon(const int x, const int y, const int w, const int h, const int heading);
     void DrawGround(const int x, const int y, const int w, const int h, Camera *cam);
@@ -43,8 +43,7 @@ class Scene {
   public:
     Scene(Zone& z);
     ~Scene();
-    void AddObject(GenericObject *obj);
-    void RemoveObject(GenericObject *obj);
+    void AddObject(const Vector2D &cell, GenericObject *obj);
     void DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam);
     void DrawTopDown();
 };

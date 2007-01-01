@@ -32,6 +32,18 @@ GenericObject::~GenericObject()
 {
 }
 
+Vector2D&
+GenericObject::GetPosition()
+{
+  return pos;
+}
+
+Vector2D&
+GenericObject::GetRelativePosition()
+{
+  return relpos;
+}
+
 void
 GenericObject::CalculateRelativePosition(const Vector2D &p)
 {
