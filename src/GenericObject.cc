@@ -59,5 +59,5 @@ GenericObject::GetDistance() const
 int
 GenericObject::GetAngle(const int heading) const
 {
-  return ((int)((PI2 + relpos.GetTheta()) * (float)(1 << MAX_HEADING_BITS) / PI2) - heading) & ~(1 << MAX_HEADING_BITS);
+  return ((int)((PI2 + relpos.GetTheta()) * (float)ANGLE_SIZE / PI2) - heading) & ANGLE_MASK;
 }
