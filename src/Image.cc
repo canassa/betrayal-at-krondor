@@ -78,7 +78,7 @@ Image::Image(const int w, const int h, Image *img)
     float fx = (float)img->width / (float)width;
     float fy = (float)img->height / (float)height;
     for (int y = 0; y < height; y++) {
-      uint8_t *prow = img->pixel + (int)(y * fy);
+      uint8_t *prow = img->pixel + (int)(y * fy) * img->width;
       for (int x = 0; x < width; x++) {
         *p++ = *(prow + (int)(x * fx));
       }
