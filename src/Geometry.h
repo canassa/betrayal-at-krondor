@@ -31,6 +31,10 @@
 static const float PI  = M_PI;
 static const float PI2 = M_PI + M_PI;
 
+static const unsigned int ANGLE_BITS = 8;
+static const unsigned int ANGLE_SIZE = 1 << ANGLE_BITS;
+static const unsigned int ANGLE_MASK = ANGLE_SIZE - 1;
+
 class Vector2D {
   private:
     int xCoord;
@@ -56,7 +60,7 @@ class Vector2D {
     void SetX(int x);
     void SetY(int y);
     unsigned int GetRhoSqr() const;
-    float GetTheta() const;
+    int GetTheta() const;
 };
 
 class Vector3D {
@@ -87,7 +91,7 @@ class Vector3D {
     void SetY(int y);
     void SetZ(int z);
     unsigned int GetRhoSqr() const;
-    float GetTheta() const;
+    int GetTheta() const;
 };
 
 class Rectangle {

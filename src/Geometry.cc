@@ -148,17 +148,13 @@ Vector2D::GetRhoSqr() const
   return (unsigned int)((xCoord * xCoord) + (yCoord * yCoord));
 }
 
-float
+int
 Vector2D::GetTheta() const
 {
   if (xCoord == 0) {
-    if (yCoord >= 0) {
-      return PI;
-    } else {
-      return -PI;
-    }
+    return ANGLE_SIZE / 2;
   } else {
-    return atan(yCoord / xCoord);
+    return (int)((atan((float)yCoord / (float)xCoord) / PI2) * (float)ANGLE_SIZE) & ANGLE_MASK;
   }
 }
 
@@ -312,10 +308,14 @@ Vector3D::GetRhoSqr() const
   return (unsigned int)((xCoord * xCoord) + (yCoord * yCoord) + (zCoord * zCoord));
 }
 
-float
+int
 Vector3D::GetTheta() const
 {
-  return atan(yCoord / xCoord);
+  if (xCoord == 0) {
+    return ANGLE_SIZE / 2;
+  } else {
+    return (int)((atan((float)yCoord / (float)xCoord) / PI2) * (float)ANGLE_SIZE) & ANGLE_MASK;
+  }
 }
 
 

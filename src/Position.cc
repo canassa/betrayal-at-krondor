@@ -17,6 +17,7 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "Orientation.h"
 #include "Position.h"
 #include "TileWorldResource.h"
 

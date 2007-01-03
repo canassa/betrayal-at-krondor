@@ -24,12 +24,12 @@
 #include "config.h"
 #endif
 
-static const int MAX_HEADING_BITS = 8;
+#include "Geometry.h"
 
 static const int NORTH = 0;
-static const int EAST  = 64;
-static const int SOUTH = 128;
-static const int WEST  = 192;
+static const int EAST  = ANGLE_SIZE / 4;
+static const int SOUTH = ANGLE_SIZE / 2;
+static const int WEST  = 3 * ANGLE_SIZE / 4;
 
 static const int TURN_SIZE  = 2;
 static const int TURN_LEFT  = -1 * TURN_SIZE;
@@ -38,8 +38,8 @@ static const int TURN_RIGHT = +1 * TURN_SIZE;
 class Orientation {
   private:
     int heading;
-    static float cosTbl[1 << MAX_HEADING_BITS];
-    static float sinTbl[1 << MAX_HEADING_BITS];
+    static float cosTbl[ANGLE_SIZE];
+    static float sinTbl[ANGLE_SIZE];
   public:
     Orientation(const int head);
     ~Orientation();
