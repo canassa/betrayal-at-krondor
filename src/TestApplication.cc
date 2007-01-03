@@ -187,8 +187,12 @@ TestApplication::WalkWorld(const std::string& zone, const std::string& tile)
 {
   try {
     MediaToolkit *media = MediaToolkit::GetInstance();
-    FileManager::GetInstance()->Load(&img, "Z" + zone + "H.BMX");
+    FileManager::GetInstance()->Load(&img, "Z" + zone + "SLOT0.BMX");
     FileManager::GetInstance()->Load(&wld, "T" + zone + tile + ".WLD");
+    img.GetImage(0)->Draw(0, 0);
+    Image *image = new Image(img.GetImage(0)->GetWidth() / 2, img.GetImage(0)->GetHeight() / 2, img.GetImage(0));
+    image->Draw(160, 0);
+    delete image;
     media->GetVideo()->DrawLine(10, 10, 200, 150, 1);
     media->GetVideo()->DrawLine(240, 20, 20, 160, 2);
     media->GetVideo()->DrawLine(300, 180, 190, 30, 3);
