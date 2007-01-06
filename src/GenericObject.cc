@@ -61,6 +61,6 @@ void
 GenericObject::CalculateRelativePosition(const Vector2D &p, const int a)
 {
   relpos = pos - p;
-  angle = (relpos.GetTheta() - a) & ANGLE_MASK;
+  angle = (ANGLE_SIZE / 4 - relpos.GetTheta() - a) & ANGLE_MASK;
   distance = relpos.GetRhoSqr();
 }
