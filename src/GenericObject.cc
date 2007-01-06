@@ -18,11 +18,12 @@
  */
 
 #include "GenericObject.h"
-#include "Orientation.h"
 
-GenericObject::GenericObject(const Vector2D &p, int w, int h)
+GenericObject::GenericObject(const Vector2D &p, const int w, const int h)
 : pos(p)
 , relpos(0, 0)
+, angle(0)
+, distance(0)
 , width(w)
 , height(h)
 {
@@ -44,20 +45,22 @@ GenericObject::GetRelativePosition()
   return relpos;
 }
 
-void
-GenericObject::CalculateRelativePosition(const Vector2D &p)
+int
+GenericObject::GetAngle() const
 {
-  relpos = pos - p;
+  return angle;
 }
 
 unsigned int
 GenericObject::GetDistance() const
 {
-  return relpos.GetRhoSqr();
+  return distance;
 }
 
-int
-GenericObject::GetAngle(const int heading) const
+void
+GenericObject::CalculateRelativePosition(const Vector2D &p, const int a)
 {
-  return ((int)((PI2 + relpos.GetTheta()) * (float)ANGLE_SIZE / PI2) - heading) & ANGLE_MASK;
+  relpos = pos - p;
+  angle = (relpos.GetTheta() - a) & ANGLE_MASK;
+  distance = relpos.GetRhoSqr();
 }

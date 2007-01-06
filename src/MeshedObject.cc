@@ -29,7 +29,7 @@ MeshedObject::~MeshedObject()
 }
 
 void
-MeshedObject::DrawFirstPerson()
+MeshedObject::DrawFirstPerson(const int x, const int y, const int w, const int h)
 {
 }
 

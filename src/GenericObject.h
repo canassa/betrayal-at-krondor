@@ -26,21 +26,31 @@
 
 #include "Geometry.h"
 
+static const int ANGLE_OF_VIEW = 32;
+static const int LOWER_ANGLE_OF_VIEW = ANGLE_OF_VIEW;
+static const int UPPER_ANGLE_OF_VIEW = ANGLE_SIZE - ANGLE_OF_VIEW;
+
+static const int TERRAIN_HEIGHT = 38;
+
+static const unsigned int VIEW_DISTANCE = 8000 * 8000;
+
 class GenericObject {
-  private:
+  protected:
     Vector2D pos;
     Vector2D relpos;
+    int angle;
+    unsigned int distance;
     int width;
     int height;
   public:
-    GenericObject(const Vector2D &p, int w, int h);
+    GenericObject(const Vector2D &p, const int w, const int h);
     virtual ~GenericObject();
     Vector2D& GetPosition();
     Vector2D& GetRelativePosition();
-    void CalculateRelativePosition(const Vector2D &p);
+    int GetAngle() const;
     unsigned int GetDistance() const;
-    int GetAngle(const int heading) const;
-    virtual void DrawFirstPerson() = 0;
+    void CalculateRelativePosition(const Vector2D &p, const int a);
+    virtual void DrawFirstPerson(const int x, const int y, const int w, const int h) = 0;
     virtual void DrawTopDown() = 0;
 };
 

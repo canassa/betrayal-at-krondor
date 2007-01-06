@@ -19,11 +19,6 @@
 
 #include "Scene.h"
 
-static const int LOWER_ANGLE_OF_VIEW = 32;
-static const int UPPER_ANGLE_OF_VIEW = 224;
-
-static const unsigned int VIEW_DISTANCE = 8000 * 8000;
-
 Scene::Scene(Zone& z)
 : zone(z)
 , objects()
@@ -46,10 +41,11 @@ Scene::AddObject(const Vector2D &cell, GenericObject *obj)
 void
 Scene::FillZBuffer(Camera *cam)
 {
+  zBuffer.clear();
   Vector2D cell = cam->GetPosition().GetCell();
   for (std::multimap<const Vector2D, GenericObject *>::iterator it = objects.lower_bound(cell); it != objects.upper_bound(cell); it++) {
-    (*it).second->CalculateRelativePosition(cam->GetPosition().GetPos());
-    int angle = (*it).second->GetAngle(cam->GetHeading());
+    (*it).second->CalculateRelativePosition(cam->GetPosition().GetPos(), cam->GetHeading());
+    int angle = (*it).second->GetAngle();
     unsigned int distance = (*it).second->GetDistance();
     if (((angle <= LOWER_ANGLE_OF_VIEW) || (angle >= UPPER_ANGLE_OF_VIEW)) && (distance < VIEW_DISTANCE)) {
       zBuffer.insert(std::pair<int, GenericObject *>(distance, (*it).second));
@@ -83,7 +79,6 @@ Scene::DrawHorizon(const int x, const int y, const int w, const int h, const int
 void
 Scene::DrawGround(const int x, const int y, const int w, const int h, Camera *cam)
 {
-  static const int TERRAIN_HEIGHT = 38;
   static const int TERRAIN_YOFFSET = 82;
   Image *terrain = zone.GetTerrain();
   int imagewidth = terrain->GetWidth();
@@ -103,10 +98,8 @@ Scene::DrawGround(const int x, const int y, const int w, const int h, Camera *ca
 void
 Scene::DrawZBuffer(const int x, const int y, const int w, const int h)
 {
-  if (x && y && w && h) {
-  }
   for (std::multimap<const unsigned int, GenericObject *>::reverse_iterator it = zBuffer.rbegin(); it != zBuffer.rend(); it++) {
-    (*it).second->DrawFirstPerson();
+    (*it).second->DrawFirstPerson(x, y, w, h);
   }
 }
 

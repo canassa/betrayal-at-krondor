@@ -17,9 +17,10 @@
  * Copyright (C) 2006 Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "Defines.h"
 #include "SpritedObject.h"
 
-SpritedObject::SpritedObject(const Vector2D &p, int w, int h, Image *img)
+SpritedObject::SpritedObject(const Vector2D &p, const int w, const int h, Image *img)
 : GenericObject(p, w, h)
 , sprite(img)
 {
@@ -30,8 +31,16 @@ SpritedObject::~SpritedObject()
 }
 
 void
-SpritedObject::DrawFirstPerson()
+SpritedObject::DrawFirstPerson(const int x, const int y, const int w, const int h)
 {
+  float fd = (float)(VIEW_DISTANCE - distance) / (float)VIEW_DISTANCE;
+  Image *image = new Image((int)((float)sprite->GetWidth() * fd), (int)((float)sprite->GetHeight() * fd), sprite);
+  int xx = (int)((float)(((angle + ANGLE_OF_VIEW) & ANGLE_MASK) * w) / (float)(2 * ANGLE_OF_VIEW)) - (image->GetWidth() / 2);
+  int yy = h - image->GetHeight() - (int)((float)TERRAIN_HEIGHT * (1.0 - fd));
+  int ww = MIN(image->GetWidth() + xx, MIN(image->GetWidth(), w - xx));
+  int hh = image->GetHeight();
+  image->Draw(x + xx, y + yy, MAX(-xx, 0), 0, ww, hh, 0);
+  delete image;
 }
 
 void

@@ -19,7 +19,7 @@
 
 #include "TerrainObject.h"
 
-TerrainObject::TerrainObject(const Vector2D &p, int w, int h)
+TerrainObject::TerrainObject(const Vector2D &p, const int w, const int h)
 : GenericObject(p, w, h)
 {
 }
@@ -29,7 +29,7 @@ TerrainObject::~TerrainObject()
 }
 
 void
-TerrainObject::DrawFirstPerson()
+TerrainObject::DrawFirstPerson(const int x, const int y, const int w, const int h)
 {
 }
 
