@@ -22,6 +22,7 @@
 
 #include "SDL_endian.h"
 
+#include "Defines.h"
 #include "Exception.h"
 #include "FileBuffer.h"
 
@@ -55,7 +56,7 @@ FileBuffer::Fill(FileBuffer *buf)
 {
   if (buffer) {
     current = buffer;
-    buf->GetData(buffer, (size <= buf->GetSize() ? size : buf->GetSize()));
+    buf->GetData(buffer, MIN(size, buf->GetSize()));
   }
 }
 

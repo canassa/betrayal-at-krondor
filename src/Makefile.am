@@ -12,6 +12,7 @@ noinst_HEADERS = AnimationResource.h \
                  CombatViewWidget.h \
                  CompassWidget.h \
                  ContainerWidget.h \
+                 Defines.h \
                  Dialog.h \
                  DialogFactory.h \
                  DialogResource.h \

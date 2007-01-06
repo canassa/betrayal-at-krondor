@@ -17,6 +17,7 @@
  * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "Defines.h"
 #include "DialogFactory.h"
 #include "DialogWindow.h"
 #include "Exception.h"
@@ -275,8 +276,7 @@ DialogFactory::CreateLoadDialog()
     }
     for (unsigned int i = 0; i < label.GetSize(); i++) {
       LabelData data = label.GetLabelData(i);
-      panel->AddWidget(widgetFactory.CreateLabel(data, font, request.GetRectangle().GetWidth() > screen.GetImage()->GetWidth() ?
-                                                             request.GetRectangle().GetWidth() : screen.GetImage()->GetWidth()));
+      panel->AddWidget(widgetFactory.CreateLabel(data, font, MAX(request.GetRectangle().GetWidth(), screen.GetImage()->GetWidth())));
     }
     return dialog;
   } catch (Exception &e) {
@@ -381,8 +381,7 @@ DialogFactory::CreatePreferencesDialog()
     }
     for (unsigned int i = 0; i < label.GetSize(); i++) {
       LabelData data = label.GetLabelData(i);
-      panel->AddWidget(widgetFactory.CreateLabel(data, font, request.GetRectangle().GetWidth() > screen.GetImage()->GetWidth() ?
-                                                             request.GetRectangle().GetWidth() : screen.GetImage()->GetWidth()));
+      panel->AddWidget(widgetFactory.CreateLabel(data, font, MAX(request.GetRectangle().GetWidth(), screen.GetImage()->GetWidth())));
     }
     return dialog;
   } catch (Exception &e) {
@@ -415,8 +414,7 @@ DialogFactory::CreateSaveDialog()
     }
     for (unsigned int i = 0; i < label.GetSize(); i++) {
       LabelData data = label.GetLabelData(i);
-      panel->AddWidget(widgetFactory.CreateLabel(data, font, request.GetRectangle().GetWidth() > screen.GetImage()->GetWidth() ?
-                                                             request.GetRectangle().GetWidth() : screen.GetImage()->GetWidth()));
+      panel->AddWidget(widgetFactory.CreateLabel(data, font, MAX(request.GetRectangle().GetWidth(), screen.GetImage()->GetWidth())));
     }
     return dialog;
   } catch (Exception &e) {
