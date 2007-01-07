@@ -31,7 +31,7 @@ class TerrainObject
   public:
     TerrainObject(const Vector2D &p, const int w, const int h);
     ~TerrainObject();
-    void DrawFirstPerson(const int x, const int y, const int w, const int h);
+    void DrawFirstPerson(const int x, const int y, const int w, const int h, const int heading);
     void DrawTopDown();
 };
 

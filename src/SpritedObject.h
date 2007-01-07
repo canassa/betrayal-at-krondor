@@ -34,7 +34,7 @@ class SpritedObject
   public:
     SpritedObject(const Vector2D &p, const int w, const int h, Image *img);
     ~SpritedObject();
-    void DrawFirstPerson(const int x, const int y, const int w, const int h);
+    void DrawFirstPerson(const int x, const int y, const int w, const int h, const int heading);
     void DrawTopDown();
 };
 

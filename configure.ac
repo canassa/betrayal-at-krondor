@@ -67,9 +67,11 @@ AC_CHECK_FUNCS([mkdir])
 AC_CHECK_FUNCS([stat])
 AC_CHECK_FUNCS([strncmp])
 AC_CHECK_FUNCS([strncpy])
+AC_CHECK_FUNCS([abs])
 AC_CHECK_FUNCS([atan])
 AC_CHECK_FUNCS([cos])
 AC_CHECK_FUNCS([sin])
+AC_CHECK_FUNCS([sqrt])
 
 AC_CACHE_SAVE
 

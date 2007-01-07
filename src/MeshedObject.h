@@ -31,7 +31,7 @@ class MeshedObject
   public:
     MeshedObject(const Vector2D &p, int w, int h);
     ~MeshedObject();
-    void DrawFirstPerson(const int x, const int y, const int w, const int h);
+    void DrawFirstPerson(const int x, const int y, const int w, const int h, const int heading);
     void DrawTopDown();
 };
 

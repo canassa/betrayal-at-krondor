@@ -31,11 +31,11 @@ SpritedObject::~SpritedObject()
 }
 
 void
-SpritedObject::DrawFirstPerson(const int x, const int y, const int w, const int h)
+SpritedObject::DrawFirstPerson(const int x, const int y, const int w, const int h, const int heading)
 {
   float fd = (float)(VIEW_DISTANCE - distance) / (float)VIEW_DISTANCE;
   Image *image = new Image((int)((float)sprite->GetWidth() * fd), (int)((float)sprite->GetHeight() * fd), sprite);
-  int xx = (int)((float)(((angle + ANGLE_OF_VIEW) & ANGLE_MASK) * w) / (float)(2 * ANGLE_OF_VIEW)) - (image->GetWidth() / 2);
+  int xx = (int)((float)(((angle - heading + ANGLE_OF_VIEW) & ANGLE_MASK) * w) / (float)(2 * ANGLE_OF_VIEW)) - (image->GetWidth() / 2);
   int yy = h - image->GetHeight() - (int)((float)TERRAIN_HEIGHT * (1.0 - fd));
   int ww = MIN(image->GetWidth() + xx, MIN(image->GetWidth(), w - xx));
   int hh = image->GetHeight();

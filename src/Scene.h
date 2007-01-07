@@ -39,7 +39,7 @@ class Scene {
     void FillZBuffer(Camera *cam);
     void DrawHorizon(const int x, const int y, const int w, const int h, const int heading);
     void DrawGround(const int x, const int y, const int w, const int h, Camera *cam);
-    void DrawZBuffer(const int x, const int y, const int w, const int h);
+    void DrawZBuffer(const int x, const int y, const int w, const int h, const int heading);
   public:
     Scene(Zone& z);
     ~Scene();

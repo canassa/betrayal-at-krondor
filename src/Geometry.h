@@ -59,7 +59,7 @@ class Vector2D {
     int GetY() const;
     void SetX(int x);
     void SetY(int y);
-    unsigned int GetRhoSqr() const;
+    unsigned int GetRho() const;
     int GetTheta() const;
 };
 
@@ -90,7 +90,7 @@ class Vector3D {
     void SetX(int x);
     void SetY(int y);
     void SetZ(int z);
-    unsigned int GetRhoSqr() const;
+    unsigned int GetRho() const;
     int GetTheta() const;
 };
 

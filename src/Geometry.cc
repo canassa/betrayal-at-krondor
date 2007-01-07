@@ -143,18 +143,27 @@ Vector2D::SetY(int y)
 }
 
 unsigned int
-Vector2D::GetRhoSqr() const
+Vector2D::GetRho() const
 {
-  return (unsigned int)((xCoord * xCoord) + (yCoord * yCoord));
+  return (unsigned int)sqrt(((float)xCoord * (float)xCoord) + ((float)yCoord * (float)yCoord));
 }
 
 int
 Vector2D::GetTheta() const
 {
   if (xCoord == 0) {
-    return ANGLE_SIZE / 2;
+    if (yCoord >= 0) {
+      return ANGLE_SIZE / 4;
+    } else {
+      return - ANGLE_SIZE / 4;
+    }
   } else {
-    return (int)((atan((float)yCoord / (float)xCoord) / PI2) * (float)ANGLE_SIZE) & ANGLE_MASK;
+    int angle = (int)((atan((float)yCoord / (float)xCoord) / PI2) * (float)ANGLE_SIZE);
+    if (xCoord > 0) {
+      return angle & ANGLE_MASK;
+    } else {
+      return (angle + ANGLE_SIZE / 2) & ANGLE_MASK;
+    }
   }
 }
 
@@ -303,18 +312,27 @@ Vector3D::SetZ(int z)
 }
 
 unsigned int
-Vector3D::GetRhoSqr() const
+Vector3D::GetRho() const
 {
-  return (unsigned int)((xCoord * xCoord) + (yCoord * yCoord) + (zCoord * zCoord));
+  return (unsigned int)sqrt(((float)xCoord * (float)xCoord) + ((float)yCoord * (float)yCoord) + ((float)zCoord * (float)zCoord));
 }
 
 int
 Vector3D::GetTheta() const
 {
   if (xCoord == 0) {
-    return ANGLE_SIZE / 2;
+    if (yCoord >= 0) {
+      return ANGLE_SIZE / 4;
+    } else {
+      return - ANGLE_SIZE / 4;
+    }
   } else {
-    return (int)((atan((float)yCoord / (float)xCoord) / PI2) * (float)ANGLE_SIZE) & ANGLE_MASK;
+    int angle = (int)((atan((float)yCoord / (float)xCoord) / PI2) * (float)ANGLE_SIZE);
+    if (xCoord > 0) {
+      return angle & ANGLE_MASK;
+    } else {
+      return (angle + ANGLE_SIZE / 2) & ANGLE_MASK;
+    }
   }
 }
 

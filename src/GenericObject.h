@@ -32,7 +32,7 @@ static const int UPPER_ANGLE_OF_VIEW = ANGLE_SIZE - ANGLE_OF_VIEW;
 
 static const int TERRAIN_HEIGHT = 38;
 
-static const unsigned int VIEW_DISTANCE = 8000 * 8000;
+static const unsigned int VIEW_DISTANCE = 32000;
 
 class GenericObject {
   protected:
@@ -49,8 +49,8 @@ class GenericObject {
     Vector2D& GetRelativePosition();
     int GetAngle() const;
     unsigned int GetDistance() const;
-    void CalculateRelativePosition(const Vector2D &p, const int a);
-    virtual void DrawFirstPerson(const int x, const int y, const int w, const int h) = 0;
+    void CalculateRelativePosition(const Vector2D &p);
+    virtual void DrawFirstPerson(const int x, const int y, const int w, const int h, const int heading) = 0;
     virtual void DrawTopDown() = 0;
 };
 
