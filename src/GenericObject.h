@@ -26,13 +26,10 @@
 
 #include "Geometry.h"
 
-static const int ANGLE_OF_VIEW = 32;
-static const int LOWER_ANGLE_OF_VIEW = ANGLE_OF_VIEW;
-static const int UPPER_ANGLE_OF_VIEW = ANGLE_SIZE - ANGLE_OF_VIEW;
+static const int ANGLE_OF_VIEW = 16;
+static const unsigned int VIEW_DISTANCE = 32000;
 
 static const int TERRAIN_HEIGHT = 38;
-
-static const unsigned int VIEW_DISTANCE = 32000;
 
 class GenericObject {
   protected:

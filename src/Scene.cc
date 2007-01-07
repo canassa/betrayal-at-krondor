@@ -47,7 +47,7 @@ Scene::FillZBuffer(Camera *cam)
     (*it).second->CalculateRelativePosition(cam->GetPosition().GetPos());
     int angle = (*it).second->GetAngle();
     unsigned int distance = (*it).second->GetDistance();
-    if (((abs(angle - cam->GetHeading()) <= LOWER_ANGLE_OF_VIEW)) && (distance < VIEW_DISTANCE)) {
+    if (((abs(angle - cam->GetHeading()) <= ANGLE_OF_VIEW)) && (distance < VIEW_DISTANCE)) {
       zBuffer.insert(std::pair<int, GenericObject *>(distance, (*it).second));
     }
   }
