@@ -26,7 +26,7 @@
 
 #include "Geometry.h"
 
-static const int ANGLE_OF_VIEW = 16;
+static const int ANGLE_OF_VIEW = 12;
 static const unsigned int VIEW_DISTANCE = 32000;
 
 static const int TERRAIN_HEIGHT = 38;
