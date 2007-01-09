@@ -1,5 +1,5 @@
-2006-12-xx, xbak-0.0.13:
-* Added the framework for a basic 3D engine.
+2007-01-xx, xbak-0.0.13:
+* Added a minimal 3D engine.
 * Added terrain and the illusion of movement to the main game view.
 * Added geometrical classes.
 * TBL files can be loaded and partly interpreted.
