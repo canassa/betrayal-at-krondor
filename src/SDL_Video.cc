@@ -262,6 +262,19 @@ SDL_Video::FillPolygon(const int* x, const int* y, const unsigned int n, const u
 }
 
 void
+SDL_Video::DrawRect(const int x, const int y, const int w, const int h, const unsigned int c)
+{
+  SDL_Rect top = {x, y, w, 1};
+  SDL_FillRect(buffer, &top, c);
+  SDL_Rect left = {x, y, 1, h};
+  SDL_FillRect(buffer, &left, c);
+  SDL_Rect right = {x + w - 1, y, 1, h};
+  SDL_FillRect(buffer, &right, c);
+  SDL_Rect bottom = {x, y + h - 1, w, 1};
+  SDL_FillRect(buffer, &bottom, c);
+}
+
+void
 SDL_Video::FillRect(const int x, const int y, const int w, const int h, const unsigned int c)
 {
   SDL_Rect rect = {x, y, w, h};
