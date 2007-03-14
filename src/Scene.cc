@@ -43,11 +43,15 @@ Scene::FillZBuffer(Camera *cam)
 {
   zBuffer.clear();
   Vector2D cell = cam->GetPosition().GetCell();
+  int heading = cam->GetHeading();
   for (std::multimap<const Vector2D, GenericObject *>::iterator it = objects.lower_bound(cell); it != objects.upper_bound(cell); it++) {
     (*it).second->CalculateRelativePosition(cam->GetPosition().GetPos());
-    int angle = (*it).second->GetAngle();
+    Orientation orient(((*it).second->GetAngle() - heading) & ANGLE_MASK);
+    int angle = orient.GetHeading();
     unsigned int distance = (*it).second->GetDistance();
-    if (((abs(angle - cam->GetHeading()) <= ANGLE_OF_VIEW)) && (distance < VIEW_DISTANCE)) {
+    if ((distance < VIEW_DISTANCE) &&
+        ((((int)(ANGLE_SIZE - ANGLE_OF_VIEW) <= angle) || (angle <= (int)ANGLE_OF_VIEW)) ||
+         (((WEST < angle) || (angle < EAST)) && (abs((int)((float)distance * orient.GetSin())) < 128)))) {
       zBuffer.insert(std::pair<int, GenericObject *>(distance, (*it).second));
     }
   }
