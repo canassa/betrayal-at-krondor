@@ -59,6 +59,7 @@ class SDL_Video
     void DrawPolygon(const int *x, const int *y, const unsigned int n, const unsigned int c);
     void FillPolygon(const int *x, const int *y, const unsigned int n, const unsigned int c);
     void DrawCircle(const int x, const int y, const unsigned int r, const unsigned int c);
+    void FillCircle(const int x, const int y, const unsigned int r, const unsigned int c);
     void ReadImage(const int x, const int y, const int w, const int h, uint8_t *p);
     void DrawImage(const int x, const int y, const int w, const int h, uint8_t *p);
     void DrawImage(const int x, const int y, const int w, const int h, uint8_t *p, const uint8_t transparant);

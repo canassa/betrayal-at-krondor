@@ -299,7 +299,7 @@ SDL_Video::DrawCircle(const int x, const int y, const unsigned int r, const unsi
       d += 2 * xx + 1;
     } else {
       yy--;
-      d += 2 * (xx - yy + 1);
+      d += 2 * (xx - yy) + 1;
     }
     if (xx == yy) {
       PutPixel(x + xx, y + yy, c);
@@ -315,6 +315,32 @@ SDL_Video::DrawCircle(const int x, const int y, const unsigned int r, const unsi
       PutPixel(x - yy, y + xx, c);
       PutPixel(x + yy, y - xx, c);
       PutPixel(x - yy, y - xx, c);
+    }
+  }
+}
+
+void
+SDL_Video::FillCircle(const int x, const int y, const unsigned int r, const unsigned int c)
+{
+  int xx = 0;
+  int yy = r;
+  int d = (5 - 4 * (int)r) / 4;
+
+  DrawHLine(x - yy, y, 2 * yy, c);
+
+  while (xx < yy) {
+    xx++;
+    if (d < 0){
+      d += 2 * xx + 1;
+    } else {
+      DrawHLine(x - xx + 1, y + yy, 2 * (xx - 1), c);
+      DrawHLine(x - xx + 1, y - yy, 2 * (xx - 1), c);
+      yy--;
+      d += 2 * (xx - yy) + 1;
+    }
+    if (xx <= yy) {
+      DrawHLine(x - yy, y + xx, 2 * yy, c);
+      DrawHLine(x - yy, y - xx, 2 * yy, c);
     }
   }
 }
