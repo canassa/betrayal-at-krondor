@@ -203,6 +203,7 @@ TestApplication::WalkWorld(const std::string& zone, const std::string& tile)
     int xx[6] = {100, 100, 160, 280, 280, 200};
     int yy[6] = {90, 150, 190, 90, 150, 90};
     media->GetVideo()->FillPolygon(xx, yy, 6, 6);
+    media->GetVideo()->DrawCircle(40, 160, 30, 7);
     media->GetVideo()->Refresh();
     media->GetClock()->StartTimer(TMR_TEST_APP, 5000);
     media->WaitEventLoop();

@@ -163,6 +163,26 @@ SDL_Video::DrawLine(int x1, int y1, int x2, int y2, const unsigned int c)
 }
 
 void
+SDL_Video::DrawRect(const int x, const int y, const int w, const int h, const unsigned int c)
+{
+  SDL_Rect top = {x, y, w, 1};
+  SDL_FillRect(buffer, &top, c);
+  SDL_Rect left = {x, y, 1, h};
+  SDL_FillRect(buffer, &left, c);
+  SDL_Rect right = {x + w - 1, y, 1, h};
+  SDL_FillRect(buffer, &right, c);
+  SDL_Rect bottom = {x, y + h - 1, w, 1};
+  SDL_FillRect(buffer, &bottom, c);
+}
+
+void
+SDL_Video::FillRect(const int x, const int y, const int w, const int h, const unsigned int c)
+{
+  SDL_Rect rect = {x, y, w, h};
+  SDL_FillRect(buffer, &rect, c);
+}
+
+void
 SDL_Video::DrawPolygon(const int *x, const int *y, const unsigned int n, const unsigned int c)
 {
   for (unsigned int i = 1; i < n; i++) {
@@ -262,23 +282,41 @@ SDL_Video::FillPolygon(const int* x, const int* y, const unsigned int n, const u
 }
 
 void
-SDL_Video::DrawRect(const int x, const int y, const int w, const int h, const unsigned int c)
+SDL_Video::DrawCircle(const int x, const int y, const unsigned int r, const unsigned int c)
 {
-  SDL_Rect top = {x, y, w, 1};
-  SDL_FillRect(buffer, &top, c);
-  SDL_Rect left = {x, y, 1, h};
-  SDL_FillRect(buffer, &left, c);
-  SDL_Rect right = {x + w - 1, y, 1, h};
-  SDL_FillRect(buffer, &right, c);
-  SDL_Rect bottom = {x, y + h - 1, w, 1};
-  SDL_FillRect(buffer, &bottom, c);
-}
+  int xx = 0;
+  int yy = r;
+  int d = (5 - 4 * (int)r) / 4;
 
-void
-SDL_Video::FillRect(const int x, const int y, const int w, const int h, const unsigned int c)
-{
-  SDL_Rect rect = {x, y, w, h};
-  SDL_FillRect(buffer, &rect, c);
+  PutPixel(x, y + yy, c);
+  PutPixel(x, y - yy, c);
+  PutPixel(x + yy, y, c);
+  PutPixel(x - yy, y, c);
+
+  while (xx < yy) {
+    xx++;
+    if (d < 0){
+      d += 2 * xx + 1;
+    } else {
+      yy--;
+      d += 2 * (xx - yy + 1);
+    }
+    if (xx == yy) {
+      PutPixel(x + xx, y + yy, c);
+      PutPixel(x - xx, y + yy, c);
+      PutPixel(x + xx, y - yy, c);
+      PutPixel(x - xx, y - yy, c);
+    } else if (xx < yy) {
+      PutPixel(x + xx, y + yy, c);
+      PutPixel(x - xx, y + yy, c);
+      PutPixel(x + xx, y - yy, c);
+      PutPixel(x - xx, y - yy, c);
+      PutPixel(x + yy, y + xx, c);
+      PutPixel(x - yy, y + xx, c);
+      PutPixel(x + yy, y - xx, c);
+      PutPixel(x - yy, y - xx, c);
+    }
+  }
 }
 
 void
