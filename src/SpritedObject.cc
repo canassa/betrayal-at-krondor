@@ -33,7 +33,6 @@ SpritedObject::~SpritedObject()
 void
 SpritedObject::DrawFirstPerson(const int x, const int y, const int w, const int h, const int heading)
 {
-  //float sizeFactor = ((2.0 * (float)VIEW_DISTANCE) / ((float)VIEW_DISTANCE + (8.0 * ((float)distance))));
   float distFactor = 2.0 * (((float)VIEW_DISTANCE / ((float)VIEW_DISTANCE + (float)distance)) - 0.5);
   Image *image = new Image((int)((float)sprite->GetWidth() * distFactor), (int)((float)sprite->GetHeight() * distFactor), sprite);
   int xx = (int)((float)(((angle - heading + ANGLE_OF_VIEW - 1) & ANGLE_MASK) * w) / (float)(2 * ANGLE_OF_VIEW + 1));
