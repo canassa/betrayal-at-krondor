@@ -17,6 +17,7 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "Exception.h"
 #include "ImageButtonWidget.h"
 
 ImageButtonWidget::ImageButtonWidget(const Rectangle &r, const int a)
@@ -33,6 +34,9 @@ ImageButtonWidget::~ImageButtonWidget()
 void
 ImageButtonWidget::SetImage(Image *normal, Image *press)
 {
+  if ((!normal) || (!press)) {
+    throw NullPointer(__FILE__, __LINE__);
+  }
   normalImage = normal;
   pressedImage = press;
 }
