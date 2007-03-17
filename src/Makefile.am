@@ -88,7 +88,6 @@ noinst_HEADERS = AnimationResource.h \
                  TextArea.h \
                  TextButtonWidget.h \
                  TextWidget.h \
-                 TickboxWidget.h \
                  TileDataResource.h \
                  TileWorldResource.h \
                  Video.h \
@@ -227,8 +226,6 @@ libguitoolkit_a_SOURCES = BadgeWidget.cc \
                           TextButtonWidget.h \
                           TextWidget.cc \
                           TextWidget.h \
-                          TickboxWidget.cc \
-                          TickboxWidget.h \
                           Widget.cc \
                           Widget.h \
                           WidgetFactory.cc \
