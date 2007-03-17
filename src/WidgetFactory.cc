@@ -64,15 +64,12 @@ WidgetFactory::CreateCharacterButton(RequestData& data, PlayerCharacter *pc, Ima
 }
 
 ChoiceWidget*
-WidgetFactory::CreateChoice()
+WidgetFactory::CreateChoice(RequestData& data, ImageResource& img, ActionEventListener *ael)
 {
-  return 0;
-}
-
-TickboxWidget*
-WidgetFactory::CreateTickbox()
-{
-  return 0;
+  ChoiceWidget *choice = new ChoiceWidget(Rectangle(data.xpos, data.ypos, data.width, data.height), data.action);
+  choice->SetImage(img.GetImage(data.image + 1), img.GetImage(data.image));
+  choice->AddActionListener(ael);
+  return choice;
 }
 
 CompassWidget*

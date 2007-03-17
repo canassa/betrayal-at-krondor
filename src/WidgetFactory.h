@@ -44,7 +44,6 @@
 #include "SkillsWidget.h"
 #include "TextButtonWidget.h"
 #include "TextWidget.h"
-#include "TickboxWidget.h"
 #include "WorldViewWidget.h"
 
 class WidgetFactory {
@@ -54,8 +53,7 @@ class WidgetFactory {
     TextButtonWidget* CreateTextButton(RequestData& data, FontResource& fnt, ActionEventListener *ael);
     ImageButtonWidget* CreateImageButton(RequestData& data, ImageResource& normal, ImageResource& pressed, ActionEventListener *ael);
     CharacterButtonWidget* CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource& img, ActionEventListener *ael);
-    ChoiceWidget* CreateChoice();
-    TickboxWidget* CreateTickbox();
+    ChoiceWidget* CreateChoice(RequestData& data, ImageResource& img, ActionEventListener *ael);
     CompassWidget* CreateCompass(Camera *cam, Image *img);
     CombatViewWidget* CreateCombatView(RequestData& data, Game *game);
     MapViewWidget* CreateMapView(RequestData& data, Game *game);

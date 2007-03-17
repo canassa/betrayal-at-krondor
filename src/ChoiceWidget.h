@@ -24,17 +24,23 @@
 #include "config.h"
 #endif
 
+#include "Image.h"
 #include "Widget.h"
 
-class ChoiceWidget: public ActiveWidget {
+class ChoiceWidget
+: public ActiveWidget {
   private:
+    bool selected;
+    Image *normalImage;
+    Image *selectedImage;
   public:
     ChoiceWidget(const Rectangle &r, const int a);
     virtual ~ChoiceWidget();
+    void SetImage(Image *normal, Image *select);
     void Draw();
     void Focus();
-    void Activate();
-    void Deactivate();
+    void LeftClick(const bool toggle);
+    void RightClick(const bool toggle);
 };
 
 #endif

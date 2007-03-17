@@ -971,6 +971,24 @@ GameStatePreferences::Execute()
       break;
     case PREF_DEFAULTS:
       break;
+    case PREF_STEP_SMALL:
+    case PREF_STEP_MEDIUM:
+    case PREF_STEP_LARGE:
+    case PREF_TURN_SMALL:
+    case PREF_TURN_MEDIUM:
+    case PREF_TURN_LARGE:
+    case PREF_DETAIL_MIN:
+    case PREF_DETAIL_LOW:
+    case PREF_DETAIL_HIGH:
+    case PREF_DETAIL_MAX:
+    case PREF_TEXT_WAIT:
+    case PREF_TEXT_MEDIUM:
+    case PREF_TEXT_FAST:
+    case PREF_SOUND:
+    case PREF_MUSIC:
+    case PREF_COMBAT_MUSIC:
+    case PREF_INTRODUCTION:
+      break;
     default:
       throw UnexpectedValue(__FILE__, __LINE__, action);
       break;

@@ -364,6 +364,7 @@ DialogFactory::CreatePreferencesDialog()
     FileManager::GetInstance()->Load(&request, "REQ_PREF.DAT");
     FileManager::GetInstance()->Load(&palette, "OPTIONS.PAL");
     FileManager::GetInstance()->Load(&screen, "OPTIONS2.SCX");
+    FileManager::GetInstance()->Load(&normal, "BICONS1.BMX");
     FileManager::GetInstance()->Load(&font, "GAME.FNT");
     FileManager::GetInstance()->Load(&label, "LBL_PREF.DAT");
 
@@ -374,6 +375,9 @@ DialogFactory::CreatePreferencesDialog()
       switch (data.widget) {
         case REQ_TEXTBUTTON:
           panel->AddActiveWidget(widgetFactory.CreateTextButton(data, font, dialog));
+          break;
+        case REQ_SELECT:
+          panel->AddActiveWidget(widgetFactory.CreateChoice(data, normal, dialog));
           break;
         default:
           break;

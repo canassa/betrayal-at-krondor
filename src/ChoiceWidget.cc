@@ -18,9 +18,13 @@
  */
 
 #include "ChoiceWidget.h"
+#include "Exception.h"
 
 ChoiceWidget::ChoiceWidget(const Rectangle &r, const int a)
 : ActiveWidget(r, a)
+, selected(false)
+, normalImage(0)
+, selectedImage(0)
 {
 }
 
@@ -29,9 +33,24 @@ ChoiceWidget::~ChoiceWidget()
 }
 
 void
+ChoiceWidget::SetImage(Image *normal, Image *select)
+{
+  if ((!normal) || (!select)) {
+    throw NullPointer(__FILE__, __LINE__);
+  }
+  normalImage = normal;
+  selectedImage = select;
+}
+
+void
 ChoiceWidget::Draw()
 {
   if (IsVisible()) {
+    if (selected) {
+      selectedImage->Draw(rect.GetXPos(), rect.GetYPos(), 0);
+    } else {
+      normalImage->Draw(rect.GetXPos(), rect.GetYPos(), 0);
+    }
   }
 }
 
@@ -41,11 +60,23 @@ ChoiceWidget::Focus()
 }
 
 void
-ChoiceWidget::Activate()
+ChoiceWidget::LeftClick(const bool toggle)
 {
+  if (IsVisible()) {
+    if (toggle) {
+      ActionEvent ae(action);
+      for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it) {
+        (*it)->ActionPerformed(ae);
+      }
+    }
+  }
 }
 
 void
-ChoiceWidget::Deactivate()
+ChoiceWidget::RightClick(const bool toggle)
 {
+  if (IsVisible()) {
+    if (toggle) {
+    }
+  }
 }
