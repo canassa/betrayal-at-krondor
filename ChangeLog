@@ -1,3 +1,7 @@
+2007-04-xx, xbak-0.1.1:
+* Improved the 3D engine.
+* Added a few more drawing primitives.
+
 2007-01-10, xbak-0.1.0:
 * Added a minimal 3D engine.
 * Added terrain and the illusion of movement to the main game view.
