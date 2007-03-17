@@ -14,7 +14,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * Copyright (C) 2005-2006  Guido de Jong <guidoj@users.sf.net>
+ * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
 #ifndef DIRECTORIES_H
