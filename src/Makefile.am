@@ -61,6 +61,7 @@ noinst_HEADERS = AnimationResource.h \
                  PopUpWidget.h \
                  PortraitWidget.h \
                  Position.h \
+                 Preferences.h \
                  RatingsWidget.h \
                  RequestResource.h \
                  ResourceArchive.h \
@@ -152,6 +153,8 @@ libgame_a_SOURCES = Camera.cc \
                     PlayerCharacter.h \
                     Position.cc \
                     Position.h \
+                    Preferences.cc \
+                    Preferences.h \
                     Scene.cc \
                     Scene.h \
                     SceneFactory.cc \
