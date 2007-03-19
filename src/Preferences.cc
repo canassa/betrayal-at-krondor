@@ -19,6 +19,8 @@
 
 #include "Preferences.h"
 
+Preferences* Preferences::instance = 0;
+
 Preferences::Preferences()
 {
   SetDefaults();
@@ -26,6 +28,25 @@ Preferences::Preferences()
 
 Preferences::~Preferences()
 {
+}
+
+Preferences*
+Preferences::GetInstance()
+{
+  if (!instance) {
+    instance = new Preferences();
+  }
+  return instance;
+}
+
+
+void
+Preferences::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
 }
 
 void

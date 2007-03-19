@@ -53,9 +53,13 @@ class Preferences {
     bool music;
     bool combatMusic;
     bool introduction;
-  public:
+    static Preferences* instance;
+  protected:
     Preferences();
+  public:
     ~Preferences();
+    static Preferences* GetInstance();
+    static void CleanUp();
     void SetDefaults();
     StepTurnSize GetStepSize() const;
     void SetStepSize(const StepTurnSize sz);
