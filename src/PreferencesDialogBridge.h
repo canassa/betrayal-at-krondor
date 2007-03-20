@@ -17,30 +17,24 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef CHOICE_WIDGET_H
-#define CHOICE_WIDGET_H
+#ifndef PREFERENCES_DIALOG_BRIDGE_H
+#define PREFERENCES_DIALOG_BRIDGE_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "Image.h"
-#include "Widget.h"
-
-class ChoiceWidget
-: public ActiveWidget {
+class PreferencesDialogBridge {
   private:
-    Image *normalImage;
-    Image *selectedImage;
+    static PreferencesDialogBridge* instance;
+  protected:
+    PreferencesDialogBridge();
   public:
-    ChoiceWidget(const Rectangle &r, const int a);
-    virtual ~ChoiceWidget();
-    void SetImage(Image *normal, Image *selected);
-    void Draw();
-    void Focus();
-    void LeftClick(const bool toggle);
-    void RightClick(const bool toggle);
+    ~PreferencesDialogBridge();
+    static PreferencesDialogBridge* GetInstance();
+    static void CleanUp();
+    bool GetSelectState(const unsigned int action);
+    void SetSelectState(const unsigned int action);
 };
 
 #endif
-

@@ -23,6 +23,8 @@
 #include "Exception.h"
 #include "GameApplication.h"
 #include "GameState.h"
+#include "Preferences.h"
+#include "PreferencesDialogBridge.h"
 
 GameState::GameState()
 : dialogFactory()
@@ -943,6 +945,7 @@ GameStatePreferences::CleanUp()
     delete instance;
     instance = 0;
   }
+  PreferencesDialogBridge::CleanUp();
 }
 
 void
@@ -970,6 +973,7 @@ GameStatePreferences::Execute()
       ChangeState(prevState);
       break;
     case PREF_DEFAULTS:
+      Preferences::GetInstance()->SetDefaults();
       break;
     case PREF_STEP_SMALL:
     case PREF_STEP_MEDIUM:
@@ -988,6 +992,7 @@ GameStatePreferences::Execute()
     case PREF_MUSIC:
     case PREF_COMBAT_MUSIC:
     case PREF_INTRODUCTION:
+      PreferencesDialogBridge::GetInstance()->SetSelectState(action);
       break;
     default:
       throw UnexpectedValue(__FILE__, __LINE__, action);

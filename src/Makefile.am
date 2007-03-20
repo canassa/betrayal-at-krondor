@@ -62,6 +62,7 @@ noinst_HEADERS = AnimationResource.h \
                  PortraitWidget.h \
                  Position.h \
                  Preferences.h \
+                 PreferencesDialogBridge.h \
                  RatingsWidget.h \
                  RequestResource.h \
                  ResourceArchive.h \
@@ -155,6 +156,8 @@ libgame_a_SOURCES = Camera.cc \
                     Position.h \
                     Preferences.cc \
                     Preferences.h \
+                    PreferencesDialogBridge.cc \
+                    PreferencesDialogBridge.h \
                     Scene.cc \
                     Scene.h \
                     SceneFactory.cc \

@@ -19,10 +19,10 @@
 
 #include "ChoiceWidget.h"
 #include "Exception.h"
+#include "PreferencesDialogBridge.h"
 
 ChoiceWidget::ChoiceWidget(const Rectangle &r, const int a)
 : ActiveWidget(r, a)
-, selected(false)
 , normalImage(0)
 , selectedImage(0)
 {
@@ -33,20 +33,20 @@ ChoiceWidget::~ChoiceWidget()
 }
 
 void
-ChoiceWidget::SetImage(Image *normal, Image *select)
+ChoiceWidget::SetImage(Image *normal, Image *selected)
 {
-  if ((!normal) || (!select)) {
+  if ((!normal) || (!selected)) {
     throw NullPointer(__FILE__, __LINE__);
   }
   normalImage = normal;
-  selectedImage = select;
+  selectedImage = selected;
 }
 
 void
 ChoiceWidget::Draw()
 {
   if (IsVisible()) {
-    if (selected) {
+    if (PreferencesDialogBridge::GetInstance()->GetSelectState(action)) {
       selectedImage->Draw(rect.GetXPos(), rect.GetYPos(), 0);
     } else {
       normalImage->Draw(rect.GetXPos(), rect.GetYPos(), 0);
