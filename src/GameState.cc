@@ -23,7 +23,6 @@
 #include "Exception.h"
 #include "GameApplication.h"
 #include "GameState.h"
-#include "Preferences.h"
 #include "PreferencesDialogBridge.h"
 
 GameState::GameState()
@@ -951,6 +950,7 @@ GameStatePreferences::CleanUp()
 void
 GameStatePreferences::Enter()
 {
+  PreferencesDialogBridge::GetInstance()->Fetch();
   dialog->Enter();
 }
 
@@ -970,10 +970,11 @@ GameStatePreferences::Execute()
       ChangeState(prevState);
       break;
     case PREF_OK:
+      PreferencesDialogBridge::GetInstance()->Commit();
       ChangeState(prevState);
       break;
     case PREF_DEFAULTS:
-      Preferences::GetInstance()->SetDefaults();
+      PreferencesDialogBridge::GetInstance()->SetDefaults();
       break;
     case PREF_STEP_SMALL:
     case PREF_STEP_MEDIUM:

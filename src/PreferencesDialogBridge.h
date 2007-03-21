@@ -24,8 +24,11 @@
 #include "config.h"
 #endif
 
+#include "Preferences.h"
+
 class PreferencesDialogBridge {
   private:
+    Preferences prefs;
     static PreferencesDialogBridge* instance;
   protected:
     PreferencesDialogBridge();
@@ -33,8 +36,11 @@ class PreferencesDialogBridge {
     ~PreferencesDialogBridge();
     static PreferencesDialogBridge* GetInstance();
     static void CleanUp();
+    void Fetch();
+    void Commit();
     bool GetSelectState(const unsigned int action);
     void SetSelectState(const unsigned int action);
+    void SetDefaults();
 };
 
 #endif

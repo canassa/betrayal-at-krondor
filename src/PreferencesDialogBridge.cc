@@ -17,7 +17,7 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
-#include "Preferences.h"
+#include "Exception.h"
 #include "PreferencesDialogBridge.h"
 #include "RequestResource.h"
 
@@ -50,65 +50,78 @@ PreferencesDialogBridge::CleanUp()
   }
 }
 
+void
+PreferencesDialogBridge::Fetch()
+{
+  prefs.Copy(globalPrefs);
+}
+
+void
+PreferencesDialogBridge::Commit()
+{
+  globalPrefs.Copy(prefs);
+}
+
 bool
 PreferencesDialogBridge::GetSelectState(const unsigned int action)
 {
   switch (action) {
     case PREF_STEP_SMALL:
-      return Preferences::GetInstance()->GetStepSize() == STS_SMALL;
+      return prefs.GetStepSize() == STS_SMALL;
       break;
     case PREF_STEP_MEDIUM:
-      return Preferences::GetInstance()->GetStepSize() == STS_MEDIUM;
+      return prefs.GetStepSize() == STS_MEDIUM;
       break;
     case PREF_STEP_LARGE:
-      return Preferences::GetInstance()->GetStepSize() == STS_LARGE;
+      return prefs.GetStepSize() == STS_LARGE;
       break;
     case PREF_TURN_SMALL:
-      return Preferences::GetInstance()->GetTurnSize() == STS_SMALL;
+      return prefs.GetTurnSize() == STS_SMALL;
       break;
     case PREF_TURN_MEDIUM:
-      return Preferences::GetInstance()->GetTurnSize() == STS_MEDIUM;
+      return prefs.GetTurnSize() == STS_MEDIUM;
       break;
     case PREF_TURN_LARGE:
-      return Preferences::GetInstance()->GetTurnSize() == STS_LARGE;
+      return prefs.GetTurnSize() == STS_LARGE;
       break;
     case PREF_DETAIL_MIN:
-      return Preferences::GetInstance()->GetDetail() == LOD_MIN;
+      return prefs.GetDetail() == LOD_MIN;
       break;
     case PREF_DETAIL_LOW:
-      return Preferences::GetInstance()->GetDetail() == LOD_LOW;
+      return prefs.GetDetail() == LOD_LOW;
       break;
     case PREF_DETAIL_HIGH:
-      return Preferences::GetInstance()->GetDetail() == LOD_HIGH;
+      return prefs.GetDetail() == LOD_HIGH;
       break;
     case PREF_DETAIL_MAX:
-      return Preferences::GetInstance()->GetDetail() == LOD_MAX;
+      return prefs.GetDetail() == LOD_MAX;
       break;
     case PREF_TEXT_WAIT:
-      return Preferences::GetInstance()->GetTextSpeed() == TS_WAIT;
+      return prefs.GetTextSpeed() == TS_WAIT;
       break;
     case PREF_TEXT_MEDIUM:
-      return Preferences::GetInstance()->GetTextSpeed() == TS_MEDIUM;
+      return prefs.GetTextSpeed() == TS_MEDIUM;
       break;
     case PREF_TEXT_FAST:
-      return Preferences::GetInstance()->GetTextSpeed() == TS_FAST;
+      return prefs.GetTextSpeed() == TS_FAST;
       break;
     case PREF_SOUND:
-      return Preferences::GetInstance()->GetSound();
+      return prefs.GetSound();
       break;
     case PREF_MUSIC:
-      return Preferences::GetInstance()->GetMusic();
+      return prefs.GetMusic();
       break;
     case PREF_COMBAT_MUSIC:
-      return Preferences::GetInstance()->GetCombatMusic();
+      return prefs.GetCombatMusic();
       break;
     case PREF_INTRODUCTION:
-      return Preferences::GetInstance()->GetIntroduction();
+      return prefs.GetIntroduction();
       break;
    default:
-     return false;
+     throw UnexpectedValue(__FILE__, __LINE__, action);
      break;
   }
+  return false;
 }
 
 void
@@ -116,57 +129,64 @@ PreferencesDialogBridge::SetSelectState(const unsigned int action)
 {
   switch (action) {
     case PREF_STEP_SMALL:
-      Preferences::GetInstance()->SetStepSize(STS_SMALL);
+      prefs.SetStepSize(STS_SMALL);
       break;
     case PREF_STEP_MEDIUM:
-      Preferences::GetInstance()->SetStepSize(STS_MEDIUM);
+      prefs.SetStepSize(STS_MEDIUM);
       break;
     case PREF_STEP_LARGE:
-      Preferences::GetInstance()->SetStepSize(STS_LARGE);
+      prefs.SetStepSize(STS_LARGE);
       break;
     case PREF_TURN_SMALL:
-      Preferences::GetInstance()->SetTurnSize(STS_SMALL);
+      prefs.SetTurnSize(STS_SMALL);
       break;
     case PREF_TURN_MEDIUM:
-      Preferences::GetInstance()->SetTurnSize(STS_MEDIUM);
+      prefs.SetTurnSize(STS_MEDIUM);
       break;
     case PREF_TURN_LARGE:
-      Preferences::GetInstance()->SetTurnSize(STS_LARGE);
+      prefs.SetTurnSize(STS_LARGE);
       break;
     case PREF_DETAIL_MIN:
-      Preferences::GetInstance()->SetDetail(LOD_MIN);
+      prefs.SetDetail(LOD_MIN);
       break;
     case PREF_DETAIL_LOW:
-      Preferences::GetInstance()->SetDetail(LOD_LOW);
+      prefs.SetDetail(LOD_LOW);
       break;
     case PREF_DETAIL_HIGH:
-      Preferences::GetInstance()->SetDetail(LOD_HIGH);
+      prefs.SetDetail(LOD_HIGH);
       break;
     case PREF_DETAIL_MAX:
-      Preferences::GetInstance()->SetDetail(LOD_MAX);
+      prefs.SetDetail(LOD_MAX);
       break;
     case PREF_TEXT_WAIT:
-      Preferences::GetInstance()->SetTextSpeed(TS_WAIT);
+      prefs.SetTextSpeed(TS_WAIT);
       break;
     case PREF_TEXT_MEDIUM:
-      Preferences::GetInstance()->SetTextSpeed(TS_MEDIUM);
+      prefs.SetTextSpeed(TS_MEDIUM);
       break;
     case PREF_TEXT_FAST:
-      Preferences::GetInstance()->SetTextSpeed(TS_FAST);
+      prefs.SetTextSpeed(TS_FAST);
       break;
     case PREF_SOUND:
-      Preferences::GetInstance()->SetSound(!Preferences::GetInstance()->GetSound());
+      prefs.SetSound(!prefs.GetSound());
       break;
     case PREF_MUSIC:
-      Preferences::GetInstance()->SetMusic(!Preferences::GetInstance()->GetMusic());
+      prefs.SetMusic(!prefs.GetMusic());
       break;
     case PREF_COMBAT_MUSIC:
-      Preferences::GetInstance()->SetCombatMusic(!Preferences::GetInstance()->GetCombatMusic());
+      prefs.SetCombatMusic(!prefs.GetCombatMusic());
       break;
     case PREF_INTRODUCTION:
-      Preferences::GetInstance()->SetIntroduction(!Preferences::GetInstance()->GetIntroduction());
+      prefs.SetIntroduction(!prefs.GetIntroduction());
       break;
    default:
+     throw UnexpectedValue(__FILE__, __LINE__, action);
      break;
   }
+}
+
+void
+PreferencesDialogBridge::SetDefaults()
+{
+  prefs.SetDefaults();
 }

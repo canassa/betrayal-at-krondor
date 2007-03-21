@@ -19,7 +19,7 @@
 
 #include "Preferences.h"
 
-Preferences* Preferences::instance = 0;
+Preferences globalPrefs;
 
 Preferences::Preferences()
 {
@@ -28,25 +28,6 @@ Preferences::Preferences()
 
 Preferences::~Preferences()
 {
-}
-
-Preferences*
-Preferences::GetInstance()
-{
-  if (!instance) {
-    instance = new Preferences();
-  }
-  return instance;
-}
-
-
-void
-Preferences::CleanUp()
-{
-  if (instance) {
-    delete instance;
-    instance = 0;
-  }
 }
 
 void
@@ -60,6 +41,19 @@ Preferences::SetDefaults()
   music = true;
   combatMusic = true;
   introduction = true;
+}
+
+void
+Preferences::Copy(const Preferences &prefs)
+{
+  stepSize = prefs.stepSize;
+  turnSize = prefs.turnSize;
+  textSpeed = prefs.textSpeed;
+  detail = prefs.detail;
+  sound = prefs.sound;
+  music = prefs.music;
+  combatMusic = prefs.combatMusic;
+  introduction = prefs.introduction;
 }
 
 StepTurnSize
