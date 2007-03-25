@@ -26,6 +26,7 @@ Once the configure script is built successfully, retry building from the start.
 Notes for running the xBaK game:
 * Original data files
   xBaK requires the following files, containing resource data:
+  - krondor.cfg
   - krondor.rmf
   - krondor.001
   - frp.sx
