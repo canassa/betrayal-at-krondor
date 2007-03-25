@@ -1,6 +1,7 @@
 2007-04-xx, xbak-0.1.1:
 * Improved the 3D engine.
 * Preferences dialog is completed.
+* Configuration file can be loaded and saved.
 * Added a few more drawing primitives.
 
 2007-01-10, xbak-0.1.0:
