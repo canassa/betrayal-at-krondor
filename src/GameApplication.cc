@@ -58,15 +58,21 @@ GameApplication::GameApplication()
   ta.SetColor(15);
   ta.Draw(16, 16);
   media->GetVideo()->Refresh();
-  media->GetClock()->Delay(500);
 
+  config = new ConfigResource;
+  FileManager::GetInstance()->Load(config, "krondor.cfg");
   game = new GameResource;
   MousePointerManager::GetInstance()->AddPointer("POINTER.BMX");
   MousePointerManager::GetInstance()->AddPointer("POINTERG.BMX");
+
+  media->GetClock()->Delay(500);
 }
 
 GameApplication::~GameApplication()
 {
+  if (config) {
+    delete config;
+  }
   if (game) {
     delete game;
   }
@@ -108,6 +114,12 @@ GameApplication::CleanUp()
     delete instance;
     instance = 0;
   }
+}
+
+Preferences *
+GameApplication::GetPreferences()
+{
+  return config->GetPreferences();
 }
 
 Game *
@@ -152,6 +164,12 @@ void
 GameApplication::QuitGame()
 {
   done = true;
+}
+
+void
+GameApplication::SaveConfig()
+{
+  FileManager::GetInstance()->Save(config, "krondor.cfg");
 }
 
 void

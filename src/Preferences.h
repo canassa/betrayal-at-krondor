@@ -76,6 +76,4 @@ class Preferences {
     void SetIntroduction(const bool toggle);
 };
 
-extern Preferences globalPrefs;
-
 #endif

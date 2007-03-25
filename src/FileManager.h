@@ -24,6 +24,7 @@
 #include "config.h"
 #endif
 
+#include "ConfigData.h"
 #include "GameData.h"
 #include "ResourceArchive.h"
 #include "ResourceData.h"
@@ -33,6 +34,8 @@ class FileManager {
   private:
     ResourceIndex resIndex;
     ResourceArchive resArchive;
+    FileBuffer* LoadConfig(const std::string &name);
+    void SaveConfig(const std::string &name, FileBuffer* buffer);
     FileBuffer* LoadGame(const std::string &name);
     void SaveGame(const std::string &name, FileBuffer* buffer);
     FileBuffer* LoadResource(const std::string &name);
@@ -44,6 +47,9 @@ class FileManager {
     ~FileManager();
     static FileManager* GetInstance();
     static void CleanUp();
+    bool ConfigExists(const std::string &name);
+    void Load(ConfigData *cfg, const std::string &name);
+    void Save(ConfigData *cfg, const std::string &name);
     bool GameExists(const std::string &name);
     void Load(GameData *gam, const std::string &name);
     void Save(GameData *gam, const std::string &name);

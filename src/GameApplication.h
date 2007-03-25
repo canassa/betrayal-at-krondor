@@ -24,6 +24,7 @@
 #include "config.h"
 #endif
 
+#include "ConfigResource.h"
 #include "EventListener.h"
 #include "GameResource.h"
 #include "GameState.h"
@@ -36,6 +37,7 @@ class GameApplication
     friend class GameState;
     bool done;
     bool inputGrabbed;
+    ConfigResource *config;
     GameResource *game;
     GameState *state;
     int screenSaveCount;
@@ -47,10 +49,12 @@ class GameApplication
     ~GameApplication();
     static GameApplication* GetInstance();
     static void CleanUp();
+    Preferences* GetPreferences();
     Game* GetGame();
     void PlayIntro();
     void StartNewGame();
     void QuitGame();
+    void SaveConfig();
     void Run();
     void KeyPressed(const KeyboardEvent& kbe);
     void KeyReleased(const KeyboardEvent& kbe);

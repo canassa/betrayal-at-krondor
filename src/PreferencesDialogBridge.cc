@@ -18,6 +18,7 @@
  */
 
 #include "Exception.h"
+#include "GameApplication.h"
 #include "PreferencesDialogBridge.h"
 #include "RequestResource.h"
 
@@ -53,13 +54,13 @@ PreferencesDialogBridge::CleanUp()
 void
 PreferencesDialogBridge::Fetch()
 {
-  prefs.Copy(globalPrefs);
+  prefs.Copy(*(GameApplication::GetInstance()->GetPreferences()));
 }
 
 void
 PreferencesDialogBridge::Commit()
 {
-  globalPrefs.Copy(prefs);
+  GameApplication::GetInstance()->GetPreferences()->Copy(prefs);
 }
 
 bool

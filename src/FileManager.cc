@@ -17,6 +17,7 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "ConfigFile.h"
 #include "Exception.h"
 #include "FileManager.h"
 #include "GameFile.h"
@@ -50,6 +51,36 @@ FileManager::CleanUp()
   if (instance) {
     delete instance;
     instance = 0;
+  }
+}
+
+FileBuffer*
+FileManager::LoadConfig(const std::string &name)
+{
+  try {
+    ConfigFile cfgfile;
+    cfgfile.Open(name, false);
+    FileBuffer *buffer = new FileBuffer(cfgfile.Size());
+    cfgfile.Seek(0);
+    cfgfile.Load(*buffer);
+    cfgfile.Close();
+    return buffer;
+  } catch (Exception &e) {
+    throw FileNotFound(__FILE__, __LINE__, name);
+  }
+  return 0;
+}
+
+void
+FileManager::SaveConfig(const std::string &name, FileBuffer* buffer)
+{
+  try {
+    ConfigFile cfgfile;
+    cfgfile.Open(name, true);
+    cfgfile.Save(*buffer);
+    cfgfile.Close();
+  } catch (Exception &e) {
+    throw FileNotFound(__FILE__, __LINE__, name);
   }
 }
 
@@ -122,6 +153,48 @@ FileManager::SaveResource(const std::string &name, FileBuffer* buffer)
     resfile.Close();
   } catch (Exception &e) {
     throw FileNotFound(__FILE__, __LINE__, name);
+  }
+}
+
+bool
+FileManager::ConfigExists(const std::string &name)
+{
+  try {
+    ConfigFile cfgfile;
+    cfgfile.Open(name, false);
+    cfgfile.Close();
+    return true;
+  } catch (Exception &e) {
+    return false;
+  }
+  return false;
+}
+
+void
+FileManager::Load(ConfigData *cfg, const std::string &name)
+{
+  try {
+    FileBuffer *buffer;
+    buffer = LoadConfig(name);
+    cfg->Load(buffer);
+    delete buffer;
+  } catch (Exception &e) {
+    e.Print("FileManager::Load");
+    throw;
+  }
+}
+
+void
+FileManager::Save(ConfigData *cfg, const std::string &name)
+{
+  try {
+    FileBuffer *buffer = new FileBuffer(16);
+    cfg->Save(buffer);
+    SaveConfig(name, buffer);
+    delete buffer;
+  } catch (Exception &e) {
+    e.Print("FileManager::Save");
+    throw;
   }
 }
 

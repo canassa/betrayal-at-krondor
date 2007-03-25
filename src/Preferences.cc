@@ -19,8 +19,6 @@
 
 #include "Preferences.h"
 
-Preferences globalPrefs;
-
 Preferences::Preferences()
 {
   SetDefaults();

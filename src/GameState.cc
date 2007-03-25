@@ -971,6 +971,7 @@ GameStatePreferences::Execute()
       break;
     case PREF_OK:
       PreferencesDialogBridge::GetInstance()->Commit();
+      GameApplication::GetInstance()->SaveConfig();
       ChangeState(prevState);
       break;
     case PREF_DEFAULTS:

@@ -19,6 +19,7 @@
 
 #include "ChoiceWidget.h"
 #include "Exception.h"
+#include "MediaToolkit.h"
 #include "PreferencesDialogBridge.h"
 
 ChoiceWidget::ChoiceWidget(const Rectangle &r, const int a)
@@ -57,6 +58,7 @@ ChoiceWidget::Draw()
 void
 ChoiceWidget::Focus()
 {
+  MediaToolkit::GetInstance()->GetVideo()->SetPointerPosition(rect.GetXPos() + rect.GetWidth() / 2, rect.GetYPos() + rect.GetHeight() / 2);
 }
 
 void

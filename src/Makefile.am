@@ -11,6 +11,9 @@ noinst_HEADERS = AnimationResource.h \
                  Clock.h \
                  CombatViewWidget.h \
                  CompassWidget.h \
+                 ConfigData.h \
+                 ConfigFile.h \
+                 ConfigResource.h \
                  ContainerWidget.h \
                  Defines.h \
                  Dialog.h \
@@ -138,6 +141,8 @@ libgame_a_SOURCES = Camera.cc \
                     Camera.h \
                     Chapter.cc \
                     Chapter.h \
+                    ConfigResource.cc \
+                    ConfigResource.h \
                     Game.cc \
                     Game.h \
                     GameResource.cc \
@@ -238,7 +243,9 @@ libguitoolkit_a_SOURCES = BadgeWidget.cc \
                           WidgetFactory.h \
                           WorldViewWidget.cc \
                           WorldViewWidget.h
-libresbase_a_SOURCES = Directories.cc \
+libresbase_a_SOURCES = ConfigFile.cc \
+                       ConfigFile.h \
+                       Directories.cc \
                        Directories.h \
                        FileManager.cc \
                        FileManager.h \

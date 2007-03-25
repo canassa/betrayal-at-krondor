@@ -49,7 +49,7 @@ Directories::Directories()
   gamesPath = "";
   capturePath = "";
 #else
-  userPath = std::string(getenv("HOME")) + "/." + std::string(PACKAGE);
+  userPath = std::string(getenv("HOME")) + "/." + std::string(PACKAGE) + "/";
   gamesPath = userPath + "/games/";
   capturePath = userPath + "/capture/";
 #endif
