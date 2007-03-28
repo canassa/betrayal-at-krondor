@@ -576,7 +576,9 @@ GameStateIntro::CleanUp()
 void
 GameStateIntro::Execute()
 {
-  GameApplication::GetInstance()->PlayIntro();
+  if (GameApplication::GetInstance()->GetPreferences()->GetIntroduction()) {
+    GameApplication::GetInstance()->PlayIntro();
+  }
   ChangeState(GameStateInitialOptions::GetInstance());
 }
 
@@ -1117,6 +1119,8 @@ GameStateWorld::Leave()
 void
 GameStateWorld::Execute()
 {
+  int moveFactor = 1 + (int)GameApplication::GetInstance()->GetPreferences()->GetStepSize();
+  int turnFactor = 1 + (int)GameApplication::GetInstance()->GetPreferences()->GetTurnSize();
   unsigned int action = dialog->Execute();
   switch (action) {
     case ACT_ESCAPE:
@@ -1159,22 +1163,22 @@ GameStateWorld::Execute()
       break;
     case ACT_LEFT:
     case MAIN_LEFT:
-      GameApplication::GetInstance()->GetGame()->GetCamera()->Turn(TURN_LEFT);
+      GameApplication::GetInstance()->GetGame()->GetCamera()->Turn(TURN_LEFT * turnFactor);
       dialog->Update();
       break;
     case ACT_RIGHT:
     case MAIN_RIGHT:
-      GameApplication::GetInstance()->GetGame()->GetCamera()->Turn(TURN_RIGHT);
+      GameApplication::GetInstance()->GetGame()->GetCamera()->Turn(TURN_RIGHT * turnFactor);
       dialog->Update();
       break;
     case ACT_UP:
     case MAIN_UP:
-      GameApplication::GetInstance()->GetGame()->GetCamera()->Move(MOVE_FORWARD);
+      GameApplication::GetInstance()->GetGame()->GetCamera()->Move(MOVE_FORWARD * moveFactor);
       dialog->Update();
       break;
     case ACT_DOWN:
     case MAIN_DOWN:
-      GameApplication::GetInstance()->GetGame()->GetCamera()->Move(MOVE_BACKWARD);
+      GameApplication::GetInstance()->GetGame()->GetCamera()->Move(MOVE_BACKWARD * moveFactor);
       dialog->Update();
       break;
     case MAIN_BOOKMARK:
