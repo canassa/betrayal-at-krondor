@@ -108,6 +108,12 @@ PlayerCharacter::SetCondition(const ConditionType ct)
   condition = ct;
 }
 
+Inventory &
+PlayerCharacter::GetInventory()
+{
+  return inventory;
+}
+
 int
 PlayerCharacter::GetOrder() const
 {

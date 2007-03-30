@@ -42,6 +42,8 @@ noinst_HEADERS = AnimationResource.h \
                  ImageButtonWidget.h \
                  ImageResource.h \
                  ImageWidget.h \
+                 Inventory.h \
+                 InventoryItem.h \
                  LabelResource.h \
                  MapViewWidget.h \
                  MediaToolkit.h \
@@ -149,6 +151,10 @@ libgame_a_SOURCES = Camera.cc \
                     GameResource.h \
                     GenericObject.cc \
                     GenericObject.h \
+                    Inventory.cc \
+                    Inventory.h \
+                    InventoryItem.cc \
+                    InventoryItem.h \
                     MeshedObject.cc \
                     MeshedObject.h \
                     Orientation.cc \

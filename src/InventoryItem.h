@@ -17,42 +17,28 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef GAME_H
-#define GAME_H
+#ifndef INVENTORY_ITEM_H
+#define INVENTORY_ITEM_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "Camera.h"
-#include "Chapter.h"
-#include "ImageResource.h"
-#include "ObjectResource.h"
-#include "Party.h"
-#include "PartyResource.h"
-#include "Scene.h"
-
-class Game {
+class InventoryItem {
   private:
-    std::string name;
-    Chapter *chapter;
-    Party *party;
-    Scene *scene;
-    Camera *camera;
-    ObjectResource *objectRes;
-    PartyResource *partyRes;
-    ImageResource *buttonImages;
+    unsigned int id;
+    unsigned int amount;
+    unsigned int flags;
   public:
-    Game();
-    ~Game();
-    std::string& GetName();
-    void SetName(const std::string& s);
-    ObjectInfo& GetObjectInfo(const unsigned int n) const;
-    Party* GetParty() const;
-    Chapter* GetChapter() const;
-    Camera* GetCamera() const;
-    Scene* GetScene() const;
+    InventoryItem(const unsigned int i, const unsigned int a, const unsigned int f);
+    ~InventoryItem();
+    unsigned int GetId() const;
+    unsigned int GetAmount() const;
+    unsigned int GetFlags() const;
+    bool IsEquiped() const;
+    void Add(const unsigned int n);
+    void Remove(const unsigned int n);
+    void Equip(const bool toggle);
 };
 
 #endif
-

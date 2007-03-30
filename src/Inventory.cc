@@ -17,42 +17,26 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef GAME_H
-#define GAME_H
+#include "Inventory.h"
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+Inventory::Inventory()
+: items()
+{
+}
 
-#include "Camera.h"
-#include "Chapter.h"
-#include "ImageResource.h"
-#include "ObjectResource.h"
-#include "Party.h"
-#include "PartyResource.h"
-#include "Scene.h"
+Inventory::~Inventory()
+{
+  items.clear();
+}
 
-class Game {
-  private:
-    std::string name;
-    Chapter *chapter;
-    Party *party;
-    Scene *scene;
-    Camera *camera;
-    ObjectResource *objectRes;
-    PartyResource *partyRes;
-    ImageResource *buttonImages;
-  public:
-    Game();
-    ~Game();
-    std::string& GetName();
-    void SetName(const std::string& s);
-    ObjectInfo& GetObjectInfo(const unsigned int n) const;
-    Party* GetParty() const;
-    Chapter* GetChapter() const;
-    Camera* GetCamera() const;
-    Scene* GetScene() const;
-};
+InventoryItem &
+Inventory::GetItem(const unsigned int n)
+{
+  return items[n];
+}
 
-#endif
-
+unsigned int
+Inventory::GetSize() const
+{
+  return items.size();
+}

@@ -17,42 +17,63 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef GAME_H
-#define GAME_H
+#include "InventoryItem.h"
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+static const unsigned int EQUIPED_MASK = 0x0040;
 
-#include "Camera.h"
-#include "Chapter.h"
-#include "ImageResource.h"
-#include "ObjectResource.h"
-#include "Party.h"
-#include "PartyResource.h"
-#include "Scene.h"
+InventoryItem::InventoryItem(const unsigned int i, const unsigned int a, const unsigned int f)
+: id(i)
+, amount(a)
+, flags(f)
+{
+}
 
-class Game {
-  private:
-    std::string name;
-    Chapter *chapter;
-    Party *party;
-    Scene *scene;
-    Camera *camera;
-    ObjectResource *objectRes;
-    PartyResource *partyRes;
-    ImageResource *buttonImages;
-  public:
-    Game();
-    ~Game();
-    std::string& GetName();
-    void SetName(const std::string& s);
-    ObjectInfo& GetObjectInfo(const unsigned int n) const;
-    Party* GetParty() const;
-    Chapter* GetChapter() const;
-    Camera* GetCamera() const;
-    Scene* GetScene() const;
-};
+InventoryItem::~InventoryItem()
+{
+}
 
-#endif
+unsigned int
+InventoryItem::GetId() const
+{
+  return id;
+}
 
+unsigned int
+InventoryItem::GetAmount() const
+{
+  return amount;
+}
+
+unsigned int
+InventoryItem::GetFlags() const
+{
+  return flags;
+}
+
+bool
+InventoryItem::IsEquiped() const
+{
+  return flags & EQUIPED_MASK;
+}
+
+void
+InventoryItem::Add(const unsigned int n)
+{
+  amount += n;
+}
+
+void
+InventoryItem::Remove(const unsigned int n)
+{
+  amount -= n;
+}
+
+void
+InventoryItem::Equip(const bool toggle)
+{
+  if (toggle) {
+    flags |= EQUIPED_MASK;
+  } else {
+    flags &= ~EQUIPED_MASK;
+  }
+}

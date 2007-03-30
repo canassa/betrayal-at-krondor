@@ -25,6 +25,7 @@
 #endif
 
 #include "Image.h"
+#include "Inventory.h"
 #include "Statistics.h"
 
 typedef enum _CharacterClass {
@@ -53,6 +54,7 @@ class PlayerCharacter {
     bool selected;
     CharacterClass charClass;
     ConditionType condition;
+    Inventory inventory;
   public:
     PlayerCharacter(const std::string& s);
     ~PlayerCharacter();
@@ -71,6 +73,7 @@ class PlayerCharacter {
     void SetCharacterClass(const CharacterClass cc);
     ConditionType GetCondition() const;
     void SetCondition(const ConditionType ct);
+    Inventory& GetInventory();
 };
 
 #endif
