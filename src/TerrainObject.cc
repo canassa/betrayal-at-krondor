@@ -31,6 +31,7 @@ TerrainObject::~TerrainObject()
 void
 TerrainObject::DrawFirstPerson(const int x, const int y, const int w, const int h, const int heading)
 {
+  if (x && y && w && h && heading);
 }
 
 void

@@ -42,7 +42,7 @@ AC_CACHE_SAVE
 AC_LANG([C++])
 CPPFLAGS="$CPPFLAGS -DDATADIR='\"$datadir\"'"
 SDL_CFLAGS=$(sh sdl-config --cflags)
-CXXFLAGS="$CXXFLAGS $SDL_CFLAGS -Wall -Werror -Wpointer-arith -Wcast-qual -Wwrite-strings -Wshadow -Wcast-align -Winline -ansi -pedantic"
+CXXFLAGS="$CXXFLAGS $SDL_CFLAGS -Wall -Wextra -Werror -Wpointer-arith -Wcast-qual -Wwrite-strings -Wshadow -Wcast-align -Winline -ansi -pedantic"
 
 AC_C_CONST
 AC_FUNC_STAT
