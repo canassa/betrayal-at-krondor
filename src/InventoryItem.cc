@@ -19,7 +19,8 @@
 
 #include "InventoryItem.h"
 
-static const unsigned int EQUIPED_MASK = 0x0040;
+static const unsigned int FINITE_USE_MASK = 0x0020;
+static const unsigned int EQUIPED_MASK    = 0x0040;
 
 InventoryItem::InventoryItem(const unsigned int i, const unsigned int a, const unsigned int f)
 : id(i)
@@ -51,6 +52,12 @@ InventoryItem::GetFlags() const
 }
 
 bool
+InventoryItem::HasFiniteUse() const
+{
+  return flags & FINITE_USE_MASK;
+}
+
+bool
 InventoryItem::IsEquiped() const
 {
   return flags & EQUIPED_MASK;
@@ -76,4 +83,31 @@ InventoryItem::Equip(const bool toggle)
   } else {
     flags &= ~EQUIPED_MASK;
   }
+}
+
+InventoryItem &
+InventoryItem::operator=(const InventoryItem &item)
+{
+  id = item.id;
+  amount = item.amount;
+  flags = item.flags;
+  return *this;
+}
+
+bool
+InventoryItem::operator==(const InventoryItem &item) const
+{
+  return (id == item.id);
+}
+
+bool
+InventoryItem::operator!=(const InventoryItem &item) const
+{
+  return (id != item.id);
+}
+
+bool
+InventoryItem::operator<(const InventoryItem &item) const
+{
+  return (id < item.id);
 }

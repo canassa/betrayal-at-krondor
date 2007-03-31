@@ -31,6 +31,7 @@
 class Inventory {
   private:
     std::vector<InventoryItem> items;
+    unsigned int Find(const InventoryItem &item) const;
   public:
     Inventory();
     ~Inventory();

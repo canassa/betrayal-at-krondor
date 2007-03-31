@@ -40,3 +40,16 @@ Inventory::GetSize() const
 {
   return items.size();
 }
+
+unsigned int
+Inventory::Find(const InventoryItem& item) const
+{
+  unsigned int i = 0;
+  while (i < items.size()) {
+    if (items[i] == item) {
+      return i;
+    }
+    i++;
+  }
+  return i;
+}

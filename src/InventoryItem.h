@@ -35,10 +35,15 @@ class InventoryItem {
     unsigned int GetId() const;
     unsigned int GetAmount() const;
     unsigned int GetFlags() const;
+    bool HasFiniteUse() const;
     bool IsEquiped() const;
     void Add(const unsigned int n);
     void Remove(const unsigned int n);
     void Equip(const bool toggle);
+    InventoryItem& operator=(const InventoryItem &item);
+    bool operator==(const InventoryItem &item) const;
+    bool operator!=(const InventoryItem &item) const;
+    bool operator<(const InventoryItem &item) const;
 };
 
 #endif
