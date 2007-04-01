@@ -29,6 +29,13 @@ InventoryItem::InventoryItem(const unsigned int i, const unsigned int a, const u
 {
 }
 
+InventoryItem::InventoryItem(const InventoryItem &item)
+: id(item.id)
+, amount(item.amount)
+, flags(item.flags)
+{
+}
+
 InventoryItem::~InventoryItem()
 {
 }

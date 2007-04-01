@@ -31,6 +31,7 @@ class InventoryItem {
     unsigned int flags;
   public:
     InventoryItem(const unsigned int i, const unsigned int a, const unsigned int f);
+    InventoryItem(const InventoryItem &item);
     ~InventoryItem();
     unsigned int GetId() const;
     unsigned int GetAmount() const;
