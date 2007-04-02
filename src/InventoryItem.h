@@ -24,27 +24,73 @@
 #include "config.h"
 #endif
 
-class InventoryItem {
-  private:
+class InventoryItem
+{
+  protected:
     unsigned int id;
-    unsigned int amount;
+    unsigned int value;
     unsigned int flags;
+    InventoryItem(const unsigned int i, const unsigned int v, const unsigned int f);
   public:
-    InventoryItem(const unsigned int i, const unsigned int a, const unsigned int f);
     InventoryItem(const InventoryItem &item);
-    ~InventoryItem();
+    virtual ~InventoryItem();
     unsigned int GetId() const;
-    unsigned int GetAmount() const;
+    unsigned int GetValue() const;
     unsigned int GetFlags() const;
-    bool HasFiniteUse() const;
     bool IsEquiped() const;
-    void Add(const unsigned int n);
-    void Remove(const unsigned int n);
     void Equip(const bool toggle);
     InventoryItem& operator=(const InventoryItem &item);
-    bool operator==(const InventoryItem &item) const;
-    bool operator!=(const InventoryItem &item) const;
-    bool operator<(const InventoryItem &item) const;
+    virtual bool operator==(const InventoryItem &item) const = 0;
+    virtual bool operator!=(const InventoryItem &item) const = 0;
+};
+
+class SingleInventoryItem
+: InventoryItem
+{
+  public:
+    SingleInventoryItem(const unsigned int i);
+    virtual ~SingleInventoryItem();
+    bool operator==(const SingleInventoryItem &item) const;
+    bool operator!=(const SingleInventoryItem &item) const;
+};
+
+class MultipleInventoryItem
+: InventoryItem
+{
+  public:
+    MultipleInventoryItem(const unsigned int i, const unsigned int n);
+    virtual ~MultipleInventoryItem();
+    unsigned int GetAmount() const;
+    void Add(const unsigned int n);
+    void Remove(const unsigned int n);
+    bool operator==(const MultipleInventoryItem &item) const;
+    bool operator!=(const MultipleInventoryItem &item) const;
+};
+
+class RepairableInventoryItem
+: InventoryItem
+{
+  public:
+    RepairableInventoryItem(const unsigned int i, const unsigned int c);
+    virtual ~RepairableInventoryItem();
+    unsigned int GetCondition() const;
+    void Repair(const unsigned int n);
+    void Damage(const unsigned int n);
+    bool operator==(const RepairableInventoryItem &item) const;
+    bool operator!=(const RepairableInventoryItem &item) const;
+};
+
+class UsableInventoryItem
+: InventoryItem
+{
+  public:
+    UsableInventoryItem(const unsigned int i, const unsigned int u);
+    virtual ~UsableInventoryItem();
+    unsigned int GetUses() const;
+    void Use(const unsigned int n);
+    void Restore(const unsigned int n);
+    bool operator==(const UsableInventoryItem &item) const;
+    bool operator!=(const UsableInventoryItem &item) const;
 };
 
 #endif

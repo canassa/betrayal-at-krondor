@@ -19,19 +19,19 @@
 
 #include "InventoryItem.h"
 
-static const unsigned int FINITE_USE_MASK = 0x0020;
+static const unsigned int REPAIRABLE_MASK = 0x0020;
 static const unsigned int EQUIPED_MASK    = 0x0040;
 
-InventoryItem::InventoryItem(const unsigned int i, const unsigned int a, const unsigned int f)
+InventoryItem::InventoryItem(const unsigned int i, const unsigned int v, const unsigned int f)
 : id(i)
-, amount(a)
+, value(v)
 , flags(f)
 {
 }
 
 InventoryItem::InventoryItem(const InventoryItem &item)
 : id(item.id)
-, amount(item.amount)
+, value(item.value)
 , flags(item.flags)
 {
 }
@@ -47,9 +47,9 @@ InventoryItem::GetId() const
 }
 
 unsigned int
-InventoryItem::GetAmount() const
+InventoryItem::GetValue() const
 {
-  return amount;
+  return value;
 }
 
 unsigned int
@@ -59,27 +59,9 @@ InventoryItem::GetFlags() const
 }
 
 bool
-InventoryItem::HasFiniteUse() const
-{
-  return flags & FINITE_USE_MASK;
-}
-
-bool
 InventoryItem::IsEquiped() const
 {
   return flags & EQUIPED_MASK;
-}
-
-void
-InventoryItem::Add(const unsigned int n)
-{
-  amount += n;
-}
-
-void
-InventoryItem::Remove(const unsigned int n)
-{
-  amount -= n;
 }
 
 void
@@ -96,25 +78,131 @@ InventoryItem &
 InventoryItem::operator=(const InventoryItem &item)
 {
   id = item.id;
-  amount = item.amount;
+  value = item.value;
   flags = item.flags;
   return *this;
 }
 
+
+SingleInventoryItem::SingleInventoryItem(const unsigned int i)
+: InventoryItem(i, 0, 0)
+{
+}
+
+SingleInventoryItem::~SingleInventoryItem()
+{
+}
+
 bool
-InventoryItem::operator==(const InventoryItem &item) const
+SingleInventoryItem::operator==(const SingleInventoryItem &) const
+{
+  return false;
+}
+
+bool
+SingleInventoryItem::operator!=(const SingleInventoryItem &) const
+{
+  return true;
+}
+
+
+MultipleInventoryItem::MultipleInventoryItem(const unsigned int i, const unsigned int n)
+: InventoryItem(i, n, 0)
+{
+}
+
+MultipleInventoryItem::~MultipleInventoryItem()
+{
+}
+
+void
+MultipleInventoryItem::Add(const unsigned int n)
+{
+  value += n;
+}
+
+void
+MultipleInventoryItem::Remove(const unsigned int n)
+{
+  value -= n;
+}
+
+bool
+MultipleInventoryItem::operator==(const MultipleInventoryItem &item) const
 {
   return (id == item.id);
 }
 
 bool
-InventoryItem::operator!=(const InventoryItem &item) const
+MultipleInventoryItem::operator!=(const MultipleInventoryItem &item) const
 {
   return (id != item.id);
 }
 
-bool
-InventoryItem::operator<(const InventoryItem &item) const
+
+RepairableInventoryItem::RepairableInventoryItem(const unsigned int i, const unsigned int c)
+: InventoryItem(i, c, REPAIRABLE_MASK)
 {
-  return (id < item.id);
+}
+
+RepairableInventoryItem::~RepairableInventoryItem()
+{
+}
+
+void
+RepairableInventoryItem::Repair(const unsigned int n)
+{
+  value += n;
+}
+
+void
+RepairableInventoryItem::Damage(const unsigned int n)
+{
+  value -= n;
+}
+
+bool
+RepairableInventoryItem::operator==(const RepairableInventoryItem &) const
+{
+  return false;
+}
+
+bool
+RepairableInventoryItem::operator!=(const RepairableInventoryItem &) const
+{
+  return true;
+}
+
+
+UsableInventoryItem::UsableInventoryItem(const unsigned int i, const unsigned int u)
+: InventoryItem(i, u, 0)
+{
+}
+
+UsableInventoryItem::~UsableInventoryItem()
+{
+}
+
+void
+UsableInventoryItem::Use(const unsigned int n)
+{
+  value += n;
+}
+
+void
+UsableInventoryItem::Restore(const unsigned int n)
+{
+  value -= n;
+}
+
+bool
+UsableInventoryItem::operator==(const UsableInventoryItem &) const
+{
+  return false;
+}
+
+bool
+UsableInventoryItem::operator!=(const UsableInventoryItem &) const
+{
+  return true;
 }
