@@ -58,10 +58,10 @@ Scene::FillZBuffer(Camera *cam)
 }
 
 void
-Scene::DrawHorizon(const int x, const int y, const int w, const int h, const int heading)
+Scene::DrawHorizon(const int x, const int y, const int w, const int, const int heading)
 {
   static const int HORIZON_TOP_SIZE = 34;
-  Image top(w, HORIZON_TOP_SIZE < h ? HORIZON_TOP_SIZE : h);
+  Image top(w, HORIZON_TOP_SIZE);
   int index = (heading >> 6) & 0x03;
   int imagewidth = zone.GetHorizon(index)->GetWidth();
   int imageheight = zone.GetHorizon(index)->GetHeight();

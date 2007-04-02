@@ -379,10 +379,9 @@ SDL_Video::DrawImage(const int x, const int y, const int w, const int h, uint8_t
 }
 
 void
-SDL_Video::DrawImage(const int x, const int y, const int w, const int h,
+SDL_Video::DrawImage(const int x, const int y, const int w, const int,
                      const int xx, const int yy, const int ww, const int hh, uint8_t *p)
 {
-  if (h < 0) return;
   p += yy * w;
   for (int j = y + yy; j < y + yy + hh; j++) {
     p += xx;
@@ -395,11 +394,10 @@ SDL_Video::DrawImage(const int x, const int y, const int w, const int h,
 }
 
 void
-SDL_Video::DrawImage(const int x, const int y, const int w, const int h,
+SDL_Video::DrawImage(const int x, const int y, const int w, const int,
                      const int xx, const int yy, const int ww, const int hh,
                      uint8_t *p, const uint8_t transparant)
 {
-  if (h < 0) return;
   p += yy * w;
   for (int j = y + yy; j < y + yy + hh; j++) {
     p += xx;
