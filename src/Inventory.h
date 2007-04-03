@@ -24,21 +24,20 @@
 #include "config.h"
 #endif
 
-#include <vector>
+#include <list>
 
 #include "InventoryItem.h"
 
 class Inventory {
   private:
-    std::vector<InventoryItem> items;
-    unsigned int Find(const InventoryItem &item) const;
+    std::list<const InventoryItem *> items;
+    std::list<const InventoryItem *>::iterator Find(const InventoryItem *item);
   public:
     Inventory();
     ~Inventory();
-    InventoryItem& GetItem(const unsigned int n);
-    unsigned int GetSize() const;
-    void Add(const InventoryItem &item);
-    void Remove(const InventoryItem &item);
+    std::list<const InventoryItem *>& GetItems();
+    void Add(const InventoryItem *item);
+    void Remove(const InventoryItem *item);
 };
 
 #endif

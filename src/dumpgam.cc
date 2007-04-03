@@ -46,6 +46,11 @@ int main(int argc, char *argv[]) {
         }
       }
       printf("\n");
+      Inventory inv = game->GetParty()->GetMember(m)->GetInventory();
+      printf("inventory (%ld): ", inv.GetItems().size());
+      for (std::list<const InventoryItem *>::iterator it = inv.GetItems().begin(); it != inv.GetItems().end(); ++it) {
+      }
+      printf("\n");
     }
     printf("active:");
     for (unsigned int i = 0; i < game->GetParty()->GetNumActiveMembers(); i++) {

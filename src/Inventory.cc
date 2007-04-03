@@ -29,27 +29,46 @@ Inventory::~Inventory()
   items.clear();
 }
 
-InventoryItem &
-Inventory::GetItem(const unsigned int n)
+std::list<const InventoryItem *>&
+Inventory::GetItems()
 {
-  return items[n];
+  return items;
 }
 
-unsigned int
-Inventory::GetSize() const
+std::list<const InventoryItem *>::iterator
+Inventory::Find(const InventoryItem* item)
 {
-  return items.size();
-}
-
-unsigned int
-Inventory::Find(const InventoryItem& item) const
-{
-  unsigned int i = 0;
-  while (i < items.size()) {
-    if (items[i] == item) {
-      return i;
+  std::list<const InventoryItem *>::iterator it = items.begin();
+  while (it != items.end()) {
+    if (**it == *item) {
+      break;
     }
-    i++;
+    ++it;
   }
-  return i;
+  return it;
+}
+
+void
+Inventory::Add(const InventoryItem* item)
+{
+  std::list<const InventoryItem *>::iterator it = Find(item);
+  if (it == items.end()) {
+    items.push_back(item);
+  } else {
+    ((MultipleInventoryItem *)(*it))->Add(item->GetValue());
+  }
+}
+
+void
+Inventory::Remove(const InventoryItem* item)
+{
+  std::list<const InventoryItem *>::iterator it = Find(item);
+  if (it == items.end()) {
+    items.remove(item);
+  } else {
+    ((MultipleInventoryItem *)(*it))->Remove(item->GetValue());
+    if ((*it)->GetValue() == 0) {
+      items.erase(it);
+    }
+  }
 }
