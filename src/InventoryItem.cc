@@ -19,9 +19,6 @@
 
 #include "InventoryItem.h"
 
-static const unsigned int REPAIRABLE_MASK = 0x0020;
-static const unsigned int EQUIPED_MASK    = 0x0040;
-
 InventoryItem::InventoryItem(const unsigned int i, const unsigned int v, const unsigned int f)
 : id(i)
 , value(v)

@@ -26,6 +26,9 @@ Inventory::Inventory()
 
 Inventory::~Inventory()
 {
+  for (std::list<const InventoryItem *>::iterator it = items.begin(); it != items.end(); ++it) {
+    delete (*it);
+  }
   items.clear();
 }
 
@@ -36,11 +39,11 @@ Inventory::GetItems()
 }
 
 std::list<const InventoryItem *>::iterator
-Inventory::Find(const InventoryItem* item)
+Inventory::FindExistingMultiple(const InventoryItem* item)
 {
   std::list<const InventoryItem *>::iterator it = items.begin();
   while (it != items.end()) {
-    if (**it == *item) {
+    if (*((MultipleInventoryItem *)(*it)) == *((MultipleInventoryItem *)item)) {
       break;
     }
     ++it;
@@ -51,7 +54,7 @@ Inventory::Find(const InventoryItem* item)
 void
 Inventory::Add(const InventoryItem* item)
 {
-  std::list<const InventoryItem *>::iterator it = Find(item);
+  std::list<const InventoryItem *>::iterator it = FindExistingMultiple(item);
   if (it == items.end()) {
     items.push_back(item);
   } else {
@@ -62,7 +65,7 @@ Inventory::Add(const InventoryItem* item)
 void
 Inventory::Remove(const InventoryItem* item)
 {
-  std::list<const InventoryItem *>::iterator it = Find(item);
+  std::list<const InventoryItem *>::iterator it = FindExistingMultiple(item);
   if (it == items.end()) {
     items.remove(item);
   } else {

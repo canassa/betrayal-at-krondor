@@ -20,6 +20,8 @@
 #include "Exception.h"
 #include "GameResource.h"
 
+static const unsigned int INVENTORY_SLOTS = 24;
+
 GameResource::GameResource()
 : game(0)
 , xloc(0)
@@ -91,7 +93,7 @@ GameResource::Load(FileBuffer *buffer)
     }
     game = new Game();
     game->SetName(buffer->GetString());
-    buffer->Seek(90);
+    buffer->Seek(0x00005a);
     buffer->Skip(16);
     yloc = buffer->GetUint32LE();
     xloc = buffer->GetUint32LE();
@@ -127,6 +129,69 @@ GameResource::Load(FileBuffer *buffer)
     if (game->GetParty()->GetNumActiveMembers() != n) {
       throw DataCorruption(__FILE__, __LINE__, "active members");
     }
+    buffer->Seek(0x03a7f8);
+    for (unsigned int m = 0; m < game->GetParty()->GetNumMembers(); m++) {
+      buffer->Skip(buffer->GetUint16LE());
+      unsigned int numItems = buffer->GetUint8();
+      unsigned int numSlots = buffer->GetUint16LE();
+      if (numSlots != INVENTORY_SLOTS) {
+        throw DataCorruption(__FILE__, __LINE__, "inventory slots");
+      }
+      Inventory *inv = game->GetParty()->GetMember(m)->GetInventory();
+      for (unsigned int i = 0; i < numSlots; i++) {
+        if (i < numItems){
+          unsigned int id = buffer->GetUint8();
+          unsigned int value = buffer->GetUint8();
+          unsigned int flags = buffer->GetUint16LE();
+          InventoryItem *item;
+          switch (game->GetObjectInfo(id).type) {
+            case OT_SWORD:
+            case OT_CROSSBOW:
+            case OT_ARMOR:
+              item = new RepairableInventoryItem(id, value);
+              break;
+            case OT_STAFF:
+              item = new SingleInventoryItem(id);
+              break;
+            case OT_WEAPON_OIL:
+            case OT_ARMOR_OIL:
+            case OT_SPECIAL_OIL:
+            case OT_NOTE:
+            case OT_BOOK:
+            case OT_POTION:
+            case OT_RESTORATIVES:
+              item = new UsableInventoryItem(id, value);
+              break;
+            case OT_AMMUNITION:
+            case OT_KEY:
+            case OT_TOOL:
+            case OT_BOWSTRING:
+            case OT_SCROLL:
+            case OT_CONTAINER:
+            case OT_LIGHTER:
+            case OT_INGREDIENT:
+            case OT_RATION:
+            case OT_FOOD:
+              item = new MultipleInventoryItem(id, value);
+              break;
+            case OT_UNKNOWN5:
+            case OT_UNKNOWN6:
+            case OT_UNKNOWN14:
+            case OT_UNKNOWN15:
+              throw DataCorruption(__FILE__, __LINE__, "unknown object type: ", game->GetObjectInfo(id).type);
+              break;
+            default:
+              throw DataCorruption(__FILE__, __LINE__, "invalid object type: ", game->GetObjectInfo(id).type);
+              break;
+          }
+          item->Equip(flags & EQUIPED_MASK);
+          inv->Add(item);
+        } else {
+          buffer->Skip(4);
+        }
+      }
+      buffer->Skip(1);
+    }
   } catch (Exception &e) {
     e.Print("GameResource::Load");
     throw;
@@ -142,7 +207,7 @@ GameResource::Save(FileBuffer *buffer)
   try {
     buffer->Rewind();
     buffer->PutString(game->GetName());
-    buffer->Seek(90);
+    buffer->Seek(0x00005a);
     buffer->Skip(16);
     buffer->PutUint32LE(yloc);
     buffer->PutUint32LE(xloc);
@@ -171,6 +236,24 @@ GameResource::Save(FileBuffer *buffer)
     buffer->PutUint8(game->GetParty()->GetNumActiveMembers());
     for (unsigned int i = 0; i < game->GetParty()->GetNumActiveMembers(); i++) {
       buffer->PutUint8(game->GetParty()->GetActiveMemberIndex(i));
+    }
+    buffer->Seek(0x03a7f8);
+    for (unsigned int m = 0; m < game->GetParty()->GetNumMembers(); m++) {
+      buffer->Skip(12);
+      Inventory *inv = game->GetParty()->GetMember(m)->GetInventory();
+      buffer->PutUint8(inv->GetItems().size());
+      buffer->PutUint8(INVENTORY_SLOTS);
+      std::list<const InventoryItem *>::iterator it = inv->GetItems().begin();
+      for (unsigned int i = 0; i < INVENTORY_SLOTS; i++) {
+        if (it != inv->GetItems().end()) {
+          buffer->PutUint8((*it)->GetId());
+          buffer->PutUint8((*it)->GetValue());
+          buffer->PutUint16LE((*it)->GetFlags());
+          ++it;
+        } else {
+          buffer->PutUint32LE(0);
+        }
+      }
     }
   } catch (Exception &e) {
     e.Print("GameResource::Save");

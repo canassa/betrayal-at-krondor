@@ -31,7 +31,7 @@
 class Inventory {
   private:
     std::list<const InventoryItem *> items;
-    std::list<const InventoryItem *>::iterator Find(const InventoryItem *item);
+    std::list<const InventoryItem *>::iterator FindExistingMultiple(const InventoryItem *item);
   public:
     Inventory();
     ~Inventory();

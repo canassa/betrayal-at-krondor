@@ -30,10 +30,12 @@ PlayerCharacter::PlayerCharacter(const std::string& s)
 {
   charClass = CLASS_WARRIOR;
   condition = COND_NORMAL;
+  inventory = new Inventory;
 }
 
 PlayerCharacter::~PlayerCharacter()
 {
+  delete inventory;
 }
 
 std::string&
@@ -108,7 +110,7 @@ PlayerCharacter::SetCondition(const ConditionType ct)
   condition = ct;
 }
 
-Inventory &
+Inventory *
 PlayerCharacter::GetInventory()
 {
   return inventory;

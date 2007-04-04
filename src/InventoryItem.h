@@ -24,14 +24,17 @@
 #include "config.h"
 #endif
 
+static const unsigned int REPAIRABLE_MASK = 0x0020;
+static const unsigned int EQUIPED_MASK    = 0x0040;
+
 class InventoryItem
 {
   protected:
     unsigned int id;
     unsigned int value;
     unsigned int flags;
-    InventoryItem(const unsigned int i, const unsigned int v, const unsigned int f);
   public:
+    InventoryItem(const unsigned int i, const unsigned int v, const unsigned int f);
     InventoryItem(const InventoryItem &item);
     virtual ~InventoryItem();
     unsigned int GetId() const;
@@ -40,12 +43,10 @@ class InventoryItem
     bool IsEquiped() const;
     void Equip(const bool toggle);
     InventoryItem& operator=(const InventoryItem &item);
-    virtual bool operator==(const InventoryItem &item) const = 0;
-    virtual bool operator!=(const InventoryItem &item) const = 0;
 };
 
 class SingleInventoryItem
-: InventoryItem
+: public InventoryItem
 {
   public:
     SingleInventoryItem(const unsigned int i);
@@ -55,7 +56,7 @@ class SingleInventoryItem
 };
 
 class MultipleInventoryItem
-: InventoryItem
+: public InventoryItem
 {
   public:
     MultipleInventoryItem(const unsigned int i, const unsigned int n);
@@ -68,7 +69,7 @@ class MultipleInventoryItem
 };
 
 class RepairableInventoryItem
-: InventoryItem
+: public InventoryItem
 {
   public:
     RepairableInventoryItem(const unsigned int i, const unsigned int c);
@@ -81,7 +82,7 @@ class RepairableInventoryItem
 };
 
 class UsableInventoryItem
-: InventoryItem
+: public InventoryItem
 {
   public:
     UsableInventoryItem(const unsigned int i, const unsigned int u);

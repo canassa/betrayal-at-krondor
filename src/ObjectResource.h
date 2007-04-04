@@ -37,7 +37,7 @@ typedef enum _Race {
 } Race;
 
 typedef enum _ObjectType {
-  OT_UNSPECIFIED,
+  OT_AMMUNITION,
   OT_SWORD,
   OT_CROSSBOW,
   OT_STAFF,
@@ -55,7 +55,7 @@ typedef enum _ObjectType {
   OT_UNKNOWN15,
   OT_NOTE,
   OT_BOOK,
-  OT_OTHER_POTION,
+  OT_POTION,
   OT_RESTORATIVES,
   OT_CONTAINER,
   OT_LIGHTER,

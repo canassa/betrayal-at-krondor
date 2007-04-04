@@ -54,7 +54,7 @@ class PlayerCharacter {
     bool selected;
     CharacterClass charClass;
     ConditionType condition;
-    Inventory inventory;
+    Inventory *inventory;
   public:
     PlayerCharacter(const std::string& s);
     ~PlayerCharacter();
@@ -73,7 +73,7 @@ class PlayerCharacter {
     void SetCharacterClass(const CharacterClass cc);
     ConditionType GetCondition() const;
     void SetCondition(const ConditionType ct);
-    Inventory& GetInventory();
+    Inventory* GetInventory();
 };
 
 #endif

@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
            game->GetCamera()->GetPosition().GetCell().GetX(), game->GetCamera()->GetPosition().GetCell().GetY(),
            game->GetCamera()->GetPos().GetX(), game->GetCamera()->GetPos().GetY(), game->GetCamera()->GetHeading());
     for (unsigned int m = 0; m < game->GetParty()->GetNumMembers(); m++) {
-      printf("%10s:", game->GetParty()->GetMember(m)->GetName().c_str());
+      printf("%-10s:", game->GetParty()->GetMember(m)->GetName().c_str());
       for (unsigned int i = 0; i < NUM_STATS; i++) {
         printf("\n\t");
         for (unsigned int j = 0; j < NUM_STAT_VALUES; j++) {
@@ -46,11 +46,10 @@ int main(int argc, char *argv[]) {
         }
       }
       printf("\n");
-      Inventory inv = game->GetParty()->GetMember(m)->GetInventory();
-      printf("inventory (%ld): ", inv.GetItems().size());
-      for (std::list<const InventoryItem *>::iterator it = inv.GetItems().begin(); it != inv.GetItems().end(); ++it) {
+      Inventory *inv = game->GetParty()->GetMember(m)->GetInventory();
+      for (std::list<const InventoryItem *>::iterator it = inv->GetItems().begin(); it != inv->GetItems().end(); ++it) {
+        printf("\t%-24s %3d\n", game->GetObjectInfo((*it)->GetId()).name.c_str(), (*it)->GetValue());
       }
-      printf("\n");
     }
     printf("active:");
     for (unsigned int i = 0; i < game->GetParty()->GetNumActiveMembers(); i++) {
