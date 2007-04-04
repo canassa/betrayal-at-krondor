@@ -55,12 +55,14 @@ class BufferFull: public Exception {
 class CompressionError: public Exception {
   public:
     CompressionError(const std::string &file, const unsigned int line, const std::string &msg = "");
+    CompressionError(const std::string &file, const unsigned int line, const std::string &msg, const unsigned int value);
     virtual ~CompressionError() throw ();
 };
 
 class DataCorruption: public Exception {
   public:
     DataCorruption(const std::string &file, const unsigned int line, const std::string &msg = "");
+    DataCorruption(const std::string &file, const unsigned int line, const std::string &msg, const unsigned int value);
     virtual ~DataCorruption() throw ();
 };
 
@@ -73,6 +75,7 @@ class FileNotFound: public Exception {
 class IndexOutOfRange: public Exception {
   public:
     IndexOutOfRange(const std::string &file, const unsigned int line, const std::string &msg = "");
+    IndexOutOfRange(const std::string &file, const unsigned int line, const std::string &msg, const unsigned int value);
     virtual ~IndexOutOfRange() throw ();
 };
 

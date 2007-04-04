@@ -82,11 +82,19 @@ CompressionError::CompressionError(const std::string &file, const unsigned int l
 : Exception(file, line, COMPRESSION_ERROR + " " + msg) {
 }
 
+CompressionError::CompressionError(const std::string &file, const unsigned int line, const std::string &msg, const unsigned int value)
+: Exception(file, line, COMPRESSION_ERROR + " " + msg, value) {
+}
+
 CompressionError::~CompressionError() throw() {
 }
 
 DataCorruption::DataCorruption(const std::string &file, const unsigned int line, const std::string &msg)
 : Exception(file, line, DATA_CORRUPTION + " " + msg) {
+}
+
+DataCorruption::DataCorruption(const std::string &file, const unsigned int line, const std::string &msg, const unsigned int value)
+: Exception(file, line, DATA_CORRUPTION + " " + msg, value) {
 }
 
 DataCorruption::~DataCorruption() throw() {
@@ -101,6 +109,10 @@ FileNotFound::~FileNotFound() throw() {
 
 IndexOutOfRange::IndexOutOfRange(const std::string &file, const unsigned int line, const std::string &msg)
 : Exception(file, line, INDEX_OUT_OF_RANGE + " " + msg) {
+}
+
+IndexOutOfRange::IndexOutOfRange(const std::string &file, const unsigned int line, const std::string &msg, const unsigned int value)
+: Exception(file, line, INDEX_OUT_OF_RANGE + " " + msg, value) {
 }
 
 IndexOutOfRange::~IndexOutOfRange() throw() {
