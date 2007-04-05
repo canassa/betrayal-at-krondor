@@ -162,7 +162,7 @@ GameResource::Load(FileBuffer *buffer)
             case OT_RESTORATIVES:
               item = new UsableInventoryItem(id, value);
               break;
-            case OT_AMMUNITION:
+            case OT_UNSPECIFIED:
             case OT_KEY:
             case OT_TOOL:
             case OT_BOWSTRING:
