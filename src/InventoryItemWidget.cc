@@ -19,12 +19,15 @@
 
 #include "Exception.h"
 #include "InventoryItemWidget.h"
+#include "MousePointerManager.h"
 
 InventoryItemWidget::InventoryItemWidget(const Rectangle &r, const int a)
 : ActiveWidget(r, a)
 , iconImage(0)
 , pressed(false)
 , selected(false)
+, xOffset(0)
+, yOffset(0)
 {
 }
 
@@ -45,10 +48,20 @@ void
 InventoryItemWidget::Draw()
 {
   if (IsVisible()) {
+    int x = 0;
+    int y = 0;
     if (selected) {
     }
+    if (pressed) {
+      MousePointer *mp = MousePointerManager::GetInstance()->GetCurrentPointer();
+      x = mp->GetXPos() + xOffset;
+      y = mp->GetYPos() + yOffset;
+    } else {
+      x = rect.GetXPos();
+      y = rect.GetYPos();
+    }
     if (iconImage) {
-      iconImage->Draw(rect.GetXPos(), rect.GetYPos() + 1, 0);
+      iconImage->Draw(x, y + 1, 0);
     }
   }
 }
@@ -58,6 +71,14 @@ InventoryItemWidget::LeftClick(const bool toggle)
 {
   if (IsVisible()) {
     pressed = toggle;
+    if (pressed) {
+      MousePointer *mp = MousePointerManager::GetInstance()->GetCurrentPointer();
+      xOffset = rect.GetXPos() - mp->GetXPos();
+      yOffset = rect.GetYPos() - mp->GetYPos();
+    } else {
+      xOffset = 0;
+      yOffset = 0;
+    }
     if (toggle) {
       GenerateActionEvent(GetAction());
     }

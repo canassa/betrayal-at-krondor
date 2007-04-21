@@ -34,6 +34,8 @@ class InventoryItemWidget
     Image *iconImage;
     bool pressed;
     bool selected;
+    int xOffset;
+    int yOffset;
   public:
     InventoryItemWidget(const Rectangle &r, const int a);
     virtual ~InventoryItemWidget();

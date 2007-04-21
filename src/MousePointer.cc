@@ -39,6 +39,18 @@ MousePointer::~MousePointer()
 {
 }
 
+int
+MousePointer::GetXPos() const
+{
+  return xPos;
+}
+
+int
+MousePointer::GetYPos() const
+{
+  return yPos;
+}
+
 void
 MousePointer::SetPointerType(MousePointerType mpt)
 {
