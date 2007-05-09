@@ -148,6 +148,14 @@ WidgetFactory::CreateImage(const Rectangle &r, Image *img, const Flipping flip)
   return image;
 }
 
+InventoryItemWidget*
+WidgetFactory::CreateInventoryItem(const Rectangle &r, Image *img, const int a)
+{
+  InventoryItemWidget* invitem = new InventoryItemWidget(r, a);
+  invitem->SetImage(img);
+  return invitem;
+}
+
 PortraitWidget*
 WidgetFactory::CreatePortrait(const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb)
 {

@@ -34,6 +34,7 @@
 #include "ImageButtonWidget.h"
 #include "ImageResource.h"
 #include "ImageWidget.h"
+#include "InventoryItemWidget.h"
 #include "LabelResource.h"
 #include "MapViewWidget.h"
 #include "PanelWidget.h"
@@ -61,6 +62,7 @@ class WidgetFactory {
     TextWidget* CreateLabel(LabelData& data, FontResource& fnt, const int panelWidth);
     BadgeWidget* CreateBadge(const Rectangle &r, const std::string& s, Font *f);
     ImageWidget* CreateImage(const Rectangle &r, Image *img, const Flipping flip = NONE);
+    InventoryItemWidget* CreateInventoryItem(const Rectangle &r, Image *img, const int a);
     PortraitWidget* CreatePortrait(const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb);
     RatingsWidget* CreateRatings(const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb, Font *f);
     SkillsWidget* CreateSkills(const Rectangle &r, PlayerCharacter *pc, Image *sw, Image *bl, Font *f);
