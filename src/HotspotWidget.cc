@@ -29,21 +29,6 @@ HotspotWidget::~HotspotWidget()
 {
 }
 
-int
-HotspotWidget::GetAction() const
-{
-  return action;
-}
-
-void
-HotspotWidget::GenerateActionEvent(const int a)
-{
-  ActionEvent ae(a);
-  for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it) {
-    (*it)->ActionPerformed(ae);
-  }
-}
-
 void
 HotspotWidget::Focus()
 {

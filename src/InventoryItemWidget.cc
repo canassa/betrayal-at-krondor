@@ -67,6 +67,11 @@ InventoryItemWidget::Draw()
 }
 
 void
+InventoryItemWidget::Focus()
+{
+}
+
+void
 InventoryItemWidget::LeftClick(const bool toggle)
 {
   if (IsVisible()) {

@@ -35,13 +35,11 @@ class ButtonWidget
   public:
     ButtonWidget(const Rectangle &r, const int a);
     virtual ~ButtonWidget();
-    int GetAction() const;
     void SetEnabled(const bool toggle);
     bool IsEnabled() const;
     void SetPressed(const bool toggle);
     bool IsPressed() const;
     void Focus();
-    void GenerateActionEvent(const int a);
     virtual void LeftClick(const bool toggle) = 0;
     virtual void RightClick(const bool toggle) = 0;
 };

@@ -32,8 +32,6 @@ class HotspotWidget
   public:
     HotspotWidget(const Rectangle &r, const int a);
     virtual ~HotspotWidget();
-    int GetAction() const;
-    void GenerateActionEvent(const int a);
     void Focus();
     void LeftClick(const bool toggle);
     void RightClick(const bool toggle);

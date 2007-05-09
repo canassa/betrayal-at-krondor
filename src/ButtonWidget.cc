@@ -32,12 +32,6 @@ ButtonWidget::~ButtonWidget()
 {
 }
 
-int
-ButtonWidget::GetAction() const
-{
-  return action;
-}
-
 void
 ButtonWidget::SetEnabled(const bool toggle)
 {
@@ -66,13 +60,4 @@ void
 ButtonWidget::Focus()
 {
   MediaToolkit::GetInstance()->GetVideo()->SetPointerPosition(rect.GetXPos() + rect.GetWidth() / 2, rect.GetYPos() + rect.GetHeight() / 2);
-}
-
-void
-ButtonWidget::GenerateActionEvent(const int a)
-{
-  ActionEvent ae(a);
-  for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it) {
-    (*it)->ActionPerformed(ae);
-  }
 }

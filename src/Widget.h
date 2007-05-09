@@ -51,6 +51,7 @@ class Widget {
     Widget(const Rectangle &r);
     virtual ~Widget();
     Rectangle& GetRectangle();
+    void SetPosition(const int x, const int y);
     void SetVisible(const bool toggle);
     bool IsVisible() const;
     virtual void Draw() = 0;
@@ -64,9 +65,10 @@ class ActiveWidget
   public:
     ActiveWidget(const Rectangle &r, const int a);
     ~ActiveWidget();
-    void SetPosition(const int x, const int y);
+    int GetAction() const;
     void AddActionListener(ActionEventListener *ael);
     void RemoveActionListener(ActionEventListener *ael);
+    void GenerateActionEvent(const int a);
     virtual void Focus() = 0;
     virtual void LeftClick(const bool toggle) = 0;
     virtual void RightClick(const bool toggle) = 0;

@@ -36,6 +36,13 @@ Widget::GetRectangle()
 }
 
 void
+Widget::SetPosition(const int x, const int y)
+{
+  rect.SetXPos(x);
+  rect.SetYPos(y);
+}
+
+void
 Widget::SetVisible(const bool toggle)
 {
   visible = toggle;
@@ -60,11 +67,19 @@ ActiveWidget::~ActiveWidget()
   actionListeners.clear();
 }
 
-void
-ActiveWidget::SetPosition(const int x, const int y)
+int
+ActiveWidget::GetAction() const
 {
-  rect.SetXPos(x);
-  rect.SetYPos(y);
+  return action;
+}
+
+void
+ActiveWidget::GenerateActionEvent(const int a)
+{
+  ActionEvent ae(a);
+  for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it) {
+    (*it)->ActionPerformed(ae);
+  }
 }
 
 void

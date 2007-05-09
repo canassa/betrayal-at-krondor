@@ -39,12 +39,11 @@ class InventoryItemWidget
   public:
     InventoryItemWidget(const Rectangle &r, const int a);
     virtual ~InventoryItemWidget();
-    int GetAction() const;
     void SetImage(Image *icon);
     void Draw();
+    void Focus();
     void LeftClick(const bool toggle);
     void RightClick(const bool toggle);
-    void GenerateActionEvent(const int a);
 };
 
 #endif
