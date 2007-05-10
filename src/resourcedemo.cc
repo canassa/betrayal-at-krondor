@@ -20,6 +20,10 @@
 #include <iostream>
 #include <cstring>
 
+#if defined( __MACOS__) || defined(__MACOSX__)
+#include "SDL.h"
+#endif
+
 #include "Directories.h"
 #include "Exception.h"
 #include "TestApplication.h"
