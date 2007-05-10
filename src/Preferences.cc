@@ -38,6 +38,7 @@ Preferences::SetDefaults()
   sound = true;
   music = true;
   combatMusic = true;
+  cdMusic = false;
   introduction = true;
 }
 
@@ -136,6 +137,18 @@ void
 Preferences::SetCombatMusic(const bool toggle)
 {
   combatMusic = toggle;
+}
+
+bool
+Preferences::GetCdMusic() const
+{
+  return cdMusic;
+}
+
+void
+Preferences::SetCdMusic(const bool toggle)
+{
+  cdMusic = toggle;
 }
 
 bool

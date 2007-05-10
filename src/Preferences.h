@@ -52,6 +52,7 @@ class Preferences {
     bool sound;
     bool music;
     bool combatMusic;
+    bool cdMusic;
     bool introduction;
   public:
     Preferences();
@@ -72,6 +73,8 @@ class Preferences {
     void SetMusic(const bool toggle);
     bool GetCombatMusic() const;
     void SetCombatMusic(const bool toggle);
+    bool GetCdMusic() const;
+    void SetCdMusic(const bool toggle);
     bool GetIntroduction() const;
     void SetIntroduction(const bool toggle);
 };

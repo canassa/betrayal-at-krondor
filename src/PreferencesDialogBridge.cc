@@ -115,6 +115,9 @@ PreferencesDialogBridge::GetSelectState(const unsigned int action)
     case PREF_COMBAT_MUSIC:
       return prefs.GetCombatMusic();
       break;
+    case PREF_CD_MUSIC:
+      return prefs.GetCdMusic();
+      break;
     case PREF_INTRODUCTION:
       return prefs.GetIntroduction();
       break;
@@ -176,6 +179,9 @@ PreferencesDialogBridge::SetSelectState(const unsigned int action)
       break;
     case PREF_COMBAT_MUSIC:
       prefs.SetCombatMusic(!prefs.GetCombatMusic());
+      break;
+    case PREF_CD_MUSIC:
+      prefs.SetCdMusic(!prefs.GetCdMusic());
       break;
     case PREF_INTRODUCTION:
       prefs.SetIntroduction(!prefs.GetIntroduction());

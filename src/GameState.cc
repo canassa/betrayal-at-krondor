@@ -995,6 +995,7 @@ GameStatePreferences::Execute()
     case PREF_SOUND:
     case PREF_MUSIC:
     case PREF_COMBAT_MUSIC:
+    case PREF_CD_MUSIC:
     case PREF_INTRODUCTION:
       PreferencesDialogBridge::GetInstance()->SetSelectState(action);
       break;

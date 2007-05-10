@@ -128,6 +128,7 @@ static const unsigned int PREF_SOUND        = 205;
 static const unsigned int PREF_MUSIC        = 206;
 static const unsigned int PREF_COMBAT_MUSIC = 207;
 static const unsigned int PREF_INTRODUCTION = 208;
+static const unsigned int PREF_CD_MUSIC     = 209;
 
 static const unsigned int SAVE_REMOVE_DIR   = 195;
 static const unsigned int SAVE_REMOVE_GAME  = 194;
