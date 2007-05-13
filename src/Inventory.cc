@@ -17,6 +17,7 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "Exception.h"
 #include "Inventory.h"
 
 Inventory::Inventory()
@@ -26,24 +27,75 @@ Inventory::Inventory()
 
 Inventory::~Inventory()
 {
-  for (std::list<const InventoryItem *>::iterator it = items.begin(); it != items.end(); ++it) {
+  for (std::list<InventoryItem *>::iterator it = items.begin(); it != items.end(); ++it) {
     delete (*it);
   }
   items.clear();
 }
 
-std::list<const InventoryItem *>&
-Inventory::GetItems()
+unsigned int
+Inventory::GetSize() const
 {
-  return items;
+  return items.size();
 }
 
-std::list<const InventoryItem *>::iterator
-Inventory::FindExistingMultiple(const InventoryItem* item)
+InventoryItem *
+Inventory::GetItem(const unsigned int n)
 {
-  std::list<const InventoryItem *>::iterator it = items.begin();
+  std::list<InventoryItem *>::iterator it = items.begin();
+  for (unsigned int i =0; i < n;i++) ++it;
+  return *it;
+}
+
+std::list<InventoryItem *>::iterator
+Inventory::Find(SingleInventoryItem* item)
+{
+  std::list<InventoryItem *>::iterator it = items.begin();
   while (it != items.end()) {
-    if (*((MultipleInventoryItem *)(*it)) == *((MultipleInventoryItem *)item)) {
+    SingleInventoryItem *sii = dynamic_cast<SingleInventoryItem *>(*it);
+    if (sii && (*sii == *item)) {
+      break;
+    }
+    ++it;
+  }
+  return it;
+}
+
+std::list<InventoryItem *>::iterator
+Inventory::Find(MultipleInventoryItem* item)
+{
+  std::list<InventoryItem *>::iterator it = items.begin();
+  while (it != items.end()) {
+    MultipleInventoryItem *mii = dynamic_cast<MultipleInventoryItem *>(*it);
+    if (mii && (*mii == *item)) {
+      break;
+    }
+    ++it;
+  }
+  return it;
+}
+
+std::list<InventoryItem *>::iterator
+Inventory::Find(RepairableInventoryItem* item)
+{
+  std::list<InventoryItem *>::iterator it = items.begin();
+  while (it != items.end()) {
+    RepairableInventoryItem *rii = dynamic_cast<RepairableInventoryItem *>(*it);
+    if (rii && (*rii == *item)) {
+      break;
+    }
+    ++it;
+  }
+  return it;
+}
+
+std::list<InventoryItem *>::iterator
+Inventory::Find(UsableInventoryItem* item)
+{
+  std::list<InventoryItem *>::iterator it = items.begin();
+  while (it != items.end()) {
+    UsableInventoryItem *uii = dynamic_cast<UsableInventoryItem *>(*it);
+    if (uii && (*uii == *item)) {
       break;
     }
     ++it;
@@ -52,26 +104,64 @@ Inventory::FindExistingMultiple(const InventoryItem* item)
 }
 
 void
-Inventory::Add(const InventoryItem* item)
+Inventory::Add(SingleInventoryItem* item)
 {
-  std::list<const InventoryItem *>::iterator it = FindExistingMultiple(item);
-  if (it == items.end()) {
-    items.push_back(item);
+  items.push_back(item);
+}
+
+void
+Inventory::Remove(SingleInventoryItem* item)
+{
+  items.remove(item);
+}
+
+void
+Inventory::Add(MultipleInventoryItem* item)
+{
+  std::list<InventoryItem *>::iterator it = Find(item);
+  if (it != items.end()) {
+    MultipleInventoryItem *mii = dynamic_cast<MultipleInventoryItem *>(*it);
+    mii->Add(item->GetValue());
   } else {
-    ((MultipleInventoryItem *)(*it))->Add(item->GetValue());
+    items.push_back(item);
   }
 }
 
 void
-Inventory::Remove(const InventoryItem* item)
+Inventory::Remove(MultipleInventoryItem* item)
 {
-  std::list<const InventoryItem *>::iterator it = FindExistingMultiple(item);
-  if (it == items.end()) {
-    items.remove(item);
-  } else {
-    ((MultipleInventoryItem *)(*it))->Remove(item->GetValue());
-    if ((*it)->GetValue() == 0) {
-      items.erase(it);
+  std::list<InventoryItem *>::iterator it = Find(item);
+  if (it != items.end()) {
+    MultipleInventoryItem *mii = dynamic_cast<MultipleInventoryItem *>(*it);
+    mii->Remove(item->GetValue());
+    if (mii->GetValue() == 0) {
+      items.remove(item);
     }
+  } else {
+    throw UnexpectedValue(__FILE__, __LINE__, "items.end()");
   }
+}
+
+void
+Inventory::Add(RepairableInventoryItem* item)
+{
+  items.push_back(item);
+}
+
+void
+Inventory::Remove(RepairableInventoryItem* item)
+{
+  items.remove(item);
+}
+
+void
+Inventory::Add(UsableInventoryItem* item)
+{
+  items.push_back(item);
+}
+
+void
+Inventory::Remove(UsableInventoryItem* item)
+{
+  items.remove(item);
 }

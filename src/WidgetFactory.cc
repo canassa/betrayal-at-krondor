@@ -156,6 +156,21 @@ WidgetFactory::CreateInventoryItem(const Rectangle &r, Image *img, const int a)
   return invitem;
 }
 
+ContainerWidget *
+WidgetFactory::CreateInventory(const Rectangle &r, PlayerCharacter *pc, ImageResource& img)
+{
+  ContainerWidget *invwidget = new ContainerWidget(r);
+  Inventory* inv = pc->GetInventory();
+  for (unsigned int i = 0; i < inv->GetSize(); i++) {
+    InventoryItem *item = inv->GetItem(i);
+    if (!item->IsEquiped()) {
+      InventoryItemWidget *invitem = CreateInventoryItem(r, img.GetImage(item->GetId()), INVENTORY_OFFSET + i);
+      invwidget->AddActiveWidget(invitem);
+    }
+  }
+  return invwidget;
+}
+
 PortraitWidget*
 WidgetFactory::CreatePortrait(const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb)
 {

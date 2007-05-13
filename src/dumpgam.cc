@@ -47,8 +47,9 @@ int main(int argc, char *argv[]) {
       }
       printf("\n");
       Inventory *inv = game->GetParty()->GetMember(m)->GetInventory();
-      for (std::list<const InventoryItem *>::iterator it = inv->GetItems().begin(); it != inv->GetItems().end(); ++it) {
-        printf("\t%-24s %3d\n", game->GetObjectInfo((*it)->GetId()).name.c_str(), (*it)->GetValue());
+      for (unsigned int i = 0; i < inv->GetSize(); i++) {
+        const InventoryItem *item = inv->GetItem(i);
+        printf("\t%-24s %3d\n", game->GetObjectInfo(item->GetId()).name.c_str(), item->GetValue());
       }
     }
     printf("active:");

@@ -30,14 +30,24 @@
 
 class Inventory {
   private:
-    std::list<const InventoryItem *> items;
-    std::list<const InventoryItem *>::iterator FindExistingMultiple(const InventoryItem *item);
+    std::list<InventoryItem *> items;
+    std::list<InventoryItem *>::iterator Find(SingleInventoryItem* item);
+    std::list<InventoryItem *>::iterator Find(MultipleInventoryItem* item);
+    std::list<InventoryItem *>::iterator Find(RepairableInventoryItem* item);
+    std::list<InventoryItem *>::iterator Find(UsableInventoryItem* item);
   public:
     Inventory();
     ~Inventory();
-    std::list<const InventoryItem *>& GetItems();
-    void Add(const InventoryItem *item);
-    void Remove(const InventoryItem *item);
+    unsigned int GetSize() const;
+    InventoryItem* GetItem(const unsigned int n);
+    void Add(SingleInventoryItem *item);
+    void Remove(SingleInventoryItem *item);
+    void Add(MultipleInventoryItem *item);
+    void Remove(MultipleInventoryItem *item);
+    void Add(RepairableInventoryItem *item);
+    void Remove(RepairableInventoryItem *item);
+    void Add(UsableInventoryItem *item);
+    void Remove(UsableInventoryItem *item);
 };
 
 #endif

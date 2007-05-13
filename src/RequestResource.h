@@ -34,11 +34,11 @@ static const unsigned int REQ_IMAGEBUTTON   = 3;
 static const unsigned int REQ_SELECT        = 4;
 static const unsigned int REQ_TEXTBUTTON    = 6;
 
-static const unsigned int ACT_ESCAPE        = 512;
-static const unsigned int ACT_UP            = 513;
-static const unsigned int ACT_DOWN          = 514;
-static const unsigned int ACT_LEFT          = 515;
-static const unsigned int ACT_RIGHT         = 516;
+static const unsigned int ACT_ESCAPE        = 1024;
+static const unsigned int ACT_UP            = 1025;
+static const unsigned int ACT_DOWN          = 1026;
+static const unsigned int ACT_LEFT          = 1027;
+static const unsigned int ACT_RIGHT         = 1028;
 
 static const unsigned int CAMP_EXIT         = 192;
 static const unsigned int CAMP_UNTIL_HEALED = 193;

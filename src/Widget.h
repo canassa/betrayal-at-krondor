@@ -41,7 +41,9 @@ static const int BUTTON_COLOR_PRESSED = 11;
 static const int POPUP_COLOR          = 14;
 static const int RATINGS_TEXT_COLOR   = 159;
 
-static const int RIGHT_CLICK_OFFSET   = 256;
+static const int INVENTORY_OFFSET     = 256;
+
+static const int RIGHT_CLICK_OFFSET   = 512;
 
 class Widget {
   protected:

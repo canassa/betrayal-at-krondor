@@ -63,6 +63,7 @@ class WidgetFactory {
     BadgeWidget* CreateBadge(const Rectangle &r, const std::string& s, Font *f);
     ImageWidget* CreateImage(const Rectangle &r, Image *img, const Flipping flip = NONE);
     InventoryItemWidget* CreateInventoryItem(const Rectangle &r, Image *img, const int a);
+    ContainerWidget *CreateInventory(const Rectangle &r, PlayerCharacter *pc, ImageResource& img);
     PortraitWidget* CreatePortrait(const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb);
     RatingsWidget* CreateRatings(const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb, Font *f);
     SkillsWidget* CreateSkills(const Rectangle &r, PlayerCharacter *pc, Image *sw, Image *bl, Font *f);

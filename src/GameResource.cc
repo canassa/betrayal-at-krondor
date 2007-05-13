@@ -1,4 +1,4 @@
-/*
+  /*
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or (at
@@ -143,15 +143,22 @@ GameResource::Load(FileBuffer *buffer)
           unsigned int id = buffer->GetUint8();
           unsigned int value = buffer->GetUint8();
           unsigned int flags = buffer->GetUint16LE();
-          InventoryItem *item;
           switch (game->GetObjectInfo(id).type) {
             case OT_SWORD:
             case OT_CROSSBOW:
             case OT_ARMOR:
-              item = new RepairableInventoryItem(id, value);
+              {
+                RepairableInventoryItem *item = new RepairableInventoryItem(id, value);
+                item->Equip(flags & EQUIPED_MASK);
+                inv->Add(item);
+              }
               break;
             case OT_STAFF:
-              item = new SingleInventoryItem(id);
+              {
+                SingleInventoryItem *item = new SingleInventoryItem(id);
+                item->Equip(flags & EQUIPED_MASK);
+                inv->Add(item);
+              }
               break;
             case OT_WEAPON_OIL:
             case OT_ARMOR_OIL:
@@ -160,7 +167,10 @@ GameResource::Load(FileBuffer *buffer)
             case OT_BOOK:
             case OT_POTION:
             case OT_RESTORATIVES:
-              item = new UsableInventoryItem(id, value);
+              {
+                UsableInventoryItem *item = new UsableInventoryItem(id, value);
+                inv->Add(item);
+              }
               break;
             case OT_UNSPECIFIED:
             case OT_KEY:
@@ -172,7 +182,10 @@ GameResource::Load(FileBuffer *buffer)
             case OT_INGREDIENT:
             case OT_RATION:
             case OT_FOOD:
-              item = new MultipleInventoryItem(id, value);
+              {
+                MultipleInventoryItem *item = new MultipleInventoryItem(id, value);
+                inv->Add(item);
+              }
               break;
             case OT_UNKNOWN5:
             case OT_UNKNOWN6:
@@ -184,8 +197,6 @@ GameResource::Load(FileBuffer *buffer)
               throw DataCorruption(__FILE__, __LINE__, "invalid object type: ", game->GetObjectInfo(id).type);
               break;
           }
-          item->Equip(flags & EQUIPED_MASK);
-          inv->Add(item);
         } else {
           buffer->Skip(4);
         }
@@ -241,15 +252,14 @@ GameResource::Save(FileBuffer *buffer)
     for (unsigned int m = 0; m < game->GetParty()->GetNumMembers(); m++) {
       buffer->Skip(12);
       Inventory *inv = game->GetParty()->GetMember(m)->GetInventory();
-      buffer->PutUint8(inv->GetItems().size());
+      buffer->PutUint8(inv->GetSize());
       buffer->PutUint8(INVENTORY_SLOTS);
-      std::list<const InventoryItem *>::iterator it = inv->GetItems().begin();
       for (unsigned int i = 0; i < INVENTORY_SLOTS; i++) {
-        if (it != inv->GetItems().end()) {
-          buffer->PutUint8((*it)->GetId());
-          buffer->PutUint8((*it)->GetValue());
-          buffer->PutUint16LE((*it)->GetFlags());
-          ++it;
+        if (i < inv->GetSize()) {
+          const InventoryItem *item = inv->GetItem(i);
+          buffer->PutUint8(item->GetId());
+          buffer->PutUint8(item->GetValue());
+          buffer->PutUint16LE(item->GetFlags());
         } else {
           buffer->PutUint32LE(0);
         }
