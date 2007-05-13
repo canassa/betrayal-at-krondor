@@ -1,3 +1,8 @@
+2007-05-??, xbak-0.1.2:
+* Added some GUI widgets for inventory.
+* Character inventory can be loaded from saved games.
+* Several bug fixes.
+
 2007-03-29, xbak-0.1.1:
 * Slightly improved the 3D engine.
 * Preferences dialog is completed, and some preferences are effective.
