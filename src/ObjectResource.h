@@ -74,7 +74,7 @@ typedef struct _ObjectInfo {
   int accuracySwing;
   int strengthThrust;
   int accuracyThrust;
-  int group;
+  unsigned int inventorySize;
   Race race;
   ObjectType type;
   unsigned int effectmask;

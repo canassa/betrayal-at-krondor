@@ -64,7 +64,7 @@ ObjectResource::Load(FileBuffer *buffer)
       obj.accuracySwing = buffer->GetSint16LE();
       obj.accuracyThrust = buffer->GetSint16LE();
       buffer->Skip(2);
-      obj.group = buffer->GetSint16LE();
+      obj.inventorySize = buffer->GetUint16LE();
       buffer->Skip(4);
       obj.race = (Race)(buffer->GetUint16LE());
       buffer->Skip(2);
