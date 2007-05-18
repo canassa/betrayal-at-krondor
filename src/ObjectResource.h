@@ -74,12 +74,12 @@ typedef struct _ObjectInfo {
   int accuracySwing;
   int strengthThrust;
   int accuracyThrust;
-  unsigned int inventorySize;
+  unsigned int imageSize;
   Race race;
   ObjectType type;
-  unsigned int effectmask;
+  unsigned int effectMask;
   int effect;
-  unsigned int modifiermask;
+  unsigned int modifierMask;
   int modifier;
 } ObjectInfo;
 

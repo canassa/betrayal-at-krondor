@@ -85,15 +85,15 @@ ObjectResource::Load(FileBuffer *buffer)
       obj.accuracySwing = buffer->GetSint16LE();
       obj.accuracyThrust = buffer->GetSint16LE();
       buffer->Skip(2);
-      obj.inventorySize = buffer->GetUint16LE();
+      obj.imageSize = buffer->GetUint16LE();
       buffer->Skip(4);
       obj.race = (Race)(buffer->GetUint16LE());
       buffer->Skip(2);
       obj.type = (ObjectType)(buffer->GetUint16LE());
-      obj.effectmask = buffer->GetUint16LE();
+      obj.effectMask = buffer->GetUint16LE();
       obj.effect = buffer->GetSint16LE();
       buffer->Skip(4);
-      obj.modifiermask = buffer->GetUint16LE();
+      obj.modifierMask = buffer->GetUint16LE();
       obj.modifier = buffer->GetSint16LE();
       buffer->Skip(6);
       data.push_back(obj);
