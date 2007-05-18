@@ -28,13 +28,22 @@
 
 #include "InventoryItem.h"
 
+class InventoryData {
+  public:
+    unsigned int size;
+    InventoryItem *item;
+    InventoryData(unsigned int n, InventoryItem *ii): size(n), item(ii) {};
+    bool operator==(const InventoryData &invdata) const { return (invdata.size < size) && (invdata.item < item); };
+    bool operator<(const InventoryData &invdata) const { return invdata.size < size; };
+};
+
 class Inventory {
   private:
-    std::list<InventoryItem *> items;
-    std::list<InventoryItem *>::iterator Find(SingleInventoryItem* item);
-    std::list<InventoryItem *>::iterator Find(MultipleInventoryItem* item);
-    std::list<InventoryItem *>::iterator Find(RepairableInventoryItem* item);
-    std::list<InventoryItem *>::iterator Find(UsableInventoryItem* item);
+    std::list<InventoryData> items;
+    std::list<InventoryData>::iterator Find(SingleInventoryItem* item);
+    std::list<InventoryData>::iterator Find(MultipleInventoryItem* item);
+    std::list<InventoryData>::iterator Find(RepairableInventoryItem* item);
+    std::list<InventoryData>::iterator Find(UsableInventoryItem* item);
   public:
     Inventory();
     ~Inventory();

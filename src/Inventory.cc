@@ -19,6 +19,7 @@
 
 #include "Exception.h"
 #include "Inventory.h"
+#include "ObjectResource.h"
 
 Inventory::Inventory()
 : items()
@@ -27,8 +28,8 @@ Inventory::Inventory()
 
 Inventory::~Inventory()
 {
-  for (std::list<InventoryItem *>::iterator it = items.begin(); it != items.end(); ++it) {
-    delete (*it);
+  for (std::list<InventoryData>::iterator it = items.begin(); it != items.end(); ++it) {
+    delete it->item;
   }
   items.clear();
 }
@@ -42,17 +43,17 @@ Inventory::GetSize() const
 InventoryItem *
 Inventory::GetItem(const unsigned int n)
 {
-  std::list<InventoryItem *>::iterator it = items.begin();
-  for (unsigned int i =0; i < n;i++) ++it;
-  return *it;
+  std::list<InventoryData>::iterator it = items.begin();
+  for (unsigned int i =0; i < n; i++) ++it;
+  return it->item;
 }
 
-std::list<InventoryItem *>::iterator
+std::list<InventoryData>::iterator
 Inventory::Find(SingleInventoryItem* item)
 {
-  std::list<InventoryItem *>::iterator it = items.begin();
+  std::list<InventoryData>::iterator it = items.begin();
   while (it != items.end()) {
-    SingleInventoryItem *sii = dynamic_cast<SingleInventoryItem *>(*it);
+    SingleInventoryItem *sii = dynamic_cast<SingleInventoryItem *>(it->item);
     if (sii && (*sii == *item)) {
       break;
     }
@@ -61,12 +62,12 @@ Inventory::Find(SingleInventoryItem* item)
   return it;
 }
 
-std::list<InventoryItem *>::iterator
+std::list<InventoryData>::iterator
 Inventory::Find(MultipleInventoryItem* item)
 {
-  std::list<InventoryItem *>::iterator it = items.begin();
+  std::list<InventoryData>::iterator it = items.begin();
   while (it != items.end()) {
-    MultipleInventoryItem *mii = dynamic_cast<MultipleInventoryItem *>(*it);
+    MultipleInventoryItem *mii = dynamic_cast<MultipleInventoryItem *>(it->item);
     if (mii && (*mii == *item)) {
       break;
     }
@@ -75,12 +76,12 @@ Inventory::Find(MultipleInventoryItem* item)
   return it;
 }
 
-std::list<InventoryItem *>::iterator
+std::list<InventoryData>::iterator
 Inventory::Find(RepairableInventoryItem* item)
 {
-  std::list<InventoryItem *>::iterator it = items.begin();
+  std::list<InventoryData>::iterator it = items.begin();
   while (it != items.end()) {
-    RepairableInventoryItem *rii = dynamic_cast<RepairableInventoryItem *>(*it);
+    RepairableInventoryItem *rii = dynamic_cast<RepairableInventoryItem *>(it->item);
     if (rii && (*rii == *item)) {
       break;
     }
@@ -89,12 +90,12 @@ Inventory::Find(RepairableInventoryItem* item)
   return it;
 }
 
-std::list<InventoryItem *>::iterator
+std::list<InventoryData>::iterator
 Inventory::Find(UsableInventoryItem* item)
 {
-  std::list<InventoryItem *>::iterator it = items.begin();
+  std::list<InventoryData>::iterator it = items.begin();
   while (it != items.end()) {
-    UsableInventoryItem *uii = dynamic_cast<UsableInventoryItem *>(*it);
+    UsableInventoryItem *uii = dynamic_cast<UsableInventoryItem *>(it->item);
     if (uii && (*uii == *item)) {
       break;
     }
@@ -106,36 +107,38 @@ Inventory::Find(UsableInventoryItem* item)
 void
 Inventory::Add(SingleInventoryItem* item)
 {
-  items.push_back(item);
+  items.push_back(InventoryData(-ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).inventorySize, item));
+  items.sort();
 }
 
 void
 Inventory::Remove(SingleInventoryItem* item)
 {
-  items.remove(item);
+  items.remove(InventoryData(-ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).inventorySize, item));
 }
 
 void
 Inventory::Add(MultipleInventoryItem* item)
 {
-  std::list<InventoryItem *>::iterator it = Find(item);
+  std::list<InventoryData>::iterator it = Find(item);
   if (it != items.end()) {
-    MultipleInventoryItem *mii = dynamic_cast<MultipleInventoryItem *>(*it);
+    MultipleInventoryItem *mii = dynamic_cast<MultipleInventoryItem *>(it->item);
     mii->Add(item->GetValue());
   } else {
-    items.push_back(item);
+    items.push_back(InventoryData(-ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).inventorySize, item));
+    items.sort();
   }
 }
 
 void
 Inventory::Remove(MultipleInventoryItem* item)
 {
-  std::list<InventoryItem *>::iterator it = Find(item);
+  std::list<InventoryData>::iterator it = Find(item);
   if (it != items.end()) {
-    MultipleInventoryItem *mii = dynamic_cast<MultipleInventoryItem *>(*it);
+    MultipleInventoryItem *mii = dynamic_cast<MultipleInventoryItem *>(it->item);
     mii->Remove(item->GetValue());
     if (mii->GetValue() == 0) {
-      items.remove(item);
+      items.remove(InventoryData(-ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).inventorySize, item));
     }
   } else {
     throw UnexpectedValue(__FILE__, __LINE__, "items.end()");
@@ -145,23 +148,25 @@ Inventory::Remove(MultipleInventoryItem* item)
 void
 Inventory::Add(RepairableInventoryItem* item)
 {
-  items.push_back(item);
+  items.push_back(InventoryData(-ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).inventorySize, item));
+  items.sort();
 }
 
 void
 Inventory::Remove(RepairableInventoryItem* item)
 {
-  items.remove(item);
+  items.remove(InventoryData(-ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).inventorySize, item));
 }
 
 void
 Inventory::Add(UsableInventoryItem* item)
 {
-  items.push_back(item);
+  items.push_back(InventoryData(-ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).inventorySize, item));
+  items.sort();
 }
 
 void
 Inventory::Remove(UsableInventoryItem* item)
 {
-  items.remove(item);
+  items.remove(InventoryData(-ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).inventorySize, item));
 }
