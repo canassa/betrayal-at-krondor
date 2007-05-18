@@ -20,6 +20,7 @@
 #include "Exception.h"
 #include "FileManager.h"
 #include "Game.h"
+#include "ObjectResource.h"
 #include "PlayerCharacter.h"
 #include "SceneFactory.h"
 
@@ -29,13 +30,10 @@ Game::Game()
 , party(0)
 , scene(0)
 , camera(0)
-, objectRes(0)
 , partyRes(0)
 , buttonImages(0)
 {
   try {
-    objectRes = new ObjectResource;
-    FileManager::GetInstance()->Load(objectRes, "OBJINFO.DAT");
     partyRes = new PartyResource;
     FileManager::GetInstance()->Load(partyRes, "PARTY.DAT");
     buttonImages = new ImageResource;
@@ -89,12 +87,6 @@ void
 Game::SetName(const std::string& s)
 {
   name = s;
-}
-
-ObjectInfo &
-Game::GetObjectInfo(const unsigned int n) const
-{
-  return objectRes->GetObjectInfo(n);
 }
 
 Party *

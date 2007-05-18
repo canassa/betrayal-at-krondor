@@ -23,6 +23,7 @@
 #include "Exception.h"
 #include "FileManager.h"
 #include "GameResource.h"
+#include "ObjectResource.h"
 
 int main(int argc, char *argv[]) {
   try {
@@ -49,7 +50,7 @@ int main(int argc, char *argv[]) {
       Inventory *inv = game->GetParty()->GetMember(m)->GetInventory();
       for (unsigned int i = 0; i < inv->GetSize(); i++) {
         const InventoryItem *item = inv->GetItem(i);
-        printf("\t%-24s %3d\n", game->GetObjectInfo(item->GetId()).name.c_str(), item->GetValue());
+        printf("\t%-24s %3d\n", ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).name.c_str(), item->GetValue());
       }
     }
     printf("active:");
@@ -58,6 +59,7 @@ int main(int argc, char *argv[]) {
     }
     printf("\n");
     delete gam;
+    ObjectResource::CleanUp();
     FileManager::CleanUp();
     Directories::CleanUp();
   } catch (Exception &e) {

@@ -19,6 +19,7 @@
 
 #include "Exception.h"
 #include "GameResource.h"
+#include "ObjectResource.h"
 
 static const unsigned int INVENTORY_SLOTS = 24;
 
@@ -143,7 +144,7 @@ GameResource::Load(FileBuffer *buffer)
           unsigned int id = buffer->GetUint8();
           unsigned int value = buffer->GetUint8();
           unsigned int flags = buffer->GetUint16LE();
-          switch (game->GetObjectInfo(id).type) {
+          switch (ObjectResource::GetInstance()->GetObjectInfo(id).type) {
             case OT_SWORD:
             case OT_CROSSBOW:
             case OT_ARMOR:
@@ -191,10 +192,10 @@ GameResource::Load(FileBuffer *buffer)
             case OT_UNKNOWN6:
             case OT_UNKNOWN14:
             case OT_UNKNOWN15:
-              throw DataCorruption(__FILE__, __LINE__, "unknown object type: ", game->GetObjectInfo(id).type);
+              throw DataCorruption(__FILE__, __LINE__, "unknown object type: ", ObjectResource::GetInstance()->GetObjectInfo(id).type);
               break;
             default:
-              throw DataCorruption(__FILE__, __LINE__, "invalid object type: ", game->GetObjectInfo(id).type);
+              throw DataCorruption(__FILE__, __LINE__, "invalid object type: ", ObjectResource::GetInstance()->GetObjectInfo(id).type);
               break;
           }
         } else {

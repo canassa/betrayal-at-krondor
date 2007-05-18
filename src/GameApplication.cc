@@ -29,6 +29,7 @@
 #include "MousePointerManager.h"
 #include "MoviePlayer.h"
 #include "MovieResource.h"
+#include "ObjectResource.h"
 #include "PaletteResource.h"
 #include "ScreenResource.h"
 #include "SDL_Toolkit.h"
@@ -78,6 +79,7 @@ GameApplication::~GameApplication()
   }
   MousePointerManager::CleanUp();
   MediaToolkit::CleanUp();
+  ObjectResource::CleanUp();
   SoundResource::CleanUp();
   FileManager::CleanUp();
 }

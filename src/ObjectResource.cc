@@ -18,7 +18,10 @@
  */
 
 #include "Exception.h"
+#include "FileManager.h"
 #include "ObjectResource.h"
+
+ObjectResource* ObjectResource::instance = 0;
 
 ObjectResource::ObjectResource()
 : data()
@@ -28,6 +31,24 @@ ObjectResource::ObjectResource()
 ObjectResource::~ObjectResource()
 {
   Clear();
+}
+
+ObjectResource*
+ObjectResource::GetInstance()
+{
+  if (!instance) {
+    instance = new ObjectResource();
+    FileManager::GetInstance()->Load(instance, "OBJINFO.DAT");
+  }
+  return instance;
+}
+
+void ObjectResource::CleanUp()
+{
+  if (instance) {
+    delete instance;
+    instance = 0;
+  }
 }
 
 unsigned int

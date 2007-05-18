@@ -24,21 +24,16 @@
 #include "FileManager.h"
 #include "ObjectResource.h"
 
-int main(int argc, char *argv[]) {
+int main()
+{
   try {
-    if (argc != 2) {
-      std::cerr << "Usage: " << argv[0] << " <OBJ-file>" << std::endl;
-      return 1;
-    }
-    ObjectResource *obj = new ObjectResource;
-    FileManager::GetInstance()->Load(obj, argv[1]);
-    for (unsigned int i = 0; i < obj->GetSize(); i++) {
-      ObjectInfo info = obj->GetObjectInfo(i);
+    for (unsigned int i = 0; i < ObjectResource::GetInstance()->GetSize(); i++) {
+      ObjectInfo info = ObjectResource::GetInstance()->GetObjectInfo(i);
       printf("%-30s: %04x %3d %5d %3d %3d %3d %3d %1d %1d %2d %04x %6d %04x %3d\n", info.name.c_str(), info.flags, info.level, info.value,
              info.strengthSwing, info.accuracySwing, info.strengthThrust, info.accuracyThrust, info.inventorySize, info.race, info.type,
              info.effectmask, info.effect, info.modifiermask, info.modifier);
     }
-    delete obj;
+    ObjectResource::CleanUp();
     FileManager::CleanUp();
     Directories::CleanUp();
   } catch (Exception &e) {
