@@ -107,14 +107,14 @@ Inventory::Find(UsableInventoryItem* item)
 void
 Inventory::Add(SingleInventoryItem* item)
 {
-  items.push_back(InventoryData(-ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
+  items.push_back(InventoryData(ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
   items.sort();
 }
 
 void
 Inventory::Remove(SingleInventoryItem* item)
 {
-  items.remove(InventoryData(-ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
+  items.remove(InventoryData(ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
 }
 
 void
@@ -125,7 +125,7 @@ Inventory::Add(MultipleInventoryItem* item)
     MultipleInventoryItem *mii = dynamic_cast<MultipleInventoryItem *>(it->item);
     mii->Add(item->GetValue());
   } else {
-    items.push_back(InventoryData(-ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
+    items.push_back(InventoryData(ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
     items.sort();
   }
 }
@@ -138,7 +138,7 @@ Inventory::Remove(MultipleInventoryItem* item)
     MultipleInventoryItem *mii = dynamic_cast<MultipleInventoryItem *>(it->item);
     mii->Remove(item->GetValue());
     if (mii->GetValue() == 0) {
-      items.remove(InventoryData(-ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
+      items.remove(InventoryData(ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
     }
   } else {
     throw UnexpectedValue(__FILE__, __LINE__, "items.end()");
@@ -148,25 +148,25 @@ Inventory::Remove(MultipleInventoryItem* item)
 void
 Inventory::Add(RepairableInventoryItem* item)
 {
-  items.push_back(InventoryData(-ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
+  items.push_back(InventoryData(ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
   items.sort();
 }
 
 void
 Inventory::Remove(RepairableInventoryItem* item)
 {
-  items.remove(InventoryData(-ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
+  items.remove(InventoryData(ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
 }
 
 void
 Inventory::Add(UsableInventoryItem* item)
 {
-  items.push_back(InventoryData(-ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
+  items.push_back(InventoryData(ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
   items.sort();
 }
 
 void
 Inventory::Remove(UsableInventoryItem* item)
 {
-  items.remove(InventoryData(-ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
+  items.remove(InventoryData(ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
 }
