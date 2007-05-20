@@ -379,6 +379,14 @@ Rectangle::operator!=(const Rectangle &r)
   return (xpos != r.xpos) || (ypos != r.ypos) || (width != r.width) || (height != r.height);
 }
 
+bool
+Rectangle::operator<(const Rectangle &r)
+{
+  return (xpos < r.xpos) ||
+         ((xpos == r.xpos) && (ypos < r.ypos)) ||
+         ((xpos == r.xpos) && (ypos == r.ypos) && ((width * height) < (r.width * r.height)));
+}
+
 int
 Rectangle::GetXPos() const
 {

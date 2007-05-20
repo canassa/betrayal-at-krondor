@@ -107,6 +107,7 @@ class Rectangle {
     Rectangle& operator=(const Rectangle &r);
     bool operator==(const Rectangle &r);
     bool operator!=(const Rectangle &r);
+    bool operator<(const Rectangle &r);
     int GetXPos() const;
     int GetYPos() const;
     int GetXCenter() const;
