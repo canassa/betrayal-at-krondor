@@ -41,9 +41,9 @@ Inventory::GetSize() const
 }
 
 InventoryItem *
-Inventory::GetItem(const unsigned int n)
+Inventory::GetItem(const unsigned int n) const
 {
-  std::list<InventoryData>::iterator it = items.begin();
+  std::list<InventoryData>::const_iterator it = items.begin();
   for (unsigned int i =0; i < n; i++) ++it;
   return it->item;
 }

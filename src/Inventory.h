@@ -48,7 +48,7 @@ class Inventory {
     Inventory();
     ~Inventory();
     unsigned int GetSize() const;
-    InventoryItem* GetItem(const unsigned int n);
+    InventoryItem* GetItem(const unsigned int n) const;
     void Add(SingleInventoryItem *item);
     void Remove(SingleInventoryItem *item);
     void Add(MultipleInventoryItem *item);

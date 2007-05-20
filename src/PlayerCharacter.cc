@@ -111,7 +111,7 @@ PlayerCharacter::SetCondition(const ConditionType ct)
 }
 
 Inventory *
-PlayerCharacter::GetInventory()
+PlayerCharacter::GetInventory() const
 {
   return inventory;
 }

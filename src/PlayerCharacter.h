@@ -73,7 +73,7 @@ class PlayerCharacter {
     void SetCharacterClass(const CharacterClass cc);
     ConditionType GetCondition() const;
     void SetCondition(const ConditionType ct);
-    Inventory* GetInventory();
+    Inventory* GetInventory() const;
 };
 
 #endif
