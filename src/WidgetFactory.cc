@@ -17,6 +17,8 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "Exception.h"
+#include "ObjectResource.h"
 #include "WidgetFactory.h"
 
 WidgetFactory::WidgetFactory()
@@ -159,15 +161,65 @@ WidgetFactory::CreateInventoryItem(const Rectangle &r, Image *img, const int a)
 ContainerWidget *
 WidgetFactory::CreateInventory(const Rectangle &r, PlayerCharacter *pc, ImageResource& img)
 {
+  static const int MAX_INVENTOY_WIDGET_WIDTH  = 80;
+  static const int MAX_INVENTOY_WIDGET_HEIGHT = 58;
   ContainerWidget *invwidget = new ContainerWidget(r);
-  Inventory* inv = pc->GetInventory();
+  const Inventory* inv = pc->GetInventory();
+  std::list<Rectangle> freeSpaces;
+  freeSpaces.push_back(r);
   for (unsigned int i = 0; i < inv->GetSize(); i++) {
     InventoryItem *item = inv->GetItem(i);
-    if (!item->IsEquiped()) {
-      InventoryItemWidget *invitem = CreateInventoryItem(r, img.GetImage(item->GetId()), INVENTORY_OFFSET + i);
-      invwidget->AddActiveWidget(invitem);
+    if (!(item->IsEquiped())) {
+      Image *image = img.GetImage(item->GetId());
+      int width;
+      int height;
+      switch (ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize) {
+        case 1:
+          width = MAX_INVENTOY_WIDGET_WIDTH / 2;
+          height = MAX_INVENTOY_WIDGET_HEIGHT / 2;
+          break;
+        case 2:
+          width = MAX_INVENTOY_WIDGET_WIDTH;
+          height = MAX_INVENTOY_WIDGET_HEIGHT / 2;
+          break;
+        case 4:
+          width = MAX_INVENTOY_WIDGET_WIDTH;
+          height = MAX_INVENTOY_WIDGET_HEIGHT;
+          break;
+        default:
+          throw UnexpectedValue(__FILE__, __LINE__, ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize);
+          break;
+      }
+      std::list<Rectangle>::iterator it = freeSpaces.begin();
+      while (it != freeSpaces.end()) {
+        if ((it->GetWidth() > width) && (it->GetHeight() > height)) {
+          Rectangle rect(it->GetXPos() + 1 + (width - image->GetWidth()) / 2,
+                         it->GetYPos() + 1 + (height - image->GetHeight()) / 2,
+                         image->GetWidth(),
+                         image->GetHeight());
+          InventoryItemWidget *invitem = CreateInventoryItem(rect, image, INVENTORY_OFFSET + i);
+          invwidget->AddActiveWidget(invitem);
+          Rectangle origFreeSpace(*it);
+          freeSpaces.erase(it);
+          if ((origFreeSpace.GetWidth() - width) > (MAX_INVENTOY_WIDGET_WIDTH / 2)) {
+            freeSpaces.push_back(Rectangle(origFreeSpace.GetXPos() + width + 1,
+                                           origFreeSpace.GetYPos(),
+                                           origFreeSpace.GetWidth() - width - 1,
+                                           origFreeSpace.GetHeight()));
+          }
+          if ((origFreeSpace.GetHeight() - height) > (MAX_INVENTOY_WIDGET_HEIGHT / 2)) {
+            freeSpaces.push_back(Rectangle(origFreeSpace.GetXPos(),
+                                           origFreeSpace.GetYPos() + height + 1,
+                                           origFreeSpace.GetWidth(),
+                                           origFreeSpace.GetHeight() - height - 1));
+          }
+          freeSpaces.sort();
+        }
+        ++it;
+      }
     }
   }
+  freeSpaces.clear();
   return invwidget;
 }
 
