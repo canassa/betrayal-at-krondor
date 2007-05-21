@@ -174,7 +174,6 @@ GameStateCast::Execute()
   switch (action) {
     case ACT_ESCAPE:
     case CAST_EXIT:
-      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(-1);
       ChangeState(GameStateWorld::GetInstance());
       break;
     case CAST_CAMP1:
@@ -458,7 +457,6 @@ GameStateInfo::Execute()
   switch (action) {
     case ACT_ESCAPE:
     case INFO_EXIT:
-      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(-1);
       ChangeState(prevState);
       break;
     case ACT_UP:
@@ -636,7 +634,6 @@ GameStateInventory::Execute()
   switch (action) {
     case ACT_ESCAPE:
     case INV_EXIT:
-      GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(-1);
       ChangeState(prevState);
       break;
     case INV_MEMBER1:
@@ -769,6 +766,7 @@ GameStateMap::CleanUp()
 void
 GameStateMap::Enter()
 {
+  GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(-1);
   dialog = dialogFactory.CreateMapDialog();
   dialog->Enter();
 }
@@ -1105,6 +1103,7 @@ GameStateWorld::CleanUp()
 void
 GameStateWorld::Enter()
 {
+  GameApplication::GetInstance()->GetGame()->GetParty()->SelectMember(-1);
   dialog = dialogFactory.CreateWorldDialog();
   dialog->Enter();
 }
