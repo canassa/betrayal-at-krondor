@@ -20,7 +20,7 @@
 #include "ContainerWidget.h"
 
 ContainerWidget::ContainerWidget(const Rectangle &r)
-: Widget(r)
+: ActiveWidget(r, -1)
 , widgets()
 , activeWidgets()
 , currentActiveWidget()
@@ -85,6 +85,11 @@ ContainerWidget::Draw()
 }
 
 void
+ContainerWidget::Focus()
+{
+}
+
+void
 ContainerWidget::NextWidget()
 {
   if (activeWidgets.size() > 0) {
@@ -115,7 +120,7 @@ ContainerWidget::PreviousWidget()
 }
 
 void
-ContainerWidget::LeftClickWidget(const bool toggle)
+ContainerWidget::LeftClick(const bool toggle)
 {
   if ((activeWidgets.size() > 0) && (currentActiveWidget != activeWidgets.end())) {
     (*currentActiveWidget)->LeftClick(toggle);
@@ -123,7 +128,7 @@ ContainerWidget::LeftClickWidget(const bool toggle)
 }
 
 void
-ContainerWidget::RightClickWidget(const bool toggle)
+ContainerWidget::RightClick(const bool toggle)
 {
   if ((activeWidgets.size() > 0) && (currentActiveWidget != activeWidgets.end())) {
     (*currentActiveWidget)->RightClick(toggle);
@@ -131,34 +136,46 @@ ContainerWidget::RightClickWidget(const bool toggle)
 }
 
 void
-ContainerWidget::LeftClickWidget(const bool toggle, const int x, const int y)
+ContainerWidget::LeftClick(const bool toggle, const int x, const int y)
 {
   for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-    Vector2D p(x, y);
-    if ((*it)->GetRectangle().IsInside(p)) {
-      (*it)->LeftClick(toggle);
+    if ((*it)->GetRectangle().IsInside(Vector2D(x, y))) {
+      ContainerWidget *cw = dynamic_cast<ContainerWidget *>(*it);
+      if (cw) {
+        cw->LeftClick(toggle, x, y);
+      } else {
+        (*it)->LeftClick(toggle);
+      }
     }
   }
 }
 
 void
-ContainerWidget::RightClickWidget(const bool toggle, const int x, const int y)
+ContainerWidget::RightClick(const bool toggle, const int x, const int y)
 {
   for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-    Vector2D p(x, y);
-    if ((*it)->GetRectangle().IsInside(p)) {
-      (*it)->RightClick(toggle);
+    if ((*it)->GetRectangle().IsInside(Vector2D(x, y))) {
+      ContainerWidget *cw = dynamic_cast<ContainerWidget *>(*it);
+      if (cw) {
+        cw->RightClick(toggle, x, y);
+      } else {
+        (*it)->RightClick(toggle);
+      }
     }
   }
 }
 
 void
-ContainerWidget::MouseOverWidget(const int x, const int y)
+ContainerWidget::MouseOver(const int x, const int y)
 {
   for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-    Vector2D p(x, y);
-    if (!(*it)->GetRectangle().IsInside(p)) {
-      (*it)->LeftClick(false);
+    if ((*it)->GetRectangle().IsInside(Vector2D(x, y))) {
+      ContainerWidget *cw = dynamic_cast<ContainerWidget *>(*it);
+      if (cw) {
+        cw->LeftClick(false, x, y);
+      } else {
+        (*it)->LeftClick(false);
+      }
     }
   }
 }

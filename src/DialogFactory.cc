@@ -245,7 +245,7 @@ DialogFactory::CreateInventoryDialog()
           break;
       }
     }
-    panel->AddWidget(widgetFactory.CreateInventory(Rectangle(105, 11, 202, 121), GameApplication::GetInstance()->GetGame()->GetParty()->GetSelectedMember(), icons));
+    panel->AddActiveWidget(widgetFactory.CreateInventory(Rectangle(105, 11, 202, 121), GameApplication::GetInstance()->GetGame()->GetParty()->GetSelectedMember(), icons));
     return dialog;
   } catch (Exception &e) {
     e.Print("DialogFactory::CreateInventoryDialog");

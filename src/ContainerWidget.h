@@ -29,7 +29,7 @@
 #include "Widget.h"
 
 class ContainerWidget
-: public Widget {
+: public ActiveWidget {
   private:
     std::list<Widget *> widgets;
     std::list<ActiveWidget *> activeWidgets;
@@ -40,17 +40,18 @@ class ContainerWidget
     ContainerWidget(const Rectangle &r);
     virtual ~ContainerWidget();
     void Draw();
+    void Focus();
     void AddWidget(Widget *w);
     void RemoveWidget(Widget *w);
     void AddActiveWidget(ActiveWidget *aw);
     void RemoveActiveWidget(ActiveWidget *aw);
     void NextWidget();
     void PreviousWidget();
-    void LeftClickWidget(const bool toggle);
-    void RightClickWidget(const bool toggle);
-    void LeftClickWidget(const bool toggle, const int x, const int y);
-    void RightClickWidget(const bool toggle, const int x, const int y);
-    void MouseOverWidget(const int x, const int y);
+    void LeftClick(const bool toggle);
+    void RightClick(const bool toggle);
+    void LeftClick(const bool toggle, const int x, const int y);
+    void RightClick(const bool toggle, const int x, const int y);
+    void MouseOver(const int x, const int y);
 };
 
 #endif

@@ -59,31 +59,31 @@ DialogWindow::FadeOut(Palette* pal)
 void
 DialogWindow::LeftClickWidget(const bool toggle)
 {
-  panel->LeftClickWidget(toggle);
+  panel->LeftClick(toggle);
 }
 
 void
 DialogWindow::RightClickWidget(const bool toggle)
 {
-  panel->RightClickWidget(toggle);
+  panel->RightClick(toggle);
 }
 
 void
 DialogWindow::LeftClickWidget(const bool toggle, const int x, const int y)
 {
-  panel->LeftClickWidget(toggle, x, y);
+  panel->LeftClick(toggle, x, y);
 }
 
 void
 DialogWindow::RightClickWidget(const bool toggle, const int x, const int y)
 {
-  panel->RightClickWidget(toggle, x, y);
+  panel->RightClick(toggle, x, y);
 }
 
 void
 DialogWindow::MouseOverWidget(const int x, const int y)
 {
-  panel->MouseOverWidget(x, y);
+  panel->MouseOver(x, y);
 }
 
 void
