@@ -38,8 +38,8 @@ class ImageButtonWidget
     virtual ~ImageButtonWidget();
     void SetImage(Image *normal, Image *press);
     void Draw();
-    void LeftClick(const bool toggle);
-    void RightClick(const bool toggle);
+    void LeftClick(const bool toggle, const int x, const int y);
+    void RightClick(const bool toggle, const int x, const int y);
 };
 
 #endif

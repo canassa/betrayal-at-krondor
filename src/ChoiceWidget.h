@@ -38,8 +38,8 @@ class ChoiceWidget
     void SetImage(Image *normal, Image *selected);
     void Draw();
     void Focus();
-    void LeftClick(const bool toggle);
-    void RightClick(const bool toggle);
+    void LeftClick(const bool toggle, const int x, const int y);
+    void RightClick(const bool toggle, const int x, const int y);
 };
 
 #endif

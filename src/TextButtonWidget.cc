@@ -78,7 +78,7 @@ TextButtonWidget::Draw()
 }
 
 void
-TextButtonWidget::LeftClick(const bool toggle)
+TextButtonWidget::LeftClick(const bool toggle, const int, const int)
 {
   if (IsVisible()) {
     SetPressed(toggle);
@@ -89,7 +89,7 @@ TextButtonWidget::LeftClick(const bool toggle)
 }
 
 void
-TextButtonWidget::RightClick(const bool toggle)
+TextButtonWidget::RightClick(const bool toggle, const int, const int)
 {
   if (IsVisible()) {
     if (toggle) {

@@ -64,7 +64,7 @@ CharacterButtonWidget::Draw()
 }
 
 void
-CharacterButtonWidget::LeftClick(const bool toggle)
+CharacterButtonWidget::LeftClick(const bool toggle, const int, const int)
 {
   if (IsVisible()) {
     if (toggle) {
@@ -74,7 +74,7 @@ CharacterButtonWidget::LeftClick(const bool toggle)
 }
 
 void
-CharacterButtonWidget::RightClick(const bool toggle)
+CharacterButtonWidget::RightClick(const bool toggle, const int, const int)
 {
   if (IsVisible()) {
     if (toggle) {

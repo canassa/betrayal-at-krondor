@@ -72,8 +72,8 @@ class ActiveWidget
     void RemoveActionListener(ActionEventListener *ael);
     void GenerateActionEvent(const int a);
     virtual void Focus() = 0;
-    virtual void LeftClick(const bool toggle) = 0;
-    virtual void RightClick(const bool toggle) = 0;
+    virtual void LeftClick(const bool toggle, const int x, const int y) = 0;
+    virtual void RightClick(const bool toggle, const int x, const int y) = 0;
 };
 
 #endif

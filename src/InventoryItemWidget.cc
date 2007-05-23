@@ -69,14 +69,13 @@ InventoryItemWidget::Focus()
 }
 
 void
-InventoryItemWidget::LeftClick(const bool toggle)
+InventoryItemWidget::LeftClick(const bool toggle, const int x, const int y)
 {
   if (IsVisible()) {
     pressed = toggle;
     if (pressed) {
-      MousePointer *mp = MousePointerManager::GetInstance()->GetCurrentPointer();
-      xOffset = rect.GetXPos() - mp->GetXPos();
-      yOffset = rect.GetYPos() - mp->GetYPos();
+      xOffset = rect.GetXPos() - x;
+      yOffset = rect.GetYPos() - y;
     } else {
       rect.SetXPos(xOrg);
       rect.SetYPos(yOrg);
@@ -90,7 +89,7 @@ InventoryItemWidget::LeftClick(const bool toggle)
 }
 
 void
-InventoryItemWidget::RightClick(const bool toggle)
+InventoryItemWidget::RightClick(const bool toggle, const int, const int)
 {
   if (IsVisible()) {
     selected = toggle;

@@ -60,7 +60,7 @@ ImageButtonWidget::Draw()
 }
 
 void
-ImageButtonWidget::LeftClick(const bool toggle)
+ImageButtonWidget::LeftClick(const bool toggle, const int, const int)
 {
   if (IsVisible()) {
     SetPressed(toggle);
@@ -71,7 +71,7 @@ ImageButtonWidget::LeftClick(const bool toggle)
 }
 
 void
-ImageButtonWidget::RightClick(const bool toggle)
+ImageButtonWidget::RightClick(const bool toggle, const int, const int)
 {
   if (IsVisible()) {
     if (toggle) {

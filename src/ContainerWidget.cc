@@ -123,7 +123,8 @@ void
 ContainerWidget::LeftClick(const bool toggle)
 {
   if ((activeWidgets.size() > 0) && (currentActiveWidget != activeWidgets.end())) {
-    (*currentActiveWidget)->LeftClick(toggle);
+    Rectangle r = (*currentActiveWidget)->GetRectangle();
+    (*currentActiveWidget)->LeftClick(toggle, r.GetXCenter(), r.GetYCenter());
   }
 }
 
@@ -131,7 +132,8 @@ void
 ContainerWidget::RightClick(const bool toggle)
 {
   if ((activeWidgets.size() > 0) && (currentActiveWidget != activeWidgets.end())) {
-    (*currentActiveWidget)->RightClick(toggle);
+    Rectangle r = (*currentActiveWidget)->GetRectangle();
+    (*currentActiveWidget)->RightClick(toggle, r.GetXCenter(), r.GetYCenter());
   }
 }
 
@@ -140,12 +142,7 @@ ContainerWidget::LeftClick(const bool toggle, const int x, const int y)
 {
   for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
     if ((*it)->GetRectangle().IsInside(Vector2D(x, y))) {
-      ContainerWidget *cw = dynamic_cast<ContainerWidget *>(*it);
-      if (cw) {
-        cw->LeftClick(toggle, x, y);
-      } else {
-        (*it)->LeftClick(toggle);
-      }
+      (*it)->LeftClick(toggle, x, y);
     }
   }
 }
@@ -155,12 +152,7 @@ ContainerWidget::RightClick(const bool toggle, const int x, const int y)
 {
   for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
     if ((*it)->GetRectangle().IsInside(Vector2D(x, y))) {
-      ContainerWidget *cw = dynamic_cast<ContainerWidget *>(*it);
-      if (cw) {
-        cw->RightClick(toggle, x, y);
-      } else {
-        (*it)->RightClick(toggle);
-      }
+      (*it)->RightClick(toggle, x, y);
     }
   }
 }
@@ -170,12 +162,7 @@ ContainerWidget::MouseOver(const int x, const int y)
 {
   for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
     if ((*it)->GetRectangle().IsInside(Vector2D(x, y))) {
-      ContainerWidget *cw = dynamic_cast<ContainerWidget *>(*it);
-      if (cw) {
-        cw->LeftClick(false, x, y);
-      } else {
-        (*it)->LeftClick(false);
-      }
+      (*it)->LeftClick(false, x, y);
     }
   }
 }

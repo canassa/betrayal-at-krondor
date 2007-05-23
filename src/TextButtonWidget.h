@@ -37,8 +37,8 @@ class TextButtonWidget
     virtual ~TextButtonWidget();
     void SetLabel(const std::string& s, Font *f);
     void Draw();
-    void LeftClick(const bool toggle);
-    void RightClick(const bool toggle);
+    void LeftClick(const bool toggle, const int x, const int y);
+    void RightClick(const bool toggle, const int x, const int y);
 };
 
 #endif

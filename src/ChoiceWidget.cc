@@ -62,7 +62,7 @@ ChoiceWidget::Focus()
 }
 
 void
-ChoiceWidget::LeftClick(const bool toggle)
+ChoiceWidget::LeftClick(const bool toggle, const int, const int)
 {
   if (IsVisible()) {
     if (toggle) {
@@ -75,7 +75,7 @@ ChoiceWidget::LeftClick(const bool toggle)
 }
 
 void
-ChoiceWidget::RightClick(const bool toggle)
+ChoiceWidget::RightClick(const bool toggle, const int, const int)
 {
   if (IsVisible()) {
     if (toggle) {
