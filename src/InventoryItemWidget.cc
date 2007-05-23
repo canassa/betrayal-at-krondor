@@ -26,6 +26,8 @@ InventoryItemWidget::InventoryItemWidget(const Rectangle &r, const int a)
 , iconImage(0)
 , pressed(false)
 , selected(false)
+, xOrg(r.GetXPos())
+, yOrg(r.GetYPos())
 , xOffset(0)
 , yOffset(0)
 {
@@ -48,20 +50,15 @@ void
 InventoryItemWidget::Draw()
 {
   if (IsVisible()) {
-    int x = 0;
-    int y = 0;
     if (selected) {
     }
     if (pressed) {
       MousePointer *mp = MousePointerManager::GetInstance()->GetCurrentPointer();
-      x = mp->GetXPos() + xOffset;
-      y = mp->GetYPos() + yOffset;
-    } else {
-      x = rect.GetXPos();
-      y = rect.GetYPos();
+      rect.SetXPos(mp->GetXPos() + xOffset);
+      rect.SetYPos(mp->GetYPos() + yOffset);
     }
     if (iconImage) {
-      iconImage->Draw(x, y + 1, 0);
+      iconImage->Draw(rect.GetXPos(), rect.GetYPos(), 0);
     }
   }
 }
@@ -81,6 +78,8 @@ InventoryItemWidget::LeftClick(const bool toggle)
       xOffset = rect.GetXPos() - mp->GetXPos();
       yOffset = rect.GetYPos() - mp->GetYPos();
     } else {
+      rect.SetXPos(xOrg);
+      rect.SetYPos(yOrg);
       xOffset = 0;
       yOffset = 0;
     }

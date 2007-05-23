@@ -34,6 +34,8 @@ class InventoryItemWidget
     Image *iconImage;
     bool pressed;
     bool selected;
+    int xOrg;
+    int yOrg;
     int xOffset;
     int yOffset;
   public:
