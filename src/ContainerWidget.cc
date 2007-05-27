@@ -87,62 +87,74 @@ ContainerWidget::Draw()
 void
 ContainerWidget::Focus()
 {
+  if (IsVisible()) {
+  }
 }
 
 void
 ContainerWidget::NextWidget()
 {
-  if (activeWidgets.size() > 0) {
-    do {
-      if (currentActiveWidget != activeWidgets.end()) {
-        currentActiveWidget++;
-      }
-      if (currentActiveWidget == activeWidgets.end()) {
-        currentActiveWidget = activeWidgets.begin();
-      }
-    } while (!((*currentActiveWidget)->IsVisible()));
-    (*currentActiveWidget)->Focus();
+  if (IsVisible()) {
+    if (activeWidgets.size() > 0) {
+      do {
+        if (currentActiveWidget != activeWidgets.end()) {
+          currentActiveWidget++;
+        }
+        if (currentActiveWidget == activeWidgets.end()) {
+          currentActiveWidget = activeWidgets.begin();
+        }
+      } while (!((*currentActiveWidget)->IsVisible()));
+      (*currentActiveWidget)->Focus();
+    }
   }
 }
 
 void
 ContainerWidget::PreviousWidget()
 {
-  if (activeWidgets.size() > 0) {
-    do {
-      if (currentActiveWidget == activeWidgets.begin()) {
-        currentActiveWidget = activeWidgets.end();
-      }
-      currentActiveWidget--;
-    } while (!((*currentActiveWidget)->IsVisible()));
-    (*currentActiveWidget)->Focus();
+  if (IsVisible()) {
+    if (activeWidgets.size() > 0) {
+      do {
+        if (currentActiveWidget == activeWidgets.begin()) {
+          currentActiveWidget = activeWidgets.end();
+        }
+        currentActiveWidget--;
+      } while (!((*currentActiveWidget)->IsVisible()));
+      (*currentActiveWidget)->Focus();
+    }
   }
 }
 
 void
 ContainerWidget::LeftClick(const bool toggle)
 {
-  if ((activeWidgets.size() > 0) && (currentActiveWidget != activeWidgets.end())) {
-    Rectangle r = (*currentActiveWidget)->GetRectangle();
-    (*currentActiveWidget)->LeftClick(toggle, r.GetXCenter(), r.GetYCenter());
+  if (IsVisible()) {
+    if ((activeWidgets.size() > 0) && (currentActiveWidget != activeWidgets.end())) {
+      Rectangle r = (*currentActiveWidget)->GetRectangle();
+      (*currentActiveWidget)->LeftClick(toggle, r.GetXCenter(), r.GetYCenter());
+    }
   }
 }
 
 void
 ContainerWidget::RightClick(const bool toggle)
 {
-  if ((activeWidgets.size() > 0) && (currentActiveWidget != activeWidgets.end())) {
-    Rectangle r = (*currentActiveWidget)->GetRectangle();
-    (*currentActiveWidget)->RightClick(toggle, r.GetXCenter(), r.GetYCenter());
+  if (IsVisible()) {
+    if ((activeWidgets.size() > 0) && (currentActiveWidget != activeWidgets.end())) {
+      Rectangle r = (*currentActiveWidget)->GetRectangle();
+      (*currentActiveWidget)->RightClick(toggle, r.GetXCenter(), r.GetYCenter());
+    }
   }
 }
 
 void
 ContainerWidget::LeftClick(const bool toggle, const int x, const int y)
 {
-  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-    if ((*it)->GetRectangle().IsInside(Vector2D(x, y))) {
-      (*it)->LeftClick(toggle, x, y);
+  if (IsVisible()) {
+    for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
+      if ((*it)->GetRectangle().IsInside(Vector2D(x, y))) {
+        (*it)->LeftClick(toggle, x, y);
+      }
     }
   }
 }
@@ -150,9 +162,11 @@ ContainerWidget::LeftClick(const bool toggle, const int x, const int y)
 void
 ContainerWidget::RightClick(const bool toggle, const int x, const int y)
 {
-  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-    if ((*it)->GetRectangle().IsInside(Vector2D(x, y))) {
-      (*it)->RightClick(toggle, x, y);
+  if (IsVisible()) {
+    for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
+      if ((*it)->GetRectangle().IsInside(Vector2D(x, y))) {
+        (*it)->RightClick(toggle, x, y);
+      }
     }
   }
 }
@@ -160,9 +174,11 @@ ContainerWidget::RightClick(const bool toggle, const int x, const int y)
 void
 ContainerWidget::MouseOver(const int x, const int y)
 {
-  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-    if ((*it)->GetRectangle().IsInside(Vector2D(x, y))) {
-      (*it)->LeftClick(false, x, y);
+  if (IsVisible()) {
+    for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
+      if ((*it)->GetRectangle().IsInside(Vector2D(x, y))) {
+        (*it)->LeftClick(false, x, y);
+      }
     }
   }
 }
