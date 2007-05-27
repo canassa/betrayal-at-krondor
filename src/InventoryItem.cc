@@ -17,6 +17,8 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include <sstream>
+
 #include "InventoryItem.h"
 
 InventoryItem::InventoryItem(const unsigned int i, const unsigned int v, const unsigned int f)
@@ -90,6 +92,12 @@ SingleInventoryItem::~SingleInventoryItem()
 {
 }
 
+const std::string
+SingleInventoryItem::ToString() const
+{
+  return "";
+}
+
 bool
 SingleInventoryItem::operator==(const SingleInventoryItem &) const
 {
@@ -122,6 +130,14 @@ void
 MultipleInventoryItem::Remove(const unsigned int n)
 {
   value -= n;
+}
+
+const std::string
+MultipleInventoryItem::ToString() const
+{
+  std::stringstream ss;
+  ss << value;
+  return ss.str();
 }
 
 bool
@@ -158,6 +174,14 @@ RepairableInventoryItem::Damage(const unsigned int n)
   value -= n;
 }
 
+const std::string
+RepairableInventoryItem::ToString() const
+{
+  std::stringstream ss;
+  ss << value << "%";
+  return ss.str();
+}
+
 bool
 RepairableInventoryItem::operator==(const RepairableInventoryItem &) const
 {
@@ -190,6 +214,12 @@ void
 UsableInventoryItem::Restore(const unsigned int n)
 {
   value -= n;
+}
+
+const std::string
+UsableInventoryItem::ToString() const
+{
+  return "";
 }
 
 bool

@@ -151,15 +151,16 @@ WidgetFactory::CreateImage(const Rectangle &r, Image *img, const Flipping flip)
 }
 
 InventoryItemWidget*
-WidgetFactory::CreateInventoryItem(const Rectangle &r, Image *img, const int a)
+WidgetFactory::CreateInventoryItem(const Rectangle &r, const int a, Image *img, const std::string& s, Font *f)
 {
   InventoryItemWidget* invitem = new InventoryItemWidget(r, a);
   invitem->SetImage(img);
+  invitem->SetLabel(s, f);
   return invitem;
 }
 
 ContainerWidget *
-WidgetFactory::CreateInventory(const Rectangle &r, PlayerCharacter *pc, ImageResource& img)
+WidgetFactory::CreateInventory(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Font *f)
 {
   static const int MAX_INVENTOY_WIDGET_WIDTH  = 80;
   static const int MAX_INVENTOY_WIDGET_HEIGHT = 58;
@@ -193,11 +194,8 @@ WidgetFactory::CreateInventory(const Rectangle &r, PlayerCharacter *pc, ImageRes
       std::list<Rectangle>::iterator it = freeSpaces.begin();
       while (it != freeSpaces.end()) {
         if ((it->GetWidth() > width) && (it->GetHeight() > height)) {
-          Rectangle rect(it->GetXPos() + 1 + (width - image->GetWidth()) / 2,
-                         it->GetYPos() + 1 + (height - image->GetHeight()) / 2,
-                         image->GetWidth(),
-                         image->GetHeight());
-          InventoryItemWidget *invitem = CreateInventoryItem(rect, image, INVENTORY_OFFSET + i);
+          Rectangle rect(it->GetXPos() + 1, it->GetYPos() + 1, width, height);
+          InventoryItemWidget *invitem = CreateInventoryItem(rect, INVENTORY_OFFSET + i, image, item->ToString(), f);
           invwidget->AddActiveWidget(invitem);
           Rectangle origFreeSpace(*it);
           freeSpaces.erase(it);

@@ -24,14 +24,16 @@
 #include "config.h"
 #endif
 
-#include "Widget.h"
 #include "Image.h"
+#include "TextWidget.h"
+#include "Widget.h"
 
 class InventoryItemWidget
 : public ActiveWidget
 {
   private:
     Image *iconImage;
+    TextWidget *label;
     bool pressed;
     bool selected;
     int xOrg;
@@ -42,6 +44,7 @@ class InventoryItemWidget
     InventoryItemWidget(const Rectangle &r, const int a);
     virtual ~InventoryItemWidget();
     void SetImage(Image *icon);
+    void SetLabel(const std::string& s, Font *f);
     void Draw();
     void Focus();
     void LeftClick(const bool toggle, const int x, const int y);

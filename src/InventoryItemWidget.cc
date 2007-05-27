@@ -24,6 +24,7 @@
 InventoryItemWidget::InventoryItemWidget(const Rectangle &r, const int a)
 : ActiveWidget(r, a)
 , iconImage(0)
+, label(0)
 , pressed(false)
 , selected(false)
 , xOrg(r.GetXPos())
@@ -35,6 +36,9 @@ InventoryItemWidget::InventoryItemWidget(const Rectangle &r, const int a)
 
 InventoryItemWidget::~InventoryItemWidget()
 {
+  if (label) {
+    delete label;
+  }
 }
 
 void
@@ -44,6 +48,15 @@ InventoryItemWidget::SetImage(Image *icon)
     throw NullPointer(__FILE__, __LINE__);
   }
   iconImage = icon;
+}
+
+void
+InventoryItemWidget::SetLabel(const std::string& s, Font *f)
+{
+  label = new TextWidget(Rectangle(rect.GetXPos(), rect.GetYPos(), rect.GetWidth(), rect.GetHeight()), f);
+  label->SetText(s);
+  label->SetColor(INFO_TEXT_COLOR);
+  label->SetAlignment(HA_RIGHT, VA_BOTTOM);
 }
 
 void
@@ -58,7 +71,11 @@ InventoryItemWidget::Draw()
       rect.SetYPos(mp->GetYPos() + yOffset);
     }
     if (iconImage) {
-      iconImage->Draw(rect.GetXPos(), rect.GetYPos(), 0);
+      iconImage->Draw(rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2,
+                      rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2, 0);
+    }
+    if (label && !pressed) {
+      label->Draw();
     }
   }
 }

@@ -24,6 +24,8 @@
 #include "config.h"
 #endif
 
+#include <string>
+
 static const unsigned int REPAIRABLE_MASK = 0x0020;
 static const unsigned int EQUIPED_MASK    = 0x0040;
 
@@ -42,6 +44,7 @@ class InventoryItem
     unsigned int GetFlags() const;
     bool IsEquiped() const;
     void Equip(const bool toggle);
+    virtual const std::string ToString() const = 0;
     InventoryItem& operator=(const InventoryItem &item);
 };
 
@@ -51,6 +54,7 @@ class SingleInventoryItem
   public:
     SingleInventoryItem(const unsigned int i);
     virtual ~SingleInventoryItem();
+    const std::string ToString() const;
     bool operator==(const SingleInventoryItem &item) const;
     bool operator!=(const SingleInventoryItem &item) const;
 };
@@ -64,6 +68,7 @@ class MultipleInventoryItem
     unsigned int GetAmount() const;
     void Add(const unsigned int n);
     void Remove(const unsigned int n);
+    const std::string ToString() const;
     bool operator==(const MultipleInventoryItem &item) const;
     bool operator!=(const MultipleInventoryItem &item) const;
 };
@@ -77,6 +82,7 @@ class RepairableInventoryItem
     unsigned int GetCondition() const;
     void Repair(const unsigned int n);
     void Damage(const unsigned int n);
+    const std::string ToString() const;
     bool operator==(const RepairableInventoryItem &item) const;
     bool operator!=(const RepairableInventoryItem &item) const;
 };
@@ -90,6 +96,7 @@ class UsableInventoryItem
     unsigned int GetUses() const;
     void Use(const unsigned int n);
     void Restore(const unsigned int n);
+    const std::string ToString() const;
     bool operator==(const UsableInventoryItem &item) const;
     bool operator!=(const UsableInventoryItem &item) const;
 };

@@ -164,10 +164,15 @@ GameResource::Load(FileBuffer *buffer)
             case OT_WEAPON_OIL:
             case OT_ARMOR_OIL:
             case OT_SPECIAL_OIL:
+            case OT_BOWSTRING:
+            case OT_SCROLL:
             case OT_NOTE:
             case OT_BOOK:
             case OT_POTION:
             case OT_RESTORATIVES:
+            case OT_CONTAINER:
+            case OT_LIGHTER:
+            case OT_INGREDIENT:
               {
                 UsableInventoryItem *item = new UsableInventoryItem(id, value);
                 inv->Add(item);
@@ -176,11 +181,6 @@ GameResource::Load(FileBuffer *buffer)
             case OT_UNSPECIFIED:
             case OT_KEY:
             case OT_TOOL:
-            case OT_BOWSTRING:
-            case OT_SCROLL:
-            case OT_CONTAINER:
-            case OT_LIGHTER:
-            case OT_INGREDIENT:
             case OT_RATION:
             case OT_FOOD:
               {

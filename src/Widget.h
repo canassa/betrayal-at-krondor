@@ -39,7 +39,7 @@ static const int TEXT_COLOR_PRESSED   = 6;
 static const int BUTTON_COLOR_NORMAL  = 14;
 static const int BUTTON_COLOR_PRESSED = 11;
 static const int POPUP_COLOR          = 14;
-static const int RATINGS_TEXT_COLOR   = 159;
+static const int INFO_TEXT_COLOR      = 159;
 
 static const int INVENTORY_OFFSET     = 256;
 
