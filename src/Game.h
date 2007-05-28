@@ -38,8 +38,8 @@ class Game {
     Party *party;
     Scene *scene;
     Camera *camera;
-    PartyResource *partyRes;
-    ImageResource *buttonImages;
+    PartyResource partyRes;
+    ImageResource buttonImages;
   public:
     Game();
     ~Game();
