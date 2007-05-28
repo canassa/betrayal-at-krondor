@@ -45,6 +45,7 @@ noinst_HEADERS = AnimationResource.h \
                  Inventory.h \
                  InventoryItem.h \
                  InventoryItemWidget.h \
+                 InventoryWidget.h \
                  LabelResource.h \
                  MapViewWidget.h \
                  MediaToolkit.h \
@@ -216,6 +217,8 @@ libguitoolkit_a_SOURCES = BadgeWidget.cc \
                           ImageWidget.h \
                           InventoryItemWidget.cc \
                           InventoryItemWidget.h \
+                          InventoryWidget.cc \
+                          InventoryWidget.h \
                           MapViewWidget.cc \
                           MapViewWidget.h \
                           MousePointer.cc \

@@ -29,6 +29,12 @@ ContainerWidget::ContainerWidget(const Rectangle &r)
 
 ContainerWidget::~ContainerWidget()
 {
+  Clear();
+}
+
+void
+ContainerWidget::Clear()
+{
   for (std::list<Widget *>::iterator it = widgets.begin(); it != widgets.end(); ++it) {
     delete (*it);
   }
