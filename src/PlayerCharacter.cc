@@ -108,6 +108,7 @@ void
 PlayerCharacter::SetCondition(const ConditionType ct)
 {
   condition = ct;
+  Notify();
 }
 
 Inventory *
@@ -138,4 +139,5 @@ void
 PlayerCharacter::Select(const bool toggle)
 {
   selected = toggle;
+  Notify();
 }

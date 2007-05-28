@@ -27,6 +27,7 @@
 #include <list>
 
 #include "InventoryItem.h"
+#include "Subject.h"
 
 class InventoryData {
   public:
@@ -37,7 +38,9 @@ class InventoryData {
     bool operator<(const InventoryData &invdata) const { return invdata.size < size; };
 };
 
-class Inventory {
+class Inventory
+: public Subject
+{
   private:
     std::list<InventoryData> items;
     std::list<InventoryData>::iterator Find(SingleInventoryItem* item);

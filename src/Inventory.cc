@@ -109,12 +109,14 @@ Inventory::Add(SingleInventoryItem* item)
 {
   items.push_back(InventoryData(ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
   items.sort();
+  Notify();
 }
 
 void
 Inventory::Remove(SingleInventoryItem* item)
 {
   items.remove(InventoryData(ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
+  Notify();
 }
 
 void
@@ -128,6 +130,7 @@ Inventory::Add(MultipleInventoryItem* item)
     items.push_back(InventoryData(ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
     items.sort();
   }
+  Notify();
 }
 
 void
@@ -143,6 +146,7 @@ Inventory::Remove(MultipleInventoryItem* item)
   } else {
     throw UnexpectedValue(__FILE__, __LINE__, "items.end()");
   }
+  Notify();
 }
 
 void
@@ -150,12 +154,14 @@ Inventory::Add(RepairableInventoryItem* item)
 {
   items.push_back(InventoryData(ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
   items.sort();
+  Notify();
 }
 
 void
 Inventory::Remove(RepairableInventoryItem* item)
 {
   items.remove(InventoryData(ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
+  Notify();
 }
 
 void
@@ -163,10 +169,12 @@ Inventory::Add(UsableInventoryItem* item)
 {
   items.push_back(InventoryData(ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
   items.sort();
+  Notify();
 }
 
 void
 Inventory::Remove(UsableInventoryItem* item)
 {
   items.remove(InventoryData(ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
+  Notify();
 }

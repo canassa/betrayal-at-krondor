@@ -228,7 +228,9 @@ DialogFactory::CreateInventoryDialog()
       switch (data.widget) {
         case REQ_USERDEFINED:
           if ((data.action >= 0) && (data.group == GROUP3)) {
-            panel->AddActiveWidget(widgetFactory.CreateCharacterButton(data, GameApplication::GetInstance()->GetGame()->GetParty()->GetActiveMember(nextMember), heads, dialog));
+            PlayerCharacter *pc = GameApplication::GetInstance()->GetGame()->GetParty()->GetActiveMember(nextMember);
+            panel->AddActiveWidget(widgetFactory.CreateCharacterButton(data, pc, heads, dialog));
+            panel->AddActiveWidget(widgetFactory.CreateInventory(Rectangle(105, 11, 202, 121), pc, icons, font));
             nextMember++;
           }
           break;
@@ -245,7 +247,6 @@ DialogFactory::CreateInventoryDialog()
           break;
       }
     }
-    panel->AddActiveWidget(widgetFactory.CreateInventory(Rectangle(105, 11, 202, 121), GameApplication::GetInstance()->GetGame()->GetParty()->GetSelectedMember(), icons, font));
     return dialog;
   } catch (Exception &e) {
     e.Print("DialogFactory::CreateInventoryDialog");

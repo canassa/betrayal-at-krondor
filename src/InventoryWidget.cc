@@ -25,19 +25,23 @@
 static const int MAX_INVENTOY_WIDGET_WIDTH  = 80;
 static const int MAX_INVENTOY_WIDGET_HEIGHT = 58;
 
-InventoryWidget::InventoryWidget(const Rectangle &r, const Inventory *inv, ImageResource& img, Font *f)
+InventoryWidget::InventoryWidget(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Font *f)
 : ContainerWidget(r)
 , Observer()
-, inventory(inv)
+, character(pc)
 , images(img)
 , font(f)
 , freeSpaces()
 {
+  character->Attach(this);
+  character->GetInventory()->Attach(this);
   Update();
 }
 
 InventoryWidget::~InventoryWidget()
 {
+  character->GetInventory()->Detach(this);
+  character->Detach(this);
 }
 
 void
@@ -46,8 +50,8 @@ InventoryWidget::Update()
   Clear();
   WidgetFactory wf;
   freeSpaces.push_back(rect);
-  for (unsigned int i = 0; i < inventory->GetSize(); i++) {
-    InventoryItem *item = inventory->GetItem(i);
+  for (unsigned int i = 0; i < character->GetInventory()->GetSize(); i++) {
+    InventoryItem *item = character->GetInventory()->GetItem(i);
     if (!(item->IsEquiped())) {
       Image *image = images.GetImage(item->GetId());
       int width;
@@ -96,4 +100,5 @@ InventoryWidget::Update()
     }
   }
   freeSpaces.clear();
+  SetVisible(character->IsSelected());
 }

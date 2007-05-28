@@ -162,7 +162,7 @@ WidgetFactory::CreateInventoryItem(const Rectangle &r, const int a, Image *img, 
 InventoryWidget *
 WidgetFactory::CreateInventory(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, FontResource& fnt)
 {
-  return new InventoryWidget(r, pc->GetInventory(), img, fnt.GetFont());
+  return new InventoryWidget(r, pc, img, fnt.GetFont());
 }
 
 PortraitWidget*

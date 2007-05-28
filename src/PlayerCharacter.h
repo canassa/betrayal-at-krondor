@@ -27,6 +27,7 @@
 #include "Image.h"
 #include "Inventory.h"
 #include "Statistics.h"
+#include "Subject.h"
 
 typedef enum _CharacterClass {
   CLASS_WARRIOR,
@@ -44,7 +45,9 @@ typedef enum _ConditionType {
   COND_NEAR_DEATH
 } ConditionType;
 
-class PlayerCharacter {
+class PlayerCharacter
+: public Subject
+{
   private:
     std::string name;
     Statistics statistics;

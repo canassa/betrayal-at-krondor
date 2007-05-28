@@ -27,20 +27,20 @@
 #include "ContainerWidget.h"
 #include "Font.h"
 #include "ImageResource.h"
-#include "Inventory.h"
 #include "Observer.h"
+#include "PlayerCharacter.h"
 
 class InventoryWidget
 : public ContainerWidget
 , public Observer
 {
   private:
-    const Inventory *inventory;
+    PlayerCharacter *character;
     ImageResource& images;
     Font *font;
     std::list<Rectangle> freeSpaces;
   public:
-    InventoryWidget(const Rectangle &r, const Inventory *inv, ImageResource& img, Font *f);
+    InventoryWidget(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Font *f);
     virtual ~InventoryWidget();
     void Update();
 };
