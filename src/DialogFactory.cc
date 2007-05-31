@@ -231,6 +231,7 @@ DialogFactory::CreateInventoryDialog()
             PlayerCharacter *pc = GameApplication::GetInstance()->GetGame()->GetParty()->GetActiveMember(nextMember);
             panel->AddActiveWidget(widgetFactory.CreateCharacterButton(data, pc, heads, dialog));
             panel->AddActiveWidget(widgetFactory.CreateInventory(Rectangle(105, 11, 202, 121), pc, icons, font));
+            panel->AddActiveWidget(widgetFactory.CreateEquipment(Rectangle(13, 11, 82, 121), pc, icons, font));
             nextMember++;
           }
           break;

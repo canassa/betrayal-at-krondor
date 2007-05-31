@@ -17,42 +17,41 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "EquipmentWidget.h"
 #include "Exception.h"
-#include "InventoryWidget.h"
 #include "ObjectResource.h"
 #include "WidgetFactory.h"
 
-InventoryWidget::InventoryWidget(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Font *f)
+EquipmentWidget::EquipmentWidget(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Font *f)
 : ContainerWidget(r)
 , Observer()
 , character(pc)
 , images(img)
 , font(f)
-, freeSpaces()
 {
   character->Attach(this);
   character->GetInventory()->Attach(this);
   Update();
 }
 
-InventoryWidget::~InventoryWidget()
+EquipmentWidget::~EquipmentWidget()
 {
   character->GetInventory()->Detach(this);
   character->Detach(this);
 }
 
 void
-InventoryWidget::Update()
+EquipmentWidget::Update()
 {
   Clear();
   WidgetFactory wf;
-  freeSpaces.push_back(rect);
   for (unsigned int i = 0; i < character->GetInventory()->GetSize(); i++) {
     InventoryItem *item = character->GetInventory()->GetItem(i);
-    if (!(item->IsEquiped())) {
+    if ((item->IsEquiped())) {
       Image *image = images.GetImage(item->GetId());
       int width;
       int height;
+      int yoffset;
       ObjectInfo objInfo = ObjectResource::GetInstance()->GetObjectInfo(item->GetId());
       switch (objInfo.imageSize) {
         case 1:
@@ -71,32 +70,27 @@ InventoryWidget::Update()
           throw UnexpectedValue(__FILE__, __LINE__, objInfo.imageSize);
           break;
       }
-      std::list<Rectangle>::iterator it = freeSpaces.begin();
-      while (it != freeSpaces.end()) {
-        if ((it->GetWidth() > width) && (it->GetHeight() > height)) {
-          InventoryItemWidget *invitem = wf.CreateInventoryItem(Rectangle(it->GetXPos() + 1, it->GetYPos() + 1, width, height),
-                                                                INVENTORY_OFFSET + 3 + i, image, item->ToString(), font);
-          AddActiveWidget(invitem);
-          Rectangle origFreeSpace(*it);
-          freeSpaces.erase(it);
-          if ((origFreeSpace.GetWidth() - width) > (MAX_INVENTORY_ITEM_WIDGET_WIDTH / 2)) {
-            freeSpaces.push_back(Rectangle(origFreeSpace.GetXPos() + width + 1,
-                                           origFreeSpace.GetYPos(),
-                                           origFreeSpace.GetWidth() - width - 1,
-                                           origFreeSpace.GetHeight()));
-          }
-          if ((origFreeSpace.GetHeight() - height) > (MAX_INVENTORY_ITEM_WIDGET_HEIGHT / 2)) {
-            freeSpaces.push_back(Rectangle(origFreeSpace.GetXPos(),
-                                           origFreeSpace.GetYPos() + height + 1,
-                                           origFreeSpace.GetWidth(),
-                                           origFreeSpace.GetHeight() - height - 1));
-          }
-          freeSpaces.sort();
-        }
-        ++it;
+      switch (objInfo.type) {
+        case OT_SWORD:
+          yoffset = 0;
+          break;
+        case OT_CROSSBOW:
+          yoffset = 30;
+          break;
+        case OT_STAFF:
+          yoffset = 0;
+          break;
+        case OT_ARMOR:
+          yoffset = 60;
+          break;
+        default:
+          throw UnexpectedValue(__FILE__, __LINE__, objInfo.type);
+          break;
       }
+      InventoryItemWidget *invitem = wf.CreateInventoryItem(Rectangle(rect.GetXPos() + 1, rect.GetYPos() + yoffset + 1, width, height),
+                                                            INVENTORY_OFFSET + i, image, item->ToString(), font);
+      AddActiveWidget(invitem);
     }
   }
-  freeSpaces.clear();
   SetVisible(character->IsSelected());
 }

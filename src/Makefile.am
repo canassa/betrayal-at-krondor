@@ -21,6 +21,7 @@ noinst_HEADERS = AnimationResource.h \
                  DialogResource.h \
                  DialogWindow.h \
                  Directories.h \
+                 EquipmentWidget.h \
                  Event.h \
                  EventListener.h \
                  Exception.h \
@@ -203,6 +204,8 @@ libguitoolkit_a_SOURCES = BadgeWidget.cc \
                           DialogFactory.h \
                           DialogWindow.cc \
                           DialogWindow.h \
+                          EquipmentWidget.cc \
+                          EquipmentWidget.h \
                           Font.cc \
                           Font.h \
                           GameViewWidget.cc \

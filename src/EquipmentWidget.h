@@ -17,41 +17,31 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef INVENTORY_ITEM_WIDGET_H
-#define INVENTORY_ITEM_WIDGET_H
+#ifndef EQUIPMENT_WIDGET_H
+#define EQUIPMENT_WIDGET_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "Image.h"
-#include "TextWidget.h"
-#include "Widget.h"
+#include "ContainerWidget.h"
+#include "Font.h"
+#include "ImageResource.h"
+#include "Observer.h"
+#include "PlayerCharacter.h"
 
-static const int MAX_INVENTORY_ITEM_WIDGET_WIDTH  = 80;
-static const int MAX_INVENTORY_ITEM_WIDGET_HEIGHT = 58;
-
-class InventoryItemWidget
-: public ActiveWidget
+class EquipmentWidget
+: public ContainerWidget
+, public Observer
 {
   private:
-    Image *iconImage;
-    TextWidget *label;
-    bool pressed;
-    bool selected;
-    int xOrg;
-    int yOrg;
-    int xOffset;
-    int yOffset;
+    PlayerCharacter *character;
+    ImageResource& images;
+    Font *font;
   public:
-    InventoryItemWidget(const Rectangle &r, const int a);
-    virtual ~InventoryItemWidget();
-    void SetImage(Image *icon);
-    void SetLabel(const std::string& s, Font *f);
-    void Draw();
-    void Focus();
-    void LeftClick(const bool toggle, const int x, const int y);
-    void RightClick(const bool toggle, const int x, const int y);
+    EquipmentWidget(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Font *f);
+    virtual ~EquipmentWidget();
+    void Update();
 };
 
 #endif

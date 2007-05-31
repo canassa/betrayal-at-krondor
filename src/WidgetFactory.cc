@@ -165,6 +165,12 @@ WidgetFactory::CreateInventory(const Rectangle &r, PlayerCharacter *pc, ImageRes
   return new InventoryWidget(r, pc, img, fnt.GetFont());
 }
 
+EquipmentWidget *
+WidgetFactory::CreateEquipment(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, FontResource& fnt)
+{
+  return new EquipmentWidget(r, pc, img, fnt.GetFont());
+}
+
 PortraitWidget*
 WidgetFactory::CreatePortrait(const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb)
 {
