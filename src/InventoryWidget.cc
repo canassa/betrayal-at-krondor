@@ -22,8 +22,8 @@
 #include "ObjectResource.h"
 #include "WidgetFactory.h"
 
-static const int MAX_INVENTOY_WIDGET_WIDTH  = 80;
-static const int MAX_INVENTOY_WIDGET_HEIGHT = 58;
+static const int MAX_INVENTORY_WIDGET_WIDTH  = 80;
+static const int MAX_INVENTORY_WIDGET_HEIGHT = 58;
 
 InventoryWidget::InventoryWidget(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Font *f)
 : ContainerWidget(r)
@@ -58,16 +58,16 @@ InventoryWidget::Update()
       int height;
       switch (ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize) {
         case 1:
-          width = MAX_INVENTOY_WIDGET_WIDTH / 2;
-          height = MAX_INVENTOY_WIDGET_HEIGHT / 2;
+          width = MAX_INVENTORY_WIDGET_WIDTH / 2;
+          height = MAX_INVENTORY_WIDGET_HEIGHT / 2;
           break;
         case 2:
-          width = MAX_INVENTOY_WIDGET_WIDTH;
-          height = MAX_INVENTOY_WIDGET_HEIGHT / 2;
+          width = MAX_INVENTORY_WIDGET_WIDTH;
+          height = MAX_INVENTORY_WIDGET_HEIGHT / 2;
           break;
         case 4:
-          width = MAX_INVENTOY_WIDGET_WIDTH;
-          height = MAX_INVENTOY_WIDGET_HEIGHT;
+          width = MAX_INVENTORY_WIDGET_WIDTH;
+          height = MAX_INVENTORY_WIDGET_HEIGHT;
           break;
         default:
           throw UnexpectedValue(__FILE__, __LINE__, ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize);
@@ -81,13 +81,13 @@ InventoryWidget::Update()
           AddActiveWidget(invitem);
           Rectangle origFreeSpace(*it);
           freeSpaces.erase(it);
-          if ((origFreeSpace.GetWidth() - width) > (MAX_INVENTOY_WIDGET_WIDTH / 2)) {
+          if ((origFreeSpace.GetWidth() - width) > (MAX_INVENTORY_WIDGET_WIDTH / 2)) {
             freeSpaces.push_back(Rectangle(origFreeSpace.GetXPos() + width + 1,
                                            origFreeSpace.GetYPos(),
                                            origFreeSpace.GetWidth() - width - 1,
                                            origFreeSpace.GetHeight()));
           }
-          if ((origFreeSpace.GetHeight() - height) > (MAX_INVENTOY_WIDGET_HEIGHT / 2)) {
+          if ((origFreeSpace.GetHeight() - height) > (MAX_INVENTORY_WIDGET_HEIGHT / 2)) {
             freeSpaces.push_back(Rectangle(origFreeSpace.GetXPos(),
                                            origFreeSpace.GetYPos() + height + 1,
                                            origFreeSpace.GetWidth(),
