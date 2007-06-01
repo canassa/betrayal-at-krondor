@@ -75,7 +75,7 @@ InventoryWidget::Update()
       while (it != freeSpaces.end()) {
         if ((it->GetWidth() > width) && (it->GetHeight() > height)) {
           InventoryItemWidget *invitem = wf.CreateInventoryItem(Rectangle(it->GetXPos() + 1, it->GetYPos() + 1, width, height),
-                                                                INVENTORY_OFFSET + 3 + i, image, item->ToString(), font);
+                                                                INVENTORY_OFFSET + i, image, item->ToString(), font);
           AddActiveWidget(invitem);
           Rectangle origFreeSpace(*it);
           freeSpaces.erase(it);

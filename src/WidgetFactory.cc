@@ -165,6 +165,15 @@ WidgetFactory::CreateInventory(const Rectangle &r, PlayerCharacter *pc, ImageRes
   return new InventoryWidget(r, pc, img, fnt.GetFont());
 }
 
+EquipmentItemWidget*
+WidgetFactory::CreateEquipmentItem(const Rectangle &r, Image *img, const std::string& s, Font *f)
+{
+  EquipmentItemWidget* eqitem = new EquipmentItemWidget(r);
+  eqitem->SetImage(img);
+  eqitem->SetLabel(s, f);
+  return eqitem;
+}
+
 EquipmentWidget *
 WidgetFactory::CreateEquipment(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, FontResource& fnt)
 {

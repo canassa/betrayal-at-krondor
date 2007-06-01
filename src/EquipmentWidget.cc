@@ -45,6 +45,8 @@ EquipmentWidget::Update()
 {
   Clear();
   WidgetFactory wf;
+  bool armorEquipped = false;
+  bool crossbowEquipped = false;
   for (unsigned int i = 0; i < character->GetInventory()->GetSize(); i++) {
     InventoryItem *item = character->GetInventory()->GetItem(i);
     if ((item->IsEquiped())) {
@@ -55,16 +57,16 @@ EquipmentWidget::Update()
       ObjectInfo objInfo = ObjectResource::GetInstance()->GetObjectInfo(item->GetId());
       switch (objInfo.imageSize) {
         case 1:
-          width = MAX_INVENTORY_ITEM_WIDGET_WIDTH / 2;
-          height = MAX_INVENTORY_ITEM_WIDGET_HEIGHT / 2;
+          width = MAX_EQUIPMENT_ITEM_WIDGET_WIDTH / 2;
+          height = MAX_EQUIPMENT_ITEM_WIDGET_HEIGHT / 2;
           break;
         case 2:
-          width = MAX_INVENTORY_ITEM_WIDGET_WIDTH;
-          height = MAX_INVENTORY_ITEM_WIDGET_HEIGHT / 2;
+          width = MAX_EQUIPMENT_ITEM_WIDGET_WIDTH;
+          height = MAX_EQUIPMENT_ITEM_WIDGET_HEIGHT / 2;
           break;
         case 4:
-          width = MAX_INVENTORY_ITEM_WIDGET_WIDTH;
-          height = MAX_INVENTORY_ITEM_WIDGET_HEIGHT;
+          width = MAX_EQUIPMENT_ITEM_WIDGET_WIDTH;
+          height = MAX_EQUIPMENT_ITEM_WIDGET_HEIGHT;
           break;
         default:
           throw UnexpectedValue(__FILE__, __LINE__, objInfo.imageSize);
@@ -76,21 +78,27 @@ EquipmentWidget::Update()
           break;
         case OT_CROSSBOW:
           yoffset = 30;
+          crossbowEquipped = true;
           break;
         case OT_STAFF:
           yoffset = 0;
           break;
         case OT_ARMOR:
           yoffset = 60;
+          armorEquipped = true;
           break;
         default:
           throw UnexpectedValue(__FILE__, __LINE__, objInfo.type);
           break;
       }
-      InventoryItemWidget *invitem = wf.CreateInventoryItem(Rectangle(rect.GetXPos() + 1, rect.GetYPos() + yoffset + 1, width, height),
-                                                            INVENTORY_OFFSET + i, image, item->ToString(), font);
-      AddActiveWidget(invitem);
+      EquipmentItemWidget *eqitem = wf.CreateEquipmentItem(Rectangle(rect.GetXPos() + 1, rect.GetYPos() + yoffset + 1, width, height),
+                                                           image, item->ToString(), font);
+      AddWidget(eqitem);
     }
+  }
+  if (!armorEquipped) {
+  }
+  if ((character->GetCharacterClass() == CLASS_WARRIOR) && (!crossbowEquipped)) {
   }
   SetVisible(character->IsSelected());
 }

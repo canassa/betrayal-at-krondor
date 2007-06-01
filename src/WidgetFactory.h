@@ -29,6 +29,7 @@
 #include "ChoiceWidget.h"
 #include "CombatViewWidget.h"
 #include "CompassWidget.h"
+#include "EquipmentItemWidget.h"
 #include "EquipmentWidget.h"
 #include "FontResource.h"
 #include "Game.h"
@@ -66,6 +67,7 @@ class WidgetFactory {
     ImageWidget* CreateImage(const Rectangle &r, Image *img, const Flipping flip = NONE);
     InventoryItemWidget* CreateInventoryItem(const Rectangle &r, const int a, Image *img, const std::string& s, Font *f);
     InventoryWidget *CreateInventory(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, FontResource& fnt);
+    EquipmentItemWidget* CreateEquipmentItem(const Rectangle &r, Image *img, const std::string& s, Font *f);
     EquipmentWidget *CreateEquipment(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, FontResource& fnt);
     PortraitWidget* CreatePortrait(const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb);
     RatingsWidget* CreateRatings(const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb, Font *f);
