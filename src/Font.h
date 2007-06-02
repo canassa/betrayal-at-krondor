@@ -26,6 +26,12 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#else
+#include "alt_stdint.h"
+#endif
+
 static const unsigned int MAX_FONT_HEIGHT = 16;
 
 typedef uint16_t GlyphData[MAX_FONT_HEIGHT];
