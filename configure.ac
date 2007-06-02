@@ -40,9 +40,10 @@ AC_CACHE_SAVE
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_LANG([C++])
+AC_ARG_ENABLE([werror], AS_HELP_STRING([--enable-werror],[use compiler flag -Werror (default is NO)]),WERROR_CFLAGS="-Werror",WERROR_CFLAGS="")
 CPPFLAGS="$CPPFLAGS -DDATADIR='\"$datadir\"'"
 SDL_CFLAGS=$(sh sdl-config --cflags)
-CXXFLAGS="$CXXFLAGS $SDL_CFLAGS -Wall -Wextra -Werror -Wpointer-arith -Wcast-qual -Wwrite-strings -Wshadow -Wcast-align -Winline -ansi -pedantic"
+CXXFLAGS="$CXXFLAGS $SDL_CFLAGS -ansi -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -Wwrite-strings -Wshadow -Wcast-align -Winline $WERROR_CFLAGS"
 
 AC_C_CONST
 AC_FUNC_STAT

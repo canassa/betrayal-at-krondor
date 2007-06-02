@@ -1,4 +1,5 @@
-2007-05-??, xbak-0.1.2:
+2007-06-??, xbak-0.1.2:
+* Added inventory and equipment dialog.
 * Added some GUI widgets for inventory.
 * Character inventory can be loaded from saved games.
 * Several bug fixes.
