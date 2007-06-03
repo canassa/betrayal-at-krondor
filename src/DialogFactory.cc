@@ -230,8 +230,8 @@ DialogFactory::CreateInventoryDialog()
           if ((data.action >= 0) && (data.group == GROUP3)) {
             PlayerCharacter *pc = GameApplication::GetInstance()->GetGame()->GetParty()->GetActiveMember(nextMember);
             panel->AddActiveWidget(widgetFactory.CreateCharacterButton(data, pc, heads, dialog));
+            panel->AddActiveWidget(widgetFactory.CreateEquipment(Rectangle(13, 11, 82, 121), pc, icons, images, font));
             panel->AddActiveWidget(widgetFactory.CreateInventory(Rectangle(105, 11, 202, 121), pc, icons, font));
-            panel->AddActiveWidget(widgetFactory.CreateEquipment(Rectangle(13, 11, 82, 121), pc, icons, font));
             nextMember++;
           }
           break;

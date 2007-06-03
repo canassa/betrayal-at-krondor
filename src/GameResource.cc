@@ -121,6 +121,12 @@ GameResource::Load(FileBuffer *buffer)
           game->GetParty()->GetMember(m)->GetStatistics().Set(i, j, buffer->GetUint8());
         }
       }
+      if (game->GetParty()->GetMember(m)->GetStatistics().Get(STAT_CROSSBOW_ACCURACY, STAT_MAXIMUM) > 0) {
+        game->GetParty()->GetMember(m)->SetCharacterClass(CLASS_WARRIOR);
+      }
+      if (game->GetParty()->GetMember(m)->GetStatistics().Get(STAT_CASTING_ACCURACY, STAT_MAXIMUM) > 0) {
+        game->GetParty()->GetMember(m)->SetCharacterClass(CLASS_SPELLCASTER);
+      }
       buffer->Skip(7);
     }
     unsigned int n = buffer->GetUint8();

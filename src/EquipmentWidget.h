@@ -26,6 +26,7 @@
 
 #include "ContainerWidget.h"
 #include "Font.h"
+#include "Image.h"
 #include "ImageResource.h"
 #include "Observer.h"
 #include "PlayerCharacter.h"
@@ -37,9 +38,11 @@ class EquipmentWidget
   private:
     PlayerCharacter *character;
     ImageResource& images;
+    Image *armorSlot;
+    Image *crossbowSlot;
     Font *font;
   public:
-    EquipmentWidget(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Font *f);
+    EquipmentWidget(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Image *as, Image *cbs, Font *f);
     virtual ~EquipmentWidget();
     void Update();
 };

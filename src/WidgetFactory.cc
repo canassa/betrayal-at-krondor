@@ -175,9 +175,9 @@ WidgetFactory::CreateEquipmentItem(const Rectangle &r, Image *img, const std::st
 }
 
 EquipmentWidget *
-WidgetFactory::CreateEquipment(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, FontResource& fnt)
+WidgetFactory::CreateEquipment(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, ImageResource& slot, FontResource& fnt)
 {
-  return new EquipmentWidget(r, pc, img, fnt.GetFont());
+  return new EquipmentWidget(r, pc, img, slot.GetImage(11), slot.GetImage(10), fnt.GetFont());
 }
 
 PortraitWidget*

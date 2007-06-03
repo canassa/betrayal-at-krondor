@@ -68,7 +68,7 @@ class WidgetFactory {
     InventoryItemWidget* CreateInventoryItem(const Rectangle &r, const int a, Image *img, const std::string& s, Font *f);
     InventoryWidget *CreateInventory(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, FontResource& fnt);
     EquipmentItemWidget* CreateEquipmentItem(const Rectangle &r, Image *img, const std::string& s, Font *f);
-    EquipmentWidget *CreateEquipment(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, FontResource& fnt);
+    EquipmentWidget *CreateEquipment(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, ImageResource& slot, FontResource& fnt);
     PortraitWidget* CreatePortrait(const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb);
     RatingsWidget* CreateRatings(const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb, Font *f);
     SkillsWidget* CreateSkills(const Rectangle &r, PlayerCharacter *pc, Image *sw, Image *bl, Font *f);

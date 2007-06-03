@@ -22,11 +22,16 @@
 #include "ObjectResource.h"
 #include "WidgetFactory.h"
 
-EquipmentWidget::EquipmentWidget(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Font *f)
+static const unsigned int ARMOR_OFFSET    = 60;
+static const unsigned int CROSSBOW_OFFSET = 30;
+
+EquipmentWidget::EquipmentWidget(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Image *as, Image *cbs, Font *f)
 : ContainerWidget(r)
 , Observer()
 , character(pc)
 , images(img)
+, armorSlot(as)
+, crossbowSlot(cbs)
 , font(f)
 {
   character->Attach(this);
@@ -77,14 +82,14 @@ EquipmentWidget::Update()
           yoffset = 0;
           break;
         case OT_CROSSBOW:
-          yoffset = 30;
+          yoffset = CROSSBOW_OFFSET;
           crossbowEquipped = true;
           break;
         case OT_STAFF:
           yoffset = 0;
           break;
         case OT_ARMOR:
-          yoffset = 60;
+          yoffset = ARMOR_OFFSET;
           armorEquipped = true;
           break;
         default:
@@ -97,8 +102,16 @@ EquipmentWidget::Update()
     }
   }
   if (!armorEquipped) {
+    EquipmentItemWidget *eqitem = wf.CreateEquipmentItem(Rectangle(rect.GetXPos() + 1, rect.GetYPos() + ARMOR_OFFSET + 1,
+                                                         MAX_EQUIPMENT_ITEM_WIDGET_WIDTH, MAX_EQUIPMENT_ITEM_WIDGET_HEIGHT),
+                                                         armorSlot, "", font);
+    AddWidget(eqitem);
   }
   if ((character->GetCharacterClass() == CLASS_WARRIOR) && (!crossbowEquipped)) {
+    EquipmentItemWidget *eqitem = wf.CreateEquipmentItem(Rectangle(rect.GetXPos() + 1, rect.GetYPos() + CROSSBOW_OFFSET + 1,
+                                                                   MAX_EQUIPMENT_ITEM_WIDGET_WIDTH, MAX_EQUIPMENT_ITEM_WIDGET_HEIGHT / 2),
+                                                         crossbowSlot, "", font);
+    AddWidget(eqitem);
   }
   SetVisible(character->IsSelected());
 }
