@@ -44,7 +44,7 @@ Directories::Directories()
 #else
   sharedPath = "";
 #endif
-#if defined(WIN32) || defined(__APPLE_CC__)
+#if defined(WIN32) || defined(__MACOS__) || defined(__MACOSX__)
   userPath = "";
   gamesPath = "";
   capturePath = "";
@@ -85,7 +85,7 @@ Directories::CreatePath(const std::string &path)
 {
 #if defined(WIN32)
   // TODO
-#elif defined(__APPLE_CC__)
+#elif defined(__MACOS__) || defined(__MACOSX__)
   // TODO
 #else
   struct stat statbuf;
@@ -109,6 +109,9 @@ static const std::string SEARCH_RESOURCE_PATH[] =
   "/krondor/",
   "./krondor/",
   "../krondor/",
+  "/bakcd/",
+  "./bakcd/",
+  "../bakcd/",
   ""
 };
 
