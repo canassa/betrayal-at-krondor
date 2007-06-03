@@ -27,10 +27,6 @@ InventoryItemWidget::InventoryItemWidget(const Rectangle &r, const int a)
 , label(0)
 , pressed(false)
 , selected(false)
-, xOrg(r.GetXPos())
-, yOrg(r.GetYPos())
-, xOffset(0)
-, yOffset(0)
 {
 }
 
@@ -65,12 +61,7 @@ InventoryItemWidget::Draw()
   if (IsVisible()) {
     if (selected) {
     }
-    if (pressed) {
-      MousePointer *mp = MousePointerManager::GetInstance()->GetCurrentPointer();
-      rect.SetXPos(mp->GetXPos() + xOffset);
-      rect.SetYPos(mp->GetYPos() + yOffset);
-    }
-    if (iconImage) {
+    if ((!pressed) && (iconImage)) {
       iconImage->Draw(rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2,
                       rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2, 0);
     }
@@ -90,14 +81,13 @@ InventoryItemWidget::LeftClick(const bool toggle, const int x, const int y)
 {
   if (IsVisible()) {
     pressed = toggle;
+    MousePointer *mp = MousePointerManager::GetInstance()->GetCurrentPointer();
     if (pressed) {
-      xOffset = rect.GetXPos() - x;
-      yOffset = rect.GetYPos() - y;
+      mp->SetDragImage(iconImage,
+                       rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2 - x,
+                       rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2 - y);
     } else {
-      rect.SetXPos(xOrg);
-      rect.SetYPos(yOrg);
-      xOffset = 0;
-      yOffset = 0;
+      mp->SetDragImage(0, 0, 0);
     }
     if (toggle) {
       GenerateActionEvent(GetAction());

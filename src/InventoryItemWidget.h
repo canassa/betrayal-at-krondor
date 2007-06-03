@@ -39,10 +39,6 @@ class InventoryItemWidget
     TextWidget *label;
     bool pressed;
     bool selected;
-    int xOrg;
-    int yOrg;
-    int xOffset;
-    int yOffset;
   public:
     InventoryItemWidget(const Rectangle &r, const int a);
     virtual ~InventoryItemWidget();

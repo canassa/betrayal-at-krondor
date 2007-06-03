@@ -31,6 +31,9 @@ MousePointer::MousePointer(const std::string &resname)
 , yPos(0)
 , pointerType(MP_SWORD)
 , pointerImages()
+, dragImage(0)
+, dragOffsetX(0)
+, dragOffsetY(0)
 {
   FileManager::GetInstance()->Load(&pointerImages, resname);
 }
@@ -74,9 +77,20 @@ MousePointer::SetVisible(const bool vis)
 }
 
 void
+MousePointer::SetDragImage(Image *img, const int x, const int y)
+{
+  dragImage = img;
+  dragOffsetX = x;
+  dragOffsetY = y;
+}
+
+void
 MousePointer::Draw()
 {
   if (visible) {
+    if (dragImage) {
+      dragImage->Draw(xPos + dragOffsetX, yPos + dragOffsetY, 0);
+    }
     pointerImages.GetImage((int)pointerType)->Draw(xPos, yPos, 0);
   }
 }

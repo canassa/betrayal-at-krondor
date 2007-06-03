@@ -66,6 +66,9 @@ class MousePointer
     int yPos;
     MousePointerType pointerType;
     ImageResource pointerImages;
+    Image *dragImage;
+    int dragOffsetX;
+    int dragOffsetY;
   public:
     MousePointer(const std::string &resname);
     virtual ~MousePointer();
@@ -74,6 +77,7 @@ class MousePointer
     void SetPointerType(MousePointerType mpt);
     void SetPosition(const int x, const int y);
     void SetVisible(const bool vis);
+    void SetDragImage(Image *img, const int x, const int y);
     void Draw();
 };
 
