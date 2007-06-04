@@ -104,14 +104,15 @@ Directories::CreatePath(const std::string &path)
 static const std::string SEARCH_RESOURCE_FILE = "krondor.001";
 static const std::string SEARCH_RESOURCE_PATH[] =
 {
-  "/opt/krondor/",
-  "/opt/share/krondor/",
+  "./",
   "/krondor/",
   "./krondor/",
   "../krondor/",
+  "/opt/krondor/",
   "/bakcd/",
   "./bakcd/",
   "../bakcd/",
+  "/opt/bakcd/",
   ""
 };
 

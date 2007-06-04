@@ -1,7 +1,8 @@
 2007-06-??, xbak-0.1.2:
 * Added inventory and equipment dialog.
-* Added some GUI widgets for inventory.
+* Added GUI widgets for inventory items.
 * Character inventory can be loaded from saved games.
+* Improved search paths for original BaK data files.
 * Several bug fixes.
 
 2007-03-29, xbak-0.1.1:
