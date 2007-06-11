@@ -63,15 +63,18 @@ class ActiveWidget
 : public Widget {
   protected:
     int action;
+    bool focusable;
     std::list<ActionEventListener *> actionListeners;
   public:
     ActiveWidget(const Rectangle &r, const int a);
-    ~ActiveWidget();
+    virtual ~ActiveWidget();
     int GetAction() const;
+    bool IsFocusable() const;
+    void SetFocusable(const bool toggle);
     void AddActionListener(ActionEventListener *ael);
     void RemoveActionListener(ActionEventListener *ael);
     void GenerateActionEvent(const int a);
-    virtual void Focus() = 0;
+    void Focus();
     virtual void LeftClick(const bool toggle, const int x, const int y) = 0;
     virtual void RightClick(const bool toggle, const int x, const int y) = 0;
 };

@@ -55,9 +55,3 @@ ButtonWidget::IsPressed() const
 {
   return pressed;
 }
-
-void
-ButtonWidget::Focus()
-{
-  MediaToolkit::GetInstance()->GetVideo()->SetPointerPosition(rect.GetXPos() + rect.GetWidth() / 2, rect.GetYPos() + rect.GetHeight() / 2);
-}

@@ -28,6 +28,7 @@ InventoryItemWidget::InventoryItemWidget(const Rectangle &r, const int a)
 , pressed(false)
 , selected(false)
 {
+  SetFocusable(false);
 }
 
 InventoryItemWidget::~InventoryItemWidget()
@@ -69,11 +70,6 @@ InventoryItemWidget::Draw()
       label->Draw();
     }
   }
-}
-
-void
-InventoryItemWidget::Focus()
-{
 }
 
 void

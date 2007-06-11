@@ -39,7 +39,6 @@ class ButtonWidget
     bool IsEnabled() const;
     void SetPressed(const bool toggle);
     bool IsPressed() const;
-    void Focus();
     virtual void LeftClick(const bool toggle, const int x, const int y) = 0;
     virtual void RightClick(const bool toggle, const int x, const int y) = 0;
 };

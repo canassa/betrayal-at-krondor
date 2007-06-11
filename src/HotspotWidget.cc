@@ -23,14 +23,10 @@
 HotspotWidget::HotspotWidget(const Rectangle &r, const int a)
 : ActiveWidget(r, a)
 {
+  SetFocusable(false);
 }
 
 HotspotWidget::~HotspotWidget()
-{
-}
-
-void
-HotspotWidget::Focus()
 {
 }
 

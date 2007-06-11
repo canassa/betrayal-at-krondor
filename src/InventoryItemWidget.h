@@ -45,7 +45,6 @@ class InventoryItemWidget
     void SetImage(Image *icon);
     void SetLabel(const std::string& s, Font *f);
     void Draw();
-    void Focus();
     void LeftClick(const bool toggle, const int x, const int y);
     void RightClick(const bool toggle, const int x, const int y);
 };

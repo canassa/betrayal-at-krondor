@@ -40,7 +40,6 @@ class ContainerWidget
     ContainerWidget(const Rectangle &r);
     virtual ~ContainerWidget();
     void Draw();
-    void Focus();
     void Clear();
     void AddWidget(Widget *w);
     void RemoveWidget(Widget *w);

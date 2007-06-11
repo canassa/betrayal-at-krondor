@@ -25,6 +25,7 @@ ContainerWidget::ContainerWidget(const Rectangle &r)
 , activeWidgets()
 , currentActiveWidget()
 {
+  SetFocusable(false);
 }
 
 ContainerWidget::~ContainerWidget()
@@ -91,13 +92,6 @@ ContainerWidget::Draw()
 }
 
 void
-ContainerWidget::Focus()
-{
-  if (IsVisible()) {
-  }
-}
-
-void
 ContainerWidget::NextWidget()
 {
   if (IsVisible()) {
@@ -109,7 +103,7 @@ ContainerWidget::NextWidget()
         if (currentActiveWidget == activeWidgets.end()) {
           currentActiveWidget = activeWidgets.begin();
         }
-      } while (!((*currentActiveWidget)->IsVisible()));
+      } while (!((*currentActiveWidget)->IsVisible()) || !((*currentActiveWidget)->IsFocusable()));
       (*currentActiveWidget)->Focus();
     }
   }
@@ -125,7 +119,7 @@ ContainerWidget::PreviousWidget()
           currentActiveWidget = activeWidgets.end();
         }
         currentActiveWidget--;
-      } while (!((*currentActiveWidget)->IsVisible()));
+      } while (!((*currentActiveWidget)->IsVisible()) || !((*currentActiveWidget)->IsFocusable()));
       (*currentActiveWidget)->Focus();
     }
   }

@@ -17,6 +17,7 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "MediaToolkit.h"
 #include "Widget.h"
 
 Widget::Widget(const Rectangle &r)
@@ -58,6 +59,7 @@ Widget::IsVisible() const
 ActiveWidget::ActiveWidget(const Rectangle &r, const int a)
 : Widget(r)
 , action(a)
+, focusable(true)
 , actionListeners()
 {
 }
@@ -71,6 +73,18 @@ int
 ActiveWidget::GetAction() const
 {
   return action;
+}
+
+bool
+ActiveWidget::IsFocusable() const
+{
+  return focusable;
+}
+
+void
+ActiveWidget::SetFocusable(const bool toggle)
+{
+  focusable = toggle;
 }
 
 void
@@ -92,4 +106,12 @@ void
 ActiveWidget::RemoveActionListener(ActionEventListener *ael)
 {
   actionListeners.remove(ael);
+}
+
+void
+ActiveWidget::Focus()
+{
+  if (focusable) {
+    MediaToolkit::GetInstance()->GetVideo()->SetPointerPosition(rect.GetXPos() + rect.GetWidth() / 2, rect.GetYPos() + rect.GetHeight() / 2);
+  }
 }
