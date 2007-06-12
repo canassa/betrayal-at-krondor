@@ -59,6 +59,7 @@ Widget::IsVisible() const
 ActiveWidget::ActiveWidget(const Rectangle &r, const int a)
 : Widget(r)
 , action(a)
+, draggable(false)
 , focusable(true)
 , actionListeners()
 {
@@ -73,6 +74,18 @@ int
 ActiveWidget::GetAction() const
 {
   return action;
+}
+
+bool
+ActiveWidget::IsDraggable() const
+{
+  return draggable;
+}
+
+void
+ActiveWidget::SetDraggable(const bool toggle)
+{
+  draggable = toggle;
 }
 
 bool
@@ -114,4 +127,9 @@ ActiveWidget::Focus()
   if (focusable) {
     MediaToolkit::GetInstance()->GetVideo()->SetPointerPosition(rect.GetXPos() + rect.GetWidth() / 2, rect.GetYPos() + rect.GetHeight() / 2);
   }
+}
+
+void
+ActiveWidget::Reset()
+{
 }

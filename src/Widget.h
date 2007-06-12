@@ -42,8 +42,8 @@ static const int POPUP_COLOR          = 14;
 static const int INFO_TEXT_COLOR      = 159;
 
 static const int INVENTORY_OFFSET     = 256;
-
 static const int RIGHT_CLICK_OFFSET   = 512;
+static const int RELEASE_OFFSET       = 1024;
 
 class Widget {
   protected:
@@ -63,18 +63,22 @@ class ActiveWidget
 : public Widget {
   protected:
     int action;
+    bool draggable;
     bool focusable;
     std::list<ActionEventListener *> actionListeners;
   public:
     ActiveWidget(const Rectangle &r, const int a);
     virtual ~ActiveWidget();
     int GetAction() const;
+    bool IsDraggable() const;
+    void SetDraggable(const bool toggle);
     bool IsFocusable() const;
     void SetFocusable(const bool toggle);
     void AddActionListener(ActionEventListener *ael);
     void RemoveActionListener(ActionEventListener *ael);
     void GenerateActionEvent(const int a);
     void Focus();
+    virtual void Reset();
     virtual void LeftClick(const bool toggle, const int x, const int y) = 0;
     virtual void RightClick(const bool toggle, const int x, const int y) = 0;
 };

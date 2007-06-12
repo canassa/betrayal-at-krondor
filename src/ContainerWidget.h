@@ -52,6 +52,7 @@ class ContainerWidget
     void LeftClick(const bool toggle, const int x, const int y);
     void RightClick(const bool toggle, const int x, const int y);
     void MouseOver(const int x, const int y);
+    void Reset();
 };
 
 #endif

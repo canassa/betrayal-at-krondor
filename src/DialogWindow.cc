@@ -43,6 +43,7 @@ DialogWindow::Draw()
 void
 DialogWindow::FadeIn(Palette* pal)
 {
+  panel->Reset();
   panel->Draw();
   MousePointerManager::GetInstance()->GetCurrentPointer()->Draw();
   pal->FadeIn(0, VIDEO_COLORS, 64, 5);

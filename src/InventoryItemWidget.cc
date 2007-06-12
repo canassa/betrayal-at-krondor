@@ -78,14 +78,13 @@ InventoryItemWidget::LeftClick(const bool toggle, const int x, const int y)
   if (IsVisible()) {
     pressed = toggle;
     MousePointer *mp = MousePointerManager::GetInstance()->GetCurrentPointer();
-    if (pressed) {
+    if (toggle) {
       mp->SetDragImage(iconImage,
                        rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2 - x,
                        rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2 - y);
+      GenerateActionEvent(GetAction());
     } else {
       mp->SetDragImage(0, 0, 0);
-    }
-    if (toggle) {
       GenerateActionEvent(GetAction());
     }
   }

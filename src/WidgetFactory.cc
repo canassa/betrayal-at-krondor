@@ -154,6 +154,7 @@ InventoryItemWidget*
 WidgetFactory::CreateInventoryItem(const Rectangle &r, const int a, Image *img, const std::string& s, Font *f)
 {
   InventoryItemWidget* invitem = new InventoryItemWidget(r, a);
+  invitem->SetDraggable(true);
   invitem->SetImage(img);
   invitem->SetLabel(s, f);
   return invitem;
@@ -162,7 +163,9 @@ WidgetFactory::CreateInventoryItem(const Rectangle &r, const int a, Image *img, 
 InventoryWidget *
 WidgetFactory::CreateInventory(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, FontResource& fnt)
 {
-  return new InventoryWidget(r, pc, img, fnt.GetFont());
+  InventoryWidget *inv = new InventoryWidget(r, pc, img, fnt.GetFont());
+  inv->SetDraggable(true);
+  return inv;
 }
 
 EquipmentItemWidget*

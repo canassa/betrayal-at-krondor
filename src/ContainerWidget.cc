@@ -152,7 +152,7 @@ ContainerWidget::LeftClick(const bool toggle, const int x, const int y)
 {
   if (IsVisible()) {
     for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-      if ((*it)->GetRectangle().IsInside(Vector2D(x, y))) {
+      if (((*it)->GetRectangle().IsInside(Vector2D(x, y))) || ((*it)->IsDraggable() && !toggle)) {
         (*it)->LeftClick(toggle, x, y);
       }
     }
@@ -164,7 +164,7 @@ ContainerWidget::RightClick(const bool toggle, const int x, const int y)
 {
   if (IsVisible()) {
     for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-      if ((*it)->GetRectangle().IsInside(Vector2D(x, y))) {
+      if (((*it)->GetRectangle().IsInside(Vector2D(x, y))) || ((*it)->IsDraggable() && !toggle)) {
         (*it)->RightClick(toggle, x, y);
       }
     }
@@ -179,6 +179,16 @@ ContainerWidget::MouseOver(const int x, const int y)
       if ((*it)->GetRectangle().IsInside(Vector2D(x, y))) {
         (*it)->LeftClick(false, x, y);
       }
+    }
+  }
+}
+
+void
+ContainerWidget::Reset()
+{
+  if (IsVisible()) {
+    for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
+      (*it)->Reset();
     }
   }
 }

@@ -55,3 +55,9 @@ ButtonWidget::IsPressed() const
 {
   return pressed;
 }
+
+void
+ButtonWidget::Reset()
+{
+  pressed = false;
+}
