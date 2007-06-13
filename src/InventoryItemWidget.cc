@@ -85,7 +85,7 @@ InventoryItemWidget::LeftClick(const bool toggle, const int x, const int y)
       GenerateActionEvent(GetAction());
     } else {
       mp->SetDragImage(0, 0, 0);
-      GenerateActionEvent(GetAction());
+      GenerateActionEvent(GetAction() + RELEASE_OFFSET);
     }
   }
 }
