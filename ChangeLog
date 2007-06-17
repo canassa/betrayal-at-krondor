@@ -1,7 +1,8 @@
-2007-06-??, xbak-0.1.2:
+2007-06-17, xbak-0.1.2:
 * Added inventory and equipment dialog.
 * Added GUI widgets for inventory items.
 * Character inventory can be loaded from saved games.
+* Refactored the GUI widgets a bit.
 * Improved search paths for original BaK data files.
 * Several bug fixes.
 
@@ -16,7 +17,7 @@
 * Added terrain and the illusion of movement to the main game view.
 * Added geometrical classes.
 * TBL files can be loaded and partly interpreted.
-* OBJINFO.DAT file can be loaded (mostly interpretted).
+* OBJINFO.DAT file can be loaded (mostly interpreted).
 * Several bug fixes.
 
 2006-11-09, xbak-0.0.12:
