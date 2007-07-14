@@ -29,6 +29,7 @@
 #include "FileBuffer.h"
 
 typedef struct _ResourceIndexData {
+  unsigned int hashkey;
   std::streamoff offset;
   unsigned int size;
 } ResourceIndexData;
@@ -41,8 +42,10 @@ class ResourceIndex {
   public:
     ResourceIndex();
     virtual ~ResourceIndex();
-    void Init(const std::string &filename);
+    void Load(const std::string &filename);
+    void Save(const std::string &filename);
     std::string GetResourceFilename() const;
+    unsigned int GetNumResources() const;
     bool Find(const std::string &name, ResourceIndexData &data);
 };
 

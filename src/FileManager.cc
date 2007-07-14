@@ -27,7 +27,7 @@ FileManager* FileManager::instance = 0;
 
 FileManager::FileManager()
 {
-  resIndex.Init("krondor.rmf");
+  resIndex.Load("krondor.rmf");
   resArchive.Open(resIndex.GetResourceFilename(), false);
 }
 
@@ -126,7 +126,7 @@ FileManager::LoadResource(const std::string &name)
     resfile.Close();
     return buffer;
   } catch (Exception &e1) {
-    ResourceIndexData resIdxData = {0, 0};
+    ResourceIndexData resIdxData = {0, 0, 0};
     if (resIndex.Find(name, resIdxData) && (resIdxData.size != 0)) {
       try {
         FileBuffer *buffer = new FileBuffer(resIdxData.size);
@@ -249,7 +249,7 @@ FileManager::ResourceExists(const std::string &name)
     resfile.Close();
     return true;
   } catch (Exception &e1) {
-    ResourceIndexData resIdxData = {0, 0};
+    ResourceIndexData resIdxData = {0, 0, 0};
     return (resIndex.Find(name, resIdxData) && (resIdxData.size != 0));
   }
   return false;

@@ -33,7 +33,7 @@ ResourceIndex::~ResourceIndex()
 }
 
 void
-ResourceIndex::Init(const std::string &filename)
+ResourceIndex::Load(const std::string &filename)
 {
   try {
     ResourceFile rmf;
@@ -52,20 +52,33 @@ ResourceIndex::Init(const std::string &filename)
     res.Open(resourceFilename, false);
     FileBuffer resBuffer(RES_FILENAME_LEN + 4);
     for (unsigned int i = 0; i < numResources; i++) {
-      /* skip the hashkey */
-      rmfBuffer.Skip(4);
+      unsigned int hashkey = rmfBuffer.GetUint32LE();
       std::streamoff offset = rmfBuffer.GetUint32LE();
       res.Seek(offset);
       res.Load(resBuffer);
       std::string resIdxName = resBuffer.GetString(RES_FILENAME_LEN);
       ResourceIndexData resIdxData;
+      resIdxData.hashkey = hashkey;
       resIdxData.offset = offset + RES_FILENAME_LEN + 4;
       resIdxData.size = resBuffer.GetUint32LE();
       resIdxMap.insert(std::pair<const std::string, ResourceIndexData>(resIdxName, resIdxData));
     }
     res.Close();
   } catch (Exception &e) {
-    e.Print("ResourceIndex::Init");
+    e.Print("ResourceIndex::Load");
+    throw;
+  }
+}
+
+void
+ResourceIndex::Save(const std::string &filename)
+{
+  try {
+    ResourceFile rmf;
+    rmf.Open(filename, true);
+    rmf.Close();
+  } catch (Exception &e) {
+    e.Print("ResourceIndex::Save");
     throw;
   }
 }
@@ -74,6 +87,12 @@ std::string
 ResourceIndex::GetResourceFilename() const
 {
   return resourceFilename;
+}
+
+unsigned int
+ResourceIndex::GetNumResources() const
+{
+  return numResources;
 }
 
 bool
