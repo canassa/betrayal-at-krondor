@@ -49,8 +49,8 @@ class FileBuffer {
 
     void Load(std::ifstream &ifs);
     void Save(std::ofstream &ofs);
-    void Dump();
-    void Copy(FileBuffer *buf, unsigned int n); 
+    void Dump(const unsigned int n = 0);
+    void Copy(FileBuffer *buf, const unsigned int n);
     void Fill(FileBuffer *buf);
     void Rewind();
     void Seek(const unsigned int n);

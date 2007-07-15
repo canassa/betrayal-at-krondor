@@ -43,7 +43,7 @@ FileBuffer::~FileBuffer()
 }
 
 void
-FileBuffer::Copy(FileBuffer *buf, unsigned int n)
+FileBuffer::Copy(FileBuffer *buf, const unsigned int n)
 {
   if (buffer && n && (current + n <= buffer + size)) {
     buf->GetData(current, n);
@@ -89,12 +89,17 @@ FileBuffer::Save(std::ofstream &ofs)
 }
 
 void
-FileBuffer::Dump()
+FileBuffer::Dump(const unsigned int n)
 {
-  current = buffer;
+  uint8_t* tmp = current;
+  unsigned int l = 0;
   std::cout << std::setbase(16) << std::setfill('0');
-  while (current < (buffer + size)) {
-    std::cout << std::setw(2) << (unsigned int)*current++ << " ";
+  while ((tmp < (buffer + size)) && ((tmp < (current + n)) || (n == 0))) {
+    std::cout << std::setw(2) << (unsigned int)*tmp++ << " ";
+    if (++l == 32) {
+      std::cout << std::endl;
+      l = 0;
+    }
   }
   std::cout << std::endl;
 }
