@@ -243,10 +243,14 @@ class LoopEvent {
 class ActionEvent {
   private:
     int action;
+    int xpos;
+    int ypos;
   public:
-    ActionEvent(const int a);
+    ActionEvent(const int a, const int x, const int y);
     virtual ~ActionEvent();
     int GetAction() const;
+    int GetXPos() const;
+    int GetYPos() const;
 };
 
 #endif

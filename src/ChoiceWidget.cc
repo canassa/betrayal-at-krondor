@@ -56,11 +56,11 @@ ChoiceWidget::Draw()
 }
 
 void
-ChoiceWidget::LeftClick(const bool toggle, const int, const int)
+ChoiceWidget::LeftClick(const bool toggle, const int x, const int y)
 {
   if (IsVisible()) {
     if (toggle) {
-      ActionEvent ae(action);
+      ActionEvent ae(action, x, y);
       for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it) {
         (*it)->ActionPerformed(ae);
       }

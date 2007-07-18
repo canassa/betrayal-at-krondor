@@ -103,7 +103,24 @@ ActiveWidget::SetFocusable(const bool toggle)
 void
 ActiveWidget::GenerateActionEvent(const int a)
 {
-  ActionEvent ae(a);
+  ActionEvent ae(a, rect.GetXCenter(), rect.GetYCenter());
+  for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it) {
+    (*it)->ActionPerformed(ae);
+  }
+}
+
+void
+ActiveWidget::GenerateActionEvent(const int a, const int x, const int y)
+{
+  ActionEvent ae(a, x, y);
+  for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it) {
+    (*it)->ActionPerformed(ae);
+  }
+}
+
+void
+ActiveWidget::GenerateActionEvent(const ActionEvent& ae)
+{
   for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it) {
     (*it)->ActionPerformed(ae);
   }

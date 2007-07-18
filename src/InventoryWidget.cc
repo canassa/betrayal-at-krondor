@@ -23,7 +23,8 @@
 #include "WidgetFactory.h"
 
 InventoryWidget::InventoryWidget(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Font *f)
-: ContainerWidget(r)
+: ActionEventListener()
+, ContainerWidget(r)
 , Observer()
 , character(pc)
 , images(img)
@@ -39,6 +40,14 @@ InventoryWidget::~InventoryWidget()
 {
   character->GetInventory()->Detach(this);
   character->Detach(this);
+}
+
+void
+InventoryWidget::ActionPerformed(const ActionEvent &ae)
+{
+  if (!rect.IsInside(Vector2D(ae.GetXPos(), ae.GetXPos()))) {
+    GenerateActionEvent(ae);
+  }
 }
 
 void
@@ -75,7 +84,7 @@ InventoryWidget::Update()
       while (it != freeSpaces.end()) {
         if ((it->GetWidth() > width) && (it->GetHeight() > height)) {
           InventoryItemWidget *invitem = wf.CreateInventoryItem(Rectangle(it->GetXPos() + 1, it->GetYPos() + 1, width, height),
-                                                                INVENTORY_OFFSET + i, image, item->ToString(), font);
+                                                                INVENTORY_OFFSET + i, image, item->ToString(), font, this);
           AddActiveWidget(invitem);
           Rectangle origFreeSpace(*it);
           freeSpaces.erase(it);

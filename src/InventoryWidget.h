@@ -31,7 +31,8 @@
 #include "PlayerCharacter.h"
 
 class InventoryWidget
-: public ContainerWidget
+: public ActionEventListener
+, public ContainerWidget
 , public Observer
 {
   private:
@@ -42,6 +43,7 @@ class InventoryWidget
   public:
     InventoryWidget(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Font *f);
     virtual ~InventoryWidget();
+    void ActionPerformed(const ActionEvent &ae);
     void Update();
 };
 

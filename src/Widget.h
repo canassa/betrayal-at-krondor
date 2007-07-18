@@ -26,6 +26,7 @@
 #include "config.h"
 #endif
 
+#include "Event.h"
 #include "EventListener.h"
 #include "Geometry.h"
 
@@ -77,6 +78,8 @@ class ActiveWidget
     void AddActionListener(ActionEventListener *ael);
     void RemoveActionListener(ActionEventListener *ael);
     void GenerateActionEvent(const int a);
+    void GenerateActionEvent(const int a, const int x, const int y);
+    void GenerateActionEvent(const ActionEvent& ae);
     void Focus();
     virtual void Reset();
     virtual void LeftClick(const bool toggle, const int x, const int y) = 0;

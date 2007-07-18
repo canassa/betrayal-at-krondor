@@ -115,8 +115,10 @@ LoopEvent::GetTicks() const
   return ticks;
 }
 
-ActionEvent::ActionEvent(const int a)
+ActionEvent::ActionEvent(const int a, const int x, const int y)
 : action(a)
+, xpos(x)
+, ypos(y)
 {
 }
 
@@ -128,4 +130,16 @@ int
 ActionEvent::GetAction() const
 {
   return action;
+}
+
+int
+ActionEvent::GetXPos() const
+{
+  return xpos;
+}
+
+int
+ActionEvent::GetYPos() const
+{
+  return ypos;
 }
