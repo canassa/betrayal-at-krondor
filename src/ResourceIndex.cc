@@ -74,8 +74,34 @@ void
 ResourceIndex::Save(const std::string &filename)
 {
   try {
+    std::map<unsigned int, unsigned int> hashtable;
+    ResourceFile res;
+    res.Open(resourceFilename, false);
+    FileBuffer resBuffer(RES_FILENAME_LEN + 4);
+    unsigned int offset = 0;
+    for (unsigned int i = 0; i < numResources; i++) {
+      res.Seek(offset);
+      res.Load(resBuffer);
+      std::string resIdxName = resBuffer.GetString(RES_FILENAME_LEN);
+      ResourceIndexData resIdxData;
+      Find(resIdxName, resIdxData);
+      hashtable.insert(std::pair<unsigned int, unsigned int>(resIdxData.hashkey, offset));
+    }
+    res.Close();
+
+    FileBuffer rmfBuffer(4 + 2 + RES_FILENAME_LEN + 2 + numResources * (4 + 4));
+    rmfBuffer.PutUint32LE(1);
+    rmfBuffer.PutUint16LE(4);
+    rmfBuffer.PutString(resourceFilename, RES_FILENAME_LEN);
+    rmfBuffer.PutUint16LE(numResources);
+    for (std::map<unsigned int, unsigned int>::iterator it = hashtable.begin(); it != hashtable.end(); ++it) {
+      rmfBuffer.PutUint32LE(it->first);
+      rmfBuffer.PutUint32LE(it->second);
+    }
+
     ResourceFile rmf;
     rmf.Open(filename, true);
+    rmf.Save(rmfBuffer);
     rmf.Close();
   } catch (Exception &e) {
     e.Print("ResourceIndex::Save");
