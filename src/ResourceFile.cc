@@ -42,5 +42,5 @@ ResourceFile::GetAlternatePath() const
 std::string
 ResourceFile::GetStoragePath() const
 {
-  return Directories::GetInstance()->GetUserPath();
+  return Directories::GetInstance()->GetDataPath();
 }

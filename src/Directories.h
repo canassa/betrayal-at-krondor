@@ -34,6 +34,7 @@ class Directories
     std::string userPath;
     std::string gamesPath;
     std::string capturePath;
+    std::string dataPath;
     static Directories *instance;
     void CreatePath(const std::string& path);
     std::string SearchResources() const;
@@ -48,6 +49,7 @@ class Directories
     std::string GetUserPath() const;
     std::string GetGamesPath() const;
     std::string GetCapturePath() const;
+    std::string GetDataPath() const;
     void SetResourcePath(const std::string &path);
 };
 
