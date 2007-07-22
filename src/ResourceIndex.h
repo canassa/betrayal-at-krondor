@@ -39,6 +39,7 @@ class ResourceIndex {
     std::string resourceFilename;
     unsigned int numResources;
     std::map <const std::string, ResourceIndexData> resIdxMap;
+    std::map<const std::string, ResourceIndexData>::iterator resIdxIterator;
   public:
     ResourceIndex();
     virtual ~ResourceIndex();
@@ -47,6 +48,8 @@ class ResourceIndex {
     std::string GetResourceFilename() const;
     unsigned int GetNumResources() const;
     bool Find(const std::string &name, ResourceIndexData &data);
+    bool GetFirst(std::string& name, ResourceIndexData &data);
+    bool GetNext(std::string& name, ResourceIndexData &data);
 };
 
 #endif

@@ -89,6 +89,24 @@ FileBuffer::Save(std::ofstream &ofs)
 }
 
 void
+FileBuffer::Save(std::ofstream &ofs, const unsigned int n)
+{
+  if (ofs.is_open()) {
+    if (n <= size) {
+      current = buffer;
+      ofs.write((char *)buffer, n);
+      if (ofs.fail()) {
+        throw IOError(__FILE__, __LINE__);
+      }
+    } else {
+      throw BufferEmpty(__FILE__, __LINE__);
+    }
+  } else {
+    throw OpenError(__FILE__, __LINE__);
+  }
+}
+
+void
 FileBuffer::Dump(const unsigned int n)
 {
   uint8_t* tmp = current;

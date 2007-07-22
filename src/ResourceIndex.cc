@@ -24,6 +24,8 @@
 ResourceIndex::ResourceIndex()
 : resourceFilename("")
 , numResources(0)
+, resIdxMap()
+, resIdxIterator(resIdxMap.begin())
 {
 }
 
@@ -74,7 +76,12 @@ void
 ResourceIndex::Save(const std::string &filename)
 {
   try {
-    std::map<unsigned int, unsigned int> hashtable;
+    FileBuffer rmfBuffer(4 + 2 + RES_FILENAME_LEN + 2 + numResources * (4 + 4));
+    rmfBuffer.PutUint32LE(1);
+    rmfBuffer.PutUint16LE(4);
+    rmfBuffer.PutString(resourceFilename, RES_FILENAME_LEN);
+    rmfBuffer.PutUint16LE(numResources);
+
     ResourceFile res;
     res.Open(resourceFilename, false);
     FileBuffer resBuffer(RES_FILENAME_LEN + 4);
@@ -85,19 +92,11 @@ ResourceIndex::Save(const std::string &filename)
       std::string resIdxName = resBuffer.GetString(RES_FILENAME_LEN);
       ResourceIndexData resIdxData;
       Find(resIdxName, resIdxData);
-      hashtable.insert(std::pair<unsigned int, unsigned int>(resIdxData.hashkey, offset));
+      rmfBuffer.PutUint32LE(resIdxData.hashkey);
+      rmfBuffer.PutUint32LE(offset);
+      offset += RES_FILENAME_LEN + 4 + resIdxData.size;
     }
     res.Close();
-
-    FileBuffer rmfBuffer(4 + 2 + RES_FILENAME_LEN + 2 + numResources * (4 + 4));
-    rmfBuffer.PutUint32LE(1);
-    rmfBuffer.PutUint16LE(4);
-    rmfBuffer.PutString(resourceFilename, RES_FILENAME_LEN);
-    rmfBuffer.PutUint16LE(numResources);
-    for (std::map<unsigned int, unsigned int>::iterator it = hashtable.begin(); it != hashtable.end(); ++it) {
-      rmfBuffer.PutUint32LE(it->first);
-      rmfBuffer.PutUint32LE(it->second);
-    }
 
     ResourceFile rmf;
     rmf.Open(filename, true);
@@ -127,6 +126,34 @@ ResourceIndex::Find(const std::string &name, ResourceIndexData &data)
   std::map<const std::string, ResourceIndexData>::iterator it = resIdxMap.find(name);
   if (it != resIdxMap.end()) {
     data = it->second;
+    return true;
+  }
+  return false;
+}
+
+bool
+ResourceIndex::GetFirst(std::string& name, ResourceIndexData &data)
+{
+  resIdxIterator = resIdxMap.begin();
+  if (resIdxIterator != resIdxMap.end()) {
+    name = resIdxIterator->first;
+    data = resIdxIterator->second;
+    return true;
+  }
+  return false;
+}
+
+
+bool
+ResourceIndex::GetNext(std::string& name, ResourceIndexData &data)
+{
+  if (resIdxIterator == resIdxMap.end()) {
+    return false;
+  }
+  resIdxIterator++;
+  if (resIdxIterator != resIdxMap.end()) {
+    name = resIdxIterator->first;
+    data = resIdxIterator->second;
     return true;
   }
   return false;

@@ -26,6 +26,7 @@
 
 #include "Directories.h"
 #include "Exception.h"
+#include "FileManager.h"
 #include "TestApplication.h"
 
 typedef enum _CommandType
@@ -33,6 +34,7 @@ typedef enum _CommandType
   CT_UNKNOWN,
   CT_BMX,
   CT_FNT,
+  CT_RMF,
   CT_SCX,
   CT_SND,
   CT_TTM,
@@ -50,6 +52,9 @@ get_command_type(char *cmd)
   }
   if (strncmp(cmd, "FNT", 3) == 0) {
     return CT_FNT;
+  }
+  if (strncmp(cmd, "RMF", 3) == 0) {
+    return CT_RMF;
   }
   if (strncmp(cmd, "SCX", 3) == 0) {
     return CT_SCX;
@@ -69,58 +74,89 @@ get_command_type(char *cmd)
 int main(int argc, char **argv)
 {
   try {
-    TestApplication *app = TestApplication::GetInstance();
     CommandType ct = get_command_type(argv[1]);
     switch (ct) {
       case CT_UNKNOWN:
-        printf("Usage: %s <BMX|FNT|SCX|SND|TTM|WLD> <command-options>\n", argv[0]);
+        printf("Usage: %s <BMX|FNT|RMF|SCX|SND|TTM|WLD> <command-options>\n", argv[0]);
         return -1;
       case CT_BMX:
         if (argc != 4) {
           printf("Usage: %s BMX <PAL-file> <BMX-file>\n", argv[0]);
           return -1;
+        } else {
+          TestApplication *app = TestApplication::GetInstance();
+          app->ActivatePalette(argv[2]);
+          app->ShowImage(argv[3]);
         }
-        app->ActivatePalette(argv[2]);
-        app->ShowImage(argv[3]);
         break;
       case CT_FNT:
         if (argc != 3) {
           printf("Usage: %s FNT <FNT-file>\n", argv[0]);
           return -1;
+        } else {
+          TestApplication *app = TestApplication::GetInstance();
+          app->ActivatePalette();
+          app->DrawFont(argv[2]);
         }
-        app->ActivatePalette();
-        app->DrawFont(argv[2]);
+        break;
+      case CT_RMF:
+        if (argc != 3) {
+          printf("Usage: %s RMF <A|E>\n", argv[0]);
+          return -1;
+        } else {
+          switch (*argv[2]) {
+            case 'A':
+              FileManager::GetInstance()->ArchiveAllResources();
+              break;
+            case 'E':
+              FileManager::GetInstance()->ExtractAllResources();
+              break;
+            default:
+              printf("Usage: %s RMF <A|E>\n", argv[0]);
+              return -1;
+              break;
+          }
+          FileManager::CleanUp();
+        }
         break;
       case CT_SCX:
         if (argc != 4) {
           printf("Usage: %s SCX <PAL-file> <SCX-file>\n", argv[0]);
           return -1;
+        } else {
+          TestApplication *app = TestApplication::GetInstance();
+          app->ActivatePalette(argv[2]);
+          app->ShowScreen(argv[3]);
         }
-        app->ActivatePalette(argv[2]);
-        app->ShowScreen(argv[3]);
         break;
       case CT_SND:
         if (argc != 3) {
           printf("Usage: %s SND <index>\n", argv[0]);
           return -1;
+        } else {
+          TestApplication *app = TestApplication::GetInstance();
+          app->PlaySound(atoi(argv[2]));
         }
-        app->PlaySound(atoi(argv[2]));
         break;
       case CT_TTM:
         if (argc != 3) {
           printf("Usage: %s TTM <TTM-file>\n", argv[0]);
           return -1;
+        } else {
+          TestApplication *app = TestApplication::GetInstance();
+          app->ActivatePalette();
+          app->PlayMovie(argv[2]);
         }
-        app->ActivatePalette();
-        app->PlayMovie(argv[2]);
         break;
       case CT_WLD:
         if (argc != 4) {
           printf("Usage: %s WLD <zone> <tile>\n", argv[0]);
           return -1;
+        } else {
+          TestApplication *app = TestApplication::GetInstance();
+          app->ActivatePalette("Z" + std::string(argv[2]) + ".PAL");
+          app->WalkWorld(argv[2], argv[3]);
         }
-        app->ActivatePalette("Z" + std::string(argv[2]) + ".PAL");
-        app->WalkWorld(argv[2], argv[3]);
         break;
     }
     TestApplication::CleanUp();

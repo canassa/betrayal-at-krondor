@@ -273,12 +273,72 @@ void
 FileManager::Save(ResourceData *res, const std::string &name)
 {
   try {
-    FileBuffer *buffer = new FileBuffer(100000);
+    FileBuffer *buffer = new FileBuffer(0x20000);
     res->Save(buffer);
     SaveResource(name, buffer);
     delete buffer;
   } catch (Exception &e) {
     e.Print("FileManager::Save");
+    throw;
+  }
+}
+
+void
+FileManager::ExtractResource(const std::string &name)
+{
+  try {
+    FileBuffer *buffer;
+    buffer = LoadResource(name);
+    SaveResource(name, buffer);
+    delete buffer;
+  } catch (Exception &e) {
+    e.Print("FileManager::ExtractResource");
+    throw;
+  }
+}
+
+void
+FileManager::ExtractAllResources()
+{
+  try {
+    std::string resName;
+    ResourceIndexData resIdxData = {0, 0, 0};
+    if (resIndex.GetFirst(resName, resIdxData)) {
+      do {
+        FileBuffer *buffer = new FileBuffer(resIdxData.size);
+        resArchive.LoadResource(*buffer, resIdxData.offset);
+        SaveResource(resName, buffer);
+        delete buffer;
+      } while (resIndex.GetNext(resName, resIdxData));
+    }
+  } catch (Exception &e) {
+    e.Print("FileManager::ExtractAllResources");
+    throw;
+  }
+}
+
+void
+FileManager::ArchiveAllResources()
+{
+  try {
+    std::string resName;
+    ResourceIndexData resIdxData = {0, 0, 0};
+    FileBuffer *archiveBuffer = new FileBuffer(0x1000000);
+    if (resIndex.GetFirst(resName, resIdxData)) {
+      do {
+        FileBuffer *buffer = new FileBuffer(resIdxData.size);
+        resArchive.LoadResource(*buffer, resIdxData.offset);
+        archiveBuffer->PutString(resName, RES_FILENAME_LEN);
+        archiveBuffer->PutUint32LE(resIdxData.size);
+        archiveBuffer->Copy(buffer, resIdxData.size);
+        delete buffer;
+      } while (resIndex.GetNext(resName, resIdxData));
+    }
+    SaveResource(resIndex.GetResourceFilename(), archiveBuffer);
+    resIndex.Save("krondor.rmf");
+    delete archiveBuffer;
+  } catch (Exception &e) {
+    e.Print("FileManager::ArchiveAllResources");
     throw;
   }
 }

@@ -56,6 +56,9 @@ class FileManager {
     bool ResourceExists(const std::string &name);
     void Load(ResourceData *res, const std::string &name);
     void Save(ResourceData *res, const std::string &name);
+    void ExtractResource(const std::string &name);
+    void ExtractAllResources();
+    void ArchiveAllResources();
 };
 
 #endif
