@@ -44,6 +44,7 @@ class BasicFile {
     std::streamsize Size();
     void Load(FileBuffer &buffer);
     void Save(FileBuffer &buffer);
+    void Save(FileBuffer &buffer, const unsigned int n);
 };
 
 #endif

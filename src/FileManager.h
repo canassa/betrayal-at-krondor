@@ -40,6 +40,7 @@ class FileManager {
     void SaveGame(const std::string &name, FileBuffer* buffer);
     FileBuffer* LoadResource(const std::string &name);
     void SaveResource(const std::string &name, FileBuffer* buffer);
+    void SaveResource(const std::string &name, FileBuffer* buffer, const unsigned int n);
     static FileManager *instance;
   protected:
     FileManager();

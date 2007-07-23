@@ -30,11 +30,17 @@ ResourceFile::~ResourceFile() {
 std::string
 ResourceFile::GetDefaultPath() const
 {
-  return Directories::GetInstance()->GetSharedPath();
+  return Directories::GetInstance()->GetDataPath();
 }
 
 std::string
 ResourceFile::GetAlternatePath() const
+{
+  return Directories::GetInstance()->GetSharedPath();
+}
+
+std::string
+ResourceFile::GetLastResortPath() const
 {
   return Directories::GetInstance()->GetResourcePath();
 }

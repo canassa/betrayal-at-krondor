@@ -160,3 +160,14 @@ BasicFile::Save(FileBuffer &buffer)
     throw;
   }
 }
+
+void
+BasicFile::Save(FileBuffer &buffer, const unsigned int n)
+{
+  try {
+    buffer.Save(ofs, n);
+  } catch (Exception &e) {
+    e.Print("BasicFile::Save");
+    throw;
+  }
+}

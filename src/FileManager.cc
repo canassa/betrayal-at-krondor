@@ -66,7 +66,8 @@ FileManager::LoadConfig(const std::string &name)
     cfgfile.Close();
     return buffer;
   } catch (Exception &e) {
-    throw FileNotFound(__FILE__, __LINE__, name);
+    e.Print("FileManager::SaveConfig");
+    throw;
   }
   return 0;
 }
@@ -80,7 +81,8 @@ FileManager::SaveConfig(const std::string &name, FileBuffer* buffer)
     cfgfile.Save(*buffer);
     cfgfile.Close();
   } catch (Exception &e) {
-    throw FileNotFound(__FILE__, __LINE__, name);
+    e.Print("FileManager::SaveConfig");
+    throw;
   }
 }
 
@@ -96,7 +98,8 @@ FileManager::LoadGame(const std::string &name)
     gamfile.Close();
     return buffer;
   } catch (Exception &e) {
-    throw FileNotFound(__FILE__, __LINE__, name);
+    e.Print("FileManager::LoadGame");
+    throw;
   }
   return 0;
 }
@@ -110,7 +113,8 @@ FileManager::SaveGame(const std::string &name, FileBuffer* buffer)
     gamfile.Save(*buffer);
     gamfile.Close();
   } catch (Exception &e) {
-    throw FileNotFound(__FILE__, __LINE__, name);
+    e.Print("FileManager::SaveGame");
+    throw;
   }
 }
 
@@ -152,7 +156,22 @@ FileManager::SaveResource(const std::string &name, FileBuffer* buffer)
     resfile.Save(*buffer);
     resfile.Close();
   } catch (Exception &e) {
-    throw FileNotFound(__FILE__, __LINE__, name);
+    e.Print("FileManager::SaveResource");
+    throw;
+  }
+}
+
+void
+FileManager::SaveResource(const std::string &name, FileBuffer* buffer, const unsigned int n)
+{
+  try {
+    ResourceFile resfile;
+    resfile.Open(name, true);
+    resfile.Save(*buffer, n);
+    resfile.Close();
+  } catch (Exception &e) {
+    e.Print("FileManager::SaveResource");
+    throw;
   }
 }
 
@@ -334,7 +353,7 @@ FileManager::ArchiveAllResources()
         delete buffer;
       } while (resIndex.GetNext(resName, resIdxData));
     }
-    SaveResource(resIndex.GetResourceFilename(), archiveBuffer);
+    SaveResource(resIndex.GetResourceFilename(), archiveBuffer, archiveBuffer->GetBytesDone());
     resIndex.Save("krondor.rmf");
     delete archiveBuffer;
   } catch (Exception &e) {
