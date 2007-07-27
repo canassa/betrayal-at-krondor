@@ -110,13 +110,14 @@ void
 FileBuffer::Dump(const unsigned int n)
 {
   uint8_t* tmp = current;
-  unsigned int l = 0;
-  std::cout << std::setbase(16) << std::setfill('0');
+  unsigned int count = 0;
+  std::cout << std::setbase(16) << std::setfill('0') << std::setw(8) << count << ": ";
   while ((tmp < (buffer + size)) && ((tmp < (current + n)) || (n == 0))) {
     std::cout << std::setw(2) << (unsigned int)*tmp++ << " ";
-    if (++l == 32) {
-      std::cout << std::endl;
-      l = 0;
+    if ((++count & 0x1f) == 0) {
+      std::cout << std::endl << std::setw(8) << count << ": ";
+    } else if ((count & 0x07) == 0) {
+      std::cout << "| ";
     }
   }
   std::cout << std::endl;
