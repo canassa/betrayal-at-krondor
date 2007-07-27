@@ -19,6 +19,12 @@
 
 #include "Geometry.h"
 
+Vector2D::Vector2D()
+: xCoord(0)
+, yCoord(0)
+{
+}
+
 Vector2D::Vector2D(const int x, const int y)
 : xCoord(x)
 , yCoord(y)
@@ -167,6 +173,13 @@ Vector2D::GetTheta() const
   }
 }
 
+
+Vector3D::Vector3D()
+: xCoord(0)
+, yCoord(0)
+, zCoord(0)
+{
+}
 
 Vector3D::Vector3D(const int x, const int y, const int z)
 : xCoord(x)

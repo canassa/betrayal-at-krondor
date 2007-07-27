@@ -40,6 +40,7 @@ class Vector2D {
     int xCoord;
     int yCoord;
   public:
+    Vector2D();
     Vector2D(const int x, const int y);
     Vector2D(const Vector2D &p);
     virtual ~Vector2D();
@@ -69,6 +70,7 @@ class Vector3D {
     int yCoord;
     int zCoord;
   public:
+    Vector3D();
     Vector3D(const int x, const int y, const int z);
     Vector3D(const Vector3D &p);
     virtual ~Vector3D();
