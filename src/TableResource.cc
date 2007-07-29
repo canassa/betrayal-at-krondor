@@ -20,6 +20,14 @@
 #include "Exception.h"
 #include "TableResource.h"
 
+DatInfo::DatInfo()
+{
+}
+
+DatInfo::~DatInfo()
+{
+}
+
 TableResource::TableResource()
 : TaggedResource()
 , mapItems()
@@ -49,7 +57,7 @@ TableResource::GetDatSize() const
   return datItems.size();
 }
 
-DatInfo&
+DatInfo*
 TableResource::GetDatItem(const unsigned int i)
 {
   return datItems[i];
@@ -71,6 +79,10 @@ void
 TableResource::Clear()
 {
   mapItems.clear();
+  for (std::vector<DatInfo *>::iterator it = datItems.begin(); it != datItems.end(); ++it) {
+    delete (*it);
+  }
+  datItems.clear();
   gidItems.clear();
 }
 
@@ -119,8 +131,8 @@ TableResource::Load(FileBuffer *buffer)
     for (unsigned int i = 0; i < numMapItems; i++) {
       gidbuf->Seek(gidOffset[i]);
       GidInfo item;
-      item.xsize = gidbuf->GetUint16LE();
-      item.ysize = gidbuf->GetUint16LE();
+      item.xoffset = gidbuf->GetUint16LE();
+      item.yoffset = gidbuf->GetUint16LE();
       bool more = gidbuf->GetUint16LE() > 0;
       item.flags = gidbuf->GetUint16LE();
       if (more) {
@@ -136,16 +148,16 @@ TableResource::Load(FileBuffer *buffer)
     }
     for (unsigned int i = 0; i < numMapItems; i++) {
       datbuf->Seek(datOffset[i]);
-      DatInfo item;
-      item.objectClass = datbuf->GetUint8();
-      item.objectType = datbuf->GetUint8();
-      item.terrainClass = datbuf->GetUint8();
-      item.terrainType = datbuf->GetUint8();
+      DatInfo *item = new DatInfo();
+      item->objectClass = datbuf->GetUint8();
+      item->objectType = datbuf->GetUint8();
+      item->terrainClass = datbuf->GetUint8();
+      item->terrainType = datbuf->GetUint8();
       datbuf->Skip(4);
       bool more = datbuf->GetUint16LE() > 0;
       datbuf->Skip(4);
       if (more) {
-        switch (item.objectType) {
+        switch (item->objectType) {
           case OT_TREE:
           case OT_TOMBSTONE:
           case OT_SIGN:
@@ -166,14 +178,16 @@ TableResource::Load(FileBuffer *buffer)
           case OT_COLUMN:
           case OT_BAG:
           case OT_LADDER:
-            datbuf->Skip(22);
-            item.sprite = datbuf->GetUint16LE();
-            datbuf->Skip(4);
+            {
+              datbuf->Skip(22);
+              item->sprite = datbuf->GetUint16LE();
+              datbuf->Skip(4);
+            }
             break;
           case OT_TERRAIN:
           case OT_EXTERIOR:
-          case OT_BRIDGE:
           case OT_INTERIOR:
+          case OT_BRIDGE:
           case OT_LANDSCAPE1:
           case OT_CHEST:
           case OT_DEADBODY1:
@@ -190,8 +204,17 @@ TableResource::Load(FileBuffer *buffer)
           case OT_CATAPULT:
           case OT_LANDSCAPE2:
           case OT_MOUNTAIN:
-            item.sprite = (unsigned int) -1;
-            // TODO
+            {
+              item->sprite = (unsigned int) -1;
+              item->min.SetX(datbuf->GetSint16LE());
+              item->min.SetY(datbuf->GetSint16LE());
+              item->min.SetZ(datbuf->GetSint16LE());
+              item->max.SetX(datbuf->GetSint16LE());
+              item->max.SetY(datbuf->GetSint16LE());
+              item->max.SetZ(datbuf->GetSint16LE());
+              datbuf->Skip(16);
+              // TODO
+            }
             break;
           default:
             throw DataCorruption(__FILE__, __LINE__);

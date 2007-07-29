@@ -20,8 +20,8 @@
 #include "Defines.h"
 #include "SpritedObject.h"
 
-SpritedObject::SpritedObject(const Vector2D &p, const int w, const int h, Image *img)
-: GenericObject(p, w, h)
+SpritedObject::SpritedObject(const Vector2D &p, Image *img)
+: GenericObject(p)
 , sprite(img)
 {
 }

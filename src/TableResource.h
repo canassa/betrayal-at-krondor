@@ -26,6 +26,7 @@
 #include "config.h"
 #endif
 
+#include "Geometry.h"
 #include "TaggedResource.h"
 
 /* Object Class */
@@ -88,8 +89,8 @@ static const unsigned int TT_LANDSCAPE = 8;
 
 class GidInfo {
   public:
-    unsigned int xsize;
-    unsigned int ysize;
+    unsigned int xoffset;
+    unsigned int yoffset;
     unsigned int flags;
 };
 
@@ -100,13 +101,17 @@ class DatInfo {
     unsigned int terrainClass;
     unsigned int terrainType;
     unsigned int sprite;
+    Vector3D min;
+    Vector3D max;
+    DatInfo();
+    ~DatInfo();
 };
 
 class TableResource
 : public TaggedResource {
   private:
     std::vector<std::string> mapItems;
-    std::vector<DatInfo> datItems;
+    std::vector<DatInfo *> datItems;
     std::vector<GidInfo> gidItems;
   public:
     TableResource();
@@ -114,7 +119,7 @@ class TableResource
     unsigned int GetMapSize() const;
     std::string& GetMapItem(const unsigned int i);
     unsigned int GetDatSize() const;
-    DatInfo& GetDatItem(const unsigned int i);
+    DatInfo* GetDatItem(const unsigned int i);
     unsigned int GetGidSize() const;
     GidInfo& GetGidItem(const unsigned int i);
     void Clear();

@@ -19,8 +19,8 @@
 
 #include "TerrainObject.h"
 
-TerrainObject::TerrainObject(const Vector2D &p, const int w, const int h)
-: GenericObject(p, w, h)
+TerrainObject::TerrainObject(const Vector2D &p)
+: GenericObject(p)
 {
 }
 

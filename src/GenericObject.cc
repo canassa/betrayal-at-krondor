@@ -19,13 +19,11 @@
 
 #include "GenericObject.h"
 
-GenericObject::GenericObject(const Vector2D &p, const int w, const int h)
+GenericObject::GenericObject(const Vector2D &p)
 : pos(p)
 , relpos(0, 0)
 , angle(0)
 , distance(0)
-, width(w)
-, height(h)
 {
 }
 

@@ -34,11 +34,12 @@ int main(int argc, char *argv[]) {
     FileManager::GetInstance()->Load(tbl, argv[1]);
     for (unsigned int i = 0; i < tbl->GetMapSize(); i++) {
       GidInfo gid = tbl->GetGidItem(i);
-      DatInfo dat = tbl->GetDatItem(i);
-      printf("%3d: %-8s %6d %6d %04x %02x %2d %2d %2d %2d\n", i, tbl->GetMapItem(i).c_str(),
-             gid.xsize, gid.ysize, gid.flags,
-             dat.objectClass, dat.objectType, dat.terrainClass, dat.terrainType,
-             dat.sprite);
+      DatInfo *dat = tbl->GetDatItem(i);
+      printf("%3d: %-8s %6d %6d %04x %02x %2d %2d %2d %2d\n\t(%6d, %6d, %6d) (%6d, %6d, %6d)", i, tbl->GetMapItem(i).c_str(),
+             gid.xoffset, gid.yoffset, gid.flags,
+             dat->objectClass, dat->objectType, dat->terrainClass, dat->terrainType, dat->sprite,
+             dat->min.GetX(), dat->min.GetY(), dat->min.GetZ(), dat->max.GetX(), dat->max.GetY(), dat->max.GetZ());
+      printf("\n");
     }
     delete tbl;
     FileManager::CleanUp();

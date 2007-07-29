@@ -37,10 +37,8 @@ class GenericObject {
     Vector2D relpos;
     int angle;
     unsigned int distance;
-    int width;
-    int height;
   public:
-    GenericObject(const Vector2D &p, const int w, const int h);
+    GenericObject(const Vector2D &p);
     virtual ~GenericObject();
     Vector2D& GetPosition();
     Vector2D& GetRelativePosition();

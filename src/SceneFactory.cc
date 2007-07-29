@@ -41,9 +41,9 @@ SceneFactory::CreateScene(Zone& zone)
       if (tile) {
         for (unsigned int i = 0; i < tile->GetSize(); i++) {
           TileWorldItem item = tile->GetItem(i);
-          DatInfo dat = table->GetDatItem(item.type);
+          DatInfo *dat = table->GetDatItem(item.type);
           GidInfo gid = table->GetGidItem(item.type);
-          switch (dat.objectType) {
+          switch (dat->objectType) {
             case OT_TREE:
             case OT_TOMBSTONE:
             case OT_SIGN:
@@ -64,7 +64,7 @@ SceneFactory::CreateScene(Zone& zone)
             case OT_COLUMN:
             case OT_BAG:
             case OT_LADDER:
-              scene->AddObject(Vector2D(x, y), new SpritedObject(Vector2D(item.xloc, item.yloc), gid.xsize, gid.ysize, zone.GetSprite(dat.sprite)));
+              scene->AddObject(Vector2D(x, y), new SpritedObject(Vector2D(item.xloc, item.yloc), zone.GetSprite(dat->sprite)));
               break;
             default:
               break;
