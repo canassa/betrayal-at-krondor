@@ -64,6 +64,7 @@ PaletteResource::Load(FileBuffer *buffer)
       c.r = (vgabuf->GetUint8() << 2);
       c.g = (vgabuf->GetUint8() << 2);
       c.b = (vgabuf->GetUint8() << 2);
+      c.a = 0;
       palette->SetColor(i, c);
     }
     ClearTags();

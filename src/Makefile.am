@@ -1,5 +1,6 @@
 noinst_HEADERS = AnimationResource.h \
                  Audio.h \
+                 BMP.h \
                  BadgeWidget.h \
                  BasicFile.h \
                  BookResource.h \
@@ -109,6 +110,7 @@ noinst_HEADERS = AnimationResource.h \
 noinst_LIBRARIES = libbase.a \
                    libresbase.a \
                    libresdata.a \
+                   libresutil.a \
                    libgame.a \
                    libguitoolkit.a \
                    libdriver.a
@@ -315,6 +317,8 @@ libresdata_a_SOURCES = AnimationResource.cc \
                        TileDataResource.h \
                        TileWorldResource.cc \
                        TileWorldResource.h
+libresutil_a_SOURCES = BMP.cc \
+                       BMP.h
 libdriver_a_SOURCES = Audio.h \
                       Clock.h \
                       MediaToolkit.cc \

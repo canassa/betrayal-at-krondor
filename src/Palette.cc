@@ -64,9 +64,11 @@ Palette::Fill()
   colors[0].r = 0;
   colors[0].g = 0;
   colors[0].b = 0;
+  colors[0].a = 0;
   colors[15].r = 255;
   colors[15].g = 255;
   colors[15].b = 255;
+  colors[15].a = 0;
 }
 
 void
