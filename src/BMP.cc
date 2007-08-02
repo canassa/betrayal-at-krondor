@@ -119,6 +119,15 @@ BMP::Load(const std::string &name)
   if (bmpInfoHdr.infoSize != BITMAP_INFO_HEADER_SIZE) {
     throw DataCorruption(__FILE__, __LINE__, "BMP info header size");
   }
+  if (bmpInfoHdr.planes != 1) {
+    throw DataCorruption(__FILE__, __LINE__, "BMP planes");
+  }
+  if (bmpInfoHdr.compression != 0) {
+    throw DataCorruption(__FILE__, __LINE__, "BMP compression");
+  }
+  if (bmpInfoHdr.colorsUsed != VIDEO_BPP) {
+    throw DataCorruption(__FILE__, __LINE__, "BMP planes");
+  }
 
   FileBuffer paletteBuffer(bmpInfoHdr.colorsUsed * 4);
   paletteBuffer.Load(ifs);
