@@ -33,9 +33,9 @@
 #include "alt_stdint.h"
 #endif
 
-static const unsigned int COMPRESSION_LZW = 0;
-static const unsigned int COMPRESSION_LZ = 1;
-static const unsigned int COMPRESSION_RLE = 2;
+static const unsigned int COMPRESSION_LZW  = 0;
+static const unsigned int COMPRESSION_LZSS = 1;
+static const unsigned int COMPRESSION_RLE  = 2;
 
 class FileBuffer {
   private:
@@ -58,10 +58,14 @@ class FileBuffer {
     void Skip(const int n);
 
     void SkipBits();
-    void DecompressLZW(FileBuffer *result);
-    void DecompressLZ(FileBuffer *result);
-    void DecompressRLE(FileBuffer *result);
-    void Decompress(FileBuffer *result, const unsigned int method);
+    unsigned int CompressLZW(FileBuffer *result);
+    unsigned int CompressLZSS(FileBuffer *result);
+    unsigned int CompressRLE(FileBuffer *result);
+    unsigned int Compress(FileBuffer *result, const unsigned int method);
+    unsigned int DecompressLZW(FileBuffer *result);
+    unsigned int DecompressLZSS(FileBuffer *result);
+    unsigned int DecompressRLE(FileBuffer *result);
+    unsigned int Decompress(FileBuffer *result, const unsigned int method);
 
     bool AtEnd() const;
     unsigned int GetSize() const;
@@ -99,6 +103,7 @@ class FileBuffer {
     void PutString(const std::string s, const unsigned int len);
     void PutData(void * data, const unsigned int n);
     void PutData(const uint8_t x, const unsigned int n);
+    void PutBits(const unsigned int x, const unsigned int n);
 };
 
 #endif

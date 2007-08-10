@@ -19,6 +19,7 @@
 
 #include <iomanip>
 #include <iostream>
+#include <map>
 
 #include "SDL_endian.h"
 
@@ -148,12 +149,185 @@ FileBuffer::SkipBits()
   }
 }
 
+typedef union _HashTableEntry {
+  uint32_t code;
+  struct {
+    uint16_t prefix;
+    uint8_t  append;
+  } entry;
+} HashTableEntry;
+
+unsigned int
+FileBuffer::CompressLZW(FileBuffer *result)
+{
+  try {
+    std::map<uint32_t, uint16_t> hashtable;
+    unsigned int n_bits = 9;
+    unsigned int free_entry = 257;
+    HashTableEntry hte;
+    hte.entry.prefix = GetUint8();
+    while (!AtEnd()) {
+      hte.entry.append = GetUint8();
+      std::map<uint32_t, uint16_t>::iterator it = hashtable.find(hte.code);
+      if (it == hashtable.end()) {
+        result->PutBits(hte.entry.prefix, n_bits);
+        hashtable.insert(std::pair<uint32_t, uint16_t>(hte.code, free_entry));
+        hte.entry.prefix = hte.entry.append;
+        free_entry++;
+        if ((free_entry >= (unsigned int)(1 << n_bits)) && (n_bits < 12)) {
+          n_bits++;
+        }
+      } else {
+        hte.entry.prefix = it->second;
+      }
+    }
+    unsigned int res = result->GetBytesDone();
+    result->Rewind();
+    return res;
+  } catch (Exception &e) {
+    e.Print("FileBuffer::CompressLZW");
+  }
+  return 0;
+}
+
+unsigned int
+FileBuffer::CompressLZSS(FileBuffer *result)
+{
+  try {
+    uint8_t *data = GetCurrent();
+    uint8_t *curr = GetCurrent();
+    uint8_t *codeptr = result->GetCurrent();
+    uint8_t byte = GetUint8();
+    uint8_t code = 0;
+    uint8_t mask = 0;
+    while (!AtEnd()) {
+      if (!mask) {
+        *codeptr = code;
+        codeptr = result->GetCurrent();
+        result->Skip(1);
+        code = 0;
+        mask = 0x01;
+      }
+      unsigned int off = 0;
+      unsigned int len = 0;
+      uint8_t *ptr = curr;
+      while (ptr > data) {
+        ptr--;
+        if (*ptr == byte) {
+          off = ptr - data;
+          len = 1;
+          while ((curr + len < buffer + size) && (ptr[len] == curr[len])) {
+            len++;
+          }
+        }
+      }
+      if (len < 5) {
+        code |= mask;
+        result->PutUint8(byte);
+      } else {
+        result->PutUint16LE(off);
+        result->PutUint8(len - 5);
+        Skip(len - 1);
+      }
+      curr = GetCurrent();
+      byte = GetUint8();
+      mask <<= 1;
+    }
+    *codeptr = code;
+    unsigned int res = result->GetBytesDone();
+    result->Rewind();
+    return res;
+  } catch (Exception &e) {
+    e.Print("FileBuffer::CompressLZSS");
+  }
+  return 0;
+}
+
+unsigned int
+FileBuffer::CompressRLE(FileBuffer *result)
+{
+  try {
+    uint8_t byte = 0;
+    uint8_t next = GetUint8();
+    unsigned int count = 1;
+    unsigned int skipped = 0;
+    while (!AtEnd()) {
+      count = 1;
+      do {
+        byte = next;
+        next = GetUint8();
+        count++;
+      } while (!AtEnd() && (next == byte));
+      if (next != byte) {
+        count--;
+      }
+      if (count > 2) {
+        if (skipped > 0) {
+          Skip(-skipped);
+          while (skipped > 0) {
+            unsigned int n = skipped & 0x7f;
+            result->PutUint8(n);
+            result->Copy(this, n);
+            skipped -= n;
+          }
+        }
+        while (count > 2) {
+          unsigned int n = count & 0x7f;
+          result->PutUint8(n | 0x80);
+          result->PutUint8(byte);
+          count -= n;
+        }
+        skipped = count;
+      } else {
+        skipped += count;
+      }
+    }
+    if (next != byte) {
+      skipped++;
+    }
+    if (skipped > 0) {
+      Skip(-skipped);
+      while (skipped > 0) {
+        unsigned int n = skipped & 0x7f;
+        result->PutUint8(n);
+        result->Copy(this, n);
+        skipped -= n;
+      }
+    }
+    unsigned int res = result->GetBytesDone();
+    result->Rewind();
+    return res;
+  } catch (Exception &e) {
+    e.Print("FileBuffer::CompressRLE");
+  }
+  return 0;
+}
+
+unsigned int
+FileBuffer::Compress(FileBuffer *result, const unsigned int method)
+{
+  switch (method) {
+    case COMPRESSION_LZW:
+      return CompressLZW(result);
+      break;
+    case COMPRESSION_LZSS:
+      return CompressLZSS(result);
+      break;
+    case COMPRESSION_RLE:
+      return CompressRLE(result);
+      break;
+    default:
+      throw CompressionError(__FILE__, __LINE__);
+      break;
+  }
+}
+
 typedef struct _CodeTableEntry {
   uint16_t prefix;
   uint8_t  append;
 } CodeTableEntry;
 
-void
+unsigned int
 FileBuffer::DecompressLZW(FileBuffer *result)
 {
   try {
@@ -204,14 +378,17 @@ FileBuffer::DecompressLZW(FileBuffer *result)
     }
     delete[] decodestack;
     delete[] codetable;
+    unsigned int res = result->GetBytesDone();
     result->Rewind();
+    return res;
   } catch (Exception &e) {
     e.Print("FileBuffer::DecompressLZW");
   }
+  return 0;
 }
 
-void
-FileBuffer::DecompressLZ(FileBuffer *result)
+unsigned int
+FileBuffer::DecompressLZSS(FileBuffer *result)
 {
   try {
     uint8_t *data = result->GetCurrent();
@@ -231,13 +408,16 @@ FileBuffer::DecompressLZ(FileBuffer *result)
       }
       mask <<= 1;
     }
+    unsigned int res = result->GetBytesDone();
     result->Rewind();
+    return res;
   } catch (Exception &e) {
-    e.Print("FileBuffer::DecompressLZ");
+    e.Print("FileBuffer::DecompressLZSS");
   }
+  return 0;
 }
 
-void
+unsigned int
 FileBuffer::DecompressRLE(FileBuffer *result)
 {
   try {
@@ -249,27 +429,30 @@ FileBuffer::DecompressRLE(FileBuffer *result)
         result->Copy(this, control);
       }
     }
+    unsigned int res = result->GetBytesDone();
     result->Rewind();
+    return res;
   } catch (Exception &e) {
     e.Print("FileBuffer::DecompressRLE");
   }
+  return 0;
 }
 
-void
+unsigned int
 FileBuffer::Decompress(FileBuffer *result, const unsigned int method)
 {
   switch (method) {
     case COMPRESSION_LZW:
       if ((GetUint8() != 0x02) || (GetUint32LE() != result->GetSize())) {
-        throw DataCorruption(__FILE__, __LINE__); 
-      } 
-      DecompressLZW(result);
+        throw DataCorruption(__FILE__, __LINE__);
+      }
+      return DecompressLZW(result);
       break;
-    case COMPRESSION_LZ:
-      DecompressLZ(result);
+    case COMPRESSION_LZSS:
+      return DecompressLZSS(result);
       break;
     case COMPRESSION_RLE:
-      DecompressRLE(result);
+      return DecompressRLE(result);
       break;
     default:
       throw CompressionError(__FILE__, __LINE__);
@@ -669,6 +852,26 @@ void FileBuffer::PutData(const uint8_t x, const unsigned int n)
   if (current + n <= buffer + size) {
     memset(current, x, n);
     current += n;
+  } else {
+    throw BufferFull(__FILE__, __LINE__);
+  }
+}
+
+void FileBuffer::PutBits(const unsigned int x, const unsigned int n)
+{
+  if (current + ((nextbit + n + 7)/8) <= buffer + size) {
+    for (unsigned int i = 0; i < n; i++) {
+      if (x & (1 << i)) {
+        *current |= (1 << nextbit);
+      } else {
+        *current &= ~(1 << nextbit);
+      }
+      nextbit++;
+      if (nextbit > 7) {
+        current++;
+        nextbit = 0;
+      }
+    }
   } else {
     throw BufferFull(__FILE__, __LINE__);
   }
