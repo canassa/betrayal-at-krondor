@@ -164,6 +164,7 @@ FileBuffer::CompressLZW(FileBuffer *result)
     std::map<uint32_t, uint16_t> hashtable;
     unsigned int n_bits = 9;
     unsigned int free_entry = 257;
+    unsigned int bitpos = 0;
     HashTableEntry hte;
     hte.entry.prefix = GetUint8();
     while (!AtEnd()) {
@@ -171,16 +172,28 @@ FileBuffer::CompressLZW(FileBuffer *result)
       std::map<uint32_t, uint16_t>::iterator it = hashtable.find(hte.code);
       if (it == hashtable.end()) {
         result->PutBits(hte.entry.prefix, n_bits);
+        bitpos += n_bits;
         hashtable.insert(std::pair<uint32_t, uint16_t>(hte.code, free_entry));
         hte.entry.prefix = hte.entry.append;
         free_entry++;
-        if ((free_entry >= (unsigned int)(1 << n_bits)) && (n_bits < 12)) {
-          n_bits++;
+        if (free_entry >= (unsigned int)(1 << n_bits)) {
+          if (n_bits < 12) {
+            n_bits++;
+          } else {
+            hashtable.clear();
+            free_entry = 256;
+            result->PutBits(free_entry, n_bits);
+            result->SkipBits();
+            result->Skip((((bitpos-1)+((n_bits<<3)-(bitpos-1+(n_bits<<3))%(n_bits<<3)))-bitpos)>>3);
+            n_bits = 9;
+            bitpos = 0;
+          }
         }
       } else {
         hte.entry.prefix = it->second;
       }
     }
+    hashtable.clear();
     unsigned int res = result->GetBytesDone();
     result->Rewind();
     return res;
