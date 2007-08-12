@@ -32,6 +32,7 @@
 class ImageResource
 : public ResourceData {
   private:
+    unsigned int compression;
     unsigned int numImages;
     std::vector<Image *> images;
     void DecompressLZW(FileBuffer *from, FileBuffer *to);
@@ -40,6 +41,8 @@ class ImageResource
   public:
     ImageResource();
     virtual ~ImageResource();
+    unsigned int GetCompression() const;
+    void SetCompression(const unsigned int c);
     unsigned int GetNumImages() const;
     Image * GetImage(unsigned int n) const;
     void Clear();

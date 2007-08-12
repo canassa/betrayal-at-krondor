@@ -21,13 +21,26 @@
 #include "ImageResource.h"
 
 ImageResource::ImageResource()
-: numImages(0)
+: compression(COMPRESSION_LZW)
+, numImages(0)
 {
 }
 
 ImageResource::~ImageResource()
 {
   Clear();
+}
+
+unsigned int
+ImageResource::GetCompression() const
+{
+  return compression;
+}
+
+void
+ImageResource::SetCompression(const unsigned int c)
+{
+  compression = c;
 }
 
 unsigned int
@@ -59,7 +72,7 @@ ImageResource::Load(FileBuffer *buffer)
     if (buffer->GetUint16LE() != 0x1066 ) {
       throw DataCorruption(__FILE__, __LINE__);
     }
-    unsigned int compression = (unsigned int)buffer->GetUint16LE();
+    compression = (unsigned int)buffer->GetUint16LE();
     numImages = (unsigned int)buffer->GetUint16LE();
     unsigned int *imageSize = new unsigned int[numImages];
     unsigned int *imageFlags = new unsigned int[numImages];
