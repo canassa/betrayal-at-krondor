@@ -59,7 +59,7 @@ ScreenResource::Load(FileBuffer *buffer)
     FileBuffer *decompressed = new FileBuffer(buffer->GetUint32LE());
     buffer->DecompressLZW(decompressed);
     image = new Image(SCREEN_WIDTH, SCREEN_HEIGHT);
-    image->Load(decompressed, 0);
+    image->Load(decompressed);
     delete decompressed;
   } catch (Exception &e) {
     e.Print("ScreenResource::Load");

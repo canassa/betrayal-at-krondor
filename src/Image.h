@@ -30,9 +30,11 @@ class Image {
   private:
     int width;
     int height;
+    unsigned int flags;
     uint8_t *pixel;
   public:
     Image(const int w, const int h);
+    Image(const int w, const int h, const unsigned int f);
     Image(const int w, const int h, const uint8_t *p);
     Image(Image *img);
     Image(const int w, const int h, Image *img);
@@ -40,6 +42,8 @@ class Image {
     int GetWidth() const;
     int GetHeight() const;
     unsigned int GetSize() const;
+    unsigned int GetFlags() const;
+    void SetFlags(const unsigned int f);
     uint8_t GetPixel(const int x, const int y) const;
     uint8_t * GetPixels() const;
     void SetPixel(const int x, const int y, const uint8_t color);
@@ -47,7 +51,8 @@ class Image {
     void HorizontalFlip();
     void VerticalFlip();
     void Fill(const uint8_t color);
-    void Load(FileBuffer *buffer, const unsigned int flags);
+    void Load(FileBuffer *buffer);
+    void Save(FileBuffer *buffer);
     void Read(const int x, const int y);
     void Draw(const int x, const int y);
     void Draw(const int x, const int y, const uint8_t transparent);

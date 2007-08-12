@@ -28,6 +28,22 @@ static const unsigned int FLAG_COMPRESSED = 0x80;
 Image::Image(const int w, const int h)
 : width(w)
 , height(h)
+, flags(0)
+, pixel(0)
+{
+  if ((width > 0) && (height > 0)) {
+    pixel = new uint8_t[width * height];
+    memset(pixel, 0, width * height);
+  } else {
+    width = 0;
+    height = 0;
+  }
+}
+
+Image::Image(const int w, const int h, const unsigned int f)
+: width(w)
+, height(h)
+, flags(f)
 , pixel(0)
 {
   if ((width > 0) && (height > 0)) {
@@ -42,6 +58,7 @@ Image::Image(const int w, const int h)
 Image::Image(const int w, const int h, const uint8_t *p)
 : width(w)
 , height(h)
+, flags(0)
 , pixel(0)
 {
   if ((width > 0) && (height > 0)) {
@@ -56,6 +73,7 @@ Image::Image(const int w, const int h, const uint8_t *p)
 Image::Image(Image *img)
 : width(img->width)
 , height(img->height)
+, flags(0)
 , pixel(0)
 {
   if ((width > 0) && (height > 0)) {
@@ -70,6 +88,7 @@ Image::Image(Image *img)
 Image::Image(const int w, const int h, Image *img)
 : width(w)
 , height(h)
+, flags(0)
 , pixel(0)
 {
   if ((width > 0) && (height > 0)) {
@@ -112,6 +131,18 @@ unsigned int
 Image::GetSize() const
 {
   return (unsigned int)width * height;
+}
+
+unsigned int
+Image::GetFlags() const
+{
+  return flags;
+}
+
+void
+Image::SetFlags(const unsigned int f)
+{
+  flags = f;
 }
 
 uint8_t
@@ -181,7 +212,7 @@ Image::VerticalFlip()
 }
 
 void
-Image::Load(FileBuffer *buffer, const unsigned int flags)
+Image::Load(FileBuffer *buffer)
 {
   try {
     if (pixel) {
@@ -207,6 +238,36 @@ Image::Load(FileBuffer *buffer, const unsigned int flags)
     }
   } catch (Exception &e) {
     e.Print("Image::Load");
+  }
+}
+
+void
+Image::Save(FileBuffer *buffer)
+{
+  try {
+    if (pixel) {
+      FileBuffer *imgbuf = new FileBuffer(width * height);
+      if (flags & FLAG_XYSWAPPED) {
+        for (int x = 0; x < width; x++) {
+          for (int y = 0; y < height; y++) {
+            SetPixel(x, y, imgbuf->GetUint8());
+          }
+        }
+      } else {
+        imgbuf->GetData(pixel, width * height);
+      }
+      if (flags & FLAG_COMPRESSED) {
+        FileBuffer *compressed = new FileBuffer(width * height);
+        unsigned int size = compressed->CompressRLE(imgbuf);
+        buffer->Copy(compressed, size);
+        delete compressed;
+      } else {
+        buffer->Copy(imgbuf, width * height);
+      }
+      delete imgbuf;
+    }
+  } catch (Exception &e) {
+    e.Print("Image::Save");
   }
 }
 

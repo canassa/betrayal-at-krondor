@@ -75,17 +75,14 @@ ImageResource::Load(FileBuffer *buffer)
     compression = (unsigned int)buffer->GetUint16LE();
     numImages = (unsigned int)buffer->GetUint16LE();
     unsigned int *imageSize = new unsigned int[numImages];
-    unsigned int *imageFlags = new unsigned int[numImages];
     buffer->Skip(2);
     unsigned int size = buffer->GetUint32LE();
     for (unsigned int i = 0; i < numImages; i++) {
       imageSize[i] = (unsigned int)buffer->GetUint16LE();
-      imageFlags[i] = (unsigned int)buffer->GetUint16LE();
-      unsigned int width;
-      unsigned int height;
-      width = (unsigned int)buffer->GetUint16LE();
-      height = (unsigned int)buffer->GetUint16LE();
-      Image *img = new Image(width, height);
+      unsigned int flags = (unsigned int)buffer->GetUint16LE();
+      unsigned int width = (unsigned int)buffer->GetUint16LE();
+      unsigned int height = (unsigned int)buffer->GetUint16LE();
+      Image *img = new Image(width, height, flags);
       images.push_back(img);
     }
     FileBuffer *decompressed = new FileBuffer(size);
@@ -93,11 +90,10 @@ ImageResource::Load(FileBuffer *buffer)
     for (unsigned int i = 0; i < numImages; i++) {
       FileBuffer *imageBuffer = new FileBuffer(imageSize[i]);
       imageBuffer->Fill(decompressed);
-      (images[i])->Load(imageBuffer, imageFlags[i]);
+      (images[i])->Load(imageBuffer);
       delete imageBuffer;
     }
     delete decompressed;
-    delete[] imageFlags;
     delete[] imageSize;
   } catch (Exception &e) {
     e.Print("ImageResource::Load");
@@ -109,8 +105,31 @@ void
 ImageResource::Save(FileBuffer *buffer)
 {
   try {
-    // TODO
-    buffer = buffer;
+    buffer->PutUint16LE(0x1066);
+    buffer->PutUint16LE(compression);
+    buffer->PutUint16LE(numImages);
+    buffer->PutUint16LE(0);
+    unsigned int size = 0;
+    for (unsigned int i = 0; i < numImages; i++) {
+      size += (images[i])->GetSize();
+    }
+    buffer->PutUint32LE(size);
+    for (unsigned int i = 0; i < numImages; i++) {
+      Image* img = images[i];
+      buffer->PutUint16LE(img->GetSize());
+      buffer->PutUint16LE(img->GetFlags());
+      buffer->PutUint16LE(img->GetWidth());
+      buffer->PutUint16LE(img->GetHeight());
+    }
+    FileBuffer *decompressed = new FileBuffer(size);
+    for (unsigned int i = 0; i < numImages; i++) {
+      (images[i])->Save(decompressed);
+    }
+    FileBuffer *compressed = new FileBuffer(size);
+    size = compressed->Compress(decompressed, compression);
+    buffer->Copy(compressed, size);
+    delete compressed;
+    delete decompressed;
   } catch (Exception &e) {
     e.Print("ImageResource::Save");
     throw;
