@@ -32,8 +32,8 @@ typedef struct _BitmapFileHeader {
 
 typedef struct _BitmapInfoHeader {
   uint32_t infoSize;
-  uint32_t width;
-  uint32_t height;
+  int32_t  width;
+  int32_t  height;
   uint16_t planes;
   uint16_t bitCount;
   uint32_t compression;
@@ -125,13 +125,15 @@ BMP::Load(const std::string &name)
   if (bmpInfoHdr.compression != 0) {
     throw DataCorruption(__FILE__, __LINE__, "BMP compression");
   }
-  if (bmpInfoHdr.colorsUsed != VIDEO_BPP) {
-    throw DataCorruption(__FILE__, __LINE__, "BMP planes");
-  }
 
+  if (!palette) {
+    throw NullPointer(__FILE__, __LINE__, "palette");
+  }
   FileBuffer paletteBuffer(bmpInfoHdr.colorsUsed * 4);
   paletteBuffer.Load(ifs);
-  palette = new Palette(bmpInfoHdr.colorsUsed);
+  if (palette->GetSize() != bmpInfoHdr.colorsUsed) {
+    throw DataCorruption(__FILE__, __LINE__, "palette size");
+  }
   for(unsigned int i = 0; i < bmpInfoHdr.colorsUsed; i++) {
     Color c;
     c.b = paletteBuffer.GetUint8();
@@ -141,9 +143,14 @@ BMP::Load(const std::string &name)
     palette->SetColor(i, c);
   }
 
+  if (!image) {
+    throw NullPointer(__FILE__, __LINE__, "image");
+  }
   FileBuffer imageBuffer(bmpInfoHdr.imageSize);
   imageBuffer.Load(ifs);
-  image = new Image(bmpInfoHdr.width, bmpInfoHdr.height);
+  if ((image->GetWidth() != bmpInfoHdr.width) || (image->GetHeight() != bmpInfoHdr.height)) {
+    throw DataCorruption(__FILE__, __LINE__, "image size");
+  }
   uint8_t *pixelLine = image->GetPixels() + bmpInfoHdr.imageSize;
   while (pixelLine > image->GetPixels()) {
     pixelLine -= bmpInfoHdr.width;
