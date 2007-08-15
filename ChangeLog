@@ -1,4 +1,6 @@
 2007-08-??, xbak-0.1.3:
+* Implemented saving image resources (BMX, SCX files)
+* Added compression methods
 * Added extraction and archiving of resources.
 * Several bug fixes.
 
