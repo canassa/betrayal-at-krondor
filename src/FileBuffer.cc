@@ -199,6 +199,7 @@ FileBuffer::CompressLZW(FileBuffer *result)
     return res;
   } catch (Exception &e) {
     e.Print("FileBuffer::CompressLZW");
+    throw;
   }
   return 0;
 }
@@ -252,6 +253,7 @@ FileBuffer::CompressLZSS(FileBuffer *result)
     return res;
   } catch (Exception &e) {
     e.Print("FileBuffer::CompressLZSS");
+    throw;
   }
   return 0;
 }
@@ -312,6 +314,7 @@ FileBuffer::CompressRLE(FileBuffer *result)
     return res;
   } catch (Exception &e) {
     e.Print("FileBuffer::CompressRLE");
+    throw;
   }
   return 0;
 }
@@ -396,6 +399,7 @@ FileBuffer::DecompressLZW(FileBuffer *result)
     return res;
   } catch (Exception &e) {
     e.Print("FileBuffer::DecompressLZW");
+    throw;
   }
   return 0;
 }
@@ -426,6 +430,7 @@ FileBuffer::DecompressLZSS(FileBuffer *result)
     return res;
   } catch (Exception &e) {
     e.Print("FileBuffer::DecompressLZSS");
+    throw;
   }
   return 0;
 }
@@ -447,6 +452,7 @@ FileBuffer::DecompressRLE(FileBuffer *result)
     return res;
   } catch (Exception &e) {
     e.Print("FileBuffer::DecompressRLE");
+    throw;
   }
   return 0;
 }
