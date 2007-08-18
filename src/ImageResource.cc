@@ -126,7 +126,7 @@ ImageResource::Save(FileBuffer *buffer)
       (images[i])->Save(decompressed);
     }
     FileBuffer *compressed = new FileBuffer(size);
-    size = compressed->Compress(decompressed, compression);
+    size = decompressed->Compress(compressed, compression);
     buffer->Copy(compressed, size);
     delete compressed;
     delete decompressed;

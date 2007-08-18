@@ -256,9 +256,10 @@ Image::Save(FileBuffer *buffer)
       } else {
         imgbuf->GetData(pixel, width * height);
       }
+      imgbuf->Rewind();
       if (flags & FLAG_COMPRESSED) {
         FileBuffer *compressed = new FileBuffer(width * height);
-        unsigned int size = compressed->CompressRLE(imgbuf);
+        unsigned int size = imgbuf->CompressRLE(compressed);
         buffer->Copy(compressed, size);
         delete compressed;
       } else {
