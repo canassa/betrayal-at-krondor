@@ -36,22 +36,25 @@ static const unsigned int PARTY_JAMES    = 4;
 static const unsigned int PARTY_PATRUS   = 5;
 static const unsigned int PARTY_SIZE     = 6;
 
-typedef struct _PartyData {
-  std::string name;
-} PartyData;
+typedef struct _PartyData
+{
+    std::string name;
+}
+PartyData;
 
 class PartyResource
-: public ResourceData {
-  private:
+            : public ResourceData
+{
+private:
     std::vector<PartyData *> data;
-  public:
+public:
     PartyResource();
     virtual ~PartyResource();
     unsigned int GetSize() const;
-    PartyData* GetData(const unsigned int n);
+    PartyData* GetData ( const unsigned int n );
     void Clear();
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

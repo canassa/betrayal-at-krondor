@@ -32,17 +32,17 @@
 #include "PlayerCharacter.h"
 
 class EquipmentWidget
-: public ContainerWidget
-, public Observer
+            : public ContainerWidget
+            , public Observer
 {
-  private:
+private:
     PlayerCharacter *character;
     ImageResource& images;
     Image *armorSlot;
     Image *crossbowSlot;
     Font *font;
-  public:
-    EquipmentWidget(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Image *as, Image *cbs, Font *f);
+public:
+    EquipmentWidget ( const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Image *as, Image *cbs, Font *f );
     virtual ~EquipmentWidget();
     void Update();
 };

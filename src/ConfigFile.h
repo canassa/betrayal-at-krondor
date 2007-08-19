@@ -27,8 +27,9 @@
 #include "BasicFile.h"
 
 class ConfigFile
-: public BasicFile {
-  public:
+            : public BasicFile
+{
+public:
     ConfigFile();
     virtual ~ConfigFile();
     std::string GetDefaultPath() const;

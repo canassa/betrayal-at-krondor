@@ -28,30 +28,30 @@
 #include "Zone.h"
 
 class Chapter
-: public KeyboardEventListener
-, public MouseButtonEventListener
-, public TimerEventListener
+            : public KeyboardEventListener
+            , public MouseButtonEventListener
+            , public TimerEventListener
 {
-  private:
+private:
     int number;
     bool delayed;
     Zone zone;
     void PlayIntro();
-    void PlayScene(const int scene);
-    void ReadBook(const int scene);
+    void PlayScene ( const int scene );
+    void ReadBook ( const int scene );
     void ShowMap();
-  public:
-    Chapter(const int n);
+public:
+    Chapter ( const int n );
     ~Chapter();
     int Get() const;
     Zone& GetZone();
     void Next();
-    void Start(const bool maponly = false);
-    void KeyPressed(const KeyboardEvent &kbe);
-    void KeyReleased(const KeyboardEvent &kbe);
-    void MouseButtonPressed(const MouseButtonEvent &mbe);
-    void MouseButtonReleased(const MouseButtonEvent &mbe);
-    void TimerExpired(const TimerEvent &te);
+    void Start ( const bool maponly = false );
+    void KeyPressed ( const KeyboardEvent &kbe );
+    void KeyReleased ( const KeyboardEvent &kbe );
+    void MouseButtonPressed ( const MouseButtonEvent &mbe );
+    void MouseButtonReleased ( const MouseButtonEvent &mbe );
+    void TimerExpired ( const TimerEvent &te );
 };
 
 #endif

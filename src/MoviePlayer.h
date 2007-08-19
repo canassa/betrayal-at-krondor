@@ -35,11 +35,11 @@ static const unsigned int MAX_IMAGE_SLOTS   = 4;
 static const unsigned int MAX_PALETTE_SLOTS = 4;
 
 class MoviePlayer
-: public KeyboardEventListener
-, public MouseButtonEventListener
-, public TimerEventListener
+            : public KeyboardEventListener
+            , public MouseButtonEventListener
+            , public TimerEventListener
 {
-  private:
+private:
     std::vector<MovieTag *> *tagVec;
     ScreenResource* screenSlot;
     SoundResource* soundSlot;
@@ -60,16 +60,16 @@ class MoviePlayer
     bool playing;
     bool looped;
     bool delayed;
-    void PlayTag(MediaToolkit* media);
-  public:
+    void PlayTag ( MediaToolkit* media );
+public:
     MoviePlayer();
     ~MoviePlayer();
-    void Play(std::vector<MovieTag *> *movie, const bool repeat);
-    void KeyPressed(const KeyboardEvent& kbe);
-    void KeyReleased(const KeyboardEvent& kbe);
-    void MouseButtonPressed(const MouseButtonEvent& mbe);
-    void MouseButtonReleased(const MouseButtonEvent& mbe);
-    void TimerExpired(const TimerEvent& te);
+    void Play ( std::vector<MovieTag *> *movie, const bool repeat );
+    void KeyPressed ( const KeyboardEvent& kbe );
+    void KeyReleased ( const KeyboardEvent& kbe );
+    void MouseButtonPressed ( const MouseButtonEvent& mbe );
+    void MouseButtonReleased ( const MouseButtonEvent& mbe );
+    void TimerExpired ( const TimerEvent& te );
     void FadeComplete();
 };
 

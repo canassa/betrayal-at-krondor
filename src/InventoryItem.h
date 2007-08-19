@@ -31,74 +31,74 @@ static const unsigned int EQUIPED_MASK    = 0x0040;
 
 class InventoryItem
 {
-  protected:
+protected:
     unsigned int id;
     unsigned int value;
     unsigned int flags;
-  public:
-    InventoryItem(const unsigned int i, const unsigned int v, const unsigned int f);
-    InventoryItem(const InventoryItem &item);
+public:
+    InventoryItem ( const unsigned int i, const unsigned int v, const unsigned int f );
+    InventoryItem ( const InventoryItem &item );
     virtual ~InventoryItem();
     unsigned int GetId() const;
     unsigned int GetValue() const;
     unsigned int GetFlags() const;
     bool IsEquiped() const;
-    void Equip(const bool toggle);
+    void Equip ( const bool toggle );
     virtual const std::string ToString() const = 0;
-    InventoryItem& operator=(const InventoryItem &item);
+    InventoryItem& operator= ( const InventoryItem &item );
 };
 
 class SingleInventoryItem
-: public InventoryItem
+            : public InventoryItem
 {
-  public:
-    SingleInventoryItem(const unsigned int i);
+public:
+    SingleInventoryItem ( const unsigned int i );
     virtual ~SingleInventoryItem();
     const std::string ToString() const;
-    bool operator==(const SingleInventoryItem &item) const;
-    bool operator!=(const SingleInventoryItem &item) const;
+    bool operator== ( const SingleInventoryItem &item ) const;
+    bool operator!= ( const SingleInventoryItem &item ) const;
 };
 
 class MultipleInventoryItem
-: public InventoryItem
+            : public InventoryItem
 {
-  public:
-    MultipleInventoryItem(const unsigned int i, const unsigned int n);
+public:
+    MultipleInventoryItem ( const unsigned int i, const unsigned int n );
     virtual ~MultipleInventoryItem();
     unsigned int GetAmount() const;
-    void Add(const unsigned int n);
-    void Remove(const unsigned int n);
+    void Add ( const unsigned int n );
+    void Remove ( const unsigned int n );
     const std::string ToString() const;
-    bool operator==(const MultipleInventoryItem &item) const;
-    bool operator!=(const MultipleInventoryItem &item) const;
+    bool operator== ( const MultipleInventoryItem &item ) const;
+    bool operator!= ( const MultipleInventoryItem &item ) const;
 };
 
 class RepairableInventoryItem
-: public InventoryItem
+            : public InventoryItem
 {
-  public:
-    RepairableInventoryItem(const unsigned int i, const unsigned int c);
+public:
+    RepairableInventoryItem ( const unsigned int i, const unsigned int c );
     virtual ~RepairableInventoryItem();
     unsigned int GetCondition() const;
-    void Repair(const unsigned int n);
-    void Damage(const unsigned int n);
+    void Repair ( const unsigned int n );
+    void Damage ( const unsigned int n );
     const std::string ToString() const;
-    bool operator==(const RepairableInventoryItem &item) const;
-    bool operator!=(const RepairableInventoryItem &item) const;
+    bool operator== ( const RepairableInventoryItem &item ) const;
+    bool operator!= ( const RepairableInventoryItem &item ) const;
 };
 
 class UsableInventoryItem
-: public InventoryItem
+            : public InventoryItem
 {
-  public:
-    UsableInventoryItem(const unsigned int i, const unsigned int u);
+public:
+    UsableInventoryItem ( const unsigned int i, const unsigned int u );
     virtual ~UsableInventoryItem();
     unsigned int GetUses() const;
-    void Use(const unsigned int n);
-    void Restore(const unsigned int n);
+    void Use ( const unsigned int n );
+    void Restore ( const unsigned int n );
     const std::string ToString() const;
-    bool operator==(const UsableInventoryItem &item) const;
-    bool operator!=(const UsableInventoryItem &item) const;
+    bool operator== ( const UsableInventoryItem &item ) const;
+    bool operator!= ( const UsableInventoryItem &item ) const;
 };
 
 #endif

@@ -29,15 +29,16 @@
 #include "Observer.h"
 
 class GameViewWidget
-: public ContainerWidget
-, public Observer {
-  private:
+            : public ContainerWidget
+            , public Observer
+{
+private:
     virtual void Redraw() = 0;
-  protected:
+protected:
     Game *game;
     Image *cachedImage;
-  public:
-    GameViewWidget(const Rectangle &r, Game *g);
+public:
+    GameViewWidget ( const Rectangle &r, Game *g );
     virtual ~GameViewWidget();
     void Draw();
     void Update();

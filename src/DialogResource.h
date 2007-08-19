@@ -29,8 +29,9 @@
 
 #include "ResourceData.h"
 
-class DialogData {
-  public:
+class DialogData
+{
+public:
     unsigned int childDialogs;
     std::vector<std::string> text;
     std::vector<DialogData*> childData;
@@ -39,18 +40,19 @@ class DialogData {
 };
 
 class DialogResource
-: public ResourceData {
-  private:
+            : public ResourceData
+{
+private:
     std::map<const unsigned int, DialogData*> dialogMap;
-    void ReadDialogData(FileBuffer *buffer, DialogData *data);
-  public:
+    void ReadDialogData ( FileBuffer *buffer, DialogData *data );
+public:
     DialogResource();
     virtual ~DialogResource();
     unsigned int GetSize() const;
-    bool Find(const unsigned int n, DialogData* data);
+    bool Find ( const unsigned int n, DialogData* data );
     void Clear();
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

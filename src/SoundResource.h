@@ -29,8 +29,9 @@
 #include "Sound.h"
 #include "TaggedResource.h"
 
-class SoundData {
-  public:
+class SoundData
+{
+public:
     SoundData();
     ~SoundData();
     std::string name;
@@ -39,20 +40,21 @@ class SoundData {
 };
 
 class SoundResource
-: public TaggedResource {
-  private:
+            : public TaggedResource
+{
+private:
     std::map<unsigned int, SoundData> soundMap;
     static SoundResource* instance;
-  protected:
+protected:
     SoundResource();
-  public:
+public:
     ~SoundResource();
     static SoundResource* GetInstance();
     static void CleanUp();
     void Clear();
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
-    SoundData& GetSoundData(unsigned int id);
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
+    SoundData& GetSoundData ( unsigned int id );
 };
 
 #endif

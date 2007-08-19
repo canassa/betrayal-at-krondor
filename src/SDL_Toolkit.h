@@ -28,10 +28,11 @@
 #include "SDL.h"
 
 class SDL_Toolkit
-: public MediaToolkit {
-  private:
-    void HandleEvent(SDL_Event& event);
-  public:
+            : public MediaToolkit
+{
+private:
+    void HandleEvent ( SDL_Event& event );
+public:
     SDL_Toolkit();
     ~SDL_Toolkit();
     void PollEvents();
@@ -39,7 +40,7 @@ class SDL_Toolkit
     void WaitEvents();
     void WaitEventLoop();
     void ClearEvents();
-    void GetMousePosition(int *x, int *y);
+    void GetMousePosition ( int *x, int *y );
 };
 
 #endif

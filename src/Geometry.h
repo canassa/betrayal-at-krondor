@@ -35,92 +35,95 @@ static const unsigned int ANGLE_BITS = 8;
 static const unsigned int ANGLE_SIZE = 1 << ANGLE_BITS;
 static const unsigned int ANGLE_MASK = ANGLE_SIZE - 1;
 
-class Vector2D {
-  private:
+class Vector2D
+{
+private:
     int xCoord;
     int yCoord;
-  public:
+public:
     Vector2D();
-    Vector2D(const int x, const int y);
-    Vector2D(const Vector2D &p);
+    Vector2D ( const int x, const int y );
+    Vector2D ( const Vector2D &p );
     virtual ~Vector2D();
-    Vector2D& operator=(const Vector2D &p);
-    Vector2D& operator+=(const Vector2D &p);
-    Vector2D& operator-=(const Vector2D &p);
-    Vector2D& operator*=(const int f);
-    Vector2D& operator/=(const int f);
-    Vector2D operator+(const Vector2D &p);
-    Vector2D operator-(const Vector2D &p);
-    Vector2D operator*(const int f);
-    Vector2D operator/(const int f);
-    bool operator==(const Vector2D &p) const;
-    bool operator!=(const Vector2D &p) const;
-    bool operator<(const Vector2D &p) const;
+    Vector2D& operator= ( const Vector2D &p );
+    Vector2D& operator+= ( const Vector2D &p );
+    Vector2D& operator-= ( const Vector2D &p );
+    Vector2D& operator*= ( const int f );
+    Vector2D& operator/= ( const int f );
+    Vector2D operator+ ( const Vector2D &p );
+    Vector2D operator- ( const Vector2D &p );
+    Vector2D operator* ( const int f );
+    Vector2D operator/ ( const int f );
+    bool operator== ( const Vector2D &p ) const;
+    bool operator!= ( const Vector2D &p ) const;
+    bool operator< ( const Vector2D &p ) const;
     int GetX() const;
     int GetY() const;
-    void SetX(int x);
-    void SetY(int y);
+    void SetX ( int x );
+    void SetY ( int y );
     unsigned int GetRho() const;
     int GetTheta() const;
 };
 
-class Vector3D {
-  private:
+class Vector3D
+{
+private:
     int xCoord;
     int yCoord;
     int zCoord;
-  public:
+public:
     Vector3D();
-    Vector3D(const int x, const int y, const int z);
-    Vector3D(const Vector3D &p);
+    Vector3D ( const int x, const int y, const int z );
+    Vector3D ( const Vector3D &p );
     virtual ~Vector3D();
-    Vector3D& operator=(const Vector3D &p);
-    Vector3D& operator+=(const Vector3D &p);
-    Vector3D& operator-=(const Vector3D &p);
-    Vector3D& operator*=(const int f);
-    Vector3D& operator/=(const int f);
-    Vector3D operator+(const Vector3D &p);
-    Vector3D operator-(const Vector3D &p);
-    Vector3D operator*(const int f);
-    Vector3D operator/(const int f);
-    bool operator==(const Vector3D &p) const;
-    bool operator!=(const Vector3D &p) const;
-    bool operator<(const Vector3D &p) const;
+    Vector3D& operator= ( const Vector3D &p );
+    Vector3D& operator+= ( const Vector3D &p );
+    Vector3D& operator-= ( const Vector3D &p );
+    Vector3D& operator*= ( const int f );
+    Vector3D& operator/= ( const int f );
+    Vector3D operator+ ( const Vector3D &p );
+    Vector3D operator- ( const Vector3D &p );
+    Vector3D operator* ( const int f );
+    Vector3D operator/ ( const int f );
+    bool operator== ( const Vector3D &p ) const;
+    bool operator!= ( const Vector3D &p ) const;
+    bool operator< ( const Vector3D &p ) const;
     int GetX() const;
     int GetY() const;
     int GetZ() const;
-    void SetX(int x);
-    void SetY(int y);
-    void SetZ(int z);
+    void SetX ( int x );
+    void SetY ( int y );
+    void SetZ ( int z );
     unsigned int GetRho() const;
     int GetTheta() const;
 };
 
-class Rectangle {
-  private:
+class Rectangle
+{
+private:
     int xpos;
     int ypos;
     int width;
     int height;
-  public:
-    Rectangle(const int x, const int y, const int w, const int h);
-    Rectangle(const Rectangle &r);
+public:
+    Rectangle ( const int x, const int y, const int w, const int h );
+    Rectangle ( const Rectangle &r );
     virtual ~Rectangle();
-    Rectangle& operator=(const Rectangle &r);
-    bool operator==(const Rectangle &r);
-    bool operator!=(const Rectangle &r);
-    bool operator<(const Rectangle &r);
+    Rectangle& operator= ( const Rectangle &r );
+    bool operator== ( const Rectangle &r );
+    bool operator!= ( const Rectangle &r );
+    bool operator< ( const Rectangle &r );
     int GetXPos() const;
     int GetYPos() const;
     int GetXCenter() const;
     int GetYCenter() const;
     int GetWidth() const;
     int GetHeight() const;
-    void SetXPos(int x);
-    void SetYPos(int x);
-    void SetWidth(int w);
-    void SetHeight(int h);
-    bool IsInside(const Vector2D &p);
+    void SetXPos ( int x );
+    void SetYPos ( int x );
+    void SetWidth ( int w );
+    void SetHeight ( int h );
+    bool IsInside ( const Vector2D &p );
 };
 
 #endif

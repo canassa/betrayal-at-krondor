@@ -23,55 +23,58 @@
 #include "TerrainObject.h"
 
 SceneFactory::SceneFactory()
-{
-}
+{}
 
 SceneFactory::~SceneFactory()
-{
-}
+{}
 
 Scene *
 SceneFactory::CreateScene(Zone& zone)
 {
-  Scene *scene = new Scene(zone);
-  TableResource *table = zone.GetTable();
-  for (unsigned int y = 1; y <= MAX_TILES; y++) {
-    for (unsigned int x = 1; x <= MAX_TILES; x++) {
-      TileWorldResource *tile = zone.GetTile(x, y);
-      if (tile) {
-        for (unsigned int i = 0; i < tile->GetSize(); i++) {
-          TileWorldItem item = tile->GetItem(i);
-          DatInfo *dat = table->GetDatItem(item.type);
-          GidInfo gid = table->GetGidItem(item.type);
-          switch (dat->objectType) {
-            case OT_TREE:
-            case OT_TOMBSTONE:
-            case OT_SIGN:
-            case OT_DEADBODY2:
-            case OT_DIRTPILE:
-            case OT_FIRE:
-            case OT_FERN:
-            case OT_ROCKPILE:
-            case OT_BUSH1:
-            case OT_BUSH2:
-            case OT_BUSH3:
-            case OT_SLAB:
-            case OT_STUMP:
-            case OT_WELL:
-            case OT_ENGINE:
-            case OT_SCARECROW:
-            case OT_TRAP:
-            case OT_COLUMN:
-            case OT_BAG:
-            case OT_LADDER:
-              scene->AddObject(Vector2D(x, y), new SpritedObject(Vector2D(item.xloc, item.yloc), zone.GetSprite(dat->sprite)));
-              break;
-            default:
-              break;
-          }
+    Scene *scene = new Scene(zone);
+    TableResource *table = zone.GetTable();
+    for (unsigned int y = 1; y <= MAX_TILES; y++)
+    {
+        for (unsigned int x = 1; x <= MAX_TILES; x++)
+        {
+            TileWorldResource *tile = zone.GetTile(x, y);
+            if (tile)
+            {
+                for (unsigned int i = 0; i < tile->GetSize(); i++)
+                {
+                    TileWorldItem item = tile->GetItem(i);
+                    DatInfo *dat = table->GetDatItem(item.type);
+                    GidInfo gid = table->GetGidItem(item.type);
+                    switch (dat->objectType)
+                    {
+                    case OT_TREE:
+                    case OT_TOMBSTONE:
+                    case OT_SIGN:
+                    case OT_DEADBODY2:
+                    case OT_DIRTPILE:
+                    case OT_FIRE:
+                    case OT_FERN:
+                    case OT_ROCKPILE:
+                    case OT_BUSH1:
+                    case OT_BUSH2:
+                    case OT_BUSH3:
+                    case OT_SLAB:
+                    case OT_STUMP:
+                    case OT_WELL:
+                    case OT_ENGINE:
+                    case OT_SCARECROW:
+                    case OT_TRAP:
+                    case OT_COLUMN:
+                    case OT_BAG:
+                    case OT_LADDER:
+                        scene->AddObject(Vector2D(x, y), new SpritedObject(Vector2D(item.xloc, item.yloc), zone.GetSprite(dat->sprite)));
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            }
         }
-      }
     }
-  }
-  return scene;
+    return scene;
 }

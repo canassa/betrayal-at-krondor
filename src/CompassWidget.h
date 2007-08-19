@@ -30,14 +30,15 @@
 #include "Widget.h"
 
 class CompassWidget
-: public Observer
-, public Widget {
-  private:
+            : public Observer
+            , public Widget
+{
+private:
     Camera *camera;
     Image *compassImage;
     Image *cachedImage;
-  public:
-    CompassWidget(Camera *cam, Image *img);
+public:
+    CompassWidget ( Camera *cam, Image *img );
     virtual ~CompassWidget();
     void Draw();
     void Update();

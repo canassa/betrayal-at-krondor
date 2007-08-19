@@ -20,175 +20,206 @@
 #include "ContainerWidget.h"
 
 ContainerWidget::ContainerWidget(const Rectangle &r)
-: ActiveWidget(r, -1)
-, widgets()
-, activeWidgets()
-, currentActiveWidget()
+        : ActiveWidget(r, -1)
+        , widgets()
+        , activeWidgets()
+        , currentActiveWidget()
 {
-  SetFocusable(false);
+    SetFocusable(false);
 }
 
 ContainerWidget::~ContainerWidget()
 {
-  Clear();
+    Clear();
 }
 
 void
 ContainerWidget::Clear()
 {
-  for (std::list<Widget *>::iterator it = widgets.begin(); it != widgets.end(); ++it) {
-    delete (*it);
-  }
-  widgets.clear();
-  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-    delete (*it);
-  }
-  activeWidgets.clear();
+    for (std::list<Widget *>::iterator it = widgets.begin(); it != widgets.end(); ++it)
+    {
+        delete (*it);
+    }
+    widgets.clear();
+    for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it)
+    {
+        delete (*it);
+    }
+    activeWidgets.clear();
 }
 
 void
 ContainerWidget::AddWidget(Widget *w)
 {
-  widgets.push_back(w);
+    widgets.push_back(w);
 }
 
 void
 ContainerWidget::AddActiveWidget(ActiveWidget *aw)
 {
-  activeWidgets.push_back(aw);
-  currentActiveWidget = activeWidgets.end();
+    activeWidgets.push_back(aw);
+    currentActiveWidget = activeWidgets.end();
 }
 
 void
 ContainerWidget::RemoveWidget(Widget *w)
 {
-  widgets.remove(w);
+    widgets.remove(w);
 }
 
 void
 ContainerWidget::RemoveActiveWidget(ActiveWidget *aw)
 {
-  activeWidgets.remove(aw);
-  currentActiveWidget = activeWidgets.end();
+    activeWidgets.remove(aw);
+    currentActiveWidget = activeWidgets.end();
 }
 
 void
 ContainerWidget::DrawChildWidgets()
 {
-  for (std::list<Widget *>::iterator it = widgets.begin(); it != widgets.end(); ++it) {
-    (*it)->Draw();
-  }
-  for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-    (*it)->Draw();
-  }
+    for (std::list<Widget *>::iterator it = widgets.begin(); it != widgets.end(); ++it)
+    {
+        (*it)->Draw();
+    }
+    for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it)
+    {
+        (*it)->Draw();
+    }
 }
 
 void
 ContainerWidget::Draw()
 {
-  if (IsVisible()) {
-    DrawChildWidgets();
-  }
+    if (IsVisible())
+    {
+        DrawChildWidgets();
+    }
 }
 
 void
 ContainerWidget::NextWidget()
 {
-  if (IsVisible()) {
-    if (activeWidgets.size() > 0) {
-      do {
-        if (currentActiveWidget != activeWidgets.end()) {
-          currentActiveWidget++;
+    if (IsVisible())
+    {
+        if (activeWidgets.size() > 0)
+        {
+            do
+            {
+                if (currentActiveWidget != activeWidgets.end())
+                {
+                    currentActiveWidget++;
+                }
+                if (currentActiveWidget == activeWidgets.end())
+                {
+                    currentActiveWidget = activeWidgets.begin();
+                }
+            }
+            while (!((*currentActiveWidget)->IsVisible()) || !((*currentActiveWidget)->IsFocusable()));
+            (*currentActiveWidget)->Focus();
         }
-        if (currentActiveWidget == activeWidgets.end()) {
-          currentActiveWidget = activeWidgets.begin();
-        }
-      } while (!((*currentActiveWidget)->IsVisible()) || !((*currentActiveWidget)->IsFocusable()));
-      (*currentActiveWidget)->Focus();
     }
-  }
 }
 
 void
 ContainerWidget::PreviousWidget()
 {
-  if (IsVisible()) {
-    if (activeWidgets.size() > 0) {
-      do {
-        if (currentActiveWidget == activeWidgets.begin()) {
-          currentActiveWidget = activeWidgets.end();
+    if (IsVisible())
+    {
+        if (activeWidgets.size() > 0)
+        {
+            do
+            {
+                if (currentActiveWidget == activeWidgets.begin())
+                {
+                    currentActiveWidget = activeWidgets.end();
+                }
+                currentActiveWidget--;
+            }
+            while (!((*currentActiveWidget)->IsVisible()) || !((*currentActiveWidget)->IsFocusable()));
+            (*currentActiveWidget)->Focus();
         }
-        currentActiveWidget--;
-      } while (!((*currentActiveWidget)->IsVisible()) || !((*currentActiveWidget)->IsFocusable()));
-      (*currentActiveWidget)->Focus();
     }
-  }
 }
 
 void
 ContainerWidget::LeftClick(const bool toggle)
 {
-  if (IsVisible()) {
-    if ((activeWidgets.size() > 0) && (currentActiveWidget != activeWidgets.end())) {
-      Rectangle r = (*currentActiveWidget)->GetRectangle();
-      (*currentActiveWidget)->LeftClick(toggle, r.GetXCenter(), r.GetYCenter());
+    if (IsVisible())
+    {
+        if ((activeWidgets.size() > 0) && (currentActiveWidget != activeWidgets.end()))
+        {
+            Rectangle r = (*currentActiveWidget)->GetRectangle();
+            (*currentActiveWidget)->LeftClick(toggle, r.GetXCenter(), r.GetYCenter());
+        }
     }
-  }
 }
 
 void
 ContainerWidget::RightClick(const bool toggle)
 {
-  if (IsVisible()) {
-    if ((activeWidgets.size() > 0) && (currentActiveWidget != activeWidgets.end())) {
-      Rectangle r = (*currentActiveWidget)->GetRectangle();
-      (*currentActiveWidget)->RightClick(toggle, r.GetXCenter(), r.GetYCenter());
+    if (IsVisible())
+    {
+        if ((activeWidgets.size() > 0) && (currentActiveWidget != activeWidgets.end()))
+        {
+            Rectangle r = (*currentActiveWidget)->GetRectangle();
+            (*currentActiveWidget)->RightClick(toggle, r.GetXCenter(), r.GetYCenter());
+        }
     }
-  }
 }
 
 void
 ContainerWidget::LeftClick(const bool toggle, const int x, const int y)
 {
-  if (IsVisible()) {
-    for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-      if (((*it)->GetRectangle().IsInside(Vector2D(x, y))) || ((*it)->IsDraggable() && !toggle)) {
-        (*it)->LeftClick(toggle, x, y);
-      }
+    if (IsVisible())
+    {
+        for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it)
+        {
+            if (((*it)->GetRectangle().IsInside(Vector2D(x, y))) || ((*it)->IsDraggable() && !toggle))
+            {
+                (*it)->LeftClick(toggle, x, y);
+            }
+        }
     }
-  }
 }
 
 void
 ContainerWidget::RightClick(const bool toggle, const int x, const int y)
 {
-  if (IsVisible()) {
-    for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-      if (((*it)->GetRectangle().IsInside(Vector2D(x, y))) || ((*it)->IsDraggable() && !toggle)) {
-        (*it)->RightClick(toggle, x, y);
-      }
+    if (IsVisible())
+    {
+        for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it)
+        {
+            if (((*it)->GetRectangle().IsInside(Vector2D(x, y))) || ((*it)->IsDraggable() && !toggle))
+            {
+                (*it)->RightClick(toggle, x, y);
+            }
+        }
     }
-  }
 }
 
 void
 ContainerWidget::MouseOver(const int x, const int y)
 {
-  if (IsVisible()) {
-    for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-      if ((*it)->GetRectangle().IsInside(Vector2D(x, y))) {
-        (*it)->LeftClick(false, x, y);
-      }
+    if (IsVisible())
+    {
+        for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it)
+        {
+            if ((*it)->GetRectangle().IsInside(Vector2D(x, y)))
+            {
+                (*it)->LeftClick(false, x, y);
+            }
+        }
     }
-  }
 }
 
 void
 ContainerWidget::Reset()
 {
-  if (IsVisible()) {
-    for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it) {
-      (*it)->Reset();
+    if (IsVisible())
+    {
+        for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it)
+        {
+            (*it)->Reset();
+        }
     }
-  }
 }

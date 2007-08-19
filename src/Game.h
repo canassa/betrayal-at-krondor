@@ -31,8 +31,9 @@
 #include "PartyResource.h"
 #include "Scene.h"
 
-class Game {
-  private:
+class Game
+{
+private:
     std::string name;
     Chapter *chapter;
     Party *party;
@@ -40,11 +41,11 @@ class Game {
     Camera *camera;
     PartyResource partyRes;
     ImageResource buttonImages;
-  public:
+public:
     Game();
     ~Game();
     std::string& GetName();
-    void SetName(const std::string& s);
+    void SetName ( const std::string& s );
     Party* GetParty() const;
     Chapter* GetChapter() const;
     Camera* GetCamera() const;

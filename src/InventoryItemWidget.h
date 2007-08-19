@@ -32,21 +32,21 @@ static const int MAX_INVENTORY_ITEM_WIDGET_WIDTH  = 80;
 static const int MAX_INVENTORY_ITEM_WIDGET_HEIGHT = 58;
 
 class InventoryItemWidget
-: public ActiveWidget
+            : public ActiveWidget
 {
-  private:
+private:
     Image *iconImage;
     TextWidget *label;
     bool pressed;
     bool selected;
-  public:
-    InventoryItemWidget(const Rectangle &r, const int a);
+public:
+    InventoryItemWidget ( const Rectangle &r, const int a );
     virtual ~InventoryItemWidget();
-    void SetImage(Image *icon);
-    void SetLabel(const std::string& s, Font *f);
+    void SetImage ( Image *icon );
+    void SetLabel ( const std::string& s, Font *f );
     void Draw();
-    void LeftClick(const bool toggle, const int x, const int y);
-    void RightClick(const bool toggle, const int x, const int y);
+    void LeftClick ( const bool toggle, const int x, const int y );
+    void RightClick ( const bool toggle, const int x, const int y );
 };
 
 #endif

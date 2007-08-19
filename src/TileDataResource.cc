@@ -21,41 +21,46 @@
 #include "TileDataResource.h"
 
 TileDataResource::TileDataResource()
-{
-}
+{}
 
 TileDataResource::~TileDataResource()
 {
-  Clear();
+    Clear();
 }
 
 void
 TileDataResource::Clear()
-{
-}
+{}
 
 void
 TileDataResource::Load(FileBuffer *buffer)
 {
-  try {
-    Clear();
-    while (!buffer->AtEnd()) {
-      buffer->Skip(4);
+    try
+    {
+        Clear();
+        while (!buffer->AtEnd())
+        {
+            buffer->Skip(4);
+        }
     }
-  } catch (Exception &e) {
-    e.Print("TileDataResource::Load");
-    throw;
-  }
+    catch (Exception &e)
+    {
+        e.Print("TileDataResource::Load");
+        throw;
+    }
 }
 
 void
 TileDataResource::Save(FileBuffer *buffer)
 {
-  try {
-    // TODO
-    buffer = buffer;
-  } catch (Exception &e) {
-    e.Print("TileDataResource::Load");
-    throw;
-  }
+    try
+    {
+        // TODO
+        buffer = buffer;
+    }
+    catch (Exception &e)
+    {
+        e.Print("TileDataResource::Load");
+        throw;
+    }
 }

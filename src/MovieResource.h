@@ -28,27 +28,30 @@
 
 #include "TaggedResource.h"
 
-typedef struct _MovieTag {
-  unsigned int code;
-  std::string name;
-  std::vector<int> data;
-} MovieTag;
+typedef struct _MovieTag
+{
+    unsigned int code;
+    std::string name;
+    std::vector<int> data;
+}
+MovieTag;
 
 class MovieResource
-: public TaggedResource {
-  private:
+            : public TaggedResource
+{
+private:
     std::string version;
     unsigned int pages;
     std::vector<MovieTag *> movieTags;
-  public:
+public:
     MovieResource();
     virtual ~MovieResource();
     std::string& GetVersion();
     unsigned int GetPages() const;
     std::vector<MovieTag *> & GetMovieTags();
     void Clear();
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

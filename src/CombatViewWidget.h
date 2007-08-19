@@ -27,11 +27,12 @@
 #include "GameViewWidget.h"
 
 class CombatViewWidget
-: public GameViewWidget {
-  private:
+            : public GameViewWidget
+{
+private:
     void Redraw();
-  public:
-    CombatViewWidget(const Rectangle &r, Game *g);
+public:
+    CombatViewWidget ( const Rectangle &r, Game *g );
     virtual ~CombatViewWidget();
 };
 

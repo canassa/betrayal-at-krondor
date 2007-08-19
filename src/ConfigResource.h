@@ -29,16 +29,17 @@
 #include "Preferences.h"
 
 class ConfigResource
-: public ConfigData {
-  private:
+            : public ConfigData
+{
+private:
     Preferences *prefs;
-  public:
+public:
     ConfigResource();
     virtual ~ConfigResource();
     Preferences * GetPreferences();
-    void SetPreferences(Preferences *p);
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void SetPreferences ( Preferences *p );
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

@@ -49,15 +49,16 @@ static const uint32_t TAG_VER = 0x3a524556;
 static const uint32_t TAG_VGA = 0x3a414756;
 
 class TaggedResource
-: public ResourceData {
-  private:
+            : public ResourceData
+{
+private:
     std::map<const unsigned int, FileBuffer*> bufferMap;
-  public:
+public:
     TaggedResource();
     virtual ~TaggedResource();
     void ClearTags();
-    void Split(FileBuffer *buffer);
-    bool Find(const unsigned label, FileBuffer* &buffer);
+    void Split ( FileBuffer *buffer );
+    bool Find ( const unsigned label, FileBuffer* &buffer );
 };
 
 #endif

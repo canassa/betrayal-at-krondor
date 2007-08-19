@@ -24,26 +24,34 @@
 #include "Exception.h"
 #include "FileManager.h"
 
-int main(int argc, char *argv[]) {
-  try {
-    if (argc != 2) {
-      std::cerr << "Usage: " << argv[0] << " <BOK-file>" << std::endl;
-      return 1;
+int main(int argc, char *argv[])
+{
+    try
+    {
+        if (argc != 2)
+        {
+            std::cerr << "Usage: " << argv[0] << " <BOK-file>" << std::endl;
+            return 1;
+        }
+        BookResource *bok = new BookResource;
+        FileManager::GetInstance()->Load(bok, argv[1]);
+        for (unsigned int i = 0; i < bok->GetNumParagraphs(); i++)
+        {
+            std::cout << i << ": " << bok->GetParagraph(i)<< std::endl;
+        }
+        delete bok;
+        FileManager::CleanUp();
+        Directories::CleanUp();
     }
-    BookResource *bok = new BookResource;
-    FileManager::GetInstance()->Load(bok, argv[1]);
-    for (unsigned int i = 0; i < bok->GetNumParagraphs(); i++) {
-      std::cout << i << ": " << bok->GetParagraph(i)<< std::endl;
+    catch (Exception &e)
+    {
+        e.Print("main");
     }
-    delete bok;
-    FileManager::CleanUp();
-    Directories::CleanUp();
-  } catch (Exception &e) {
-    e.Print("main");
-  } catch (...) {
-    /* every exception should have been handled before */
-    std::cerr << "Unhandled exception" << std::endl;
-  }
-  return 0;
+    catch (...)
+    {
+        /* every exception should have been handled before */
+        std::cerr << "Unhandled exception" << std::endl;
+    }
+    return 0;
 }
 

@@ -25,151 +25,172 @@
 #include "SDL_Video.h"
 
 SDL_Toolkit::SDL_Toolkit()
-: MediaToolkit()
+        : MediaToolkit()
 {
-  if (SDL_Init(SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_VIDEO) < 0) {
-    throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
-  }
+    if (SDL_Init(SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_VIDEO) < 0)
+    {
+        throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
+    }
 #if defined(HAVE_LIBSDL_MIXER) && defined(HAVE_LIBSDL_SOUND)
-  audio = new SDL_Audio();
+    audio = new SDL_Audio();
 #else
-  audio = new Null_Audio();
+    audio = new Null_Audio();
 #endif
-  clock = new SDL_Clock();
-  video = new SDL_Video();
+    clock = new SDL_Clock();
+    video = new SDL_Video();
 }
 
 SDL_Toolkit::~SDL_Toolkit()
 {
-  delete audio;
-  delete clock;
-  delete video;
-  SDL_Quit();
+    delete audio;
+    delete clock;
+    delete video;
+    SDL_Quit();
 }
 
 void
 SDL_Toolkit::HandleEvent(SDL_Event& event)
 {
-  switch (event.type) {
-    case SDL_KEYDOWN: {
+    switch (event.type)
+    {
+    case SDL_KEYDOWN:
+    {
         KeyboardEvent kbe((Key)event.key.keysym.sym);
-        for (std::list<KeyboardEventListener *>::iterator it = keyboardListeners.begin(); it != keyboardListeners.end(); ++it) {
-          (*it)->KeyPressed(kbe);
+        for (std::list<KeyboardEventListener *>::iterator it = keyboardListeners.begin(); it != keyboardListeners.end(); ++it)
+        {
+            (*it)->KeyPressed(kbe);
         }
-      }
-      break;
-    case SDL_KEYUP: {
+    }
+    break;
+    case SDL_KEYUP:
+    {
         KeyboardEvent kbe((Key)event.key.keysym.sym);
-        for (std::list<KeyboardEventListener *>::iterator it = keyboardListeners.begin(); it != keyboardListeners.end(); ++it) {
-          (*it)->KeyReleased(kbe);
+        for (std::list<KeyboardEventListener *>::iterator it = keyboardListeners.begin(); it != keyboardListeners.end(); ++it)
+        {
+            (*it)->KeyReleased(kbe);
         }
-      }
-      break;
-    case SDL_MOUSEBUTTONDOWN: {
+    }
+    break;
+    case SDL_MOUSEBUTTONDOWN:
+    {
         MouseButtonEvent mbe((MouseButton)(event.button.button - 1),
                              event.button.x / video->GetScaling(),
                              event.button.y / video->GetScaling());
-        for (std::list<MouseButtonEventListener *>::iterator it = mouseButtonListeners.begin(); it != mouseButtonListeners.end(); ++it) {
-          (*it)->MouseButtonPressed(mbe);
+        for (std::list<MouseButtonEventListener *>::iterator it = mouseButtonListeners.begin(); it != mouseButtonListeners.end(); ++it)
+        {
+            (*it)->MouseButtonPressed(mbe);
         }
-      }
-      break;
-    case SDL_MOUSEBUTTONUP: {
+    }
+    break;
+    case SDL_MOUSEBUTTONUP:
+    {
         MouseButtonEvent mbe((MouseButton)(event.button.button - 1),
                              event.button.x / video->GetScaling(),
                              event.button.y / video->GetScaling());
-        for (std::list<MouseButtonEventListener *>::iterator it = mouseButtonListeners.begin(); it != mouseButtonListeners.end(); ++it) {
-          (*it)->MouseButtonReleased(mbe);
+        for (std::list<MouseButtonEventListener *>::iterator it = mouseButtonListeners.begin(); it != mouseButtonListeners.end(); ++it)
+        {
+            (*it)->MouseButtonReleased(mbe);
         }
-      }
-      break;
-    case SDL_MOUSEMOTION: {
+    }
+    break;
+    case SDL_MOUSEMOTION:
+    {
         MouseMotionEvent mme(event.button.x / video->GetScaling(),
                              event.button.y / video->GetScaling());
-        for (std::list<MouseMotionEventListener *>::iterator it = mouseMotionListeners.begin(); it != mouseMotionListeners.end(); ++it) {
-          (*it)->MouseMoved(mme);
+        for (std::list<MouseMotionEventListener *>::iterator it = mouseMotionListeners.begin(); it != mouseMotionListeners.end(); ++it)
+        {
+            (*it)->MouseMoved(mme);
         }
-      }
-      break;
-    case SDL_USEREVENT: {
+    }
+    break;
+    case SDL_USEREVENT:
+    {
         // timer event
         clock->CancelTimer((unsigned long)event.user.data1);
         TimerEvent te((unsigned long)event.user.data1);
-        for (std::list<TimerEventListener *>::iterator it = timerListeners.begin(); it != timerListeners.end(); ++it) {
-          (*it)->TimerExpired(te);
+        for (std::list<TimerEventListener *>::iterator it = timerListeners.begin(); it != timerListeners.end(); ++it)
+        {
+            (*it)->TimerExpired(te);
         }
-      }
-      break;
+    }
+    break;
     default:
-      break;
-  }
+        break;
+    }
 }
 
 void
 SDL_Toolkit::PollEvents()
 {
-  SDL_Event event;
-  while (SDL_PollEvent(&event)) {
-    HandleEvent(event);
-  }
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+        HandleEvent(event);
+    }
 }
 
 void
 SDL_Toolkit::PollEventLoop()
 {
-  int currentTicks;
-  int previousTicks = SDL_GetTicks();
+    int currentTicks;
+    int previousTicks = SDL_GetTicks();
 
-  eventLoopRunning = true;
-  while (eventLoopRunning) {
-    PollEvents();
-    currentTicks = SDL_GetTicks();
-    LoopEvent le(currentTicks - previousTicks);
-    for (std::list<LoopEventListener *>::iterator it = loopListeners.begin(); it != loopListeners.end(); ++it) {
-      (*it)->LoopComplete(le);
+    eventLoopRunning = true;
+    while (eventLoopRunning)
+    {
+        PollEvents();
+        currentTicks = SDL_GetTicks();
+        LoopEvent le(currentTicks - previousTicks);
+        for (std::list<LoopEventListener *>::iterator it = loopListeners.begin(); it != loopListeners.end(); ++it)
+        {
+            (*it)->LoopComplete(le);
+        }
+        previousTicks = currentTicks;
     }
-    previousTicks = currentTicks;
-  }
 }
 
 void
 SDL_Toolkit::WaitEvents()
 {
-  SDL_Event event;
-  if (SDL_WaitEvent(&event)) {
-    HandleEvent(event);
-  }
+    SDL_Event event;
+    if (SDL_WaitEvent(&event))
+    {
+        HandleEvent(event);
+    }
 }
 
 void
 SDL_Toolkit::WaitEventLoop()
 {
-  int currentTicks;
-  int previousTicks = SDL_GetTicks();
+    int currentTicks;
+    int previousTicks = SDL_GetTicks();
 
-  eventLoopRunning = true;
-  while (eventLoopRunning) {
-    WaitEvents();
-    currentTicks = SDL_GetTicks();
-    LoopEvent le(currentTicks - previousTicks);
-    for (std::list<LoopEventListener *>::iterator it = loopListeners.begin(); it != loopListeners.end(); ++it) {
-      (*it)->LoopComplete(le);
+    eventLoopRunning = true;
+    while (eventLoopRunning)
+    {
+        WaitEvents();
+        currentTicks = SDL_GetTicks();
+        LoopEvent le(currentTicks - previousTicks);
+        for (std::list<LoopEventListener *>::iterator it = loopListeners.begin(); it != loopListeners.end(); ++it)
+        {
+            (*it)->LoopComplete(le);
+        }
+        previousTicks = currentTicks;
     }
-    previousTicks = currentTicks;
-  }
 }
 
 void
 SDL_Toolkit::ClearEvents()
 {
-  SDL_Event event;
-  while (SDL_PollEvent(&event)) {
-    // nothing
-  }
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+        // nothing
+    }
 }
 
 void
 SDL_Toolkit::GetMousePosition(int *x, int *y)
 {
-  SDL_GetMouseState(x, y);
+    SDL_GetMouseState(x, y);
 }

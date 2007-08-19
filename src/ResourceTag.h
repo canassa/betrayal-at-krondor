@@ -28,14 +28,15 @@
 
 #include "FileBuffer.h"
 
-class ResourceTag {
-  private:
+class ResourceTag
+{
+private:
     std::map<const unsigned int, std::string> tagMap;
-  public:
+public:
     ResourceTag();
     virtual ~ResourceTag();
-    void Load(FileBuffer *buffer);
-    bool Find(const unsigned int id, std::string &name);
+    void Load ( FileBuffer *buffer );
+    bool Find ( const unsigned int id, std::string &name );
 };
 
 #endif

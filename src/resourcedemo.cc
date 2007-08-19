@@ -31,141 +31,177 @@
 
 typedef enum _CommandType
 {
-  CT_UNKNOWN,
-  CT_BMX,
-  CT_FNT,
-  CT_RMF,
-  CT_SCX,
-  CT_SND,
-  CT_TTM,
-  CT_WLD
+    CT_UNKNOWN,
+    CT_BMX,
+    CT_FNT,
+    CT_RMF,
+    CT_SCX,
+    CT_SND,
+    CT_TTM,
+    CT_WLD
 } CommandType;
 
 CommandType
 get_command_type(char *cmd)
 {
-  if (!cmd) {
+    if (!cmd)
+    {
+        return CT_UNKNOWN;
+    }
+    if (strncmp(cmd, "BMX", 3) == 0)
+    {
+        return CT_BMX;
+    }
+    if (strncmp(cmd, "FNT", 3) == 0)
+    {
+        return CT_FNT;
+    }
+    if (strncmp(cmd, "RMF", 3) == 0)
+    {
+        return CT_RMF;
+    }
+    if (strncmp(cmd, "SCX", 3) == 0)
+    {
+        return CT_SCX;
+    }
+    if (strncmp(cmd, "SND", 3) == 0)
+    {
+        return CT_SND;
+    }
+    if (strncmp(cmd, "TTM", 3) == 0)
+    {
+        return CT_TTM;
+    }
+    if (strncmp(cmd, "WLD", 3) == 0)
+    {
+        return CT_WLD;
+    }
     return CT_UNKNOWN;
-  }
-  if (strncmp(cmd, "BMX", 3) == 0) {
-    return CT_BMX;
-  }
-  if (strncmp(cmd, "FNT", 3) == 0) {
-    return CT_FNT;
-  }
-  if (strncmp(cmd, "RMF", 3) == 0) {
-    return CT_RMF;
-  }
-  if (strncmp(cmd, "SCX", 3) == 0) {
-    return CT_SCX;
-  }
-  if (strncmp(cmd, "SND", 3) == 0) {
-    return CT_SND;
-  }
-  if (strncmp(cmd, "TTM", 3) == 0) {
-    return CT_TTM;
-  }
-  if (strncmp(cmd, "WLD", 3) == 0) {
-    return CT_WLD;
-  }
-  return CT_UNKNOWN;
 }
 
 int main(int argc, char **argv)
 {
-  try {
-    CommandType ct = get_command_type(argv[1]);
-    switch (ct) {
-      case CT_UNKNOWN:
-        printf("Usage: %s <BMX|FNT|RMF|SCX|SND|TTM|WLD> <command-options>\n", argv[0]);
-        return -1;
-      case CT_BMX:
-        if (argc != 4) {
-          printf("Usage: %s BMX <PAL-file> <BMX-file>\n", argv[0]);
-          return -1;
-        } else {
-          TestApplication *app = TestApplication::GetInstance();
-          app->ActivatePalette(argv[2]);
-          app->ShowImage(argv[3]);
+    try
+    {
+        CommandType ct = get_command_type(argv[1]);
+        switch (ct)
+        {
+        case CT_UNKNOWN:
+            printf("Usage: %s <BMX|FNT|RMF|SCX|SND|TTM|WLD> <command-options>\n", argv[0]);
+            return -1;
+        case CT_BMX:
+            if (argc != 4)
+            {
+                printf("Usage: %s BMX <PAL-file> <BMX-file>\n", argv[0]);
+                return -1;
+            }
+            else
+            {
+                TestApplication *app = TestApplication::GetInstance();
+                app->ActivatePalette(argv[2]);
+                app->ShowImage(argv[3]);
+            }
+            break;
+        case CT_FNT:
+            if (argc != 3)
+            {
+                printf("Usage: %s FNT <FNT-file>\n", argv[0]);
+                return -1;
+            }
+            else
+            {
+                TestApplication *app = TestApplication::GetInstance();
+                app->ActivatePalette();
+                app->DrawFont(argv[2]);
+            }
+            break;
+        case CT_RMF:
+            if (argc != 3)
+            {
+                printf("Usage: %s RMF <A|E>\n", argv[0]);
+                return -1;
+            }
+            else
+            {
+                switch (*argv[2])
+                {
+                case 'A':
+                    FileManager::GetInstance()->ArchiveAllResources();
+                    break;
+                case 'E':
+                    FileManager::GetInstance()->ExtractAllResources();
+                    break;
+                default:
+                    printf("Usage: %s RMF <A|E>\n", argv[0]);
+                    return -1;
+                    break;
+                }
+                FileManager::CleanUp();
+            }
+            break;
+        case CT_SCX:
+            if (argc != 4)
+            {
+                printf("Usage: %s SCX <PAL-file> <SCX-file>\n", argv[0]);
+                return -1;
+            }
+            else
+            {
+                TestApplication *app = TestApplication::GetInstance();
+                app->ActivatePalette(argv[2]);
+                app->ShowScreen(argv[3]);
+            }
+            break;
+        case CT_SND:
+            if (argc != 3)
+            {
+                printf("Usage: %s SND <index>\n", argv[0]);
+                return -1;
+            }
+            else
+            {
+                TestApplication *app = TestApplication::GetInstance();
+                app->PlaySound(atoi(argv[2]));
+            }
+            break;
+        case CT_TTM:
+            if (argc != 3)
+            {
+                printf("Usage: %s TTM <TTM-file>\n", argv[0]);
+                return -1;
+            }
+            else
+            {
+                TestApplication *app = TestApplication::GetInstance();
+                app->ActivatePalette();
+                app->PlayMovie(argv[2]);
+            }
+            break;
+        case CT_WLD:
+            if (argc != 4)
+            {
+                printf("Usage: %s WLD <zone> <tile>\n", argv[0]);
+                return -1;
+            }
+            else
+            {
+                TestApplication *app = TestApplication::GetInstance();
+                app->ActivatePalette("Z" + std::string(argv[2]) + ".PAL");
+                app->WalkWorld(argv[2], argv[3]);
+            }
+            break;
         }
-        break;
-      case CT_FNT:
-        if (argc != 3) {
-          printf("Usage: %s FNT <FNT-file>\n", argv[0]);
-          return -1;
-        } else {
-          TestApplication *app = TestApplication::GetInstance();
-          app->ActivatePalette();
-          app->DrawFont(argv[2]);
-        }
-        break;
-      case CT_RMF:
-        if (argc != 3) {
-          printf("Usage: %s RMF <A|E>\n", argv[0]);
-          return -1;
-        } else {
-          switch (*argv[2]) {
-            case 'A':
-              FileManager::GetInstance()->ArchiveAllResources();
-              break;
-            case 'E':
-              FileManager::GetInstance()->ExtractAllResources();
-              break;
-            default:
-              printf("Usage: %s RMF <A|E>\n", argv[0]);
-              return -1;
-              break;
-          }
-          FileManager::CleanUp();
-        }
-        break;
-      case CT_SCX:
-        if (argc != 4) {
-          printf("Usage: %s SCX <PAL-file> <SCX-file>\n", argv[0]);
-          return -1;
-        } else {
-          TestApplication *app = TestApplication::GetInstance();
-          app->ActivatePalette(argv[2]);
-          app->ShowScreen(argv[3]);
-        }
-        break;
-      case CT_SND:
-        if (argc != 3) {
-          printf("Usage: %s SND <index>\n", argv[0]);
-          return -1;
-        } else {
-          TestApplication *app = TestApplication::GetInstance();
-          app->PlaySound(atoi(argv[2]));
-        }
-        break;
-      case CT_TTM:
-        if (argc != 3) {
-          printf("Usage: %s TTM <TTM-file>\n", argv[0]);
-          return -1;
-        } else {
-          TestApplication *app = TestApplication::GetInstance();
-          app->ActivatePalette();
-          app->PlayMovie(argv[2]);
-        }
-        break;
-      case CT_WLD:
-        if (argc != 4) {
-          printf("Usage: %s WLD <zone> <tile>\n", argv[0]);
-          return -1;
-        } else {
-          TestApplication *app = TestApplication::GetInstance();
-          app->ActivatePalette("Z" + std::string(argv[2]) + ".PAL");
-          app->WalkWorld(argv[2], argv[3]);
-        }
-        break;
+        TestApplication::CleanUp();
+        Directories::CleanUp();
     }
-    TestApplication::CleanUp();
-    Directories::CleanUp();
-  } catch (Exception &e) {
-    e.Print("main");
-  } catch (...) {
-    /* every exception should have been handled before */
-    std::cerr << "Unhandled exception" << std::endl;
-  }
-  return 0;
+    catch (Exception &e)
+    {
+        e.Print("main");
+    }
+    catch (...)
+    {
+        /* every exception should have been handled before */
+        std::cerr << "Unhandled exception" << std::endl;
+    }
+    return 0;
 }

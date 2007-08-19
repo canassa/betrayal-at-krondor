@@ -30,19 +30,20 @@ static const int MOVE_SIZE     = 400;
 static const int MOVE_FORWARD  = +1 * MOVE_SIZE;
 static const int MOVE_BACKWARD = -1 * MOVE_SIZE;
 
-class Position {
-  private:
+class Position
+{
+private:
     Vector2D pos;
     Vector2D cell;
-  public:
-    Position(const Vector2D &p);
-    Position(const Vector2D &p, const Vector2D &c);
+public:
+    Position ( const Vector2D &p );
+    Position ( const Vector2D &p, const Vector2D &c );
     ~Position();
     Vector2D& GetCell();
     Vector2D& GetPos();
-    void SetPos(const Vector2D &p);
-    void Adjust(const Vector2D &delta);
-    void Adjust(const int deltaX, const int deltaY);
+    void SetPos ( const Vector2D &p );
+    void Adjust ( const Vector2D &delta );
+    void Adjust ( const int deltaX, const int deltaY );
 };
 
 #endif

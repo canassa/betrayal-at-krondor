@@ -26,25 +26,28 @@
 
 #include "TaggedResource.h"
 
-typedef struct _AnimationData {
-  std::string name;
-  std::string resource;
-} AnimationData;
+typedef struct _AnimationData
+{
+    std::string name;
+    std::string resource;
+}
+AnimationData;
 
-class AnimationResource: public TaggedResource {
-  private:
+class AnimationResource: public TaggedResource
+{
+private:
     std::string version;
     std::map<unsigned int, AnimationData> animationMap;
     FileBuffer *script;
-  public:
+public:
     AnimationResource();
     virtual ~AnimationResource();
     std::string &GetVersion();
     FileBuffer * GetScript() const;
-    AnimationData &GetAnimationData(unsigned int id);
+    AnimationData &GetAnimationData ( unsigned int id );
     void Clear();
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

@@ -21,68 +21,77 @@
 #include "PaletteResource.h"
 
 PaletteResource::PaletteResource()
-: TaggedResource()
+        : TaggedResource()
 {
-  palette = new Palette(0);
+    palette = new Palette(0);
 }
 
 PaletteResource::~PaletteResource()
 {
-  Clear();
+    Clear();
 }
 
 Palette *
 PaletteResource::GetPalette() const
 {
-  return palette;
+    return palette;
 }
 
 void
 PaletteResource::Clear()
 {
-  if (palette) {
-    delete palette;
-    palette = 0;
-  }
+    if (palette)
+    {
+        delete palette;
+        palette = 0;
+    }
 }
 
 void
 PaletteResource::Load(FileBuffer *buffer)
 {
-  try {
-    Clear();
-    Split(buffer);
-    FileBuffer *vgabuf;
-    if (!Find(TAG_VGA, vgabuf)) {
-      ClearTags();
-      throw DataCorruption(__FILE__, __LINE__);
+    try
+    {
+        Clear();
+        Split(buffer);
+        FileBuffer *vgabuf;
+        if (!Find(TAG_VGA, vgabuf))
+        {
+            ClearTags();
+            throw DataCorruption(__FILE__, __LINE__);
+        }
+        unsigned int size = vgabuf->GetSize() / 3;
+        palette = new Palette(size);
+        for (unsigned int i = 0; i < size; i++)
+        {
+            Color c;
+            c.r = (vgabuf->GetUint8() << 2);
+            c.g = (vgabuf->GetUint8() << 2);
+            c.b = (vgabuf->GetUint8() << 2);
+            c.a = 0;
+            palette->SetColor(i, c);
+        }
+        ClearTags();
     }
-    unsigned int size = vgabuf->GetSize() / 3;
-    palette = new Palette(size);
-    for (unsigned int i = 0; i < size; i++) {
-      Color c;
-      c.r = (vgabuf->GetUint8() << 2);
-      c.g = (vgabuf->GetUint8() << 2);
-      c.b = (vgabuf->GetUint8() << 2);
-      c.a = 0;
-      palette->SetColor(i, c);
+    catch (Exception &e)
+    {
+        e.Print("PaletteResource::Load");
+        ClearTags();
+        throw;
     }
-    ClearTags();
-  } catch (Exception &e) {
-    e.Print("PaletteResource::Load");
-    ClearTags();
-    throw;
-  }
 }
 
 void
 PaletteResource::Save(FileBuffer *buffer)
 {
-  try {
-    // TODO
-    buffer = buffer;
-  } catch (Exception &e) {
-    e.Print("PaletteResource::Save");
-    throw;
-  }
+    try
+    {
+        // TODO
+        buffer = buffer;
+    }
+    catch (Exception &e)
+    {
+        e.Print("PaletteResource::Save");
+        throw;
+    }
 }

@@ -31,8 +31,9 @@
 #include "Widget.h"
 
 class SkillsWidget
-: public Widget {
-  private:
+            : public Widget
+{
+private:
     PlayerCharacter *playerCharacter;
     Font *font;
     Image *leftSword;
@@ -51,8 +52,8 @@ class SkillsWidget
     SkillLevelWidget *lockpick;
     SkillLevelWidget *scouting;
     SkillLevelWidget *stealth;
-  public:
-    SkillsWidget(const Rectangle &r, PlayerCharacter *pc, Image *sw, Image *bl, Font *f);
+public:
+    SkillsWidget ( const Rectangle &r, PlayerCharacter *pc, Image *sw, Image *bl, Font *f );
     virtual ~SkillsWidget();
     void Draw();
 };

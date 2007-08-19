@@ -21,144 +21,143 @@
 
 Preferences::Preferences()
 {
-  SetDefaults();
+    SetDefaults();
 }
 
 Preferences::~Preferences()
-{
-}
+{}
 
 void
 Preferences::SetDefaults()
 {
-  stepSize = STS_SMALL;
-  turnSize = STS_SMALL;
-  textSpeed = TS_WAIT;
-  detail = LOD_MAX;
-  sound = true;
-  music = true;
-  combatMusic = true;
-  cdMusic = false;
-  introduction = true;
+    stepSize = STS_SMALL;
+    turnSize = STS_SMALL;
+    textSpeed = TS_WAIT;
+    detail = LOD_MAX;
+    sound = true;
+    music = true;
+    combatMusic = true;
+    cdMusic = false;
+    introduction = true;
 }
 
 void
 Preferences::Copy(const Preferences &prefs)
 {
-  stepSize = prefs.stepSize;
-  turnSize = prefs.turnSize;
-  textSpeed = prefs.textSpeed;
-  detail = prefs.detail;
-  sound = prefs.sound;
-  music = prefs.music;
-  combatMusic = prefs.combatMusic;
-  introduction = prefs.introduction;
+    stepSize = prefs.stepSize;
+    turnSize = prefs.turnSize;
+    textSpeed = prefs.textSpeed;
+    detail = prefs.detail;
+    sound = prefs.sound;
+    music = prefs.music;
+    combatMusic = prefs.combatMusic;
+    introduction = prefs.introduction;
 }
 
 StepTurnSize
 Preferences::GetStepSize() const
 {
-  return stepSize;
+    return stepSize;
 }
 
 void
 Preferences::SetStepSize(const StepTurnSize sz)
 {
-  stepSize = sz;
+    stepSize = sz;
 }
 
 StepTurnSize
 Preferences::GetTurnSize() const
 {
-  return turnSize;
+    return turnSize;
 }
 
 void
 Preferences::SetTurnSize(const StepTurnSize sz)
 {
-  turnSize = sz;
+    turnSize = sz;
 }
 
 TextSpeed
 Preferences::GetTextSpeed() const
 {
-  return textSpeed;
+    return textSpeed;
 }
 
 void
 Preferences::SetTextSpeed(const TextSpeed ts)
 {
-  textSpeed = ts;
+    textSpeed = ts;
 }
 
 LevelOfDetail
 Preferences::GetDetail() const
 {
-  return detail;
+    return detail;
 }
 
 void
 Preferences::SetDetail(const LevelOfDetail lod)
 {
-  detail = lod;
+    detail = lod;
 }
 
 bool
 Preferences::GetSound() const
 {
-  return sound;
+    return sound;
 }
 
 void
 Preferences::SetSound(const bool toggle)
 {
-  sound = toggle;
+    sound = toggle;
 }
 
 bool
 Preferences::GetMusic() const
 {
-  return music;
+    return music;
 }
 
 void
 Preferences::SetMusic(const bool toggle)
 {
-  music = toggle;
+    music = toggle;
 }
 
 bool
 Preferences::GetCombatMusic() const
 {
-  return combatMusic;
+    return combatMusic;
 }
 
 void
 Preferences::SetCombatMusic(const bool toggle)
 {
-  combatMusic = toggle;
+    combatMusic = toggle;
 }
 
 bool
 Preferences::GetCdMusic() const
 {
-  return cdMusic;
+    return cdMusic;
 }
 
 void
 Preferences::SetCdMusic(const bool toggle)
 {
-  cdMusic = toggle;
+    cdMusic = toggle;
 }
 
 bool
 Preferences::GetIntroduction() const
 {
-  return introduction;
+    return introduction;
 }
 
 void
 Preferences::SetIntroduction(const bool toggle)
 {
-  introduction = toggle;
+    introduction = toggle;
 }

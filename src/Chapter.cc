@@ -28,187 +28,208 @@
 #include "MoviePlayer.h"
 
 Chapter::Chapter(const int n)
-: number(n)
-, delayed(false)
-, zone()
+        : number(n)
+        , delayed(false)
+        , zone()
 {
-  zone.Load(number);
+    zone.Load(number);
 }
 
 Chapter::~Chapter()
-{
-}
+{}
 
 void
 Chapter::PlayIntro()
 {
-  try {
-    AnimationResource anim;
-    std::stringstream filenameStream;
-    filenameStream << "CHAPTER" << number << ".ADS";
-    FileManager::GetInstance()->Load(&anim, filenameStream.str());
-    MovieResource ttm;
-    FileManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
-    MoviePlayer moviePlayer;
-    moviePlayer.Play(&ttm.GetMovieTags(), false);
-  } catch (Exception &e) {
-    e.Print("Chapter::PlayIntro");
-  }
+    try
+    {
+        AnimationResource anim;
+        std::stringstream filenameStream;
+        filenameStream << "CHAPTER" << number << ".ADS";
+        FileManager::GetInstance()->Load(&anim, filenameStream.str());
+        MovieResource ttm;
+        FileManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
+        MoviePlayer moviePlayer;
+        moviePlayer.Play(&ttm.GetMovieTags(), false);
+    }
+    catch (Exception &e)
+    {
+        e.Print("Chapter::PlayIntro");
+    }
 }
 
 void
 Chapter::PlayScene(const int scene)
 {
-  try {
-    ScreenResource scr;
-    FileManager::GetInstance()->Load(&scr, "CFRAME.SCX");
-    scr.GetImage()->Draw(0, 0);
-    AnimationResource anim;
-    std::stringstream filenameStream;
-    filenameStream << "C" << number << scene << ".ADS";
-    FileManager::GetInstance()->Load(&anim, filenameStream.str());
-    MovieResource ttm;
-    FileManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
-    MoviePlayer moviePlayer;
-    moviePlayer.Play(&ttm.GetMovieTags(), false);
-  } catch (Exception &e) {
-    e.Print("Chapter::PlayIntro");
-  }
+    try
+    {
+        ScreenResource scr;
+        FileManager::GetInstance()->Load(&scr, "CFRAME.SCX");
+        scr.GetImage()->Draw(0, 0);
+        AnimationResource anim;
+        std::stringstream filenameStream;
+        filenameStream << "C" << number << scene << ".ADS";
+        FileManager::GetInstance()->Load(&anim, filenameStream.str());
+        MovieResource ttm;
+        FileManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
+        MoviePlayer moviePlayer;
+        moviePlayer.Play(&ttm.GetMovieTags(), false);
+    }
+    catch (Exception &e)
+    {
+        e.Print("Chapter::PlayIntro");
+    }
 }
 
 void
 Chapter::ReadBook(const int scene)
 {
-  try {
-    BookResource bok;
-    std::stringstream filenameStream;
-    filenameStream << "C" << number << scene << ".BOK";
-    FileManager::GetInstance()->Load(&bok, filenameStream.str());
-  } catch (Exception &e) {
-    e.Print("Chapter::ReadBook");
-  }
+    try
+    {
+        BookResource bok;
+        std::stringstream filenameStream;
+        filenameStream << "C" << number << scene << ".BOK";
+        FileManager::GetInstance()->Load(&bok, filenameStream.str());
+    }
+    catch (Exception &e)
+    {
+        e.Print("Chapter::ReadBook");
+    }
 }
 
 void
 Chapter::ShowMap()
 {
-  try {
-    PaletteResource *pal = new PaletteResource;
-    FileManager::GetInstance()->Load(pal, "FULLMAP.PAL");
-    ScreenResource *scr = new ScreenResource;
-    FileManager::GetInstance()->Load(scr, "FULLMAP.SCX");
-    scr->GetImage()->Draw(0, 0);
-    Video *video = MediaToolkit::GetInstance()->GetVideo();
-    video->FillRect(14, 161, 157, 27, BUTTON_COLOR_NORMAL);
-    video->DrawVLine(13, 161, 29, SHADOW_COLOR);
-    video->DrawHLine(13, 160, 160, LIGHT_COLOR);
-    video->DrawVLine(171, 161, 28, LIGHT_COLOR);
-    video->DrawHLine(14, 188, 157, SHADOW_COLOR);
-    video->DrawVLine(12, 162, 26, COLOR_BLACK);
-    video->DrawHLine(12, 189, 157, COLOR_BLACK);
-    pal->GetPalette()->FadeIn(0, VIDEO_COLORS, 64, 5);
-    MediaToolkit::GetInstance()->GetClock()->StartTimer(TMR_CHAPTER, 4000);
-    delayed = true;
-    while (delayed) {
-      MediaToolkit::GetInstance()->WaitEvents();
+    try
+    {
+        PaletteResource *pal = new PaletteResource;
+        FileManager::GetInstance()->Load(pal, "FULLMAP.PAL");
+        ScreenResource *scr = new ScreenResource;
+        FileManager::GetInstance()->Load(scr, "FULLMAP.SCX");
+        scr->GetImage()->Draw(0, 0);
+        Video *video = MediaToolkit::GetInstance()->GetVideo();
+        video->FillRect(14, 161, 157, 27, BUTTON_COLOR_NORMAL);
+        video->DrawVLine(13, 161, 29, SHADOW_COLOR);
+        video->DrawHLine(13, 160, 160, LIGHT_COLOR);
+        video->DrawVLine(171, 161, 28, LIGHT_COLOR);
+        video->DrawHLine(14, 188, 157, SHADOW_COLOR);
+        video->DrawVLine(12, 162, 26, COLOR_BLACK);
+        video->DrawHLine(12, 189, 157, COLOR_BLACK);
+        pal->GetPalette()->FadeIn(0, VIDEO_COLORS, 64, 5);
+        MediaToolkit::GetInstance()->GetClock()->StartTimer(TMR_CHAPTER, 4000);
+        delayed = true;
+        while (delayed)
+        {
+            MediaToolkit::GetInstance()->WaitEvents();
+        }
+        pal->GetPalette()->FadeOut(0, VIDEO_COLORS, 64, 5);
+        delete pal;
+        delete scr;
     }
-    pal->GetPalette()->FadeOut(0, VIDEO_COLORS, 64, 5);
-    delete pal;
-    delete scr;
-  } catch (Exception &e) {
-    e.Print("Chapter::ShowMap");
-  }
+    catch (Exception &e)
+    {
+        e.Print("Chapter::ShowMap");
+    }
 }
 
 int
 Chapter::Get() const
 {
-  return number;
+    return number;
 }
 
 Zone&
 Chapter::GetZone()
 {
-  return zone;
+    return zone;
 }
 
 void
 Chapter::Next()
 {
-  number++;
-  zone.Load(number);
+    number++;
+    zone.Load(number);
 }
 
 void
 Chapter::Start(const bool maponly)
 {
-  try {
-    MediaToolkit* media = MediaToolkit::GetInstance();
-    media->AddKeyboardListener(this);
-    media->AddMouseButtonListener(this);
-    media->AddTimerListener(this);
-    if (!maponly) {
-      PlayIntro();
-      ReadBook(1);
-      PlayScene(1);
+    try
+    {
+        MediaToolkit* media = MediaToolkit::GetInstance();
+        media->AddKeyboardListener(this);
+        media->AddMouseButtonListener(this);
+        media->AddTimerListener(this);
+        if (!maponly)
+        {
+            PlayIntro();
+            ReadBook(1);
+            PlayScene(1);
+        }
+        ShowMap();
+        media->RemoveTimerListener(this);
+        media->RemoveMouseButtonListener(this);
+        media->RemoveKeyboardListener(this);
     }
-    ShowMap();
-    media->RemoveTimerListener(this);
-    media->RemoveMouseButtonListener(this);
-    media->RemoveKeyboardListener(this);
-  } catch (Exception &e) {
-    e.Print("Chapter::Start");
-  }
+    catch (Exception &e)
+    {
+        e.Print("Chapter::Start");
+    }
 }
 
 void
 Chapter::KeyPressed(const KeyboardEvent &kbe)
 {
-  switch (kbe.GetKey()) {
+    switch (kbe.GetKey())
+    {
     case KEY_ESCAPE:
     case KEY_RETURN:
     case KEY_SPACE:
-      delayed = false;
-      break;
+        delayed = false;
+        break;
     default:
-      break;
-  }
+        break;
+    }
 }
 
 void
 Chapter::KeyReleased(const KeyboardEvent &kbe)
 {
-  switch (kbe.GetKey()) {
+    switch (kbe.GetKey())
+    {
     default:
-      break;
-  }
+        break;
+    }
 }
 
 void
 Chapter::MouseButtonPressed(const MouseButtonEvent &mbe)
 {
-  switch (mbe.GetButton()) {
+    switch (mbe.GetButton())
+    {
     case MB_LEFT:
-      delayed = false;
-      break;
+        delayed = false;
+        break;
     default:
-      break;
-  }
+        break;
+    }
 }
 
 void
 Chapter::MouseButtonReleased(const MouseButtonEvent &mbe)
 {
-  switch (mbe.GetButton()) {
+    switch (mbe.GetButton())
+    {
     default:
-      break;
-  }
+        break;
+    }
 }
 
 void
 Chapter::TimerExpired(const TimerEvent &te)
 {
-  if (te.GetID() == TMR_CHAPTER) {
-    delayed = false;
-  }
+    if (te.GetID() == TMR_CHAPTER)
+    {
+        delayed = false;
+    }
 }

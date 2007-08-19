@@ -27,20 +27,27 @@
 #include "Exception.h"
 #include "GameApplication.h"
 
-int main(int argc, char **argv) {
-  if (argc > 1) {
-    Directories::GetInstance()->SetResourcePath(std::string(argv[1]));
-  }
-  try {
-    GameApplication::GetInstance()->Run();
-    GameApplication::CleanUp();
-  } catch (Exception &e) {
-    e.Print("main");
-  } catch (...) {
-    /* every exception should have been handled before */
-    std::cerr << "Unhandled exception" << std::endl;
-  }
-  Directories::CleanUp();
-  return 0;
+int main(int argc, char **argv)
+{
+    if (argc > 1)
+    {
+        Directories::GetInstance()->SetResourcePath(std::string(argv[1]));
+    }
+    try
+    {
+        GameApplication::GetInstance()->Run();
+        GameApplication::CleanUp();
+    }
+    catch (Exception &e)
+    {
+        e.Print("main");
+    }
+    catch (...)
+    {
+        /* every exception should have been handled before */
+        std::cerr << "Unhandled exception" << std::endl;
+    }
+    Directories::CleanUp();
+    return 0;
 }
 

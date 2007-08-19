@@ -35,19 +35,20 @@ static const int TURN_SIZE  = 2;
 static const int TURN_LEFT  = -1 * TURN_SIZE;
 static const int TURN_RIGHT = +1 * TURN_SIZE;
 
-class Orientation {
-  private:
+class Orientation
+{
+private:
     int heading;
     static float cosTbl[ANGLE_SIZE];
     static float sinTbl[ANGLE_SIZE];
-  public:
-    Orientation(const int head);
+public:
+    Orientation ( const int head );
     ~Orientation();
     int GetHeading() const;
-    void SetHeading(const int head);
+    void SetHeading ( const int head );
     float GetCos() const;
     float GetSin() const;
-    void AdjustHeading(const int delta);
+    void AdjustHeading ( const int delta );
 };
 
 #endif

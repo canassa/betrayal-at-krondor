@@ -31,16 +31,17 @@ static const unsigned int SCREEN_WIDTH  = 320;
 static const unsigned int SCREEN_HEIGHT = 200;
 
 class ScreenResource
-: public ResourceData {
-  private:
+            : public ResourceData
+{
+private:
     Image *image;
-  public:
+public:
     ScreenResource();
     virtual ~ScreenResource();
     Image* GetImage();
     void Clear();
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

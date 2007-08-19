@@ -21,123 +21,125 @@
 #include "PlayerCharacter.h"
 
 PlayerCharacter::PlayerCharacter(const std::string& s)
-: name(s)
-, statistics()
-, buttonImage(0)
-, portraitImage(0)
-, order(-1)
-, selected(false)
+        : name(s)
+        , statistics()
+        , buttonImage(0)
+        , portraitImage(0)
+        , order(-1)
+        , selected(false)
 {
-  charClass = CLASS_WARRIOR;
-  condition = COND_NORMAL;
-  inventory = new Inventory;
+    charClass = CLASS_WARRIOR;
+    condition = COND_NORMAL;
+    inventory = new Inventory;
 }
 
 PlayerCharacter::~PlayerCharacter()
 {
-  delete inventory;
+    delete inventory;
 }
 
 std::string&
 PlayerCharacter::GetName()
 {
-  return name;
+    return name;
 }
 
 void
 PlayerCharacter::SetName(const std::string& s)
 {
-  name = s;
+    name = s;
 }
 
 Statistics&
 PlayerCharacter::GetStatistics()
 {
-  return statistics;
+    return statistics;
 }
 
 Image *
 PlayerCharacter::GetButtonImage() const
 {
-  return buttonImage;
+    return buttonImage;
 }
 
 void
 PlayerCharacter::SetButtonImage(Image *img)
 {
-  if (!img) {
-    throw NullPointer(__FILE__, __LINE__);
-  }
-  buttonImage = img;
+    if (!img)
+    {
+        throw NullPointer(__FILE__, __LINE__);
+    }
+    buttonImage = img;
 }
 
 Image *
 PlayerCharacter::GetPortraitImage() const
 {
-  return portraitImage;
+    return portraitImage;
 }
 
 void
 PlayerCharacter::SetPortraitImage(Image *img)
 {
-  if (!img) {
-    throw NullPointer(__FILE__, __LINE__);
-  }
-  portraitImage = img;
+    if (!img)
+    {
+        throw NullPointer(__FILE__, __LINE__);
+    }
+    portraitImage = img;
 }
 
 CharacterClass
 PlayerCharacter::GetCharacterClass() const
 {
-  return charClass;
+    return charClass;
 }
 
 void
 PlayerCharacter::SetCharacterClass(const CharacterClass cc)
 {
-  charClass = cc;
+    charClass = cc;
 }
 
 ConditionType
 PlayerCharacter::GetCondition() const
 {
-  return condition;
+    return condition;
 }
 
 void
 PlayerCharacter::SetCondition(const ConditionType ct)
 {
-  condition = ct;
-  Notify();
+    condition = ct;
+    Notify();
 }
 
 Inventory *
 PlayerCharacter::GetInventory() const
 {
-  return inventory;
+    return inventory;
 }
 
 int
 PlayerCharacter::GetOrder() const
 {
-  return order;
+    return order;
 }
 
 void
 PlayerCharacter::SetOrder(const int n)
 {
-  order = n;
+    order = n;
 }
 
 bool
 PlayerCharacter::IsSelected() const
 {
-  return selected;
+    return selected;
 }
 
 void
 PlayerCharacter::Select(const bool toggle)
 {
-  selected = toggle;
-  Notify();
+    selected = toggle;
+    Notify();
 }

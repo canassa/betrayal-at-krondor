@@ -30,10 +30,10 @@
 #include "GameState.h"
 
 class GameApplication
-: public KeyboardEventListener
-, public MouseButtonEventListener
+            : public KeyboardEventListener
+            , public MouseButtonEventListener
 {
-  private:
+private:
     friend class GameState;
     bool done;
     bool inputGrabbed;
@@ -42,10 +42,10 @@ class GameApplication
     GameState *state;
     int screenSaveCount;
     static GameApplication *instance;
-    void SetState(GameState *st);
-  protected:
+    void SetState ( GameState *st );
+protected:
     GameApplication();
-  public:
+public:
     ~GameApplication();
     static GameApplication* GetInstance();
     static void CleanUp();
@@ -56,10 +56,10 @@ class GameApplication
     void QuitGame();
     void SaveConfig();
     void Run();
-    void KeyPressed(const KeyboardEvent& kbe);
-    void KeyReleased(const KeyboardEvent& kbe);
-    void MouseButtonPressed(const MouseButtonEvent& mbe);
-    void MouseButtonReleased(const MouseButtonEvent& mbe);
+    void KeyPressed ( const KeyboardEvent& kbe );
+    void KeyReleased ( const KeyboardEvent& kbe );
+    void MouseButtonPressed ( const MouseButtonEvent& mbe );
+    void MouseButtonReleased ( const MouseButtonEvent& mbe );
 };
 
 #endif

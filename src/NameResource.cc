@@ -21,62 +21,71 @@
 #include "NameResource.h"
 
 NameResource::NameResource()
-: name()
-{
-}
+        : name()
+{}
 
 NameResource::~NameResource()
 {
-  Clear();
+    Clear();
 }
 
 unsigned int
-NameResource::GetSize() const {
-  return name.size();
+NameResource::GetSize() const
+{
+    return name.size();
 }
 
 std::string
-NameResource::GetName(unsigned int n) const {
-  return name[n];
+NameResource::GetName(unsigned int n) const
+{
+    return name[n];
 }
 
 void
 NameResource::Clear()
 {
-  name.clear();
+    name.clear();
 }
 
 void
 NameResource::Load(FileBuffer *buffer)
 {
-  try {
-    Clear();
-    unsigned int n = buffer->GetUint16LE();
-    unsigned int *offset = new unsigned int[n];
-    for (unsigned int i = 0; i < n; i++) {
-      offset[i] = buffer->GetUint16LE();
+    try
+    {
+        Clear();
+        unsigned int n = buffer->GetUint16LE();
+        unsigned int *offset = new unsigned int[n];
+        for (unsigned int i = 0; i < n; i++)
+        {
+            offset[i] = buffer->GetUint16LE();
+        }
+        buffer->Skip(2);
+        unsigned int start = buffer->GetBytesDone();
+        for (unsigned int i = 0; i < n; i++)
+        {
+            buffer->Seek(start + offset[i]);
+            name.push_back(buffer->GetString());
+        }
+        delete[] offset;
     }
-    buffer->Skip(2);
-    unsigned int start = buffer->GetBytesDone();
-    for (unsigned int i = 0; i < n; i++) {
-      buffer->Seek(start + offset[i]);
-      name.push_back(buffer->GetString());
+    catch (Exception &e)
+    {
+        e.Print("NameResource::Load");
+        throw;
     }
-    delete[] offset;
-  } catch (Exception &e) {
-    e.Print("NameResource::Load");
-    throw;
-  }
 }
 
 void
 NameResource::Save(FileBuffer *buffer)
 {
-  try {
-    // TODO
-    buffer = buffer;
-  } catch (Exception &e) {
-    e.Print("NameResource::Save");
-    throw;
-  }
+    try
+    {
+        // TODO
+        buffer = buffer;
+    }
+    catch (Exception &e)
+    {
+        e.Print("NameResource::Save");
+        throw;
+    }
 }

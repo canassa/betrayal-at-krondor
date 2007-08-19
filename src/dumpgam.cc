@@ -25,49 +25,61 @@
 #include "GameResource.h"
 #include "ObjectResource.h"
 
-int main(int argc, char *argv[]) {
-  try {
-    if (argc != 2) {
-      std::cerr << "Usage: " << argv[0] << " <GAM-file>" << std::endl;
-      return 1;
-    }
-    GameResource *gam = new GameResource;
-    FileManager::GetInstance()->Load(gam, argv[1]);
-    Game *game = gam->GetGame();
-    printf("%s  l: (%d, %d) z: %d  c: (%d, %d)  p: (%d, %d)  o: %d\n",
-           game->GetName().c_str(), gam->GetXLoc(), gam->GetYLoc(), gam->GetZone(),
-           game->GetCamera()->GetPosition().GetCell().GetX(), game->GetCamera()->GetPosition().GetCell().GetY(),
-           game->GetCamera()->GetPos().GetX(), game->GetCamera()->GetPos().GetY(), game->GetCamera()->GetHeading());
-    for (unsigned int m = 0; m < game->GetParty()->GetNumMembers(); m++) {
-      printf("%-10s:", game->GetParty()->GetMember(m)->GetName().c_str());
-      for (unsigned int i = 0; i < NUM_STATS; i++) {
-        printf("\n\t");
-        for (unsigned int j = 0; j < NUM_STAT_VALUES; j++) {
-          printf(" %3d", game->GetParty()->GetMember(m)->GetStatistics().Get(i, j));
+int main(int argc, char *argv[])
+{
+    try
+    {
+        if (argc != 2)
+        {
+            std::cerr << "Usage: " << argv[0] << " <GAM-file>" << std::endl;
+            return 1;
         }
-      }
-      printf("\n");
-      Inventory *inv = game->GetParty()->GetMember(m)->GetInventory();
-      for (unsigned int i = 0; i < inv->GetSize(); i++) {
-        const InventoryItem *item = inv->GetItem(i);
-        printf("\t%-24s %3d\n", ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).name.c_str(), item->GetValue());
-      }
+        GameResource *gam = new GameResource;
+        FileManager::GetInstance()->Load(gam, argv[1]);
+        Game *game = gam->GetGame();
+        printf("%s  l: (%d, %d) z: %d  c: (%d, %d)  p: (%d, %d)  o: %d\n",
+               game->GetName().c_str(), gam->GetXLoc(), gam->GetYLoc(), gam->GetZone(),
+               game->GetCamera()->GetPosition().GetCell().GetX(), game->GetCamera()->GetPosition().GetCell().GetY(),
+               game->GetCamera()->GetPos().GetX(), game->GetCamera()->GetPos().GetY(), game->GetCamera()->GetHeading());
+        for (unsigned int m = 0; m < game->GetParty()->GetNumMembers(); m++)
+        {
+            printf("%-10s:", game->GetParty()->GetMember(m)->GetName().c_str());
+            for (unsigned int i = 0; i < NUM_STATS; i++)
+            {
+                printf("\n\t");
+                for (unsigned int j = 0; j < NUM_STAT_VALUES; j++)
+                {
+                    printf(" %3d", game->GetParty()->GetMember(m)->GetStatistics().Get(i, j));
+                }
+            }
+            printf("\n");
+            Inventory *inv = game->GetParty()->GetMember(m)->GetInventory();
+            for (unsigned int i = 0; i < inv->GetSize(); i++)
+            {
+                const InventoryItem *item = inv->GetItem(i);
+                printf("\t%-24s %3d\n", ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).name.c_str(), item->GetValue());
+            }
+        }
+        printf("active:");
+        for (unsigned int i = 0; i < game->GetParty()->GetNumActiveMembers(); i++)
+        {
+            printf(" %s", game->GetParty()->GetActiveMember(i)->GetName().c_str());
+        }
+        printf("\n");
+        delete gam;
+        ObjectResource::CleanUp();
+        FileManager::CleanUp();
+        Directories::CleanUp();
     }
-    printf("active:");
-    for (unsigned int i = 0; i < game->GetParty()->GetNumActiveMembers(); i++) {
-      printf(" %s", game->GetParty()->GetActiveMember(i)->GetName().c_str());
+    catch (Exception &e)
+    {
+        e.Print("main");
     }
-    printf("\n");
-    delete gam;
-    ObjectResource::CleanUp();
-    FileManager::CleanUp();
-    Directories::CleanUp();
-  } catch (Exception &e) {
-    e.Print("main");
-  } catch (...) {
-    /* every exception should have been handled before */
-    std::cerr << "Unhandled exception" << std::endl;
-  }
-  return 0;
+    catch (...)
+    {
+        /* every exception should have been handled before */
+        std::cerr << "Unhandled exception" << std::endl;
+    }
+    return 0;
 }
 

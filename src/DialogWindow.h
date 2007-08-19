@@ -27,20 +27,21 @@
 #include "Palette.h"
 #include "PanelWidget.h"
 
-class DialogWindow {
-  private:
+class DialogWindow
+{
+private:
     PanelWidget *panel;
-  public:
-    DialogWindow(PanelWidget *panelwidget);
+public:
+    DialogWindow ( PanelWidget *panelwidget );
     ~DialogWindow();
     void Draw();
-    void FadeIn(Palette* pal);
-    void FadeOut(Palette* pal);
-    void LeftClickWidget(const bool toggle);
-    void RightClickWidget(const bool toggle);
-    void LeftClickWidget(const bool toggle, const int x, const int y);
-    void RightClickWidget(const bool toggle, const int x, const int y);
-    void MouseOverWidget(const int x, const int y);
+    void FadeIn ( Palette* pal );
+    void FadeOut ( Palette* pal );
+    void LeftClickWidget ( const bool toggle );
+    void RightClickWidget ( const bool toggle );
+    void LeftClickWidget ( const bool toggle, const int x, const int y );
+    void RightClickWidget ( const bool toggle, const int x, const int y );
+    void MouseOverWidget ( const int x, const int y );
     void SelectNextWidget();
     void SelectPreviousWidget();
 };

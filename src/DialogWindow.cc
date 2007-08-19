@@ -21,80 +21,80 @@
 #include "MousePointerManager.h"
 
 DialogWindow::DialogWindow(PanelWidget *panelwidget)
-: panel(panelwidget)
-{
-}
+        : panel(panelwidget)
+{}
 
 DialogWindow::~DialogWindow()
 {
-  if (panel) {
-    delete panel;
-  }
+    if (panel)
+    {
+        delete panel;
+    }
 }
 
 void
 DialogWindow::Draw()
 {
-  panel->Draw();
-  MousePointerManager::GetInstance()->GetCurrentPointer()->Draw();
-  MediaToolkit::GetInstance()->GetVideo()->Refresh();
+    panel->Draw();
+    MousePointerManager::GetInstance()->GetCurrentPointer()->Draw();
+    MediaToolkit::GetInstance()->GetVideo()->Refresh();
 }
 
 void
 DialogWindow::FadeIn(Palette* pal)
 {
-  panel->Reset();
-  panel->Draw();
-  MousePointerManager::GetInstance()->GetCurrentPointer()->Draw();
-  pal->FadeIn(0, VIDEO_COLORS, 64, 5);
+    panel->Reset();
+    panel->Draw();
+    MousePointerManager::GetInstance()->GetCurrentPointer()->Draw();
+    pal->FadeIn(0, VIDEO_COLORS, 64, 5);
 }
 
 void
 DialogWindow::FadeOut(Palette* pal)
 {
-  panel->Draw();
-  MousePointerManager::GetInstance()->GetCurrentPointer()->Draw();
-  pal->FadeOut(0, VIDEO_COLORS, 64, 5);
+    panel->Draw();
+    MousePointerManager::GetInstance()->GetCurrentPointer()->Draw();
+    pal->FadeOut(0, VIDEO_COLORS, 64, 5);
 }
 
 void
 DialogWindow::LeftClickWidget(const bool toggle)
 {
-  panel->LeftClick(toggle);
+    panel->LeftClick(toggle);
 }
 
 void
 DialogWindow::RightClickWidget(const bool toggle)
 {
-  panel->RightClick(toggle);
+    panel->RightClick(toggle);
 }
 
 void
 DialogWindow::LeftClickWidget(const bool toggle, const int x, const int y)
 {
-  panel->LeftClick(toggle, x, y);
+    panel->LeftClick(toggle, x, y);
 }
 
 void
 DialogWindow::RightClickWidget(const bool toggle, const int x, const int y)
 {
-  panel->RightClick(toggle, x, y);
+    panel->RightClick(toggle, x, y);
 }
 
 void
 DialogWindow::MouseOverWidget(const int x, const int y)
 {
-  panel->MouseOver(x, y);
+    panel->MouseOver(x, y);
 }
 
 void
 DialogWindow::SelectNextWidget()
 {
-  panel->NextWidget();
+    panel->NextWidget();
 }
 
 void
 DialogWindow::SelectPreviousWidget()
 {
-  panel->PreviousWidget();
+    panel->PreviousWidget();
 }

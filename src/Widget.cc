@@ -21,132 +21,132 @@
 #include "Widget.h"
 
 Widget::Widget(const Rectangle &r)
-: rect(r)
-, visible(true)
-{
-}
+        : rect(r)
+        , visible(true)
+{}
 
 Widget::~Widget()
-{
-}
+{}
 
 Rectangle&
 Widget::GetRectangle()
 {
-  return rect;
+    return rect;
 }
 
 void
 Widget::SetPosition(const int x, const int y)
 {
-  rect.SetXPos(x);
-  rect.SetYPos(y);
+    rect.SetXPos(x);
+    rect.SetYPos(y);
 }
 
 void
 Widget::SetVisible(const bool toggle)
 {
-  visible = toggle;
+    visible = toggle;
 }
 
 bool
 Widget::IsVisible() const
 {
-  return visible;
+    return visible;
 }
 
 
 ActiveWidget::ActiveWidget(const Rectangle &r, const int a)
-: Widget(r)
-, action(a)
-, draggable(false)
-, focusable(true)
-, actionListeners()
-{
-}
+        : Widget(r)
+        , action(a)
+        , draggable(false)
+        , focusable(true)
+        , actionListeners()
+{}
 
 ActiveWidget::~ActiveWidget()
 {
-  actionListeners.clear();
+    actionListeners.clear();
 }
 
 int
 ActiveWidget::GetAction() const
 {
-  return action;
+    return action;
 }
 
 bool
 ActiveWidget::IsDraggable() const
 {
-  return draggable;
+    return draggable;
 }
 
 void
 ActiveWidget::SetDraggable(const bool toggle)
 {
-  draggable = toggle;
+    draggable = toggle;
 }
 
 bool
 ActiveWidget::IsFocusable() const
 {
-  return focusable;
+    return focusable;
 }
 
 void
 ActiveWidget::SetFocusable(const bool toggle)
 {
-  focusable = toggle;
+    focusable = toggle;
 }
 
 void
 ActiveWidget::GenerateActionEvent(const int a)
 {
-  ActionEvent ae(a, rect.GetXCenter(), rect.GetYCenter());
-  for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it) {
-    (*it)->ActionPerformed(ae);
-  }
+    ActionEvent ae(a, rect.GetXCenter(), rect.GetYCenter());
+    for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it)
+    {
+        (*it)->ActionPerformed(ae);
+    }
 }
 
 void
 ActiveWidget::GenerateActionEvent(const int a, const int x, const int y)
 {
-  ActionEvent ae(a, x, y);
-  for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it) {
-    (*it)->ActionPerformed(ae);
-  }
+    ActionEvent ae(a, x, y);
+    for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it)
+    {
+        (*it)->ActionPerformed(ae);
+    }
 }
 
 void
 ActiveWidget::GenerateActionEvent(const ActionEvent& ae)
 {
-  for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it) {
-    (*it)->ActionPerformed(ae);
-  }
+    for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it)
+    {
+        (*it)->ActionPerformed(ae);
+    }
 }
 
 void
 ActiveWidget::AddActionListener(ActionEventListener *ael)
 {
-  actionListeners.push_back(ael);
+    actionListeners.push_back(ael);
 }
 
 void
 ActiveWidget::RemoveActionListener(ActionEventListener *ael)
 {
-  actionListeners.remove(ael);
+    actionListeners.remove(ael);
 }
 
 void
 ActiveWidget::Focus()
 {
-  if (focusable) {
-    MediaToolkit::GetInstance()->GetVideo()->SetPointerPosition(rect.GetXPos() + rect.GetWidth() / 2, rect.GetYPos() + rect.GetHeight() / 2);
-  }
+    if (focusable)
+    {
+        MediaToolkit::GetInstance()->GetVideo()->SetPointerPosition(rect.GetXPos() + rect.GetWidth() / 2, rect.GetYPos() + rect.GetHeight() / 2);
+    }
 }
 
 void
 ActiveWidget::Reset()
-{
-}
+{}

@@ -28,18 +28,18 @@
 #include "Image.h"
 
 class ImageButtonWidget
-: public ButtonWidget
+            : public ButtonWidget
 {
-  private:
+private:
     Image *normalImage;
     Image *pressedImage;
-  public:
-    ImageButtonWidget(const Rectangle &r, const int a);
+public:
+    ImageButtonWidget ( const Rectangle &r, const int a );
     virtual ~ImageButtonWidget();
-    void SetImage(Image *normal, Image *press);
+    void SetImage ( Image *normal, Image *press );
     void Draw();
-    void LeftClick(const bool toggle, const int x, const int y);
-    void RightClick(const bool toggle, const int x, const int y);
+    void LeftClick ( const bool toggle, const int x, const int y );
+    void RightClick ( const bool toggle, const int x, const int y );
 };
 
 #endif

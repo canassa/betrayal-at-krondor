@@ -33,22 +33,23 @@
 
 static const unsigned int MAX_TILES = 32;
 
-class Zone {
-  private:
+class Zone
+{
+private:
     ImageResource horizon;
     Image *terrain;
     std::vector<Image *> sprites;
     std::map<const std::pair<unsigned int, unsigned int>, TileWorldResource *> tiles;
     TableResource *table;
-  public:
+public:
     Zone();
     ~Zone();
     void Clear();
-    void Load(const unsigned int n);
-    Image* GetHorizon(const unsigned int n);
+    void Load ( const unsigned int n );
+    Image* GetHorizon ( const unsigned int n );
     Image* GetTerrain() const;
-    Image* GetSprite(const unsigned int n);
-    TileWorldResource* GetTile(const unsigned int x, const unsigned int y);
+    Image* GetSprite ( const unsigned int n );
+    TileWorldResource* GetTile ( const unsigned int x, const unsigned int y );
     TableResource* GetTable();
 };
 

@@ -30,34 +30,35 @@
 #include "ResourceData.h"
 #include "ResourceIndex.h"
 
-class FileManager {
-  private:
+class FileManager
+{
+private:
     ResourceIndex resIndex;
     ResourceArchive resArchive;
-    FileBuffer* LoadConfig(const std::string &name);
-    void SaveConfig(const std::string &name, FileBuffer* buffer);
-    FileBuffer* LoadGame(const std::string &name);
-    void SaveGame(const std::string &name, FileBuffer* buffer);
-    FileBuffer* LoadResource(const std::string &name);
-    void SaveResource(const std::string &name, FileBuffer* buffer);
-    void SaveResource(const std::string &name, FileBuffer* buffer, const unsigned int n);
+    FileBuffer* LoadConfig ( const std::string &name );
+    void SaveConfig ( const std::string &name, FileBuffer* buffer );
+    FileBuffer* LoadGame ( const std::string &name );
+    void SaveGame ( const std::string &name, FileBuffer* buffer );
+    FileBuffer* LoadResource ( const std::string &name );
+    void SaveResource ( const std::string &name, FileBuffer* buffer );
+    void SaveResource ( const std::string &name, FileBuffer* buffer, const unsigned int n );
     static FileManager *instance;
-  protected:
+protected:
     FileManager();
-  public:
+public:
     ~FileManager();
     static FileManager* GetInstance();
     static void CleanUp();
-    bool ConfigExists(const std::string &name);
-    void Load(ConfigData *cfg, const std::string &name);
-    void Save(ConfigData *cfg, const std::string &name);
-    bool GameExists(const std::string &name);
-    void Load(GameData *gam, const std::string &name);
-    void Save(GameData *gam, const std::string &name);
-    bool ResourceExists(const std::string &name);
-    void Load(ResourceData *res, const std::string &name);
-    void Save(ResourceData *res, const std::string &name);
-    void ExtractResource(const std::string &name);
+    bool ConfigExists ( const std::string &name );
+    void Load ( ConfigData *cfg, const std::string &name );
+    void Save ( ConfigData *cfg, const std::string &name );
+    bool GameExists ( const std::string &name );
+    void Load ( GameData *gam, const std::string &name );
+    void Save ( GameData *gam, const std::string &name );
+    bool ResourceExists ( const std::string &name );
+    void Load ( ResourceData *res, const std::string &name );
+    void Save ( ResourceData *res, const std::string &name );
+    void ExtractResource ( const std::string &name );
     void ExtractAllResources();
     void ArchiveAllResources();
 };

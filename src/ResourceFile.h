@@ -27,8 +27,9 @@
 #include "BasicFile.h"
 
 class ResourceFile
-: public BasicFile {
-  public:
+            : public BasicFile
+{
+public:
     ResourceFile();
     virtual ~ResourceFile();
     std::string GetDefaultPath() const;

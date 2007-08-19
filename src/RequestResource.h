@@ -140,29 +140,32 @@ static const int GROUP1 = 1;
 static const int GROUP2 = 2;
 static const int GROUP3 = 3;
 
-typedef struct _RequestData {
-  unsigned int widget;
-  int action;
-  bool visible;
-  int xpos;
-  int ypos;
-  int width;
-  int height;
-  int teleport;
-  int image;
-  int group;
-  std::string label;
-} RequestData;
+typedef struct _RequestData
+{
+    unsigned int widget;
+    int action;
+    bool visible;
+    int xpos;
+    int ypos;
+    int width;
+    int height;
+    int teleport;
+    int image;
+    int group;
+    std::string label;
+}
+RequestData;
 
 class RequestResource
-: public ResourceData {
-  private:
+            : public ResourceData
+{
+private:
     bool popup;
     Rectangle rect;
     int xoff;
     int yoff;
     std::vector<RequestData> data;
-  public:
+public:
     RequestResource();
     virtual ~RequestResource();
     bool IsPopup() const;
@@ -170,10 +173,10 @@ class RequestResource
     int GetXOff() const;
     int GetYOff() const;
     unsigned int GetSize() const;
-    RequestData GetRequestData(const unsigned int n) const;
+    RequestData GetRequestData ( const unsigned int n ) const;
     void Clear();
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

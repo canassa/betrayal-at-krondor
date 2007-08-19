@@ -22,80 +22,90 @@
 #include "MediaToolkit.h"
 
 Font::Font()
-: first(0)
-, height(0) {
-}
+        : first(0)
+        , height(0)
+{}
 
 Font::~Font()
 {
-  fontGlyphs.clear();
+    fontGlyphs.clear();
 }
 
 unsigned int
 Font::GetFirst() const
 {
-  return first;
+    return first;
 }
 
 void
 Font::SetFirst(const unsigned int n)
 {
-  first = n;
+    first = n;
 }
 
 unsigned int
 Font::GetHeight() const
 {
-  return height;
+    return height;
 }
 
 void
 Font::SetHeight(const unsigned int h)
 {
-  height = h;
+    height = h;
 }
 
 unsigned int
 Font::GetWidth(const unsigned int n) const
 {
-  if (n < fontGlyphs.size()) {
-    return fontGlyphs[n].width;
-  } else {
-    throw IndexOutOfRange(__FILE__, __LINE__);
-  }
+    if (n < fontGlyphs.size())
+    {
+        return fontGlyphs[n].width;
+    }
+    else
+    {
+        throw IndexOutOfRange(__FILE__, __LINE__);
+    }
 }
 
 unsigned int
 Font::GetSize() const
 {
-  return fontGlyphs.size();
+    return fontGlyphs.size();
 }
 
 FontGlyph&
 Font::GetGlyph(const unsigned int n)
 {
-  if (n < fontGlyphs.size()) {
-    return fontGlyphs[n];
-  } else {
-    throw IndexOutOfRange(__FILE__, __LINE__);
-  }
+    if (n < fontGlyphs.size())
+    {
+        return fontGlyphs[n];
+    }
+    else
+    {
+        throw IndexOutOfRange(__FILE__, __LINE__);
+    }
 }
 
 void
 Font::AddGlyph(FontGlyph& glyph)
 {
-  fontGlyphs.push_back(glyph);
+    fontGlyphs.push_back(glyph);
 }
 
 void
 Font::DrawChar(const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color, const bool italic)
 {
-  Video *video = MediaToolkit::GetInstance()->GetVideo();
-  if ((int)(ch - first) >= 0) {
-    if (italic) {
-      video->DrawGlyphItalic(x, y, fontGlyphs[ch - first].width, height, color, fontGlyphs[ch - first].data);
-    } else {
-      video->DrawGlyph(x, y, fontGlyphs[ch - first].width, height, color, fontGlyphs[ch - first].data);
+    Video *video = MediaToolkit::GetInstance()->GetVideo();
+    if ((int)(ch - first) >= 0)
+    {
+        if (italic)
+        {
+            video->DrawGlyphItalic(x, y, fontGlyphs[ch - first].width, height, color, fontGlyphs[ch - first].data);
+        }
+        else
+        {
+            video->DrawGlyph(x, y, fontGlyphs[ch - first].width, height, color, fontGlyphs[ch - first].data);
+        }
     }
-  }
 }

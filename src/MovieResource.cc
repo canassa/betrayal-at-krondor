@@ -25,113 +25,129 @@
 #include "MovieResource.h"
 
 MovieResource::MovieResource()
-: TaggedResource()
-, version("")
-, pages(0)
-, movieTags()
-{
-}
+        : TaggedResource()
+        , version("")
+        , pages(0)
+        , movieTags()
+{}
 
 MovieResource::~MovieResource()
 {
-  Clear();
+    Clear();
 }
 
 std::string&
 MovieResource::GetVersion()
 {
-  return version;
+    return version;
 }
 
 unsigned int
 MovieResource::GetPages() const
 {
-  return pages;
+    return pages;
 }
 
 std::vector<MovieTag *> &
 MovieResource::GetMovieTags()
 {
-  return movieTags;
+    return movieTags;
 }
 
 void
 MovieResource::Clear()
 {
-  for (unsigned int i = 0; i < movieTags.size(); i++) {
-    movieTags[i]->data.clear();
-    delete movieTags[i];
-  }
-  movieTags.clear();
+    for (unsigned int i = 0; i < movieTags.size(); i++)
+    {
+        movieTags[i]->data.clear();
+        delete movieTags[i];
+    }
+    movieTags.clear();
 }
 
 void
 MovieResource::Load(FileBuffer *buffer)
 {
-  try {
-    Clear();
-    Split(buffer);
-    FileBuffer *verbuf;
-    FileBuffer *pagbuf;
-    FileBuffer *tt3buf;
-    FileBuffer *tagbuf;
-    if (!Find(TAG_VER, verbuf) ||
-        !Find(TAG_PAG, pagbuf) ||
-        !Find(TAG_TT3, tt3buf) ||
-        !Find(TAG_TAG, tagbuf)) {
-      ClearTags();
-      throw DataCorruption(__FILE__, __LINE__);
+    try
+    {
+        Clear();
+        Split(buffer);
+        FileBuffer *verbuf;
+        FileBuffer *pagbuf;
+        FileBuffer *tt3buf;
+        FileBuffer *tagbuf;
+        if (!Find(TAG_VER, verbuf) ||
+                !Find(TAG_PAG, pagbuf) ||
+                !Find(TAG_TT3, tt3buf) ||
+                !Find(TAG_TAG, tagbuf))
+        {
+            ClearTags();
+            throw DataCorruption(__FILE__, __LINE__);
+        }
+        version = verbuf->GetString();
+        pages = pagbuf->GetUint16LE();
+        tt3buf->Skip(1);
+        FileBuffer *tmpbuf = new FileBuffer(tt3buf->GetUint32LE());
+        tt3buf->DecompressRLE(tmpbuf);
+        ResourceTag tags;
+        tags.Load(tagbuf);
+        while (!tmpbuf->AtEnd())
+        {
+            MovieTag *mt = new MovieTag;
+            unsigned int code = tmpbuf->GetUint16LE();
+            unsigned int size = code & 0x000f;
+            code &= 0xfff0;
+            mt->code = code;
+            if ((code == 0x1110) && (size == 1))
+            {
+                unsigned int id = tmpbuf->GetUint16LE();
+                mt->data.push_back(id);
+                std::string name;
+                if (tags.Find(id, name))
+                {
+                    mt->name = name;
+                }
+            }
+            else if (size == 15)
+            {
+                mt->name = tmpbuf->GetString();
+                transform(mt->name.begin(), mt->name.end(), mt->name.begin(), toupper);
+                if (tmpbuf->GetBytesLeft() & 1)
+                {
+                    tmpbuf->Skip(1);
+                }
+            }
+            else
+            {
+                for (unsigned int i = 0; i < size; i++)
+                {
+                    mt->data.push_back(tmpbuf->GetSint16LE());
+                }
+            }
+            movieTags.push_back(mt);
+        }
+        delete tmpbuf;
+        ClearTags();
     }
-    version = verbuf->GetString();
-    pages = pagbuf->GetUint16LE();
-    tt3buf->Skip(1);
-    FileBuffer *tmpbuf = new FileBuffer(tt3buf->GetUint32LE());
-    tt3buf->DecompressRLE(tmpbuf);
-    ResourceTag tags;
-    tags.Load(tagbuf);
-    while (!tmpbuf->AtEnd()) {
-      MovieTag *mt = new MovieTag;
-      unsigned int code = tmpbuf->GetUint16LE();
-      unsigned int size = code & 0x000f;
-      code &= 0xfff0;
-      mt->code = code;
-      if ((code == 0x1110) && (size == 1)) {
-        unsigned int id = tmpbuf->GetUint16LE();
-        mt->data.push_back(id);
-        std::string name;
-        if (tags.Find(id, name)) {
-          mt->name = name;
-        }
-      } else if (size == 15) {
-        mt->name = tmpbuf->GetString();
-        transform(mt->name.begin(), mt->name.end(), mt->name.begin(), toupper);
-        if (tmpbuf->GetBytesLeft() & 1) {
-          tmpbuf->Skip(1);
-        }
-      } else {
-        for (unsigned int i = 0; i < size; i++) {
-          mt->data.push_back(tmpbuf->GetSint16LE());
-        }
-      }
-      movieTags.push_back(mt);
+    catch (Exception &e)
+    {
+        e.Print("MovieResource::Load");
+        ClearTags();
+        throw;
     }
-    delete tmpbuf;
-    ClearTags();
-  } catch (Exception &e) {
-    e.Print("MovieResource::Load");
-    ClearTags();
-    throw;
-  }
 }
 
 void
 MovieResource::Save(FileBuffer *buffer)
 {
-  try {
-    // TODO
-    buffer = buffer;
-  } catch (Exception &e) {
-    e.Print("MovieResource::Save");
-    throw;
-  }
+    try
+    {
+        // TODO
+        buffer = buffer;
+    }
+    catch (Exception &e)
+    {
+        e.Print("MovieResource::Save");
+        throw;
+    }
 }

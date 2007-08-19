@@ -20,15 +20,12 @@
 #include "CombatViewWidget.h"
 
 CombatViewWidget::CombatViewWidget(const Rectangle &r, Game *g)
-: GameViewWidget(r, g)
-{
-}
+        : GameViewWidget(r, g)
+{}
 
 CombatViewWidget::~CombatViewWidget()
-{
-}
+{}
 
 void
 CombatViewWidget::Redraw()
-{
-}
+{}

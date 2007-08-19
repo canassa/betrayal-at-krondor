@@ -26,25 +26,26 @@
 
 #include "FileBuffer.h"
 
-class BasicFile {
-  private:
+class BasicFile
+{
+private:
     std::ifstream ifs;
     std::ofstream ofs;
-  public:
+public:
     BasicFile();
     virtual ~BasicFile();
     virtual std::string GetDefaultPath() const;
     virtual std::string GetAlternatePath() const;
     virtual std::string GetLastResortPath() const;
     virtual std::string GetStoragePath() const;
-    void Open(const std::string &name, const bool writable);
+    void Open ( const std::string &name, const bool writable );
     void Close();
-    void Seek(const std::streamoff offset);
-    void SeekEnd(const std::streamoff offset);
+    void Seek ( const std::streamoff offset );
+    void SeekEnd ( const std::streamoff offset );
     std::streamsize Size();
-    void Load(FileBuffer &buffer);
-    void Save(FileBuffer &buffer);
-    void Save(FileBuffer &buffer, const unsigned int n);
+    void Load ( FileBuffer &buffer );
+    void Save ( FileBuffer &buffer );
+    void Save ( FileBuffer &buffer, const unsigned int n );
 };
 
 #endif

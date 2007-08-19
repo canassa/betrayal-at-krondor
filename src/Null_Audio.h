@@ -27,12 +27,13 @@
 #include "Audio.h"
 
 class Null_Audio
-: public Audio {
-  public:
+            : public Audio
+{
+public:
     Null_Audio();
     virtual ~Null_Audio();
-    int PlaySound(FileBuffer *buffer, const int repeat = 0);
-    void StopSound(const int channel = -1);
+    int PlaySound ( FileBuffer *buffer, const int repeat = 0 );
+    void StopSound ( const int channel = -1 );
 };
 
 #endif

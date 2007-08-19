@@ -31,21 +31,22 @@ static const unsigned int VIEW_DISTANCE = 32000;
 
 static const int TERRAIN_HEIGHT = 38;
 
-class GenericObject {
-  protected:
+class GenericObject
+{
+protected:
     Vector2D pos;
     Vector2D relpos;
     int angle;
     unsigned int distance;
-  public:
-    GenericObject(const Vector2D &p);
+public:
+    GenericObject ( const Vector2D &p );
     virtual ~GenericObject();
     Vector2D& GetPosition();
     Vector2D& GetRelativePosition();
     int GetAngle() const;
     unsigned int GetDistance() const;
-    void CalculateRelativePosition(const Vector2D &p);
-    virtual void DrawFirstPerson(const int x, const int y, const int w, const int h, const int heading) = 0;
+    void CalculateRelativePosition ( const Vector2D &p );
+    virtual void DrawFirstPerson ( const int x, const int y, const int w, const int h, const int heading ) = 0;
     virtual void DrawTopDown() = 0;
 };
 

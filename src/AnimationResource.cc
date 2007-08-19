@@ -22,102 +22,114 @@
 #include "ResourceTag.h"
 
 AnimationResource::AnimationResource()
-: TaggedResource()
-, version("")
-, animationMap()
-, script(0)
-{
-}
+        : TaggedResource()
+        , version("")
+        , animationMap()
+        , script(0)
+{}
 
 AnimationResource::~AnimationResource()
 {
-  Clear();
+    Clear();
 }
 
 std::string&
 AnimationResource::GetVersion()
 {
-  return version;
+    return version;
 }
 
 FileBuffer *
 AnimationResource::GetScript() const
 {
-  return script;
+    return script;
 }
 
 AnimationData&
 AnimationResource::GetAnimationData(unsigned int id)
 {
-  return animationMap[id];
+    return animationMap[id];
 }
 
 void
 AnimationResource::Clear()
 {
-  animationMap.clear();
-  if (script) {
-    delete script;
-    script = 0;
-  }
+    animationMap.clear();
+    if (script)
+    {
+        delete script;
+        script = 0;
+    }
 }
 
 void
 AnimationResource::Load(FileBuffer *buffer)
 {
-  try {
-    Clear();
-    Split(buffer);
-    FileBuffer *verbuf;
-    FileBuffer *resbuf;
-    FileBuffer *scrbuf;
-    FileBuffer *tagbuf;
-    if (!Find(TAG_VER, verbuf) ||
-        !Find(TAG_RES, resbuf) ||
-        !Find(TAG_SCR, scrbuf) ||
-        !Find(TAG_TAG, tagbuf)) {
-      ClearTags();
-      throw DataCorruption(__FILE__, __LINE__);
+    try
+    {
+        Clear();
+        Split(buffer);
+        FileBuffer *verbuf;
+        FileBuffer *resbuf;
+        FileBuffer *scrbuf;
+        FileBuffer *tagbuf;
+        if (!Find(TAG_VER, verbuf) ||
+                !Find(TAG_RES, resbuf) ||
+                !Find(TAG_SCR, scrbuf) ||
+                !Find(TAG_TAG, tagbuf))
+        {
+            ClearTags();
+            throw DataCorruption(__FILE__, __LINE__);
+        }
+        version = verbuf->GetString();
+        if (scrbuf->GetUint8() != 0x02)
+        {
+            ClearTags();
+            throw DataCorruption(__FILE__, __LINE__);
+        }
+        script = new FileBuffer(scrbuf->GetUint32LE());
+        scrbuf->DecompressLZW(script);
+        ResourceTag tags;
+        tags.Load(tagbuf);
+        unsigned int n = resbuf->GetUint16LE();
+        for (unsigned int i = 0; i < n; i++)
+        {
+            unsigned int id = resbuf->GetUint16LE();
+            std::string resource = resbuf->GetString();
+            std::string name;
+            if (tags.Find(id, name))
+            {
+                AnimationData data;
+                data.name = name;
+                data.resource = resource;
+                animationMap.insert(std::pair<unsigned int, AnimationData>(id, data));
+            }
+            else
+            {
+                throw DataCorruption(__FILE__, __LINE__);
+            }
+        }
+        ClearTags();
     }
-    version = verbuf->GetString();
-    if (scrbuf->GetUint8() != 0x02) {
-      ClearTags();
-      throw DataCorruption(__FILE__, __LINE__);
+    catch (Exception &e)
+    {
+        e.Print("AnimationResource::Load");
+        ClearTags();
+        throw;
     }
-    script = new FileBuffer(scrbuf->GetUint32LE());
-    scrbuf->DecompressLZW(script);
-    ResourceTag tags;
-    tags.Load(tagbuf);
-    unsigned int n = resbuf->GetUint16LE();
-    for (unsigned int i = 0; i < n; i++) {
-      unsigned int id = resbuf->GetUint16LE();
-      std::string resource = resbuf->GetString();
-      std::string name;
-      if (tags.Find(id, name)) {
-        AnimationData data;
-        data.name = name;
-        data.resource = resource;
-        animationMap.insert(std::pair<unsigned int, AnimationData>(id, data));
-      } else {
-        throw DataCorruption(__FILE__, __LINE__);
-      }
-    }
-    ClearTags();
-  } catch (Exception &e) {
-    e.Print("AnimationResource::Load");
-    ClearTags();
-    throw;
-  }
 }
 
 void
 AnimationResource::Save(FileBuffer *buffer)
 {
-  try {
-    // TODO
-    buffer = buffer;
-  } catch (Exception &e) {
-    e.Print("AnimationResource::Save");
-    throw;
-  }
+    try
+    {
+        // TODO
+        buffer = buffer;
+    }
+    catch (Exception &e)
+    {
+        e.Print("AnimationResource::Save");
+        throw;
+    }
 }

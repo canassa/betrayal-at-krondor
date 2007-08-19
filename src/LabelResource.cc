@@ -21,71 +21,81 @@
 #include "LabelResource.h"
 
 LabelResource::LabelResource()
-: data()
-{
-}
+        : data()
+{}
 
 LabelResource::~LabelResource()
 {
-  Clear();
+    Clear();
 }
 
 unsigned int
-LabelResource::GetSize() const {
-  return data.size();
+LabelResource::GetSize() const
+{
+    return data.size();
 }
 
 LabelData&
-LabelResource::GetLabelData(const unsigned int n) {
-  return data[n];
+LabelResource::GetLabelData(const unsigned int n)
+{
+    return data[n];
 }
 
 void
 LabelResource::Clear()
 {
-  data.clear();
+    data.clear();
 }
 
 void
 LabelResource::Load(FileBuffer *buffer)
 {
-  try {
-    Clear();
-    unsigned int numRecords = buffer->GetUint16LE();
-    int *offset = new int[numRecords];
-    for (unsigned int i = 0; i < numRecords; i++) {
-      LabelData lblData;
-      offset[i] = buffer->GetSint16LE();
-      lblData.xpos = buffer->GetSint16LE();
-      lblData.ypos = buffer->GetSint16LE();
-      lblData.type = buffer->GetSint16LE();
-      lblData.color = buffer->GetSint8();
-      lblData.shadow = buffer->GetSint8();
-      data.push_back(lblData);
+    try
+    {
+        Clear();
+        unsigned int numRecords = buffer->GetUint16LE();
+        int *offset = new int[numRecords];
+        for (unsigned int i = 0; i < numRecords; i++)
+        {
+            LabelData lblData;
+            offset[i] = buffer->GetSint16LE();
+            lblData.xpos = buffer->GetSint16LE();
+            lblData.ypos = buffer->GetSint16LE();
+            lblData.type = buffer->GetSint16LE();
+            lblData.color = buffer->GetSint8();
+            lblData.shadow = buffer->GetSint8();
+            data.push_back(lblData);
+        }
+        buffer->Skip(2);
+        unsigned int start = buffer->GetBytesDone();
+        for (unsigned int i = 0; i < numRecords; i++)
+        {
+            if (offset[i] >= 0)
+            {
+                buffer->Seek(start + offset[i]);
+                data[i].label = buffer->GetString();
+            }
+        }
+        delete[] offset;
     }
-    buffer->Skip(2);
-    unsigned int start = buffer->GetBytesDone();
-    for (unsigned int i = 0; i < numRecords; i++) {
-      if (offset[i] >= 0) {
-        buffer->Seek(start + offset[i]);
-        data[i].label = buffer->GetString();
-      }
+    catch (Exception &e)
+    {
+        e.Print("LabelResource::Load");
+        throw;
     }
-    delete[] offset;
-  } catch (Exception &e) {
-    e.Print("LabelResource::Load");
-    throw;
-  }
 }
 
 void
 LabelResource::Save(FileBuffer *buffer)
 {
-  try {
-    // TODO
-    buffer = buffer;
-  } catch (Exception &e) {
-    e.Print("LabelResource::Save");
-    throw;
-  }
+    try
+    {
+        // TODO
+        buffer = buffer;
+    }
+    catch (Exception &e)
+    {
+        e.Print("LabelResource::Save");
+        throw;
+    }
 }

@@ -25,26 +25,27 @@
 #endif
 
 typedef enum _StepTurnSize {
-  STS_SMALL,
-  STS_MEDIUM,
-  STS_LARGE
+    STS_SMALL,
+    STS_MEDIUM,
+    STS_LARGE
 } StepTurnSize;
 
 typedef enum _TextSpeed {
-  TS_WAIT,
-  TS_MEDIUM,
-  TS_FAST
+    TS_WAIT,
+    TS_MEDIUM,
+    TS_FAST
 } TextSpeed;
 
 typedef enum _LevelOfDetail {
-  LOD_MIN,
-  LOD_LOW,
-  LOD_HIGH,
-  LOD_MAX
+    LOD_MIN,
+    LOD_LOW,
+    LOD_HIGH,
+    LOD_MAX
 } LevelOfDetail;
 
-class Preferences {
-  private:
+class Preferences
+{
+private:
     StepTurnSize stepSize;
     StepTurnSize turnSize;
     TextSpeed textSpeed;
@@ -54,29 +55,29 @@ class Preferences {
     bool combatMusic;
     bool cdMusic;
     bool introduction;
-  public:
+public:
     Preferences();
     ~Preferences();
     void SetDefaults();
-    void Copy(const Preferences &prefs);
+    void Copy ( const Preferences &prefs );
     StepTurnSize GetStepSize() const;
-    void SetStepSize(const StepTurnSize sz);
+    void SetStepSize ( const StepTurnSize sz );
     StepTurnSize GetTurnSize() const;
-    void SetTurnSize(const StepTurnSize sz);
+    void SetTurnSize ( const StepTurnSize sz );
     TextSpeed GetTextSpeed() const;
-    void SetTextSpeed(const TextSpeed ts);
+    void SetTextSpeed ( const TextSpeed ts );
     LevelOfDetail GetDetail() const;
-    void SetDetail(const LevelOfDetail lod);
+    void SetDetail ( const LevelOfDetail lod );
     bool GetSound() const;
-    void SetSound(const bool toggle);
+    void SetSound ( const bool toggle );
     bool GetMusic() const;
-    void SetMusic(const bool toggle);
+    void SetMusic ( const bool toggle );
     bool GetCombatMusic() const;
-    void SetCombatMusic(const bool toggle);
+    void SetCombatMusic ( const bool toggle );
     bool GetCdMusic() const;
-    void SetCdMusic(const bool toggle);
+    void SetCdMusic ( const bool toggle );
     bool GetIntroduction() const;
-    void SetIntroduction(const bool toggle);
+    void SetIntroduction ( const bool toggle );
 };
 
 #endif

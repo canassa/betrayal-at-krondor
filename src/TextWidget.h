@@ -30,20 +30,21 @@
 #include "Widget.h"
 
 typedef enum {
-  HA_LEFT,
-  HA_CENTER,
-  HA_RIGHT
+    HA_LEFT,
+    HA_CENTER,
+    HA_RIGHT
 } HorizontalAlignment;
 
 typedef enum  {
-  VA_TOP,
-  VA_CENTER,
-  VA_BOTTOM
+    VA_TOP,
+    VA_CENTER,
+    VA_BOTTOM
 } VerticalAlignment;
 
 class TextWidget
-: public Widget {
-  private:
+            : public Widget
+{
+private:
     Font *font;
     std::string text;
     int textWidth;
@@ -54,14 +55,14 @@ class TextWidget
     int shadowYoff;
     HorizontalAlignment horAlign;
     VerticalAlignment vertAlign;
-  public:
-    TextWidget(const Rectangle &r, Font *f);
+public:
+    TextWidget ( const Rectangle &r, Font *f );
     virtual ~TextWidget();
     void Draw();
-    void SetColor(const int c);
-    void SetText(const std::string& s);
-    void SetShadow(const int s, const int xoff, const int yoff);
-    void SetAlignment(const HorizontalAlignment ha, const VerticalAlignment va);
+    void SetColor ( const int c );
+    void SetText ( const std::string& s );
+    void SetShadow ( const int s, const int xoff, const int yoff );
+    void SetAlignment ( const HorizontalAlignment ha, const VerticalAlignment va );
 };
 
 #endif

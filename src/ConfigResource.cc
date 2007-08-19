@@ -21,27 +21,27 @@
 #include "ConfigResource.h"
 
 ConfigResource::ConfigResource()
-: prefs(0)
-{
-}
+        : prefs(0)
+{}
 
 ConfigResource::~ConfigResource()
 {
-  if (prefs) {
-    delete prefs;
-  }
+    if (prefs)
+    {
+        delete prefs;
+    }
 }
 
 Preferences *
 ConfigResource::GetPreferences()
 {
-  return prefs;
+    return prefs;
 }
 
 void
 ConfigResource::SetPreferences(Preferences *p)
 {
-  prefs = p;
+    prefs = p;
 }
 
 static const unsigned int PREF_SOUND_MASK        = 0x01;
@@ -52,46 +52,54 @@ static const unsigned int PREF_INTRODUCTION_MASK = 0x08;
 void
 ConfigResource::Load(FileBuffer *buffer)
 {
-  try {
-    if (prefs){
-      delete prefs;
+    try
+    {
+        if (prefs)
+        {
+            delete prefs;
+        }
+        prefs = new Preferences();
+        prefs->SetStepSize((StepTurnSize)buffer->GetUint8());
+        prefs->SetTurnSize((StepTurnSize)buffer->GetUint8());
+        prefs->SetDetail((LevelOfDetail)buffer->GetUint8());
+        prefs->SetTextSpeed((TextSpeed)buffer->GetUint8());
+        unsigned int flags = (unsigned int)buffer->GetUint8();
+        prefs->SetSound(flags & PREF_SOUND_MASK);
+        prefs->SetMusic(flags & PREF_MUSIC_MASK);
+        prefs->SetCombatMusic(flags & PREF_COMBATMUSIC_MASK);
+        prefs->SetIntroduction(flags & PREF_INTRODUCTION_MASK);
     }
-    prefs = new Preferences();
-    prefs->SetStepSize((StepTurnSize)buffer->GetUint8());
-    prefs->SetTurnSize((StepTurnSize)buffer->GetUint8());
-    prefs->SetDetail((LevelOfDetail)buffer->GetUint8());
-    prefs->SetTextSpeed((TextSpeed)buffer->GetUint8());
-    unsigned int flags = (unsigned int)buffer->GetUint8();
-    prefs->SetSound(flags & PREF_SOUND_MASK);
-    prefs->SetMusic(flags & PREF_MUSIC_MASK);
-    prefs->SetCombatMusic(flags & PREF_COMBATMUSIC_MASK);
-    prefs->SetIntroduction(flags & PREF_INTRODUCTION_MASK);
-  } catch (Exception &e) {
-    e.Print("ConfigResource::Load");
-    throw;
-  }
+    catch (Exception &e)
+    {
+        e.Print("ConfigResource::Load");
+        throw;
+    }
 }
 
 void
 ConfigResource::Save(FileBuffer *buffer)
 {
-  if (!prefs) {
-    throw NullPointer(__FILE__, __LINE__, "prefs");
-  }
-  try {
-    buffer->Rewind();
-    buffer->PutUint8((unsigned int)prefs->GetStepSize());
-    buffer->PutUint8((unsigned int)prefs->GetTurnSize());
-    buffer->PutUint8((unsigned int)prefs->GetDetail());
-    buffer->PutUint8((unsigned int)prefs->GetTextSpeed());
-    unsigned int flags = 0;
-    if (prefs->GetSound()) flags |= PREF_SOUND_MASK;
-    if (prefs->GetMusic()) flags |= PREF_MUSIC_MASK;
-    if (prefs->GetCombatMusic()) flags |= PREF_COMBATMUSIC_MASK;
-    if (prefs->GetIntroduction()) flags |= PREF_INTRODUCTION_MASK;
-    buffer->PutUint8(flags);
-  } catch (Exception &e) {
-    e.Print("ConfigResource::Save");
-    throw;
-  }
+    if (!prefs)
+    {
+        throw NullPointer(__FILE__, __LINE__, "prefs");
+    }
+    try
+    {
+        buffer->Rewind();
+        buffer->PutUint8((unsigned int)prefs->GetStepSize());
+        buffer->PutUint8((unsigned int)prefs->GetTurnSize());
+        buffer->PutUint8((unsigned int)prefs->GetDetail());
+        buffer->PutUint8((unsigned int)prefs->GetTextSpeed());
+        unsigned int flags = 0;
+        if (prefs->GetSound()) flags |= PREF_SOUND_MASK;
+        if (prefs->GetMusic()) flags |= PREF_MUSIC_MASK;
+        if (prefs->GetCombatMusic()) flags |= PREF_COMBATMUSIC_MASK;
+        if (prefs->GetIntroduction()) flags |= PREF_INTRODUCTION_MASK;
+        buffer->PutUint8(flags);
+    }
+    catch (Exception &e)
+    {
+        e.Print("ConfigResource::Save");
+        throw;
+    }
 }

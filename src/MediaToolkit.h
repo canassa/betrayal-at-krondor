@@ -31,10 +31,11 @@
 #include "EventListener.h"
 #include "Video.h"
 
-class MediaToolkit {
-  private:
+class MediaToolkit
+{
+private:
     static MediaToolkit* instance;
-  protected:
+protected:
     Audio *audio;
     Clock *clock;
     Video *video;
@@ -44,7 +45,7 @@ class MediaToolkit {
     std::list<MouseMotionEventListener *> mouseMotionListeners;
     std::list<TimerEventListener *> timerListeners;
     std::list<LoopEventListener *> loopListeners;
-  public:
+public:
     MediaToolkit();
     virtual ~MediaToolkit();
     static MediaToolkit* GetInstance();
@@ -52,23 +53,23 @@ class MediaToolkit {
     Audio* GetAudio() const;
     Clock* GetClock() const;
     Video* GetVideo() const;
-    void AddKeyboardListener(KeyboardEventListener *kel);
-    void RemoveKeyboardListener(KeyboardEventListener *kel);
-    void AddMouseButtonListener(MouseButtonEventListener *mbel);
-    void RemoveMouseButtonListener(MouseButtonEventListener *mbel);
-    void AddMouseMotionListener(MouseMotionEventListener *mmel);
-    void RemoveMouseMotionListener(MouseMotionEventListener *mmel);
-    void AddTimerListener(TimerEventListener *tel);
-    void RemoveTimerListener(TimerEventListener *tel);
-    void AddUpdateListener(LoopEventListener *lel);
-    void RemoveUpdateListener(LoopEventListener *lel);
+    void AddKeyboardListener ( KeyboardEventListener *kel );
+    void RemoveKeyboardListener ( KeyboardEventListener *kel );
+    void AddMouseButtonListener ( MouseButtonEventListener *mbel );
+    void RemoveMouseButtonListener ( MouseButtonEventListener *mbel );
+    void AddMouseMotionListener ( MouseMotionEventListener *mmel );
+    void RemoveMouseMotionListener ( MouseMotionEventListener *mmel );
+    void AddTimerListener ( TimerEventListener *tel );
+    void RemoveTimerListener ( TimerEventListener *tel );
+    void AddUpdateListener ( LoopEventListener *lel );
+    void RemoveUpdateListener ( LoopEventListener *lel );
     void TerminateEventLoop();
     virtual void PollEvents() = 0;
     virtual void PollEventLoop() = 0;
     virtual void WaitEvents() = 0;
     virtual void WaitEventLoop() = 0;
     virtual void ClearEvents() = 0;
-    virtual void GetMousePosition(int *x, int *y) = 0;
+    virtual void GetMousePosition ( int *x, int *y ) = 0;
 };
 
 #endif

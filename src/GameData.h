@@ -26,12 +26,15 @@
 
 #include "FileBuffer.h"
 
-class GameData {
-  public:
-    GameData() {};
-    virtual ~GameData() {};
-    virtual void Load(FileBuffer *buffer) = 0;
-    virtual void Save(FileBuffer *buffer) = 0;
+class GameData
+{
+public:
+    GameData()
+    {};
+    virtual ~GameData()
+    {};
+    virtual void Load ( FileBuffer *buffer ) = 0;
+    virtual void Save ( FileBuffer *buffer ) = 0;
 };
 
 #endif

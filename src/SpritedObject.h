@@ -28,13 +28,14 @@
 #include "Image.h"
 
 class SpritedObject
-: public GenericObject {
-  private:
+            : public GenericObject
+{
+private:
     Image *sprite;
-  public:
-    SpritedObject(const Vector2D &p, Image *img);
+public:
+    SpritedObject ( const Vector2D &p, Image *img );
     ~SpritedObject();
-    void DrawFirstPerson(const int x, const int y, const int w, const int h, const int heading);
+    void DrawFirstPerson ( const int x, const int y, const int w, const int h, const int heading );
     void DrawTopDown();
 };
 

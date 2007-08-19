@@ -32,16 +32,16 @@ static const int MAX_EQUIPMENT_ITEM_WIDGET_WIDTH  = 80;
 static const int MAX_EQUIPMENT_ITEM_WIDGET_HEIGHT = 58;
 
 class EquipmentItemWidget
-: public Widget
+            : public Widget
 {
-  private:
+private:
     Image *iconImage;
     TextWidget *label;
-  public:
-    EquipmentItemWidget(const Rectangle &r);
+public:
+    EquipmentItemWidget ( const Rectangle &r );
     virtual ~EquipmentItemWidget();
-    void SetImage(Image *icon);
-    void SetLabel(const std::string& s, Font *f);
+    void SetImage ( Image *icon );
+    void SetLabel ( const std::string& s, Font *f );
     void Draw();
 };
 

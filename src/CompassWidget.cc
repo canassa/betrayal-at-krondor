@@ -27,46 +27,52 @@ static const int COMPASS_WIDGET_HEIGHT = 11;
 static const Rectangle COMPASS_WIDGET_RECTANGLE = Rectangle(COMPASS_WIDGET_XPOS, COMPASS_WIDGET_YPOS, COMPASS_WIDGET_WIDTH, COMPASS_WIDGET_HEIGHT);
 
 CompassWidget::CompassWidget(Camera *cam, Image *img)
-: Widget(COMPASS_WIDGET_RECTANGLE)
-, camera(cam)
-, compassImage(img)
-, cachedImage(0)
+        : Widget(COMPASS_WIDGET_RECTANGLE)
+        , camera(cam)
+        , compassImage(img)
+        , cachedImage(0)
 {
-  cachedImage = new Image(COMPASS_WIDGET_WIDTH, COMPASS_WIDGET_HEIGHT);
-  camera->Attach(this);
-  Update();
+    cachedImage = new Image(COMPASS_WIDGET_WIDTH, COMPASS_WIDGET_HEIGHT);
+    camera->Attach(this);
+    Update();
 }
 
 CompassWidget::~CompassWidget()
 {
-  camera->Detach(this);
-  if (cachedImage) {
-    delete cachedImage;
-  }
+    camera->Detach(this);
+    if (cachedImage)
+    {
+        delete cachedImage;
+    }
 }
 
 void
 CompassWidget::Draw()
 {
-  if (IsVisible()) {
-    if (cachedImage){
-      cachedImage->Draw(rect.GetXPos(), rect.GetYPos());
+    if (IsVisible())
+    {
+        if (cachedImage)
+        {
+            cachedImage->Draw(rect.GetXPos(), rect.GetYPos());
+        }
     }
-  }
 }
 
 void
 CompassWidget::Update()
 {
-  if (compassImage) {
-    int offset = camera->GetHeading();
-    int imagewidth = compassImage->GetWidth();
-    compassImage->Draw(rect.GetXPos() - offset, rect.GetYPos(), offset, 0, rect.GetWidth(), rect.GetHeight());
-    if ((imagewidth - offset) < rect.GetWidth()) {
-      compassImage->Draw(rect.GetXPos() - offset + imagewidth, rect.GetYPos(), 0, 0, rect.GetWidth() - imagewidth + offset, rect.GetHeight());
+    if (compassImage)
+    {
+        int offset = camera->GetHeading();
+        int imagewidth = compassImage->GetWidth();
+        compassImage->Draw(rect.GetXPos() - offset, rect.GetYPos(), offset, 0, rect.GetWidth(), rect.GetHeight());
+        if ((imagewidth - offset) < rect.GetWidth())
+        {
+            compassImage->Draw(rect.GetXPos() - offset + imagewidth, rect.GetYPos(), 0, 0, rect.GetWidth() - imagewidth + offset, rect.GetHeight());
+        }
     }
-  }
-  if (cachedImage){
-    cachedImage->Read(rect.GetXPos(), rect.GetYPos());
-  }
+    if (cachedImage)
+    {
+        cachedImage->Read(rect.GetXPos(), rect.GetYPos());
+    }
 }

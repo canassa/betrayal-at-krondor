@@ -33,20 +33,23 @@ static const unsigned int TILE_SIZE_2 = TILE_SIZE / 2;
 
 static const unsigned int OBJECT_CENTER = 0;
 
-typedef struct _TileWorldItem {
-  unsigned int type;
-  unsigned int flags;
-  unsigned int xloc;
-  unsigned int yloc;
-} TileWorldItem;
+typedef struct _TileWorldItem
+{
+    unsigned int type;
+    unsigned int flags;
+    unsigned int xloc;
+    unsigned int yloc;
+}
+TileWorldItem;
 
 class TileWorldResource
-: public ResourceData {
-  private:
+            : public ResourceData
+{
+private:
     unsigned int xCenter;
     unsigned int yCenter;
     std::vector<TileWorldItem> items;
-  public:
+public:
     TileWorldResource();
     virtual ~TileWorldResource();
     unsigned int GetMinX() const;
@@ -54,10 +57,10 @@ class TileWorldResource
     unsigned int GetMinY() const;
     unsigned int GetMaxY() const;
     unsigned int GetSize() const;
-    TileWorldItem& GetItem(unsigned int i);
+    TileWorldItem& GetItem ( unsigned int i );
     void Clear();
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

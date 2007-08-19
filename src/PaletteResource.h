@@ -28,16 +28,17 @@
 #include "TaggedResource.h"
 
 class PaletteResource
-: public TaggedResource {
-  private:
+            : public TaggedResource
+{
+private:
     Palette *palette;
-  public:
+public:
     PaletteResource();
     virtual ~PaletteResource();
     Palette* GetPalette() const;
     void Clear();
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

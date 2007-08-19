@@ -22,33 +22,39 @@
 
 Statistics::Statistics()
 {
-  memset(statMatrix, 0, sizeof(statMatrix));
+    memset(statMatrix, 0, sizeof(statMatrix));
 }
 
 Statistics::~Statistics()
-{
-}
+{}
 
 int
 Statistics::Get(const unsigned int stat, const unsigned int type) const
 {
-  if ((stat < NUM_STATS) && (type < NUM_STAT_VALUES)) {
-    return statMatrix[stat][type];
-  } else {
-    throw IndexOutOfRange(__FILE__, __LINE__, "statMatrix");
-  }
+    if ((stat < NUM_STATS) && (type < NUM_STAT_VALUES))
+    {
+        return statMatrix[stat][type];
+    }
+    else
+    {
+        throw IndexOutOfRange(__FILE__, __LINE__, "statMatrix");
+    }
 }
 
 void
 Statistics::Set(const unsigned int stat, const unsigned int type, const unsigned int value)
 {
-  if ((stat < NUM_STATS) && (type < NUM_STAT_VALUES)) {
-    if (type != STAT_ACTUAL) {
-      statMatrix[stat][type] = value;
-      statMatrix[stat][STAT_ACTUAL] = statMatrix[stat][STAT_CURRENT] + statMatrix[stat][STAT_MODIFIER];
+    if ((stat < NUM_STATS) && (type < NUM_STAT_VALUES))
+    {
+        if (type != STAT_ACTUAL)
+        {
+            statMatrix[stat][type] = value;
+            statMatrix[stat][STAT_ACTUAL] = statMatrix[stat][STAT_CURRENT] + statMatrix[stat][STAT_MODIFIER];
+        }
     }
-  } else {
-    throw IndexOutOfRange(__FILE__, __LINE__, "statMatrix");
-  }
+    else
+    {
+        throw IndexOutOfRange(__FILE__, __LINE__, "statMatrix");
+    }
 }
 

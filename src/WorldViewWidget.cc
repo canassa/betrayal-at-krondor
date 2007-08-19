@@ -22,20 +22,20 @@
 #include "WorldViewWidget.h"
 
 WorldViewWidget::WorldViewWidget(const Rectangle &r, Game *g)
-: GameViewWidget(r, g)
+        : GameViewWidget(r, g)
 {
-  game->GetCamera()->Attach(this);
-  Update();
+    game->GetCamera()->Attach(this);
+    Update();
 }
 
 WorldViewWidget::~WorldViewWidget()
 {
-  game->GetCamera()->Detach(this);
+    game->GetCamera()->Detach(this);
 }
 
 void
 WorldViewWidget::Redraw()
 {
-  MediaToolkit::GetInstance()->GetVideo()->Clear(rect.GetXPos(), rect.GetYPos(), rect.GetWidth(), rect.GetHeight());
-  game->GetScene()->DrawFirstPerson(rect.GetXPos(), rect.GetYPos(), rect.GetWidth(), rect.GetHeight(), game->GetCamera());
+    MediaToolkit::GetInstance()->GetVideo()->Clear(rect.GetXPos(), rect.GetYPos(), rect.GetWidth(), rect.GetHeight());
+    game->GetScene()->DrawFirstPerson(rect.GetXPos(), rect.GetYPos(), rect.GetWidth(), rect.GetHeight(), game->GetCamera());
 }

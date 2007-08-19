@@ -21,39 +21,41 @@
 #include "BadgeWidget.h"
 
 BadgeWidget::BadgeWidget(const Rectangle &r)
-: Widget(r)
-, label(0)
-{
-}
+        : Widget(r)
+        , label(0)
+{}
 
 BadgeWidget::~BadgeWidget()
 {
-  if (label) {
-    delete label;
-  }
+    if (label)
+    {
+        delete label;
+    }
 }
 
 void
 BadgeWidget::SetLabel(const std::string& s, Font *f)
 {
-  label = new TextWidget(Rectangle(rect.GetXPos() + 2, rect.GetYPos() + 2, rect.GetWidth() - 4, rect.GetHeight() - 4), f);
-  label->SetText(s);
-  label->SetColor(TEXT_COLOR_NORMAL);
-  label->SetShadow(SHADOW_COLOR, 0, 1);
+    label = new TextWidget(Rectangle(rect.GetXPos() + 2, rect.GetYPos() + 2, rect.GetWidth() - 4, rect.GetHeight() - 4), f);
+    label->SetText(s);
+    label->SetColor(TEXT_COLOR_NORMAL);
+    label->SetShadow(SHADOW_COLOR, 0, 1);
 }
 
 void
 BadgeWidget::Draw()
 {
-  if (IsVisible()) {
-    Video *video = MediaToolkit::GetInstance()->GetVideo();
-    video->FillRect(rect.GetXPos() + 1, rect.GetYPos() + 1, rect.GetWidth() - 2, rect.GetHeight() - 2, BUTTON_COLOR_NORMAL);
-    video->DrawVLine(rect.GetXPos(), rect.GetYPos(), rect.GetHeight(), SHADOW_COLOR);
-    video->DrawHLine(rect.GetXPos() + 1, rect.GetYPos(), rect.GetWidth() - 1, LIGHT_COLOR);
-    video->DrawVLine(rect.GetXPos() + rect.GetWidth() - 1, rect.GetYPos() + 1, rect.GetHeight() - 2, LIGHT_COLOR);
-    video->DrawHLine(rect.GetXPos() + 1, rect.GetYPos() + rect.GetHeight() - 1, rect.GetWidth() - 1, SHADOW_COLOR);
-    if (label) {
-      label->Draw();
+    if (IsVisible())
+    {
+        Video *video = MediaToolkit::GetInstance()->GetVideo();
+        video->FillRect(rect.GetXPos() + 1, rect.GetYPos() + 1, rect.GetWidth() - 2, rect.GetHeight() - 2, BUTTON_COLOR_NORMAL);
+        video->DrawVLine(rect.GetXPos(), rect.GetYPos(), rect.GetHeight(), SHADOW_COLOR);
+        video->DrawHLine(rect.GetXPos() + 1, rect.GetYPos(), rect.GetWidth() - 1, LIGHT_COLOR);
+        video->DrawVLine(rect.GetXPos() + rect.GetWidth() - 1, rect.GetYPos() + 1, rect.GetHeight() - 2, LIGHT_COLOR);
+        video->DrawHLine(rect.GetXPos() + 1, rect.GetYPos() + rect.GetHeight() - 1, rect.GetWidth() - 1, SHADOW_COLOR);
+        if (label)
+        {
+            label->Draw();
+        }
     }
-  }
 }

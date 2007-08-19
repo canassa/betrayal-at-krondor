@@ -28,28 +28,31 @@
 
 #include "FileBuffer.h"
 
-typedef struct _ResourceIndexData {
-  unsigned int hashkey;
-  std::streamoff offset;
-  unsigned int size;
-} ResourceIndexData;
+typedef struct _ResourceIndexData
+{
+    unsigned int hashkey;
+    std::streamoff offset;
+    unsigned int size;
+}
+ResourceIndexData;
 
-class ResourceIndex {
-  private:
+class ResourceIndex
+{
+private:
     std::string resourceFilename;
     unsigned int numResources;
     std::map <const std::string, ResourceIndexData> resIdxMap;
     std::map<const std::string, ResourceIndexData>::iterator resIdxIterator;
-  public:
+public:
     ResourceIndex();
     virtual ~ResourceIndex();
-    void Load(const std::string &filename);
-    void Save(const std::string &filename);
+    void Load ( const std::string &filename );
+    void Save ( const std::string &filename );
     std::string GetResourceFilename() const;
     unsigned int GetNumResources() const;
-    bool Find(const std::string &name, ResourceIndexData &data);
-    bool GetFirst(std::string& name, ResourceIndexData &data);
-    bool GetNext(std::string& name, ResourceIndexData &data);
+    bool Find ( const std::string &name, ResourceIndexData &data );
+    bool GetFirst ( std::string& name, ResourceIndexData &data );
+    bool GetNext ( std::string& name, ResourceIndexData &data );
 };
 
 #endif

@@ -28,17 +28,18 @@
 #include "Widget.h"
 
 class ChoiceWidget
-: public ActiveWidget {
-  private:
+            : public ActiveWidget
+{
+private:
     Image *normalImage;
     Image *selectedImage;
-  public:
-    ChoiceWidget(const Rectangle &r, const int a);
+public:
+    ChoiceWidget ( const Rectangle &r, const int a );
     virtual ~ChoiceWidget();
-    void SetImage(Image *normal, Image *selected);
+    void SetImage ( Image *normal, Image *selected );
     void Draw();
-    void LeftClick(const bool toggle, const int x, const int y);
-    void RightClick(const bool toggle, const int x, const int y);
+    void LeftClick ( const bool toggle, const int x, const int y );
+    void RightClick ( const bool toggle, const int x, const int y );
 };
 
 #endif

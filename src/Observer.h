@@ -24,10 +24,13 @@
 #include "config.h"
 #endif
 
-class Observer {
-  public:
-    Observer() {};
-    virtual ~Observer() {};
+class Observer
+{
+public:
+    Observer()
+    {};
+    virtual ~Observer()
+    {};
     virtual void Update() = 0;
 };
 

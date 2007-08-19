@@ -21,26 +21,25 @@
 #include "PopUpWidget.h"
 
 PopUpWidget::PopUpWidget(const Rectangle &r)
-: ContainerWidget(r)
-{
-}
+        : ContainerWidget(r)
+{}
 
 PopUpWidget::~PopUpWidget()
-{
-}
+{}
 
 void
 PopUpWidget::Draw()
 {
-  if (IsVisible()) {
-    Video *video = MediaToolkit::GetInstance()->GetVideo();
-    video->FillRect(rect.GetXPos() + 1, rect.GetYPos() + 1, rect.GetWidth() - 2, rect.GetHeight() - 2, POPUP_COLOR);
-    video->DrawVLine(rect.GetXPos(), rect.GetYPos(), rect.GetHeight(), SHADOW_COLOR);
-    video->DrawHLine(rect.GetXPos() + 1, rect.GetYPos(), rect.GetWidth() - 1, LIGHT_COLOR);
-    video->DrawVLine(rect.GetXPos() + rect.GetWidth() - 1, rect.GetYPos() + 1, rect.GetHeight() - 2, LIGHT_COLOR);
-    video->DrawHLine(rect.GetXPos() + 1, rect.GetYPos() + rect.GetHeight() - 1, rect.GetWidth() - 1, SHADOW_COLOR);
-    video->DrawVLine(rect.GetXPos() - 1, rect.GetYPos() + 1, rect.GetHeight(), SHADOW_COLOR);
-    video->DrawHLine(rect.GetXPos(), rect.GetYPos() + rect.GetHeight(), rect.GetWidth() - 1, SHADOW_COLOR);
-    DrawChildWidgets();
-  }
+    if (IsVisible())
+    {
+        Video *video = MediaToolkit::GetInstance()->GetVideo();
+        video->FillRect(rect.GetXPos() + 1, rect.GetYPos() + 1, rect.GetWidth() - 2, rect.GetHeight() - 2, POPUP_COLOR);
+        video->DrawVLine(rect.GetXPos(), rect.GetYPos(), rect.GetHeight(), SHADOW_COLOR);
+        video->DrawHLine(rect.GetXPos() + 1, rect.GetYPos(), rect.GetWidth() - 1, LIGHT_COLOR);
+        video->DrawVLine(rect.GetXPos() + rect.GetWidth() - 1, rect.GetYPos() + 1, rect.GetHeight() - 2, LIGHT_COLOR);
+        video->DrawHLine(rect.GetXPos() + 1, rect.GetYPos() + rect.GetHeight() - 1, rect.GetWidth() - 1, SHADOW_COLOR);
+        video->DrawVLine(rect.GetXPos() - 1, rect.GetYPos() + 1, rect.GetHeight(), SHADOW_COLOR);
+        video->DrawHLine(rect.GetXPos(), rect.GetYPos() + rect.GetHeight(), rect.GetWidth() - 1, SHADOW_COLOR);
+        DrawChildWidgets();
+    }
 }

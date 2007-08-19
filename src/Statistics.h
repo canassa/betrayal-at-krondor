@@ -51,14 +51,15 @@ static const unsigned int NUM_STAT_VALUES = 5;
 
 typedef int StatValues[NUM_STAT_VALUES];
 
-class Statistics {
-  private:
+class Statistics
+{
+private:
     StatValues statMatrix[NUM_STATS];
-  public:
+public:
     Statistics();
     virtual ~Statistics();
-    int Get(const unsigned int stat, const unsigned int type) const;
-    void Set(const unsigned int stat, const unsigned int type, const unsigned int value);
+    int Get ( const unsigned int stat, const unsigned int type ) const;
+    void Set ( const unsigned int stat, const unsigned int type, const unsigned int value );
 };
 
 #endif

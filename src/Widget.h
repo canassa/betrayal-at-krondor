@@ -46,44 +46,46 @@ static const int INVENTORY_OFFSET     = 256;
 static const int RIGHT_CLICK_OFFSET   = 512;
 static const int RELEASE_OFFSET       = 1024;
 
-class Widget {
-  protected:
+class Widget
+{
+protected:
     Rectangle rect;
     bool visible;
-  public:
-    Widget(const Rectangle &r);
+public:
+    Widget ( const Rectangle &r );
     virtual ~Widget();
     Rectangle& GetRectangle();
-    void SetPosition(const int x, const int y);
-    void SetVisible(const bool toggle);
+    void SetPosition ( const int x, const int y );
+    void SetVisible ( const bool toggle );
     bool IsVisible() const;
     virtual void Draw() = 0;
 };
 
 class ActiveWidget
-: public Widget {
-  protected:
+            : public Widget
+{
+protected:
     int action;
     bool draggable;
     bool focusable;
     std::list<ActionEventListener *> actionListeners;
-  public:
-    ActiveWidget(const Rectangle &r, const int a);
+public:
+    ActiveWidget ( const Rectangle &r, const int a );
     virtual ~ActiveWidget();
     int GetAction() const;
     bool IsDraggable() const;
-    void SetDraggable(const bool toggle);
+    void SetDraggable ( const bool toggle );
     bool IsFocusable() const;
-    void SetFocusable(const bool toggle);
-    void AddActionListener(ActionEventListener *ael);
-    void RemoveActionListener(ActionEventListener *ael);
-    void GenerateActionEvent(const int a);
-    void GenerateActionEvent(const int a, const int x, const int y);
-    void GenerateActionEvent(const ActionEvent& ae);
+    void SetFocusable ( const bool toggle );
+    void AddActionListener ( ActionEventListener *ael );
+    void RemoveActionListener ( ActionEventListener *ael );
+    void GenerateActionEvent ( const int a );
+    void GenerateActionEvent ( const int a, const int x, const int y );
+    void GenerateActionEvent ( const ActionEvent& ae );
     void Focus();
     virtual void Reset();
-    virtual void LeftClick(const bool toggle, const int x, const int y) = 0;
-    virtual void RightClick(const bool toggle, const int x, const int y) = 0;
+    virtual void LeftClick ( const bool toggle, const int x, const int y ) = 0;
+    virtual void RightClick ( const bool toggle, const int x, const int y ) = 0;
 };
 
 #endif

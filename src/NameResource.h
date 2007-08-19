@@ -29,17 +29,18 @@
 #include "ResourceData.h"
 
 class NameResource
-: public ResourceData {
-  private:
+            : public ResourceData
+{
+private:
     std::vector<std::string> name;
-  public:
+public:
     NameResource();
     virtual ~NameResource();
     unsigned int GetSize() const;
-    std::string GetName(unsigned int n) const;
+    std::string GetName ( unsigned int n ) const;
     void Clear();
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

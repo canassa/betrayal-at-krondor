@@ -26,26 +26,27 @@
 
 #include "MediaToolkit.h"
 
-class Palette {
-  private:
+class Palette
+{
+private:
     unsigned int size;
     Color *colors;
     bool delayed;
     MediaToolkit *media;
-  public:
-    Palette(const unsigned int n);
+public:
+    Palette ( const unsigned int n );
     ~Palette();
     unsigned int GetSize() const;
-    Color& GetColor(const unsigned int i) const;
-    void SetColor(const unsigned int i, const Color &c);
+    Color& GetColor ( const unsigned int i ) const;
+    void SetColor ( const unsigned int i, const Color &c );
     void Fill();
-    void Activate(const unsigned int first, const unsigned int n);
-    void Retrieve(const unsigned int first, const unsigned int n);
-    void FadeFrom(Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay);
-    void FadeTo(Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay);
-    void FadeIn(const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay);
-    void FadeOut(const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay);
-    void TimerExpired(const TimerEvent &te);
+    void Activate ( const unsigned int first, const unsigned int n );
+    void Retrieve ( const unsigned int first, const unsigned int n );
+    void FadeFrom ( Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay );
+    void FadeTo ( Color* from, const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay );
+    void FadeIn ( const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay );
+    void FadeOut ( const unsigned int first, const unsigned int n, const unsigned int steps, const unsigned int delay );
+    void TimerExpired ( const TimerEvent &te );
 };
 
 #endif

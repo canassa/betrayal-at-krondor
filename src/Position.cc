@@ -22,50 +22,47 @@
 #include "TileWorldResource.h"
 
 Position::Position(const Vector2D &p)
-: pos(p)
-, cell(p.GetX() / TILE_SIZE, p.GetY() / TILE_SIZE)
-{
-}
+        : pos(p)
+        , cell(p.GetX() / TILE_SIZE, p.GetY() / TILE_SIZE)
+{}
 
 Position::Position(const Vector2D &p, const Vector2D &c)
-: pos(p)
-, cell(c)
-{
-}
+        : pos(p)
+        , cell(c)
+{}
 
 Position::~Position()
-{
-}
+{}
 
 Vector2D &
 Position::GetCell()
 {
-  return cell;
+    return cell;
 }
 
 Vector2D &
 Position::GetPos()
 {
-  return pos;
+    return pos;
 }
 
 void
 Position::SetPos(const Vector2D &p)
 {
-  pos = p;
-  cell = pos / TILE_SIZE;
+    pos = p;
+    cell = pos / TILE_SIZE;
 }
 
 void
 Position::Adjust(const Vector2D &delta)
 {
-  pos += delta;
-  cell = pos / TILE_SIZE;
+    pos += delta;
+    cell = pos / TILE_SIZE;
 }
 
 void
 Position::Adjust(const int deltaX, const int deltaY)
 {
-  pos += Vector2D(deltaX, deltaY);
-  cell = pos / TILE_SIZE;
+    pos += Vector2D(deltaX, deltaY);
+    cell = pos / TILE_SIZE;
 }

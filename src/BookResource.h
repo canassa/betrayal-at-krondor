@@ -29,17 +29,18 @@
 #include "ResourceData.h"
 
 class BookResource
-: public ResourceData {
-  private:
+            : public ResourceData
+{
+private:
     std::vector<std::string> paragraphs;
-  public:
+public:
     BookResource();
     virtual ~BookResource();
     unsigned int GetNumParagraphs() const;
-    std::string& GetParagraph(const unsigned int i);
+    std::string& GetParagraph ( const unsigned int i );
     void Clear();
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

@@ -27,14 +27,15 @@
 #include "ResourceData.h"
 
 class TileDataResource
-: public ResourceData {
-  private:
-  public:
+            : public ResourceData
+{
+private:
+public:
     TileDataResource();
     virtual ~TileDataResource();
     void Clear();
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

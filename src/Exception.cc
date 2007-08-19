@@ -36,123 +36,126 @@ static const std::string SDL_EXCEPTION      = "SDL error";
 static const std::string UNEXPECTED_VALUE   = "Unexpected value";
 
 Exception::Exception(const std::string &file, const unsigned int line, const std::string &msg)
-: filename(file)
-, linenr(line)
-, message(msg) {
-}
+        : filename(file)
+        , linenr(line)
+        , message(msg)
+{}
 
 Exception::Exception(const std::string &file, const unsigned int line, const std::string &msg, const unsigned int val)
-: filename(file)
-, linenr(line) {
-  std::stringstream s;
-  s << msg << " (" << val << ")";
-  message = s.str();
+        : filename(file)
+        , linenr(line)
+{
+    std::stringstream s;
+    s << msg << " (" << val << ")";
+    message = s.str();
 }
 
-Exception::~Exception() throw() {
-}
+Exception::~Exception() throw()
+{}
 
 void
-Exception::Print(const std::string &handler) const throw() {
-  std::cerr << handler << " >> " << filename << ":" << linenr << " " << message << std::endl;
+Exception::Print(const std::string &handler) const throw()
+{
+    std::cerr << handler << " >> " << filename << ":" << linenr << " " << message << std::endl;
 }
 
 std::string
-Exception::What() const throw() {
-  std::stringstream s;
-  s << filename << ":" << linenr << " " << message;
-  return s.str();
+Exception::What() const throw()
+{
+    std::stringstream s;
+    s << filename << ":" << linenr << " " << message;
+    return s.str();
 }
 
 BufferEmpty::BufferEmpty(const std::string &file, const unsigned int line, const std::string &msg)
-: Exception(file, line, BUFFER_EMPTY + " " + msg) {
-}
+        : Exception(file, line, BUFFER_EMPTY + " " + msg)
+{}
 
-BufferEmpty::~BufferEmpty() throw() {
-}
+BufferEmpty::~BufferEmpty() throw()
+{}
 
 BufferFull::BufferFull(const std::string &file, const unsigned int line, const std::string &msg)
-: Exception(file, line, BUFFER_FULL + " " + msg) {
-}
+        : Exception(file, line, BUFFER_FULL + " " + msg)
+{}
 
-BufferFull::~BufferFull() throw() {
-}
+BufferFull::~BufferFull() throw()
+{}
 
 CompressionError::CompressionError(const std::string &file, const unsigned int line, const std::string &msg)
-: Exception(file, line, COMPRESSION_ERROR + " " + msg) {
-}
+        : Exception(file, line, COMPRESSION_ERROR + " " + msg)
+{}
 
 CompressionError::CompressionError(const std::string &file, const unsigned int line, const std::string &msg, const unsigned int value)
-: Exception(file, line, COMPRESSION_ERROR + " " + msg, value) {
-}
+        : Exception(file, line, COMPRESSION_ERROR + " " + msg, value)
+{}
 
-CompressionError::~CompressionError() throw() {
-}
+CompressionError::~CompressionError() throw()
+{}
 
 DataCorruption::DataCorruption(const std::string &file, const unsigned int line, const std::string &msg)
-: Exception(file, line, DATA_CORRUPTION + " " + msg) {
-}
+        : Exception(file, line, DATA_CORRUPTION + " " + msg)
+{}
 
 DataCorruption::DataCorruption(const std::string &file, const unsigned int line, const std::string &msg, const unsigned int value)
-: Exception(file, line, DATA_CORRUPTION + " " + msg, value) {
-}
+        : Exception(file, line, DATA_CORRUPTION + " " + msg, value)
+{}
 
-DataCorruption::~DataCorruption() throw() {
-}
+DataCorruption::~DataCorruption() throw()
+{}
 
 FileNotFound::FileNotFound(const std::string &file, const unsigned int line, const std::string &msg)
-: Exception(file, line, FILE_NOT_FOUND + " (" + msg + ")") {
-}
+        : Exception(file, line, FILE_NOT_FOUND + " (" + msg + ")")
+{}
 
-FileNotFound::~FileNotFound() throw() {
-}
+FileNotFound::~FileNotFound() throw()
+{}
 
 IndexOutOfRange::IndexOutOfRange(const std::string &file, const unsigned int line, const std::string &msg)
-: Exception(file, line, INDEX_OUT_OF_RANGE + " " + msg) {
-}
+        : Exception(file, line, INDEX_OUT_OF_RANGE + " " + msg)
+{}
 
 IndexOutOfRange::IndexOutOfRange(const std::string &file, const unsigned int line, const std::string &msg, const unsigned int value)
-: Exception(file, line, INDEX_OUT_OF_RANGE + " " + msg, value) {
-}
+        : Exception(file, line, INDEX_OUT_OF_RANGE + " " + msg, value)
+{}
 
-IndexOutOfRange::~IndexOutOfRange() throw() {
-}
+IndexOutOfRange::~IndexOutOfRange() throw()
+{}
 
 IOError::IOError(const std::string &file, const unsigned int line, const std::string &msg)
-: Exception(file, line, IO_ERROR + " " + msg) {
-}
+        : Exception(file, line, IO_ERROR + " " + msg)
+{}
 
-IOError::~IOError() throw() {
-}
+IOError::~IOError() throw()
+{}
 
 NullPointer::NullPointer(const std::string &file, const unsigned int line, const std::string &msg)
-: Exception(file, line, NULL_POINTER + " " + msg) {
-}
+        : Exception(file, line, NULL_POINTER + " " + msg)
+{}
 
-NullPointer::~NullPointer() throw() {
-}
+NullPointer::~NullPointer() throw()
+{}
 
 OpenError::OpenError(const std::string &file, const unsigned int line, const std::string &msg)
-: Exception(file, line, OPEN_ERROR + " " + msg) {
-}
+        : Exception(file, line, OPEN_ERROR + " " + msg)
+{}
 
-OpenError::~OpenError() throw() {
-}
+OpenError::~OpenError() throw()
+{}
 
 SDL_Exception::SDL_Exception(const std::string &file, const unsigned int line, const std::string &msg)
-: Exception(file, line, SDL_EXCEPTION + " " + msg) {
-}
+        : Exception(file, line, SDL_EXCEPTION + " " + msg)
+{}
 
-SDL_Exception::~SDL_Exception() throw() {
-}
+SDL_Exception::~SDL_Exception() throw()
+{}
 
 UnexpectedValue::UnexpectedValue(const std::string &file, const unsigned int line, const std::string &value)
-: Exception(file, line, UNEXPECTED_VALUE + " " + value) {
-}
+        : Exception(file, line, UNEXPECTED_VALUE + " " + value)
+{}
 
 UnexpectedValue::UnexpectedValue(const std::string &file, const unsigned int line, const unsigned int value)
-: Exception(file, line, UNEXPECTED_VALUE, value) {
-}
+        : Exception(file, line, UNEXPECTED_VALUE, value)
+{}
 
-UnexpectedValue::~UnexpectedValue() throw() {
-}
+UnexpectedValue::~UnexpectedValue() throw()
+{}

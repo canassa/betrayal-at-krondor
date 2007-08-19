@@ -22,32 +22,33 @@
 #include "PanelWidget.h"
 
 PanelWidget::PanelWidget(const Rectangle &r)
-: ContainerWidget(r)
-, background(0)
-{
-}
+        : ContainerWidget(r)
+        , background(0)
+{}
 
 PanelWidget::~PanelWidget()
-{
-}
+{}
 
 void
 PanelWidget::SetBackground(Image *img)
 {
-  if (!img) {
-    throw NullPointer(__FILE__, __LINE__);
-  }
-  background = img;
+    if (!img)
+    {
+        throw NullPointer(__FILE__, __LINE__);
+    }
+    background = img;
 }
 
 void
 PanelWidget::Draw()
 {
-  if (IsVisible()) {
-    MediaToolkit::GetInstance()->GetVideo()->Clear(rect.GetXPos(), rect.GetYPos(), rect.GetWidth(), rect.GetHeight());
-    if (background) {
-      background->Draw(rect.GetXPos(), rect.GetYPos());
+    if (IsVisible())
+    {
+        MediaToolkit::GetInstance()->GetVideo()->Clear(rect.GetXPos(), rect.GetYPos(), rect.GetWidth(), rect.GetHeight());
+        if (background)
+        {
+            background->Draw(rect.GetXPos(), rect.GetYPos());
+        }
+        DrawChildWidgets();
     }
-    DrawChildWidgets();
-  }
 }

@@ -21,140 +21,163 @@
 #include "DialogResource.h"
 
 DialogData::DialogData()
-: childDialogs(0)
-, text()
-, childData()
-{
-}
+        : childDialogs(0)
+        , text()
+        , childData()
+{}
 
 DialogData::~DialogData()
 {
-  text.clear();
-  for (unsigned int i = 0; i < childData.size(); i++) {
-    delete childData[i];
-  }
-  childData.clear();
+    text.clear();
+    for (unsigned int i = 0; i < childData.size(); i++)
+    {
+        delete childData[i];
+    }
+    childData.clear();
 }
 
 DialogResource::DialogResource()
-: dialogMap()
-{
-}
+        : dialogMap()
+{}
 
 DialogResource::~DialogResource()
 {
-  Clear();
+    Clear();
 }
 
 unsigned int
-DialogResource::GetSize() const {
-  return dialogMap.size();
+DialogResource::GetSize() const
+{
+    return dialogMap.size();
 }
 
 bool
-DialogResource::Find(const unsigned int n, DialogData* data) {
-  std::map<const unsigned int, DialogData*>::iterator it = dialogMap.find(n);
-  if (it != dialogMap.end()) {
-    data = it->second;
-    return true;
-  }
-  return false;
+DialogResource::Find(const unsigned int n, DialogData* data)
+{
+    std::map<const unsigned int, DialogData*>::iterator it = dialogMap.find(n);
+    if (it != dialogMap.end())
+    {
+        data = it->second;
+        return true;
+    }
+    return false;
 }
 
 void
 DialogResource::Clear()
 {
-  for (std::map<const unsigned int, DialogData*>::iterator it = dialogMap.begin(); it != dialogMap.end(); ++it) {
-    delete it->second;
-  }
-  dialogMap.clear();
+    for (std::map<const unsigned int, DialogData*>::iterator it = dialogMap.begin(); it != dialogMap.end(); ++it)
+    {
+        delete it->second;
+    }
+    dialogMap.clear();
 }
 
-typedef struct _DialogPageOffset {
-  int type;
-  unsigned int offset;
-} DialogPageOffset;
+typedef struct _DialogPageOffset
+{
+    int type;
+    unsigned int offset;
+}
+DialogPageOffset;
 
 void
 DialogResource::ReadDialogData(FileBuffer *buffer, DialogData *data)
 {
-  try {
-    buffer->Skip(5);
-    data->childDialogs = buffer->GetUint8();
-    unsigned int n = buffer->GetUint8();
-    buffer->Skip(2);
-    std::vector<DialogPageOffset> pageOffset;
-    for (unsigned int i = 0; i < data->childDialogs; i++) {
-      DialogPageOffset dpo;
-      buffer->Skip(4);
-      dpo.type = buffer->GetSint16LE();
-      dpo.offset = buffer->GetUint32LE();
-      pageOffset.push_back(dpo);
+    try
+    {
+        buffer->Skip(5);
+        data->childDialogs = buffer->GetUint8();
+        unsigned int n = buffer->GetUint8();
+        buffer->Skip(2);
+        std::vector<DialogPageOffset> pageOffset;
+        for (unsigned int i = 0; i < data->childDialogs; i++)
+        {
+            DialogPageOffset dpo;
+            buffer->Skip(4);
+            dpo.type = buffer->GetSint16LE();
+            dpo.offset = buffer->GetUint32LE();
+            pageOffset.push_back(dpo);
+        }
+        bool done = false;
+        for (unsigned int i = 0; i < data->childDialogs; i++)
+        {
+            if (pageOffset[i].type >= 0)
+            {
+                buffer->Seek(pageOffset[i].offset);
+                DialogData* child = new DialogData;
+                ReadDialogData(buffer, child);
+                data->childData.push_back(child);
+                done = true;
+            }
+        }
+        if (!done)
+        {
+            for (unsigned int j = 0; j < n; j++)
+            {
+                buffer->Skip(10);
+            }
+            for (unsigned int i = 0; i < data->childDialogs; i++)
+            {
+                std::string s = buffer->GetString();
+                data->text.push_back(s);
+                done = true;
+            }
+            if (!done)
+            {
+                std::string s = buffer->GetString();
+                data->text.push_back(s);
+            }
+        }
+        pageOffset.clear();
     }
-    bool done = false;
-    for (unsigned int i = 0; i < data->childDialogs; i++) {
-      if (pageOffset[i].type >= 0) {
-        buffer->Seek(pageOffset[i].offset);
-        DialogData* child = new DialogData;
-        ReadDialogData(buffer, child);
-        data->childData.push_back(child);
-        done = true;
-      }
+    catch (Exception &e)
+    {
+        e.Print("DialogResource::ReadDialogData");
+        throw;
     }
-    if (!done) {
-      for (unsigned int j = 0; j < n; j++) {
-        buffer->Skip(10);
-      }
-      for (unsigned int i = 0; i < data->childDialogs; i++) {
-        std::string s = buffer->GetString();
-        data->text.push_back(s);
-        done = true;
-      }
-      if (!done) {
-        std::string s = buffer->GetString();
-        data->text.push_back(s);
-      }
-    }
-    pageOffset.clear();
-  } catch (Exception &e) {
-    e.Print("DialogResource::ReadDialogData");
-    throw;
-  }
 }
 
 void
 DialogResource::Load(FileBuffer *buffer)
 {
-  try {
-    Clear();
-    unsigned int n = buffer->GetUint16LE();
-    std::map<const unsigned int, unsigned int> offset;
-    for (unsigned int i = 0; i < n; i++) {
-      unsigned int key = buffer->GetUint32LE();
-      unsigned int value = buffer->GetUint32LE();
-      offset.insert(std::pair<const unsigned int, unsigned int>(key, value));
+    try
+    {
+        Clear();
+        unsigned int n = buffer->GetUint16LE();
+        std::map<const unsigned int, unsigned int> offset;
+        for (unsigned int i = 0; i < n; i++)
+        {
+            unsigned int key = buffer->GetUint32LE();
+            unsigned int value = buffer->GetUint32LE();
+            offset.insert(std::pair<const unsigned int, unsigned int>(key, value));
+        }
+        for (std::map<const unsigned int, unsigned int>::iterator it = offset.begin(); it != offset.end(); ++it)
+        {
+            buffer->Seek(it->second);
+            DialogData* data = new DialogData;
+            ReadDialogData(buffer, data);
+            dialogMap.insert(std::pair<const unsigned int, DialogData*>(it->first, data));
+        }
+        offset.clear();
     }
-    for (std::map<const unsigned int, unsigned int>::iterator it = offset.begin(); it != offset.end(); ++it) {
-      buffer->Seek(it->second);
-      DialogData* data = new DialogData;
-      ReadDialogData(buffer, data);
-      dialogMap.insert(std::pair<const unsigned int, DialogData*>(it->first, data));
+    catch (Exception &e)
+    {
+        e.Print("DialogResource::Load");
+        throw;
     }
-    offset.clear();
-  } catch (Exception &e) {
-    e.Print("DialogResource::Load");
-    throw;
-  }
 }
 
 void
 DialogResource::Save(FileBuffer *buffer)
 {
-  try {
-    // TODO
-    buffer = buffer;
-  } catch (Exception &e) {
-    e.Print("DialogResource::Save");
-    throw;
-  }
+    try
+    {
+        // TODO
+        buffer = buffer;
+    }
+    catch (Exception &e)
+    {
+        e.Print("DialogResource::Save");
+        throw;
+    }
 }

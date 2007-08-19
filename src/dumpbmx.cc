@@ -24,33 +24,43 @@
 #include "FileManager.h"
 #include "ImageResource.h"
 
-int main(int argc, char *argv[]) {
-  try {
-    if (argc != 2) {
-      std::cerr << "Usage: " << argv[0] << " <BMX-file>" << std::endl;
-      return 1;
-    }
-    ImageResource *bmx = new ImageResource;
-    FileManager::GetInstance()->Load(bmx, argv[1]);
-    for (unsigned int i = 0; i < bmx->GetNumImages(); i++) {
-      Image *image = bmx->GetImage(i);
-      printf("%2d  %dx%d\n", i, image->GetWidth(), image->GetHeight());
-      for (int y = 0; y < image->GetHeight(); y++) {
-        for (int x = 0; x < image->GetWidth(); x++) {
-          printf("%02x ", image->GetPixel(x, y));
+int main(int argc, char *argv[])
+{
+    try
+    {
+        if (argc != 2)
+        {
+            std::cerr << "Usage: " << argv[0] << " <BMX-file>" << std::endl;
+            return 1;
         }
-        printf("\n");
-      }
+        ImageResource *bmx = new ImageResource;
+        FileManager::GetInstance()->Load(bmx, argv[1]);
+        for (unsigned int i = 0; i < bmx->GetNumImages(); i++)
+        {
+            Image *image = bmx->GetImage(i);
+            printf("%2d  %dx%d\n", i, image->GetWidth(), image->GetHeight());
+            for (int y = 0; y < image->GetHeight(); y++)
+            {
+                for (int x = 0; x < image->GetWidth(); x++)
+                {
+                    printf("%02x ", image->GetPixel(x, y));
+                }
+                printf("\n");
+            }
+        }
+        delete bmx;
+        FileManager::CleanUp();
+        Directories::CleanUp();
     }
-    delete bmx;
-    FileManager::CleanUp();
-    Directories::CleanUp();
-  } catch (Exception &e) {
-    e.Print("main");
-  } catch (...) {
-    /* every exception should have been handled before */
-    std::cerr << "Unhandled exception" << std::endl;
-  }
-  return 0;
+    catch (Exception &e)
+    {
+        e.Print("main");
+    }
+    catch (...)
+    {
+        /* every exception should have been handled before */
+        std::cerr << "Unhandled exception" << std::endl;
+    }
+    return 0;
 }
 

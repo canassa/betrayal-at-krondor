@@ -20,64 +20,62 @@
 #include "Camera.h"
 
 Camera::Camera(const Vector2D &p, const int heading)
-: position(p)
-, orientation(heading)
-{
-}
+        : position(p)
+        , orientation(heading)
+{}
 
 Camera::~Camera()
-{
-}
+{}
 
 Position&
 Camera::GetPosition()
 {
-  return position;
+    return position;
 }
 
 Vector2D &
 Camera::GetPos()
 {
-  return position.GetPos();
+    return position.GetPos();
 }
 
 void
 Camera::SetPosition(const Vector2D &p)
 {
-  position.SetPos(p);
-  Notify();
+    position.SetPos(p);
+    Notify();
 }
 
 Orientation&
 Camera::GetOrientation()
 {
-  return orientation;
+    return orientation;
 }
 
 int
 Camera::GetHeading() const
 {
-  return orientation.GetHeading();
+    return orientation.GetHeading();
 }
 
 void
 Camera::SetHeading(const int heading)
 {
-  orientation.SetHeading(heading);
-  Notify();
+    orientation.SetHeading(heading);
+    Notify();
 }
 
 void
 Camera::Move(const int delta)
 {
-  position.Adjust((int)((float)delta * orientation.GetSin()),
-                  (int)((float)delta * orientation.GetCos()));
-  Notify();
+    position.Adjust((int)((float)delta * orientation.GetSin()),
+                    (int)((float)delta * orientation.GetCos()));
+    Notify();
 }
 
 void
 Camera::Turn(const int delta)
 {
-  orientation.AdjustHeading(delta);
-  Notify();
+    orientation.AdjustHeading(delta);
+    Notify();
 }

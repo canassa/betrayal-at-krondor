@@ -31,27 +31,30 @@
 static const int LBL_STANDARD = 0;
 static const int LBL_TITLE    = 3;
 
-typedef struct _LabelData {
-  int xpos;
-  int ypos;
-  int type;
-  int color;
-  int shadow;
-  std::string label;
-} LabelData;
+typedef struct _LabelData
+{
+    int xpos;
+    int ypos;
+    int type;
+    int color;
+    int shadow;
+    std::string label;
+}
+LabelData;
 
 class LabelResource
-: public ResourceData {
-  private:
+            : public ResourceData
+{
+private:
     std::vector<LabelData> data;
-  public:
+public:
     LabelResource();
     virtual ~LabelResource();
     unsigned int GetSize() const;
-    LabelData& GetLabelData(const unsigned int n);
+    LabelData& GetLabelData ( const unsigned int n );
     void Clear();
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

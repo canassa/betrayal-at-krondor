@@ -29,37 +29,40 @@
 #include "FileBuffer.h"
 
 typedef enum _SoundFormat {
-  SF_MIDI,
-  SF_WAVE,
-  SF_UNKNOWN
+    SF_MIDI,
+    SF_WAVE,
+    SF_UNKNOWN
 } SoundFormat;
 
-typedef struct _MidiEvent {
-  unsigned int delta;
-  unsigned int size;
-  uint8_t data[8];
-} MidiEvent;
+typedef struct _MidiEvent
+{
+    unsigned int delta;
+    unsigned int size;
+    uint8_t data[8];
+}
+MidiEvent;
 
-class Sound {
-  private:
+class Sound
+{
+private:
     unsigned int type;
     unsigned int channel;
     SoundFormat format;
     FileBuffer *buffer;
     std::multimap<unsigned int, MidiEvent> midiEvents;
-    void PutVariableLength(FileBuffer *buf, unsigned int n);
-    void CreateWaveSamples(FileBuffer *buf);
-    void CreateMidiEvents(FileBuffer *buf);
+    void PutVariableLength ( FileBuffer *buf, unsigned int n );
+    void CreateWaveSamples ( FileBuffer *buf );
+    void CreateMidiEvents ( FileBuffer *buf );
     void GenerateMidi();
     void GenerateWave();
-  public:
-    Sound(const unsigned int t);
+public:
+    Sound ( const unsigned int t );
     virtual ~Sound();
     unsigned int GetType() const;
     unsigned int GetChannel() const;
     SoundFormat GetFormat() const;
     FileBuffer * GetSamples();
-    void AddVoice(FileBuffer *buf);
+    void AddVoice ( FileBuffer *buf );
     void GenerateBuffer();
 };
 

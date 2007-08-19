@@ -50,29 +50,30 @@
 #include "TextWidget.h"
 #include "WorldViewWidget.h"
 
-class WidgetFactory {
-  public:
+class WidgetFactory
+{
+public:
     WidgetFactory();
     virtual ~WidgetFactory();
-    TextButtonWidget* CreateTextButton(RequestData& data, FontResource& fnt, ActionEventListener *ael);
-    ImageButtonWidget* CreateImageButton(RequestData& data, ImageResource& normal, ImageResource& pressed, ActionEventListener *ael);
-    CharacterButtonWidget* CreateCharacterButton(RequestData& data, PlayerCharacter *pc, ImageResource& img, ActionEventListener *ael);
-    ChoiceWidget* CreateChoice(RequestData& data, ImageResource& img, ActionEventListener *ael);
-    CompassWidget* CreateCompass(Camera *cam, Image *img);
-    CombatViewWidget* CreateCombatView(RequestData& data, Game *game);
-    MapViewWidget* CreateMapView(RequestData& data, Game *game);
-    WorldViewWidget* CreateWorldView(RequestData& data, Game *game);
-    TextWidget* CreateLabel(LabelData& data, FontResource& fnt, const int panelWidth);
-    BadgeWidget* CreateBadge(const Rectangle &r, const std::string& s, Font *f);
-    ImageWidget* CreateImage(const Rectangle &r, Image *img, const Flipping flip = NONE);
-    InventoryItemWidget* CreateInventoryItem(const Rectangle &r, const int a, Image *img, const std::string& s, Font *f, ActionEventListener *ael);
-    InventoryWidget *CreateInventory(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, FontResource& fnt, ActionEventListener *ael);
-    EquipmentItemWidget* CreateEquipmentItem(const Rectangle &r, Image *img, const std::string& s, Font *f);
-    EquipmentWidget *CreateEquipment(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, ImageResource& slot, FontResource& fnt);
-    PortraitWidget* CreatePortrait(const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb);
-    RatingsWidget* CreateRatings(const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb, Font *f);
-    SkillsWidget* CreateSkills(const Rectangle &r, PlayerCharacter *pc, Image *sw, Image *bl, Font *f);
-    PanelWidget* CreatePanel(const Rectangle &r, Image *img);
+    TextButtonWidget* CreateTextButton ( RequestData& data, FontResource& fnt, ActionEventListener *ael );
+    ImageButtonWidget* CreateImageButton ( RequestData& data, ImageResource& normal, ImageResource& pressed, ActionEventListener *ael );
+    CharacterButtonWidget* CreateCharacterButton ( RequestData& data, PlayerCharacter *pc, ImageResource& img, ActionEventListener *ael );
+    ChoiceWidget* CreateChoice ( RequestData& data, ImageResource& img, ActionEventListener *ael );
+    CompassWidget* CreateCompass ( Camera *cam, Image *img );
+    CombatViewWidget* CreateCombatView ( RequestData& data, Game *game );
+    MapViewWidget* CreateMapView ( RequestData& data, Game *game );
+    WorldViewWidget* CreateWorldView ( RequestData& data, Game *game );
+    TextWidget* CreateLabel ( LabelData& data, FontResource& fnt, const int panelWidth );
+    BadgeWidget* CreateBadge ( const Rectangle &r, const std::string& s, Font *f );
+    ImageWidget* CreateImage ( const Rectangle &r, Image *img, const Flipping flip = NONE );
+    InventoryItemWidget* CreateInventoryItem ( const Rectangle &r, const int a, Image *img, const std::string& s, Font *f, ActionEventListener *ael );
+    InventoryWidget *CreateInventory ( const Rectangle &r, PlayerCharacter *pc, ImageResource& img, FontResource& fnt, ActionEventListener *ael );
+    EquipmentItemWidget* CreateEquipmentItem ( const Rectangle &r, Image *img, const std::string& s, Font *f );
+    EquipmentWidget *CreateEquipment ( const Rectangle &r, PlayerCharacter *pc, ImageResource& img, ImageResource& slot, FontResource& fnt );
+    PortraitWidget* CreatePortrait ( const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb );
+    RatingsWidget* CreateRatings ( const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb, Font *f );
+    SkillsWidget* CreateSkills ( const Rectangle &r, PlayerCharacter *pc, Image *sw, Image *bl, Font *f );
+    PanelWidget* CreatePanel ( const Rectangle &r, Image *img );
 };
 
 #endif

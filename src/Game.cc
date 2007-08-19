@@ -25,80 +25,88 @@
 #include "SceneFactory.h"
 
 Game::Game()
-: name("")
-, chapter(0)
-, party(0)
-, scene(0)
-, camera(0)
+        : name("")
+        , chapter(0)
+        , party(0)
+        , scene(0)
+        , camera(0)
 {
-  try {
-    FileManager::GetInstance()->Load(&partyRes, "PARTY.DAT");
-    FileManager::GetInstance()->Load(&buttonImages, "HEADS.BMX");
-    chapter = new Chapter(1);
-    party = new Party;
-    for (unsigned int i = 0; i < partyRes.GetSize(); i++) {
-      PartyData *pd = partyRes.GetData(i);
-      PlayerCharacter *pc = new PlayerCharacter(pd->name);
-      pc->SetButtonImage(buttonImages.GetImage(i));
-      party->AddMember(pc);
+    try
+    {
+        FileManager::GetInstance()->Load(&partyRes, "PARTY.DAT");
+        FileManager::GetInstance()->Load(&buttonImages, "HEADS.BMX");
+        chapter = new Chapter(1);
+        party = new Party;
+        for (unsigned int i = 0; i < partyRes.GetSize(); i++)
+        {
+            PartyData *pd = partyRes.GetData(i);
+            PlayerCharacter *pc = new PlayerCharacter(pd->name);
+            pc->SetButtonImage(buttonImages.GetImage(i));
+            party->AddMember(pc);
+        }
+        SceneFactory sf;
+        scene = sf.CreateScene(chapter->GetZone());
+        camera = new Camera(Vector2D(0, 0), 0);
     }
-    SceneFactory sf;
-    scene = sf.CreateScene(chapter->GetZone());
-    camera = new Camera(Vector2D(0, 0), 0);
-  } catch (Exception &e) {
-    e.Print("Game::Game");
-    throw;
-  }
+    catch (Exception &e)
+    {
+        e.Print("Game::Game");
+        throw;
+    }
 }
 
 Game::~Game()
 {
-  if (camera) {
-    delete camera;
-  }
-  if (scene) {
-    delete scene;
-  }
-  if (party) {
-    delete party;
-  }
-  if (chapter) {
-    delete chapter;
-  }
+    if (camera)
+    {
+        delete camera;
+    }
+    if (scene)
+    {
+        delete scene;
+    }
+    if (party)
+    {
+        delete party;
+    }
+    if (chapter)
+    {
+        delete chapter;
+    }
 }
 
 std::string&
 Game::GetName()
 {
-  return name;
+    return name;
 }
 
 void
 Game::SetName(const std::string& s)
 {
-  name = s;
+    name = s;
 }
 
 Party *
 Game::GetParty() const
 {
-  return party;
+    return party;
 }
 
 Chapter *
 Game::GetChapter() const
 {
-  return chapter;
+    return chapter;
 }
 
 Camera *
 Game::GetCamera() const
 {
-  return camera;
+    return camera;
 }
 
 Scene *
 Game::GetScene() const
 {
-  return scene;
+    return scene;
 }

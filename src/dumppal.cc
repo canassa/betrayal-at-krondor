@@ -24,26 +24,34 @@
 #include "FileManager.h"
 #include "PaletteResource.h"
 
-int main(int argc, char *argv[]) {
-  try {
-    if (argc != 2) {
-      std::cerr << "Usage: " << argv[0] << " <PAL-file>" << std::endl;
-      return 1;
+int main(int argc, char *argv[])
+{
+    try
+    {
+        if (argc != 2)
+        {
+            std::cerr << "Usage: " << argv[0] << " <PAL-file>" << std::endl;
+            return 1;
+        }
+        PaletteResource *pal = new PaletteResource;
+        FileManager::GetInstance()->Load(pal, argv[1]);
+        for (unsigned int i = 0; i < pal->GetPalette()->GetSize(); i++)
+        {
+            printf("%3d #%02X%02X%02X\n", i, pal->GetPalette()->GetColor(i).r, pal->GetPalette()->GetColor(i).g, pal->GetPalette()->GetColor(i).b);
+        }
+        delete pal;
+        FileManager::CleanUp();
+        Directories::CleanUp();
     }
-    PaletteResource *pal = new PaletteResource;
-    FileManager::GetInstance()->Load(pal, argv[1]);
-    for (unsigned int i = 0; i < pal->GetPalette()->GetSize(); i++) {
-      printf("%3d #%02X%02X%02X\n", i, pal->GetPalette()->GetColor(i).r, pal->GetPalette()->GetColor(i).g, pal->GetPalette()->GetColor(i).b);
+    catch (Exception &e)
+    {
+        e.Print("main");
     }
-    delete pal;
-    FileManager::CleanUp();
-    Directories::CleanUp();
-  } catch (Exception &e) {
-    e.Print("main");
-  } catch (...) {
-    /* every exception should have been handled before */
-    std::cerr << "Unhandled exception" << std::endl;
-  }
-  return 0;
+    catch (...)
+    {
+        /* every exception should have been handled before */
+        std::cerr << "Unhandled exception" << std::endl;
+    }
+    return 0;
 }
 

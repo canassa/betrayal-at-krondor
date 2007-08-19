@@ -22,81 +22,92 @@
 #include "MousePointerManager.h"
 
 InventoryItemWidget::InventoryItemWidget(const Rectangle &r, const int a)
-: ActiveWidget(r, a)
-, iconImage(0)
-, label(0)
-, pressed(false)
-, selected(false)
+        : ActiveWidget(r, a)
+        , iconImage(0)
+        , label(0)
+        , pressed(false)
+        , selected(false)
 {
-  SetFocusable(false);
+    SetFocusable(false);
 }
 
 InventoryItemWidget::~InventoryItemWidget()
 {
-  if (label) {
-    delete label;
-  }
+    if (label)
+    {
+        delete label;
+    }
 }
 
 void
 InventoryItemWidget::SetImage(Image *icon)
 {
-  if (!icon) {
-    throw NullPointer(__FILE__, __LINE__);
-  }
-  iconImage = icon;
+    if (!icon)
+    {
+        throw NullPointer(__FILE__, __LINE__);
+    }
+    iconImage = icon;
 }
 
 void
 InventoryItemWidget::SetLabel(const std::string& s, Font *f)
 {
-  label = new TextWidget(Rectangle(rect.GetXPos(), rect.GetYPos(), rect.GetWidth(), rect.GetHeight()), f);
-  label->SetText(s);
-  label->SetColor(INFO_TEXT_COLOR);
-  label->SetAlignment(HA_RIGHT, VA_BOTTOM);
+    label = new TextWidget(Rectangle(rect.GetXPos(), rect.GetYPos(), rect.GetWidth(), rect.GetHeight()), f);
+    label->SetText(s);
+    label->SetColor(INFO_TEXT_COLOR);
+    label->SetAlignment(HA_RIGHT, VA_BOTTOM);
 }
 
 void
 InventoryItemWidget::Draw()
 {
-  if (IsVisible()) {
-    if (selected) {
+    if (IsVisible())
+    {
+        if (selected)
+        {}
+        if ((!pressed) && (iconImage))
+        {
+            iconImage->Draw(rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2,
+                            rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2, 0);
+        }
+        if (label && !pressed)
+        {
+            label->Draw();
+        }
     }
-    if ((!pressed) && (iconImage)) {
-      iconImage->Draw(rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2,
-                      rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2, 0);
-    }
-    if (label && !pressed) {
-      label->Draw();
-    }
-  }
 }
 
 void
 InventoryItemWidget::LeftClick(const bool toggle, const int x, const int y)
 {
-  if (IsVisible()) {
-    pressed = toggle;
-    MousePointer *mp = MousePointerManager::GetInstance()->GetCurrentPointer();
-    if (toggle) {
-      mp->SetDragImage(iconImage,
-                       rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2 - x,
-                       rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2 - y);
-      GenerateActionEvent(GetAction());
-    } else {
-      mp->SetDragImage(0, 0, 0);
-      GenerateActionEvent(GetAction() + RELEASE_OFFSET);
+    if (IsVisible())
+    {
+        pressed = toggle;
+        MousePointer *mp = MousePointerManager::GetInstance()->GetCurrentPointer();
+        if (toggle)
+        {
+            mp->SetDragImage(iconImage,
+                             rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2 - x,
+                             rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2 - y);
+            GenerateActionEvent(GetAction());
+        }
+        else
+        {
+            mp->SetDragImage(0, 0, 0);
+            GenerateActionEvent(GetAction() + RELEASE_OFFSET);
+        }
     }
-  }
 }
 
 void
 InventoryItemWidget::RightClick(const bool toggle, const int, const int)
 {
-  if (IsVisible()) {
-    selected = toggle;
-    if (toggle) {
-      GenerateActionEvent(GetAction() + RIGHT_CLICK_OFFSET);
+    if (IsVisible())
+    {
+        selected = toggle;
+        if (toggle)
+        {
+            GenerateActionEvent(GetAction() + RIGHT_CLICK_OFFSET);
+        }
     }
-  }
 }

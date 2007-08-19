@@ -31,22 +31,23 @@
 #include "Widget.h"
 
 typedef enum _Side {
-  LEFT_SIDE, RIGHT_SIDE
+    LEFT_SIDE, RIGHT_SIDE
 } Side;
 
 class SkillLevelWidget
-: public Widget {
-  private:
+            : public Widget
+{
+private:
     Side side;
     Image *sword;
     Image *blood;
     TextWidget *skill;
     TextWidget *level;
     int value;
-  public:
-    SkillLevelWidget(const Rectangle &r, const Side s, Image *sw, Image *bl, Font *f);
+public:
+    SkillLevelWidget ( const Rectangle &r, const Side s, Image *sw, Image *bl, Font *f );
     virtual ~SkillLevelWidget();
-    void SetLevel(const std::string& s, const int v);
+    void SetLevel ( const std::string& s, const int v );
     void Draw();
 };
 

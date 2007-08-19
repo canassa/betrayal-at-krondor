@@ -30,8 +30,9 @@
 #include "Widget.h"
 
 class RatingsWidget
-: public Widget {
-  private:
+            : public Widget
+{
+private:
     PlayerCharacter *playerCharacter;
     Image *horizontalBorder;
     Image *verticalBorder;
@@ -50,10 +51,10 @@ class RatingsWidget
     TextWidget *maximumHealth;
     TextWidget *maximumStamina;
     TextWidget *condition;
-  public:
-    RatingsWidget(const Rectangle &r, PlayerCharacter *pc, Font *f);
+public:
+    RatingsWidget ( const Rectangle &r, PlayerCharacter *pc, Font *f );
     virtual ~RatingsWidget();
-    void SetBorders(Image *hb, Image *vb);
+    void SetBorders ( Image *hb, Image *vb );
     void Draw();
 };
 

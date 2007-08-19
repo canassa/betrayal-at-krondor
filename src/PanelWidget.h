@@ -27,14 +27,15 @@
 #include "ContainerWidget.h"
 #include "Image.h"
 
-class PanelWidget: public ContainerWidget {
-  private:
+class PanelWidget: public ContainerWidget
+{
+private:
     Image *background;
-  public:
-    PanelWidget(const Rectangle &r);
+public:
+    PanelWidget ( const Rectangle &r );
     virtual ~PanelWidget();
     void Draw();
-    void SetBackground(Image *img);
+    void SetBackground ( Image *img );
 };
 
 #endif

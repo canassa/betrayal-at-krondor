@@ -21,153 +21,188 @@
 #include "Exception.h"
 #include "BasicFile.h"
 
-BasicFile::BasicFile() {
-}
+BasicFile::BasicFile()
+{}
 
-BasicFile::~BasicFile() {
-}
+BasicFile::~BasicFile()
+{}
 
 std::string
 BasicFile::GetDefaultPath() const
 {
-  return std::string("");
+    return std::string("");
 }
 
 std::string
 BasicFile::GetAlternatePath() const
 {
-  return std::string("");
+    return std::string("");
 }
 
 std::string
 BasicFile::GetLastResortPath() const
 {
-  return std::string("");
+    return std::string("");
 }
 
 std::string
 BasicFile::GetStoragePath() const
 {
-  return std::string("");
+    return std::string("");
 }
 
 void
-BasicFile::Open(const std::string &name, const bool writable) {
-  if (writable) {
-    std::string filename = GetStoragePath() + name;
-    ofs.open(filename.c_str(), std::ios::out | std::ios::binary);
-    if (ofs.fail()) {
-      throw OpenError(__FILE__, __LINE__, "(" + filename + ")");
-    }
-  } else {
-    std::string filename = GetDefaultPath() + name;
-    ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
-    if (ifs.fail()) {
-      ifs.clear();
-      filename = GetAlternatePath() + name;
-      ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
-      if (ifs.fail()) {
-        ifs.clear();
-        filename = GetLastResortPath() + name;
-        ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
-        if (ifs.fail()) {
-          throw OpenError(__FILE__, __LINE__, "(" + filename + ")");
+BasicFile::Open(const std::string &name, const bool writable)
+{
+    if (writable)
+    {
+        std::string filename = GetStoragePath() + name;
+        ofs.open(filename.c_str(), std::ios::out | std::ios::binary);
+        if (ofs.fail())
+        {
+            throw OpenError(__FILE__, __LINE__, "(" + filename + ")");
         }
-      }
     }
-  }
+    else
+    {
+        std::string filename = GetDefaultPath() + name;
+        ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
+        if (ifs.fail())
+        {
+            ifs.clear();
+            filename = GetAlternatePath() + name;
+            ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
+            if (ifs.fail())
+            {
+                ifs.clear();
+                filename = GetLastResortPath() + name;
+                ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
+                if (ifs.fail())
+                {
+                    throw OpenError(__FILE__, __LINE__, "(" + filename + ")");
+                }
+            }
+        }
+    }
 }
 
 void
-BasicFile::Close() {
-  if (ifs.is_open()) {
-    ifs.close();
-  }
-  if (ofs.is_open()) {
-    ofs.close();
-  }
+BasicFile::Close()
+{
+    if (ifs.is_open())
+    {
+        ifs.close();
+    }
+    if (ofs.is_open())
+    {
+        ofs.close();
+    }
 }
 
 void
-BasicFile::Seek(const std::streamoff offset) {
-  if (ifs.is_open()) {
-    ifs.seekg(offset, std::ios::beg);
-    if (ifs.fail()) {
-      throw IOError(__FILE__, __LINE__);
+BasicFile::Seek(const std::streamoff offset)
+{
+    if (ifs.is_open())
+    {
+        ifs.seekg(offset, std::ios::beg);
+        if (ifs.fail())
+        {
+            throw IOError(__FILE__, __LINE__);
+        }
     }
-  }
-  if (ofs.is_open()) {
-    ofs.seekp(offset, std::ios::beg);
-    if (ofs.fail()) {
-      throw IOError(__FILE__, __LINE__);
+    if (ofs.is_open())
+    {
+        ofs.seekp(offset, std::ios::beg);
+        if (ofs.fail())
+        {
+            throw IOError(__FILE__, __LINE__);
+        }
     }
-  }
 }
 
 void
-BasicFile::SeekEnd(const std::streamoff offset) {
-  if (ifs.is_open()) {
-    ifs.seekg(offset, std::ios::end);
-    if (ifs.fail()) {
-      throw IOError(__FILE__, __LINE__);
+BasicFile::SeekEnd(const std::streamoff offset)
+{
+    if (ifs.is_open())
+    {
+        ifs.seekg(offset, std::ios::end);
+        if (ifs.fail())
+        {
+            throw IOError(__FILE__, __LINE__);
+        }
     }
-  }
-  if (ofs.is_open()) {
-    ofs.seekp(offset, std::ios::end);
-    if (ofs.fail()) {
-      throw IOError(__FILE__, __LINE__);
+    if (ofs.is_open())
+    {
+        ofs.seekp(offset, std::ios::end);
+        if (ofs.fail())
+        {
+            throw IOError(__FILE__, __LINE__);
+        }
     }
-  }
 }
 
 std::streamsize
-BasicFile::Size() {
-  if (ifs.is_open()) {
-    ifs.seekg(0, std::ios::end);
-    if (ifs.fail()) {
-      throw IOError(__FILE__, __LINE__);
+BasicFile::Size()
+{
+    if (ifs.is_open())
+    {
+        ifs.seekg(0, std::ios::end);
+        if (ifs.fail())
+        {
+            throw IOError(__FILE__, __LINE__);
+        }
+        return ifs.tellg();
     }
-    return ifs.tellg();
-  }
-  if (ofs.is_open()) {
-    ofs.seekp(0, std::ios::end);
-    if (ofs.fail()) {
-      throw IOError(__FILE__, __LINE__);
+    if (ofs.is_open())
+    {
+        ofs.seekp(0, std::ios::end);
+        if (ofs.fail())
+        {
+            throw IOError(__FILE__, __LINE__);
+        }
+        return ofs.tellp();
     }
-    return ofs.tellp();
-  }
-  return 0;
+    return 0;
 }
 
 void
 BasicFile::Load(FileBuffer &buffer)
 {
-  try {
-    buffer.Load(ifs);
-  } catch (Exception &e) {
-    e.Print("BasicFile::Load");
-    throw;
-  }
+    try
+    {
+        buffer.Load(ifs);
+    }
+    catch (Exception &e)
+    {
+        e.Print("BasicFile::Load");
+        throw;
+    }
 }
 
 void
 BasicFile::Save(FileBuffer &buffer)
 {
-  try {
-    buffer.Save(ofs);
-  } catch (Exception &e) {
-    e.Print("BasicFile::Save");
-    throw;
-  }
+    try
+    {
+        buffer.Save(ofs);
+    }
+    catch (Exception &e)
+    {
+        e.Print("BasicFile::Save");
+        throw;
+    }
 }
 
 void
 BasicFile::Save(FileBuffer &buffer, const unsigned int n)
 {
-  try {
-    buffer.Save(ofs, n);
-  } catch (Exception &e) {
-    e.Print("BasicFile::Save");
-    throw;
-  }
+    try
+    {
+        buffer.Save(ofs, n);
+    }
+    catch (Exception &e)
+    {
+        e.Print("BasicFile::Save");
+        throw;
+    }
 }

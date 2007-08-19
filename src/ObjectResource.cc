@@ -24,94 +24,104 @@
 ObjectResource* ObjectResource::instance = 0;
 
 ObjectResource::ObjectResource()
-: data()
-{
-}
+        : data()
+{}
 
 ObjectResource::~ObjectResource()
 {
-  Clear();
+    Clear();
 }
 
 ObjectResource*
 ObjectResource::GetInstance()
 {
-  if (!instance) {
-    instance = new ObjectResource();
-    FileManager::GetInstance()->Load(instance, "OBJINFO.DAT");
-  }
-  return instance;
+    if (!instance)
+    {
+        instance = new ObjectResource();
+        FileManager::GetInstance()->Load(instance, "OBJINFO.DAT");
+    }
+    return instance;
 }
 
 void ObjectResource::CleanUp()
 {
-  if (instance) {
-    delete instance;
-    instance = 0;
-  }
+    if (instance)
+    {
+        delete instance;
+        instance = 0;
+    }
 }
 
 unsigned int
-ObjectResource::GetSize() const {
-  return data.size();
+ObjectResource::GetSize() const
+{
+    return data.size();
 }
 
 ObjectInfo&
-ObjectResource::GetObjectInfo(unsigned int n) {
-  return data[n];
+ObjectResource::GetObjectInfo(unsigned int n)
+{
+    return data[n];
 }
 
 void
 ObjectResource::Clear()
 {
-  data.clear();
+    data.clear();
 }
 
 void
 ObjectResource::Load(FileBuffer *buffer)
 {
-  try {
-    Clear();
-    for (unsigned int i = 0; i < 138; i++) {
-      ObjectInfo obj;
-      obj.name = buffer->GetString(30);
-      buffer->Skip(2);
-      obj.flags = buffer->GetUint16LE();
-      buffer->Skip(2);
-      obj.level = buffer->GetSint16LE();
-      obj.value = buffer->GetSint16LE();
-      obj.strengthSwing = buffer->GetSint16LE();
-      obj.strengthThrust = buffer->GetSint16LE();
-      obj.accuracySwing = buffer->GetSint16LE();
-      obj.accuracyThrust = buffer->GetSint16LE();
-      buffer->Skip(2);
-      obj.imageSize = buffer->GetUint16LE();
-      buffer->Skip(4);
-      obj.race = (Race)(buffer->GetUint16LE());
-      buffer->Skip(2);
-      obj.type = (ObjectType)(buffer->GetUint16LE());
-      obj.effectMask = buffer->GetUint16LE();
-      obj.effect = buffer->GetSint16LE();
-      buffer->Skip(4);
-      obj.modifierMask = buffer->GetUint16LE();
-      obj.modifier = buffer->GetSint16LE();
-      buffer->Skip(6);
-      data.push_back(obj);
+    try
+    {
+        Clear();
+        for (unsigned int i = 0; i < 138; i++)
+        {
+            ObjectInfo obj;
+            obj.name = buffer->GetString(30);
+            buffer->Skip(2);
+            obj.flags = buffer->GetUint16LE();
+            buffer->Skip(2);
+            obj.level = buffer->GetSint16LE();
+            obj.value = buffer->GetSint16LE();
+            obj.strengthSwing = buffer->GetSint16LE();
+            obj.strengthThrust = buffer->GetSint16LE();
+            obj.accuracySwing = buffer->GetSint16LE();
+            obj.accuracyThrust = buffer->GetSint16LE();
+            buffer->Skip(2);
+            obj.imageSize = buffer->GetUint16LE();
+            buffer->Skip(4);
+            obj.race = (Race)(buffer->GetUint16LE());
+            buffer->Skip(2);
+            obj.type = (ObjectType)(buffer->GetUint16LE());
+            obj.effectMask = buffer->GetUint16LE();
+            obj.effect = buffer->GetSint16LE();
+            buffer->Skip(4);
+            obj.modifierMask = buffer->GetUint16LE();
+            obj.modifier = buffer->GetSint16LE();
+            buffer->Skip(6);
+            data.push_back(obj);
+        }
     }
-  } catch (Exception &e) {
-    e.Print("ObjectResource::Load");
-    throw;
-  }
+    catch (Exception &e)
+    {
+        e.Print("ObjectResource::Load");
+        throw;
+    }
 }
 
 void
 ObjectResource::Save(FileBuffer *buffer)
 {
-  try {
-    // TODO
-    buffer = buffer;
-  } catch (Exception &e) {
-    e.Print("ObjectResource::Save");
-    throw;
-  }
+    try
+    {
+        // TODO
+        buffer = buffer;
+    }
+    catch (Exception &e)
+    {
+        e.Print("ObjectResource::Save");
+        throw;
+    }
 }

@@ -21,32 +21,32 @@
 #include "ConfigFile.h"
 #include "Directories.h"
 
-ConfigFile::ConfigFile() {
-}
+ConfigFile::ConfigFile()
+{}
 
-ConfigFile::~ConfigFile() {
-}
+ConfigFile::~ConfigFile()
+{}
 
 std::string
 ConfigFile::GetDefaultPath() const
 {
-  return Directories::GetInstance()->GetUserPath();
+    return Directories::GetInstance()->GetUserPath();
 }
 
 std::string
 ConfigFile::GetAlternatePath() const
 {
-  return Directories::GetInstance()->GetSharedPath();
+    return Directories::GetInstance()->GetSharedPath();
 }
 
 std::string
 ConfigFile::GetLastResortPath() const
 {
-  return Directories::GetInstance()->GetResourcePath();
+    return Directories::GetInstance()->GetResourcePath();
 }
 
 std::string
 ConfigFile::GetStoragePath() const
 {
-  return Directories::GetInstance()->GetUserPath();
+    return Directories::GetInstance()->GetUserPath();
 }

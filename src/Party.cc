@@ -20,99 +20,107 @@
 #include "Party.h"
 
 Party::Party()
-: members()
-, numActiveMembers(0)
-{
-}
+        : members()
+        , numActiveMembers(0)
+{}
 
 Party::~Party()
 {
-  for (unsigned int i = 0; i < members.size(); i++) {
-    delete members[i];
-  }
-  members.clear();
-  numActiveMembers = 0;
+    for (unsigned int i = 0; i < members.size(); i++)
+    {
+        delete members[i];
+    }
+    members.clear();
+    numActiveMembers = 0;
 }
 
 unsigned int
 Party::GetNumMembers() const
 {
-  return members.size();
+    return members.size();
 }
 
 PlayerCharacter *
 Party::GetMember(const unsigned int n)
 {
-  return members[n];
+    return members[n];
 }
 
 unsigned int
 Party::GetNumActiveMembers() const
 {
-  return numActiveMembers;
+    return numActiveMembers;
 }
 
 PlayerCharacter *
 Party::GetActiveMember(const int order)
 {
-  unsigned int n = GetActiveMemberIndex(order);
-  if (n < members.size()) {
-    return members[n];
-  }
-  return 0;
+    unsigned int n = GetActiveMemberIndex(order);
+    if (n < members.size())
+    {
+        return members[n];
+    }
+    return 0;
 }
 
 unsigned int
 Party::GetActiveMemberIndex(const int order) const
 {
-  unsigned int i = 0;
-  while (i < members.size()) {
-    if (order == members[i]->GetOrder()) {
-      return i;
+    unsigned int i = 0;
+    while (i < members.size())
+    {
+        if (order == members[i]->GetOrder())
+        {
+            return i;
+        }
+        i++;
     }
-    i++;
-  }
-  return members.size();
+    return members.size();
 }
 
 PlayerCharacter *
 Party::GetSelectedMember()
 {
-  unsigned int i = 0;
-  while (i < members.size()) {
-    if (members[i]->IsSelected()) {
-      return members[i];
+    unsigned int i = 0;
+    while (i < members.size())
+    {
+        if (members[i]->IsSelected())
+        {
+            return members[i];
+        }
+        i++;
     }
-    i++;
-  }
-  return 0;
+    return 0;
 }
 
 void
 Party::AddMember(PlayerCharacter *pc)
 {
-  members.push_back(pc);
+    members.push_back(pc);
 }
 
 void
 Party::ActivateMember(const unsigned int n, const int order)
 {
-  PlayerCharacter *pc = GetActiveMember(order);
-  if (pc) {
-    pc->SetOrder(-1);
-    numActiveMembers--;
-  }
-  if (members[n]->GetOrder() >= 0) {
-    numActiveMembers--;
-  }
-  members[n]->SetOrder(order);
-  numActiveMembers++;
+    PlayerCharacter *pc = GetActiveMember(order);
+    if (pc)
+    {
+        pc->SetOrder(-1);
+        numActiveMembers--;
+    }
+    if (members[n]->GetOrder() >= 0)
+    {
+        numActiveMembers--;
+    }
+    members[n]->SetOrder(order);
+    numActiveMembers++;
 }
 
 void
 Party::SelectMember(const int order)
 {
-  for (unsigned int i = 0; i < members.size(); i++) {
-    members[i]->Select((order >= 0) && (members[i]->GetOrder() == order));
-  }
+    for (unsigned int i = 0; i < members.size(); i++)
+    {
+        members[i]->Select((order >= 0) && (members[i]->GetOrder() == order));
+    }
 }

@@ -34,25 +34,25 @@ static const unsigned int NORMAL_POINTER = 0;
 static const unsigned int SPECIAL_POINTER = 1;
 
 class MousePointerManager
-: public MouseButtonEventListener
-, public MouseMotionEventListener
+            : public MouseButtonEventListener
+            , public MouseMotionEventListener
 {
-  private:
+private:
     unsigned int currentPointer;
     std::vector<MousePointer *> pointerVec;
     static MousePointerManager *instance;
-  protected:
+protected:
     MousePointerManager();
-  public:
+public:
     ~MousePointerManager();
     static MousePointerManager* GetInstance();
     static void CleanUp();
     MousePointer* GetCurrentPointer();
-    void SetCurrentPointer(unsigned int n);
-    void AddPointer(const std::string& resname);
-    void MouseButtonPressed(const MouseButtonEvent &mbe);
-    void MouseButtonReleased(const MouseButtonEvent &mbe);
-    void MouseMoved(const MouseMotionEvent &mme);
+    void SetCurrentPointer ( unsigned int n );
+    void AddPointer ( const std::string& resname );
+    void MouseButtonPressed ( const MouseButtonEvent &mbe );
+    void MouseButtonReleased ( const MouseButtonEvent &mbe );
+    void MouseMoved ( const MouseMotionEvent &mme );
 };
 
 #endif

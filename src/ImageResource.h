@@ -30,24 +30,25 @@
 #include "ResourceData.h"
 
 class ImageResource
-: public ResourceData {
-  private:
+            : public ResourceData
+{
+private:
     unsigned int compression;
     unsigned int numImages;
     std::vector<Image *> images;
-    void DecompressLZW(FileBuffer *from, FileBuffer *to);
-    void DecompressLZ(FileBuffer *from, FileBuffer *to);
-    void DecompressRLE(FileBuffer *from, FileBuffer *to);
-  public:
+    void DecompressLZW ( FileBuffer *from, FileBuffer *to );
+    void DecompressLZ ( FileBuffer *from, FileBuffer *to );
+    void DecompressRLE ( FileBuffer *from, FileBuffer *to );
+public:
     ImageResource();
     virtual ~ImageResource();
     unsigned int GetCompression() const;
-    void SetCompression(const unsigned int c);
+    void SetCompression ( const unsigned int c );
     unsigned int GetNumImages() const;
-    Image * GetImage(unsigned int n) const;
+    Image * GetImage ( unsigned int n ) const;
     void Clear();
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

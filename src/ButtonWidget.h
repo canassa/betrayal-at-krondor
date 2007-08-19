@@ -27,21 +27,21 @@
 #include "Widget.h"
 
 class ButtonWidget
-: public ActiveWidget
+            : public ActiveWidget
 {
-  private:
+private:
     bool enabled;
     bool pressed;
-  public:
-    ButtonWidget(const Rectangle &r, const int a);
+public:
+    ButtonWidget ( const Rectangle &r, const int a );
     virtual ~ButtonWidget();
-    void SetEnabled(const bool toggle);
+    void SetEnabled ( const bool toggle );
     bool IsEnabled() const;
-    void SetPressed(const bool toggle);
+    void SetPressed ( const bool toggle );
     bool IsPressed() const;
     void Reset();
-    virtual void LeftClick(const bool toggle, const int x, const int y) = 0;
-    virtual void RightClick(const bool toggle, const int x, const int y) = 0;
+    virtual void LeftClick ( const bool toggle, const int x, const int y ) = 0;
+    virtual void RightClick ( const bool toggle, const int x, const int y ) = 0;
 };
 
 #endif

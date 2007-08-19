@@ -31,18 +31,18 @@
 
 class BMP
 {
-  private:
+private:
     Image *image;
     Palette *palette;
-  public:
+public:
     BMP();
     virtual ~BMP();
     Image * GetImage() const;
-    void SetImage(Image *img);
+    void SetImage ( Image *img );
     Palette * GetPalette() const;
-    void SetPalette(Palette *pal);
-    void Load(const std::string &name);
-    void Save(const std::string &name);
+    void SetPalette ( Palette *pal );
+    void Load ( const std::string &name );
+    void Save ( const std::string &name );
 };
 
 #endif

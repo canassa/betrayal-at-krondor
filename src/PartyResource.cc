@@ -21,68 +21,76 @@
 #include "PartyResource.h"
 
 PartyResource::PartyResource()
-: data()
-{
-}
+        : data()
+{}
 
 PartyResource::~PartyResource()
 {
-  Clear();
+    Clear();
 }
 
 unsigned int
 PartyResource::GetSize() const
 {
-  return data.size();
+    return data.size();
 }
 
 PartyData *
 PartyResource::GetData(const unsigned int n)
 {
-  return data[n];
+    return data[n];
 }
 
 void
 PartyResource::Clear()
 {
-  for (unsigned int i = 0; i < data.size(); i++) {
-    delete data[i];
-  }
-  data.clear();
+    for (unsigned int i = 0; i < data.size(); i++)
+    {
+        delete data[i];
+    }
+    data.clear();
 }
 
 void
 PartyResource::Load(FileBuffer *buffer)
 {
-  try {
-    Clear();
-    unsigned int offset[PARTY_SIZE];
-    for (unsigned int i = 0; i < PARTY_SIZE; i++) {
-      offset[i] = buffer->GetUint16LE();
-      buffer->Skip(93);
+    try
+    {
+        Clear();
+        unsigned int offset[PARTY_SIZE];
+        for (unsigned int i = 0; i < PARTY_SIZE; i++)
+        {
+            offset[i] = buffer->GetUint16LE();
+            buffer->Skip(93);
+        }
+        buffer->Skip(2);
+        unsigned int start = buffer->GetBytesDone();
+        for (unsigned int i = 0; i < PARTY_SIZE; i++)
+        {
+            buffer->Seek(start + offset[i]);
+            PartyData *pd = new PartyData;
+            pd->name = buffer->GetString();
+            data.push_back(pd);
+        }
     }
-    buffer->Skip(2);
-    unsigned int start = buffer->GetBytesDone();
-    for (unsigned int i = 0; i < PARTY_SIZE; i++) {
-      buffer->Seek(start + offset[i]);
-      PartyData *pd = new PartyData;
-      pd->name = buffer->GetString();
-      data.push_back(pd);
+    catch (Exception &e)
+    {
+        e.Print("PartyResource::Load");
+        throw;
     }
-  } catch (Exception &e) {
-    e.Print("PartyResource::Load");
-    throw;
-  }
 }
 
 void
 PartyResource::Save(FileBuffer *buffer)
 {
-  try {
-    // TODO
-    buffer = buffer;
-  } catch (Exception &e) {
-    e.Print("PartyResource::Save");
-    throw;
-  }
+    try
+    {
+        // TODO
+        buffer = buffer;
+    }
+    catch (Exception &e)
+    {
+        e.Print("PartyResource::Save");
+        throw;
+    }
 }

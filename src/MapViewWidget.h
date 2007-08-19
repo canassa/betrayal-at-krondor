@@ -27,11 +27,12 @@
 #include "GameViewWidget.h"
 
 class MapViewWidget
-: public GameViewWidget {
-  private:
+            : public GameViewWidget
+{
+private:
     void Redraw();
-  public:
-    MapViewWidget(const Rectangle &r, Game *g);
+public:
+    MapViewWidget ( const Rectangle &r, Game *g );
     virtual ~MapViewWidget();
 };
 

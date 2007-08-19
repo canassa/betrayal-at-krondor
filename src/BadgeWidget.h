@@ -27,14 +27,14 @@
 #include "TextWidget.h"
 
 class BadgeWidget
-: public Widget
+            : public Widget
 {
-  private:
+private:
     TextWidget* label;
-  public:
-    BadgeWidget(const Rectangle &r);
+public:
+    BadgeWidget ( const Rectangle &r );
     virtual ~BadgeWidget();
-    void SetLabel(const std::string& s, Font *f);
+    void SetLabel ( const std::string& s, Font *f );
     void Draw();
 };
 

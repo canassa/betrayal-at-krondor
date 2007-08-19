@@ -21,26 +21,25 @@
 #include "Null_Audio.h"
 
 Null_Audio::Null_Audio()
-{
-}
+{}
 
 Null_Audio::~Null_Audio()
-{
-}
+{}
 
 int
 Null_Audio::PlaySound(FileBuffer *buffer, const int repeat)
 {
-  if (buffer) {
-    if (repeat > 1) {
+    if (buffer)
+    {
+        if (repeat > 1)
+        {}
     }
-  }
-  return -1;
+    return -1;
 }
 
 void
 Null_Audio::StopSound(const int channel)
 {
-  if (channel > 0) {
-  }
+    if (channel > 0)
+    {}
 }

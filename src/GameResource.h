@@ -32,25 +32,26 @@
 #include "GameData.h"
 
 class GameResource
-: public GameData {
-  private:
+            : public GameData
+{
+private:
     Game *game;
     unsigned int zone;
     unsigned int xloc;
     unsigned int yloc;
-  public:
+public:
     GameResource();
     virtual ~GameResource();
     Game * GetGame();
-    void SetGame(Game *g);
+    void SetGame ( Game *g );
     unsigned int GetZone() const;
-    void SetZone(const unsigned int z);
+    void SetZone ( const unsigned int z );
     unsigned int GetXLoc() const;
-    void SetXLoc(const unsigned int x);
+    void SetXLoc ( const unsigned int x );
     unsigned int GetYLoc() const;
-    void SetYLoc(const unsigned int y);
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void SetYLoc ( const unsigned int y );
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

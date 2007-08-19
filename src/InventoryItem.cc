@@ -22,214 +22,206 @@
 #include "InventoryItem.h"
 
 InventoryItem::InventoryItem(const unsigned int i, const unsigned int v, const unsigned int f)
-: id(i)
-, value(v)
-, flags(f)
-{
-}
+        : id(i)
+        , value(v)
+        , flags(f)
+{}
 
 InventoryItem::InventoryItem(const InventoryItem &item)
-: id(item.id)
-, value(item.value)
-, flags(item.flags)
-{
-}
+        : id(item.id)
+        , value(item.value)
+        , flags(item.flags)
+{}
 
 InventoryItem::~InventoryItem()
-{
-}
+{}
 
 unsigned int
 InventoryItem::GetId() const
 {
-  return id;
+    return id;
 }
 
 unsigned int
 InventoryItem::GetValue() const
 {
-  return value;
+    return value;
 }
 
 unsigned int
 InventoryItem::GetFlags() const
 {
-  return flags;
+    return flags;
 }
 
 bool
 InventoryItem::IsEquiped() const
 {
-  return flags & EQUIPED_MASK;
+    return flags & EQUIPED_MASK;
 }
 
 void
 InventoryItem::Equip(const bool toggle)
 {
-  if (toggle) {
-    flags |= EQUIPED_MASK;
-  } else {
-    flags &= ~EQUIPED_MASK;
-  }
+    if (toggle)
+    {
+        flags |= EQUIPED_MASK;
+    }
+    else
+    {
+        flags &= ~EQUIPED_MASK;
+    }
 }
 
 InventoryItem &
 InventoryItem::operator=(const InventoryItem &item)
 {
-  id = item.id;
-  value = item.value;
-  flags = item.flags;
-  return *this;
+    id = item.id;
+    value = item.value;
+    flags = item.flags;
+    return *this;
 }
 
 
 SingleInventoryItem::SingleInventoryItem(const unsigned int i)
-: InventoryItem(i, 0, 0)
-{
-}
+        : InventoryItem(i, 0, 0)
+{}
 
 SingleInventoryItem::~SingleInventoryItem()
-{
-}
+{}
 
 const std::string
 SingleInventoryItem::ToString() const
 {
-  return "";
+    return "";
 }
 
 bool
 SingleInventoryItem::operator==(const SingleInventoryItem &) const
 {
-  return false;
+    return false;
 }
 
 bool
 SingleInventoryItem::operator!=(const SingleInventoryItem &) const
 {
-  return true;
+    return true;
 }
 
 
 MultipleInventoryItem::MultipleInventoryItem(const unsigned int i, const unsigned int n)
-: InventoryItem(i, n, 0)
-{
-}
+        : InventoryItem(i, n, 0)
+{}
 
 MultipleInventoryItem::~MultipleInventoryItem()
-{
-}
+{}
 
 void
 MultipleInventoryItem::Add(const unsigned int n)
 {
-  value += n;
+    value += n;
 }
 
 void
 MultipleInventoryItem::Remove(const unsigned int n)
 {
-  value -= n;
+    value -= n;
 }
 
 const std::string
 MultipleInventoryItem::ToString() const
 {
-  std::stringstream ss;
-  ss << value;
-  return ss.str();
+    std::stringstream ss;
+    ss << value;
+    return ss.str();
 }
 
 bool
 MultipleInventoryItem::operator==(const MultipleInventoryItem &item) const
 {
-  return (id == item.id);
+    return (id == item.id);
 }
 
 bool
 MultipleInventoryItem::operator!=(const MultipleInventoryItem &item) const
 {
-  return (id != item.id);
+    return (id != item.id);
 }
 
 
 RepairableInventoryItem::RepairableInventoryItem(const unsigned int i, const unsigned int c)
-: InventoryItem(i, c, REPAIRABLE_MASK)
-{
-}
+        : InventoryItem(i, c, REPAIRABLE_MASK)
+{}
 
 RepairableInventoryItem::~RepairableInventoryItem()
-{
-}
+{}
 
 void
 RepairableInventoryItem::Repair(const unsigned int n)
 {
-  value += n;
+    value += n;
 }
 
 void
 RepairableInventoryItem::Damage(const unsigned int n)
 {
-  value -= n;
+    value -= n;
 }
 
 const std::string
 RepairableInventoryItem::ToString() const
 {
-  std::stringstream ss;
-  ss << value << "%";
-  return ss.str();
+    std::stringstream ss;
+    ss << value << "%";
+    return ss.str();
 }
 
 bool
 RepairableInventoryItem::operator==(const RepairableInventoryItem &) const
 {
-  return false;
+    return false;
 }
 
 bool
 RepairableInventoryItem::operator!=(const RepairableInventoryItem &) const
 {
-  return true;
+    return true;
 }
 
 
 UsableInventoryItem::UsableInventoryItem(const unsigned int i, const unsigned int u)
-: InventoryItem(i, u, 0)
-{
-}
+        : InventoryItem(i, u, 0)
+{}
 
 UsableInventoryItem::~UsableInventoryItem()
-{
-}
+{}
 
 void
 UsableInventoryItem::Use(const unsigned int n)
 {
-  value += n;
+    value += n;
 }
 
 void
 UsableInventoryItem::Restore(const unsigned int n)
 {
-  value -= n;
+    value -= n;
 }
 
 const std::string
 UsableInventoryItem::ToString() const
 {
-  return "";
+    return "";
 }
 
 bool
 UsableInventoryItem::operator==(const UsableInventoryItem &) const
 {
-  return false;
+    return false;
 }
 
 bool
 UsableInventoryItem::operator!=(const UsableInventoryItem &) const
 {
-  return true;
+    return true;
 }

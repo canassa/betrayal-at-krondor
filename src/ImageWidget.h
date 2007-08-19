@@ -28,15 +28,16 @@
 #include "Widget.h"
 
 typedef enum _Flipping {
-  NONE, HORIZONTAL, VERTICAL
+    NONE, HORIZONTAL, VERTICAL
 } Flipping;
 
 class ImageWidget
-: public Widget {
-  private:
+            : public Widget
+{
+private:
     Image *image;
-  public:
-    ImageWidget(const Rectangle &r, Image *img);
+public:
+    ImageWidget ( const Rectangle &r, Image *img );
     virtual ~ImageWidget();
     void HorizontalFlip();
     void VerticalFlip();

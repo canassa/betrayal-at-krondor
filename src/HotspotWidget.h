@@ -27,13 +27,13 @@
 #include "Widget.h"
 
 class HotspotWidget
-: public ActiveWidget
+            : public ActiveWidget
 {
-  public:
-    HotspotWidget(const Rectangle &r, const int a);
+public:
+    HotspotWidget ( const Rectangle &r, const int a );
     virtual ~HotspotWidget();
-    void LeftClick(const bool toggle);
-    void RightClick(const bool toggle);
+    void LeftClick ( const bool toggle );
+    void RightClick ( const bool toggle );
 };
 
 #endif

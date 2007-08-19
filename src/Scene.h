@@ -31,20 +31,21 @@
 #include "GenericObject.h"
 #include "Zone.h"
 
-class Scene {
-  private:
+class Scene
+{
+private:
     Zone& zone;
     std::multimap<const Vector2D, GenericObject *> objects;
     std::multimap<const unsigned int, GenericObject *> zBuffer;
-    void FillZBuffer(Camera *cam);
-    void DrawHorizon(const int x, const int y, const int w, const int h, const int heading);
-    void DrawGround(const int x, const int y, const int w, const int h, Camera *cam);
-    void DrawZBuffer(const int x, const int y, const int w, const int h, const int heading);
-  public:
-    Scene(Zone& z);
+    void FillZBuffer ( Camera *cam );
+    void DrawHorizon ( const int x, const int y, const int w, const int h, const int heading );
+    void DrawGround ( const int x, const int y, const int w, const int h, Camera *cam );
+    void DrawZBuffer ( const int x, const int y, const int w, const int h, const int heading );
+public:
+    Scene ( Zone& z );
     ~Scene();
-    void AddObject(const Vector2D &cell, GenericObject *obj);
-    void DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam);
+    void AddObject ( const Vector2D &cell, GenericObject *obj );
+    void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam );
     void DrawTopDown();
 };
 

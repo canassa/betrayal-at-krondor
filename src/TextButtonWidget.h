@@ -28,17 +28,17 @@
 #include "TextWidget.h"
 
 class TextButtonWidget
-: public ButtonWidget
+            : public ButtonWidget
 {
-  private:
+private:
     TextWidget* label;
-  public:
-    TextButtonWidget(const Rectangle &r, const int a);
+public:
+    TextButtonWidget ( const Rectangle &r, const int a );
     virtual ~TextButtonWidget();
-    void SetLabel(const std::string& s, Font *f);
+    void SetLabel ( const std::string& s, Font *f );
     void Draw();
-    void LeftClick(const bool toggle, const int x, const int y);
-    void RightClick(const bool toggle, const int x, const int y);
+    void LeftClick ( const bool toggle, const int x, const int y );
+    void RightClick ( const bool toggle, const int x, const int y );
 };
 
 #endif

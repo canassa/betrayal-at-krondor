@@ -27,8 +27,9 @@
 #include "BasicFile.h"
 
 class GameFile
-: public BasicFile {
-  public:
+            : public BasicFile
+{
+public:
     GameFile();
     virtual ~GameFile();
     std::string GetDefaultPath() const;

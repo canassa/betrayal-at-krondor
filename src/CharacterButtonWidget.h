@@ -30,19 +30,19 @@
 static const unsigned int SELECTED_IMAGE = 7;
 
 class CharacterButtonWidget
-: public ButtonWidget
+            : public ButtonWidget
 {
-  private:
+private:
     PlayerCharacter *character;
     static Image *selectedImage;
-  public:
-    CharacterButtonWidget(const Rectangle &r, const int a);
+public:
+    CharacterButtonWidget ( const Rectangle &r, const int a );
     virtual ~CharacterButtonWidget();
-    void SetCharacter(PlayerCharacter *pc);
-    void SetImage(Image *selected);
+    void SetCharacter ( PlayerCharacter *pc );
+    void SetImage ( Image *selected );
     void Draw();
-    void LeftClick(const bool toggle, const int x, const int y);
-    void RightClick(const bool toggle, const int x, const int y);
+    void LeftClick ( const bool toggle, const int x, const int y );
+    void RightClick ( const bool toggle, const int x, const int y );
 };
 
 #endif

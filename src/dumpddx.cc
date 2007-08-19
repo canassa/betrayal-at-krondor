@@ -24,46 +24,60 @@
 #include "Exception.h"
 #include "FileManager.h"
 
-void dumpDialogData(unsigned int n, DialogData *data, unsigned int depth) {
-  for (unsigned int d = 0; d < depth; d++) {
-    printf("\t");
-  }
-  printf("%d\t%d\n", n, data->childDialogs);
-  for (unsigned int i = 0; i < data->text.size(); i++) {
-    for (unsigned int d = 0; d < depth; d++) {
-      printf("\t");
+void dumpDialogData(unsigned int n, DialogData *data, unsigned int depth)
+{
+    for (unsigned int d = 0; d < depth; d++)
+    {
+        printf("\t");
     }
-    printf("\t%d: %s\n", i, data->text[i].c_str());
-  }
-  for (unsigned int i = 0; i < data->childData.size(); i++) {
-    dumpDialogData(i, data->childData[i], depth+1);
-  }
+    printf("%d\t%d\n", n, data->childDialogs);
+    for (unsigned int i = 0; i < data->text.size(); i++)
+    {
+        for (unsigned int d = 0; d < depth; d++)
+        {
+            printf("\t");
+        }
+        printf("\t%d: %s\n", i, data->text[i].c_str());
+    }
+    for (unsigned int i = 0; i < data->childData.size(); i++)
+    {
+        dumpDialogData(i, data->childData[i], depth+1);
+    }
 }
 
-int main(int argc, char *argv[]) {
-  try {
-    if (argc != 2) {
-      std::cerr << "Usage: " << argv[0] << " <DDX-file>" << std::endl;
-      return 1;
+int main(int argc, char *argv[])
+{
+    try
+    {
+        if (argc != 2)
+        {
+            std::cerr << "Usage: " << argv[0] << " <DDX-file>" << std::endl;
+            return 1;
+        }
+        DialogResource *ddx = new DialogResource;
+        FileManager::GetInstance()->Load(ddx, argv[1]);
+        printf("Size: %d\n", ddx->GetSize());
+        DialogData* data = 0;
+        for (unsigned int i = 0; i < 512; i++)
+        {
+            if (ddx->Find(i, data))
+            {
+                dumpDialogData(i, data, 0);
+            }
+        }
+        delete ddx;
+        FileManager::CleanUp();
+        Directories::CleanUp();
     }
-    DialogResource *ddx = new DialogResource;
-    FileManager::GetInstance()->Load(ddx, argv[1]);
-    printf("Size: %d\n", ddx->GetSize());
-    DialogData* data = 0;
-    for (unsigned int i = 0; i < 512; i++) {
-      if (ddx->Find(i, data)) {
-        dumpDialogData(i, data, 0);
-      }
+    catch (Exception &e)
+    {
+        e.Print("main");
     }
-    delete ddx;
-    FileManager::CleanUp();
-    Directories::CleanUp();
-  } catch (Exception &e) {
-    e.Print("main");
-  } catch (...) {
-    /* every exception should have been handled before */
-    std::cerr << "Unhandled exception" << std::endl;
-  }
-  return 0;
+    catch (...)
+    {
+        /* every exception should have been handled before */
+        std::cerr << "Unhandled exception" << std::endl;
+    }
+    return 0;
 }
 

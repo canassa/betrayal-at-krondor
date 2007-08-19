@@ -28,7 +28,7 @@
 
 class Directories
 {
-  private:
+private:
     std::string resourcePath;
     std::string sharedPath;
     std::string userPath;
@@ -36,11 +36,11 @@ class Directories
     std::string capturePath;
     std::string dataPath;
     static Directories *instance;
-    void CreatePath(const std::string& path);
+    void CreatePath ( const std::string& path );
     std::string SearchResources() const;
-  protected:
+protected:
     Directories();
-  public:
+public:
     ~Directories();
     static Directories* GetInstance();
     static void CleanUp();
@@ -50,7 +50,7 @@ class Directories
     std::string GetGamesPath() const;
     std::string GetCapturePath() const;
     std::string GetDataPath() const;
-    void SetResourcePath(const std::string &path);
+    void SetResourcePath ( const std::string &path );
 };
 
 #endif

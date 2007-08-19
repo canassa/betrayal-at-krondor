@@ -21,47 +21,51 @@
 #include "Exception.h"
 
 EquipmentItemWidget::EquipmentItemWidget(const Rectangle &r)
-: Widget(r)
-, iconImage(0)
-, label(0)
-{
-}
+        : Widget(r)
+        , iconImage(0)
+        , label(0)
+{}
 
 EquipmentItemWidget::~EquipmentItemWidget()
 {
-  if (label) {
-    delete label;
-  }
+    if (label)
+    {
+        delete label;
+    }
 }
 
 void
 EquipmentItemWidget::SetImage(Image *icon)
 {
-  if (!icon) {
-    throw NullPointer(__FILE__, __LINE__);
-  }
-  iconImage = icon;
+    if (!icon)
+    {
+        throw NullPointer(__FILE__, __LINE__);
+    }
+    iconImage = icon;
 }
 
 void
 EquipmentItemWidget::SetLabel(const std::string& s, Font *f)
 {
-  label = new TextWidget(Rectangle(rect.GetXPos(), rect.GetYPos(), rect.GetWidth(), rect.GetHeight()), f);
-  label->SetText(s);
-  label->SetColor(INFO_TEXT_COLOR);
-  label->SetAlignment(HA_RIGHT, VA_BOTTOM);
+    label = new TextWidget(Rectangle(rect.GetXPos(), rect.GetYPos(), rect.GetWidth(), rect.GetHeight()), f);
+    label->SetText(s);
+    label->SetColor(INFO_TEXT_COLOR);
+    label->SetAlignment(HA_RIGHT, VA_BOTTOM);
 }
 
 void
 EquipmentItemWidget::Draw()
 {
-  if (IsVisible()) {
-    if (iconImage) {
-      iconImage->Draw(rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2,
-                      rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2, 0);
+    if (IsVisible())
+    {
+        if (iconImage)
+        {
+            iconImage->Draw(rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2,
+                            rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2, 0);
+        }
+        if (label)
+        {
+            label->Draw();
+        }
     }
-    if (label) {
-      label->Draw();
-    }
-  }
 }

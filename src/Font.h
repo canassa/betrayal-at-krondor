@@ -36,28 +36,31 @@ static const unsigned int MAX_FONT_HEIGHT = 16;
 
 typedef uint16_t GlyphData[MAX_FONT_HEIGHT];
 
-typedef struct _FontGlyph {
-  unsigned int width;
-  GlyphData data;
-} FontGlyph;
+typedef struct _FontGlyph
+{
+    unsigned int width;
+    GlyphData data;
+}
+FontGlyph;
 
-class Font {
-  private:
+class Font
+{
+private:
     unsigned int first;
     unsigned int height;
     std::vector<FontGlyph> fontGlyphs;
-  public:
+public:
     Font();
     virtual ~Font();
     unsigned int GetFirst() const;
-    void SetFirst(const unsigned int n);
+    void SetFirst ( const unsigned int n );
     unsigned int GetHeight() const;
-    void SetHeight(const unsigned int h);
-    unsigned int GetWidth(const unsigned int n) const;
+    void SetHeight ( const unsigned int h );
+    unsigned int GetWidth ( const unsigned int n ) const;
     unsigned int GetSize() const;
-    FontGlyph& GetGlyph(const unsigned int n);
-    void AddGlyph(FontGlyph& glyph);
-    void DrawChar(const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color, const bool italic);
+    FontGlyph& GetGlyph ( const unsigned int n );
+    void AddGlyph ( FontGlyph& glyph );
+    void DrawChar ( const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color, const bool italic );
 };
 
 #endif

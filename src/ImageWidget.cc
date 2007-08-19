@@ -20,33 +20,34 @@
 #include "ImageWidget.h"
 
 ImageWidget::ImageWidget(const Rectangle &r, Image *img)
-: Widget(r)
-, image(0)
+        : Widget(r)
+        , image(0)
 {
-  image = new Image(img);
+    image = new Image(img);
 }
 
 ImageWidget::~ImageWidget()
 {
-  delete image;
+    delete image;
 }
 
 void
 ImageWidget::HorizontalFlip()
 {
-  image->HorizontalFlip();
+    image->HorizontalFlip();
 }
 
 void
 ImageWidget::VerticalFlip()
 {
-  image->VerticalFlip();
+    image->VerticalFlip();
 }
 
 void
 ImageWidget::Draw()
 {
-  if (IsVisible()) {
-    image->Draw(rect.GetXPos(), rect.GetYPos(), 0, 0, rect.GetWidth(), rect.GetHeight(), 0);
-  }
+    if (IsVisible())
+    {
+        image->Draw(rect.GetXPos(), rect.GetYPos(), 0, 0, rect.GetWidth(), rect.GetHeight(), 0);
+    }
 }

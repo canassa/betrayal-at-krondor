@@ -20,31 +20,31 @@
 #include "Subject.h"
 
 Subject::Subject()
-: observers()
-{
-}
+        : observers()
+{}
 
 Subject::~Subject()
 {
-  observers.clear();
+    observers.clear();
 }
 
 void
 Subject::Attach(Observer *obs)
 {
-  observers.push_back(obs);
+    observers.push_back(obs);
 }
 
 void
 Subject::Detach(Observer *obs)
 {
-  observers.remove(obs);
+    observers.remove(obs);
 }
 
 void
 Subject::Notify()
 {
-  for (std::list<Observer *>::iterator it = observers.begin(); it != observers.end(); ++it) {
-    (*it)->Update();
-  }
+    for (std::list<Observer *>::iterator it = observers.begin(); it != observers.end(); ++it)
+    {
+        (*it)->Update();
+    }
 }

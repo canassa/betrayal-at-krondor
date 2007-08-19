@@ -21,23 +21,24 @@
 #include "ResourceArchive.h"
 
 ResourceArchive::ResourceArchive()
-: ResourceFile()
-{
-}
+        : ResourceFile()
+{}
 
 ResourceArchive::~ResourceArchive()
-{
-}
+{}
 
 void
 ResourceArchive::LoadResource(FileBuffer &buffer, const std::streamoff offset)
 {
-  try {
-    Seek(offset);
-    Load(buffer);
-  } catch (Exception &e) {
-    e.Print("ResourceArchive::LoadResource");
-    throw;
-  }
+    try
+    {
+        Seek(offset);
+        Load(buffer);
+    }
+    catch (Exception &e)
+    {
+        e.Print("ResourceArchive::LoadResource");
+        throw;
+    }
 }
 

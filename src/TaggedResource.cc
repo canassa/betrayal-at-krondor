@@ -21,82 +21,91 @@
 #include "TaggedResource.h"
 
 TaggedResource::TaggedResource()
-{
-}
+{}
 
 TaggedResource::~TaggedResource()
 {
-  ClearTags();
+    ClearTags();
 }
 
 void
 TaggedResource::ClearTags()
 {
-  for (std::map<const unsigned int, FileBuffer*>::iterator it = bufferMap.begin(); it != bufferMap.end(); ++it) {
-    delete (*it).second;
-  }
-  bufferMap.clear();
+    for (std::map<const unsigned int, FileBuffer*>::iterator it = bufferMap.begin(); it != bufferMap.end(); ++it)
+    {
+        delete (*it).second;
+    }
+    bufferMap.clear();
 }
 
 void
 TaggedResource::Split(FileBuffer *buffer)
 {
-  while (!buffer->AtEnd()) {
-    unsigned int label = buffer->GetUint32LE();
-    switch (label) {
-      case TAG_ADS:
-      case TAG_APP:
-      case TAG_BIN:
-      case TAG_BMP:
-      case TAG_DAT:
-      case TAG_FNT:
-      case TAG_GID:
-      case TAG_INF:
-      case TAG_MAP:
-      case TAG_PAG:
-      case TAG_PAL:
-      case TAG_RES:
-      case TAG_SCR:
-      case TAG_SND:
-      case TAG_TAG:
-      case TAG_TT3:
-      case TAG_TTI:
-      case TAG_VER:
-      case TAG_VGA:
+    while (!buffer->AtEnd())
+    {
+        unsigned int label = buffer->GetUint32LE();
+        switch (label)
         {
-          unsigned int size = buffer->GetUint32LE();
-          std::map<const unsigned int, FileBuffer*>::iterator it = bufferMap.find(label);
-          if (it != bufferMap.end()) {
-            delete (*it).second;
-            bufferMap.erase(it);
-          }
-          if (size & 0x80000000) {
-            FileBuffer *lblbuf = new FileBuffer(size & 0x7fffffff);
-            lblbuf->Fill(buffer);
-            bufferMap.insert(std::pair<const unsigned int, FileBuffer*>(label, 0));
-            Split(lblbuf);
-            delete lblbuf;
-          } else {
-            FileBuffer *lblbuf = new FileBuffer(size);
-            lblbuf->Fill(buffer);
-            bufferMap.insert(std::pair<const unsigned int, FileBuffer*>(label, lblbuf));
-          }
+        case TAG_ADS:
+        case TAG_APP:
+        case TAG_BIN:
+        case TAG_BMP:
+        case TAG_DAT:
+        case TAG_FNT:
+        case TAG_GID:
+        case TAG_INF:
+        case TAG_MAP:
+        case TAG_PAG:
+        case TAG_PAL:
+        case TAG_RES:
+        case TAG_SCR:
+        case TAG_SND:
+        case TAG_TAG:
+        case TAG_TT3:
+        case TAG_TTI:
+        case TAG_VER:
+        case TAG_VGA:
+        {
+            unsigned int size = buffer->GetUint32LE();
+            std::map<const unsigned int, FileBuffer*>::iterator it = bufferMap.find(label);
+            if (it != bufferMap.end())
+            {
+                delete (*it).second;
+                bufferMap.erase(it);
+            }
+            if (size & 0x80000000)
+            {
+                FileBuffer *lblbuf = new FileBuffer(size & 0x7fffffff);
+                lblbuf->Fill(buffer);
+                bufferMap.insert(std::pair<const unsigned int, FileBuffer*>(label, 0));
+                Split(lblbuf);
+                delete lblbuf;
+            }
+            else
+            {
+                FileBuffer *lblbuf = new FileBuffer(size);
+                lblbuf->Fill(buffer);
+                bufferMap.insert(std::pair<const unsigned int, FileBuffer*>(label, lblbuf));
+            }
         }
         break;
-      default:
-        throw DataCorruption(__FILE__, __LINE__);
-        break;
+        default:
+            throw DataCorruption(__FILE__, __LINE__);
+            break;
+        }
     }
-  }
 }
 
 bool
 TaggedResource::Find(const unsigned int label, FileBuffer* &buffer)
 {
-  try {
-    buffer = bufferMap[label];
-  } catch (...) {
-    return false;
-  }
-  return (buffer != 0);
+    try
+    {
+        buffer = bufferMap[label];
+    }
+    catch (...)
+    {
+        return false;
+    }
+    return (buffer != 0);
 }

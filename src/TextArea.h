@@ -27,19 +27,20 @@
 #include "Font.h"
 #include "Video.h"
 
-class TextArea {
-  private:
+class TextArea
+{
+private:
     unsigned int width;
     unsigned int height;
     Font *font;
     std::string text;
     unsigned int color;
-  public:
-    TextArea(const unsigned int w, const unsigned int h, Font *f);
+public:
+    TextArea ( const unsigned int w, const unsigned int h, Font *f );
     virtual ~TextArea();
-    void SetText(const std::string &s);
-    void SetColor(const unsigned int c);
-    void Draw(const unsigned int x, const unsigned int y, const bool italic = false);
+    void SetText ( const std::string &s );
+    void SetColor ( const unsigned int c );
+    void Draw ( const unsigned int x, const unsigned int y, const bool italic = false );
 };
 
 #endif

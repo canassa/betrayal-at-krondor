@@ -30,25 +30,25 @@
 #include "Subject.h"
 
 typedef enum _CharacterClass {
-  CLASS_WARRIOR,
-  CLASS_SPELLCASTER
+    CLASS_WARRIOR,
+    CLASS_SPELLCASTER
 } CharacterClass;
 
 typedef enum _ConditionType {
-  COND_NORMAL,
-  COND_SICK,
-  COND_PLAGUED,
-  COND_POISONED,
-  COND_DRUNK,
-  COND_HEALING,
-  COND_STARVING,
-  COND_NEAR_DEATH
+    COND_NORMAL,
+    COND_SICK,
+    COND_PLAGUED,
+    COND_POISONED,
+    COND_DRUNK,
+    COND_HEALING,
+    COND_STARVING,
+    COND_NEAR_DEATH
 } ConditionType;
 
 class PlayerCharacter
-: public Subject
+            : public Subject
 {
-  private:
+private:
     std::string name;
     Statistics statistics;
     Image *buttonImage;
@@ -58,24 +58,24 @@ class PlayerCharacter
     CharacterClass charClass;
     ConditionType condition;
     Inventory *inventory;
-  public:
-    PlayerCharacter(const std::string& s);
+public:
+    PlayerCharacter ( const std::string& s );
     ~PlayerCharacter();
     std::string& GetName();
-    void SetName(const std::string& s);
+    void SetName ( const std::string& s );
     Statistics& GetStatistics();
     Image* GetButtonImage() const;
-    void SetButtonImage(Image *img);
+    void SetButtonImage ( Image *img );
     Image* GetPortraitImage() const;
-    void SetPortraitImage(Image *img);
+    void SetPortraitImage ( Image *img );
     int GetOrder() const;
-    void SetOrder(const int n);
+    void SetOrder ( const int n );
     bool IsSelected() const;
-    void Select(const bool toggle);
+    void Select ( const bool toggle );
     CharacterClass GetCharacterClass() const;
-    void SetCharacterClass(const CharacterClass cc);
+    void SetCharacterClass ( const CharacterClass cc );
     ConditionType GetCondition() const;
-    void SetCondition(const ConditionType ct);
+    void SetCondition ( const ConditionType ct );
     Inventory* GetInventory() const;
 };
 

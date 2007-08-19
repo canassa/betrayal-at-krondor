@@ -20,21 +20,18 @@
 #include "MeshedObject.h"
 
 MeshedObject::MeshedObject(const Vector2D &p)
-: GenericObject(p)
-{
-}
+        : GenericObject(p)
+{}
 
 MeshedObject::~MeshedObject()
-{
-}
+{}
 
 void
 MeshedObject::DrawFirstPerson(const int x, const int y, const int w, const int h, const int heading)
 {
-  if (x && y && w && h && heading);
+    if (x && y && w && h && heading);
 }
 
 void
 MeshedObject::DrawTopDown()
-{
-}
+{}

@@ -20,126 +20,114 @@
 #include "Event.h"
 
 KeyboardEvent::KeyboardEvent(const Key k)
-: key(k)
-{
-}
+        : key(k)
+{}
 
 KeyboardEvent::~KeyboardEvent()
-{
-}
+{}
 
 Key
 KeyboardEvent::GetKey() const
 {
-  return key;
+    return key;
 }
 
 MouseButtonEvent::MouseButtonEvent(const MouseButton b, const int x, const int y)
-:button(b)
-, xpos(x)
-, ypos(y)
-{
-}
+        :button(b)
+        , xpos(x)
+        , ypos(y)
+{}
 
 MouseButtonEvent::~MouseButtonEvent()
-{
-}
+{}
 
 MouseButton
 MouseButtonEvent::GetButton() const
 {
-  return button;
+    return button;
 }
 
 int
 MouseButtonEvent::GetXPos() const
 {
-  return xpos;
+    return xpos;
 }
 
 int
 MouseButtonEvent::GetYPos() const
 {
-  return ypos;
+    return ypos;
 }
 
 MouseMotionEvent::MouseMotionEvent(const int x, const int y)
-: xpos(x)
-, ypos(y)
-{
-}
+        : xpos(x)
+        , ypos(y)
+{}
 
 MouseMotionEvent::~MouseMotionEvent()
-{
-}
+{}
 
 int
 MouseMotionEvent::GetXPos() const
 {
-  return xpos;
+    return xpos;
 }
 
 int
 MouseMotionEvent::GetYPos() const
 {
-  return ypos;
+    return ypos;
 }
 
 TimerEvent::TimerEvent(const unsigned long n)
-: id(n)
-{
-}
+        : id(n)
+{}
 
 TimerEvent::~TimerEvent()
-{
-}
+{}
 
 unsigned long
 TimerEvent::GetID() const
 {
-  return id;
+    return id;
 }
 
 LoopEvent::LoopEvent(const int t)
-: ticks(t)
-{
-}
+        : ticks(t)
+{}
 
 LoopEvent::~LoopEvent()
-{
-}
+{}
 
 int
 LoopEvent::GetTicks() const
 {
-  return ticks;
+    return ticks;
 }
 
 ActionEvent::ActionEvent(const int a, const int x, const int y)
-: action(a)
-, xpos(x)
-, ypos(y)
-{
-}
+        : action(a)
+        , xpos(x)
+        , ypos(y)
+{}
 
 ActionEvent::~ActionEvent()
-{
-}
+{}
 
 int
 ActionEvent::GetAction() const
 {
-  return action;
+    return action;
 }
 
 int
 ActionEvent::GetXPos() const
 {
-  return xpos;
+    return xpos;
 }
 
 int
 ActionEvent::GetYPos() const
 {
-  return ypos;
+    return ypos;
 }

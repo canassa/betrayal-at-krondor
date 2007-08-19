@@ -21,91 +21,98 @@
 #include "TileWorldResource.h"
 
 TileWorldResource::TileWorldResource()
-: xCenter(0)
-, yCenter(0)
-, items()
-{
-}
+        : xCenter(0)
+        , yCenter(0)
+        , items()
+{}
 
 TileWorldResource::~TileWorldResource()
 {
-  Clear();
+    Clear();
 }
 
 unsigned int
 TileWorldResource::GetMinX() const
 {
-  return xCenter - TILE_SIZE_2;
+    return xCenter - TILE_SIZE_2;
 }
 
 unsigned int
 TileWorldResource::GetMaxX() const
 {
- return xCenter + TILE_SIZE_2;
+    return xCenter + TILE_SIZE_2;
 }
 
 unsigned int
 TileWorldResource::GetMinY() const
 {
-  return yCenter - TILE_SIZE_2;
+    return yCenter - TILE_SIZE_2;
 }
 
 unsigned int
 TileWorldResource::GetMaxY() const
 {
-  return yCenter + TILE_SIZE_2;
+    return yCenter + TILE_SIZE_2;
 }
 
 unsigned int
 TileWorldResource::GetSize() const
 {
-  return items.size();
+    return items.size();
 }
 
 TileWorldItem&
 TileWorldResource::GetItem(unsigned int i)
 {
-  return items[i];
+    return items[i];
 }
 
 void
 TileWorldResource::Clear()
 {
-  items.clear();
+    items.clear();
 }
 
 void
 TileWorldResource::Load(FileBuffer *buffer)
 {
-  try {
-    Clear();
-    while (!buffer->AtEnd()) {
-      TileWorldItem twi;
-      twi.type = buffer->GetUint32LE();
-      twi.flags = buffer->GetUint32LE();
-      twi.xloc = buffer->GetUint32LE();
-      twi.yloc = buffer->GetUint32LE();
-      if (twi.type == OBJECT_CENTER) {
-        xCenter = twi.xloc;
-        yCenter = twi.yloc;
-      }
-      items.push_back(twi);
-      buffer->Skip(4);
+    try
+    {
+        Clear();
+        while (!buffer->AtEnd())
+        {
+            TileWorldItem twi;
+            twi.type = buffer->GetUint32LE();
+            twi.flags = buffer->GetUint32LE();
+            twi.xloc = buffer->GetUint32LE();
+            twi.yloc = buffer->GetUint32LE();
+            if (twi.type == OBJECT_CENTER)
+            {
+                xCenter = twi.xloc;
+                yCenter = twi.yloc;
+            }
+            items.push_back(twi);
+            buffer->Skip(4);
+        }
     }
-  } catch (Exception &e) {
-    e.Print("TileWorldResource::Load");
-    throw;
-  }
+    catch (Exception &e)
+    {
+        e.Print("TileWorldResource::Load");
+        throw;
+    }
 }
 
 void
 TileWorldResource::Save(FileBuffer *buffer)
 {
-  try {
-    // TODO
-    buffer = buffer;
-  } catch (Exception &e) {
-    e.Print("TileWorldResource::Save");
-    throw;
-  }
+    try
+    {
+        // TODO
+        buffer = buffer;
+    }
+    catch (Exception &e)
+    {
+        e.Print("TileWorldResource::Save");
+        throw;
+    }
 }

@@ -29,11 +29,12 @@
 #define RES_FILENAME_LEN 13
 
 class ResourceArchive
-: public ResourceFile {
-  public:
+            : public ResourceFile
+{
+public:
     ResourceArchive();
     virtual ~ResourceArchive();
-    void LoadResource(FileBuffer &buffer, const std::streamoff offset);
+    void LoadResource ( FileBuffer &buffer, const std::streamoff offset );
 };
 
 #endif

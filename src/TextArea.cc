@@ -20,43 +20,43 @@
 #include "TextArea.h"
 
 TextArea::TextArea(const unsigned int w, const unsigned int h, Font *f)
-: width(w)
-, height(h)
-, font(f)
-, text("")
-, color(0)
-{
-}
+        : width(w)
+        , height(h)
+        , font(f)
+        , text("")
+        , color(0)
+{}
 
 TextArea::~TextArea()
-{
-}
+{}
 
 void
 TextArea::SetText(const std::string &s)
 {
-  text = s;
+    text = s;
 }
 
 void
 TextArea::SetColor(const unsigned int c)
 {
-  color = c;
+    color = c;
 }
 
 void
 TextArea::Draw(const unsigned int x, const unsigned int y, const bool italic)
 {
-  unsigned int i = 0;
-  unsigned int h = 0;
-  while ((i < text.length()) && (h + font->GetHeight() < height)) {
-    unsigned int w = 0;
-    while ((i < text.length()) && (w + font->GetWidth(text[i] - font->GetFirst()) < width)) {
-      font->DrawChar(x + w, y + h, text[i], color, italic);
-      w += font->GetWidth((unsigned int)text[i] - font->GetFirst());
-      i++;
+    unsigned int i = 0;
+    unsigned int h = 0;
+    while ((i < text.length()) && (h + font->GetHeight() < height))
+    {
+        unsigned int w = 0;
+        while ((i < text.length()) && (w + font->GetWidth(text[i] - font->GetFirst()) < width))
+        {
+            font->DrawChar(x + w, y + h, text[i], color, italic);
+            w += font->GetWidth((unsigned int)text[i] - font->GetFirst());
+            i++;
+        }
+        h += font->GetHeight();
     }
-    h += font->GetHeight();
-  }
 }
 

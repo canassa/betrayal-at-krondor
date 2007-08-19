@@ -23,62 +23,69 @@
 Image* CharacterButtonWidget::selectedImage = 0;
 
 CharacterButtonWidget::CharacterButtonWidget(const Rectangle &r, const int a)
-: ButtonWidget(r, a)
-, character(0)
-{
-}
+        : ButtonWidget(r, a)
+        , character(0)
+{}
 
 CharacterButtonWidget::~CharacterButtonWidget()
-{
-}
+{}
 
 void
 CharacterButtonWidget::SetCharacter(PlayerCharacter *pc)
 {
-  if (!pc) {
-    throw NullPointer(__FILE__, __LINE__);
-  }
-  character = pc;
+    if (!pc)
+    {
+        throw NullPointer(__FILE__, __LINE__);
+    }
+    character = pc;
 }
 
 void
 CharacterButtonWidget::SetImage(Image *selected)
 {
-  if (!selected) {
-    throw NullPointer(__FILE__, __LINE__);
-  }
-  selectedImage = selected;
+    if (!selected)
+    {
+        throw NullPointer(__FILE__, __LINE__);
+    }
+    selectedImage = selected;
 }
 
 void
 CharacterButtonWidget::Draw()
 {
-  if (IsVisible()) {
-    if (character) {
-      character->GetButtonImage()->Draw(rect.GetXPos(), rect.GetYPos(), 0);
-      if (character->IsSelected()) {
-        selectedImage->Draw(rect.GetXPos(), rect.GetYPos(), 0);
-      }
+    if (IsVisible())
+    {
+        if (character)
+        {
+            character->GetButtonImage()->Draw(rect.GetXPos(), rect.GetYPos(), 0);
+            if (character->IsSelected())
+            {
+                selectedImage->Draw(rect.GetXPos(), rect.GetYPos(), 0);
+            }
+        }
     }
-  }
 }
 
 void
 CharacterButtonWidget::LeftClick(const bool toggle, const int, const int)
 {
-  if (IsVisible()) {
-    if (toggle) {
-      GenerateActionEvent(GetAction());
+    if (IsVisible())
+    {
+        if (toggle)
+        {
+            GenerateActionEvent(GetAction());
+        }
     }
-  }
 }
 
 void
 CharacterButtonWidget::RightClick(const bool toggle, const int, const int)
 {
-  if (IsVisible()) {
-    if (toggle) {
-      GenerateActionEvent(GetAction() + RIGHT_CLICK_OFFSET);
+    if (IsVisible())
+    {
+        if (toggle)
+        {
+            GenerateActionEvent(GetAction() + RIGHT_CLICK_OFFSET);
+        }
     }
-  }
 }

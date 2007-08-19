@@ -24,14 +24,17 @@
 #include "config.h"
 #endif
 
-class Clock {
-  public:
-    Clock() {};
-    virtual ~Clock() {};
+class Clock
+{
+public:
+    Clock()
+    {};
+    virtual ~Clock()
+    {};
     virtual unsigned int GetTicks() const = 0;
-    virtual void Delay(int ms) = 0;
-    virtual void StartTimer(unsigned long n, int ms) = 0;
-    virtual void CancelTimer(unsigned long n) = 0;
+    virtual void Delay ( int ms ) = 0;
+    virtual void StartTimer ( unsigned long n, int ms ) = 0;
+    virtual void CancelTimer ( unsigned long n ) = 0;
 };
 
 #endif

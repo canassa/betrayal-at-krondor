@@ -87,15 +87,17 @@ static const unsigned int TT_INTERIOR  = 6;
 static const unsigned int TT_EXTERIOR  = 7;
 static const unsigned int TT_LANDSCAPE = 8;
 
-class GidInfo {
-  public:
+class GidInfo
+{
+public:
     unsigned int xoffset;
     unsigned int yoffset;
     unsigned int flags;
 };
 
-class DatInfo {
-  public:
+class DatInfo
+{
+public:
     unsigned int objectClass;
     unsigned int objectType;
     unsigned int terrainClass;
@@ -108,23 +110,24 @@ class DatInfo {
 };
 
 class TableResource
-: public TaggedResource {
-  private:
+            : public TaggedResource
+{
+private:
     std::vector<std::string> mapItems;
     std::vector<DatInfo *> datItems;
     std::vector<GidInfo> gidItems;
-  public:
+public:
     TableResource();
     virtual ~TableResource();
     unsigned int GetMapSize() const;
-    std::string& GetMapItem(const unsigned int i);
+    std::string& GetMapItem ( const unsigned int i );
     unsigned int GetDatSize() const;
-    DatInfo* GetDatItem(const unsigned int i);
+    DatInfo* GetDatItem ( const unsigned int i );
     unsigned int GetGidSize() const;
-    GidInfo& GetGidItem(const unsigned int i);
+    GidInfo& GetGidItem ( const unsigned int i );
     void Clear();
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

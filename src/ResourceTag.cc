@@ -21,37 +21,43 @@
 #include "ResourceTag.h"
 
 ResourceTag::ResourceTag()
-{
-}
+{}
 
 ResourceTag::~ResourceTag()
 {
-  tagMap.clear();
+    tagMap.clear();
 }
 
 void
 ResourceTag::Load(FileBuffer *buffer)
 {
-  try {
-    unsigned int n = buffer->GetUint16LE();
-    for (unsigned int i = 0; i < n; i++) {
-      unsigned int id = buffer->GetUint16LE();
-      std::string name = buffer->GetString();
-      tagMap.insert(std::pair<const unsigned int, std::string>(id, name));
+    try
+    {
+        unsigned int n = buffer->GetUint16LE();
+        for (unsigned int i = 0; i < n; i++)
+        {
+            unsigned int id = buffer->GetUint16LE();
+            std::string name = buffer->GetString();
+            tagMap.insert(std::pair<const unsigned int, std::string>(id, name));
+        }
     }
-  } catch (Exception &e) {
-    e.Print("ResourceTag::Load");
-  }
+    catch (Exception &e)
+    {
+        e.Print("ResourceTag::Load");
+    }
 }
 
 bool
 ResourceTag::Find(const unsigned int id, std::string &name)
 {
-  try {
-    name = tagMap[id];
-  } catch (...) {
-    return false;
-  }
-  return true;
+    try
+    {
+        name = tagMap[id];
+    }
+    catch (...)
+    {
+        return false;
+    }
+    return true;
 }
 

@@ -35,10 +35,10 @@
 #include "TileWorldResource.h"
 
 class TestApplication
-: public KeyboardEventListener
-, public TimerEventListener
+            : public KeyboardEventListener
+            , public TimerEventListener
 {
-  private:
+private:
     PaletteResource pal;
     FontResource fnt;
     ImageResource img;
@@ -47,23 +47,23 @@ class TestApplication
     TileWorldResource wld;
     SoundResource* snd;
     static TestApplication *instance;
-  protected:
+protected:
     TestApplication();
-  public:
+public:
     ~TestApplication();
     static TestApplication* GetInstance();
     static void CleanUp();
     void ActivatePalette();
-    void ActivatePalette(const std::string& name);
-    void ShowImage(const std::string& name);
-    void ShowScreen(const std::string& name);
-    void DrawFont(const std::string& name);
-    void PlayMovie(const std::string& name);
-    void PlaySound(const unsigned int index);
-    void WalkWorld(const std::string& zone, const std::string& tile);
-    void KeyPressed(const KeyboardEvent &kbe);
-    void KeyReleased(const KeyboardEvent &kbe);
-    void TimerExpired(const TimerEvent &te);
+    void ActivatePalette ( const std::string& name );
+    void ShowImage ( const std::string& name );
+    void ShowScreen ( const std::string& name );
+    void DrawFont ( const std::string& name );
+    void PlayMovie ( const std::string& name );
+    void PlaySound ( const unsigned int index );
+    void WalkWorld ( const std::string& zone, const std::string& tile );
+    void KeyPressed ( const KeyboardEvent &kbe );
+    void KeyReleased ( const KeyboardEvent &kbe );
+    void TimerExpired ( const TimerEvent &te );
 };
 
 #endif

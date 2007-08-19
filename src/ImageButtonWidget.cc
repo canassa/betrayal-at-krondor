@@ -21,60 +21,69 @@
 #include "ImageButtonWidget.h"
 
 ImageButtonWidget::ImageButtonWidget(const Rectangle &r, const int a)
-: ButtonWidget(r, a)
-, normalImage(0)
-, pressedImage(0)
-{
-}
+        : ButtonWidget(r, a)
+        , normalImage(0)
+        , pressedImage(0)
+{}
 
 ImageButtonWidget::~ImageButtonWidget()
-{
-}
+{}
 
 void
 ImageButtonWidget::SetImage(Image *normal, Image *press)
 {
-  if ((!normal) || (!press)) {
-    throw NullPointer(__FILE__, __LINE__);
-  }
-  normalImage = normal;
-  pressedImage = press;
+    if ((!normal) || (!press))
+    {
+        throw NullPointer(__FILE__, __LINE__);
+    }
+    normalImage = normal;
+    pressedImage = press;
 }
 
 void
 ImageButtonWidget::Draw()
 {
-  if (IsVisible()) {
-    if (IsEnabled()) {
-      if (IsPressed()) {
-        if (pressedImage) {
-          pressedImage->Draw(rect.GetXPos(), rect.GetYPos() + 1, 0);
+    if (IsVisible())
+    {
+        if (IsEnabled())
+        {
+            if (IsPressed())
+            {
+                if (pressedImage)
+                {
+                    pressedImage->Draw(rect.GetXPos(), rect.GetYPos() + 1, 0);
+                }
+            }
+            else
+            {
+                if (normalImage)
+                {
+                    normalImage->Draw(rect.GetXPos(), rect.GetYPos() + 1, 0);
+                }
+            }
         }
-      } else {
-        if (normalImage) {
-          normalImage->Draw(rect.GetXPos(), rect.GetYPos() + 1, 0);
-        }
-      }
     }
-  }
 }
 
 void
 ImageButtonWidget::LeftClick(const bool toggle, const int, const int)
 {
-  if (IsVisible()) {
-    SetPressed(toggle);
-    if (toggle) {
-      GenerateActionEvent(GetAction());
+    if (IsVisible())
+    {
+        SetPressed(toggle);
+        if (toggle)
+        {
+            GenerateActionEvent(GetAction());
+        }
     }
-  }
 }
 
 void
 ImageButtonWidget::RightClick(const bool toggle, const int, const int)
 {
-  if (IsVisible()) {
-    if (toggle) {
+    if (IsVisible())
+    {
+        if (toggle)
+        {}
     }
-  }
 }

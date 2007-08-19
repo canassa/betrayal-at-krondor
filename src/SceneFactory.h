@@ -26,12 +26,13 @@
 
 #include "Scene.h"
 
-class SceneFactory {
-  private:
-  public:
+class SceneFactory
+{
+private:
+public:
     SceneFactory();
     ~SceneFactory();
-    Scene * CreateScene(Zone& zone);
+    Scene * CreateScene ( Zone& zone );
 };
 
 #endif

@@ -29,37 +29,45 @@
 #include "InventoryItem.h"
 #include "Subject.h"
 
-class InventoryData {
-  public:
+class InventoryData
+{
+public:
     unsigned int size;
     InventoryItem *item;
-    InventoryData(unsigned int n, InventoryItem *ii): size(n), item(ii) {};
-    bool operator==(const InventoryData &invdata) const { return (invdata.size < size) && (invdata.item < item); };
-    bool operator<(const InventoryData &invdata) const { return invdata.size < size; };
+    InventoryData ( unsigned int n, InventoryItem *ii ) : size ( n ), item ( ii )
+    {};
+    bool operator== ( const InventoryData &invdata ) const
+    {
+        return ( invdata.size < size ) && ( invdata.item < item );
+    };
+    bool operator< ( const InventoryData &invdata ) const
+    {
+        return invdata.size < size;
+    };
 };
 
 class Inventory
-: public Subject
+            : public Subject
 {
-  private:
+private:
     std::list<InventoryData> items;
-    std::list<InventoryData>::iterator Find(SingleInventoryItem* item);
-    std::list<InventoryData>::iterator Find(MultipleInventoryItem* item);
-    std::list<InventoryData>::iterator Find(RepairableInventoryItem* item);
-    std::list<InventoryData>::iterator Find(UsableInventoryItem* item);
-  public:
+    std::list<InventoryData>::iterator Find ( SingleInventoryItem* item );
+    std::list<InventoryData>::iterator Find ( MultipleInventoryItem* item );
+    std::list<InventoryData>::iterator Find ( RepairableInventoryItem* item );
+    std::list<InventoryData>::iterator Find ( UsableInventoryItem* item );
+public:
     Inventory();
     ~Inventory();
     unsigned int GetSize() const;
-    InventoryItem* GetItem(const unsigned int n) const;
-    void Add(SingleInventoryItem *item);
-    void Remove(SingleInventoryItem *item);
-    void Add(MultipleInventoryItem *item);
-    void Remove(MultipleInventoryItem *item);
-    void Add(RepairableInventoryItem *item);
-    void Remove(RepairableInventoryItem *item);
-    void Add(UsableInventoryItem *item);
-    void Remove(UsableInventoryItem *item);
+    InventoryItem* GetItem ( const unsigned int n ) const;
+    void Add ( SingleInventoryItem *item );
+    void Remove ( SingleInventoryItem *item );
+    void Add ( MultipleInventoryItem *item );
+    void Remove ( MultipleInventoryItem *item );
+    void Add ( RepairableInventoryItem *item );
+    void Remove ( RepairableInventoryItem *item );
+    void Add ( UsableInventoryItem *item );
+    void Remove ( UsableInventoryItem *item );
 };
 
 #endif

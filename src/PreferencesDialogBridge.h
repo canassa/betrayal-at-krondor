@@ -26,20 +26,21 @@
 
 #include "Preferences.h"
 
-class PreferencesDialogBridge {
-  private:
+class PreferencesDialogBridge
+{
+private:
     Preferences prefs;
     static PreferencesDialogBridge* instance;
-  protected:
+protected:
     PreferencesDialogBridge();
-  public:
+public:
     ~PreferencesDialogBridge();
     static PreferencesDialogBridge* GetInstance();
     static void CleanUp();
     void Fetch();
     void Commit();
-    bool GetSelectState(const unsigned int action);
-    void SetSelectState(const unsigned int action);
+    bool GetSelectState ( const unsigned int action );
+    void SetSelectState ( const unsigned int action );
     void SetDefaults();
 };
 

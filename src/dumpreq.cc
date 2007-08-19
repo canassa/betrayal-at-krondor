@@ -24,32 +24,40 @@
 #include "FileManager.h"
 #include "RequestResource.h"
 
-int main(int argc, char *argv[]) {
-  try {
-    if (argc != 2) {
-      std::cerr << "Usage: " << argv[0] << " <REQ-file>" << std::endl;
-      return 1;
+int main(int argc, char *argv[])
+{
+    try
+    {
+        if (argc != 2)
+        {
+            std::cerr << "Usage: " << argv[0] << " <REQ-file>" << std::endl;
+            return 1;
+        }
+        RequestResource *req = new RequestResource;
+        FileManager::GetInstance()->Load(req, argv[1]);
+        printf("%5s %3d %3d %3d %3d %3d %3d\n", (req->IsPopup() ? "true" : "false"),
+               req->GetRectangle().GetXPos(), req->GetRectangle().GetYPos(), req->GetRectangle().GetWidth(), req->GetRectangle().GetHeight(),
+               req->GetXOff(), req->GetYOff());
+        for (unsigned int i = 0; i < req->GetSize(); i++)
+        {
+            RequestData data = req->GetRequestData(i);
+            printf("%3d: %3d %3d %3d %3d %3d %3d %3d %3d %3d %5s %s\n", i,
+                   data.widget, data.action, data.xpos, data.ypos, data.width, data.height,
+                   data.teleport, data.image, data.group, (data.visible ? "true" : "false"), data.label.c_str());
+        }
+        delete req;
+        FileManager::CleanUp();
+        Directories::CleanUp();
     }
-    RequestResource *req = new RequestResource;
-    FileManager::GetInstance()->Load(req, argv[1]);
-    printf("%5s %3d %3d %3d %3d %3d %3d\n", (req->IsPopup() ? "true" : "false"),
-           req->GetRectangle().GetXPos(), req->GetRectangle().GetYPos(), req->GetRectangle().GetWidth(), req->GetRectangle().GetHeight(),
-           req->GetXOff(), req->GetYOff());
-    for (unsigned int i = 0; i < req->GetSize(); i++) {
-      RequestData data = req->GetRequestData(i);
-      printf("%3d: %3d %3d %3d %3d %3d %3d %3d %3d %3d %5s %s\n", i,
-             data.widget, data.action, data.xpos, data.ypos, data.width, data.height,
-             data.teleport, data.image, data.group, (data.visible ? "true" : "false"), data.label.c_str());
+    catch (Exception &e)
+    {
+        e.Print("main");
     }
-    delete req;
-    FileManager::CleanUp();
-    Directories::CleanUp();
-  } catch (Exception &e) {
-    e.Print("main");
-  } catch (...) {
-    /* every exception should have been handled before */
-    std::cerr << "Unhandled exception" << std::endl;
-  }
-  return 0;
+    catch (...)
+    {
+        /* every exception should have been handled before */
+        std::cerr << "Unhandled exception" << std::endl;
+    }
+    return 0;
 }
 

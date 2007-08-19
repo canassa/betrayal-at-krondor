@@ -20,19 +20,19 @@
 #include "MapViewWidget.h"
 
 MapViewWidget::MapViewWidget(const Rectangle &r, Game *g)
-: GameViewWidget(r, g)
+        : GameViewWidget(r, g)
 {
-  game->GetCamera()->Attach(this);
-  Update();
+    game->GetCamera()->Attach(this);
+    Update();
 }
 
 MapViewWidget::~MapViewWidget()
 {
-  game->GetCamera()->Detach(this);
+    game->GetCamera()->Detach(this);
 }
 
 void
 MapViewWidget::Redraw()
 {
-  game->GetScene()->DrawTopDown();
+    game->GetScene()->DrawTopDown();
 }

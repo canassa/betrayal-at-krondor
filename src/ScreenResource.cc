@@ -21,60 +21,68 @@
 #include "ScreenResource.h"
 
 ScreenResource::ScreenResource()
-: image(0)
-{
-}
+        : image(0)
+{}
 
 ScreenResource::~ScreenResource()
 {
-  Clear();
+    Clear();
 }
 
 Image *
 ScreenResource::GetImage()
 {
-  return image;
+    return image;
 }
 
 void
 ScreenResource::Clear()
 {
-  if (image) {
-    delete image;
-    image = 0;
-  }
+    if (image)
+    {
+        delete image;
+        image = 0;
+    }
 }
 
 void
 ScreenResource::Load(FileBuffer *buffer)
 {
-  try {
-    Clear();
-    if (buffer->GetUint16LE() != 0x27b6) {
-      buffer->Rewind();
+    try
+    {
+        Clear();
+        if (buffer->GetUint16LE() != 0x27b6)
+        {
+            buffer->Rewind();
+        }
+        if (buffer->GetUint8() != 0x02)
+        {
+            throw DataCorruption(__FILE__, __LINE__);
+        }
+        FileBuffer *decompressed = new FileBuffer(buffer->GetUint32LE());
+        buffer->DecompressLZW(decompressed);
+        image = new Image(SCREEN_WIDTH, SCREEN_HEIGHT);
+        image->Load(decompressed);
+        delete decompressed;
     }
-    if (buffer->GetUint8() != 0x02) {
-      throw DataCorruption(__FILE__, __LINE__);
+    catch (Exception &e)
+    {
+        e.Print("ScreenResource::Load");
+        throw;
     }
-    FileBuffer *decompressed = new FileBuffer(buffer->GetUint32LE());
-    buffer->DecompressLZW(decompressed);
-    image = new Image(SCREEN_WIDTH, SCREEN_HEIGHT);
-    image->Load(decompressed);
-    delete decompressed;
-  } catch (Exception &e) {
-    e.Print("ScreenResource::Load");
-    throw;
-  }
 }
 
 void
 ScreenResource::Save(FileBuffer *buffer)
 {
-  try {
-    // TODO
-    buffer = buffer;
-  } catch (Exception &e) {
-    e.Print("ScreenResource::Save");
-    throw;
-  }
+    try
+    {
+        // TODO
+        buffer = buffer;
+    }
+    catch (Exception &e)
+    {
+        e.Print("ScreenResource::Save");
+        throw;
+    }
 }

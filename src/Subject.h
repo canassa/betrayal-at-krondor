@@ -28,14 +28,15 @@
 
 #include "Observer.h"
 
-class Subject {
-  private:
+class Subject
+{
+private:
     std::list<Observer *> observers;
-  public:
+public:
     Subject();
     virtual ~Subject();
-    void Attach(Observer *obs);
-    void Detach(Observer *obs);
+    void Attach ( Observer *obs );
+    void Detach ( Observer *obs );
     void Notify();
 };
 

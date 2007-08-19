@@ -22,42 +22,40 @@
 #include "MousePointerManager.h"
 
 ButtonWidget::ButtonWidget(const Rectangle &r, const int a)
-: ActiveWidget(r, a)
-, enabled(true)
-, pressed(false)
-{
-}
+        : ActiveWidget(r, a)
+        , enabled(true)
+        , pressed(false)
+{}
 
 ButtonWidget::~ButtonWidget()
-{
-}
+{}
 
 void
 ButtonWidget::SetEnabled(const bool toggle)
 {
-  enabled = toggle;
+    enabled = toggle;
 }
 
 bool
 ButtonWidget::IsEnabled() const
 {
-  return enabled;
+    return enabled;
 }
 
 void
 ButtonWidget::SetPressed(const bool toggle)
 {
-  pressed = toggle;
+    pressed = toggle;
 }
 
 bool
 ButtonWidget::IsPressed() const
 {
-  return pressed;
+    return pressed;
 }
 
 void
 ButtonWidget::Reset()
 {
-  pressed = false;
+    pressed = false;
 }

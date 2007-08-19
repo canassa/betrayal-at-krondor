@@ -24,32 +24,40 @@
 #include "FileManager.h"
 #include "TableResource.h"
 
-int main(int argc, char *argv[]) {
-  try {
-    if (argc != 2) {
-      std::cerr << "Usage: " << argv[0] << " <TBL-file>" << std::endl;
-      return 1;
+int main(int argc, char *argv[])
+{
+    try
+    {
+        if (argc != 2)
+        {
+            std::cerr << "Usage: " << argv[0] << " <TBL-file>" << std::endl;
+            return 1;
+        }
+        TableResource *tbl = new TableResource;
+        FileManager::GetInstance()->Load(tbl, argv[1]);
+        for (unsigned int i = 0; i < tbl->GetMapSize(); i++)
+        {
+            GidInfo gid = tbl->GetGidItem(i);
+            DatInfo *dat = tbl->GetDatItem(i);
+            printf("%3d: %-8s %6d %6d %04x %02x %2d %2d %2d %2d\n\t(%6d, %6d, %6d) (%6d, %6d, %6d)", i, tbl->GetMapItem(i).c_str(),
+                   gid.xoffset, gid.yoffset, gid.flags,
+                   dat->objectClass, dat->objectType, dat->terrainClass, dat->terrainType, dat->sprite,
+                   dat->min.GetX(), dat->min.GetY(), dat->min.GetZ(), dat->max.GetX(), dat->max.GetY(), dat->max.GetZ());
+            printf("\n");
+        }
+        delete tbl;
+        FileManager::CleanUp();
+        Directories::CleanUp();
     }
-    TableResource *tbl = new TableResource;
-    FileManager::GetInstance()->Load(tbl, argv[1]);
-    for (unsigned int i = 0; i < tbl->GetMapSize(); i++) {
-      GidInfo gid = tbl->GetGidItem(i);
-      DatInfo *dat = tbl->GetDatItem(i);
-      printf("%3d: %-8s %6d %6d %04x %02x %2d %2d %2d %2d\n\t(%6d, %6d, %6d) (%6d, %6d, %6d)", i, tbl->GetMapItem(i).c_str(),
-             gid.xoffset, gid.yoffset, gid.flags,
-             dat->objectClass, dat->objectType, dat->terrainClass, dat->terrainType, dat->sprite,
-             dat->min.GetX(), dat->min.GetY(), dat->min.GetZ(), dat->max.GetX(), dat->max.GetY(), dat->max.GetZ());
-      printf("\n");
+    catch (Exception &e)
+    {
+        e.Print("main");
     }
-    delete tbl;
-    FileManager::CleanUp();
-    Directories::CleanUp();
-  } catch (Exception &e) {
-    e.Print("main");
-  } catch (...) {
-    /* every exception should have been handled before */
-    std::cerr << "Unhandled exception" << std::endl;
-  }
-  return 0;
+    catch (...)
+    {
+        /* every exception should have been handled before */
+        std::cerr << "Unhandled exception" << std::endl;
+    }
+    return 0;
 }
 

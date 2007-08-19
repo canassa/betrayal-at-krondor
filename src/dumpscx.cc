@@ -24,31 +24,40 @@
 #include "FileManager.h"
 #include "ScreenResource.h"
 
-int main(int argc, char *argv[]) {
-  try {
-    if (argc != 2) {
-      std::cerr << "Usage: " << argv[0] << " <SCX-file>" << std::endl;
-      return 1;
+int main(int argc, char *argv[])
+{
+    try
+    {
+        if (argc != 2)
+        {
+            std::cerr << "Usage: " << argv[0] << " <SCX-file>" << std::endl;
+            return 1;
+        }
+        ScreenResource *scx = new ScreenResource;
+        FileManager::GetInstance()->Load(scx, argv[1]);
+        Image *image = scx->GetImage();
+        printf("%dx%d\n", image->GetWidth(), image->GetHeight());
+        for (int y = 0; y < image->GetHeight(); y++)
+        {
+            for (int x = 0; x < image->GetWidth(); x++)
+            {
+                printf("%02x ", image->GetPixel(x, y));
+            }
+            printf("\n");
+        }
+        delete scx;
+        FileManager::CleanUp();
+        Directories::CleanUp();
     }
-    ScreenResource *scx = new ScreenResource;
-    FileManager::GetInstance()->Load(scx, argv[1]);
-    Image *image = scx->GetImage();
-    printf("%dx%d\n", image->GetWidth(), image->GetHeight());
-    for (int y = 0; y < image->GetHeight(); y++) {
-      for (int x = 0; x < image->GetWidth(); x++) {
-        printf("%02x ", image->GetPixel(x, y));
-      }
-      printf("\n");
+    catch (Exception &e)
+    {
+        e.Print("main");
     }
-    delete scx;
-    FileManager::CleanUp();
-    Directories::CleanUp();
-  } catch (Exception &e) {
-    e.Print("main");
-  } catch (...) {
-    /* every exception should have been handled before */
-    std::cerr << "Unhandled exception" << std::endl;
-  }
-  return 0;
+    catch (...)
+    {
+        /* every exception should have been handled before */
+        std::cerr << "Unhandled exception" << std::endl;
+    }
+    return 0;
 }
 

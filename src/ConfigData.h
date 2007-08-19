@@ -26,12 +26,15 @@
 
 #include "FileBuffer.h"
 
-class ConfigData {
-  public:
-    ConfigData() {};
-    virtual ~ConfigData() {};
-    virtual void Load(FileBuffer *buffer) = 0;
-    virtual void Save(FileBuffer *buffer) = 0;
+class ConfigData
+{
+public:
+    ConfigData()
+    {};
+    virtual ~ConfigData()
+    {};
+    virtual void Load ( FileBuffer *buffer ) = 0;
+    virtual void Save ( FileBuffer *buffer ) = 0;
 };
 
 #endif

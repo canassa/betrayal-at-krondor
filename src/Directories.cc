@@ -32,155 +32,166 @@
 Directories* Directories::instance = 0;
 
 Directories::Directories()
-: resourcePath("")
-, sharedPath("")
-, userPath("")
-, gamesPath("")
-, capturePath("")
-, dataPath("")
+        : resourcePath("")
+        , sharedPath("")
+        , userPath("")
+        , gamesPath("")
+        , capturePath("")
+        , dataPath("")
 {
-  resourcePath = SearchResources();
+    resourcePath = SearchResources();
 #if defined(DATADIR)
-  sharedPath = std::string(DATADIR) + std::string(PACKAGE) + "/";
+    sharedPath = std::string(DATADIR) + std::string(PACKAGE) + "/";
 #else
-  sharedPath = "";
+    sharedPath = "";
 #endif
 #if defined(WIN32) || defined(__MACOS__) || defined(__MACOSX__)
-  userPath = "";
-  gamesPath = "";
-  capturePath = "";
-  dataPath = "";
+    userPath = "";
+    gamesPath = "";
+    capturePath = "";
+    dataPath = "";
 #else
-  userPath = std::string(getenv("HOME")) + "/." + std::string(PACKAGE) + "/";
-  gamesPath = userPath + "/games/";
-  capturePath = userPath + "/capture/";
-  dataPath = userPath + "/data/";
+    userPath = std::string(getenv("HOME")) + "/." + std::string(PACKAGE) + "/";
+    gamesPath = userPath + "/games/";
+    capturePath = userPath + "/capture/";
+    dataPath = userPath + "/data/";
 #endif
-  CreatePath(userPath);
-  CreatePath(gamesPath);
-  CreatePath(capturePath);
-  CreatePath(dataPath);
+    CreatePath(userPath);
+    CreatePath(gamesPath);
+    CreatePath(capturePath);
+    CreatePath(dataPath);
 }
 
 Directories::~Directories()
-{
-}
+{}
 
 Directories*
 Directories::GetInstance()
 {
-  if (!instance) {
-    instance = new Directories();
-  }
-  return instance;
+    if (!instance)
+    {
+        instance = new Directories();
+    }
+    return instance;
 }
 
 void
 Directories::CleanUp()
 {
-  if (instance) {
-    delete instance;
-    instance = 0;
-  }
+    if (instance)
+    {
+        delete instance;
+        instance = 0;
+    }
 }
 
 void
 Directories::CreatePath(const std::string &path)
 {
 #if defined(WIN32)
-  // TODO
+    // TODO
 #elif defined(__MACOS__) || defined(__MACOSX__)
-  // TODO
+    // TODO
 #else
-  struct stat statbuf;
-  if (stat(path.c_str(), &statbuf) == -1) {
-    if (errno == ENOENT) {
-      if (mkdir(path.c_str(), S_IRWXU| S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) == -1) {
-        throw IOError(__FILE__, __LINE__);
-      }
-    } else {
-      throw FileNotFound(__FILE__, __LINE__, path);
+    struct stat statbuf;
+    if (stat(path.c_str(), &statbuf) == -1)
+    {
+        if (errno == ENOENT)
+        {
+            if (mkdir(path.c_str(), S_IRWXU| S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) == -1)
+            {
+                throw IOError(__FILE__, __LINE__);
+            }
+        }
+        else
+        {
+            throw FileNotFound(__FILE__, __LINE__, path);
+        }
     }
-  }
 #endif
 }
 
 static const std::string SEARCH_RESOURCE_FILE = "krondor.001";
 static const std::string SEARCH_RESOURCE_PATH[] =
-{
-  "./",
-  "/krondor/",
-  "./krondor/",
-  "../krondor/",
-  "/opt/krondor/",
-  "/bakcd/",
-  "./bakcd/",
-  "../bakcd/",
-  "/opt/bakcd/",
-  ""
-};
+    {
+        "./",
+        "/krondor/",
+        "./krondor/",
+        "../krondor/",
+        "/opt/krondor/",
+        "/bakcd/",
+        "./bakcd/",
+        "../bakcd/",
+        "/opt/bakcd/",
+        ""
+    };
 
 std::string
 Directories::SearchResources() const
 {
-  unsigned int i = 0;
-  while (SEARCH_RESOURCE_PATH[i] != "") {
-    try {
-      std::string path = SEARCH_RESOURCE_PATH[i];
-      std::string filename = path + SEARCH_RESOURCE_FILE;
-      std::ifstream ifs;
-      ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
-      if (ifs.is_open()) {
-        ifs.close();
-        return path;
-      }
-    } catch (...) {
-      /* continu */
+    unsigned int i = 0;
+    while (SEARCH_RESOURCE_PATH[i] != "")
+    {
+        try
+        {
+            std::string path = SEARCH_RESOURCE_PATH[i];
+            std::string filename = path + SEARCH_RESOURCE_FILE;
+            std::ifstream ifs;
+            ifs.open(filename.c_str(), std::ios::in | std::ios::binary);
+            if (ifs.is_open())
+            {
+                ifs.close();
+                return path;
+            }
+        }
+        catch (...)
+        {
+            /* continu */
+        }
+        i++;
     }
-    i++;
-  }
-  throw FileNotFound(__FILE__, __LINE__, SEARCH_RESOURCE_FILE);
-  return "";
+    throw FileNotFound(__FILE__, __LINE__, SEARCH_RESOURCE_FILE);
+    return "";
 }
 
 void
 Directories::SetResourcePath(const std::string &path)
 {
-  resourcePath = path;
+    resourcePath = path;
 }
 
 std::string
 Directories::GetResourcePath() const
 {
-  return resourcePath;
+    return resourcePath;
 }
 
 std::string
 Directories::GetSharedPath() const
 {
-  return sharedPath;
+    return sharedPath;
 }
 
 std::string
 Directories::GetUserPath() const
 {
-  return userPath;
+    return userPath;
 }
 
 std::string
 Directories::GetGamesPath() const
 {
-  return gamesPath;
+    return gamesPath;
 }
 
 std::string
 Directories::GetCapturePath() const
 {
-  return capturePath;
+    return capturePath;
 }
 
 std::string
 Directories::GetDataPath() const
 {
-  return dataPath;
+    return dataPath;
 }

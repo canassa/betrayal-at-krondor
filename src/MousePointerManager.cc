@@ -24,78 +24,84 @@
 MousePointerManager* MousePointerManager::instance = 0;
 
 MousePointerManager::MousePointerManager()
-: currentPointer(0)
-, pointerVec()
+        : currentPointer(0)
+        , pointerVec()
 {
-  MediaToolkit::GetInstance()->AddMouseButtonListener(this);
-  MediaToolkit::GetInstance()->AddMouseMotionListener(this);
+    MediaToolkit::GetInstance()->AddMouseButtonListener(this);
+    MediaToolkit::GetInstance()->AddMouseMotionListener(this);
 }
 
 MousePointerManager::~MousePointerManager()
 {
-  MediaToolkit::GetInstance()->RemoveMouseButtonListener(this);
-  MediaToolkit::GetInstance()->RemoveMouseMotionListener(this);
-  for (unsigned int i = 0; i < pointerVec.size(); i++) {
-    delete pointerVec[i];
-  }
-  pointerVec.clear();
+    MediaToolkit::GetInstance()->RemoveMouseButtonListener(this);
+    MediaToolkit::GetInstance()->RemoveMouseMotionListener(this);
+    for (unsigned int i = 0; i < pointerVec.size(); i++)
+    {
+        delete pointerVec[i];
+    }
+    pointerVec.clear();
 }
 
 MousePointerManager*
 MousePointerManager::GetInstance()
 {
-  if (!instance) {
-    instance = new MousePointerManager();
-  }
-  return instance;
+    if (!instance)
+    {
+        instance = new MousePointerManager();
+    }
+    return instance;
 }
 
 void
 MousePointerManager::CleanUp()
 {
-  if (instance) {
-    delete instance;
-    instance = 0;
-  }
+    if (instance)
+    {
+        delete instance;
+        instance = 0;
+    }
 }
 
 MousePointer*
 MousePointerManager::GetCurrentPointer()
 {
-  return pointerVec[currentPointer];
+    return pointerVec[currentPointer];
 }
 
 void
 MousePointerManager::SetCurrentPointer(const unsigned int n)
 {
-  if (n < pointerVec.size()) {
-    currentPointer = n;
-  } else {
-    currentPointer = 0;
-  }
+    if (n < pointerVec.size())
+    {
+        currentPointer = n;
+    }
+    else
+    {
+        currentPointer = 0;
+    }
 }
 
 void
 MousePointerManager::AddPointer(const std::string& resname)
 {
-  MousePointer *mp = new MousePointer(resname);
-  pointerVec.push_back(mp);
+    MousePointer *mp = new MousePointer(resname);
+    pointerVec.push_back(mp);
 }
 
 void
 MousePointerManager::MouseButtonPressed(const MouseButtonEvent &mbe)
 {
-  pointerVec[currentPointer]->SetPosition(mbe.GetXPos(), mbe.GetYPos());
+    pointerVec[currentPointer]->SetPosition(mbe.GetXPos(), mbe.GetYPos());
 }
 
 void
 MousePointerManager::MouseButtonReleased(const MouseButtonEvent &mbe)
 {
-  pointerVec[currentPointer]->SetPosition(mbe.GetXPos(), mbe.GetYPos());
+    pointerVec[currentPointer]->SetPosition(mbe.GetXPos(), mbe.GetYPos());
 }
 
 void
 MousePointerManager::MouseMoved(const MouseMotionEvent &mme)
 {
-  pointerVec[currentPointer]->SetPosition(mme.GetXPos(), mme.GetYPos());
+    pointerVec[currentPointer]->SetPosition(mme.GetXPos(), mme.GetYPos());
 }

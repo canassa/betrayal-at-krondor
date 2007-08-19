@@ -21,26 +21,26 @@
 #include "MousePointerManager.h"
 
 HotspotWidget::HotspotWidget(const Rectangle &r, const int a)
-: ActiveWidget(r, a)
+        : ActiveWidget(r, a)
 {
-  SetFocusable(false);
+    SetFocusable(false);
 }
 
 HotspotWidget::~HotspotWidget()
-{
-}
+{}
 
 void
 HotspotWidget::LeftClick(const bool toggle)
 {
-  if (toggle) {
-    GenerateActionEvent(GetAction());
-  }
+    if (toggle)
+    {
+        GenerateActionEvent(GetAction());
+    }
 }
 
 void
 HotspotWidget::RightClick(const bool toggle)
 {
-  if (toggle) {
-  }
+    if (toggle)
+    {}
 }

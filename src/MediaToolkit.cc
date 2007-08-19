@@ -24,125 +24,126 @@
 MediaToolkit* MediaToolkit::instance = 0;
 
 MediaToolkit::MediaToolkit()
-: audio(0)
-, clock(0)
-, video(0)
-, eventLoopRunning(false)
-, keyboardListeners()
-, mouseButtonListeners()
-, mouseMotionListeners()
-, timerListeners()
-, loopListeners()
-{
-}
+        : audio(0)
+        , clock(0)
+        , video(0)
+        , eventLoopRunning(false)
+        , keyboardListeners()
+        , mouseButtonListeners()
+        , mouseMotionListeners()
+        , timerListeners()
+        , loopListeners()
+{}
 
 MediaToolkit::~MediaToolkit()
 {
-  keyboardListeners.clear();
-  mouseButtonListeners.clear();
-  mouseMotionListeners.clear();
-  timerListeners.clear();
-  loopListeners.clear();
+    keyboardListeners.clear();
+    mouseButtonListeners.clear();
+    mouseMotionListeners.clear();
+    timerListeners.clear();
+    loopListeners.clear();
 }
 
 MediaToolkit*
 MediaToolkit::GetInstance()
 {
-  if (!instance) {
-    instance = new SDL_Toolkit();
-  }
-  return instance;
+    if (!instance)
+    {
+        instance = new SDL_Toolkit();
+    }
+    return instance;
 }
 
 void
 MediaToolkit::CleanUp()
 {
-  if (instance) {
-    delete instance;
-    instance = 0;
-  }
+    if (instance)
+    {
+        delete instance;
+        instance = 0;
+    }
 }
 
 Audio*
 MediaToolkit::GetAudio() const
 {
-  return audio;
+    return audio;
 }
 
 Clock*
 MediaToolkit::GetClock() const
 {
-  return clock;
+    return clock;
 }
 
 Video*
 MediaToolkit::GetVideo() const
 {
-  return video;
+    return video;
 }
 
 void
 MediaToolkit::AddKeyboardListener(KeyboardEventListener *kel)
 {
-  keyboardListeners.push_back(kel);
+    keyboardListeners.push_back(kel);
 }
 
 void
 MediaToolkit::RemoveKeyboardListener(KeyboardEventListener *kel)
 {
-  keyboardListeners.remove(kel);
+    keyboardListeners.remove(kel);
 }
 
 void
 MediaToolkit::AddMouseButtonListener(MouseButtonEventListener *mbel)
 {
-  mouseButtonListeners.push_back(mbel);
+    mouseButtonListeners.push_back(mbel);
 }
 
 void
 MediaToolkit::RemoveMouseButtonListener(MouseButtonEventListener *mbel)
 {
-  mouseButtonListeners.remove(mbel);
+    mouseButtonListeners.remove(mbel);
 }
 
 void
 MediaToolkit::AddMouseMotionListener(MouseMotionEventListener *mmel)
 {
-  mouseMotionListeners.push_back(mmel);
+    mouseMotionListeners.push_back(mmel);
 }
 
 void
 MediaToolkit::RemoveMouseMotionListener(MouseMotionEventListener *mmel)
 {
-  mouseMotionListeners.remove(mmel);
+    mouseMotionListeners.remove(mmel);
 }
 
 void
 MediaToolkit::AddTimerListener(TimerEventListener *tel)
 {
-  timerListeners.push_back(tel);
+    timerListeners.push_back(tel);
 }
 
 void
 MediaToolkit::RemoveTimerListener(TimerEventListener *tel)
 {
-  timerListeners.remove(tel);
+    timerListeners.remove(tel);
 }
 
 void
 MediaToolkit::AddUpdateListener(LoopEventListener *lel)
 {
-  loopListeners.push_back(lel);
+    loopListeners.push_back(lel);
 }
 
 void
 MediaToolkit::RemoveUpdateListener(LoopEventListener *lel)
 {
-  loopListeners.remove(lel);
+    loopListeners.remove(lel);
 }
 
 void
 MediaToolkit::TerminateEventLoop()
 {
-  eventLoopRunning = false;
+    eventLoopRunning = false;
 }

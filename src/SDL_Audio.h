@@ -29,12 +29,13 @@
 #include "Audio.h"
 
 class SDL_Audio
-: public Audio {
-  public:
+            : public Audio
+{
+public:
     SDL_Audio();
     virtual ~SDL_Audio();
-    int PlaySound(FileBuffer *buffer, const int repeat = 0);
-    void StopSound(const int channel = -1);
+    int PlaySound ( FileBuffer *buffer, const int repeat = 0 );
+    void StopSound ( const int channel = -1 );
 };
 
 #endif

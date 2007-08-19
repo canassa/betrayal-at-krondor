@@ -30,8 +30,9 @@
 #include "PaletteResource.h"
 #include "WidgetFactory.h"
 
-class DialogFactory {
-  private:
+class DialogFactory
+{
+private:
     RequestResource request;
     PaletteResource palette;
     ScreenResource screen;
@@ -44,7 +45,7 @@ class DialogFactory {
     FontResource font;
     LabelResource label;
     WidgetFactory widgetFactory;
-  public:
+public:
     DialogFactory();
     virtual ~DialogFactory();
     Dialog* CreateCampDialog();
@@ -55,7 +56,7 @@ class DialogFactory {
     Dialog* CreateInventoryDialog();
     Dialog* CreateLoadDialog();
     Dialog* CreateMapDialog();
-    Dialog* CreateOptionsDialog(const bool firstTime);
+    Dialog* CreateOptionsDialog ( const bool firstTime );
     Dialog* CreatePreferencesDialog();
     Dialog* CreateSaveDialog();
     Dialog* CreateWorldDialog();

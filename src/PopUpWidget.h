@@ -26,10 +26,11 @@
 
 #include "ContainerWidget.h"
 
-class PopUpWidget: public ContainerWidget {
-  private:
-  public:
-    PopUpWidget(const Rectangle &r);
+class PopUpWidget: public ContainerWidget
+{
+private:
+public:
+    PopUpWidget ( const Rectangle &r );
     virtual ~PopUpWidget();
     void Draw();
 };

@@ -30,16 +30,17 @@
 #include "TaggedResource.h"
 
 class FontResource
-: public TaggedResource {
-  private:
+            : public TaggedResource
+{
+private:
     Font *font;
-  public:
+public:
     FontResource();
     virtual ~FontResource();
     Font* GetFont() const;
     void Clear();
-    void Load(FileBuffer *buffer);
-    void Save(FileBuffer *buffer);
+    void Load ( FileBuffer *buffer );
+    void Save ( FileBuffer *buffer );
 };
 
 #endif

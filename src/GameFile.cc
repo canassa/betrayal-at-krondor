@@ -21,32 +21,32 @@
 #include "GameFile.h"
 #include "Directories.h"
 
-GameFile::GameFile() {
-}
+GameFile::GameFile()
+{}
 
-GameFile::~GameFile() {
-}
+GameFile::~GameFile()
+{}
 
 std::string
 GameFile::GetDefaultPath() const
 {
-  return Directories::GetInstance()->GetGamesPath();
+    return Directories::GetInstance()->GetGamesPath();
 }
 
 std::string
 GameFile::GetAlternatePath() const
 {
-  return Directories::GetInstance()->GetUserPath();
+    return Directories::GetInstance()->GetUserPath();
 }
 
 std::string
 GameFile::GetLastResortPath() const
 {
-  return Directories::GetInstance()->GetResourcePath();
+    return Directories::GetInstance()->GetResourcePath();
 }
 
 std::string
 GameFile::GetStoragePath() const
 {
-  return Directories::GetInstance()->GetGamesPath();
+    return Directories::GetInstance()->GetGamesPath();
 }

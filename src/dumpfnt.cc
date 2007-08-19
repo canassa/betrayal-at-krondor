@@ -24,34 +24,44 @@
 #include "FileManager.h"
 #include "FontResource.h"
 
-int main(int argc, char *argv[]) {
-  try {
-    if (argc != 2) {
-      std::cerr << "Usage: " << argv[0] << " <FNT-file>" << std::endl;
-      return 1;
-    }
-    FontResource *fnt = new FontResource;
-    FileManager::GetInstance()->Load(fnt, argv[1]);
-    Font *font = fnt->GetFont();
-    for (unsigned int i = 0; i < font->GetSize(); i++) {
-      printf("%2d: '%c' (%d)\n", i, i + font->GetFirst(), font->GetWidth(i));
-      FontGlyph glyph = font->GetGlyph(i);
-      for (unsigned int j = 0; j < font->GetHeight(); j++) {
-        for (unsigned int k = 0; k < glyph.width; k++) {
-          printf("%c", glyph.data[j] & (0x8000 >> k) ? '*' : '.');
+int main(int argc, char *argv[])
+{
+    try
+    {
+        if (argc != 2)
+        {
+            std::cerr << "Usage: " << argv[0] << " <FNT-file>" << std::endl;
+            return 1;
         }
-        printf("\n");
-      }
+        FontResource *fnt = new FontResource;
+        FileManager::GetInstance()->Load(fnt, argv[1]);
+        Font *font = fnt->GetFont();
+        for (unsigned int i = 0; i < font->GetSize(); i++)
+        {
+            printf("%2d: '%c' (%d)\n", i, i + font->GetFirst(), font->GetWidth(i));
+            FontGlyph glyph = font->GetGlyph(i);
+            for (unsigned int j = 0; j < font->GetHeight(); j++)
+            {
+                for (unsigned int k = 0; k < glyph.width; k++)
+                {
+                    printf("%c", glyph.data[j] & (0x8000 >> k) ? '*' : '.');
+                }
+                printf("\n");
+            }
+        }
+        delete fnt;
+        FileManager::CleanUp();
+        Directories::CleanUp();
     }
-    delete fnt;
-    FileManager::CleanUp();
-    Directories::CleanUp();
-  } catch (Exception &e) {
-    e.Print("main");
-  } catch (...) {
-    /* every exception should have been handled before */
-    std::cerr << "Unhandled exception" << std::endl;
-  }
-  return 0;
+    catch (Exception &e)
+    {
+        e.Print("main");
+    }
+    catch (...)
+    {
+        /* every exception should have been handled before */
+        std::cerr << "Unhandled exception" << std::endl;
+    }
+    return 0;
 }
 

@@ -21,36 +21,40 @@
 #include "MediaToolkit.h"
 
 GameViewWidget::GameViewWidget(const Rectangle &r, Game *g)
-: ContainerWidget(r)
-, game(g)
-, cachedImage(0)
+        : ContainerWidget(r)
+        , game(g)
+        , cachedImage(0)
 {
-  cachedImage = new Image(rect.GetWidth(), rect.GetHeight());
+    cachedImage = new Image(rect.GetWidth(), rect.GetHeight());
 }
 
 GameViewWidget::~GameViewWidget()
 {
-  if (cachedImage) {
-    delete cachedImage;
-  }
+    if (cachedImage)
+    {
+        delete cachedImage;
+    }
 }
 
 void
 GameViewWidget::Draw()
 {
-  if (IsVisible()) {
-    if (cachedImage) {
-      cachedImage->Draw(rect.GetXPos(), rect.GetYPos());
+    if (IsVisible())
+    {
+        if (cachedImage)
+        {
+            cachedImage->Draw(rect.GetXPos(), rect.GetYPos());
+        }
+        DrawChildWidgets();
     }
-    DrawChildWidgets();
-  }
 }
 
 void
 GameViewWidget::Update()
 {
-  Redraw();
-  if (cachedImage) {
-    cachedImage->Read(rect.GetXPos(), rect.GetYPos());
-  }
+    Redraw();
+    if (cachedImage)
+    {
+        cachedImage->Read(rect.GetXPos(), rect.GetYPos());
+    }
 }

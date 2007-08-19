@@ -29,29 +29,30 @@
 #include "Widget.h"
 
 class ContainerWidget
-: public ActiveWidget {
-  private:
+            : public ActiveWidget
+{
+private:
     std::list<Widget *> widgets;
     std::list<ActiveWidget *> activeWidgets;
     std::list<ActiveWidget *>::iterator currentActiveWidget;
-  protected:
+protected:
     void DrawChildWidgets();
-  public:
-    ContainerWidget(const Rectangle &r);
+public:
+    ContainerWidget ( const Rectangle &r );
     virtual ~ContainerWidget();
     void Draw();
     void Clear();
-    void AddWidget(Widget *w);
-    void RemoveWidget(Widget *w);
-    void AddActiveWidget(ActiveWidget *aw);
-    void RemoveActiveWidget(ActiveWidget *aw);
+    void AddWidget ( Widget *w );
+    void RemoveWidget ( Widget *w );
+    void AddActiveWidget ( ActiveWidget *aw );
+    void RemoveActiveWidget ( ActiveWidget *aw );
     void NextWidget();
     void PreviousWidget();
-    void LeftClick(const bool toggle);
-    void RightClick(const bool toggle);
-    void LeftClick(const bool toggle, const int x, const int y);
-    void RightClick(const bool toggle, const int x, const int y);
-    void MouseOver(const int x, const int y);
+    void LeftClick ( const bool toggle );
+    void RightClick ( const bool toggle );
+    void LeftClick ( const bool toggle, const int x, const int y );
+    void RightClick ( const bool toggle, const int x, const int y );
+    void MouseOver ( const int x, const int y );
     void Reset();
 };
 

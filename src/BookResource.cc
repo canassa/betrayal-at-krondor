@@ -21,93 +21,109 @@
 #include "BookResource.h"
 
 BookResource::BookResource()
-: paragraphs()
-{
-}
+        : paragraphs()
+{}
 
 BookResource::~BookResource()
 {
-  Clear();
+    Clear();
 }
 
 unsigned int
 BookResource::GetNumParagraphs() const
 {
-  return paragraphs.size();
+    return paragraphs.size();
 }
 
 std::string&
 BookResource::GetParagraph(const unsigned int i)
 {
-  return paragraphs[i];
+    return paragraphs[i];
 }
 
 void
 BookResource::Clear()
 {
-  paragraphs.clear();
+    paragraphs.clear();
 }
 
 void
 BookResource::Load(FileBuffer *buffer)
 {
-  try {
-    Clear();
-    buffer->Skip(4);
-    for (unsigned int i = 0; i < buffer->GetUint16LE(); i++) {
-      buffer->Skip(4);
-    }
-    for (unsigned int i = 0; i < 40; i++) {
-      buffer->Skip(2);
-    }
-    while (!buffer->AtEnd()) {
-      unsigned int code = buffer->GetUint8();
-      std::string s = "";
-      while ((code & 0xf0) != 0xf0) {
-        s += (char)code;
-        code = buffer->GetUint8();
-      }
-      if (s.length()) {
-        paragraphs.push_back(s);
-      }
-      switch (code) {
-        case 0xf0:
-          do {
+    try
+    {
+        Clear();
+        buffer->Skip(4);
+        for (unsigned int i = 0; i < buffer->GetUint16LE(); i++)
+        {
+            buffer->Skip(4);
+        }
+        for (unsigned int i = 0; i < 40; i++)
+        {
             buffer->Skip(2);
-            if (!buffer->AtEnd()) {
-              code = buffer->GetUint8();
-              buffer->Skip(-1);
+        }
+        while (!buffer->AtEnd())
+        {
+            unsigned int code = buffer->GetUint8();
+            std::string s = "";
+            while ((code & 0xf0) != 0xf0)
+            {
+                s += (char)code;
+                code = buffer->GetUint8();
             }
-          } while ((code != 0xf0) && (!buffer->AtEnd()));
-          break;
-        case 0xf1:
-          for (unsigned int i = 0; i < 8; i++) {
-            buffer->Skip(2);
-          }
-          break;
-        case 0xf4:
-          for (unsigned int i = 0; i < 5; i++) {
-            buffer->Skip(2);
-          }
-          break;
-        default:
-          break;
-      }
+            if (s.length())
+            {
+                paragraphs.push_back(s);
+            }
+            switch (code)
+            {
+            case 0xf0:
+                do
+                {
+                    buffer->Skip(2);
+                    if (!buffer->AtEnd())
+                    {
+                        code = buffer->GetUint8();
+                        buffer->Skip(-1);
+                    }
+                }
+                while ((code != 0xf0) && (!buffer->AtEnd()));
+                break;
+            case 0xf1:
+                for (unsigned int i = 0; i < 8; i++)
+                {
+                    buffer->Skip(2);
+                }
+                break;
+            case 0xf4:
+                for (unsigned int i = 0; i < 5; i++)
+                {
+                    buffer->Skip(2);
+                }
+                break;
+            default:
+                break;
+            }
+        }
     }
-  } catch (Exception &e) {
-    e.Print("BookResource::Load");
-    throw;
-  }
+    catch (Exception &e)
+    {
+        e.Print("BookResource::Load");
+        throw;
+    }
 }
 
 void
 BookResource::Save(FileBuffer *buffer)
 {
-  try {
-    // TODO
-    buffer = buffer;
-  } catch (Exception &e) {
-    e.Print("BookResource::Save");
-    throw;
-  }
+    try
+    {
+        // TODO
+        buffer = buffer;
+    }
+    catch (Exception &e)
+    {
+        e.Print("BookResource::Save");
+        throw;
+    }
 }

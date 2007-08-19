@@ -31,19 +31,19 @@
 #include "PlayerCharacter.h"
 
 class InventoryWidget
-: public ActionEventListener
-, public ContainerWidget
-, public Observer
+            : public ActionEventListener
+            , public ContainerWidget
+            , public Observer
 {
-  private:
+private:
     PlayerCharacter *character;
     ImageResource& images;
     Font *font;
     std::list<Rectangle> freeSpaces;
-  public:
-    InventoryWidget(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Font *f);
+public:
+    InventoryWidget ( const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Font *f );
     virtual ~InventoryWidget();
-    void ActionPerformed(const ActionEvent &ae);
+    void ActionPerformed ( const ActionEvent &ae );
     void Update();
 };
 

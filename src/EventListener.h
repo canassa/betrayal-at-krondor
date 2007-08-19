@@ -26,48 +26,66 @@
 
 #include "Event.h"
 
-class KeyboardEventListener {
-  public:
-    KeyboardEventListener() {};
-    virtual ~KeyboardEventListener() {};
-    virtual void KeyPressed(const KeyboardEvent &kbe) = 0;
-    virtual void KeyReleased(const KeyboardEvent &kbe) = 0;
+class KeyboardEventListener
+{
+public:
+    KeyboardEventListener()
+    {};
+    virtual ~KeyboardEventListener()
+    {};
+    virtual void KeyPressed ( const KeyboardEvent &kbe ) = 0;
+    virtual void KeyReleased ( const KeyboardEvent &kbe ) = 0;
 };
 
-class MouseButtonEventListener {
-  public:
-    MouseButtonEventListener() {};
-    virtual ~MouseButtonEventListener() {};
-    virtual void MouseButtonPressed(const MouseButtonEvent &mbe) = 0;
-    virtual void MouseButtonReleased(const MouseButtonEvent &mbe) = 0;
+class MouseButtonEventListener
+{
+public:
+    MouseButtonEventListener()
+    {};
+    virtual ~MouseButtonEventListener()
+    {};
+    virtual void MouseButtonPressed ( const MouseButtonEvent &mbe ) = 0;
+    virtual void MouseButtonReleased ( const MouseButtonEvent &mbe ) = 0;
 };
 
-class MouseMotionEventListener {
-  public:
-    MouseMotionEventListener() {};
-    virtual ~MouseMotionEventListener() {};
-    virtual void MouseMoved(const MouseMotionEvent &mme) = 0;
+class MouseMotionEventListener
+{
+public:
+    MouseMotionEventListener()
+    {};
+    virtual ~MouseMotionEventListener()
+    {};
+    virtual void MouseMoved ( const MouseMotionEvent &mme ) = 0;
 };
 
-class TimerEventListener {
-  public:
-    TimerEventListener() {};
-    virtual ~TimerEventListener() {};
-    virtual void TimerExpired(const TimerEvent &te) = 0;
+class TimerEventListener
+{
+public:
+    TimerEventListener()
+    {};
+    virtual ~TimerEventListener()
+    {};
+    virtual void TimerExpired ( const TimerEvent &te ) = 0;
 };
 
-class LoopEventListener {
-  public:
-    LoopEventListener() {};
-    virtual ~LoopEventListener() {};
-    virtual void LoopComplete(const LoopEvent &le) = 0;
+class LoopEventListener
+{
+public:
+    LoopEventListener()
+    {};
+    virtual ~LoopEventListener()
+    {};
+    virtual void LoopComplete ( const LoopEvent &le ) = 0;
 };
 
-class ActionEventListener {
-  public:
-    ActionEventListener() {};
-    virtual ~ActionEventListener() {};
-    virtual void ActionPerformed(const ActionEvent &ae) = 0;
+class ActionEventListener
+{
+public:
+    ActionEventListener()
+    {};
+    virtual ~ActionEventListener()
+    {};
+    virtual void ActionPerformed ( const ActionEvent &ae ) = 0;
 };
 
 #endif

@@ -25,72 +25,73 @@
 #include "MousePointer.h"
 
 MousePointer::MousePointer(const std::string &resname)
-: Subject()
-, visible(false)
-, xPos(0)
-, yPos(0)
-, pointerType(MP_SWORD)
-, pointerImages()
-, dragImage(0)
-, dragOffsetX(0)
-, dragOffsetY(0)
+        : Subject()
+        , visible(false)
+        , xPos(0)
+        , yPos(0)
+        , pointerType(MP_SWORD)
+        , pointerImages()
+        , dragImage(0)
+        , dragOffsetX(0)
+        , dragOffsetY(0)
 {
-  FileManager::GetInstance()->Load(&pointerImages, resname);
+    FileManager::GetInstance()->Load(&pointerImages, resname);
 }
 
 MousePointer::~MousePointer()
-{
-}
+{}
 
 int
 MousePointer::GetXPos() const
 {
-  return xPos;
+    return xPos;
 }
 
 int
 MousePointer::GetYPos() const
 {
-  return yPos;
+    return yPos;
 }
 
 void
 MousePointer::SetPointerType(MousePointerType mpt)
 {
-  pointerType = mpt;
-  Notify();
+    pointerType = mpt;
+    Notify();
 }
 
 void
 MousePointer::SetPosition(const int x, const int y)
 {
-  xPos = x;
-  yPos = y;
-  Notify();
+    xPos = x;
+    yPos = y;
+    Notify();
 }
 
 void
 MousePointer::SetVisible(const bool vis)
 {
-  visible = vis;
-  Notify();
+    visible = vis;
+    Notify();
 }
 
 void
 MousePointer::SetDragImage(Image *img, const int x, const int y)
 {
-  dragImage = img;
-  dragOffsetX = x;
-  dragOffsetY = y;
+    dragImage = img;
+    dragOffsetX = x;
+    dragOffsetY = y;
 }
 
 void
 MousePointer::Draw()
 {
-  if (visible) {
-    if (dragImage) {
-      dragImage->Draw(xPos + dragOffsetX, yPos + dragOffsetY, 0);
+    if (visible)
+    {
+        if (dragImage)
+        {
+            dragImage->Draw(xPos + dragOffsetX, yPos + dragOffsetY, 0);
+        }
+        pointerImages.GetImage((int)pointerType)->Draw(xPos, yPos, 0);
     }
-    pointerImages.GetImage((int)pointerType)->Draw(xPos, yPos, 0);
-  }
 }

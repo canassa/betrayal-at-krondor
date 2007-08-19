@@ -29,15 +29,16 @@
 #include "Widget.h"
 
 class PortraitWidget
-: public Widget {
-  private:
+            : public Widget
+{
+private:
     PlayerCharacter *playerCharacter;
     Image *horizontalBorder;
     Image *verticalBorder;
-  public:
-    PortraitWidget(const Rectangle &r, PlayerCharacter *pc);
+public:
+    PortraitWidget ( const Rectangle &r, PlayerCharacter *pc );
     virtual ~PortraitWidget();
-    void SetBorders(Image *hb, Image *vb);
+    void SetBorders ( Image *hb, Image *vb );
     void Draw();
 };
 
