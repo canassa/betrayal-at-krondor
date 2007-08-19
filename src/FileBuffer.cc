@@ -312,6 +312,7 @@ FileBuffer::CompressRLE(FileBuffer *result)
 {
     try
     {
+        uint8_t *skipptr = GetCurrent();
         uint8_t byte = 0;
         uint8_t next = GetUint8();
         unsigned int count;
@@ -323,11 +324,10 @@ FileBuffer::CompressRLE(FileBuffer *result)
             {
                 byte = next;
                 next = GetUint8();
-                printf("%3d %02x %02x\n",count,byte,next);
                 count++;
             }
-            while (!AtEnd() && (count < 256) && (next == byte));
-            if ((next != byte) || (count == 256))
+            while (!AtEnd() && (next == byte));
+            if (next != byte)
             {
                 count--;
             }
@@ -335,23 +335,40 @@ FileBuffer::CompressRLE(FileBuffer *result)
             {
                 if (skipped > 0)
                 {
-                    Skip(-skipped);
                     while (skipped > 0)
                     {
-                        unsigned int n = skipped & 0x7f;
+                        unsigned int n;
+                        if (skipped > 127)
+                        {
+                            n = 127;
+                        }
+                        else
+                        {
+                            n = skipped & 0x7f;
+                        }
                         result->PutUint8(n);
-                        result->Copy(this, n);
+                        result->PutData(skipptr, n);
                         skipped -= n;
+                        skipptr += n;
                     }
                 }
                 while (count > 2)
                 {
-                    unsigned int n = count & 0x7f;
+                    unsigned int n;
+                    if (count > 127)
+                    {
+                        n = 127;
+                    }
+                    else
+                    {
+                        n = count & 0x7f;
+                    }
                     result->PutUint8(n | 0x80);
                     result->PutUint8(byte);
                     count -= n;
                 }
                 skipped = count;
+                skipptr = GetCurrent() - skipped - 1;
             }
             else
             {

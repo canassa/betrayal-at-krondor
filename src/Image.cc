@@ -294,13 +294,13 @@ Image::Save(FileBuffer *buffer)
                 {
                     for (int y = 0; y < height; y++)
                     {
-                        SetPixel(x, y, imgbuf->GetUint8());
+                        imgbuf->PutUint8(GetPixel(x, y));
                     }
                 }
             }
             else
             {
-                imgbuf->GetData(pixel, width * height);
+                imgbuf->PutData(pixel, width * height);
             }
             imgbuf->Rewind();
             if (flags & FLAG_COMPRESSED)
