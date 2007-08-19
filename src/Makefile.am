@@ -114,7 +114,8 @@ noinst_LIBRARIES = libbase.a \
                    libgame.a \
                    libguitoolkit.a \
                    libdriver.a
-noinst_PROGRAMS = dumpads \
+noinst_PROGRAMS = convertresource \
+                  dumpads \
                   dumpbmx \
                   dumpbok \
                   dumpddx \
@@ -335,6 +336,13 @@ libdriver_a_SOURCES = Audio.h \
                       SDL_Video.h \
                       Video.cc \
                       Video.h
+convertresource_SOURCES = convertresource.cc
+convertresource_LDADD = libresdata.a \
+                        libguitoolkit.a \
+                        libresbase.a \
+                        libresutil.a \
+                        libdriver.a \
+                        libbase.a
 dumpads_SOURCES = AnimationResource.cc \
                   AnimationResource.h \
                   dumpads.cc
