@@ -76,7 +76,7 @@ ConfigResource::Load(FileBuffer *buffer)
     }
 }
 
-void
+unsigned int
 ConfigResource::Save(FileBuffer *buffer)
 {
     if (!prefs)
@@ -96,6 +96,7 @@ ConfigResource::Save(FileBuffer *buffer)
         if (prefs->GetCombatMusic()) flags |= PREF_COMBATMUSIC_MASK;
         if (prefs->GetIntroduction()) flags |= PREF_INTRODUCTION_MASK;
         buffer->PutUint8(flags);
+        return buffer->GetBytesDone();
     }
     catch (Exception &e)
     {

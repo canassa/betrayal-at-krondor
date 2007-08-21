@@ -236,7 +236,7 @@ GameResource::Load(FileBuffer *buffer)
     }
 }
 
-void
+unsigned int
 GameResource::Save(FileBuffer *buffer)
 {
     if (!game)
@@ -304,6 +304,7 @@ GameResource::Save(FileBuffer *buffer)
                 }
             }
         }
+        return buffer->GetSize();
     }
     catch (Exception &e)
     {

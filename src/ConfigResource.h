@@ -39,7 +39,7 @@ public:
     Preferences * GetPreferences();
     void SetPreferences ( Preferences *p );
     void Load ( FileBuffer *buffer );
-    void Save ( FileBuffer *buffer );
+    unsigned int Save ( FileBuffer *buffer );
 };
 
 #endif
