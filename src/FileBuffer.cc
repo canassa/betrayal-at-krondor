@@ -45,11 +45,21 @@ FileBuffer::~FileBuffer()
 }
 
 void
-FileBuffer::Copy(FileBuffer *buf, const unsigned int n)
+FileBuffer::CopyFrom(FileBuffer *buf, const unsigned int n)
 {
     if (buffer && n && (current + n <= buffer + size))
     {
         buf->GetData(current, n);
+        current += n;
+    }
+}
+
+void
+FileBuffer::CopyTo(FileBuffer *buf, const unsigned int n)
+{
+    if (buffer && n && (current + n <= buffer + size))
+    {
+        buf->PutData(current, n);
         current += n;
     }
 }
@@ -331,7 +341,7 @@ FileBuffer::CompressRLE(FileBuffer *result)
             {
                 count--;
             }
-            if (count > 2)
+            if (count > 3)
             {
                 if (skipped > 0)
                 {
@@ -352,7 +362,7 @@ FileBuffer::CompressRLE(FileBuffer *result)
                         skipptr += n;
                     }
                 }
-                while (count > 2)
+                while (count > 3)
                 {
                     unsigned int n;
                     if (count > 127)
@@ -386,7 +396,7 @@ FileBuffer::CompressRLE(FileBuffer *result)
             {
                 unsigned int n = skipped & 0x7f;
                 result->PutUint8(n);
-                result->Copy(this, n);
+                result->CopyFrom(this, n);
                 skipped -= n;
             }
         }
@@ -555,7 +565,7 @@ FileBuffer::DecompressRLE(FileBuffer *result)
             }
             else
             {
-                result->Copy(this, control);
+                result->CopyFrom(this, control);
             }
         }
         unsigned int res = result->GetBytesDone();

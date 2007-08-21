@@ -52,7 +52,8 @@ public:
     void Save ( std::ofstream &ofs );
     void Save ( std::ofstream &ofs, const unsigned int n );
     void Dump ( const unsigned int n = 0 );
-    void Copy ( FileBuffer *buf, const unsigned int n );
+    void CopyFrom ( FileBuffer *buf, const unsigned int n );
+    void CopyTo ( FileBuffer *buf, const unsigned int n );
     void Fill ( FileBuffer *buf );
     void Rewind();
     void Seek ( const unsigned int n );

@@ -85,7 +85,7 @@ Sound::CreateWaveSamples(FileBuffer *buf)
     buffer->PutUint16LE(8);       // significant bits per sample
     buffer->PutUint32LE(DATA_ID);
     buffer->PutUint32LE(size);
-    buffer->Copy(buf, size);
+    buffer->CopyFrom(buf, size);
     buffer->Rewind();
 }
 

@@ -307,12 +307,12 @@ Image::Save(FileBuffer *buffer)
             {
                 FileBuffer *compressed = new FileBuffer(width * height);
                 unsigned int size = imgbuf->CompressRLE(compressed);
-                buffer->Copy(compressed, size);
+                buffer->CopyFrom(compressed, size);
                 delete compressed;
             }
             else
             {
-                buffer->Copy(imgbuf, width * height);
+                buffer->CopyFrom(imgbuf, width * height);
             }
             delete imgbuf;
         }

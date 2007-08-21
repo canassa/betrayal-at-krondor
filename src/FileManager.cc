@@ -417,7 +417,7 @@ FileManager::ArchiveAllResources()
                 resArchive.LoadResource(*buffer, resIdxData.offset);
                 archiveBuffer->PutString(resName, RES_FILENAME_LEN);
                 archiveBuffer->PutUint32LE(resIdxData.size);
-                archiveBuffer->Copy(buffer, resIdxData.size);
+                archiveBuffer->CopyFrom(buffer, resIdxData.size);
                 delete buffer;
             }
             while (resIndex.GetNext(resName, resIdxData));
