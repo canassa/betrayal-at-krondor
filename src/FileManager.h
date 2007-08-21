@@ -37,8 +37,10 @@ private:
     ResourceArchive resArchive;
     FileBuffer* LoadConfig ( const std::string &name );
     void SaveConfig ( const std::string &name, FileBuffer* buffer );
+    void SaveConfig ( const std::string &name, FileBuffer* buffer, const unsigned int n );
     FileBuffer* LoadGame ( const std::string &name );
     void SaveGame ( const std::string &name, FileBuffer* buffer );
+    void SaveGame ( const std::string &name, FileBuffer* buffer, const unsigned int n );
     FileBuffer* LoadResource ( const std::string &name );
     void SaveResource ( const std::string &name, FileBuffer* buffer );
     void SaveResource ( const std::string &name, FileBuffer* buffer, const unsigned int n );

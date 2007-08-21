@@ -94,6 +94,23 @@ FileManager::SaveConfig(const std::string &name, FileBuffer* buffer)
     }
 }
 
+void
+FileManager::SaveConfig(const std::string &name, FileBuffer* buffer, const unsigned int n)
+{
+    try
+    {
+        ConfigFile cfgfile;
+        cfgfile.Open(name, true);
+        cfgfile.Save(*buffer, n);
+        cfgfile.Close();
+    }
+    catch (Exception &e)
+    {
+        e.Print("FileManager::SaveConfig");
+        throw;
+    }
+}
+
 FileBuffer*
 FileManager::LoadGame(const std::string &name)
 {
@@ -123,6 +140,23 @@ FileManager::SaveGame(const std::string &name, FileBuffer* buffer)
         GameFile gamfile;
         gamfile.Open(name, true);
         gamfile.Save(*buffer);
+        gamfile.Close();
+    }
+    catch (Exception &e)
+    {
+        e.Print("FileManager::SaveGame");
+        throw;
+    }
+}
+
+void
+FileManager::SaveGame(const std::string &name, FileBuffer* buffer, const unsigned int n)
+{
+    try
+    {
+        GameFile gamfile;
+        gamfile.Open(name, true);
+        gamfile.Save(*buffer, n);
         gamfile.Close();
     }
     catch (Exception &e)
@@ -244,8 +278,8 @@ FileManager::Save(ConfigData *cfg, const std::string &name)
     try
     {
         FileBuffer *buffer = new FileBuffer(16);
-        cfg->Save(buffer);
-        SaveConfig(name, buffer);
+        unsigned int size = cfg->Save(buffer);
+        SaveConfig(name, buffer, size);
         delete buffer;
     }
     catch (Exception &e)
@@ -295,8 +329,8 @@ FileManager::Save(GameData *gam, const std::string &name)
     try
     {
         FileBuffer *buffer = new FileBuffer(400000);
-        gam->Save(buffer);
-        SaveGame(name, buffer);
+        unsigned int size = gam->Save(buffer);
+        SaveGame(name, buffer, size);
         delete buffer;
     }
     catch (Exception &e)
@@ -347,8 +381,8 @@ FileManager::Save(ResourceData *res, const std::string &name)
     try
     {
         FileBuffer *buffer = new FileBuffer(0x20000);
-        res->Save(buffer);
-        SaveResource(name, buffer);
+        unsigned int size = res->Save(buffer);
+        SaveResource(name, buffer, size);
         delete buffer;
     }
     catch (Exception &e)
