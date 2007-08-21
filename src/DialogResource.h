@@ -52,7 +52,7 @@ public:
     bool Find ( const unsigned int n, DialogData* data );
     void Clear();
     void Load ( FileBuffer *buffer );
-    void Save ( FileBuffer *buffer );
+    unsigned int Save ( FileBuffer *buffer );
 };
 
 #endif

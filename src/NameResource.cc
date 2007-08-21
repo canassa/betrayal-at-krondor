@@ -75,13 +75,14 @@ NameResource::Load(FileBuffer *buffer)
     }
 }
 
-void
+unsigned int
 NameResource::Save(FileBuffer *buffer)
 {
     try
     {
         // TODO
         buffer = buffer;
+        return 0;
     }
     catch (Exception &e)
     {

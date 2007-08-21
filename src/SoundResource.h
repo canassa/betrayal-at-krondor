@@ -53,7 +53,7 @@ public:
     static void CleanUp();
     void Clear();
     void Load ( FileBuffer *buffer );
-    void Save ( FileBuffer *buffer );
+    unsigned int Save ( FileBuffer *buffer );
     SoundData& GetSoundData ( unsigned int id );
 };
 

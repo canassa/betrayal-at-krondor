@@ -50,13 +50,14 @@ TileDataResource::Load(FileBuffer *buffer)
     }
 }
 
-void
+unsigned int
 TileDataResource::Save(FileBuffer *buffer)
 {
     try
     {
         // TODO
         buffer = buffer;
+        return 0;
     }
     catch (Exception &e)
     {

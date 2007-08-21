@@ -54,7 +54,7 @@ public:
     LabelData& GetLabelData ( const unsigned int n );
     void Clear();
     void Load ( FileBuffer *buffer );
-    void Save ( FileBuffer *buffer );
+    unsigned int Save ( FileBuffer *buffer );
 };
 
 #endif

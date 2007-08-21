@@ -35,7 +35,7 @@ public:
     {};
     virtual void Clear() = 0;
     virtual void Load ( FileBuffer *buffer ) = 0;
-    virtual void Save ( FileBuffer *buffer ) = 0;
+    virtual unsigned int Save ( FileBuffer *buffer ) = 0;
 };
 
 #endif

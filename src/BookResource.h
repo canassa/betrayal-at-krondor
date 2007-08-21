@@ -40,7 +40,7 @@ public:
     std::string& GetParagraph ( const unsigned int i );
     void Clear();
     void Load ( FileBuffer *buffer );
-    void Save ( FileBuffer *buffer );
+    unsigned int Save ( FileBuffer *buffer );
 };
 
 #endif

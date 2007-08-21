@@ -107,7 +107,7 @@ ImageResource::Load(FileBuffer *buffer)
     }
 }
 
-void
+unsigned int
 ImageResource::Save(FileBuffer *buffer)
 {
     try
@@ -141,6 +141,7 @@ ImageResource::Save(FileBuffer *buffer)
         buffer->CopyFrom(compressed, size);
         delete compressed;
         delete decompressed;
+        return size;
     }
     catch (Exception &e)
     {

@@ -139,13 +139,14 @@ RequestResource::Load(FileBuffer *buffer)
     }
 }
 
-void
+unsigned int
 RequestResource::Save(FileBuffer *buffer)
 {
     try
     {
         // TODO
         buffer = buffer;
+        return 0;
     }
     catch (Exception &e)
     {

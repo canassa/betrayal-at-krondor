@@ -80,13 +80,14 @@ PartyResource::Load(FileBuffer *buffer)
     }
 }
 
-void
+unsigned int
 PartyResource::Save(FileBuffer *buffer)
 {
     try
     {
         // TODO
         buffer = buffer;
+        return 0;
     }
     catch (Exception &e)
     {
