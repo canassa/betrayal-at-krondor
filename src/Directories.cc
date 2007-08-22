@@ -40,7 +40,7 @@ Directories::Directories()
         , dataPath("")
 {
     resourcePath = SearchResources();
-#if defined(DATADIR)
+#if defined(DATADIR) && defined(PACKAGE)
     sharedPath = std::string(DATADIR) + std::string(PACKAGE) + "/";
 #else
     sharedPath = "";
@@ -51,7 +51,10 @@ Directories::Directories()
     capturePath = "";
     dataPath = "";
 #else
-    userPath = std::string(getenv("HOME")) + "/." + std::string(PACKAGE) + "/";
+    userPath = std::string(getenv("HOME")) + "/";
+#if defined(PACKAGE)
+    userPath += "." + std::string(PACKAGE) + "/";
+#endif
     gamesPath = userPath + "/games/";
     capturePath = userPath + "/capture/";
     dataPath = userPath + "/data/";
