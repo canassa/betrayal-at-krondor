@@ -280,7 +280,7 @@ Image::Load(FileBuffer *buffer)
     }
 }
 
-void
+unsigned int
 Image::Save(FileBuffer *buffer)
 {
     try
@@ -303,24 +303,29 @@ Image::Save(FileBuffer *buffer)
                 imgbuf->PutData(pixel, width * height);
             }
             imgbuf->Rewind();
+            unsigned int size;
             if (flags & FLAG_COMPRESSED)
             {
                 FileBuffer *compressed = new FileBuffer(width * height);
-                unsigned int size = imgbuf->CompressRLE(compressed);
+                size = imgbuf->CompressRLE(compressed);
                 buffer->CopyFrom(compressed, size);
                 delete compressed;
             }
             else
             {
-                buffer->CopyFrom(imgbuf, width * height);
+                size = width * height;
+                buffer->CopyFrom(imgbuf, size);
             }
             delete imgbuf;
+            return size;
         }
+        return 0;
     }
     catch (Exception &e)
     {
         e.Print("Image::Save");
     }
+    return 0;
 }
 
 void

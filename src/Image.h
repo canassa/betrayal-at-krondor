@@ -53,7 +53,7 @@ public:
     void VerticalFlip();
     void Fill ( const uint8_t color );
     void Load ( FileBuffer *buffer );
-    void Save ( FileBuffer *buffer );
+    unsigned int Save ( FileBuffer *buffer );
     void Read ( const int x, const int y );
     void Draw ( const int x, const int y );
     void Draw ( const int x, const int y, const uint8_t transparent );
