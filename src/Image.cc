@@ -277,6 +277,7 @@ Image::Load(FileBuffer *buffer)
     catch (Exception &e)
     {
         e.Print("Image::Load");
+        throw;
     }
 }
 
@@ -324,6 +325,7 @@ Image::Save(FileBuffer *buffer)
     catch (Exception &e)
     {
         e.Print("Image::Save");
+        throw;
     }
     return 0;
 }
