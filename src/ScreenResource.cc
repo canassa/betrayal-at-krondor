@@ -77,9 +77,19 @@ ScreenResource::Save(FileBuffer *buffer)
 {
     try
     {
-        // TODO
-        buffer = buffer;
-        return 0;
+        //buffer->PutUint16LE(0x27b6);
+        buffer->PutUint8(0x02);
+        FileBuffer *decompressed = new FileBuffer(SCREEN_WIDTH * SCREEN_HEIGHT);
+        unsigned int size = image->Save(decompressed);
+        buffer->PutUint32LE(size);
+        FileBuffer *compressed = new FileBuffer(size);
+        decompressed->Rewind();
+        size = decompressed->CompressLZW(compressed);
+        compressed->Rewind();
+        buffer->CopyFrom(compressed, size);
+        delete compressed;
+        delete decompressed;
+        return size;
     }
     catch (Exception &e)
     {
