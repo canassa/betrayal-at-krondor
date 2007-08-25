@@ -115,32 +115,31 @@ ImageResource::Save(FileBuffer *buffer)
         buffer->PutUint16LE(0x1066);
         buffer->PutUint16LE(compression);
         buffer->PutUint16LE(numImages);
+        unsigned int *imageSize = new unsigned int[numImages];
         buffer->PutUint16LE(0);
-        unsigned int size = 0;
+        unsigned int size = numImages * 4000;
+        FileBuffer *decompressed = new FileBuffer(size);
         for (unsigned int i = 0; i < numImages; i++)
         {
-            size += (images[i])->GetSize();
+            imageSize[i] = (images[i])->Save(decompressed);
         }
+        size = decompressed->GetBytesDone();
         buffer->PutUint32LE(size);
+        decompressed->Rewind();
+        FileBuffer *compressed = new FileBuffer(size);
+        size = decompressed->Compress(compressed, compression);
         for (unsigned int i = 0; i < numImages; i++)
         {
             Image* img = images[i];
-            buffer->PutUint16LE(img->GetSize());
+            buffer->PutUint16LE(imageSize[i]);
             buffer->PutUint16LE(img->GetFlags());
             buffer->PutUint16LE(img->GetWidth());
             buffer->PutUint16LE(img->GetHeight());
         }
-        FileBuffer *decompressed = new FileBuffer(size);
-        for (unsigned int i = 0; i < numImages; i++)
-        {
-            (images[i])->Save(decompressed);
-        }
-        decompressed->Rewind();
-        FileBuffer *compressed = new FileBuffer(size);
-        size = decompressed->Compress(compressed, compression);
         buffer->CopyFrom(compressed, size);
         delete compressed;
         delete decompressed;
+        delete[] imageSize;
         return size;
     }
     catch (Exception &e)
