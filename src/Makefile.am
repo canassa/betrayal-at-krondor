@@ -53,8 +53,6 @@ noinst_HEADERS = AnimationResource.h \
                  MapViewWidget.h \
                  MediaToolkit.h \
                  MeshedObject.h \
-                 MousePointer.h \
-                 MousePointerManager.h \
                  MoviePlayer.h \
                  MovieResource.h \
                  NameResource.h \
@@ -68,6 +66,8 @@ noinst_HEADERS = AnimationResource.h \
                  Party.h \
                  PartyResource.h \
                  PlayerCharacter.h \
+                 Pointer.h \
+                 PointerManager.h \
                  PopUpWidget.h \
                  PortraitWidget.h \
                  Position.h \
@@ -230,16 +230,16 @@ libguitoolkit_a_SOURCES = BadgeWidget.cc \
                           InventoryWidget.h \
                           MapViewWidget.cc \
                           MapViewWidget.h \
-                          MousePointer.cc \
-                          MousePointer.h \
-                          MousePointerManager.cc \
-                          MousePointerManager.h \
                           MoviePlayer.cc \
                           MoviePlayer.h \
                           Palette.cc \
                           Palette.h \
                           PanelWidget.cc \
                           PanelWidget.h \
+                          Pointer.cc \
+                          Pointer.h \
+                          PointerManager.cc \
+                          PointerManager.h \
                           PopUpWidget.cc \
                           PopUpWidget.h \
                           PortraitWidget.cc \

@@ -20,8 +20,8 @@
 #include "Exception.h"
 #include "FileManager.h"
 #include "MediaToolkit.h"
-#include "MousePointerManager.h"
 #include "MoviePlayer.h"
+#include "PointerManager.h"
 
 static const unsigned int SAVE_BACKGROUND    = 0x0020;
 static const unsigned int DRAW_BACKGROUND    = 0x0080;
@@ -83,7 +83,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat)
         paletteSlot[currPalette]->GetPalette()->Retrieve(0, VIDEO_COLORS);
         paletteActivated = false;
 
-        MousePointerManager::GetInstance()->GetCurrentPointer()->SetVisible(false);
+        PointerManager::GetInstance()->GetCurrentPointer()->SetVisible(false);
         MediaToolkit* media = MediaToolkit::GetInstance();
         media->AddKeyboardListener(this);
         media->AddMouseButtonListener(this);
@@ -106,7 +106,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat)
         media->RemoveKeyboardListener(this);
         media->RemoveMouseButtonListener(this);
         media->RemoveTimerListener(this);
-        MousePointerManager::GetInstance()->GetCurrentPointer()->SetVisible(true);
+        PointerManager::GetInstance()->GetCurrentPointer()->SetVisible(true);
 
         if (screenSlot)
         {

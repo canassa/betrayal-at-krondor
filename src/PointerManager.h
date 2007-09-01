@@ -17,8 +17,8 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef MOUSE_POINTER_MANAGER_H
-#define MOUSE_POINTER_MANAGER_H
+#ifndef POINTER_MANAGER_H
+#define POINTER_MANAGER_H
 
 #include <string>
 #include <vector>
@@ -28,26 +28,26 @@
 #endif
 
 #include "EventListener.h"
-#include "MousePointer.h"
+#include "Pointer.h"
 
 static const unsigned int NORMAL_POINTER = 0;
 static const unsigned int SPECIAL_POINTER = 1;
 
-class MousePointerManager
+class PointerManager
             : public MouseButtonEventListener
             , public MouseMotionEventListener
 {
 private:
     unsigned int currentPointer;
-    std::vector<MousePointer *> pointerVec;
-    static MousePointerManager *instance;
+    std::vector<Pointer *> pointerVec;
+    static PointerManager *instance;
 protected:
-    MousePointerManager();
+    PointerManager();
 public:
-    ~MousePointerManager();
-    static MousePointerManager* GetInstance();
+    ~PointerManager();
+    static PointerManager* GetInstance();
     static void CleanUp();
-    MousePointer* GetCurrentPointer();
+    Pointer* GetCurrentPointer();
     void SetCurrentPointer ( unsigned int n );
     void AddPointer ( const std::string& resname );
     void MouseButtonPressed ( const MouseButtonEvent &mbe );

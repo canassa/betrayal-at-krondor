@@ -17,8 +17,8 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef MOUSE_POINTER_H
-#define MOUSE_POINTER_H
+#ifndef POINTER_H
+#define POINTER_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -28,54 +28,54 @@
 #include "Subject.h"
 #include "Video.h"
 
-typedef enum _MousePointerType {
-    MP_SWORD = 0,
-    MP_HAND = 1,
-    MP_HOURGLASS = 2,
-    MP_LOOKING_GLASS = 3,
-    MP_EXIT = 4,
-    MP_INN = 5,
-    MP_TAVERN = 6,
-    MP_SHOP = 7,
-    MP_PALACE = 8,
-    MP_TEMPLE = 9,
-    MP_HOUSE = 10,
-    MP_TELEPORT = 11,
-    MP_PETITION = 12,
-    MP_BARD = 13,
-    MP_TALK = 14,
-    MP_BUY_SELL = 15,
-    MP_ENTER = 16,
-    MP_REPAIR = 17,
-    MP_BUY = 18,
-    MP_HAND2 = 19,
-    MP_GAB = 20,
-    MP_CHAT = 21,
-    MP_SEWER = 22,
-    MP_BAR = 23,
-    MP_BARMAID = 24,
-    MP_BARKEEP = 25,
-    MP_INNKEEPER = 26
-} MousePointerType;
+typedef enum _PointerType {
+    PT_SWORD = 0,
+    PT_HAND = 1,
+    PT_HOURGLASS = 2,
+    PT_LOOKING_GLASS = 3,
+    PT_EXIT = 4,
+    PT_INN = 5,
+    PT_TAVERN = 6,
+    PT_SHOP = 7,
+    PT_PALACE = 8,
+    PT_TEMPLE = 9,
+    PT_HOUSE = 10,
+    PT_TELEPORT = 11,
+    PT_PETITION = 12,
+    PT_BARD = 13,
+    PT_TALK = 14,
+    PT_BUY_SELL = 15,
+    PT_ENTER = 16,
+    PT_REPAIR = 17,
+    PT_BUY = 18,
+    PT_HAND2 = 19,
+    PT_GAB = 20,
+    PT_CHAT = 21,
+    PT_SEWER = 22,
+    PT_BAR = 23,
+    PT_BARMAID = 24,
+    PT_BARKEEP = 25,
+    PT_INNKEEPER = 26
+} PointerType;
 
-class MousePointer
+class Pointer
             : public Subject
 {
 private:
     bool visible;
     int xPos;
     int yPos;
-    MousePointerType pointerType;
+    PointerType pointerType;
     ImageResource pointerImages;
     Image *dragImage;
     int dragOffsetX;
     int dragOffsetY;
 public:
-    MousePointer ( const std::string &resname );
-    virtual ~MousePointer();
+    Pointer ( const std::string &resname );
+    virtual ~Pointer();
     int GetXPos() const;
     int GetYPos() const;
-    void SetPointerType ( MousePointerType mpt );
+    void SetPointerType ( PointerType pt );
     void SetPosition ( const int x, const int y );
     void SetVisible ( const bool vis );
     void SetDragImage ( Image *img, const int x, const int y );

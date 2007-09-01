@@ -19,8 +19,8 @@
 
 #include "Exception.h"
 #include "FileManager.h"
-#include "MousePointerManager.h"
 #include "MoviePlayer.h"
+#include "PointerManager.h"
 #include "SDL_Toolkit.h"
 #include "TestApplication.h"
 #include "TextArea.h"
@@ -38,7 +38,7 @@ TestApplication::TestApplication()
     MediaToolkit *media = MediaToolkit::GetInstance();
     media->GetVideo()->SetScaling(2);
     media->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
-    MousePointerManager::GetInstance()->AddPointer("POINTER.BMX");
+    PointerManager::GetInstance()->AddPointer("POINTER.BMX");
     media->AddKeyboardListener(this);
     media->AddTimerListener(this);
 }
@@ -48,7 +48,7 @@ TestApplication::~TestApplication()
     MediaToolkit *media = MediaToolkit::GetInstance();
     media->RemoveKeyboardListener(this);
     media->RemoveTimerListener(this);
-    MousePointerManager::CleanUp();
+    PointerManager::CleanUp();
     MediaToolkit::CleanUp();
     SoundResource::CleanUp();
     FileManager::CleanUp();

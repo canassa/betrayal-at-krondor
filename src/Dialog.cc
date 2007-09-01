@@ -19,7 +19,7 @@
 
 #include "Exception.h"
 #include "Dialog.h"
-#include "MousePointerManager.h"
+#include "PointerManager.h"
 #include "RequestResource.h"
 
 Dialog::Dialog(Palette *pal, DialogWindow *dialogWin)
@@ -30,8 +30,8 @@ Dialog::Dialog(Palette *pal, DialogWindow *dialogWin)
 {
     try
     {
-        MousePointerManager::GetInstance()->SetCurrentPointer(NORMAL_POINTER);
-        MousePointerManager::GetInstance()->GetCurrentPointer()->SetVisible(true);
+        PointerManager::GetInstance()->SetCurrentPointer(NORMAL_POINTER);
+        PointerManager::GetInstance()->GetCurrentPointer()->SetVisible(true);
     }
     catch (Exception &e)
     {
@@ -56,7 +56,7 @@ Dialog::Enter()
     {
         MediaToolkit* media = MediaToolkit::GetInstance();
         media->GetVideo()->Clear();
-        MousePointerManager::GetInstance()->GetCurrentPointer()->Attach(this);
+        PointerManager::GetInstance()->GetCurrentPointer()->Attach(this);
         window->FadeIn(palette);
         media->AddKeyboardListener(this);
         media->AddMouseButtonListener(this);
@@ -78,7 +78,7 @@ Dialog::Leave()
         window->MouseOverWidget(VIDEO_WIDTH, VIDEO_HEIGHT);
         media->RemoveMouseButtonListener(this);
         media->RemoveKeyboardListener(this);
-        MousePointerManager::GetInstance()->GetCurrentPointer()->Detach(this);
+        PointerManager::GetInstance()->GetCurrentPointer()->Detach(this);
         media->GetVideo()->Clear();
     }
     catch (Exception &e)

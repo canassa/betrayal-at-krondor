@@ -19,7 +19,7 @@
 
 #include "Exception.h"
 #include "InventoryItemWidget.h"
-#include "MousePointerManager.h"
+#include "PointerManager.h"
 
 InventoryItemWidget::InventoryItemWidget(const Rectangle &r, const int a)
         : ActiveWidget(r, a)
@@ -83,17 +83,17 @@ InventoryItemWidget::LeftClick(const bool toggle, const int x, const int y)
     if (IsVisible())
     {
         pressed = toggle;
-        MousePointer *mp = MousePointerManager::GetInstance()->GetCurrentPointer();
+        Pointer *ptr = PointerManager::GetInstance()->GetCurrentPointer();
         if (toggle)
         {
-            mp->SetDragImage(iconImage,
+            ptr->SetDragImage(iconImage,
                              rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2 - x,
                              rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2 - y);
             GenerateActionEvent(GetAction());
         }
         else
         {
-            mp->SetDragImage(0, 0, 0);
+            ptr->SetDragImage(0, 0, 0);
             GenerateActionEvent(GetAction() + RELEASE_OFFSET);
         }
     }

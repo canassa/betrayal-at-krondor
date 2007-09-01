@@ -26,11 +26,11 @@
 #include "FileManager.h"
 #include "FontResource.h"
 #include "GameApplication.h"
-#include "MousePointerManager.h"
 #include "MoviePlayer.h"
 #include "MovieResource.h"
 #include "ObjectResource.h"
 #include "PaletteResource.h"
+#include "PointerManager.h"
 #include "ScreenResource.h"
 #include "SDL_Toolkit.h"
 #include "TextArea.h"
@@ -63,8 +63,8 @@ GameApplication::GameApplication()
     config = new ConfigResource;
     FileManager::GetInstance()->Load(config, "krondor.cfg");
     game = new GameResource;
-    MousePointerManager::GetInstance()->AddPointer("POINTER.BMX");
-    MousePointerManager::GetInstance()->AddPointer("POINTERG.BMX");
+    PointerManager::GetInstance()->AddPointer("POINTER.BMX");
+    PointerManager::GetInstance()->AddPointer("POINTERG.BMX");
 
     media->GetClock()->Delay(500);
 }
@@ -79,7 +79,7 @@ GameApplication::~GameApplication()
     {
         delete game;
     }
-    MousePointerManager::CleanUp();
+    PointerManager::CleanUp();
     MediaToolkit::CleanUp();
     ObjectResource::CleanUp();
     SoundResource::CleanUp();

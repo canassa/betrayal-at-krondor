@@ -18,7 +18,7 @@
  */
 
 #include "DialogWindow.h"
-#include "MousePointerManager.h"
+#include "PointerManager.h"
 
 DialogWindow::DialogWindow(PanelWidget *panelwidget)
         : panel(panelwidget)
@@ -36,7 +36,7 @@ void
 DialogWindow::Draw()
 {
     panel->Draw();
-    MousePointerManager::GetInstance()->GetCurrentPointer()->Draw();
+    PointerManager::GetInstance()->GetCurrentPointer()->Draw();
     MediaToolkit::GetInstance()->GetVideo()->Refresh();
 }
 
@@ -45,7 +45,7 @@ DialogWindow::FadeIn(Palette* pal)
 {
     panel->Reset();
     panel->Draw();
-    MousePointerManager::GetInstance()->GetCurrentPointer()->Draw();
+    PointerManager::GetInstance()->GetCurrentPointer()->Draw();
     pal->FadeIn(0, VIDEO_COLORS, 64, 5);
 }
 
@@ -53,7 +53,7 @@ void
 DialogWindow::FadeOut(Palette* pal)
 {
     panel->Draw();
-    MousePointerManager::GetInstance()->GetCurrentPointer()->Draw();
+    PointerManager::GetInstance()->GetCurrentPointer()->Draw();
     pal->FadeOut(0, VIDEO_COLORS, 64, 5);
 }
 
