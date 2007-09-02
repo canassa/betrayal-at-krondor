@@ -18,8 +18,6 @@
  */
 
 #include "ButtonWidget.h"
-#include "MediaToolkit.h"
-#include "MousePointerManager.h"
 
 ButtonWidget::ButtonWidget(const Rectangle &r, const int a)
         : ActiveWidget(r, a)

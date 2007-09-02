@@ -18,7 +18,6 @@
  */
 
 #include "HotspotWidget.h"
-#include "MousePointerManager.h"
 
 HotspotWidget::HotspotWidget(const Rectangle &r, const int a)
         : ActiveWidget(r, a)
