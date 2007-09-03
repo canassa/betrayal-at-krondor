@@ -88,4 +88,14 @@ public:
     virtual void ActionPerformed ( const ActionEvent &ae ) = 0;
 };
 
+class DropItemEventListener
+{
+    public:
+        DropItemEventListener()
+        {};
+        virtual ~DropItemEventListener()
+        {};
+        virtual void ItemDropped ( const DropItemEvent &die ) = 0;
+};
+
 #endif

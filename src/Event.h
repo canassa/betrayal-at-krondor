@@ -260,4 +260,15 @@ public:
     int GetYPos() const;
 };
 
+class DropItemEvent
+{
+    private:
+        int item;
+    public:
+        DropItemEvent ( const int i );
+        virtual ~DropItemEvent();
+        int GetItem() const;
+};
+
+
 #endif

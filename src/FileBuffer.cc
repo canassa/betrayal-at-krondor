@@ -754,7 +754,7 @@ FileBuffer::GetSint16LE()
     if ((current) && (current + 2 <= buffer + size))
     {
         int16_t n = 0;
-        n = SDL_SwapLE16(*((uint16_t *)current));
+        n = SDL_SwapLE16(*((int16_t *)current));
         current += 2;
         return n;
     }
@@ -771,7 +771,7 @@ FileBuffer::GetSint16BE()
     if ((current) && (current + 2 <= buffer + size))
     {
         int16_t n = 0;
-        n = SDL_SwapBE16(*((uint16_t *)current));
+        n = SDL_SwapBE16(*((int16_t *)current));
         current += 2;
         return n;
     }
@@ -788,7 +788,7 @@ FileBuffer::GetSint32LE()
     if ((current) && (current + 4 <= buffer + size))
     {
         int32_t n = 0;
-        n = SDL_SwapLE32(*((uint32_t *)current));
+        n = SDL_SwapLE32(*((int32_t *)current));
         current += 4;
         return n;
     }
@@ -805,7 +805,7 @@ FileBuffer::GetSint32BE()
     if ((current) && (current + 4 <= buffer + size))
     {
         int32_t n = 0;
-        n = SDL_SwapBE32(*((uint32_t *)current));
+        n = SDL_SwapBE32(*((int32_t *)current));
         current += 4;
         return n;
     }
