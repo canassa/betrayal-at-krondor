@@ -651,9 +651,8 @@ FileBuffer::GetUint8()
 {
     if ((current) && (current + 1 <= buffer + size))
     {
-        uint8_t n = 0;
-        n = *((uint8_t *)current);
-        current += 1;
+        uint8_t n = *((uint8_t *)current);
+        current++;
         return n;
     }
     else
@@ -668,10 +667,11 @@ FileBuffer::GetUint16LE()
 {
     if ((current) && (current + 2 <= buffer + size))
     {
-        uint16_t n = 0;
-        n = SDL_SwapLE16(*((uint16_t *)current));
-        current += 2;
-        return n;
+        uint16_t n = *((uint8_t *)current);
+        current++;
+        n += *((uint8_t *)current) << 8;
+        current++;
+        return SDL_SwapLE16(n);
     }
     else
     {
@@ -685,10 +685,11 @@ FileBuffer::GetUint16BE()
 {
     if ((current) && (current + 2 <= buffer + size))
     {
-        uint16_t n = 0;
-        n = SDL_SwapBE16(*((uint16_t *)current));
-        current += 2;
-        return n;
+        uint16_t n = *((uint8_t *)current);
+        current++;
+        n += *((uint8_t *)current) << 8;
+        current++;
+        return SDL_SwapBE16(n);
     }
     else
     {
@@ -702,10 +703,15 @@ FileBuffer::GetUint32LE()
 {
     if ((current) && (current + 4 <= buffer + size))
     {
-        uint32_t n = 0;
-        n = SDL_SwapLE32(*((uint32_t *)current));
-        current += 4;
-        return n;
+        uint32_t n = *((uint8_t *)current);
+        current++;
+        n += *((uint8_t *)current) << 8;
+        current++;
+        n += *((uint8_t *)current) << 16;
+        current++;
+        n += *((uint8_t *)current) << 24;
+        current++;
+        return SDL_SwapLE32(n);
     }
     else
     {
@@ -719,10 +725,15 @@ FileBuffer::GetUint32BE()
 {
     if ((current) && (current + 4 <= buffer + size))
     {
-        uint32_t n = 0;
-        n = SDL_SwapBE32(*((uint32_t *)current));
-        current += 4;
-        return n;
+        uint32_t n = *((uint8_t *)current);
+        current++;
+        n += *((uint8_t *)current) << 8;
+        current++;
+        n += *((uint8_t *)current) << 16;
+        current++;
+        n += *((uint8_t *)current) << 24;
+        current++;
+        return SDL_SwapBE32(n);
     }
     else
     {
@@ -738,7 +749,7 @@ FileBuffer::GetSint8()
     {
         int8_t n = 0;
         n = *((int8_t *)current);
-        current += 1;
+        current++;
         return n;
     }
     else
@@ -753,10 +764,11 @@ FileBuffer::GetSint16LE()
 {
     if ((current) && (current + 2 <= buffer + size))
     {
-        int16_t n = 0;
-        n = SDL_SwapLE16(*((int16_t *)current));
-        current += 2;
-        return n;
+        int16_t n = *((uint8_t *)current);
+        current++;
+        n += *((uint8_t *)current) << 8;
+        current++;
+        return SDL_SwapLE16(n);
     }
     else
     {
@@ -770,10 +782,11 @@ FileBuffer::GetSint16BE()
 {
     if ((current) && (current + 2 <= buffer + size))
     {
-        int16_t n = 0;
-        n = SDL_SwapBE16(*((int16_t *)current));
-        current += 2;
-        return n;
+        int16_t n = *((uint8_t *)current);
+        current++;
+        n += *((uint8_t *)current) << 8;
+        current++;
+        return SDL_SwapBE16(n);
     }
     else
     {
@@ -787,10 +800,15 @@ FileBuffer::GetSint32LE()
 {
     if ((current) && (current + 4 <= buffer + size))
     {
-        int32_t n = 0;
-        n = SDL_SwapLE32(*((int32_t *)current));
-        current += 4;
-        return n;
+        int32_t n = *((uint8_t *)current);
+        current++;
+        n += *((uint8_t *)current) << 8;
+        current++;
+        n += *((uint8_t *)current) << 16;
+        current++;
+        n += *((uint8_t *)current) << 24;
+        current++;
+        return SDL_SwapLE32(n);
     }
     else
     {
@@ -804,10 +822,15 @@ FileBuffer::GetSint32BE()
 {
     if ((current) && (current + 4 <= buffer + size))
     {
-        int32_t n = 0;
-        n = SDL_SwapBE32(*((int32_t *)current));
-        current += 4;
-        return n;
+        int32_t n = *((uint8_t *)current);
+        current++;
+        n += *((uint8_t *)current) << 8;
+        current++;
+        n += *((uint8_t *)current) << 16;
+        current++;
+        n += *((uint8_t *)current) << 24;
+        current++;
+        return SDL_SwapBE32(n);
     }
     else
     {
