@@ -45,7 +45,7 @@ public:
     virtual ~Dialog();
     void Enter();
     void Leave();
-    unsigned int Execute();
+    int Execute();
     void Update();
     void ActionPerformed ( const ActionEvent& ae );
     void MouseButtonPressed ( const MouseButtonEvent& mbe );

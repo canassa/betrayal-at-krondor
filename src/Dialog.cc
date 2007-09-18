@@ -88,7 +88,7 @@ Dialog::Leave()
     }
 }
 
-unsigned int
+int
 Dialog::Execute()
 {
     try
