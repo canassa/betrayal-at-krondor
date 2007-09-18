@@ -105,7 +105,7 @@ GameStateCamp::Leave()
 void
 GameStateCamp::Execute()
 {
-    unsigned int action = dialog->Execute();
+    int action = dialog->Execute();
     switch (action)
     {
     case ACT_ESCAPE:
@@ -172,7 +172,7 @@ GameStateCast::Leave()
 void
 GameStateCast::Execute()
 {
-    unsigned int action = dialog->Execute();
+    int action = dialog->Execute();
     switch (action)
     {
     case ACT_ESCAPE:
@@ -338,7 +338,7 @@ GameStateContents::Leave()
 void
 GameStateContents::Execute()
 {
-    unsigned int action = dialog->Execute();
+    int action = dialog->Execute();
     switch (action)
     {
     case ACT_ESCAPE:
@@ -401,7 +401,7 @@ GameStateFullMap::Leave()
 void
 GameStateFullMap::Execute()
 {
-    unsigned int action = dialog->Execute();
+    int action = dialog->Execute();
     switch (action)
     {
     case ACT_ESCAPE:
@@ -466,7 +466,7 @@ GameStateInfo::Leave()
 void
 GameStateInfo::Execute()
 {
-    unsigned int action = dialog->Execute();
+    int action = dialog->Execute();
     switch (action)
     {
     case ACT_ESCAPE:
@@ -535,7 +535,7 @@ GameStateInitialOptions::Leave()
 void
 GameStateInitialOptions::Execute()
 {
-    unsigned int action = dialog->Execute();
+    int action = dialog->Execute();
     switch (action)
     {
     case ACT_ESCAPE:
@@ -651,7 +651,7 @@ GameStateInventory::Leave()
 void
 GameStateInventory::Execute()
 {
-    unsigned int action = dialog->Execute();
+    int action = dialog->Execute();
     switch (action)
     {
     case ACT_ESCAPE:
@@ -687,7 +687,14 @@ GameStateInventory::Execute()
     case INV_MORE_INFO:
         break;
     default:
-        throw UnexpectedValue(__FILE__, __LINE__, action);
+        if ((action >= INVENTORY_OFFSET) && (action < 2 * INVENTORY_OFFSET))
+        {
+            // TODO
+        }
+        else
+        {
+            throw UnexpectedValue(__FILE__, __LINE__, action);
+        }
         break;
     }
 }
@@ -742,7 +749,7 @@ GameStateLoad::Leave()
 void
 GameStateLoad::Execute()
 {
-    unsigned int action = dialog->Execute();
+    int action = dialog->Execute();
     switch (action)
     {
     case ACT_ESCAPE:
@@ -810,7 +817,7 @@ GameStateMap::Leave()
 void
 GameStateMap::Execute()
 {
-    unsigned int action = dialog->Execute();
+    int action = dialog->Execute();
     switch (action)
     {
     case ACT_ESCAPE:
@@ -915,7 +922,7 @@ GameStateOptions::Leave()
 void
 GameStateOptions::Execute()
 {
-    unsigned int action = dialog->Execute();
+    int action = dialog->Execute();
     switch (action)
     {
     case ACT_ESCAPE:
@@ -999,7 +1006,7 @@ GameStatePreferences::Leave()
 void
 GameStatePreferences::Execute()
 {
-    unsigned int action = dialog->Execute();
+    int action = dialog->Execute();
     switch (action)
     {
     case ACT_ESCAPE:
@@ -1090,7 +1097,7 @@ GameStateSave::Leave()
 void
 GameStateSave::Execute()
 {
-    unsigned int action = dialog->Execute();
+    int action = dialog->Execute();
     switch (action)
     {
     case ACT_ESCAPE:
@@ -1164,7 +1171,7 @@ GameStateWorld::Execute()
 {
     int moveFactor = 1 + (int)GameApplication::GetInstance()->GetPreferences()->GetStepSize();
     int turnFactor = 1 + (int)GameApplication::GetInstance()->GetPreferences()->GetTurnSize();
-    unsigned int action = dialog->Execute();
+    int action = dialog->Execute();
     switch (action)
     {
     case ACT_ESCAPE:

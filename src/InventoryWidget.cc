@@ -45,10 +45,7 @@ InventoryWidget::~InventoryWidget()
 void
 InventoryWidget::ActionPerformed(const ActionEvent &ae)
 {
-    if (!rect.IsInside(Vector2D(ae.GetXPos(), ae.GetXPos())))
-    {
-        GenerateActionEvent(ae);
-    }
+    GenerateActionEvent(ae);
 }
 
 void
@@ -89,8 +86,15 @@ InventoryWidget::Update()
             {
                 if ((it->GetWidth() > width) && (it->GetHeight() > height))
                 {
-                    InventoryItemWidget *invitem = wf.CreateInventoryItem(Rectangle(it->GetXPos() + 1, it->GetYPos() + 1, width, height),
-                                                   INVENTORY_OFFSET + i, image, item->ToString(), font, this);
+                    InventoryItemWidget *invitem = wf.CreateInventoryItem(Rectangle(it->GetXPos() + 1,
+                                                                                    it->GetYPos() + 1,
+                                                                                    width,
+                                                                                    height),
+                                                                          INVENTORY_OFFSET + i,
+                                                                          image,
+                                                                          item->ToString(),
+                                                                          font,
+                                                                          this);
                     AddActiveWidget(invitem);
                     Rectangle origFreeSpace(*it);
                     freeSpaces.erase(it);
