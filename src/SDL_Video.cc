@@ -47,13 +47,6 @@ SDL_Video::~SDL_Video()
 void
 SDL_Video::CreateScreen(const int w, const int h)
 {
-    SDL_ShowCursor(SDL_DISABLE);
-    SDL_WarpMouse(0, 0);
-    SDL_WM_SetCaption(WINDOW_TITLE, 0);
-    if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL) < 0)
-    {
-        throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
-    }
     int width = w * scaling;
     int height = h * scaling;
     unsigned int flags = SDL_ANYFORMAT;
@@ -72,6 +65,13 @@ SDL_Video::CreateScreen(const int w, const int h)
     }
     disp = SDL_SetVideoMode(width, height, bpp, flags);
     if (!disp)
+    {
+        throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
+    }
+    SDL_ShowCursor(SDL_DISABLE);
+    SDL_WarpMouse(0, 0);
+    SDL_WM_SetCaption(WINDOW_TITLE, 0);
+    if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL) < 0)
     {
         throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
     }
