@@ -82,6 +82,18 @@ DialogWindow::RightClickWidget(const bool toggle, const int x, const int y)
 }
 
 void
+DialogWindow::DragWidget(const int x, const int y)
+{
+    panel->Drag(x, y);
+}
+
+void
+DialogWindow::DropWidget(const int x, const int y)
+{
+    panel->Drop(x, y);
+}
+
+void
 DialogWindow::MouseOverWidget(const int x, const int y)
 {
     panel->MouseOver(x, y);

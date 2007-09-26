@@ -40,6 +40,8 @@ public:
     virtual ~PortraitWidget();
     void SetBorders ( Image *hb, Image *vb );
     void Draw();
+    void Drag ( const int x, const int y );
+    void Drop ( const int x, const int y );
 };
 
 #endif

@@ -131,3 +131,43 @@ ActionEvent::GetYPos() const
 {
     return ypos;
 }
+
+DragEvent::DragEvent(const int x, const int y)
+        : xpos(x)
+        , ypos(y)
+{}
+
+DragEvent::~DragEvent()
+{}
+
+int
+DragEvent::GetXPos() const
+{
+    return xpos;
+}
+
+int
+DragEvent::GetYPos() const
+{
+    return ypos;
+}
+
+DropEvent::DropEvent(const int x, const int y)
+        : xpos(x)
+        , ypos(y)
+{}
+
+DropEvent::~DropEvent()
+{}
+
+int
+DropEvent::GetXPos() const
+{
+    return xpos;
+}
+
+int
+DropEvent::GetYPos() const
+{
+    return ypos;
+}

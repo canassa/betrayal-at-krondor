@@ -111,3 +111,13 @@ InventoryItemWidget::RightClick(const bool toggle, const int, const int)
         }
     }
 }
+
+void
+InventoryItemWidget::Drag(const int, const int)
+{
+}
+
+void
+InventoryItemWidget::Drop(const int, const int)
+{
+}

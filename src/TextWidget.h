@@ -58,11 +58,13 @@ private:
 public:
     TextWidget ( const Rectangle &r, Font *f );
     virtual ~TextWidget();
-    void Draw();
     void SetColor ( const int c );
     void SetText ( const std::string& s );
     void SetShadow ( const int s, const int xoff, const int yoff );
     void SetAlignment ( const HorizontalAlignment ha, const VerticalAlignment va );
+    void Draw();
+    void Drag ( const int x, const int y );
+    void Drop ( const int x, const int y );
 };
 
 #endif

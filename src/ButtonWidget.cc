@@ -57,3 +57,13 @@ ButtonWidget::Reset()
 {
     pressed = false;
 }
+
+void
+ButtonWidget::Drag(const int, const int)
+{
+}
+
+void
+ButtonWidget::Drop(const int, const int)
+{
+}

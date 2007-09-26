@@ -51,3 +51,13 @@ ImageWidget::Draw()
         image->Draw(rect.GetXPos(), rect.GetYPos(), 0, 0, rect.GetWidth(), rect.GetHeight(), 0);
     }
 }
+
+void
+ImageWidget::Drag(const int, const int)
+{
+}
+
+void
+ImageWidget::Drop(const int, const int)
+{
+}

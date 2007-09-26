@@ -24,7 +24,9 @@
 #include "config.h"
 #endif
 
+#include "EventListener.h"
 #include "ImageResource.h"
+#include "InventoryItemWidget.h"
 #include "Subject.h"
 #include "Video.h"
 
@@ -67,6 +69,7 @@ private:
     int yPos;
     PointerType pointerType;
     ImageResource pointerImages;
+    InventoryItemWidget *itemWidget;
     Image *dragImage;
     int dragOffsetX;
     int dragOffsetY;

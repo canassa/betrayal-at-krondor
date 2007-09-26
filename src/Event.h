@@ -24,6 +24,8 @@
 #include "config.h"
 #endif
 
+#include "InventoryItem.h"
+
 /* Enum's heavily based on SDLKey and SDLMod */
 typedef enum
 {
@@ -179,6 +181,7 @@ static const unsigned long TMR_GAME_APP     = 2;
 static const unsigned long TMR_CHAPTER      = 3;
 static const unsigned long TMR_MOVIE_PLAYER = 4;
 static const unsigned long TMR_PALETTE      = 5;
+static const unsigned long TMR_POINTER_DRAG = 6;
 
 
 typedef enum
@@ -260,15 +263,28 @@ public:
     int GetYPos() const;
 };
 
-class DropItemEvent
+class DragEvent
 {
     private:
-        int item;
+        int xpos;
+        int ypos;
     public:
-        DropItemEvent ( const int i );
-        virtual ~DropItemEvent();
-        int GetItem() const;
+        DragEvent ( const int x, const int y );
+        virtual ~DragEvent();
+        int GetXPos() const;
+        int GetYPos() const;
 };
 
+class DropEvent
+{
+    private:
+        int xpos;
+        int ypos;
+    public:
+        DropEvent ( const int x, const int y );
+        virtual ~DropEvent();
+        int GetXPos() const;
+        int GetYPos() const;
+};
 
 #endif

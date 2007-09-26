@@ -49,6 +49,8 @@ public:
     virtual ~SkillLevelWidget();
     void SetLevel ( const std::string& s, const int v );
     void Draw();
+    void Drag ( const int x, const int y );
+    void Drop ( const int x, const int y );
 };
 
 #endif

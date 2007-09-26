@@ -42,6 +42,8 @@ public:
     void Reset();
     virtual void LeftClick ( const bool toggle, const int x, const int y ) = 0;
     virtual void RightClick ( const bool toggle, const int x, const int y ) = 0;
+    void Drag ( const int x, const int y );
+    void Drop ( const int x, const int y );
 };
 
 #endif

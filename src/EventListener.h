@@ -80,22 +80,32 @@ public:
 
 class ActionEventListener
 {
-public:
-    ActionEventListener()
-    {};
-    virtual ~ActionEventListener()
-    {};
-    virtual void ActionPerformed ( const ActionEvent &ae ) = 0;
+    public:
+        ActionEventListener()
+        {};
+        virtual ~ActionEventListener()
+        {};
+        virtual void ActionPerformed ( const ActionEvent &ae ) = 0;
 };
 
-class DropItemEventListener
+class DragEventListener
 {
     public:
-        DropItemEventListener()
+        DragEventListener()
         {};
-        virtual ~DropItemEventListener()
+        virtual ~DragEventListener()
         {};
-        virtual void ItemDropped ( const DropItemEvent &die ) = 0;
+        virtual void WidgetDragged ( const DragEvent &die ) = 0;
+};
+
+class DropEventListener
+{
+    public:
+        DropEventListener()
+        {};
+        virtual ~DropEventListener()
+        {};
+        virtual void WidgetDropped ( const DropEvent &die ) = 0;
 };
 
 #endif

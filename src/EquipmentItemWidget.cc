@@ -69,3 +69,13 @@ EquipmentItemWidget::Draw()
         }
     }
 }
+
+void
+EquipmentItemWidget::Drag(const int, const int)
+{
+}
+
+void
+EquipmentItemWidget::Drop(const int, const int)
+{
+}

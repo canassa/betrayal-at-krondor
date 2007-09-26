@@ -42,6 +42,8 @@ public:
     void HorizontalFlip();
     void VerticalFlip();
     void Draw();
+    void Drag ( const int x, const int y );
+    void Drop ( const int x, const int y );
 };
 
 #endif

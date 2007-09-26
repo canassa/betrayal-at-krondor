@@ -41,6 +41,8 @@ public:
     CompassWidget ( Camera *cam, Image *img );
     virtual ~CompassWidget();
     void Draw();
+    void Drag ( const int x, const int y );
+    void Drop ( const int x, const int y );
     void Update();
 };
 

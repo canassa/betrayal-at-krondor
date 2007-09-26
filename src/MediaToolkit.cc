@@ -31,6 +31,8 @@ MediaToolkit::MediaToolkit()
         , keyboardListeners()
         , mouseButtonListeners()
         , mouseMotionListeners()
+        , dragListeners()
+        , dropListeners()
         , timerListeners()
         , loopListeners()
 {}
@@ -40,6 +42,8 @@ MediaToolkit::~MediaToolkit()
     keyboardListeners.clear();
     mouseButtonListeners.clear();
     mouseMotionListeners.clear();
+    dragListeners.clear();
+    dropListeners.clear();
     timerListeners.clear();
     loopListeners.clear();
 }
@@ -116,6 +120,30 @@ void
 MediaToolkit::RemoveMouseMotionListener(MouseMotionEventListener *mmel)
 {
     mouseMotionListeners.remove(mmel);
+}
+
+void
+MediaToolkit::AddDragListener(DragEventListener *diel)
+{
+    dragListeners.push_back(diel);
+}
+
+void
+MediaToolkit::RemoveDragListener(DragEventListener *diel)
+{
+    dragListeners.remove(diel);
+}
+
+void
+MediaToolkit::AddDropListener(DropEventListener *diel)
+{
+    dropListeners.push_back(diel);
+}
+
+void
+MediaToolkit::RemoveDropListener(DropEventListener *diel)
+{
+    dropListeners.remove(diel);
 }
 
 void

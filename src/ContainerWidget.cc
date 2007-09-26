@@ -198,6 +198,50 @@ ContainerWidget::RightClick(const bool toggle, const int x, const int y)
 }
 
 void
+ContainerWidget::Drag(const int x, const int y)
+{
+    if (IsVisible())
+    {
+        for (std::list<Widget *>::iterator it = widgets.begin(); it != widgets.end(); ++it)
+        {
+            if ((*it)->GetRectangle().IsInside(Vector2D(x, y)))
+            {
+                (*it)->Drag(x, y);
+            }
+        }
+        for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it)
+        {
+            if ((*it)->GetRectangle().IsInside(Vector2D(x, y)))
+            {
+                (*it)->Drag(x, y);
+            }
+        }
+    }
+}
+
+void
+ContainerWidget::Drop(const int x, const int y)
+{
+    if (IsVisible())
+    {
+        for (std::list<Widget *>::iterator it = widgets.begin(); it != widgets.end(); ++it)
+        {
+            if ((*it)->GetRectangle().IsInside(Vector2D(x, y)))
+            {
+                (*it)->Drop(x, y);
+            }
+        }
+        for (std::list<ActiveWidget *>::iterator it = activeWidgets.begin(); it != activeWidgets.end(); ++it)
+        {
+            if ((*it)->GetRectangle().IsInside(Vector2D(x, y)))
+            {
+                (*it)->Drop(x, y);
+            }
+        }
+    }
+}
+
+void
 ContainerWidget::MouseOver(const int x, const int y)
 {
     if (IsVisible())

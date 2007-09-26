@@ -36,6 +36,8 @@ public:
     virtual ~BadgeWidget();
     void SetLabel ( const std::string& s, Font *f );
     void Draw();
+    void Drag ( const int x, const int y );
+    void Drop ( const int x, const int y );
 };
 
 #endif

@@ -60,6 +60,8 @@ Dialog::Enter()
         window->FadeIn(palette);
         media->AddKeyboardListener(this);
         media->AddMouseButtonListener(this);
+        media->AddDragListener(this);
+        media->AddDropListener(this);
     }
     catch (Exception &e)
     {
@@ -76,6 +78,8 @@ Dialog::Leave()
         MediaToolkit* media = MediaToolkit::GetInstance();
         window->FadeOut(palette);
         window->MouseOverWidget(VIDEO_WIDTH, VIDEO_HEIGHT);
+        media->RemoveDropListener(this);
+        media->RemoveDragListener(this);
         media->RemoveMouseButtonListener(this);
         media->RemoveKeyboardListener(this);
         PointerManager::GetInstance()->GetCurrentPointer()->Detach(this);
@@ -96,7 +100,7 @@ Dialog::Execute()
         running = true;
         while (running)
         {
-            MediaToolkit::GetInstance()->WaitEvents();
+            MediaToolkit::GetInstance()->PollEvents();
         }
         return action;
     }
@@ -114,27 +118,20 @@ Dialog::Update()
 }
 
 void
-Dialog::ActionPerformed(const ActionEvent& ae)
-{
-    action = ae.GetAction();
-    running = false;
-}
-
-void
 Dialog::MouseButtonPressed(const MouseButtonEvent& mbe)
 {
     if (running)
     {
         switch (mbe.GetButton())
         {
-        case MB_LEFT:
-            window->LeftClickWidget(true, mbe.GetXPos(), mbe.GetYPos());
-            break;
-        case MB_RIGHT:
-            window->RightClickWidget(true, mbe.GetXPos(), mbe.GetYPos());
-            break;
-        default:
-            break;
+            case MB_LEFT:
+                window->LeftClickWidget(true, mbe.GetXPos(), mbe.GetYPos());
+                break;
+            case MB_RIGHT:
+                window->RightClickWidget(true, mbe.GetXPos(), mbe.GetYPos());
+                break;
+            default:
+                break;
         }
     }
     window->Draw();
@@ -145,14 +142,41 @@ Dialog::MouseButtonReleased(const MouseButtonEvent& mbe)
 {
     switch (mbe.GetButton())
     {
-    case MB_LEFT:
-        window->LeftClickWidget(false, mbe.GetXPos(), mbe.GetYPos());
-        break;
-    case MB_RIGHT:
-        window->RightClickWidget(false, mbe.GetXPos(), mbe.GetYPos());
-        break;
-    default:
-        break;
+        case MB_LEFT:
+            window->LeftClickWidget(false, mbe.GetXPos(), mbe.GetYPos());
+            break;
+        case MB_RIGHT:
+            window->RightClickWidget(false, mbe.GetXPos(), mbe.GetYPos());
+            break;
+        default:
+            break;
+    }
+    window->Draw();
+}
+
+void
+Dialog::ActionPerformed(const ActionEvent& ae)
+{
+    action = ae.GetAction();
+    running = false;
+}
+
+void
+Dialog::WidgetDragged(const DragEvent& die)
+{
+    if (running)
+    {
+        die.GetXPos();
+    }
+    window->Draw();
+}
+
+void
+Dialog::WidgetDropped(const DropEvent& die)
+{
+    if (running)
+    {
+        die.GetXPos();
     }
     window->Draw();
 }

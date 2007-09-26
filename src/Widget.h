@@ -59,6 +59,8 @@ public:
     void SetVisible ( const bool toggle );
     bool IsVisible() const;
     virtual void Draw() = 0;
+    virtual void Drag ( const int x, const int y ) = 0;
+    virtual void Drop ( const int x, const int y ) = 0;
 };
 
 class ActiveWidget

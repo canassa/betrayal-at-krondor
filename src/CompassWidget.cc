@@ -76,3 +76,13 @@ CompassWidget::Update()
         cachedImage->Read(rect.GetXPos(), rect.GetYPos());
     }
 }
+
+void
+CompassWidget::Drag(const int, const int)
+{
+}
+
+void
+CompassWidget::Drop(const int, const int)
+{
+}

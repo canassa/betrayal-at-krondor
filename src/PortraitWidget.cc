@@ -64,3 +64,13 @@ PortraitWidget::Draw()
         // playerCharacter->GetPortraitImage()->Draw(rect.GetXPos() +xoff, rect.GetYPos() + yoff, 0);
     }
 }
+
+void
+PortraitWidget::Drag(const int, const int)
+{
+}
+
+void
+PortraitWidget::Drop(const int, const int)
+{
+}
