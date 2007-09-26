@@ -158,7 +158,7 @@ Chapter::Start(const bool maponly)
     {
         MediaToolkit* media = MediaToolkit::GetInstance();
         media->AddKeyboardListener(this);
-        media->AddMouseButtonListener(this);
+        media->AddPointerButtonListener(this);
         media->AddTimerListener(this);
         if (!maponly)
         {
@@ -168,7 +168,7 @@ Chapter::Start(const bool maponly)
         }
         ShowMap();
         media->RemoveTimerListener(this);
-        media->RemoveMouseButtonListener(this);
+        media->RemovePointerButtonListener(this);
         media->RemoveKeyboardListener(this);
     }
     catch (Exception &e)
@@ -203,11 +203,11 @@ Chapter::KeyReleased(const KeyboardEvent &kbe)
 }
 
 void
-Chapter::MouseButtonPressed(const MouseButtonEvent &mbe)
+Chapter::PointerButtonPressed(const PointerButtonEvent &pbe)
 {
-    switch (mbe.GetButton())
+    switch (pbe.GetButton())
     {
-    case MB_LEFT:
+    case PB_PRIMARY:
         delayed = false;
         break;
     default:
@@ -216,9 +216,9 @@ Chapter::MouseButtonPressed(const MouseButtonEvent &mbe)
 }
 
 void
-Chapter::MouseButtonReleased(const MouseButtonEvent &mbe)
+Chapter::PointerButtonReleased(const PointerButtonEvent &pbe)
 {
-    switch (mbe.GetButton())
+    switch (pbe.GetButton())
     {
     default:
         break;

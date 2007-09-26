@@ -181,16 +181,15 @@ static const unsigned long TMR_GAME_APP     = 2;
 static const unsigned long TMR_CHAPTER      = 3;
 static const unsigned long TMR_MOVIE_PLAYER = 4;
 static const unsigned long TMR_PALETTE      = 5;
-static const unsigned long TMR_POINTER_DRAG = 6;
 
 
 typedef enum
 {
-    MB_LEFT,
-    MB_MIDDLE,
-    MB_RIGHT
+    PB_PRIMARY,
+    PB_SECONDARY,
+    PB_TERTIARY
 }
-MouseButton;
+PointerButton;
 
 
 class KeyboardEvent
@@ -203,28 +202,28 @@ public:
     Key GetKey() const;
 };
 
-class MouseButtonEvent
+class PointerButtonEvent
 {
 private:
-    MouseButton button;
+    PointerButton button;
     int xpos;
     int ypos;
 public:
-    MouseButtonEvent ( const MouseButton b, const int x, const int y );
-    virtual ~MouseButtonEvent();
-    MouseButton GetButton() const;
+    PointerButtonEvent ( const PointerButton b, const int x, const int y );
+    virtual ~PointerButtonEvent();
+    PointerButton GetButton() const;
     int GetXPos() const;
     int GetYPos() const;
 };
 
-class MouseMotionEvent
+class PointerMotionEvent
 {
 private:
     int xpos;
     int ypos;
 public:
-    MouseMotionEvent ( const int x, const int y );
-    virtual ~MouseMotionEvent();
+    PointerMotionEvent ( const int x, const int y );
+    virtual ~PointerMotionEvent();
     int GetXPos() const;
     int GetYPos() const;
 };

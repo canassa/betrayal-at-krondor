@@ -29,8 +29,8 @@ MediaToolkit::MediaToolkit()
         , video(0)
         , eventLoopRunning(false)
         , keyboardListeners()
-        , mouseButtonListeners()
-        , mouseMotionListeners()
+        , pointerButtonListeners()
+        , pointerMotionListeners()
         , dragListeners()
         , dropListeners()
         , timerListeners()
@@ -40,8 +40,8 @@ MediaToolkit::MediaToolkit()
 MediaToolkit::~MediaToolkit()
 {
     keyboardListeners.clear();
-    mouseButtonListeners.clear();
-    mouseMotionListeners.clear();
+    pointerButtonListeners.clear();
+    pointerMotionListeners.clear();
     dragListeners.clear();
     dropListeners.clear();
     timerListeners.clear();
@@ -99,27 +99,27 @@ MediaToolkit::RemoveKeyboardListener(KeyboardEventListener *kel)
 }
 
 void
-MediaToolkit::AddMouseButtonListener(MouseButtonEventListener *mbel)
+MediaToolkit::AddPointerButtonListener(PointerButtonEventListener *pbel)
 {
-    mouseButtonListeners.push_back(mbel);
+    pointerButtonListeners.push_back(pbel);
 }
 
 void
-MediaToolkit::RemoveMouseButtonListener(MouseButtonEventListener *mbel)
+MediaToolkit::RemovePointerButtonListener(PointerButtonEventListener *pbel)
 {
-    mouseButtonListeners.remove(mbel);
+    pointerButtonListeners.remove(pbel);
 }
 
 void
-MediaToolkit::AddMouseMotionListener(MouseMotionEventListener *mmel)
+MediaToolkit::AddPointerMotionListener(PointerMotionEventListener *pmel)
 {
-    mouseMotionListeners.push_back(mmel);
+    pointerMotionListeners.push_back(pmel);
 }
 
 void
-MediaToolkit::RemoveMouseMotionListener(MouseMotionEventListener *mmel)
+MediaToolkit::RemovePointerMotionListener(PointerMotionEventListener *pmel)
 {
-    mouseMotionListeners.remove(mmel);
+    pointerMotionListeners.remove(pmel);
 }
 
 void

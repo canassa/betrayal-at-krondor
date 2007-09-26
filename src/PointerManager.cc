@@ -27,14 +27,14 @@ PointerManager::PointerManager()
         : currentPointer(0)
         , pointerVec()
 {
-    MediaToolkit::GetInstance()->AddMouseButtonListener(this);
-    MediaToolkit::GetInstance()->AddMouseMotionListener(this);
+    MediaToolkit::GetInstance()->AddPointerButtonListener(this);
+    MediaToolkit::GetInstance()->AddPointerMotionListener(this);
 }
 
 PointerManager::~PointerManager()
 {
-    MediaToolkit::GetInstance()->RemoveMouseButtonListener(this);
-    MediaToolkit::GetInstance()->RemoveMouseMotionListener(this);
+    MediaToolkit::GetInstance()->RemovePointerButtonListener(this);
+    MediaToolkit::GetInstance()->RemovePointerMotionListener(this);
     for (unsigned int i = 0; i < pointerVec.size(); i++)
     {
         delete pointerVec[i];
@@ -89,19 +89,19 @@ PointerManager::AddPointer(const std::string& resname)
 }
 
 void
-PointerManager::MouseButtonPressed(const MouseButtonEvent &mbe)
+PointerManager::PointerButtonPressed(const PointerButtonEvent &pbe)
 {
-    pointerVec[currentPointer]->SetPosition(mbe.GetXPos(), mbe.GetYPos());
+    pointerVec[currentPointer]->SetPosition(pbe.GetXPos(), pbe.GetYPos());
 }
 
 void
-PointerManager::MouseButtonReleased(const MouseButtonEvent &mbe)
+PointerManager::PointerButtonReleased(const PointerButtonEvent &pbe)
 {
-    pointerVec[currentPointer]->SetPosition(mbe.GetXPos(), mbe.GetYPos());
+    pointerVec[currentPointer]->SetPosition(pbe.GetXPos(), pbe.GetYPos());
 }
 
 void
-PointerManager::MouseMoved(const MouseMotionEvent &mme)
+PointerManager::PointerMoved(const PointerMotionEvent &pme)
 {
-    pointerVec[currentPointer]->SetPosition(mme.GetXPos(), mme.GetYPos());
+    pointerVec[currentPointer]->SetPosition(pme.GetXPos(), pme.GetYPos());
 }

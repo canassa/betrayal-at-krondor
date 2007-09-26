@@ -34,8 +34,8 @@ static const unsigned int NORMAL_POINTER = 0;
 static const unsigned int SPECIAL_POINTER = 1;
 
 class PointerManager
-            : public MouseButtonEventListener
-            , public MouseMotionEventListener
+            : public PointerButtonEventListener
+            , public PointerMotionEventListener
 {
 private:
     unsigned int currentPointer;
@@ -50,9 +50,9 @@ public:
     Pointer* GetCurrentPointer();
     void SetCurrentPointer ( unsigned int n );
     void AddPointer ( const std::string& resname );
-    void MouseButtonPressed ( const MouseButtonEvent &mbe );
-    void MouseButtonReleased ( const MouseButtonEvent &mbe );
-    void MouseMoved ( const MouseMotionEvent &mme );
+    void PointerButtonPressed ( const PointerButtonEvent &pbe );
+    void PointerButtonReleased ( const PointerButtonEvent &pbe );
+    void PointerMoved ( const PointerMotionEvent &pme );
 };
 
 #endif

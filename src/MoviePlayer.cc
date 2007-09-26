@@ -86,7 +86,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat)
         PointerManager::GetInstance()->GetCurrentPointer()->SetVisible(false);
         MediaToolkit* media = MediaToolkit::GetInstance();
         media->AddKeyboardListener(this);
-        media->AddMouseButtonListener(this);
+        media->AddPointerButtonListener(this);
         media->AddTimerListener(this);
 
         while (playing)
@@ -104,7 +104,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat)
         paletteSlot[currPalette]->GetPalette()->FadeOut(0, VIDEO_COLORS, 64, 5);
 
         media->RemoveKeyboardListener(this);
-        media->RemoveMouseButtonListener(this);
+        media->RemovePointerButtonListener(this);
         media->RemoveTimerListener(this);
         PointerManager::GetInstance()->GetCurrentPointer()->SetVisible(true);
 
@@ -401,11 +401,11 @@ MoviePlayer::KeyReleased(const KeyboardEvent& kbe)
 }
 
 void
-MoviePlayer::MouseButtonPressed(const MouseButtonEvent& mbe)
+MoviePlayer::PointerButtonPressed(const PointerButtonEvent& pbe)
 {
-    switch (mbe.GetButton())
+    switch (pbe.GetButton())
     {
-    case MB_LEFT:
+    case PB_PRIMARY:
         playing = false;
         break;
     default:
@@ -414,9 +414,9 @@ MoviePlayer::MouseButtonPressed(const MouseButtonEvent& mbe)
 }
 
 void
-MoviePlayer::MouseButtonReleased(const MouseButtonEvent& mbe)
+MoviePlayer::PointerButtonReleased(const PointerButtonEvent& pbe)
 {
-    switch (mbe.GetButton())
+    switch (pbe.GetButton())
     {
     default:
         break;

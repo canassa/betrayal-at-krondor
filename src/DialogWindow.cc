@@ -94,9 +94,9 @@ DialogWindow::DropWidget(const int x, const int y)
 }
 
 void
-DialogWindow::MouseOverWidget(const int x, const int y)
+DialogWindow::PointerOverWidget(const int x, const int y)
 {
-    panel->MouseOver(x, y);
+    panel->PointerOver(x, y);
 }
 
 void

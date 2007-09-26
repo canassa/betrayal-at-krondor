@@ -69,7 +69,6 @@ SDL_Video::CreateScreen(const int w, const int h)
         throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
     }
     SDL_ShowCursor(SDL_DISABLE);
-    SDL_WarpMouse(0, 0);
     SDL_WM_SetCaption(WINDOW_TITLE, 0);
     if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL) < 0)
     {
@@ -529,12 +528,6 @@ SDL_Video::SetPalette(Color *color, const unsigned int first, const unsigned int
     {
         SDL_SetPalette(stretched, SDL_LOGPAL, (SDL_Color *)color, first, n);
     }
-}
-
-void
-SDL_Video::SetPointerPosition(int x, int y)
-{
-    SDL_WarpMouse(x * scaling, y * scaling);
 }
 
 void

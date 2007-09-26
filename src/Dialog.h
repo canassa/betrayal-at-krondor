@@ -31,7 +31,7 @@
 
 class Dialog
         : public ActionEventListener
-        , public MouseButtonEventListener
+        , public PointerButtonEventListener
         , public KeyboardEventListener
         , public DragEventListener
         , public DropEventListener
@@ -52,8 +52,8 @@ public:
     void ActionPerformed ( const ActionEvent& ae );
     virtual void KeyPressed ( const KeyboardEvent& kbe ) = 0;
     virtual void KeyReleased ( const KeyboardEvent& kbe ) = 0;
-    void MouseButtonPressed ( const MouseButtonEvent& mbe );
-    void MouseButtonReleased ( const MouseButtonEvent& mbe );
+    void PointerButtonPressed ( const PointerButtonEvent& pbe );
+    void PointerButtonReleased ( const PointerButtonEvent& pbe );
     void WidgetDragged ( const DragEvent &die );
     void WidgetDropped ( const DropEvent &die );
 };

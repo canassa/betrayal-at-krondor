@@ -187,7 +187,7 @@ GameApplication::Run()
     try
     {
         MediaToolkit::GetInstance()->AddKeyboardListener(this);
-        MediaToolkit::GetInstance()->AddMouseButtonListener(this);
+        MediaToolkit::GetInstance()->AddPointerButtonListener(this);
         state->Enter();
         GameState *savedState = state;
         done = false;
@@ -203,7 +203,7 @@ GameApplication::Run()
         }
         savedState->Leave();
         MediaToolkit::GetInstance()->RemoveKeyboardListener(this);
-        MediaToolkit::GetInstance()->RemoveMouseButtonListener(this);
+        MediaToolkit::GetInstance()->RemovePointerButtonListener(this);
     }
     catch (Exception &e)
     {
@@ -245,34 +245,34 @@ GameApplication::KeyReleased(const KeyboardEvent& kbe)
 }
 
 void
-GameApplication::MouseButtonPressed(const MouseButtonEvent& mbe)
+GameApplication::PointerButtonPressed(const PointerButtonEvent& pbe)
 {
-    switch (mbe.GetButton())
+    switch (pbe.GetButton())
     {
-    case MB_LEFT:
-    case MB_RIGHT:
-        if (!inputGrabbed)
-        {
-            inputGrabbed = true;
-            MediaToolkit::GetInstance()->GetVideo()->GrabInput(true);
-        }
-        break;
-    case MB_MIDDLE:
-        if (inputGrabbed)
-        {
-            inputGrabbed = false;
-            MediaToolkit::GetInstance()->GetVideo()->GrabInput(false);
-        }
-        break;
-    default:
-        break;
+        case PB_PRIMARY:
+        case PB_SECONDARY:
+            if (!inputGrabbed)
+            {
+                inputGrabbed = true;
+                MediaToolkit::GetInstance()->GetVideo()->GrabInput(true);
+            }
+            break;
+        case PB_TERTIARY:
+            if (inputGrabbed)
+            {
+                inputGrabbed = false;
+                MediaToolkit::GetInstance()->GetVideo()->GrabInput(false);
+            }
+            break;
+        default:
+            break;
     }
 }
 
 void
-GameApplication::MouseButtonReleased(const MouseButtonEvent& mbe)
+GameApplication::PointerButtonReleased(const PointerButtonEvent& pbe)
 {
-    switch (mbe.GetButton())
+    switch (pbe.GetButton())
     {
     default:
         break;

@@ -29,7 +29,7 @@
 
 class Chapter
             : public KeyboardEventListener
-            , public MouseButtonEventListener
+            , public PointerButtonEventListener
             , public TimerEventListener
 {
 private:
@@ -49,8 +49,8 @@ public:
     void Start ( const bool maponly = false );
     void KeyPressed ( const KeyboardEvent &kbe );
     void KeyReleased ( const KeyboardEvent &kbe );
-    void MouseButtonPressed ( const MouseButtonEvent &mbe );
-    void MouseButtonReleased ( const MouseButtonEvent &mbe );
+    void PointerButtonPressed ( const PointerButtonEvent &pbe );
+    void PointerButtonReleased ( const PointerButtonEvent &pbe );
     void TimerExpired ( const TimerEvent &te );
 };
 

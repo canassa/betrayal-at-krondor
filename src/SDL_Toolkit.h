@@ -28,7 +28,7 @@
 #include "SDL.h"
 
 class SDL_Toolkit
-            : public MediaToolkit
+        : public MediaToolkit
 {
 private:
     void HandleEvent ( SDL_Event& event );
@@ -40,7 +40,8 @@ public:
     void WaitEvents();
     void WaitEventLoop();
     void ClearEvents();
-    void GetMousePosition ( int *x, int *y );
+    void GetPointerPosition ( int *x, int *y );
+    void SetPointerPosition ( int x, int y );
 };
 
 #endif

@@ -41,8 +41,8 @@ protected:
     Video *video;
     bool eventLoopRunning;
     std::list<KeyboardEventListener *> keyboardListeners;
-    std::list<MouseButtonEventListener *> mouseButtonListeners;
-    std::list<MouseMotionEventListener *> mouseMotionListeners;
+    std::list<PointerButtonEventListener *> pointerButtonListeners;
+    std::list<PointerMotionEventListener *> pointerMotionListeners;
     std::list<DragEventListener *> dragListeners;
     std::list<DropEventListener *> dropListeners;
     std::list<TimerEventListener *> timerListeners;
@@ -57,10 +57,10 @@ public:
     Video* GetVideo() const;
     void AddKeyboardListener ( KeyboardEventListener *kel );
     void RemoveKeyboardListener ( KeyboardEventListener *kel );
-    void AddMouseButtonListener ( MouseButtonEventListener *mbel );
-    void RemoveMouseButtonListener ( MouseButtonEventListener *mbel );
-    void AddMouseMotionListener ( MouseMotionEventListener *mmel );
-    void RemoveMouseMotionListener ( MouseMotionEventListener *mmel );
+    void AddPointerButtonListener ( PointerButtonEventListener *pbel );
+    void RemovePointerButtonListener ( PointerButtonEventListener *pbel );
+    void AddPointerMotionListener ( PointerMotionEventListener *pmel );
+    void RemovePointerMotionListener ( PointerMotionEventListener *pmel );
     void AddDragListener ( DragEventListener *diel );
     void RemoveDragListener ( DragEventListener *diel );
     void AddDropListener ( DropEventListener *diel );
@@ -75,7 +75,8 @@ public:
     virtual void WaitEvents() = 0;
     virtual void WaitEventLoop() = 0;
     virtual void ClearEvents() = 0;
-    virtual void GetMousePosition ( int *x, int *y ) = 0;
+    virtual void GetPointerPosition ( int *x, int *y ) = 0;
+    virtual void SetPointerPosition ( int x, int y ) = 0;
 };
 
 #endif

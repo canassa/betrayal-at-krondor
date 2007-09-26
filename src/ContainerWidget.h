@@ -54,7 +54,7 @@ public:
     void RightClick ( const bool toggle, const int x, const int y );
     void Drag ( const int x, const int y );
     void Drop ( const int x, const int y );
-    void MouseOver ( const int x, const int y );
+    void PointerOver ( const int x, const int y );
     void Reset();
 };
 

@@ -73,33 +73,33 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
     break;
     case SDL_MOUSEBUTTONDOWN:
     {
-        MouseButtonEvent mbe((MouseButton)(event.button.button - 1),
+        PointerButtonEvent pbe((PointerButton)(event.button.button - 1),
                              event.button.x / video->GetScaling(),
                              event.button.y / video->GetScaling());
-        for (std::list<MouseButtonEventListener *>::iterator it = mouseButtonListeners.begin(); it != mouseButtonListeners.end(); ++it)
+        for (std::list<PointerButtonEventListener *>::iterator it = pointerButtonListeners.begin(); it != pointerButtonListeners.end(); ++it)
         {
-            (*it)->MouseButtonPressed(mbe);
+            (*it)->PointerButtonPressed(pbe);
         }
     }
     break;
     case SDL_MOUSEBUTTONUP:
     {
-        MouseButtonEvent mbe((MouseButton)(event.button.button - 1),
+        PointerButtonEvent pbe((PointerButton)(event.button.button - 1),
                              event.button.x / video->GetScaling(),
                              event.button.y / video->GetScaling());
-        for (std::list<MouseButtonEventListener *>::iterator it = mouseButtonListeners.begin(); it != mouseButtonListeners.end(); ++it)
+        for (std::list<PointerButtonEventListener *>::iterator it = pointerButtonListeners.begin(); it != pointerButtonListeners.end(); ++it)
         {
-            (*it)->MouseButtonReleased(mbe);
+            (*it)->PointerButtonReleased(pbe);
         }
     }
     break;
     case SDL_MOUSEMOTION:
     {
-        MouseMotionEvent mme(event.button.x / video->GetScaling(),
-                             event.button.y / video->GetScaling());
-        for (std::list<MouseMotionEventListener *>::iterator it = mouseMotionListeners.begin(); it != mouseMotionListeners.end(); ++it)
+        PointerMotionEvent pme(event.button.x / video->GetScaling(),
+                               event.button.y / video->GetScaling());
+        for (std::list<PointerMotionEventListener *>::iterator it = pointerMotionListeners.begin(); it != pointerMotionListeners.end(); ++it)
         {
-            (*it)->MouseMoved(mme);
+            (*it)->PointerMoved(pme);
         }
     }
     break;
@@ -190,7 +190,15 @@ SDL_Toolkit::ClearEvents()
 }
 
 void
-SDL_Toolkit::GetMousePosition(int *x, int *y)
+SDL_Toolkit::GetPointerPosition(int *x, int *y)
 {
     SDL_GetMouseState(x, y);
 }
+
+void
+SDL_Toolkit::SetPointerPosition(int x, int y)
+{
+    int scaling = video->GetScaling();
+    SDL_WarpMouse(x * scaling, y * scaling);
+}
+

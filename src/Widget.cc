@@ -143,7 +143,7 @@ ActiveWidget::Focus()
 {
     if (focusable)
     {
-        MediaToolkit::GetInstance()->GetVideo()->SetPointerPosition(rect.GetXPos() + rect.GetWidth() / 2, rect.GetYPos() + rect.GetHeight() / 2);
+        MediaToolkit::GetInstance()->SetPointerPosition(rect.GetXPos() + rect.GetWidth() / 2, rect.GetYPos() + rect.GetHeight() / 2);
     }
 }
 

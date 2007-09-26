@@ -43,7 +43,7 @@ public:
     void RightClickWidget ( const bool toggle, const int x, const int y );
     void DragWidget ( const int x, const int y );
     void DropWidget ( const int x, const int y );
-    void MouseOverWidget ( const int x, const int y );
+    void PointerOverWidget ( const int x, const int y );
     void SelectNextWidget();
     void SelectPreviousWidget();
 };

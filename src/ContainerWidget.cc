@@ -242,7 +242,7 @@ ContainerWidget::Drop(const int x, const int y)
 }
 
 void
-ContainerWidget::MouseOver(const int x, const int y)
+ContainerWidget::PointerOver(const int x, const int y)
 {
     if (IsVisible())
     {

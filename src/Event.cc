@@ -32,49 +32,49 @@ KeyboardEvent::GetKey() const
     return key;
 }
 
-MouseButtonEvent::MouseButtonEvent(const MouseButton b, const int x, const int y)
+PointerButtonEvent::PointerButtonEvent(const PointerButton b, const int x, const int y)
         :button(b)
         , xpos(x)
         , ypos(y)
 {}
 
-MouseButtonEvent::~MouseButtonEvent()
+PointerButtonEvent::~PointerButtonEvent()
 {}
 
-MouseButton
-MouseButtonEvent::GetButton() const
+PointerButton
+PointerButtonEvent::GetButton() const
 {
     return button;
 }
 
 int
-MouseButtonEvent::GetXPos() const
+PointerButtonEvent::GetXPos() const
 {
     return xpos;
 }
 
 int
-MouseButtonEvent::GetYPos() const
+PointerButtonEvent::GetYPos() const
 {
     return ypos;
 }
 
-MouseMotionEvent::MouseMotionEvent(const int x, const int y)
+PointerMotionEvent::PointerMotionEvent(const int x, const int y)
         : xpos(x)
         , ypos(y)
 {}
 
-MouseMotionEvent::~MouseMotionEvent()
+PointerMotionEvent::~PointerMotionEvent()
 {}
 
 int
-MouseMotionEvent::GetXPos() const
+PointerMotionEvent::GetXPos() const
 {
     return xpos;
 }
 
 int
-MouseMotionEvent::GetYPos() const
+PointerMotionEvent::GetYPos() const
 {
     return ypos;
 }

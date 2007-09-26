@@ -31,7 +31,7 @@
 
 class GameApplication
             : public KeyboardEventListener
-            , public MouseButtonEventListener
+            , public PointerButtonEventListener
 {
 private:
     friend class GameState;
@@ -58,8 +58,8 @@ public:
     void Run();
     void KeyPressed ( const KeyboardEvent& kbe );
     void KeyReleased ( const KeyboardEvent& kbe );
-    void MouseButtonPressed ( const MouseButtonEvent& mbe );
-    void MouseButtonReleased ( const MouseButtonEvent& mbe );
+    void PointerButtonPressed ( const PointerButtonEvent& pbe );
+    void PointerButtonReleased ( const PointerButtonEvent& pbe );
 };
 
 #endif

@@ -59,7 +59,7 @@ Dialog::Enter()
         PointerManager::GetInstance()->GetCurrentPointer()->Attach(this);
         window->FadeIn(palette);
         media->AddKeyboardListener(this);
-        media->AddMouseButtonListener(this);
+        media->AddPointerButtonListener(this);
         media->AddDragListener(this);
         media->AddDropListener(this);
     }
@@ -77,10 +77,10 @@ Dialog::Leave()
     {
         MediaToolkit* media = MediaToolkit::GetInstance();
         window->FadeOut(palette);
-        window->MouseOverWidget(VIDEO_WIDTH, VIDEO_HEIGHT);
+        window->PointerOverWidget(VIDEO_WIDTH, VIDEO_HEIGHT);
         media->RemoveDropListener(this);
         media->RemoveDragListener(this);
-        media->RemoveMouseButtonListener(this);
+        media->RemovePointerButtonListener(this);
         media->RemoveKeyboardListener(this);
         PointerManager::GetInstance()->GetCurrentPointer()->Detach(this);
         media->GetVideo()->Clear();
@@ -118,17 +118,17 @@ Dialog::Update()
 }
 
 void
-Dialog::MouseButtonPressed(const MouseButtonEvent& mbe)
+Dialog::PointerButtonPressed(const PointerButtonEvent& pbe)
 {
     if (running)
     {
-        switch (mbe.GetButton())
+        switch (pbe.GetButton())
         {
-            case MB_LEFT:
-                window->LeftClickWidget(true, mbe.GetXPos(), mbe.GetYPos());
+            case PB_PRIMARY:
+                window->LeftClickWidget(true, pbe.GetXPos(), pbe.GetYPos());
                 break;
-            case MB_RIGHT:
-                window->RightClickWidget(true, mbe.GetXPos(), mbe.GetYPos());
+            case PB_SECONDARY:
+                window->RightClickWidget(true, pbe.GetXPos(), pbe.GetYPos());
                 break;
             default:
                 break;
@@ -138,15 +138,15 @@ Dialog::MouseButtonPressed(const MouseButtonEvent& mbe)
 }
 
 void
-Dialog::MouseButtonReleased(const MouseButtonEvent& mbe)
+Dialog::PointerButtonReleased(const PointerButtonEvent& pbe)
 {
-    switch (mbe.GetButton())
+    switch (pbe.GetButton())
     {
-        case MB_LEFT:
-            window->LeftClickWidget(false, mbe.GetXPos(), mbe.GetYPos());
+        case PB_PRIMARY:
+            window->LeftClickWidget(false, pbe.GetXPos(), pbe.GetYPos());
             break;
-        case MB_RIGHT:
-            window->RightClickWidget(false, mbe.GetXPos(), mbe.GetYPos());
+        case PB_SECONDARY:
+            window->RightClickWidget(false, pbe.GetXPos(), pbe.GetYPos());
             break;
         default:
             break;

@@ -39,7 +39,7 @@ typedef struct _PolygonEdge
 PolygonEdge;
 
 class SDL_Video
-            : public Video
+        : public Video
 {
 private:
     const SDL_VideoInfo *info;
@@ -75,7 +75,6 @@ public:
     void DrawGlyphItalic ( const int x, const int y, const int w, const int h, const uint8_t c, uint16_t*p );
     void GetPalette ( Color *color, const unsigned int first, const unsigned int n );
     void SetPalette ( Color *color, const unsigned int first, const unsigned int n );
-    void SetPointerPosition ( int x, int y );
     void Clear();
     void Clear ( int x, int y, int w, int h );
     void Refresh();

@@ -37,25 +37,25 @@ public:
     virtual void KeyReleased ( const KeyboardEvent &kbe ) = 0;
 };
 
-class MouseButtonEventListener
+class PointerButtonEventListener
 {
 public:
-    MouseButtonEventListener()
+    PointerButtonEventListener()
     {};
-    virtual ~MouseButtonEventListener()
+    virtual ~PointerButtonEventListener()
     {};
-    virtual void MouseButtonPressed ( const MouseButtonEvent &mbe ) = 0;
-    virtual void MouseButtonReleased ( const MouseButtonEvent &mbe ) = 0;
+    virtual void PointerButtonPressed ( const PointerButtonEvent &pbe ) = 0;
+    virtual void PointerButtonReleased ( const PointerButtonEvent &pbe ) = 0;
 };
 
-class MouseMotionEventListener
+class PointerMotionEventListener
 {
 public:
-    MouseMotionEventListener()
+    PointerMotionEventListener()
     {};
-    virtual ~MouseMotionEventListener()
+    virtual ~PointerMotionEventListener()
     {};
-    virtual void MouseMoved ( const MouseMotionEvent &mme ) = 0;
+    virtual void PointerMoved ( const PointerMotionEvent &mme ) = 0;
 };
 
 class TimerEventListener

@@ -87,7 +87,6 @@ public:
     virtual void DrawGlyphItalic ( const int x, const int y, const int w, const int h, const uint8_t c, uint16_t *p ) = 0;
     virtual void GetPalette ( Color *color, const unsigned int first, const unsigned int n ) = 0;
     virtual void SetPalette ( Color *color, const unsigned int first, const unsigned int n ) = 0;
-    virtual void SetPointerPosition ( int x, int y ) = 0;
     virtual void Refresh() = 0;
     virtual void GrabInput ( const bool toggle ) = 0;
     virtual void SaveScreenShot ( const std::string& filename ) = 0;
