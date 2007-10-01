@@ -28,6 +28,7 @@
 #endif
 
 #include "EventListener.h"
+#include "InventoryItemWidget.h"
 #include "Pointer.h"
 
 static const unsigned int NORMAL_POINTER = 0;
@@ -39,7 +40,12 @@ class PointerManager
 {
 private:
     unsigned int currentPointer;
+    bool pressed;
+    bool dragged;
+    InventoryItemWidget *itemWidget;
     std::vector<Pointer *> pointerVec;
+    std::list<DragEventListener *> dragListeners;
+    std::list<DropEventListener *> dropListeners;
     static PointerManager *instance;
 protected:
     PointerManager();
@@ -53,6 +59,10 @@ public:
     void PointerButtonPressed ( const PointerButtonEvent &pbe );
     void PointerButtonReleased ( const PointerButtonEvent &pbe );
     void PointerMoved ( const PointerMotionEvent &pme );
+    void AddDragListener ( DragEventListener *del );
+    void RemoveDragListener ( DragEventListener *del );
+    void AddDropListener ( DropEventListener *del );
+    void RemoveDropListener ( DropEventListener *del );
 };
 
 #endif

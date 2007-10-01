@@ -25,7 +25,12 @@ PointerManager* PointerManager::instance = 0;
 
 PointerManager::PointerManager()
         : currentPointer(0)
+        , pressed(false)
+        , dragged(false)
+        , itemWidget(0)
         , pointerVec()
+        , dragListeners()
+        , dropListeners()
 {
     MediaToolkit::GetInstance()->AddPointerButtonListener(this);
     MediaToolkit::GetInstance()->AddPointerMotionListener(this);
@@ -40,6 +45,8 @@ PointerManager::~PointerManager()
         delete pointerVec[i];
     }
     pointerVec.clear();
+    dragListeners.clear();
+    dropListeners.clear();
 }
 
 PointerManager*
@@ -92,16 +99,66 @@ void
 PointerManager::PointerButtonPressed(const PointerButtonEvent &pbe)
 {
     pointerVec[currentPointer]->SetPosition(pbe.GetXPos(), pbe.GetYPos());
+    if ((!pressed) && (pbe.GetButton() == PB_PRIMARY))
+    {
+        pressed = true;
+    }
 }
 
 void
 PointerManager::PointerButtonReleased(const PointerButtonEvent &pbe)
 {
     pointerVec[currentPointer]->SetPosition(pbe.GetXPos(), pbe.GetYPos());
+    if ((pressed) && (pbe.GetButton() == PB_PRIMARY))
+    {
+        pressed = false;
+        if (dragged)
+        {
+            dragged = false;
+            DropEvent de(pbe.GetXPos(), pbe.GetYPos());
+            for (std::list<DropEventListener *>::iterator it = dropListeners.begin(); it != dropListeners.end(); ++it)
+            {
+                (*it)->WidgetDropped(de);
+            }
+        }
+    }
 }
 
 void
 PointerManager::PointerMoved(const PointerMotionEvent &pme)
 {
     pointerVec[currentPointer]->SetPosition(pme.GetXPos(), pme.GetYPos());
+    if ((pressed) && (!dragged))
+    {
+        dragged = true;
+        DragEvent de(pme.GetXPos(), pme.GetYPos());
+        for (std::list<DragEventListener *>::iterator it = dragListeners.begin(); it != dragListeners.end(); ++it)
+        {
+            (*it)->WidgetDragged(de);
+        }
+    }
+}
+
+void
+PointerManager::AddDragListener(DragEventListener *del)
+{
+    dragListeners.push_back(del);
+}
+
+void
+PointerManager::RemoveDragListener(DragEventListener *del)
+{
+    dragListeners.remove(del);
+}
+
+void
+PointerManager::AddDropListener(DropEventListener *del)
+{
+    dropListeners.push_back(del);
+}
+
+void
+PointerManager::RemoveDropListener(DropEventListener *del)
+{
+    dropListeners.remove(del);
 }

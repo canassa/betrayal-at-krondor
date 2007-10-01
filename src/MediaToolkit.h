@@ -43,8 +43,6 @@ protected:
     std::list<KeyboardEventListener *> keyboardListeners;
     std::list<PointerButtonEventListener *> pointerButtonListeners;
     std::list<PointerMotionEventListener *> pointerMotionListeners;
-    std::list<DragEventListener *> dragListeners;
-    std::list<DropEventListener *> dropListeners;
     std::list<TimerEventListener *> timerListeners;
     std::list<LoopEventListener *> loopListeners;
 public:
@@ -61,10 +59,6 @@ public:
     void RemovePointerButtonListener ( PointerButtonEventListener *pbel );
     void AddPointerMotionListener ( PointerMotionEventListener *pmel );
     void RemovePointerMotionListener ( PointerMotionEventListener *pmel );
-    void AddDragListener ( DragEventListener *diel );
-    void RemoveDragListener ( DragEventListener *diel );
-    void AddDropListener ( DropEventListener *diel );
-    void RemoveDropListener ( DropEventListener *diel );
     void AddTimerListener ( TimerEventListener *tel );
     void RemoveTimerListener ( TimerEventListener *tel );
     void AddUpdateListener ( LoopEventListener *lel );

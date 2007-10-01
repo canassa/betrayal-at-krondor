@@ -31,7 +31,6 @@ Pointer::Pointer(const std::string &resname)
         , yPos(0)
         , pointerType(PT_SWORD)
         , pointerImages()
-        , itemWidget(0)
         , dragImage(0)
         , dragOffsetX(0)
         , dragOffsetY(0)
@@ -96,4 +95,3 @@ Pointer::Draw()
         pointerImages.GetImage((int)pointerType)->Draw(xPos, yPos, 0);
     }
 }
-

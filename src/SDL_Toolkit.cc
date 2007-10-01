@@ -73,9 +73,22 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
     break;
     case SDL_MOUSEBUTTONDOWN:
     {
-        PointerButtonEvent pbe((PointerButton)(event.button.button - 1),
-                             event.button.x / video->GetScaling(),
-                             event.button.y / video->GetScaling());
+        PointerButton pb;
+        switch (event.button.button)
+        {
+            case SDL_BUTTON_LEFT:
+                pb = PB_PRIMARY;
+                break;
+            case SDL_BUTTON_MIDDLE:
+                pb = PB_TERTIARY;
+                break;
+            case SDL_BUTTON_RIGHT:
+                pb = PB_SECONDARY;
+                break;
+            default:
+                return;
+        }
+        PointerButtonEvent pbe(pb, event.button.x / video->GetScaling(), event.button.y / video->GetScaling());
         for (std::list<PointerButtonEventListener *>::iterator it = pointerButtonListeners.begin(); it != pointerButtonListeners.end(); ++it)
         {
             (*it)->PointerButtonPressed(pbe);
@@ -84,9 +97,22 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
     break;
     case SDL_MOUSEBUTTONUP:
     {
-        PointerButtonEvent pbe((PointerButton)(event.button.button - 1),
-                             event.button.x / video->GetScaling(),
-                             event.button.y / video->GetScaling());
+        PointerButton pb;
+        switch (event.button.button)
+        {
+            case SDL_BUTTON_LEFT:
+                pb = PB_PRIMARY;
+                break;
+            case SDL_BUTTON_MIDDLE:
+                pb = PB_TERTIARY;
+                break;
+            case SDL_BUTTON_RIGHT:
+                pb = PB_SECONDARY;
+                break;
+            default:
+                return;
+        }
+        PointerButtonEvent pbe(pb, event.button.x / video->GetScaling(), event.button.y / video->GetScaling());
         for (std::list<PointerButtonEventListener *>::iterator it = pointerButtonListeners.begin(); it != pointerButtonListeners.end(); ++it)
         {
             (*it)->PointerButtonReleased(pbe);
@@ -95,8 +121,7 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
     break;
     case SDL_MOUSEMOTION:
     {
-        PointerMotionEvent pme(event.button.x / video->GetScaling(),
-                               event.button.y / video->GetScaling());
+        PointerMotionEvent pme(event.button.x / video->GetScaling(), event.button.y / video->GetScaling());
         for (std::list<PointerMotionEventListener *>::iterator it = pointerMotionListeners.begin(); it != pointerMotionListeners.end(); ++it)
         {
             (*it)->PointerMoved(pme);

@@ -55,13 +55,14 @@ Dialog::Enter()
     try
     {
         MediaToolkit* media = MediaToolkit::GetInstance();
+        PointerManager *pointerManager = PointerManager::GetInstance();
         media->GetVideo()->Clear();
-        PointerManager::GetInstance()->GetCurrentPointer()->Attach(this);
+        pointerManager->GetCurrentPointer()->Attach(this);
         window->FadeIn(palette);
         media->AddKeyboardListener(this);
         media->AddPointerButtonListener(this);
-        media->AddDragListener(this);
-        media->AddDropListener(this);
+        pointerManager->AddDragListener(this);
+        pointerManager->AddDropListener(this);
     }
     catch (Exception &e)
     {
@@ -76,13 +77,14 @@ Dialog::Leave()
     try
     {
         MediaToolkit* media = MediaToolkit::GetInstance();
+        PointerManager *pointerManager = PointerManager::GetInstance();
         window->FadeOut(palette);
         window->PointerOverWidget(VIDEO_WIDTH, VIDEO_HEIGHT);
-        media->RemoveDropListener(this);
-        media->RemoveDragListener(this);
+        pointerManager->RemoveDropListener(this);
+        pointerManager->RemoveDragListener(this);
         media->RemovePointerButtonListener(this);
         media->RemoveKeyboardListener(this);
-        PointerManager::GetInstance()->GetCurrentPointer()->Detach(this);
+        pointerManager->GetCurrentPointer()->Detach(this);
         media->GetVideo()->Clear();
     }
     catch (Exception &e)
