@@ -113,8 +113,12 @@ InventoryWidget::Update()
                                                        origFreeSpace.GetHeight() - height - 1));
                     }
                     freeSpaces.sort();
+                    it = freeSpaces.end();
                 }
-                ++it;
+                else
+                {
+                    ++it;
+                }
             }
         }
     }

@@ -265,23 +265,13 @@ public:
 class DragEvent
 {
     private:
+        bool toggle;
         int xpos;
         int ypos;
     public:
-        DragEvent ( const int x, const int y );
+        DragEvent ( const bool t, const int x, const int y );
         virtual ~DragEvent();
-        int GetXPos() const;
-        int GetYPos() const;
-};
-
-class DropEvent
-{
-    private:
-        int xpos;
-        int ypos;
-    public:
-        DropEvent ( const int x, const int y );
-        virtual ~DropEvent();
+        bool GetToggle() const;
         int GetXPos() const;
         int GetYPos() const;
 };

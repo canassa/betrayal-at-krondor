@@ -30,7 +30,6 @@ PointerManager::PointerManager()
         , itemWidget(0)
         , pointerVec()
         , dragListeners()
-        , dropListeners()
 {
     MediaToolkit::GetInstance()->AddPointerButtonListener(this);
     MediaToolkit::GetInstance()->AddPointerMotionListener(this);
@@ -46,7 +45,6 @@ PointerManager::~PointerManager()
     }
     pointerVec.clear();
     dragListeners.clear();
-    dropListeners.clear();
 }
 
 PointerManager*
@@ -88,6 +86,30 @@ PointerManager::SetCurrentPointer(const unsigned int n)
     }
 }
 
+InventoryItemWidget*
+PointerManager::GetDraggedWidget()
+{
+    return itemWidget;
+}
+
+void
+PointerManager::SetDraggedWidget(InventoryItemWidget *widget, const int x, const int y)
+{
+    if (itemWidget && (itemWidget != widget))
+    {
+        itemWidget->SetDragged(false);
+    }
+    itemWidget = widget;
+    if (widget)
+    {
+        pointerVec[currentPointer]->SetDragImage(widget->GetImage(), x, y);
+    }
+    else
+    {
+        pointerVec[currentPointer]->SetDragImage(0, x, y);
+    }
+}
+
 void
 PointerManager::AddPointer(const std::string& resname)
 {
@@ -115,10 +137,10 @@ PointerManager::PointerButtonReleased(const PointerButtonEvent &pbe)
         if (dragged)
         {
             dragged = false;
-            DropEvent de(pbe.GetXPos(), pbe.GetYPos());
-            for (std::list<DropEventListener *>::iterator it = dropListeners.begin(); it != dropListeners.end(); ++it)
+            DragEvent de(dragged, pbe.GetXPos(), pbe.GetYPos());
+            for (std::list<DragEventListener *>::iterator it = dragListeners.begin(); it != dragListeners.end(); ++it)
             {
-                (*it)->WidgetDropped(de);
+                (*it)->PointerDragged(de);
             }
         }
     }
@@ -131,10 +153,10 @@ PointerManager::PointerMoved(const PointerMotionEvent &pme)
     if ((pressed) && (!dragged))
     {
         dragged = true;
-        DragEvent de(pme.GetXPos(), pme.GetYPos());
+        DragEvent de(dragged, pme.GetXPos(), pme.GetYPos());
         for (std::list<DragEventListener *>::iterator it = dragListeners.begin(); it != dragListeners.end(); ++it)
         {
-            (*it)->WidgetDragged(de);
+            (*it)->PointerDragged(de);
         }
     }
 }
@@ -149,16 +171,4 @@ void
 PointerManager::RemoveDragListener(DragEventListener *del)
 {
     dragListeners.remove(del);
-}
-
-void
-PointerManager::AddDropListener(DropEventListener *del)
-{
-    dropListeners.push_back(del);
-}
-
-void
-PointerManager::RemoveDropListener(DropEventListener *del)
-{
-    dropListeners.remove(del);
 }

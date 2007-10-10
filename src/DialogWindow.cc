@@ -91,6 +91,7 @@ void
 DialogWindow::DropWidget(const int x, const int y)
 {
     panel->Drop(x, y);
+    PointerManager::GetInstance()->SetDraggedWidget(0, 0, 0);
 }
 
 void

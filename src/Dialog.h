@@ -34,7 +34,6 @@ class Dialog
         , public PointerButtonEventListener
         , public KeyboardEventListener
         , public DragEventListener
-        , public DropEventListener
         , public Observer
 {
 protected:
@@ -54,8 +53,7 @@ public:
     virtual void KeyReleased ( const KeyboardEvent& kbe ) = 0;
     void PointerButtonPressed ( const PointerButtonEvent& pbe );
     void PointerButtonReleased ( const PointerButtonEvent& pbe );
-    void WidgetDragged ( const DragEvent &die );
-    void WidgetDropped ( const DropEvent &die );
+    void PointerDragged ( const DragEvent &de );
 };
 
 class GameDialog

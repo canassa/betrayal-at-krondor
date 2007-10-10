@@ -95,17 +95,7 @@ class DragEventListener
         {};
         virtual ~DragEventListener()
         {};
-        virtual void WidgetDragged ( const DragEvent &de ) = 0;
-};
-
-class DropEventListener
-{
-    public:
-        DropEventListener()
-        {};
-        virtual ~DropEventListener()
-        {};
-        virtual void WidgetDropped ( const DropEvent &de ) = 0;
+        virtual void PointerDragged ( const DragEvent &de ) = 0;
 };
 
 #endif

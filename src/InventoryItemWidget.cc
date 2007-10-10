@@ -25,7 +25,7 @@ InventoryItemWidget::InventoryItemWidget(const Rectangle &r, const int a)
         : ActiveWidget(r, a)
         , iconImage(0)
         , label(0)
-        , pressed(false)
+        , dragged(false)
         , selected(false)
 {
     SetFocusable(false);
@@ -37,6 +37,12 @@ InventoryItemWidget::~InventoryItemWidget()
     {
         delete label;
     }
+}
+
+Image*
+InventoryItemWidget::GetImage()
+{
+    return iconImage;
 }
 
 void
@@ -59,42 +65,41 @@ InventoryItemWidget::SetLabel(const std::string& s, Font *f)
 }
 
 void
+InventoryItemWidget::SetDragged(const bool toggle)
+{
+    dragged = toggle;
+}
+
+void
 InventoryItemWidget::Draw()
 {
     if (IsVisible())
     {
         if (selected)
         {}
-        if ((!pressed) && (iconImage))
+        if (!dragged)
         {
-            iconImage->Draw(rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2,
-                            rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2, 0);
-        }
-        if (label && !pressed)
-        {
-            label->Draw();
+            if (iconImage)
+            {
+                iconImage->Draw(rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2,
+                                rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2, 0);
+            }
+            if (label)
+            {
+                label->Draw();
+            }
         }
     }
 }
 
 void
-InventoryItemWidget::LeftClick(const bool toggle, const int x, const int y)
+InventoryItemWidget::LeftClick(const bool toggle, const int, const int)
 {
     if (IsVisible())
     {
-        pressed = toggle;
-        Pointer *ptr = PointerManager::GetInstance()->GetCurrentPointer();
         if (toggle)
         {
-            ptr->SetDragImage(iconImage,
-                             rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2 - x,
-                             rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2 - y);
             GenerateActionEvent(GetAction());
-        }
-        else
-        {
-            ptr->SetDragImage(0, 0, 0);
-            GenerateActionEvent(GetAction() + RELEASE_OFFSET);
         }
     }
 }
@@ -113,8 +118,12 @@ InventoryItemWidget::RightClick(const bool toggle, const int, const int)
 }
 
 void
-InventoryItemWidget::Drag(const int, const int)
+InventoryItemWidget::Drag(const int x, const int y)
 {
+    dragged = true;
+    PointerManager::GetInstance()->SetDraggedWidget(this,
+                                                    rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2 - x,
+                                                    rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2 - y);
 }
 
 void

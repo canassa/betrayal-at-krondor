@@ -62,7 +62,6 @@ Dialog::Enter()
         media->AddKeyboardListener(this);
         media->AddPointerButtonListener(this);
         pointerManager->AddDragListener(this);
-        pointerManager->AddDropListener(this);
     }
     catch (Exception &e)
     {
@@ -80,7 +79,6 @@ Dialog::Leave()
         PointerManager *pointerManager = PointerManager::GetInstance();
         window->FadeOut(palette);
         window->PointerOverWidget(VIDEO_WIDTH, VIDEO_HEIGHT);
-        pointerManager->RemoveDropListener(this);
         pointerManager->RemoveDragListener(this);
         media->RemovePointerButtonListener(this);
         media->RemoveKeyboardListener(this);
@@ -164,21 +162,18 @@ Dialog::ActionPerformed(const ActionEvent& ae)
 }
 
 void
-Dialog::WidgetDragged(const DragEvent& die)
+Dialog::PointerDragged(const DragEvent& de)
 {
     if (running)
     {
-        die.GetXPos();
-    }
-    window->Draw();
-}
-
-void
-Dialog::WidgetDropped(const DropEvent& die)
-{
-    if (running)
-    {
-        die.GetXPos();
+        if (de.GetToggle())
+        {
+            window->DragWidget(de.GetXPos(), de.GetYPos());
+        }
+        else
+        {
+            window->DropWidget(de.GetXPos(), de.GetYPos());
+        }
     }
     window->Draw();
 }

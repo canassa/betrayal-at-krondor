@@ -33,7 +33,7 @@ KeyboardEvent::GetKey() const
 }
 
 PointerButtonEvent::PointerButtonEvent(const PointerButton b, const int x, const int y)
-        :button(b)
+        : button(b)
         , xpos(x)
         , ypos(y)
 {}
@@ -132,42 +132,29 @@ ActionEvent::GetYPos() const
     return ypos;
 }
 
-DragEvent::DragEvent(const int x, const int y)
-        : xpos(x)
+DragEvent::DragEvent(const bool t, const int x, const int y)
+        : toggle(t)
+        , xpos(x)
         , ypos(y)
 {}
 
 DragEvent::~DragEvent()
 {}
 
+bool
+DragEvent::GetToggle() const
+{
+    return toggle;
+}
+
 int
-DragEvent::GetXPos() const
+        DragEvent::GetXPos() const
 {
     return xpos;
 }
 
 int
 DragEvent::GetYPos() const
-{
-    return ypos;
-}
-
-DropEvent::DropEvent(const int x, const int y)
-        : xpos(x)
-        , ypos(y)
-{}
-
-DropEvent::~DropEvent()
-{}
-
-int
-DropEvent::GetXPos() const
-{
-    return xpos;
-}
-
-int
-DropEvent::GetYPos() const
 {
     return ypos;
 }

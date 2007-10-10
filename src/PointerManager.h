@@ -45,7 +45,6 @@ private:
     InventoryItemWidget *itemWidget;
     std::vector<Pointer *> pointerVec;
     std::list<DragEventListener *> dragListeners;
-    std::list<DropEventListener *> dropListeners;
     static PointerManager *instance;
 protected:
     PointerManager();
@@ -55,14 +54,14 @@ public:
     static void CleanUp();
     Pointer* GetCurrentPointer();
     void SetCurrentPointer ( unsigned int n );
+    InventoryItemWidget* GetDraggedWidget ( void );
+    void SetDraggedWidget ( InventoryItemWidget *widget, const int x, const int y );
     void AddPointer ( const std::string& resname );
     void PointerButtonPressed ( const PointerButtonEvent &pbe );
     void PointerButtonReleased ( const PointerButtonEvent &pbe );
     void PointerMoved ( const PointerMotionEvent &pme );
     void AddDragListener ( DragEventListener *del );
     void RemoveDragListener ( DragEventListener *del );
-    void AddDropListener ( DropEventListener *del );
-    void RemoveDropListener ( DropEventListener *del );
 };
 
 #endif
