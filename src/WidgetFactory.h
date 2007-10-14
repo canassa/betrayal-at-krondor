@@ -68,7 +68,7 @@ public:
     ImageWidget* CreateImage ( const Rectangle &r, Image *img, const Flipping flip = NONE );
     InventoryItemWidget* CreateInventoryItem ( const Rectangle &r, const int a, Image *img, const std::string& s, Font *f, ActionEventListener *ael );
     InventoryWidget *CreateInventory ( const Rectangle &r, PlayerCharacter *pc, ImageResource& img, FontResource& fnt, ActionEventListener *ael );
-    EquipmentItemWidget* CreateEquipmentItem ( const Rectangle &r, Image *img, const std::string& s, Font *f );
+    EquipmentItemWidget* CreateEquipmentItem ( const Rectangle &r, const ObjectType t, Image *img, const std::string& s, Font *f );
     EquipmentWidget *CreateEquipment ( const Rectangle &r, PlayerCharacter *pc, ImageResource& img, ImageResource& slot, FontResource& fnt );
     PortraitWidget* CreatePortrait ( const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb );
     RatingsWidget* CreateRatings ( const Rectangle &r, PlayerCharacter *pc, Image *hb, Image *vb, Font *f );

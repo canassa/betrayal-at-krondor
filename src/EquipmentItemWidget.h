@@ -25,6 +25,7 @@
 #endif
 
 #include "Image.h"
+#include "ObjectResource.h"
 #include "TextWidget.h"
 #include "Widget.h"
 
@@ -35,10 +36,11 @@ class EquipmentItemWidget
             : public Widget
 {
 private:
+    ObjectType type;
     Image *iconImage;
     TextWidget *label;
 public:
-    EquipmentItemWidget ( const Rectangle &r );
+    EquipmentItemWidget ( const Rectangle &r, const ObjectType t );
     virtual ~EquipmentItemWidget();
     void SetImage ( Image *icon );
     void SetLabel ( const std::string& s, Font *f );

@@ -20,8 +20,9 @@
 #include "EquipmentItemWidget.h"
 #include "Exception.h"
 
-EquipmentItemWidget::EquipmentItemWidget(const Rectangle &r)
+EquipmentItemWidget::EquipmentItemWidget(const Rectangle &r, const ObjectType t)
         : Widget(r)
+        , type(t)
         , iconImage(0)
         , label(0)
 {}
