@@ -154,10 +154,11 @@ WidgetFactory::CreateImage(const Rectangle &r, Image *img, const Flipping flip)
 }
 
 InventoryItemWidget*
-WidgetFactory::CreateInventoryItem(const Rectangle &r, const int a, Image *img, const std::string& s, Font *f, ActionEventListener *ael)
+WidgetFactory::CreateInventoryItem(const Rectangle &r, const int a, InventoryItem *item, Image *img, const std::string& s, Font *f, ActionEventListener *ael)
 {
     InventoryItemWidget* invitem = new InventoryItemWidget(r, a);
     invitem->SetDraggable(true);
+    invitem->SetInventoryItem(item);
     invitem->SetImage(img);
     invitem->SetLabel(s, f);
     invitem->AddActionListener(ael);
@@ -174,9 +175,10 @@ WidgetFactory::CreateInventory(const Rectangle &r, PlayerCharacter *pc, ImageRes
 }
 
 EquipmentItemWidget*
-WidgetFactory::CreateEquipmentItem(const Rectangle &r, const ObjectType t, Image *img, const std::string& s, Font *f)
+        WidgetFactory::CreateEquipmentItem(const Rectangle &r, const ObjectType t, InventoryItem *item, Image *img, const std::string& s, Font *f)
 {
     EquipmentItemWidget* eqitem = new EquipmentItemWidget(r, t);
+    eqitem->SetInventoryItem(item);
     eqitem->SetImage(img);
     eqitem->SetLabel(s, f);
     return eqitem;

@@ -23,6 +23,7 @@
 EquipmentItemWidget::EquipmentItemWidget(const Rectangle &r, const ObjectType t)
         : Widget(r)
         , type(t)
+        , invItem(0)
         , iconImage(0)
         , label(0)
 {}
@@ -43,6 +44,18 @@ EquipmentItemWidget::SetImage(Image *icon)
         throw NullPointer(__FILE__, __LINE__);
     }
     iconImage = icon;
+}
+
+InventoryItem*
+EquipmentItemWidget::GetInventoryItem()
+{
+    return invItem;
+}
+
+void
+EquipmentItemWidget::SetInventoryItem(InventoryItem *item)
+{
+    invItem = item;
 }
 
 void

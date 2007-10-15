@@ -37,11 +37,14 @@ class EquipmentItemWidget
 {
 private:
     ObjectType type;
+    InventoryItem *invItem;
     Image *iconImage;
     TextWidget *label;
 public:
     EquipmentItemWidget ( const Rectangle &r, const ObjectType t );
     virtual ~EquipmentItemWidget();
+    InventoryItem* GetInventoryItem();
+    void SetInventoryItem ( InventoryItem *item );
     void SetImage ( Image *icon );
     void SetLabel ( const std::string& s, Font *f );
     void Draw();

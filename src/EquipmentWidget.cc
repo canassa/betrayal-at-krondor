@@ -101,7 +101,7 @@ EquipmentWidget::Update()
                 break;
             }
             EquipmentItemWidget *eqitem = wf.CreateEquipmentItem(Rectangle(rect.GetXPos() + 1, rect.GetYPos() + yoffset + 1, width, height),
-                                                                           objInfo.type, image, item->ToString(), font);
+                                                                           objInfo.type, item, image, item->ToString(), font);
             AddWidget(eqitem);
         }
     }
@@ -109,14 +109,14 @@ EquipmentWidget::Update()
     {
         EquipmentItemWidget *eqitem = wf.CreateEquipmentItem(Rectangle(rect.GetXPos() + 1, rect.GetYPos() + ARMOR_OFFSET + 1,
                                       MAX_EQUIPMENT_ITEM_WIDGET_WIDTH, MAX_EQUIPMENT_ITEM_WIDGET_HEIGHT),
-                                      OT_ARMOR, armorSlot, "", font);
+                                      OT_ARMOR, 0, armorSlot, "", font);
         AddWidget(eqitem);
     }
     if ((character->GetCharacterClass() == CLASS_WARRIOR) && (!crossbowEquipped))
     {
         EquipmentItemWidget *eqitem = wf.CreateEquipmentItem(Rectangle(rect.GetXPos() + 1, rect.GetYPos() + CROSSBOW_OFFSET + 1,
                                       MAX_EQUIPMENT_ITEM_WIDGET_WIDTH, MAX_EQUIPMENT_ITEM_WIDGET_HEIGHT / 2),
-                                      OT_CROSSBOW, crossbowSlot, "", font);
+                                      OT_CROSSBOW, 0, crossbowSlot, "", font);
         AddWidget(eqitem);
     }
     SetVisible(character->IsSelected());

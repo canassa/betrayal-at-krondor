@@ -23,6 +23,7 @@
 
 InventoryItemWidget::InventoryItemWidget(const Rectangle &r, const int a)
         : ActiveWidget(r, a)
+        , invItem(0)
         , iconImage(0)
         , label(0)
         , dragged(false)
@@ -37,6 +38,22 @@ InventoryItemWidget::~InventoryItemWidget()
     {
         delete label;
     }
+}
+
+InventoryItem*
+InventoryItemWidget::GetInventoryItem()
+{
+    return invItem;
+}
+
+void
+InventoryItemWidget::SetInventoryItem(InventoryItem *item)
+{
+    if (!item)
+    {
+        throw NullPointer(__FILE__, __LINE__);
+    }
+    invItem = item;
 }
 
 Image*

@@ -35,6 +35,7 @@ class InventoryItemWidget
             : public ActiveWidget
 {
 private:
+    InventoryItem *invItem;
     Image *iconImage;
     TextWidget *label;
     bool dragged;
@@ -42,6 +43,8 @@ private:
 public:
     InventoryItemWidget ( const Rectangle &r, const int a );
     virtual ~InventoryItemWidget();
+    InventoryItem* GetInventoryItem();
+    void SetInventoryItem ( InventoryItem *item );
     Image* GetImage();
     void SetImage ( Image *icon );
     void SetLabel ( const std::string& s, Font *f );

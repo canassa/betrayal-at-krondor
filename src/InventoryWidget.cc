@@ -91,6 +91,7 @@ InventoryWidget::Update()
                                                                                     width,
                                                                                     height),
                                                                           INVENTORY_OFFSET + i,
+                                                                          item,
                                                                           image,
                                                                           item->ToString(),
                                                                           font,
