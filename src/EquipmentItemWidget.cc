@@ -19,6 +19,8 @@
 
 #include "EquipmentItemWidget.h"
 #include "Exception.h"
+#include "ObjectResource.h"
+#include "PointerManager.h"
 
 EquipmentItemWidget::EquipmentItemWidget(const Rectangle &r, const ObjectType t)
         : Widget(r)
@@ -92,4 +94,11 @@ EquipmentItemWidget::Drag(const int, const int)
 void
 EquipmentItemWidget::Drop(const int, const int)
 {
+    InventoryItem *item = PointerManager::GetInstance()->GetDraggedWidget()->GetInventoryItem();
+    ObjectInfo objInfo = ObjectResource::GetInstance()->GetObjectInfo(item->GetId());
+    if (type == objInfo.type)
+    {
+        invItem->Equip(false);
+        item->Equip(true);
+    }
 }
