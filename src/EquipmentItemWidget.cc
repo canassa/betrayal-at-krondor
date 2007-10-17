@@ -94,11 +94,18 @@ EquipmentItemWidget::Drag(const int, const int)
 void
 EquipmentItemWidget::Drop(const int, const int)
 {
-    InventoryItem *item = PointerManager::GetInstance()->GetDraggedWidget()->GetInventoryItem();
-    ObjectInfo objInfo = ObjectResource::GetInstance()->GetObjectInfo(item->GetId());
-    if (type == objInfo.type)
+    InventoryItemWidget *widget = PointerManager::GetInstance()->GetDraggedWidget();
+    if (widget)
     {
-        invItem->Equip(false);
-        item->Equip(true);
+        InventoryItem *item = widget->GetInventoryItem();
+        if (item)
+        {
+            ObjectInfo objInfo = ObjectResource::GetInstance()->GetObjectInfo(item->GetId());
+            if (type == objInfo.type)
+            {
+                invItem->Equip(false);
+                item->Equip(true);
+            }
+        }
     }
 }
