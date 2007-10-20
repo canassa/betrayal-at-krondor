@@ -38,7 +38,7 @@ public:
     {};
     bool operator== ( const InventoryData &invdata ) const
     {
-        return ( invdata.size < size ) && ( invdata.item < item );
+        return ( invdata.size == size ) && ( invdata.item == item );
     };
     bool operator< ( const InventoryData &invdata ) const
     {
@@ -60,6 +60,8 @@ public:
     ~Inventory();
     unsigned int GetSize() const;
     InventoryItem* GetItem ( const unsigned int n ) const;
+    void Add ( InventoryItem *item );
+    void Remove ( InventoryItem *item );
     void Add ( SingleInventoryItem *item );
     void Remove ( SingleInventoryItem *item );
     void Add ( MultipleInventoryItem *item );

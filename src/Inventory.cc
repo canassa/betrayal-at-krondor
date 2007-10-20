@@ -44,7 +44,7 @@ InventoryItem *
 Inventory::GetItem(const unsigned int n) const
 {
     std::list<InventoryData>::const_iterator it = items.begin();
-    for (unsigned int i =0; i < n; i++) ++it;
+    for (unsigned int i = 0; i < n; i++) ++it;
     return it->item;
 }
 
@@ -110,6 +110,67 @@ Inventory::Find(UsableInventoryItem* item)
         ++it;
     }
     return it;
+}
+
+void
+Inventory::Add(InventoryItem* item)
+{
+
+    printf("Add: %s\n", typeid(item).name());
+    SingleInventoryItem *sii = dynamic_cast<SingleInventoryItem *>(item);
+    if (sii)
+    {
+        Add(sii);
+        return;
+    }
+    MultipleInventoryItem *mii = dynamic_cast<MultipleInventoryItem *>(item);
+    if (mii)
+    {
+        Add(mii);
+        return;
+    }
+    RepairableInventoryItem *rii = dynamic_cast<RepairableInventoryItem *>(item);
+    if (rii)
+    {
+        Add(rii);
+        return;
+    }
+    UsableInventoryItem *uii = dynamic_cast<UsableInventoryItem *>(item);
+    if (uii)
+    {
+        Add(uii);
+        return;
+    }
+}
+
+void
+Inventory::Remove(InventoryItem* item)
+{
+    printf("Remove: %s\n", typeid(item).name());
+    SingleInventoryItem *sii = dynamic_cast<SingleInventoryItem *>(item);
+    if (sii)
+    {
+        Remove(sii);
+        return;
+    }
+    MultipleInventoryItem *mii = dynamic_cast<MultipleInventoryItem *>(item);
+    if (mii)
+    {
+        Remove(mii);
+        return;
+    }
+    RepairableInventoryItem *rii = dynamic_cast<RepairableInventoryItem *>(item);
+    if (rii)
+    {
+        Remove(rii);
+        return;
+    }
+    UsableInventoryItem *uii = dynamic_cast<UsableInventoryItem *>(item);
+    if (uii)
+    {
+        Remove(uii);
+        return;
+    }
 }
 
 void

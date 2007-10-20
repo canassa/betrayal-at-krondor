@@ -19,6 +19,8 @@
 
 #include "CharacterButtonWidget.h"
 #include "Exception.h"
+#include "GameApplication.h"
+#include "PointerManager.h"
 
 Image* CharacterButtonWidget::selectedImage = 0;
 
@@ -86,6 +88,21 @@ CharacterButtonWidget::RightClick(const bool toggle, const int, const int)
         if (toggle)
         {
             GenerateActionEvent(GetAction() + RIGHT_CLICK_OFFSET);
+        }
+    }
+}
+
+void
+CharacterButtonWidget::Drop(const int, const int)
+{
+    InventoryItemWidget *widget = PointerManager::GetInstance()->GetDraggedWidget();
+    if (widget)
+    {
+        InventoryItem *item = widget->GetInventoryItem();
+        if (item)
+        {
+            GameApplication::GetInstance()->GetGame()->GetParty()->GetSelectedMember()->GetInventory()->Remove(item);
+            character->GetInventory()->Add(item);
         }
     }
 }

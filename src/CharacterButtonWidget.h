@@ -43,6 +43,7 @@ public:
     void Draw();
     void LeftClick ( const bool toggle, const int x, const int y );
     void RightClick ( const bool toggle, const int x, const int y );
+    void Drop ( const int x, const int y );
 };
 
 #endif
