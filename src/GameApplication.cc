@@ -249,23 +249,23 @@ GameApplication::PointerButtonPressed(const PointerButtonEvent& pbe)
 {
     switch (pbe.GetButton())
     {
-        case PB_PRIMARY:
-        case PB_SECONDARY:
-            if (!inputGrabbed)
-            {
-                inputGrabbed = true;
-                MediaToolkit::GetInstance()->GetVideo()->GrabInput(true);
-            }
-            break;
-        case PB_TERTIARY:
-            if (inputGrabbed)
-            {
-                inputGrabbed = false;
-                MediaToolkit::GetInstance()->GetVideo()->GrabInput(false);
-            }
-            break;
-        default:
-            break;
+    case PB_PRIMARY:
+    case PB_SECONDARY:
+        if (!inputGrabbed)
+        {
+            inputGrabbed = true;
+            MediaToolkit::GetInstance()->GetVideo()->GrabInput(true);
+        }
+        break;
+    case PB_TERTIARY:
+        if (inputGrabbed)
+        {
+            inputGrabbed = false;
+            MediaToolkit::GetInstance()->GetVideo()->GrabInput(false);
+        }
+        break;
+    default:
+        break;
     }
 }
 

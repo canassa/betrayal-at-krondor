@@ -126,10 +126,8 @@ TextWidget::Draw()
 
 void
 TextWidget::Drag(const int, const int)
-{
-}
+{}
 
 void
 TextWidget::Drop(const int, const int)
-{
-}
+{}

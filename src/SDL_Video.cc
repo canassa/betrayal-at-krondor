@@ -555,8 +555,7 @@ SDL_Video::Refresh()
 #ifdef DEBUG
 void
 SDL_Video::GrabInput(const bool)
-{
-}
+{}
 #else
 void
 SDL_Video::GrabInput(const bool toggle)

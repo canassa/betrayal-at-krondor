@@ -281,10 +281,8 @@ RatingsWidget::Draw()
 
 void
 RatingsWidget::Drag(const int, const int)
-{
-}
+{}
 
 void
 RatingsWidget::Drop(const int, const int)
-{
-}
+{}

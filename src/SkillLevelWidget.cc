@@ -106,10 +106,8 @@ SkillLevelWidget::Draw()
 
 void
 SkillLevelWidget::Drag(const int, const int)
-{
-}
+{}
 
 void
 SkillLevelWidget::Drop(const int, const int)
-{
-}
+{}

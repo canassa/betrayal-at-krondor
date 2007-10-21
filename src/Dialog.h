@@ -30,11 +30,11 @@
 #include "Palette.h"
 
 class Dialog
-        : public ActionEventListener
-        , public PointerButtonEventListener
-        , public KeyboardEventListener
-        , public DragEventListener
-        , public Observer
+            : public ActionEventListener
+            , public PointerButtonEventListener
+            , public KeyboardEventListener
+            , public DragEventListener
+            , public Observer
 {
 protected:
     DialogWindow *window;
@@ -57,7 +57,7 @@ public:
 };
 
 class GameDialog
-        : public Dialog
+            : public Dialog
 {
 public:
     GameDialog ( Palette *pal, DialogWindow *dialogwin );
@@ -67,7 +67,7 @@ public:
 };
 
 class OptionsDialog
-        : public Dialog
+            : public Dialog
 {
 public:
     OptionsDialog ( Palette *pal, DialogWindow *dialogwin );

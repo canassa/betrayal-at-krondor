@@ -80,22 +80,22 @@ public:
 
 class ActionEventListener
 {
-    public:
-        ActionEventListener()
-        {};
-        virtual ~ActionEventListener()
-        {};
-        virtual void ActionPerformed ( const ActionEvent &ae ) = 0;
+public:
+    ActionEventListener()
+    {};
+    virtual ~ActionEventListener()
+    {};
+    virtual void ActionPerformed ( const ActionEvent &ae ) = 0;
 };
 
 class DragEventListener
 {
-    public:
-        DragEventListener()
-        {};
-        virtual ~DragEventListener()
-        {};
-        virtual void PointerDragged ( const DragEvent &de ) = 0;
+public:
+    DragEventListener()
+    {};
+    virtual ~DragEventListener()
+    {};
+    virtual void PointerDragged ( const DragEvent &de ) = 0;
 };
 
 #endif

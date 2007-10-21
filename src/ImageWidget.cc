@@ -54,10 +54,8 @@ ImageWidget::Draw()
 
 void
 ImageWidget::Drag(const int, const int)
-{
-}
+{}
 
 void
 ImageWidget::Drop(const int, const int)
-{
-}
+{}

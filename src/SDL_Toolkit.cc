@@ -54,94 +54,94 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
 {
     switch (event.type)
     {
-        case SDL_KEYDOWN:
+    case SDL_KEYDOWN:
+    {
+        KeyboardEvent kbe((Key)event.key.keysym.sym);
+        for (std::list<KeyboardEventListener *>::iterator it = keyboardListeners.begin(); it != keyboardListeners.end(); ++it)
         {
-            KeyboardEvent kbe((Key)event.key.keysym.sym);
-            for (std::list<KeyboardEventListener *>::iterator it = keyboardListeners.begin(); it != keyboardListeners.end(); ++it)
-            {
-                (*it)->KeyPressed(kbe);
-            }
+            (*it)->KeyPressed(kbe);
         }
-        break;
-        case SDL_KEYUP:
+    }
+    break;
+    case SDL_KEYUP:
+    {
+        KeyboardEvent kbe((Key)event.key.keysym.sym);
+        for (std::list<KeyboardEventListener *>::iterator it = keyboardListeners.begin(); it != keyboardListeners.end(); ++it)
         {
-            KeyboardEvent kbe((Key)event.key.keysym.sym);
-            for (std::list<KeyboardEventListener *>::iterator it = keyboardListeners.begin(); it != keyboardListeners.end(); ++it)
-            {
-                (*it)->KeyReleased(kbe);
-            }
+            (*it)->KeyReleased(kbe);
         }
-        break;
-        case SDL_MOUSEBUTTONDOWN:
+    }
+    break;
+    case SDL_MOUSEBUTTONDOWN:
+    {
+        PointerButton pb;
+        switch (event.button.button)
         {
-            PointerButton pb;
-            switch (event.button.button)
-            {
-                case SDL_BUTTON_LEFT:
-                    pb = PB_PRIMARY;
-                    break;
-                case SDL_BUTTON_MIDDLE:
-                    pb = PB_TERTIARY;
-                    break;
-                case SDL_BUTTON_RIGHT:
-                    pb = PB_SECONDARY;
-                    break;
-                default:
-                    return;
-            }
-            PointerButtonEvent pbe(pb, event.button.x / video->GetScaling(), event.button.y / video->GetScaling());
-            for (std::list<PointerButtonEventListener *>::iterator it = pointerButtonListeners.begin(); it != pointerButtonListeners.end(); ++it)
-            {
-                (*it)->PointerButtonPressed(pbe);
-            }
-        }
-        break;
-        case SDL_MOUSEBUTTONUP:
-        {
-            PointerButton pb;
-            switch (event.button.button)
-            {
-                case SDL_BUTTON_LEFT:
-                    pb = PB_PRIMARY;
-                    break;
-                case SDL_BUTTON_MIDDLE:
-                    pb = PB_TERTIARY;
-                    break;
-                case SDL_BUTTON_RIGHT:
-                    pb = PB_SECONDARY;
-                    break;
-                default:
-                    return;
-            }
-            PointerButtonEvent pbe(pb, event.button.x / video->GetScaling(), event.button.y / video->GetScaling());
-            for (std::list<PointerButtonEventListener *>::iterator it = pointerButtonListeners.begin(); it != pointerButtonListeners.end(); ++it)
-            {
-                (*it)->PointerButtonReleased(pbe);
-            }
-        }
-        break;
-        case SDL_MOUSEMOTION:
-        {
-            PointerMotionEvent pme(event.button.x / video->GetScaling(), event.button.y / video->GetScaling());
-            for (std::list<PointerMotionEventListener *>::iterator it = pointerMotionListeners.begin(); it != pointerMotionListeners.end(); ++it)
-            {
-                (*it)->PointerMoved(pme);
-            }
-        }
-        break;
-        case SDL_USEREVENT:
-        {
-            // timer event
-            clock->CancelTimer((unsigned long)event.user.data1);
-            TimerEvent te((unsigned long)event.user.data1);
-            for (std::list<TimerEventListener *>::iterator it = timerListeners.begin(); it != timerListeners.end(); ++it)
-            {
-                (*it)->TimerExpired(te);
-            }
-        }
-        break;
-        default:
+        case SDL_BUTTON_LEFT:
+            pb = PB_PRIMARY;
             break;
+        case SDL_BUTTON_MIDDLE:
+            pb = PB_TERTIARY;
+            break;
+        case SDL_BUTTON_RIGHT:
+            pb = PB_SECONDARY;
+            break;
+        default:
+            return;
+        }
+        PointerButtonEvent pbe(pb, event.button.x / video->GetScaling(), event.button.y / video->GetScaling());
+        for (std::list<PointerButtonEventListener *>::iterator it = pointerButtonListeners.begin(); it != pointerButtonListeners.end(); ++it)
+        {
+            (*it)->PointerButtonPressed(pbe);
+        }
+    }
+    break;
+    case SDL_MOUSEBUTTONUP:
+    {
+        PointerButton pb;
+        switch (event.button.button)
+        {
+        case SDL_BUTTON_LEFT:
+            pb = PB_PRIMARY;
+            break;
+        case SDL_BUTTON_MIDDLE:
+            pb = PB_TERTIARY;
+            break;
+        case SDL_BUTTON_RIGHT:
+            pb = PB_SECONDARY;
+            break;
+        default:
+            return;
+        }
+        PointerButtonEvent pbe(pb, event.button.x / video->GetScaling(), event.button.y / video->GetScaling());
+        for (std::list<PointerButtonEventListener *>::iterator it = pointerButtonListeners.begin(); it != pointerButtonListeners.end(); ++it)
+        {
+            (*it)->PointerButtonReleased(pbe);
+        }
+    }
+    break;
+    case SDL_MOUSEMOTION:
+    {
+        PointerMotionEvent pme(event.button.x / video->GetScaling(), event.button.y / video->GetScaling());
+        for (std::list<PointerMotionEventListener *>::iterator it = pointerMotionListeners.begin(); it != pointerMotionListeners.end(); ++it)
+        {
+            (*it)->PointerMoved(pme);
+        }
+    }
+    break;
+    case SDL_USEREVENT:
+    {
+        // timer event
+        clock->CancelTimer((unsigned long)event.user.data1);
+        TimerEvent te((unsigned long)event.user.data1);
+        for (std::list<TimerEventListener *>::iterator it = timerListeners.begin(); it != timerListeners.end(); ++it)
+        {
+            (*it)->TimerExpired(te);
+        }
+    }
+    break;
+    default:
+        break;
     }
 }
 

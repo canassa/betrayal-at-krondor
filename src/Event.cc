@@ -148,7 +148,7 @@ DragEvent::GetToggle() const
 }
 
 int
-        DragEvent::GetXPos() const
+DragEvent::GetXPos() const
 {
     return xpos;
 }

@@ -60,10 +60,8 @@ ButtonWidget::Reset()
 
 void
 ButtonWidget::Drag(const int, const int)
-{
-}
+{}
 
 void
 ButtonWidget::Drop(const int, const int)
-{
-}
+{}

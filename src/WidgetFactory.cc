@@ -175,7 +175,7 @@ WidgetFactory::CreateInventory(const Rectangle &r, PlayerCharacter *pc, ImageRes
 }
 
 EquipmentItemWidget*
-        WidgetFactory::CreateEquipmentItem(const Rectangle &r, const ObjectType t, InventoryItem *item, Image *img, const std::string& s, Font *f)
+WidgetFactory::CreateEquipmentItem(const Rectangle &r, const ObjectType t, InventoryItem *item, Image *img, const std::string& s, Font *f)
 {
     EquipmentItemWidget* eqitem = new EquipmentItemWidget(r, t);
     eqitem->SetInventoryItem(item);

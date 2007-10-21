@@ -264,16 +264,16 @@ public:
 
 class DragEvent
 {
-    private:
-        bool toggle;
-        int xpos;
-        int ypos;
-    public:
-        DragEvent ( const bool t, const int x, const int y );
-        virtual ~DragEvent();
-        bool GetToggle() const;
-        int GetXPos() const;
-        int GetYPos() const;
+private:
+    bool toggle;
+    int xpos;
+    int ypos;
+public:
+    DragEvent ( const bool t, const int x, const int y );
+    virtual ~DragEvent();
+    bool GetToggle() const;
+    int GetXPos() const;
+    int GetYPos() const;
 };
 
 #endif

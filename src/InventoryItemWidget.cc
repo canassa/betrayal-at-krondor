@@ -139,11 +139,10 @@ InventoryItemWidget::Drag(const int x, const int y)
 {
     dragged = true;
     PointerManager::GetInstance()->SetDraggedWidget(this,
-                                                    rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2 - x,
-                                                    rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2 - y);
+            rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2 - x,
+            rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2 - y);
 }
 
 void
 InventoryItemWidget::Drop(const int, const int)
-{
-}
+{}

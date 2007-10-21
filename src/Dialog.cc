@@ -124,14 +124,14 @@ Dialog::PointerButtonPressed(const PointerButtonEvent& pbe)
     {
         switch (pbe.GetButton())
         {
-            case PB_PRIMARY:
-                window->LeftClickWidget(true, pbe.GetXPos(), pbe.GetYPos());
-                break;
-            case PB_SECONDARY:
-                window->RightClickWidget(true, pbe.GetXPos(), pbe.GetYPos());
-                break;
-            default:
-                break;
+        case PB_PRIMARY:
+            window->LeftClickWidget(true, pbe.GetXPos(), pbe.GetYPos());
+            break;
+        case PB_SECONDARY:
+            window->RightClickWidget(true, pbe.GetXPos(), pbe.GetYPos());
+            break;
+        default:
+            break;
         }
     }
     window->Draw();
@@ -142,14 +142,14 @@ Dialog::PointerButtonReleased(const PointerButtonEvent& pbe)
 {
     switch (pbe.GetButton())
     {
-        case PB_PRIMARY:
-            window->LeftClickWidget(false, pbe.GetXPos(), pbe.GetYPos());
-            break;
-        case PB_SECONDARY:
-            window->RightClickWidget(false, pbe.GetXPos(), pbe.GetYPos());
-            break;
-        default:
-            break;
+    case PB_PRIMARY:
+        window->LeftClickWidget(false, pbe.GetXPos(), pbe.GetYPos());
+        break;
+    case PB_SECONDARY:
+        window->RightClickWidget(false, pbe.GetXPos(), pbe.GetYPos());
+        break;
+    default:
+        break;
     }
     window->Draw();
 }

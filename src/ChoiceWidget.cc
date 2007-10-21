@@ -86,10 +86,8 @@ ChoiceWidget::RightClick(const bool toggle, const int, const int)
 
 void
 ChoiceWidget::Drag(const int, const int)
-{
-}
+{}
 
 void
 ChoiceWidget::Drop(const int, const int)
-{
-}
+{}

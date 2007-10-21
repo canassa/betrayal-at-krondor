@@ -28,7 +28,7 @@
 #include "SDL.h"
 
 class SDL_Toolkit
-        : public MediaToolkit
+            : public MediaToolkit
 {
 private:
     void HandleEvent ( SDL_Event& event );

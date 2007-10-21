@@ -101,7 +101,7 @@ EquipmentWidget::Update()
                 break;
             }
             EquipmentItemWidget *eqitem = wf.CreateEquipmentItem(Rectangle(rect.GetXPos() + 1, rect.GetYPos() + yoffset + 1, width, height),
-                                                                           objInfo.type, item, image, item->ToString(), font);
+                                          objInfo.type, item, image, item->ToString(), font);
             AddWidget(eqitem);
         }
     }

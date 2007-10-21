@@ -39,7 +39,7 @@ typedef struct _PolygonEdge
 PolygonEdge;
 
 class SDL_Video
-        : public Video
+            : public Video
 {
 private:
     const SDL_VideoInfo *info;

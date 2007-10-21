@@ -79,10 +79,8 @@ CompassWidget::Update()
 
 void
 CompassWidget::Drag(const int, const int)
-{
-}
+{}
 
 void
 CompassWidget::Drop(const int, const int)
-{
-}
+{}

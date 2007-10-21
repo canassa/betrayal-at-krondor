@@ -114,10 +114,8 @@ SkillsWidget::Draw()
 
 void
 SkillsWidget::Drag(const int, const int)
-{
-}
+{}
 
 void
 SkillsWidget::Drop(const int, const int)
-{
-}
+{}

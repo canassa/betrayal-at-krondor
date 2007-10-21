@@ -67,10 +67,8 @@ PortraitWidget::Draw()
 
 void
 PortraitWidget::Drag(const int, const int)
-{
-}
+{}
 
 void
 PortraitWidget::Drop(const int, const int)
-{
-}
+{}

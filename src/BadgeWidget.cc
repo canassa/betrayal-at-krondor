@@ -62,10 +62,8 @@ BadgeWidget::Draw()
 
 void
 BadgeWidget::Drag(const int, const int)
-{
-}
+{}
 
 void
 BadgeWidget::Drop(const int, const int)
-{
-}
+{}
