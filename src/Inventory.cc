@@ -115,8 +115,6 @@ Inventory::Find(UsableInventoryItem* item)
 void
 Inventory::Add(InventoryItem* item)
 {
-
-    printf("Add: %s\n", typeid(item).name());
     SingleInventoryItem *sii = dynamic_cast<SingleInventoryItem *>(item);
     if (sii)
     {
@@ -146,7 +144,6 @@ Inventory::Add(InventoryItem* item)
 void
 Inventory::Remove(InventoryItem* item)
 {
-    printf("Remove: %s\n", typeid(item).name());
     SingleInventoryItem *sii = dynamic_cast<SingleInventoryItem *>(item);
     if (sii)
     {
@@ -212,10 +209,13 @@ Inventory::Remove(MultipleInventoryItem* item)
     if (it != items.end())
     {
         MultipleInventoryItem *mii = dynamic_cast<MultipleInventoryItem *>(it->item);
-        mii->Remove(item->GetValue());
-        if (mii->GetValue() == 0)
+        if (mii->GetAmount() == item->GetAmount())
         {
             items.remove(InventoryData(ObjectResource::GetInstance()->GetObjectInfo(item->GetId()).imageSize, item));
+        }
+        else
+        {
+            mii->Remove(item->GetAmount());
         }
     }
     else

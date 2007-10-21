@@ -116,6 +116,12 @@ MultipleInventoryItem::MultipleInventoryItem(const unsigned int i, const unsigne
 MultipleInventoryItem::~MultipleInventoryItem()
 {}
 
+unsigned int
+MultipleInventoryItem::GetAmount() const
+{
+    return value;
+}
+
 void
 MultipleInventoryItem::Add(const unsigned int n)
 {
