@@ -552,11 +552,18 @@ SDL_Video::Refresh()
     SDL_Flip(disp);
 }
 
+#ifdef DEBUG
+void
+SDL_Video::GrabInput(const bool)
+{
+}
+#else
 void
 SDL_Video::GrabInput(const bool toggle)
 {
     SDL_WM_GrabInput(toggle ? SDL_GRAB_ON : SDL_GRAB_OFF);
 }
+#endif
 
 void
 SDL_Video::SaveScreenShot(const std::string& filename)
