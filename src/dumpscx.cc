@@ -17,6 +17,12 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+/*! \file dumpscx.cc
+    \brief Main dumpscx source file.
+
+    This file contains the the main function of the .SCX data dumper.
+ */
+
 #include <iostream>
 
 #include "Directories.h"

@@ -17,6 +17,12 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+/*! \file dumppal.cc
+    \brief Main dumppal source file.
+
+    This file contains the the main function of the .PAL data dumper.
+ */
+
 #include <iostream>
 
 #include "Directories.h"

@@ -17,6 +17,12 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+/*! \file dumpddx.cc
+    \brief Main dumpddx source file.
+
+    This file contains the the main function of the .DDX data dumper.
+ */
+
 #include <iostream>
 
 #include "DialogResource.h"

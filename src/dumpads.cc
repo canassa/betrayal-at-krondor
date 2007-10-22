@@ -17,6 +17,12 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+/*! \file dumpads.cc
+    \brief Main dumpads source file.
+
+    This file contains the the main function of the .ADS data dumper.
+ */
+
 #include <iostream>
 
 #include "AnimationResource.h"

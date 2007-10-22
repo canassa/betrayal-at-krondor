@@ -17,6 +17,12 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+/*! \file xbak.cc
+    \brief Main xBaK source file.
+
+    This file contains the the main function of xBaK.
+ */
+
 #include <iostream>
 
 #if defined( __MACOS__) || defined(__MACOSX__)

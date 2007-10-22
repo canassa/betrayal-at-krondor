@@ -17,6 +17,12 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+/*! \file dumpobj.cc
+    \brief Main dumpobj source file.
+
+    This file contains the the main function of the OBJINFO.DAT data dumper.
+ */
+
 #include <iostream>
 
 #include "Directories.h"

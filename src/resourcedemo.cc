@@ -17,6 +17,12 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+/*! \file resourcedemo.cc
+    \brief Main source file for the resource demo.
+
+    This file contains the the main function of resource demo.
+ */
+
 #include <iostream>
 #include <cstring>
 

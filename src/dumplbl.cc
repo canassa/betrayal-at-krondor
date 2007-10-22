@@ -17,6 +17,12 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+/*! \file dumplbl.cc
+    \brief Main dumplbl source file.
+
+    This file contains the the main function of the LBL_*.DAT data dumper.
+ */
+
 #include <iostream>
 
 #include "Directories.h"

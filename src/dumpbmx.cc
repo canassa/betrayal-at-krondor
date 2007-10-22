@@ -17,6 +17,12 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+/*! \file dumpbmx.cc
+    \brief Main dumpbmx source file.
+
+    This file contains the the main function of the .BMX data dumper.
+ */
+
 #include <iostream>
 
 #include "Directories.h"

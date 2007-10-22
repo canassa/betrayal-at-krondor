@@ -17,6 +17,17 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+/*! \file convertresource.cc
+    \brief Main convertresource source file.
+
+    This file contains the the main function of the resource conversion utility.
+    The resource converter can extract and recombine the individual data files
+    from and to the resource archive. The resource meta file (.RMF) is created
+    when archiving the individual data files. With the resource conversion utility
+    it is also possible to extract and recombine individual bitmap images from and
+    to .BMX data files. The images are stored in .BMP format.
+ */
+
 #include <cstring>
 #include <iomanip>
 #include <iostream>

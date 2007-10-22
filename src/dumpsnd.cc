@@ -17,6 +17,12 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+/*! \file dumpsnd.cc
+    \brief Main dumpsnd source file.
+
+    This file contains the the main function of the midi data dumper.
+ */
+
 #include <iostream>
 #include <sstream>
 
