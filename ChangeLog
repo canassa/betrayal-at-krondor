@@ -1,8 +1,10 @@
 2007-10-??, xbak-0.1.3:
-* Rewrote dragging and dropping inventory items
-* Implemented saving image resources (BMX, SCX files)
-* Added compression methods
-* Added extraction and archiving of resources.
+* Basic inventory handling now works.
+* Rewrote dragging and dropping widgets using events.
+* Implemented saving image resources (BMX, SCX files).
+* Added compression methods.
+* Added a tool for extraction and archiving of resources.
+* Started adding a little code documentation (Doxygen format).
 * Several bug fixes.
 
 2007-06-17, xbak-0.1.2:
