@@ -36,12 +36,11 @@ static const unsigned int MAX_FONT_HEIGHT = 16;
 
 typedef uint16_t GlyphData[MAX_FONT_HEIGHT];
 
-typedef struct _FontGlyph
+struct FontGlyph
 {
     unsigned int width;
     GlyphData data;
-}
-FontGlyph;
+};
 
 class Font
 {

@@ -26,12 +26,11 @@
 
 #include "TaggedResource.h"
 
-typedef struct _AnimationData
+struct AnimationData
 {
     std::string name;
     std::string resource;
-}
-AnimationData;
+};
 
 class AnimationResource: public TaggedResource
 {

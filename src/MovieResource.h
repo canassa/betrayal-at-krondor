@@ -28,13 +28,12 @@
 
 #include "TaggedResource.h"
 
-typedef struct _MovieTag
+struct MovieTag
 {
     unsigned int code;
     std::string name;
     std::vector<int> data;
-}
-MovieTag;
+};
 
 class MovieResource
             : public TaggedResource

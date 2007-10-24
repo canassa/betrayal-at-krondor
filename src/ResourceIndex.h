@@ -28,13 +28,12 @@
 
 #include "FileBuffer.h"
 
-typedef struct _ResourceIndexData
+struct ResourceIndexData
 {
     unsigned int hashkey;
     std::streamoff offset;
     unsigned int size;
-}
-ResourceIndexData;
+};
 
 class ResourceIndex
 {

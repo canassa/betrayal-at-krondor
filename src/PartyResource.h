@@ -36,11 +36,10 @@ static const unsigned int PARTY_JAMES    = 4;
 static const unsigned int PARTY_PATRUS   = 5;
 static const unsigned int PARTY_SIZE     = 6;
 
-typedef struct _PartyData
+struct PartyData
 {
     std::string name;
-}
-PartyData;
+};
 
 class PartyResource
             : public ResourceData

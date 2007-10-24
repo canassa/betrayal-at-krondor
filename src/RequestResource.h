@@ -140,7 +140,7 @@ static const int GROUP1 = 1;
 static const int GROUP2 = 2;
 static const int GROUP3 = 3;
 
-typedef struct _RequestData
+struct RequestData
 {
     unsigned int widget;
     int action;
@@ -153,8 +153,7 @@ typedef struct _RequestData
     int image;
     int group;
     std::string label;
-}
-RequestData;
+};
 
 class RequestResource
             : public ResourceData

@@ -65,7 +65,7 @@ typedef enum _ObjectType {
     OT_OTHER
 } ObjectType;
 
-typedef struct _ObjectInfo
+struct ObjectInfo
 {
     std::string name;
     unsigned int flags;
@@ -82,8 +82,7 @@ typedef struct _ObjectInfo
     int effect;
     unsigned int modifierMask;
     int modifier;
-}
-ObjectInfo;
+};
 
 class ObjectResource
             : public ResourceData

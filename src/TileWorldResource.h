@@ -33,14 +33,13 @@ static const unsigned int TILE_SIZE_2 = TILE_SIZE / 2;
 
 static const unsigned int OBJECT_CENTER = 0;
 
-typedef struct _TileWorldItem
+struct TileWorldItem
 {
     unsigned int type;
     unsigned int flags;
     unsigned int xloc;
     unsigned int yloc;
-}
-TileWorldItem;
+};
 
 class TileWorldResource
             : public ResourceData

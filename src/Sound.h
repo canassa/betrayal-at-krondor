@@ -34,13 +34,12 @@ typedef enum _SoundFormat {
     SF_UNKNOWN
 } SoundFormat;
 
-typedef struct _MidiEvent
+struct MidiEvent
 {
     unsigned int delta;
     unsigned int size;
     uint8_t data[8];
-}
-MidiEvent;
+};
 
 class Sound
 {

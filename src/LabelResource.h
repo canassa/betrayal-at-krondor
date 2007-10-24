@@ -31,7 +31,7 @@
 static const int LBL_STANDARD = 0;
 static const int LBL_TITLE    = 3;
 
-typedef struct _LabelData
+struct LabelData
 {
     int xpos;
     int ypos;
@@ -39,8 +39,7 @@ typedef struct _LabelData
     int color;
     int shadow;
     std::string label;
-}
-LabelData;
+};
 
 class LabelResource
             : public ResourceData
