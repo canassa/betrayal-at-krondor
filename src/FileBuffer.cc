@@ -649,194 +649,81 @@ FileBuffer::Rewind()
 uint8_t
 FileBuffer::GetUint8()
 {
-    if ((current) && (current + 1 <= buffer + size))
-    {
-        uint8_t n = *((uint8_t *)current);
-        current++;
-        return n;
-    }
-    else
-    {
-        throw BufferEmpty(__FILE__, __LINE__);
-    }
-    return 0;
+    uint8_t n;
+    GetData(&n, 1);
+    return n;
 }
 
 uint16_t
 FileBuffer::GetUint16LE()
 {
-    if ((current) && (current + 2 <= buffer + size))
-    {
-        uint16_t n = *((uint8_t *)current);
-        current++;
-        n += *((uint8_t *)current) << 8;
-        current++;
-        return SDL_SwapLE16(n);
-    }
-    else
-    {
-        throw BufferEmpty(__FILE__, __LINE__);
-    }
-    return 0;
+    uint16_t n;
+    GetData(&n, 2);
+    return SDL_SwapLE16(n);
 }
 
 uint16_t
 FileBuffer::GetUint16BE()
 {
-    if ((current) && (current + 2 <= buffer + size))
-    {
-        uint16_t n = *((uint8_t *)current);
-        current++;
-        n += *((uint8_t *)current) << 8;
-        current++;
-        return SDL_SwapBE16(n);
-    }
-    else
-    {
-        throw BufferEmpty(__FILE__, __LINE__);
-    }
-    return 0;
+    uint16_t n;
+    GetData(&n, 2);
+    return SDL_SwapBE16(n);
 }
 
 uint32_t
 FileBuffer::GetUint32LE()
 {
-    if ((current) && (current + 4 <= buffer + size))
-    {
-        uint32_t n = *((uint8_t *)current);
-        current++;
-        n += *((uint8_t *)current) << 8;
-        current++;
-        n += *((uint8_t *)current) << 16;
-        current++;
-        n += *((uint8_t *)current) << 24;
-        current++;
-        return SDL_SwapLE32(n);
-    }
-    else
-    {
-        throw BufferEmpty(__FILE__, __LINE__);
-    }
-    return 0;
+    uint32_t n;
+    GetData(&n, 4);
+    return SDL_SwapLE32(n);
 }
 
 uint32_t
 FileBuffer::GetUint32BE()
 {
-    if ((current) && (current + 4 <= buffer + size))
-    {
-        uint32_t n = *((uint8_t *)current);
-        current++;
-        n += *((uint8_t *)current) << 8;
-        current++;
-        n += *((uint8_t *)current) << 16;
-        current++;
-        n += *((uint8_t *)current) << 24;
-        current++;
-        return SDL_SwapBE32(n);
-    }
-    else
-    {
-        throw BufferEmpty(__FILE__, __LINE__);
-    }
-    return 0;
+    uint32_t n;
+    GetData(&n, 4);
+    return SDL_SwapBE32(n);
 }
 
 int8_t
 FileBuffer::GetSint8()
 {
-    if ((current) && (current + 1 <= buffer + size))
-    {
-        int8_t n = 0;
-        n = *((int8_t *)current);
-        current++;
-        return n;
-    }
-    else
-    {
-        throw BufferEmpty(__FILE__, __LINE__);
-    }
-    return 0;
+    int8_t n;
+    GetData(&n, 1);
+    return n;
 }
 
 int16_t
 FileBuffer::GetSint16LE()
 {
-    if ((current) && (current + 2 <= buffer + size))
-    {
-        int16_t n = *((uint8_t *)current);
-        current++;
-        n += *((uint8_t *)current) << 8;
-        current++;
-        return SDL_SwapLE16(n);
-    }
-    else
-    {
-        throw BufferEmpty(__FILE__, __LINE__);
-    }
-    return 0;
+    int16_t n;
+    GetData(&n, 2);
+    return SDL_SwapLE16(n);
 }
 
 int16_t
 FileBuffer::GetSint16BE()
 {
-    if ((current) && (current + 2 <= buffer + size))
-    {
-        int16_t n = *((uint8_t *)current);
-        current++;
-        n += *((uint8_t *)current) << 8;
-        current++;
-        return SDL_SwapBE16(n);
-    }
-    else
-    {
-        throw BufferEmpty(__FILE__, __LINE__);
-    }
-    return 0;
+    int16_t n;
+    GetData(&n, 2);
+    return SDL_SwapBE16(n);
 }
 
 int32_t
 FileBuffer::GetSint32LE()
 {
-    if ((current) && (current + 4 <= buffer + size))
-    {
-        int32_t n = *((uint8_t *)current);
-        current++;
-        n += *((uint8_t *)current) << 8;
-        current++;
-        n += *((uint8_t *)current) << 16;
-        current++;
-        n += *((uint8_t *)current) << 24;
-        current++;
-        return SDL_SwapLE32(n);
-    }
-    else
-    {
-        throw BufferEmpty(__FILE__, __LINE__);
-    }
-    return 0;
+    int32_t n;
+    GetData(&n, 4);
+    return SDL_SwapLE32(n);
 }
 
 int32_t
 FileBuffer::GetSint32BE()
 {
-    if ((current) && (current + 4 <= buffer + size))
-    {
-        int32_t n = *((uint8_t *)current);
-        current++;
-        n += *((uint8_t *)current) << 8;
-        current++;
-        n += *((uint8_t *)current) << 16;
-        current++;
-        n += *((uint8_t *)current) << 24;
-        current++;
-        return SDL_SwapBE32(n);
-    }
-    else
-    {
-        throw BufferEmpty(__FILE__, __LINE__);
-    }
-    return 0;
+    int32_t n;
+    GetData(&n, 4);
+    return SDL_SwapBE32(n);
 }
 
 std::string
@@ -919,141 +806,71 @@ FileBuffer::GetBits(const unsigned int n)
 void
 FileBuffer::PutUint8(const uint8_t x)
 {
-    if ((current) && (current + 1 <= buffer + size))
-    {
-        *((uint8_t *)current) = x;
-        current += 1;
-    }
-    else
-    {
-        throw BufferFull(__FILE__, __LINE__);
-    }
+    uint8_t xx = x;
+    PutData(xx, 1);
 }
 
 void
 FileBuffer::PutUint16LE(const uint16_t x)
 {
-    if ((current) && (current + 2 <= buffer + size))
-    {
-        *((uint16_t *)current) = SDL_SwapLE16(x);
-        current += 2;
-    }
-    else
-    {
-        throw BufferFull(__FILE__, __LINE__);
-    }
+    uint16_t xx = SDL_SwapLE16(x);
+    PutData(xx, 2);
 }
 
 void
 FileBuffer::PutUint16BE(const uint16_t x)
 {
-    if ((current) && (current + 2 <= buffer + size))
-    {
-        *((uint16_t *)current) = SDL_SwapBE16(x);
-        current += 2;
-    }
-    else
-    {
-        throw BufferFull(__FILE__, __LINE__);
-    }
+    uint16_t xx = SDL_SwapBE16(x);
+    PutData(xx, 2);
 }
 
 void
 FileBuffer::PutUint32LE(const uint32_t x)
 {
-    if ((current) && (current + 4 <= buffer + size))
-    {
-        *((uint32_t *)current) = SDL_SwapLE32(x);
-        current += 4;
-    }
-    else
-    {
-        throw BufferFull(__FILE__, __LINE__);
-    }
+    uint32_t xx = SDL_SwapLE32(x);
+    PutData(xx, 4);
 }
 
 void
 FileBuffer::PutUint32BE(const uint32_t x)
 {
-    if ((current) && (current + 4 <= buffer + size))
-    {
-        *((uint32_t *)current) = SDL_SwapBE32(x);
-        current += 4;
-    }
-    else
-    {
-        throw BufferFull(__FILE__, __LINE__);
-    }
+    uint32_t xx = SDL_SwapBE32(x);
+    PutData(xx, 4);
 }
 
 void
 FileBuffer::PutSint8(const int8_t x)
 {
-    if ((current) && (current + 1 <= buffer + size))
-    {
-        *((int8_t *)current) = x;
-        current += 1;
-    }
-    else
-    {
-        throw BufferFull(__FILE__, __LINE__);
-    }
+    int8_t xx = x;
+    PutData(xx, 1);
 }
 
 void
 FileBuffer::PutSint16LE(const int16_t x)
 {
-    if ((current) && (current + 2 <= buffer + size))
-    {
-        *((uint16_t *)current) = SDL_SwapLE16(x);
-        current += 2;
-    }
-    else
-    {
-        throw BufferFull(__FILE__, __LINE__);
-    }
+    int16_t xx = SDL_SwapLE16(x);
+    PutData(xx, 2);
 }
 
 void
 FileBuffer::PutSint16BE(const int16_t x)
 {
-    if ((current) && (current + 2 <= buffer + size))
-    {
-        *((uint16_t *)current) = SDL_SwapBE16(x);
-        current += 2;
-    }
-    else
-    {
-        throw BufferFull(__FILE__, __LINE__);
-    }
+    int16_t xx = SDL_SwapBE16(x);
+    PutData(xx, 2);
 }
 
 void
 FileBuffer::PutSint32LE(const int32_t x)
 {
-    if ((current) && (current + 4 <= buffer + size))
-    {
-        *((uint32_t *)current) = SDL_SwapLE32(x);
-        current += 4;
-    }
-    else
-    {
-        throw BufferFull(__FILE__, __LINE__);
-    }
+    int32_t xx = SDL_SwapLE32(x);
+    PutData(xx, 4);
 }
 
 void
 FileBuffer::PutSint32BE(const int32_t x)
 {
-    if ((current) && (current + 4 <= buffer + size))
-    {
-        *((uint32_t *)current) = SDL_SwapBE32(x);
-        current += 4;
-    }
-    else
-    {
-        throw BufferFull(__FILE__, __LINE__);
-    }
+    int32_t xx = SDL_SwapBE32(x);
+    PutData(xx, 4);
 }
 
 void
