@@ -45,7 +45,7 @@ Directories::Directories()
 #else
     sharedPath = "";
 #endif
-#if defined(WIN32) || defined(__MACOS__) || defined(__MACOSX__)
+#if defined(WIN32) || defined(__MACOS__) || defined(__MACOSX__) || defined(__APPLE__) || defined(__APPLE_CC__)
     userPath = "";
     gamesPath = "";
     capturePath = "";
@@ -93,7 +93,7 @@ Directories::CreatePath(const std::string &path)
 {
 #if defined(WIN32)
     // TODO
-#elif defined(__MACOS__) || defined(__MACOSX__)
+#elif defined(__MACOS__) || defined(__MACOSX__) || defined(__APPLE__) || defined(__APPLE_CC__)
     // TODO
 #else
     struct stat statbuf;

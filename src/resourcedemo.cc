@@ -26,7 +26,7 @@
 #include <iostream>
 #include <cstring>
 
-#if defined( __MACOS__) || defined(__MACOSX__)
+#if defined( __MACOS__) || defined(__MACOSX__) || defined(__APPLE__) || defined(__APPLE_CC__)
 #include "SDL.h"
 #endif
 
