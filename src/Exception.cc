@@ -17,6 +17,7 @@
  * Copyright (C) 2005-2007  Guido de Jong <guidoj@users.sf.net>
  */
 
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 
@@ -46,7 +47,7 @@ Exception::Exception(const std::string &file, const unsigned int line, const std
         , linenr(line)
 {
     std::stringstream s;
-    s << msg << " (" << val << ")";
+    s << msg << " : " << val << " (" << std::setbase(16) << std::setfill('0') << std::setw(8) << val << ")";
     message = s.str();
 }
 
