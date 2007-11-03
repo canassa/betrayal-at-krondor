@@ -29,17 +29,17 @@
 #include "Geometry.h"
 #include "TaggedResource.h"
 
-/* Object Class */
-static const unsigned int OC_TERRAIN      = 0x00;
-static const unsigned int OC_LARGE_OBJECT = 0x40;
-static const unsigned int OC_SMALL_OBJECT = 0x60;
+/* Object Flags */
+static const unsigned int OF_TERRAIN   = 0x00;
+static const unsigned int OF_UNBOUNDED = 0x20;
+static const unsigned int OF_2D_OBJECT = 0x40;
 
 /* Object Type */
 static const unsigned int OT_TERRAIN    =  0;
 static const unsigned int OT_EXTERIOR   =  1;
 static const unsigned int OT_BRIDGE     =  2;
 static const unsigned int OT_INTERIOR   =  3;
-static const unsigned int OT_LANDSCAPE1 =  4;
+static const unsigned int OT_FIELD      =  4;
 static const unsigned int OT_TREE       =  5;
 static const unsigned int OT_CHEST      =  6;
 static const unsigned int OT_DEADBODY1  =  7;
@@ -71,21 +71,21 @@ static const unsigned int OT_SCARECROW  = 34;
 static const unsigned int OT_TRAP       = 35;
 static const unsigned int OT_CATAPULT   = 36;
 static const unsigned int OT_COLUMN     = 37;
-static const unsigned int OT_LANDSCAPE2 = 38;
+static const unsigned int OT_LANDSCAPE  = 38;
 static const unsigned int OT_MOUNTAIN   = 39;
 static const unsigned int OT_BAG        = 41;
 static const unsigned int OT_LADDER     = 42;
-
-/* Terrain Class */
-static const unsigned int TC_NULL      = 0;
-static const unsigned int TC_MAP       = 1;
-static const unsigned int TC_LANDSCAPE = 1;
 
 /* Terrain Type */
 static const unsigned int TT_NULL      = 0;
 static const unsigned int TT_INTERIOR  = 6;
 static const unsigned int TT_EXTERIOR  = 7;
 static const unsigned int TT_LANDSCAPE = 8;
+
+/* Terrain Class */
+static const unsigned int TC_FIELD     = 0;
+static const unsigned int TC_LANDSCAPE = 1;
+static const unsigned int TC_OTHER     = 2;
 
 class GidInfo
 {
@@ -98,13 +98,15 @@ public:
 class DatInfo
 {
 public:
-    unsigned int objectClass;
+    unsigned int objectFlags;
     unsigned int objectType;
-    unsigned int terrainClass;
     unsigned int terrainType;
+    unsigned int terrainClass;
     unsigned int sprite;
     Vector3D min;
     Vector3D max;
+    Vector3D pos;
+    std::vector<Vector3D *> vertices;
     DatInfo();
     ~DatInfo();
 };

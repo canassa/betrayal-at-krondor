@@ -45,10 +45,11 @@ int main(int argc, char *argv[])
         {
             GidInfo gid = tbl->GetGidItem(i);
             DatInfo *dat = tbl->GetDatItem(i);
-            printf("%3d: %-8s %6d %6d %04x %02x %2d %2d %2d %2d\n\t(%6d, %6d, %6d) (%6d, %6d, %6d)", i, tbl->GetMapItem(i).c_str(),
-                   gid.xoffset, gid.yoffset, gid.flags,
-                   dat->objectClass, dat->objectType, dat->terrainClass, dat->terrainType, dat->sprite,
-                   dat->min.GetX(), dat->min.GetY(), dat->min.GetZ(), dat->max.GetX(), dat->max.GetY(), dat->max.GetZ());
+            printf("%3d: %-8s %6d %6d %04x %02x %2d %2d %2d %2d\n\t(%6d, %6d, %6d) (%6d, %6d, %6d) (%6d, %6d, %6d)",
+                   i, tbl->GetMapItem(i).c_str(), gid.xoffset, gid.yoffset, gid.flags,
+                                      dat->objectFlags, dat->objectType, dat->terrainType, dat->terrainClass, dat->sprite,
+                   dat->min.GetX(), dat->min.GetY(), dat->min.GetZ(), dat->max.GetX(), dat->max.GetY(), dat->max.GetZ(),
+                   dat->pos.GetX(), dat->pos.GetY(), dat->pos.GetZ());
             printf("\n");
         }
         delete tbl;

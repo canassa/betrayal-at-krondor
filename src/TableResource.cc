@@ -24,7 +24,13 @@ DatInfo::DatInfo()
 {}
 
 DatInfo::~DatInfo()
-{}
+{
+    for (std::vector<Vector3D*>::iterator it = vertices.begin(); it != vertices.end(); ++it)
+    {
+        delete (*it);
+    }
+    vertices.clear();
+}
 
 TableResource::TableResource()
         : TaggedResource()
@@ -157,78 +163,50 @@ TableResource::Load(FileBuffer *buffer)
         {
             datbuf->Seek(datOffset[i]);
             DatInfo *item = new DatInfo();
-            item->objectClass = datbuf->GetUint8();
+            item->objectFlags = datbuf->GetUint8();
             item->objectType = datbuf->GetUint8();
-            item->terrainClass = datbuf->GetUint8();
             item->terrainType = datbuf->GetUint8();
+            item->terrainClass = datbuf->GetUint8();
             datbuf->Skip(4);
             bool more = datbuf->GetUint16LE() > 0;
             datbuf->Skip(4);
             if (more)
             {
-                switch (item->objectType)
+                if (!(item->objectFlags & OF_UNBOUNDED))
                 {
-                case OT_TREE:
-                case OT_TOMBSTONE:
-                case OT_SIGN:
-                case OT_DEADBODY2:
-                case OT_DIRTPILE:
-                case OT_FIRE:
-                case OT_FERN:
-                case OT_ROCKPILE:
-                case OT_BUSH1:
-                case OT_BUSH2:
-                case OT_BUSH3:
-                case OT_SLAB:
-                case OT_STUMP:
-                case OT_WELL:
-                case OT_ENGINE:
-                case OT_SCARECROW:
-                case OT_TRAP:
-                case OT_COLUMN:
-                case OT_BAG:
-                case OT_LADDER:
-                {
-                    datbuf->Skip(22);
-                    item->sprite = datbuf->GetUint16LE();
-                    datbuf->Skip(4);
-                }
-                break;
-                case OT_TERRAIN:
-                case OT_EXTERIOR:
-                case OT_INTERIOR:
-                case OT_BRIDGE:
-                case OT_LANDSCAPE1:
-                case OT_CHEST:
-                case OT_DEADBODY1:
-                case OT_FENCE:
-                case OT_GATE:
-                case OT_BUILDING:
-                case OT_ROOM:
-                case OT_PIT:
-                case OT_CORN:
-                case OT_ENTRANCE:
-                case OT_GROVE:
-                case OT_DOOR:
-                case OT_CRYST:
-                case OT_CATAPULT:
-                case OT_LANDSCAPE2:
-                case OT_MOUNTAIN:
-                {
-                    item->sprite = (unsigned int) -1;
                     item->min.SetX(datbuf->GetSint16LE());
                     item->min.SetY(datbuf->GetSint16LE());
                     item->min.SetZ(datbuf->GetSint16LE());
                     item->max.SetX(datbuf->GetSint16LE());
                     item->max.SetY(datbuf->GetSint16LE());
                     item->max.SetZ(datbuf->GetSint16LE());
-                    datbuf->Skip(16);
-                    // TODO
                 }
-                break;
-                default:
-                    throw DataCorruption(__FILE__, __LINE__);
-                    break;
+                datbuf->Skip(2);
+                unsigned int n = datbuf->GetUint16LE();
+                datbuf->Skip(2);
+                for (unsigned int j = 0; j < n; j++)
+                {
+                    datbuf->Skip(14);
+                }
+                if (item->terrainType != TT_NULL)
+                {
+                    if (item->terrainClass == TC_FIELD)
+                    {
+                        item->pos.SetX(datbuf->GetSint16LE());
+                        item->pos.SetY(datbuf->GetSint16LE());
+                        item->pos.SetZ(datbuf->GetSint16LE());
+                    }
+                    datbuf->Skip(6);
+                }
+                if ((item->objectFlags & OF_UNBOUNDED) && (item->objectFlags & OF_2D_OBJECT) && (n == 1)) // && (item->objectType != OT_DEADBODY1))
+                {
+                    datbuf->Skip(2);
+                    item->sprite = datbuf->GetUint16LE();
+                    datbuf->Skip(4);
+                }
+                else
+                {
+                    item->sprite = (unsigned int) -1;
                 }
             }
             datItems.push_back(item);
