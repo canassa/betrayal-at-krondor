@@ -197,6 +197,18 @@ TableResource::Load(FileBuffer *buffer)
                         item->pos.SetZ(datbuf->GetSint16LE());
                     }
                     datbuf->Skip(6);
+                    int x = datbuf->GetSint16LE();
+                    int y = datbuf->GetSint16LE();
+                    int z = datbuf->GetSint16LE();
+                    while ((item->min.GetX() <= x) && (x <= item->max.GetX()) &&
+                           (item->min.GetY() <= y) && (y <= item->max.GetY()) &&
+                           (item->min.GetZ() <= z) && (z <= item->max.GetZ()))
+                    {
+                        item->vertices.push_back(new Vector3D(x, y, z));
+                        x = datbuf->GetSint16LE();
+                        y = datbuf->GetSint16LE();
+                        z = datbuf->GetSint16LE();
+                    }
                 }
                 if ((item->objectFlags & OF_UNBOUNDED) && (item->objectFlags & OF_2D_OBJECT) && (n == 1)) // && (item->objectType != OT_DEADBODY1))
                 {
