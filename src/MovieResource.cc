@@ -28,7 +28,7 @@ MovieResource::MovieResource()
         : TaggedResource()
         , version("")
         , pages(0)
-        , movieTags()
+        , movieChunks()
 {}
 
 MovieResource::~MovieResource()
@@ -48,21 +48,21 @@ MovieResource::GetPages() const
     return pages;
 }
 
-std::vector<MovieTag *> &
-MovieResource::GetMovieTags()
+std::vector<MovieChunk *> &
+MovieResource::GetMovieChunks()
 {
-    return movieTags;
+    return movieChunks;
 }
 
 void
 MovieResource::Clear()
 {
-    for (unsigned int i = 0; i < movieTags.size(); i++)
+    for (unsigned int i = 0; i < movieChunks.size(); i++)
     {
-        movieTags[i]->data.clear();
-        delete movieTags[i];
+        movieChunks[i]->data.clear();
+        delete movieChunks[i];
     }
-    movieTags.clear();
+    movieChunks.clear();
 }
 
 void
@@ -93,25 +93,25 @@ MovieResource::Load(FileBuffer *buffer)
         tags.Load(tagbuf);
         while (!tmpbuf->AtEnd())
         {
-            MovieTag *mt = new MovieTag;
+            MovieChunk *mc = new MovieChunk;
             unsigned int code = tmpbuf->GetUint16LE();
             unsigned int size = code & 0x000f;
             code &= 0xfff0;
-            mt->code = code;
+            mc->code = code;
             if ((code == 0x1110) && (size == 1))
             {
                 unsigned int id = tmpbuf->GetUint16LE();
-                mt->data.push_back(id);
+                mc->data.push_back(id);
                 std::string name;
                 if (tags.Find(id, name))
                 {
-                    mt->name = name;
+                    mc->name = name;
                 }
             }
             else if (size == 15)
             {
-                mt->name = tmpbuf->GetString();
-                transform(mt->name.begin(), mt->name.end(), mt->name.begin(), toupper);
+                mc->name = tmpbuf->GetString();
+                transform(mc->name.begin(), mc->name.end(), mc->name.begin(), toupper);
                 if (tmpbuf->GetBytesLeft() & 1)
                 {
                     tmpbuf->Skip(1);
@@ -121,10 +121,10 @@ MovieResource::Load(FileBuffer *buffer)
             {
                 for (unsigned int i = 0; i < size; i++)
                 {
-                    mt->data.push_back(tmpbuf->GetSint16LE());
+                    mc->data.push_back(tmpbuf->GetSint16LE());
                 }
             }
-            movieTags.push_back(mt);
+            movieChunks.push_back(mc);
         }
         delete tmpbuf;
         ClearTags();

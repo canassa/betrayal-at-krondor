@@ -150,7 +150,7 @@ GameApplication::PlayIntro()
         MovieResource ttm;
         FileManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
         MoviePlayer moviePlayer;
-        moviePlayer.Play(&ttm.GetMovieTags(), true);
+        moviePlayer.Play(&ttm.GetMovieChunks(), true);
     }
     catch (Exception &e)
     {

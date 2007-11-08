@@ -34,7 +34,7 @@ static const unsigned int SET_FRAME0         = 0x2000;
 static const unsigned int SET_FRAME1         = 0x2010;
 static const unsigned int FADE_OUT           = 0x4110;
 static const unsigned int FADE_IN            = 0x4120;
-static const unsigned int DRAW_WINDOW        = 0xa100;
+static const unsigned int DRAW_IMAGE         = 0xa100;
 static const unsigned int DRAW_SPRITE0       = 0xa500;
 static const unsigned int DRAW_SPRITE1       = 0xa510;
 static const unsigned int DRAW_SPRITE2       = 0xa520;
@@ -56,11 +56,11 @@ MoviePlayer::~MoviePlayer()
 {}
 
 void
-MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat)
+MoviePlayer::Play(std::vector<MovieChunk *> *movie, const bool repeat)
 {
     try
     {
-        tagVec = movie;
+        chunkVec = movie;
         looped = repeat;
         delayed = false;
         playing = true;
@@ -75,7 +75,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat)
         currFrame = 0;
         currImage = 0;
         currPalette = 0;
-        currTag = 0;
+        currChunk = 0;
         currDelay = 0;
         currSound = 0;
         soundMap.clear();
@@ -91,7 +91,7 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat)
 
         while (playing)
         {
-            PlayTag(media);
+            PlayChunk(media);
             if (playing)
             {
                 media->WaitEvents();
@@ -108,6 +108,16 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat)
         media->RemoveTimerListener(this);
         PointerManager::GetInstance()->GetCurrentPointer()->SetVisible(true);
 
+        if (backgroundImage)
+        {
+            delete backgroundImage;
+            backgroundImage = 0;
+        }
+        if (savedImage)
+        {
+            delete savedImage;
+            savedImage = 0;
+        }
         if (screenSlot)
         {
             delete screenSlot;
@@ -126,14 +136,6 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat)
                 delete paletteSlot[i];
             }
         }
-        if (backgroundImage)
-        {
-            delete backgroundImage;
-        }
-        if (savedImage)
-        {
-            delete savedImage;
-        }
     }
     catch (Exception &e)
     {
@@ -143,14 +145,14 @@ MoviePlayer::Play(std::vector<MovieTag *> *movie, const bool repeat)
 }
 
 void
-MoviePlayer::PlayTag(MediaToolkit* media)
+MoviePlayer::PlayChunk(MediaToolkit* media)
 {
     try
     {
         while ((playing) && (!delayed))
         {
-            MovieTag *mt = (*tagVec)[currTag];
-            switch (mt->code)
+            MovieChunk *mc = (*chunkVec)[currChunk];
+            switch (mc->code)
             {
             case SAVE_BACKGROUND:
                 if (!backgroundImage)
@@ -182,31 +184,31 @@ MoviePlayer::PlayTag(MediaToolkit* media)
                 savedImageDrawn = false;
                 break;
             case DELAY:
-                currDelay = mt->data[0] * 10;
+                currDelay = mc->data[0] * 10;
                 break;
             case SLOT_IMAGE:
-                currImage = mt->data[0];
+                currImage = mc->data[0];
                 break;
             case SLOT_PALETTE:
-                currPalette = mt->data[0];
+                currPalette = mc->data[0];
                 paletteActivated = false;
                 break;
             case SET_SCENE:
                 break;
             case SET_FRAME0:
             case SET_FRAME1:
-                currFrame = mt->data[1];
+                currFrame = mc->data[1];
                 break;
             case FADE_OUT:
-                paletteSlot[currPalette]->GetPalette()->FadeOut(mt->data[0], mt->data[1], 64 << (mt->data[2] & 0x0f), 2 << mt->data[3]);
+                paletteSlot[currPalette]->GetPalette()->FadeOut(mc->data[0], mc->data[1], 64 << (mc->data[2] & 0x0f), 2 << mc->data[3]);
                 media->GetVideo()->Clear();
                 paletteActivated = true;
                 break;
             case FADE_IN:
-                paletteSlot[currPalette]->GetPalette()->FadeIn(mt->data[0], mt->data[1], 64 << (mt->data[2] & 0x0f), 2 << mt->data[3]);
+                paletteSlot[currPalette]->GetPalette()->FadeIn(mc->data[0], mc->data[1], 64 << (mc->data[2] & 0x0f), 2 << mc->data[3]);
                 paletteActivated = true;
                 break;
-            case DRAW_WINDOW:
+            case DRAW_IMAGE:
                 if ((backgroundImage) && (!backgroundImageDrawn))
                 {
                     backgroundImage->Draw(0, 0);
@@ -214,7 +216,7 @@ MoviePlayer::PlayTag(MediaToolkit* media)
                 }
                 if (imageSlot[currImage])
                 {
-                    imageSlot[currImage]->GetImage(currFrame)->Draw(mt->data[0], mt->data[1], 0, 0, mt->data[2], mt->data[3]);
+                    imageSlot[currImage]->GetImage(currFrame)->Draw(mc->data[0], mc->data[1], 0, 0, mc->data[2], mc->data[3]);
                 }
                 break;
             case DRAW_SPRITE3:
@@ -243,9 +245,9 @@ MoviePlayer::PlayTag(MediaToolkit* media)
                     savedImage->Draw(0, 0);
                     savedImageDrawn = true;
                 }
-                if (imageSlot[mt->data[3]])
+                if (imageSlot[mc->data[3]])
                 {
-                    imageSlot[mt->data[3]]->GetImage(mt->data[2])->Draw(mt->data[0], mt->data[1], 0);
+                    imageSlot[mc->data[3]]->GetImage(mc->data[2])->Draw(mc->data[0], mc->data[1], 0);
                 }
                 break;
             case READ_IMAGE:
@@ -253,15 +255,15 @@ MoviePlayer::PlayTag(MediaToolkit* media)
                 {
                     delete savedImage;
                 }
-                savedImage = new Image(mt->data[2], mt->data[3]);
-                savedImage->Read(mt->data[0], mt->data[1]);
+                savedImage = new Image(mc->data[2], mc->data[3]);
+                savedImage->Read(mc->data[0], mc->data[1]);
                 savedImageDrawn = false;
                 break;
             case LOAD_SOUNDRESOURCE:
                 break;
             case SELECT_SOUND:
             {
-                std::map<unsigned int, int>::iterator it = soundMap.find(mt->data[0]);
+                std::map<unsigned int, int>::iterator it = soundMap.find(mc->data[0]);
                 if (it != soundMap.end())
                 {
                     if (it->second >= 0)
@@ -270,12 +272,12 @@ MoviePlayer::PlayTag(MediaToolkit* media)
                     }
                     soundMap.erase(it);
                 }
-                soundMap.insert(std::pair<unsigned int, int>(mt->data[0], -1));
+                soundMap.insert(std::pair<unsigned int, int>(mc->data[0], -1));
             }
             break;
             case DESELECT_SOUND:
             {
-                std::map<unsigned int, int>::iterator it = soundMap.find(mt->data[0]);
+                std::map<unsigned int, int>::iterator it = soundMap.find(mc->data[0]);
                 if (it != soundMap.end())
                 {
                     if (it->second >= 0)
@@ -288,7 +290,7 @@ MoviePlayer::PlayTag(MediaToolkit* media)
             break;
             case PLAY_SOUND:
             {
-                std::map<unsigned int, int>::iterator it = soundMap.find(mt->data[0]);
+                std::map<unsigned int, int>::iterator it = soundMap.find(mc->data[0]);
                 if (it != soundMap.end())
                 {
                     if (it->second >= 0)
@@ -302,7 +304,7 @@ MoviePlayer::PlayTag(MediaToolkit* media)
             break;
             case STOP_SOUND:
             {
-                std::map<unsigned int, int>::iterator it = soundMap.find(mt->data[0]);
+                std::map<unsigned int, int>::iterator it = soundMap.find(mc->data[0]);
                 if (it != soundMap.end())
                 {
                     if (it->second >= 0)
@@ -318,9 +320,9 @@ MoviePlayer::PlayTag(MediaToolkit* media)
                 {
                     delete screenSlot;
                 }
-                mt->name[mt->name.length() - 1] = 'X';
+                mc->name[mc->name.length() - 1] = 'X';
                 screenSlot = new ScreenResource;
-                FileManager::GetInstance()->Load(screenSlot, mt->name);
+                FileManager::GetInstance()->Load(screenSlot, mc->name);
                 screenSlot->GetImage()->Draw(0, 0);
                 break;
             case LOAD_IMAGE:
@@ -328,9 +330,9 @@ MoviePlayer::PlayTag(MediaToolkit* media)
                 {
                     delete imageSlot[currImage];
                 }
-                mt->name[mt->name.length() - 1] = 'X';
+                mc->name[mc->name.length() - 1] = 'X';
                 imageSlot[currImage] = new ImageResource;
-                FileManager::GetInstance()->Load(imageSlot[currImage], mt->name);
+                FileManager::GetInstance()->Load(imageSlot[currImage], mc->name);
                 break;
             case LOAD_PALETTE:
                 if (paletteSlot[currPalette])
@@ -338,18 +340,18 @@ MoviePlayer::PlayTag(MediaToolkit* media)
                     delete paletteSlot[currPalette];
                 }
                 paletteSlot[currPalette] = new PaletteResource;
-                FileManager::GetInstance()->Load(paletteSlot[currPalette], mt->name);
+                FileManager::GetInstance()->Load(paletteSlot[currPalette], mc->name);
                 paletteActivated = false;
                 break;
             default:
                 break;
             }
-            currTag++;
-            if (currTag == tagVec->size())
+            currChunk++;
+            if (currChunk == chunkVec->size())
             {
                 if (looped)
                 {
-                    currTag = 0;
+                    currChunk = 0;
                     if (backgroundImage)
                     {
                         delete backgroundImage;
@@ -370,7 +372,7 @@ MoviePlayer::PlayTag(MediaToolkit* media)
     }
     catch (Exception &e)
     {
-        e.Print("MoviePlayer::PlayTag");
+        e.Print("MoviePlayer::PlayChunk");
         throw;
     }
 }

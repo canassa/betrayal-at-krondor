@@ -28,7 +28,7 @@
 
 #include "TaggedResource.h"
 
-struct MovieTag
+struct MovieChunk
 {
     unsigned int code;
     std::string name;
@@ -41,13 +41,13 @@ class MovieResource
 private:
     std::string version;
     unsigned int pages;
-    std::vector<MovieTag *> movieTags;
+    std::vector<MovieChunk *> movieChunks;
 public:
     MovieResource();
     virtual ~MovieResource();
     std::string& GetVersion();
     unsigned int GetPages() const;
-    std::vector<MovieTag *> & GetMovieTags();
+    std::vector<MovieChunk *> & GetMovieChunks();
     void Clear();
     void Load ( FileBuffer *buffer );
     unsigned int Save ( FileBuffer *buffer );

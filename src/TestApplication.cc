@@ -179,7 +179,7 @@ TestApplication::PlayMovie(const std::string& name)
     {
         FileManager::GetInstance()->Load(&ttm, name);
         MoviePlayer moviePlayer;
-        moviePlayer.Play(&ttm.GetMovieTags(), false);
+        moviePlayer.Play(&ttm.GetMovieChunks(), false);
     }
     catch (Exception &e)
     {

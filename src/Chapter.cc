@@ -50,7 +50,7 @@ Chapter::PlayIntro()
         MovieResource ttm;
         FileManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
         MoviePlayer moviePlayer;
-        moviePlayer.Play(&ttm.GetMovieTags(), false);
+        moviePlayer.Play(&ttm.GetMovieChunks(), false);
     }
     catch (Exception &e)
     {
@@ -73,7 +73,7 @@ Chapter::PlayScene(const int scene)
         MovieResource ttm;
         FileManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
         MoviePlayer moviePlayer;
-        moviePlayer.Play(&ttm.GetMovieTags(), false);
+        moviePlayer.Play(&ttm.GetMovieChunks(), false);
     }
     catch (Exception &e)
     {

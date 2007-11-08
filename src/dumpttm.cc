@@ -42,19 +42,19 @@ int main(int argc, char *argv[])
         MovieResource *ttm = new MovieResource;
         FileManager::GetInstance()->Load(ttm, argv[1]);
         printf("%s %d\n", ttm->GetVersion().c_str(), ttm->GetPages());
-        std::vector<MovieTag *> mt = ttm->GetMovieTags();
-        for (unsigned int i = 0; i < mt.size(); i++)
+        std::vector<MovieChunk *> mc = ttm->GetMovieChunks();
+        for (unsigned int i = 0; i < mc.size(); i++)
         {
-            printf("%4d %04x %-39s: ", i, mt[i]->code, mt[i]->name.c_str());
-            for (unsigned int j = 0; j < mt[i]->data.size(); j++)
+            printf("%4d %04x %-39s: ", i, mc[i]->code, mc[i]->name.c_str());
+            for (unsigned int j = 0; j < mc[i]->data.size(); j++)
             {
-                printf(" %4d", mt[i]->data[j]);
+                printf(" %4d", mc[i]->data[j]);
             }
-            for (unsigned int j = mt[i]->data.size(); j < 8; j++)
+            for (unsigned int j = mc[i]->data.size(); j < 8; j++)
             {
                 printf("     ");
             }
-            switch (mt[i]->code)
+            switch (mc[i]->code)
             {
             case 0x0020:
                 printf(" save screen");
@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
             case 0xa0b0:
                 break;
             case 0xa100:
-                printf(" draw window (x, y, w, h)");
+                printf(" draw image (x, y, w, h)");
                 break;
             case 0xa500:
                 printf(" draw sprite (x, y, frame, image)");

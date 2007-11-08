@@ -40,7 +40,7 @@ class MoviePlayer
             , public TimerEventListener
 {
 private:
-    std::vector<MovieTag *> *tagVec;
+    std::vector<MovieChunk *> *chunkVec;
     ScreenResource* screenSlot;
     SoundResource* soundSlot;
     ImageResource* imageSlot[MAX_IMAGE_SLOTS];
@@ -52,7 +52,7 @@ private:
     unsigned int currFrame;
     unsigned int currImage;
     unsigned int currPalette;
-    unsigned int currTag;
+    unsigned int currChunk;
     unsigned int currDelay;
     unsigned int currSound;
     std::map<unsigned int, int> soundMap;
@@ -60,11 +60,11 @@ private:
     bool playing;
     bool looped;
     bool delayed;
-    void PlayTag ( MediaToolkit* media );
+    void PlayChunk ( MediaToolkit* media );
 public:
     MoviePlayer();
     ~MoviePlayer();
-    void Play ( std::vector<MovieTag *> *movie, const bool repeat );
+    void Play ( std::vector<MovieChunk *> *movie, const bool repeat );
     void KeyPressed ( const KeyboardEvent& kbe );
     void KeyReleased ( const KeyboardEvent& kbe );
     void PointerButtonPressed ( const PointerButtonEvent& pbe );
