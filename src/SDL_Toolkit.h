@@ -31,7 +31,7 @@ class SDL_Toolkit
             : public MediaToolkit
 {
 private:
-    void HandleEvent ( SDL_Event& event );
+    void HandleEvent ( SDL_Event *event );
 public:
     SDL_Toolkit();
     ~SDL_Toolkit();

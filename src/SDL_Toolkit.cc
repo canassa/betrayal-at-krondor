@@ -50,13 +50,13 @@ SDL_Toolkit::~SDL_Toolkit()
 }
 
 void
-SDL_Toolkit::HandleEvent(SDL_Event& event)
+SDL_Toolkit::HandleEvent(SDL_Event *event)
 {
-    switch (event.type)
+    switch (event->type)
     {
     case SDL_KEYDOWN:
     {
-        KeyboardEvent kbe((Key)event.key.keysym.sym);
+        KeyboardEvent kbe((Key)event->key.keysym.sym);
         for (std::list<KeyboardEventListener *>::iterator it = keyboardListeners.begin(); it != keyboardListeners.end(); ++it)
         {
             (*it)->KeyPressed(kbe);
@@ -65,7 +65,7 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
     break;
     case SDL_KEYUP:
     {
-        KeyboardEvent kbe((Key)event.key.keysym.sym);
+        KeyboardEvent kbe((Key)event->key.keysym.sym);
         for (std::list<KeyboardEventListener *>::iterator it = keyboardListeners.begin(); it != keyboardListeners.end(); ++it)
         {
             (*it)->KeyReleased(kbe);
@@ -75,7 +75,7 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
     case SDL_MOUSEBUTTONDOWN:
     {
         PointerButton pb;
-        switch (event.button.button)
+        switch (event->button.button)
         {
         case SDL_BUTTON_LEFT:
             pb = PB_PRIMARY;
@@ -89,7 +89,7 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
         default:
             return;
         }
-        PointerButtonEvent pbe(pb, event.button.x / video->GetScaling(), event.button.y / video->GetScaling());
+        PointerButtonEvent pbe(pb, event->button.x / video->GetScaling(), event->button.y / video->GetScaling());
         for (std::list<PointerButtonEventListener *>::iterator it = pointerButtonListeners.begin(); it != pointerButtonListeners.end(); ++it)
         {
             (*it)->PointerButtonPressed(pbe);
@@ -99,7 +99,7 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
     case SDL_MOUSEBUTTONUP:
     {
         PointerButton pb;
-        switch (event.button.button)
+        switch (event->button.button)
         {
         case SDL_BUTTON_LEFT:
             pb = PB_PRIMARY;
@@ -113,7 +113,7 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
         default:
             return;
         }
-        PointerButtonEvent pbe(pb, event.button.x / video->GetScaling(), event.button.y / video->GetScaling());
+        PointerButtonEvent pbe(pb, event->button.x / video->GetScaling(), event->button.y / video->GetScaling());
         for (std::list<PointerButtonEventListener *>::iterator it = pointerButtonListeners.begin(); it != pointerButtonListeners.end(); ++it)
         {
             (*it)->PointerButtonReleased(pbe);
@@ -122,7 +122,7 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
     break;
     case SDL_MOUSEMOTION:
     {
-        PointerMotionEvent pme(event.button.x / video->GetScaling(), event.button.y / video->GetScaling());
+        PointerMotionEvent pme(event->button.x / video->GetScaling(), event->button.y / video->GetScaling());
         for (std::list<PointerMotionEventListener *>::iterator it = pointerMotionListeners.begin(); it != pointerMotionListeners.end(); ++it)
         {
             (*it)->PointerMoved(pme);
@@ -132,8 +132,8 @@ SDL_Toolkit::HandleEvent(SDL_Event& event)
     case SDL_USEREVENT:
     {
         // timer event
-        clock->CancelTimer((unsigned long)event.user.data1);
-        TimerEvent te((unsigned long)event.user.data1);
+        clock->CancelTimer((unsigned long)event->user.data1);
+        TimerEvent te((unsigned long)event->user.data1);
         for (std::list<TimerEventListener *>::iterator it = timerListeners.begin(); it != timerListeners.end(); ++it)
         {
             (*it)->TimerExpired(te);
@@ -151,7 +151,7 @@ SDL_Toolkit::PollEvents()
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
-        HandleEvent(event);
+        HandleEvent(&event);
     }
 }
 
@@ -181,7 +181,7 @@ SDL_Toolkit::WaitEvents()
     SDL_Event event;
     if (SDL_WaitEvent(&event))
     {
-        HandleEvent(event);
+        HandleEvent(&event);
     }
 }
 
