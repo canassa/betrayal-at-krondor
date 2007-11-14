@@ -246,16 +246,16 @@ TestApplication::KeyPressed(const KeyboardEvent &kbe)
 {
     switch (kbe.GetKey())
     {
-    case KEY_ESCAPE:
-    case KEY_RETURN:
-    case KEY_SPACE:
-        MediaToolkit::GetInstance()->TerminateEventLoop();
-        break;
-    case KEY_F11:
-        MediaToolkit::GetInstance()->GetVideo()->SaveScreenShot("screenshot.bmp");
-        break;
-    default:
-        break;
+        case KEY_ESCAPE:
+        case KEY_RETURN:
+        case KEY_SPACE:
+            MediaToolkit::GetInstance()->TerminateEventLoop();
+            break;
+        case KEY_F11:
+            MediaToolkit::GetInstance()->GetVideo()->SaveScreenShot("screenshot.bmp");
+            break;
+        default:
+            break;
     }
 }
 
@@ -264,8 +264,8 @@ TestApplication::KeyReleased(const KeyboardEvent &kbe)
 {
     switch (kbe.GetKey())
     {
-    default:
-        break;
+        default:
+            break;
     }
 }
 

@@ -124,14 +124,14 @@ Dialog::PointerButtonPressed(const PointerButtonEvent& pbe)
     {
         switch (pbe.GetButton())
         {
-        case PB_PRIMARY:
-            window->LeftClickWidget(true, pbe.GetXPos(), pbe.GetYPos());
-            break;
-        case PB_SECONDARY:
-            window->RightClickWidget(true, pbe.GetXPos(), pbe.GetYPos());
-            break;
-        default:
-            break;
+            case PB_PRIMARY:
+                window->LeftClickWidget(true, pbe.GetXPos(), pbe.GetYPos());
+                break;
+            case PB_SECONDARY:
+                window->RightClickWidget(true, pbe.GetXPos(), pbe.GetYPos());
+                break;
+            default:
+                break;
         }
     }
     window->Draw();
@@ -142,14 +142,14 @@ Dialog::PointerButtonReleased(const PointerButtonEvent& pbe)
 {
     switch (pbe.GetButton())
     {
-    case PB_PRIMARY:
-        window->LeftClickWidget(false, pbe.GetXPos(), pbe.GetYPos());
-        break;
-    case PB_SECONDARY:
-        window->RightClickWidget(false, pbe.GetXPos(), pbe.GetYPos());
-        break;
-    default:
-        break;
+        case PB_PRIMARY:
+            window->LeftClickWidget(false, pbe.GetXPos(), pbe.GetYPos());
+            break;
+        case PB_SECONDARY:
+            window->RightClickWidget(false, pbe.GetXPos(), pbe.GetYPos());
+            break;
+        default:
+            break;
     }
     window->Draw();
 }
@@ -193,31 +193,31 @@ GameDialog::KeyPressed(const KeyboardEvent& kbe)
     {
         switch (kbe.GetKey())
         {
-        case KEY_ESCAPE:
-            action = ACT_ESCAPE;
-            running = false;
-            break;
-        case KEY_TAB:
-            window->SelectNextWidget();
-            break;
-        case KEY_UP:
-            action = ACT_UP;
-            running = false;
-            break;
-        case KEY_DOWN:
-            action = ACT_DOWN;
-            running = false;
-            break;
-        case KEY_LEFT:
-            action = ACT_LEFT;
-            running = false;
-            break;
-        case KEY_RIGHT:
-            action = ACT_RIGHT;
-            running = false;
-            break;
-        default:
-            break;
+            case KEY_ESCAPE:
+                action = ACT_ESCAPE;
+                running = false;
+                break;
+            case KEY_TAB:
+                window->SelectNextWidget();
+                break;
+            case KEY_UP:
+                action = ACT_UP;
+                running = false;
+                break;
+            case KEY_DOWN:
+                action = ACT_DOWN;
+                running = false;
+                break;
+            case KEY_LEFT:
+                action = ACT_LEFT;
+                running = false;
+                break;
+            case KEY_RIGHT:
+                action = ACT_RIGHT;
+                running = false;
+                break;
+            default:
+                break;
         }
     }
     window->Draw();
@@ -228,8 +228,8 @@ GameDialog::KeyReleased(const KeyboardEvent& kbe)
 {
     switch (kbe.GetKey())
     {
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -248,23 +248,23 @@ OptionsDialog::KeyPressed(const KeyboardEvent& kbe)
     {
         switch (kbe.GetKey())
         {
-        case KEY_ESCAPE:
-            action = ACT_ESCAPE;
-            running = false;
-            break;
-        case KEY_DOWN:
-        case KEY_TAB:
-            window->SelectNextWidget();
-            break;
-        case KEY_UP:
-            window->SelectPreviousWidget();
-            break;
-        case KEY_RETURN:
-        case KEY_SPACE:
-            window->LeftClickWidget(true);
-            break;
-        default:
-            break;
+            case KEY_ESCAPE:
+                action = ACT_ESCAPE;
+                running = false;
+                break;
+            case KEY_DOWN:
+            case KEY_TAB:
+                window->SelectNextWidget();
+                break;
+            case KEY_UP:
+                window->SelectPreviousWidget();
+                break;
+            case KEY_RETURN:
+            case KEY_SPACE:
+                window->LeftClickWidget(true);
+                break;
+            default:
+                break;
         }
     }
     window->Draw();

@@ -30,11 +30,11 @@
 #include "Palette.h"
 
 class Dialog
-            : public ActionEventListener
-            , public PointerButtonEventListener
-            , public KeyboardEventListener
-            , public DragEventListener
-            , public Observer
+        : public ActionEventListener
+        , public PointerButtonEventListener
+        , public KeyboardEventListener
+        , public DragEventListener
+        , public Observer
 {
 protected:
     DialogWindow *window;
@@ -49,15 +49,13 @@ public:
     int Execute();
     void Update();
     void ActionPerformed ( const ActionEvent& ae );
-    virtual void KeyPressed ( const KeyboardEvent& kbe ) = 0;
-    virtual void KeyReleased ( const KeyboardEvent& kbe ) = 0;
     void PointerButtonPressed ( const PointerButtonEvent& pbe );
     void PointerButtonReleased ( const PointerButtonEvent& pbe );
     void PointerDragged ( const DragEvent &de );
 };
 
 class GameDialog
-            : public Dialog
+        : public Dialog
 {
 public:
     GameDialog ( Palette *pal, DialogWindow *dialogwin );
@@ -67,7 +65,7 @@ public:
 };
 
 class OptionsDialog
-            : public Dialog
+        : public Dialog
 {
 public:
     OptionsDialog ( Palette *pal, DialogWindow *dialogwin );

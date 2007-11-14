@@ -216,21 +216,21 @@ GameApplication::KeyPressed(const KeyboardEvent& kbe)
 {
     switch (kbe.GetKey())
     {
-    case KEY_F11:
-    {
-        screenSaveCount++;
-        std::stringstream filenameStream;
-        filenameStream << Directories::GetInstance()->GetCapturePath();
-        filenameStream << "xbak_" << std::setw(3) << std::setfill('0') << screenSaveCount << ".bmp";
-        MediaToolkit::GetInstance()->GetVideo()->SaveScreenShot(filenameStream.str());
-    }
-    break;
-    case KEY_F12:
-        inputGrabbed = !inputGrabbed;
-        MediaToolkit::GetInstance()->GetVideo()->GrabInput(inputGrabbed);
+        case KEY_F11:
+        {
+            screenSaveCount++;
+            std::stringstream filenameStream;
+            filenameStream << Directories::GetInstance()->GetCapturePath();
+            filenameStream << "xbak_" << std::setw(3) << std::setfill('0') << screenSaveCount << ".bmp";
+            MediaToolkit::GetInstance()->GetVideo()->SaveScreenShot(filenameStream.str());
+        }
         break;
-    default:
-        break;
+        case KEY_F12:
+            inputGrabbed = !inputGrabbed;
+            MediaToolkit::GetInstance()->GetVideo()->GrabInput(inputGrabbed);
+            break;
+        default:
+            break;
     }
 }
 
@@ -239,8 +239,8 @@ GameApplication::KeyReleased(const KeyboardEvent& kbe)
 {
     switch (kbe.GetKey())
     {
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -249,23 +249,23 @@ GameApplication::PointerButtonPressed(const PointerButtonEvent& pbe)
 {
     switch (pbe.GetButton())
     {
-    case PB_PRIMARY:
-    case PB_SECONDARY:
-        if (!inputGrabbed)
-        {
-            inputGrabbed = true;
-            MediaToolkit::GetInstance()->GetVideo()->GrabInput(true);
-        }
-        break;
-    case PB_TERTIARY:
-        if (inputGrabbed)
-        {
-            inputGrabbed = false;
-            MediaToolkit::GetInstance()->GetVideo()->GrabInput(false);
-        }
-        break;
-    default:
-        break;
+        case PB_PRIMARY:
+        case PB_SECONDARY:
+            if (!inputGrabbed)
+            {
+                inputGrabbed = true;
+                MediaToolkit::GetInstance()->GetVideo()->GrabInput(true);
+            }
+            break;
+        case PB_TERTIARY:
+            if (inputGrabbed)
+            {
+                inputGrabbed = false;
+                MediaToolkit::GetInstance()->GetVideo()->GrabInput(false);
+            }
+            break;
+        default:
+            break;
     }
 }
 
@@ -274,7 +274,7 @@ GameApplication::PointerButtonReleased(const PointerButtonEvent& pbe)
 {
     switch (pbe.GetButton())
     {
-    default:
-        break;
+        default:
+            break;
     }
 }

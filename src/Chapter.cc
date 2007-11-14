@@ -182,13 +182,13 @@ Chapter::KeyPressed(const KeyboardEvent &kbe)
 {
     switch (kbe.GetKey())
     {
-    case KEY_ESCAPE:
-    case KEY_RETURN:
-    case KEY_SPACE:
-        delayed = false;
-        break;
-    default:
-        break;
+        case KEY_ESCAPE:
+        case KEY_RETURN:
+        case KEY_SPACE:
+            delayed = false;
+            break;
+        default:
+            break;
     }
 }
 
@@ -197,8 +197,8 @@ Chapter::KeyReleased(const KeyboardEvent &kbe)
 {
     switch (kbe.GetKey())
     {
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -207,11 +207,11 @@ Chapter::PointerButtonPressed(const PointerButtonEvent &pbe)
 {
     switch (pbe.GetButton())
     {
-    case PB_PRIMARY:
-        delayed = false;
-        break;
-    default:
-        break;
+        case PB_PRIMARY:
+            delayed = false;
+            break;
+        default:
+            break;
     }
 }
 
@@ -220,8 +220,8 @@ Chapter::PointerButtonReleased(const PointerButtonEvent &pbe)
 {
     switch (pbe.GetButton())
     {
-    default:
-        break;
+        default:
+            break;
     }
 }
 

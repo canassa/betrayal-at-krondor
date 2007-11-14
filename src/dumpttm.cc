@@ -57,10 +57,10 @@ int main(int argc, char *argv[])
             switch (mc[i]->code)
             {
             case 0x0020:
-                printf(" save screen");
+                printf(" save background");
                 break;
             case 0x0080:
-                printf(" draw saved screen");
+                printf(" draw background");
                 break;
             case 0x00c0:
                 break;
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
             case 0x0510:
                 break;
             case 0x0ff0:
-                printf(" end of page");
+                printf(" update");
                 break;
             case 0x1020:
                 printf(" delay (delay)");

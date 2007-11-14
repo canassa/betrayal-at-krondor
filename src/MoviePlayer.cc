@@ -382,13 +382,13 @@ MoviePlayer::KeyPressed(const KeyboardEvent& kbe)
 {
     switch (kbe.GetKey())
     {
-    case KEY_ESCAPE:
-    case KEY_RETURN:
-    case KEY_SPACE:
-        playing = false;
-        break;
-    default:
-        break;
+        case KEY_ESCAPE:
+        case KEY_RETURN:
+        case KEY_SPACE:
+            playing = false;
+            break;
+        default:
+            break;
     }
 }
 
@@ -397,8 +397,8 @@ MoviePlayer::KeyReleased(const KeyboardEvent& kbe)
 {
     switch (kbe.GetKey())
     {
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -407,11 +407,11 @@ MoviePlayer::PointerButtonPressed(const PointerButtonEvent& pbe)
 {
     switch (pbe.GetButton())
     {
-    case PB_PRIMARY:
-        playing = false;
-        break;
-    default:
-        break;
+        case PB_PRIMARY:
+            playing = false;
+            break;
+        default:
+            break;
     }
 }
 
@@ -420,8 +420,8 @@ MoviePlayer::PointerButtonReleased(const PointerButtonEvent& pbe)
 {
     switch (pbe.GetButton())
     {
-    default:
-        break;
+        default:
+            break;
     }
 }
 
