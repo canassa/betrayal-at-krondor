@@ -32,10 +32,10 @@
 
 #include <string>
 
-static const unsigned int VIDEO_WIDTH  = 320;
-static const unsigned int VIDEO_HEIGHT = 200;
-static const unsigned int VIDEO_COLORS = 256;
-static const unsigned int VIDEO_BPP    = 8;
+static const int VIDEO_WIDTH  = 320;
+static const int VIDEO_HEIGHT = 200;
+static const int VIDEO_COLORS = 256;
+static const int VIDEO_BPP    = 8;
 
 #ifdef PACKAGE_STRING
 static const char WINDOW_TITLE[] = PACKAGE_STRING;

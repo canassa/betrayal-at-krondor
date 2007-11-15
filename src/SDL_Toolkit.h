@@ -28,10 +28,16 @@
 #include "SDL.h"
 
 class SDL_Toolkit
-            : public MediaToolkit
+    : public MediaToolkit
 {
 private:
+    int xPos;
+    int yPos;
+    int xMove;
+    int yMove;
+    SDL_Joystick *joystick;
     void HandleEvent ( SDL_Event *event );
+    void UpdatePointer();
 public:
     SDL_Toolkit();
     ~SDL_Toolkit();
