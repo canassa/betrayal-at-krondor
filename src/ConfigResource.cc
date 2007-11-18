@@ -48,17 +48,17 @@ static const unsigned int PREF_SOUND_MASK        = 0x01;
 static const unsigned int PREF_MUSIC_MASK        = 0x02;
 static const unsigned int PREF_COMBATMUSIC_MASK  = 0x04;
 static const unsigned int PREF_INTRODUCTION_MASK = 0x08;
+static const unsigned int PREF_CD_MUSIC_MASK     = 0x10;
 
 void
 ConfigResource::Load(FileBuffer *buffer)
 {
+    if (!prefs)
+    {
+        prefs = new Preferences();
+    }
     try
     {
-        if (prefs)
-        {
-            delete prefs;
-        }
-        prefs = new Preferences();
         prefs->SetStepSize((StepTurnSize)buffer->GetUint8());
         prefs->SetTurnSize((StepTurnSize)buffer->GetUint8());
         prefs->SetDetail((LevelOfDetail)buffer->GetUint8());
@@ -68,6 +68,7 @@ ConfigResource::Load(FileBuffer *buffer)
         prefs->SetMusic(flags & PREF_MUSIC_MASK);
         prefs->SetCombatMusic(flags & PREF_COMBATMUSIC_MASK);
         prefs->SetIntroduction(flags & PREF_INTRODUCTION_MASK);
+        prefs->SetCdMusic(flags & PREF_CD_MUSIC_MASK);
     }
     catch (Exception &e)
     {

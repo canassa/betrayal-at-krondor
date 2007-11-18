@@ -71,7 +71,7 @@ FileManager::LoadConfig(const std::string &name)
     }
     catch (Exception &e)
     {
-        e.Print("FileManager::SaveConfig");
+        e.Print("FileManager::LoadConfig");
         throw;
     }
     return 0;

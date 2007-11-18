@@ -61,7 +61,17 @@ GameApplication::GameApplication()
     media->GetVideo()->Refresh();
 
     config = new ConfigResource;
-    FileManager::GetInstance()->Load(config, "krondor.cfg");
+    if (FileManager::GetInstance()->ConfigExists("krondor.cfg"))
+    {
+        FileManager::GetInstance()->Load(config, "krondor.cfg");
+    }
+    else
+    {
+        Preferences *prefs = new Preferences();
+        prefs->SetDefaults();
+        config->SetPreferences(prefs);
+        FileManager::GetInstance()->Save(config, "krondor.cfg");
+    }
     game = new GameResource;
     PointerManager::GetInstance()->AddPointer("POINTER.BMX");
     PointerManager::GetInstance()->AddPointer("POINTERG.BMX");
