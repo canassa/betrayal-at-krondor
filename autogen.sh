@@ -1,4 +1,5 @@
 #!/bin/sh
+rm -rf autom4te.cache
 echo "Running aclocal"
 aclocal
 echo "Running autoheader"
