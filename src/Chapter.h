@@ -42,7 +42,7 @@ private:
     void ShowMap();
 public:
     Chapter ( const int n );
-    ~Chapter();
+    virtual ~Chapter();
     int Get() const;
     Zone& GetZone();
     void Next();

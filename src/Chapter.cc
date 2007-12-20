@@ -32,11 +32,18 @@ Chapter::Chapter(const int n)
         , delayed(false)
         , zone()
 {
+    MediaToolkit::GetInstance()->AddKeyboardListener(this);
+    MediaToolkit::GetInstance()->AddPointerButtonListener(this);
+    MediaToolkit::GetInstance()->AddTimerListener(this);
     zone.Load(number);
 }
 
 Chapter::~Chapter()
-{}
+{
+    MediaToolkit::GetInstance()->RemoveTimerListener(this);
+    MediaToolkit::GetInstance()->RemovePointerButtonListener(this);
+    MediaToolkit::GetInstance()->RemoveKeyboardListener(this);
+}
 
 void
 Chapter::PlayIntro()
@@ -156,10 +163,6 @@ Chapter::Start(const bool maponly)
 {
     try
     {
-        MediaToolkit* media = MediaToolkit::GetInstance();
-        media->AddKeyboardListener(this);
-        media->AddPointerButtonListener(this);
-        media->AddTimerListener(this);
         if (!maponly)
         {
             PlayIntro();
@@ -167,9 +170,6 @@ Chapter::Start(const bool maponly)
             PlayScene(1);
         }
         ShowMap();
-        media->RemoveTimerListener(this);
-        media->RemovePointerButtonListener(this);
-        media->RemoveKeyboardListener(this);
     }
     catch (Exception &e)
     {
