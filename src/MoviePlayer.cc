@@ -50,10 +50,18 @@ static const unsigned int LOAD_IMAGE         = 0xf020;
 static const unsigned int LOAD_PALETTE       = 0xf050;
 
 MoviePlayer::MoviePlayer()
-{}
+{
+    MediaToolkit::GetInstance()->AddKeyboardListener(this);
+    MediaToolkit::GetInstance()->AddPointerButtonListener(this);
+    MediaToolkit::GetInstance()->AddTimerListener(this);
+}
 
 MoviePlayer::~MoviePlayer()
-{}
+{
+    MediaToolkit::GetInstance()->RemoveKeyboardListener(this);
+    MediaToolkit::GetInstance()->RemovePointerButtonListener(this);
+    MediaToolkit::GetInstance()->RemoveTimerListener(this);
+}
 
 void
 MoviePlayer::Play(std::vector<MovieChunk *> *movie, const bool repeat)
@@ -84,28 +92,21 @@ MoviePlayer::Play(std::vector<MovieChunk *> *movie, const bool repeat)
         paletteActivated = false;
 
         PointerManager::GetInstance()->GetCurrentPointer()->SetVisible(false);
-        MediaToolkit* media = MediaToolkit::GetInstance();
-        media->AddKeyboardListener(this);
-        media->AddPointerButtonListener(this);
-        media->AddTimerListener(this);
 
         while (playing)
         {
-            PlayChunk(media);
+            PlayChunk(MediaToolkit::GetInstance());
             if (playing)
             {
-                media->WaitEvents();
+                MediaToolkit::GetInstance()->WaitEvents();
             }
         }
         if (delayed)
         {
-            media->GetClock()->CancelTimer(TMR_MOVIE_PLAYER);
+            MediaToolkit::GetInstance()->GetClock()->CancelTimer(TMR_MOVIE_PLAYER);
         }
         paletteSlot[currPalette]->GetPalette()->FadeOut(0, VIDEO_COLORS, 64, 5);
 
-        media->RemoveKeyboardListener(this);
-        media->RemovePointerButtonListener(this);
-        media->RemoveTimerListener(this);
         PointerManager::GetInstance()->GetCurrentPointer()->SetVisible(true);
 
         if (backgroundImage)
