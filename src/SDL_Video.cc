@@ -52,7 +52,7 @@ SDL_Video::CreateScreen(const int w, const int h)
     unsigned int flags = SDL_ANYFORMAT;
     if (info->hw_available)
     {
-        flags |= SDL_HWSURFACE;
+        flags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
     }
     else
     {
@@ -63,7 +63,7 @@ SDL_Video::CreateScreen(const int w, const int h)
     {
         throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
     }
-    disp = SDL_SetVideoMode(width, height, bpp, flags);
+    disp = SDL_SetVideoMode(width, height, 0, flags);
     if (!disp)
     {
         throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
@@ -548,7 +548,9 @@ SDL_Video::Refresh()
         }
     }
     SDL_UpdateRect(stretched, 0, 0, 0, 0);
-    SDL_BlitSurface(stretched, 0, disp, 0);
+    SDL_Surface *tmp = SDL_DisplayFormat(stretched);
+    SDL_BlitSurface(tmp, 0, disp, 0);
+    SDL_FreeSurface(tmp);
     SDL_Flip(disp);
 }
 
