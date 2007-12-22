@@ -197,6 +197,12 @@ Vector3D::Vector3D(const Vector3D &p)
         , zCoord(p.zCoord)
 {}
 
+Vector3D::Vector3D(const Vector2D &p)
+    : xCoord(p.GetX())
+    , yCoord(p.GetY())
+    , zCoord(0)
+{}
+
 Vector3D::~Vector3D()
 {}
 
@@ -228,6 +234,31 @@ Vector3D::operator-=(const Vector3D &p)
 }
 
 Vector3D&
+Vector3D::operator=(const Vector2D &p)
+{
+    xCoord = p.GetX();
+    yCoord = p.GetY();
+    zCoord = 0;
+    return *this;
+}
+
+Vector3D&
+Vector3D::operator+=(const Vector2D &p)
+{
+    xCoord += p.GetX();
+    yCoord += p.GetY();
+    return *this;
+}
+
+Vector3D&
+Vector3D::operator-=(const Vector2D &p)
+{
+    xCoord -= p.GetX();
+    yCoord -= p.GetY();
+    return *this;
+}
+
+Vector3D&
 Vector3D::operator*=(const int f)
 {
     xCoord *= f;
@@ -255,6 +286,18 @@ Vector3D
 Vector3D::operator-(const Vector3D &p)
 {
     return Vector3D(xCoord - p.xCoord, yCoord - p.yCoord, zCoord - p.zCoord);
+}
+
+Vector3D
+Vector3D::operator+(const Vector2D &p)
+{
+    return Vector3D(xCoord + p.GetX(), yCoord + p.GetY(), zCoord);
+}
+
+Vector3D
+Vector3D::operator-(const Vector2D &p)
+{
+    return Vector3D(xCoord - p.GetX(), yCoord - p.GetY(), zCoord);
 }
 
 Vector3D
