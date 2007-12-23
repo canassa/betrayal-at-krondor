@@ -17,25 +17,39 @@
  * Copyright (C) 2007 Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef GENERIC_OBJECT_H
-#define GENERIC_OBJECT_H
+#ifndef VERTEX_H
+#define VERTEX_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "Vertex.h"
+#include "Geometry.h"
 
-class GenericObject
+static const int ANGLE_OF_VIEW = 12;
+static const unsigned int VIEW_DISTANCE = 32000;
+
+static const int TERRAIN_HEIGHT = 38;
+
+class Vertex
 {
+protected:
+    Vector3D pos;
+    Vector3D relpos;
+    int angle;
+    unsigned int distance;
+    float distanceFactor;
+    Vector2D ToFirstPerson ( int w, int h, int heading );
+    Vector2D ToTopDown ( int w, int h );
 public:
-    GenericObject();
-    virtual ~GenericObject();
-    virtual void CalculateRelativePosition ( const Vector2D &p ) = 0;
-    virtual int GetAngle() = 0;
-    virtual unsigned int GetDistance() = 0;
-    virtual void DrawFirstPerson ( const int x, const int y, const int w, const int h, const int heading ) = 0;
-    virtual void DrawTopDown() = 0;
+    Vertex ( const Vector3D &p );
+    virtual ~Vertex();
+    Vector3D& GetPosition();
+    Vector3D& GetRelativePosition();
+    int GetAngle() const;
+    unsigned int GetDistance() const;
+    float GetDistanceFactor() const;
+    void CalculateRelativePosition ( const Vector2D &p );
 };
 
 #endif

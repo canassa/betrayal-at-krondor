@@ -102,6 +102,7 @@ noinst_HEADERS = AnimationResource.h \
                  TextWidget.h \
                  TileDataResource.h \
                  TileWorldResource.h \
+                 Vertex.h \
                  Video.h \
                  Widget.h \
                  WidgetFactory.h \
@@ -145,7 +146,9 @@ libbase_a_SOURCES = BasicFile.cc \
                     Geometry.h \
                     Observer.h \
                     Subject.cc \
-                    Subject.h
+                    Subject.h \
+                    Vertex.cc \
+                    Vertex.h
 libgame_a_SOURCES = Camera.cc \
                     Camera.h \
                     Chapter.cc \

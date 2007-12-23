@@ -19,8 +19,8 @@
 
 #include "MeshedObject.h"
 
-MeshedObject::MeshedObject(const Vector2D &p)
-        : GenericObject(p)
+MeshedObject::MeshedObject()
+    : GenericObject()
 {}
 
 MeshedObject::~MeshedObject()

@@ -31,10 +31,14 @@ class SpritedObject
             : public GenericObject
 {
 private:
+    Vertex vertex;
     Image *sprite;
 public:
     SpritedObject ( const Vector2D &p, Image *img );
     ~SpritedObject();
+    void CalculateRelativePosition ( const Vector2D &p );
+    int GetAngle();
+    unsigned int GetDistance();
     void DrawFirstPerson ( const int x, const int y, const int w, const int h, const int heading );
     void DrawTopDown();
 };

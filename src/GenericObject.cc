@@ -19,44 +19,8 @@
 
 #include "GenericObject.h"
 
-GenericObject::GenericObject(const Vector2D &p)
-        : pos(p)
-        , relpos(0, 0)
-        , angle(0)
-        , distance(0)
+GenericObject::GenericObject()
 {}
 
 GenericObject::~GenericObject()
 {}
-
-Vector2D&
-GenericObject::GetPosition()
-{
-    return pos;
-}
-
-Vector2D&
-GenericObject::GetRelativePosition()
-{
-    return relpos;
-}
-
-int
-GenericObject::GetAngle() const
-{
-    return angle;
-}
-
-unsigned int
-GenericObject::GetDistance() const
-{
-    return distance;
-}
-
-void
-GenericObject::CalculateRelativePosition(const Vector2D &p)
-{
-    relpos = pos - p;
-    angle = (ANGLE_SIZE / 4 - relpos.GetTheta()) & ANGLE_MASK;
-    distance = relpos.GetRho();
-}
