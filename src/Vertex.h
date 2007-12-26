@@ -42,6 +42,7 @@ protected:
     Vector2D ToFirstPerson ( int w, int h, int heading );
     Vector2D ToTopDown ( int w, int h );
 public:
+    Vertex();
     Vertex ( const Vector3D &p );
     virtual ~Vertex();
     Vector3D& GetPosition();

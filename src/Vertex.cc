@@ -19,6 +19,14 @@
 
 #include "Vertex.h"
 
+Vertex::Vertex()
+        : pos(0, 0, 0)
+        , relpos(0, 0, 0)
+        , angle(0)
+        , distance(0)
+        , distanceFactor(1.0)
+{}
+
 Vertex::Vertex(const Vector3D &p)
         : pos(p)
         , relpos(0, 0, 0)

@@ -28,14 +28,14 @@
 
 class GenericObject
 {
-public:
-    GenericObject();
-    virtual ~GenericObject();
-    virtual void CalculateRelativePosition ( const Vector2D &p ) = 0;
-    virtual int GetAngle() = 0;
-    virtual unsigned int GetDistance() = 0;
-    virtual void DrawFirstPerson ( const int x, const int y, const int w, const int h, const int heading ) = 0;
-    virtual void DrawTopDown() = 0;
+    public:
+        GenericObject();
+        virtual ~GenericObject();
+        virtual void CalculateRelativePosition ( const Vector2D &p ) = 0;
+        virtual int GetAngle() = 0;
+        virtual unsigned int GetDistance() = 0;
+        virtual void DrawFirstPerson ( const int x, const int y, const int w, const int h, const int heading ) = 0;
+        virtual void DrawTopDown() = 0;
 };
 
 #endif

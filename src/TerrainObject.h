@@ -27,13 +27,15 @@
 #include "GenericObject.h"
 
 class TerrainObject
-            : public GenericObject
+    : public GenericObject
 {
-public:
-    TerrainObject();
-    ~TerrainObject();
-    void DrawFirstPerson ( const int x, const int y, const int w, const int h, const int heading );
-    void DrawTopDown();
+    private:
+        Vertex vertices[4];
+    public:
+        TerrainObject();
+        ~TerrainObject();
+        void DrawFirstPerson ( const int x, const int y, const int w, const int h, const int heading );
+        void DrawTopDown();
 };
 
 #endif

@@ -29,6 +29,8 @@
 
 #include "Camera.h"
 #include "GenericObject.h"
+#include "SpritedObject.h"
+#include "TerrainObject.h"
 #include "Zone.h"
 
 class Scene
@@ -36,7 +38,8 @@ class Scene
 private:
     Zone& zone;
     std::multimap<const Vector2D, GenericObject *> objects;
-    std::multimap<const unsigned int, GenericObject *> zBuffer;
+    std::multimap<const unsigned int, SpritedObject *> spriteZBuffer;
+    std::multimap<const unsigned int, TerrainObject *> terrainZBuffer;
     void FillZBuffer ( Camera *cam );
     void DrawHorizon ( const int x, const int y, const int w, const int h, const int heading );
     void DrawGround ( const int x, const int y, const int w, const int h, Camera *cam );

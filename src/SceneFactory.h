@@ -28,11 +28,11 @@
 
 class SceneFactory
 {
-private:
-public:
-    SceneFactory();
-    ~SceneFactory();
-    Scene * CreateScene ( Zone& zone );
+    private:
+    public:
+        SceneFactory();
+        ~SceneFactory();
+        Scene * CreateScene ( Zone& zone );
 };
 
 #endif

@@ -22,13 +22,15 @@
 Scene::Scene(Zone& z)
         : zone(z)
         , objects()
-        , zBuffer()
+        , spriteZBuffer()
+        , terrainZBuffer()
 {}
 
 Scene::~Scene()
 {
     objects.clear();
-    zBuffer.clear();
+    spriteZBuffer.clear();
+    terrainZBuffer.clear();
 }
 
 void
@@ -40,7 +42,8 @@ Scene::AddObject(const Vector2D &cell, GenericObject *obj)
 void
 Scene::FillZBuffer(Camera *cam)
 {
-    zBuffer.clear();
+    spriteZBuffer.clear();
+    terrainZBuffer.clear();
     Vector2D cell = cam->GetPosition().GetCell();
     int heading = cam->GetHeading();
     for (std::multimap<const Vector2D, GenericObject *>::iterator it = objects.lower_bound(cell); it != objects.upper_bound(cell); it++)
@@ -53,7 +56,16 @@ Scene::FillZBuffer(Camera *cam)
                 ((((int)(ANGLE_SIZE - ANGLE_OF_VIEW) <= angle) || (angle <= (int)ANGLE_OF_VIEW)) ||
                  (((WEST < angle) || (angle < EAST)) && (abs((int)((float)distance * orient.GetSin())) < 128))))
         {
-            zBuffer.insert(std::pair<int, GenericObject *>(distance, (*it).second));
+            SpritedObject* sprite = dynamic_cast<SpritedObject *>((*it).second);
+            if (sprite != 0)
+            {
+                spriteZBuffer.insert(std::pair<int, SpritedObject *>(distance, sprite));
+            }
+            TerrainObject* terrain = dynamic_cast<TerrainObject *>((*it).second);
+            if (terrain != 0)
+            {
+                terrainZBuffer.insert(std::pair<int, TerrainObject *>(distance, terrain));
+            }
         }
     }
 }
@@ -107,7 +119,11 @@ Scene::DrawGround(const int x, const int y, const int w, const int h, Camera *ca
 void
 Scene::DrawZBuffer(const int x, const int y, const int w, const int h, const int heading)
 {
-    for (std::multimap<const unsigned int, GenericObject *>::reverse_iterator it = zBuffer.rbegin(); it != zBuffer.rend(); it++)
+    for (std::multimap<const unsigned int, TerrainObject *>::reverse_iterator it = terrainZBuffer.rbegin(); it != terrainZBuffer.rend(); it++)
+    {
+        (*it).second->DrawFirstPerson(x, y, w, h, heading);
+    }
+    for (std::multimap<const unsigned int, SpritedObject *>::reverse_iterator it = spriteZBuffer.rbegin(); it != spriteZBuffer.rend(); it++)
     {
         (*it).second->DrawFirstPerson(x, y, w, h, heading);
     }

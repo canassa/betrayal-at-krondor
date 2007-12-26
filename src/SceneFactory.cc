@@ -47,30 +47,30 @@ SceneFactory::CreateScene(Zone& zone)
                     GidInfo gid = table->GetGidItem(item.type);
                     switch (dat->objectType)
                     {
-                    case OT_TREE:
-                    case OT_TOMBSTONE:
-                    case OT_SIGN:
-                    case OT_DEADBODY2:
-                    case OT_DIRTPILE:
-                    case OT_FIRE:
-                    case OT_FERN:
-                    case OT_ROCKPILE:
-                    case OT_BUSH1:
-                    case OT_BUSH2:
-                    case OT_BUSH3:
-                    case OT_SLAB:
-                    case OT_STUMP:
-                    case OT_WELL:
-                    case OT_ENGINE:
-                    case OT_SCARECROW:
-                    case OT_TRAP:
-                    case OT_COLUMN:
-                    case OT_BAG:
-                    case OT_LADDER:
-                        scene->AddObject(Vector2D(x, y), new SpritedObject(Vector2D(item.xloc, item.yloc), zone.GetSprite(dat->sprite)));
-                        break;
-                    default:
-                        break;
+                        case OT_TREE:
+                        case OT_TOMBSTONE:
+                        case OT_SIGN:
+                        case OT_DEADBODY2:
+                        case OT_DIRTPILE:
+                        case OT_FIRE:
+                        case OT_FERN:
+                        case OT_ROCKPILE:
+                        case OT_BUSH1:
+                        case OT_BUSH2:
+                        case OT_BUSH3:
+                        case OT_SLAB:
+                        case OT_STUMP:
+                        case OT_WELL:
+                        case OT_ENGINE:
+                        case OT_SCARECROW:
+                        case OT_TRAP:
+                        case OT_COLUMN:
+                        case OT_BAG:
+                        case OT_LADDER:
+                            scene->AddObject(Vector2D(x, y), new SpritedObject(Vector2D(item.xloc, item.yloc), zone.GetSprite(dat->sprite)));
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
