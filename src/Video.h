@@ -70,10 +70,12 @@ public:
     virtual void DrawLine ( int x1, int y1, int x2, int y2, const unsigned int c ) = 0;
     virtual void DrawRect ( const int x, const int y, const int w, const int h, const unsigned int c ) = 0;
     virtual void FillRect ( const int x, const int y, const int w, const int h, const unsigned int c ) = 0;
+    virtual void FillRect ( const int x, const int y, const int w, const int h,
+                            uint8_t *p, const int xx, const int yy, const int ww ) = 0;
     virtual void DrawPolygon ( const int *x, const int *y, const unsigned int n, const unsigned int c ) = 0;
     virtual void FillPolygon ( const int *x, const int *y, const unsigned int n, const unsigned int c ) = 0;
-    virtual void DrawCircle ( const int x, const int y, const unsigned int r, const unsigned int c ) = 0;
-    virtual void FillCircle ( const int x, const int y, const unsigned int r, const unsigned int c ) = 0;
+    virtual void FillPolygon ( const int* x, const int* y, const unsigned int n,
+                               uint8_t *p, const int xx, const int yy, const int ww) = 0;
     virtual void ReadImage ( const int x, const int y, const int w, const int h, uint8_t *p ) = 0;
     virtual void DrawImage ( const int x, const int y, const int w, const int h, uint8_t *p ) = 0;
     virtual void DrawImage ( const int x, const int y, const int w, const int h, uint8_t *p, const uint8_t transparant ) = 0;

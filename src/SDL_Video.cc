@@ -44,8 +44,7 @@ SDL_Video::~SDL_Video()
     }
 }
 
-void
-SDL_Video::CreateScreen(const int w, const int h)
+void SDL_Video::CreateScreen(const int w, const int h)
 {
     int width = w * scaling;
     int height = h * scaling;
@@ -86,21 +85,18 @@ SDL_Video::CreateScreen(const int w, const int h)
     }
 }
 
-void
-SDL_Video::Clear()
+void SDL_Video::Clear()
 {
     SDL_FillRect(buffer, 0, 0);
 }
 
-void
-SDL_Video::Clear(int x, int y, int w, int h)
+void SDL_Video::Clear(int x, int y, int w, int h)
 {
     SDL_Rect rect = {x, y, w, h};
     SDL_FillRect(buffer, &rect, 0);
 }
 
-unsigned int
-SDL_Video::GetPixel(const int x, const int y)
+unsigned int SDL_Video::GetPixel(const int x, const int y)
 {
     if ((x >= 0) && (x < buffer->w) && (y >= 0) && (y < buffer->h))
     {
@@ -110,8 +106,7 @@ SDL_Video::GetPixel(const int x, const int y)
     return 0;
 }
 
-void
-SDL_Video::PutPixel(const int x, const int y, const unsigned int c)
+void SDL_Video::PutPixel(const int x, const int y, const unsigned int c)
 {
     if ((x >= 0) && (x < buffer->w) && (y >= 0) && (y < buffer->h))
     {
@@ -120,15 +115,13 @@ SDL_Video::PutPixel(const int x, const int y, const unsigned int c)
     }
 }
 
-void
-SDL_Video::DrawHLine(const int x, const int y, const int w, const unsigned int c)
+void SDL_Video::DrawHLine(const int x, const int y, const int w, const unsigned int c)
 {
     SDL_Rect rect = {x, y, w, 1};
     SDL_FillRect(buffer, &rect, c);
 }
 
-void
-SDL_Video::DrawVLine(const int x, const int y, const int h, const unsigned int c)
+void SDL_Video::DrawVLine(const int x, const int y, const int h, const unsigned int c)
 {
     SDL_Rect rect = {x, y, 1, h};
     SDL_FillRect(buffer, &rect, c);
@@ -136,8 +129,7 @@ SDL_Video::DrawVLine(const int x, const int y, const int h, const unsigned int c
 
 #define swap(a,b) { int h = a; a = b; b = h; }
 
-void
-SDL_Video::DrawLine(int x1, int y1, int x2, int y2, const unsigned int c)
+void SDL_Video::DrawLine(int x1, int y1, int x2, int y2, const unsigned int c)
 {
     // Bresenham's line algorithm
     bool steep = abs(y2 - y1) > abs(x2 - x1);
@@ -183,8 +175,7 @@ SDL_Video::DrawLine(int x1, int y1, int x2, int y2, const unsigned int c)
     }
 }
 
-void
-SDL_Video::DrawRect(const int x, const int y, const int w, const int h, const unsigned int c)
+void SDL_Video::DrawRect(const int x, const int y, const int w, const int h, const unsigned int c)
 {
     SDL_Rect top = {x, y, w, 1};
     SDL_FillRect(buffer, &top, c);
@@ -196,15 +187,27 @@ SDL_Video::DrawRect(const int x, const int y, const int w, const int h, const un
     SDL_FillRect(buffer, &bottom, c);
 }
 
-void
-SDL_Video::FillRect(const int x, const int y, const int w, const int h, const unsigned int c)
+void SDL_Video::FillRect(const int x, const int y, const int w, const int h, const unsigned int c)
 {
     SDL_Rect rect = {x, y, w, h};
     SDL_FillRect(buffer, &rect, c);
 }
 
-void
-SDL_Video::DrawPolygon(const int *x, const int *y, const unsigned int n, const unsigned int c)
+void SDL_Video::FillRect(const int x, const int y, const int w, const int h,
+                         uint8_t *p, const int xx, const int yy, const int ww)
+{
+    p += (yy + y) * ww + xx + x;
+    for (int j = y; j < y + h; j++)
+    {
+        for (int i = x; i < x + w; i++)
+        {
+            PutPixel(i, j, *p++);
+        }
+        p += ww - w;
+    }
+}
+
+void SDL_Video::DrawPolygon(const int *x, const int *y, const unsigned int n, const unsigned int c)
 {
     for (unsigned int i = 1; i < n; i++)
     {
@@ -213,8 +216,7 @@ SDL_Video::DrawPolygon(const int *x, const int *y, const unsigned int n, const u
     DrawLine(x[n-1], y[n-1], x[0], y[0], c);
 }
 
-bool
-SDL_Video::CreateEdge(PolygonEdge &edge, const int x1, const int y1, const int x2, const int y2)
+bool SDL_Video::CreateEdge(PolygonEdge &edge, const int x1, const int y1, const int x2, const int y2)
 {
     if (y1 == y2)
     {
@@ -241,8 +243,7 @@ SDL_Video::CreateEdge(PolygonEdge &edge, const int x1, const int y1, const int x
     }
 }
 
-void
-SDL_Video::SortEdges(PolygonEdge* &edges, const unsigned int n)
+void SDL_Video::SortEdges(PolygonEdge* &edges, const unsigned int n)
 {
     unsigned int m = 1;
     while (m < n)
@@ -264,8 +265,7 @@ SDL_Video::SortEdges(PolygonEdge* &edges, const unsigned int n)
     }
 }
 
-void
-SDL_Video::FillPolygon(const int* x, const int* y, const unsigned int n, const unsigned int c)
+void SDL_Video::FillPolygon(const int* x, const int* y, const unsigned int n, const unsigned int c)
 {
     PolygonEdge *edges = new PolygonEdge[n];
     unsigned int m = 0;
@@ -322,80 +322,66 @@ SDL_Video::FillPolygon(const int* x, const int* y, const unsigned int n, const u
     delete[] edges;
 }
 
-void
-SDL_Video::DrawCircle(const int x, const int y, const unsigned int r, const unsigned int c)
+void SDL_Video::FillPolygon(const int* x, const int* y, const unsigned int n,
+                            uint8_t *p, const int xx, const int yy, const int ww)
 {
-    int xx = 0;
-    int yy = r;
-    int d = (5 - 4 * (int)r) / 4;
-
-    PutPixel(x, y + yy, c);
-    PutPixel(x, y - yy, c);
-    PutPixel(x + yy, y, c);
-    PutPixel(x - yy, y, c);
-
-    while (xx < yy)
+    PolygonEdge *edges = new PolygonEdge[n];
+    unsigned int m = 0;
+    if (CreateEdge(edges[m], x[n-1], y[n-1], x[0], y[0]))
     {
-        xx++;
-        if (d < 0)
+        m++;
+    }
+    for (unsigned int i = 1; i < n; i++)
+    {
+        if (CreateEdge(edges[m], x[i-1], y[i-1], x[i], y[i]))
         {
-            d += 2 * xx + 1;
-        }
-        else
-        {
-            yy--;
-            d += 2 * (xx - yy) + 1;
-        }
-        if (xx == yy)
-        {
-            PutPixel(x + xx, y + yy, c);
-            PutPixel(x - xx, y + yy, c);
-            PutPixel(x + xx, y - yy, c);
-            PutPixel(x - xx, y - yy, c);
-        }
-        else if (xx < yy)
-        {
-            PutPixel(x + xx, y + yy, c);
-            PutPixel(x - xx, y + yy, c);
-            PutPixel(x + xx, y - yy, c);
-            PutPixel(x - xx, y - yy, c);
-            PutPixel(x + yy, y + xx, c);
-            PutPixel(x - yy, y + xx, c);
-            PutPixel(x + yy, y - xx, c);
-            PutPixel(x - yy, y - xx, c);
+            m++;
         }
     }
-}
-
-void
-SDL_Video::FillCircle(const int x, const int y, const unsigned int r, const unsigned int c)
-{
-    int xx = 0;
-    int yy = r;
-    int d = (5 - 4 * (int)r) / 4;
-
-    DrawHLine(x - yy, y, 2 * yy, c);
-
-    while (xx < yy)
+    SortEdges(edges, m);
+    unsigned int l = 0;
+    while (l < m)
     {
-        xx++;
-        if (d < 0)
+        bool draw = false;
+        int x0 = edges[l].x0;
+        int y0 = edges[l].y0;
+        bool isdot = (y0 == edges[l].y1);
+        unsigned int i = l + 1;
+        while ((i < m) && (edges[i].y0 == y0))
         {
-            d += 2 * xx + 1;
+            if (!(isdot && (x0 == edges[i].x0) && (y0 < edges[i].y1)))
+            {
+                draw = !draw;
+            }
+            if (draw)
+            {
+                uint8_t *q = p + (yy + y0) * ww + xx + x0;
+                for (int x1 = x0; x1 < edges[i].x0 + 1; x1++)
+                {
+                    PutPixel(x1, y0, *q++);
+                }
+            }
+            x0 = edges[i].x0;
+            isdot = (y0 == edges[i].y1);
+            i++;
         }
-        else
+        i = l;
+        while ((i < m) && (edges[i].y0 == y0))
         {
-            DrawHLine(x - xx + 1, y + yy, 2 * (xx - 1), c);
-            DrawHLine(x - xx + 1, y - yy, 2 * (xx - 1), c);
-            yy--;
-            d += 2 * (xx - yy) + 1;
+            if (edges[i].y1 > y0)
+            {
+                edges[i].y0++;
+            }
+            edges[i].x0 = edges[i].x1 - (int)(((float)(edges[i].y1 - edges[i].y0) * edges[i].dxdy) - 0.5);
+            i++;
         }
-        if (xx <= yy)
+        SortEdges(edges, m);
+        while ((l < m) && (edges[l].y1 == y0))
         {
-            DrawHLine(x - yy, y + xx, 2 * yy, c);
-            DrawHLine(x - yy, y - xx, 2 * yy, c);
+            l++;
         }
     }
+    delete[] edges;
 }
 
 void
@@ -410,8 +396,7 @@ SDL_Video::ReadImage(const int x, const int y, const int w, const int h, uint8_t
     }
 }
 
-void
-SDL_Video::DrawImage(const int x, const int y, const int w, const int h, uint8_t *p)
+void SDL_Video::DrawImage(const int x, const int y, const int w, const int h, uint8_t *p)
 {
     for (int j = y; j < y + h; j++)
     {
@@ -422,8 +407,7 @@ SDL_Video::DrawImage(const int x, const int y, const int w, const int h, uint8_t
     }
 }
 
-void
-SDL_Video::DrawImage(const int x, const int y, const int w, const int h, uint8_t *p, const uint8_t transparant)
+void SDL_Video::DrawImage(const int x, const int y, const int w, const int h, uint8_t *p, const uint8_t transparant)
 {
     for (int j = y; j < y + h; j++)
     {
@@ -438,9 +422,8 @@ SDL_Video::DrawImage(const int x, const int y, const int w, const int h, uint8_t
     }
 }
 
-void
-SDL_Video::DrawImage(const int x, const int y, const int w, const int,
-                     const int xx, const int yy, const int ww, const int hh, uint8_t *p)
+void SDL_Video::DrawImage(const int x, const int y, const int w, const int,
+                          const int xx, const int yy, const int ww, const int hh, uint8_t *p)
 {
     p += yy * w;
     for (int j = y + yy; j < y + yy + hh; j++)
@@ -455,10 +438,9 @@ SDL_Video::DrawImage(const int x, const int y, const int w, const int,
     }
 }
 
-void
-SDL_Video::DrawImage(const int x, const int y, const int w, const int,
-                     const int xx, const int yy, const int ww, const int hh,
-                     uint8_t *p, const uint8_t transparant)
+void SDL_Video::DrawImage(const int x, const int y, const int w, const int,
+                          const int xx, const int yy, const int ww, const int hh,
+                          uint8_t *p, const uint8_t transparant)
 {
     p += yy * w;
     for (int j = y + yy; j < y + yy + hh; j++)
@@ -476,8 +458,7 @@ SDL_Video::DrawImage(const int x, const int y, const int w, const int,
     }
 }
 
-void
-SDL_Video::DrawGlyph(const int x, const int y, const int w, const int h, const uint8_t c, uint16_t *p)
+void SDL_Video::DrawGlyph(const int x, const int y, const int w, const int h, const uint8_t c, uint16_t *p)
 {
     for (int j = 0; j < h; j++)
     {
@@ -492,8 +473,7 @@ SDL_Video::DrawGlyph(const int x, const int y, const int w, const int h, const u
     }
 }
 
-void
-SDL_Video::DrawGlyphItalic(const int x, const int y, const int w, const int h, const uint8_t c, uint16_t *p)
+void SDL_Video::DrawGlyphItalic(const int x, const int y, const int w, const int h, const uint8_t c, uint16_t *p)
 {
     for (int j = 0; j < h; j++)
     {
@@ -508,8 +488,7 @@ SDL_Video::DrawGlyphItalic(const int x, const int y, const int w, const int h, c
     }
 }
 
-void
-SDL_Video::GetPalette(Color *color, const unsigned int first, const unsigned int n)
+void SDL_Video::GetPalette(Color *color, const unsigned int first, const unsigned int n)
 {
     if (buffer->format->palette)
     {
@@ -517,8 +496,7 @@ SDL_Video::GetPalette(Color *color, const unsigned int first, const unsigned int
     }
 }
 
-void
-SDL_Video::SetPalette(Color *color, const unsigned int first, const unsigned int n)
+void SDL_Video::SetPalette(Color *color, const unsigned int first, const unsigned int n)
 {
     if (buffer->format->palette)
     {
@@ -530,8 +508,7 @@ SDL_Video::SetPalette(Color *color, const unsigned int first, const unsigned int
     }
 }
 
-void
-SDL_Video::Refresh()
+void SDL_Video::Refresh()
 {
     SDL_UpdateRect(buffer, 0, 0, 0, 0);
     for (int y = 0; y < buffer->h; y++)
@@ -555,19 +532,16 @@ SDL_Video::Refresh()
 }
 
 #ifdef DEBUG
-void
-SDL_Video::GrabInput(const bool)
+void SDL_Video::GrabInput(const bool)
 {}
 #else
-void
-SDL_Video::GrabInput(const bool toggle)
+void SDL_Video::GrabInput(const bool toggle)
 {
     SDL_WM_GrabInput(toggle ? SDL_GRAB_ON : SDL_GRAB_OFF);
 }
 #endif
 
-void
-SDL_Video::SaveScreenShot(const std::string& filename)
+void SDL_Video::SaveScreenShot(const std::string& filename)
 {
     SDL_UpdateRect(buffer, 0, 0, 0, 0);
     SDL_SaveBMP(buffer, filename.c_str());

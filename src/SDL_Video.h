@@ -58,10 +58,12 @@ public:
     void DrawLine ( int x1, int y1, int x2, int y2, const unsigned int c );
     void DrawRect ( const int x, const int y, const int w, const int h, const unsigned int c );
     void FillRect ( const int x, const int y, const int w, const int h, const unsigned int c );
+    void FillRect ( const int x, const int y, const int w, const int h,
+                    uint8_t *p, const int xx, const int yy, const int ww );
     void DrawPolygon ( const int *x, const int *y, const unsigned int n, const unsigned int c );
     void FillPolygon ( const int *x, const int *y, const unsigned int n, const unsigned int c );
-    void DrawCircle ( const int x, const int y, const unsigned int r, const unsigned int c );
-    void FillCircle ( const int x, const int y, const unsigned int r, const unsigned int c );
+    void FillPolygon ( const int* x, const int* y, const unsigned int n,
+                       uint8_t *p, const int xx, const int yy, const int ww);
     void ReadImage ( const int x, const int y, const int w, const int h, uint8_t *p );
     void DrawImage ( const int x, const int y, const int w, const int h, uint8_t *p );
     void DrawImage ( const int x, const int y, const int w, const int h, uint8_t *p, const uint8_t transparant );
