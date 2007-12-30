@@ -17,20 +17,39 @@
  * Copyright (C) 2007 Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "MediaToolkit.h"
 #include "Scene.h"
 
 Scene::Scene(Zone& z)
         : zone(z)
+        , video(MediaToolkit::GetInstance()->GetVideo())
+        , horizon(0)
+        , terrainTexture(0)
         , objects()
         , spriteZBuffer()
         , terrainZBuffer()
-{}
+{
+    std::vector<Image *> images;
+    images.push_back(zone.GetHorizon(3));
+    images.push_back(zone.GetHorizon(0));
+    images.push_back(zone.GetHorizon(1));
+    images.push_back(zone.GetHorizon(2));
+    images.push_back(zone.GetHorizon(3));
+    horizon = new Image(zone.GetHorizon(0)->GetWidth() * 5, zone.GetHorizon(0)->GetHeight(), images);
+    images.clear();
+    images.push_back(zone.GetTerrain());
+    images.push_back(zone.GetTerrain());
+    images.push_back(zone.GetTerrain());
+    terrainTexture = new Image(zone.GetTerrain()->GetWidth() * 3, zone.GetTerrain()->GetHeight(), images);
+}
 
 Scene::~Scene()
 {
     objects.clear();
     spriteZBuffer.clear();
     terrainZBuffer.clear();
+    delete horizon;
+    delete terrainTexture;
 }
 
 void
@@ -74,25 +93,9 @@ void
 Scene::DrawHorizon(const int x, const int y, const int w, const int, const int heading)
 {
     static const int HORIZON_TOP_SIZE = 34;
-    Image top(w, HORIZON_TOP_SIZE);
-    int index = (heading >> 6) & 0x03;
-    int imagewidth = zone.GetHorizon(index)->GetWidth();
-    int imageheight = zone.GetHorizon(index)->GetHeight();
-    int offset = imagewidth - ((heading & 0x3f) << 2);
-    top.Fill(zone.GetHorizon(index)->GetPixel(0, 0));
-    top.Draw(x, y);
-    if (offset > 0)
-    {
-        zone.GetHorizon((index - 1) & 0x03)->Draw(x + offset - imagewidth, y + HORIZON_TOP_SIZE,
-                imagewidth - offset, 0, offset, imageheight);
-    }
-    zone.GetHorizon(index)->Draw(x + offset, y + HORIZON_TOP_SIZE,
-                                 0, 0, imagewidth, imageheight);
-    if (imagewidth + offset < w)
-    {
-        zone.GetHorizon((index + 1) & 0x03)->Draw(x + offset + imagewidth, y + HORIZON_TOP_SIZE,
-                0, 0, w - offset - imagewidth, imageheight);
-    }
+    video->FillRect(x, y, w, HORIZON_TOP_SIZE, horizon->GetPixel(0, 0));
+    int xx = (heading << 2);
+    video->FillRect(x, y + HORIZON_TOP_SIZE, w, horizon->GetHeight(), horizon->GetPixels(), xx - x, -y - HORIZON_TOP_SIZE, horizon->GetWidth());
 }
 
 void

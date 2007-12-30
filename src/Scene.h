@@ -29,14 +29,19 @@
 
 #include "Camera.h"
 #include "GenericObject.h"
+#include "Image.h"
 #include "SpritedObject.h"
 #include "TerrainObject.h"
+#include "Video.h"
 #include "Zone.h"
 
 class Scene
 {
 private:
     Zone& zone;
+    Video *video;
+    Image *horizon;
+    Image *terrainTexture;
     std::multimap<const Vector2D, GenericObject *> objects;
     std::multimap<const unsigned int, SpritedObject *> spriteZBuffer;
     std::multimap<const unsigned int, TerrainObject *> terrainZBuffer;

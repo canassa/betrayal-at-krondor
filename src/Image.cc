@@ -125,6 +125,66 @@ Image::Image(const int w, const int h, Image *img)
     }
 }
 
+Image::Image(const int w, const int h, std::vector<Image *> &img)
+        : width(w)
+        , height(h)
+        , flags(0)
+        , pixel(0)
+{
+    if ((width > 0) && (height > 0))
+    {
+        pixel = new uint8_t[width * height];
+        uint8_t *p = pixel;
+        if (width == img[0]->width)
+        {
+            unsigned int i = 0;
+            int y = 0;
+            do
+            {
+                uint8_t *q = img[i]->pixel + (y - i * width) * img[i]->width;
+                memcpy(p, q, width);
+                p += width;
+                y++;
+                if (y == height * ((int)i + 1))
+                {
+                    i++;
+                    if (i == img.size())
+                    {
+                        i = 0;
+                    }
+                }
+            }
+            while (y < height);
+        }
+        if (height == img[0]->height)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                unsigned int i = 0;
+                int x = 0;
+                do
+                {
+                    uint8_t *q = img[i]->pixel + y * img[i]->width;
+                    memcpy(p, q, img[i]->width);
+                    p += img[i]->width;
+                    x += img[i]->width;
+                    i++;
+                    if (i == img.size())
+                    {
+                        i = 0;
+                    }
+                }
+                while(x < width);
+            }
+        }
+    }
+    else
+    {
+        width = 0;
+        height = 0;
+    }
+}
+
 Image::~Image()
 {
     if (pixel)

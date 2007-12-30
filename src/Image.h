@@ -20,6 +20,8 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
+#include <vector>
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -39,6 +41,7 @@ public:
     Image ( const int w, const int h, const uint8_t *p );
     Image ( Image *img );
     Image ( const int w, const int h, Image *img );
+    Image ( const int w, const int h, std::vector<Image *> &img );
     ~Image();
     int GetWidth() const;
     int GetHeight() const;
