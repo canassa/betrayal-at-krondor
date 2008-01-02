@@ -37,10 +37,13 @@ Scene::Scene(Zone& z)
     images.push_back(zone.GetHorizon(3));
     horizon = new Image(zone.GetHorizon(0)->GetWidth() * 5, zone.GetHorizon(0)->GetHeight(), images);
     images.clear();
-    images.push_back(zone.GetTerrain());
-    images.push_back(zone.GetTerrain());
-    images.push_back(zone.GetTerrain());
-    terrainTexture = new Image(zone.GetTerrain()->GetWidth() * 3, zone.GetTerrain()->GetHeight(), images);
+    Image terrain1(zone.GetTerrain()->GetWidth(), zone.GetTerrain()->GetHeight() - 2, zone.GetTerrain()->GetPixels());
+    images.push_back(&terrain1);
+    Image terrain2(zone.GetTerrain()->GetWidth(), zone.GetTerrain()->GetHeight() - 2, zone.GetTerrain()->GetPixels() + zone.GetTerrain()->GetWidth());
+    images.push_back(&terrain2);
+    Image terrain3(zone.GetTerrain()->GetWidth(), zone.GetTerrain()->GetHeight() - 2, zone.GetTerrain()->GetPixels() + 2 * zone.GetTerrain()->GetWidth());
+    images.push_back(&terrain3);
+    terrainTexture = new Image(zone.GetTerrain()->GetWidth() * 3, zone.GetTerrain()->GetHeight() - 2, images);
 }
 
 Scene::~Scene()
@@ -101,22 +104,9 @@ Scene::DrawHorizon(const int x, const int y, const int w, const int, const int h
 void
 Scene::DrawGround(const int x, const int y, const int w, const int h, Camera *cam)
 {
-    static const int TERRAIN_YOFFSET = 82;
-    Image *terrain = zone.GetTerrain();
-    int imagewidth = terrain->GetWidth();
-    int offset = imagewidth - (((cam->GetHeading() * 16) + ((cam->GetPos().GetX() + cam->GetPos().GetY()) / 100)) % imagewidth);
-    if (offset > 0)
-    {
-        terrain->Draw(x + offset - imagewidth, y + h - TERRAIN_HEIGHT - TERRAIN_YOFFSET + 1,
-                      imagewidth - offset, TERRAIN_YOFFSET - 1, offset, TERRAIN_HEIGHT);
-    }
-    terrain->Draw(x + offset, y + h - TERRAIN_HEIGHT - TERRAIN_YOFFSET,
-                  0, TERRAIN_YOFFSET, imagewidth, TERRAIN_HEIGHT);
-    if ((imagewidth + offset) < w)
-    {
-        terrain->Draw(x + offset + imagewidth, y + h - TERRAIN_HEIGHT - TERRAIN_YOFFSET - 1,
-                      0, TERRAIN_YOFFSET + 1, w - offset - imagewidth, TERRAIN_HEIGHT);
-    }
+    static const int TERRAIN_YOFFSET = 81;
+    int offset = (((cam->GetHeading() * 16) + ((cam->GetPos().GetX() + cam->GetPos().GetY()) / 100)) % (terrainTexture->GetWidth() / 3));
+    video->FillRect(x, y + h - TERRAIN_HEIGHT, w, TERRAIN_HEIGHT, terrainTexture->GetPixels(), offset - x, TERRAIN_YOFFSET - y - h + TERRAIN_HEIGHT, terrainTexture->GetWidth());
 }
 
 void
