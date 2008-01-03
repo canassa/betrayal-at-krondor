@@ -807,70 +807,70 @@ void
 FileBuffer::PutUint8(const uint8_t x)
 {
     uint8_t xx = x;
-    PutData(xx, 1);
+    PutData(&xx, 1);
 }
 
 void
 FileBuffer::PutUint16LE(const uint16_t x)
 {
     uint16_t xx = SDL_SwapLE16(x);
-    PutData(xx, 2);
+    PutData(&xx, 2);
 }
 
 void
 FileBuffer::PutUint16BE(const uint16_t x)
 {
     uint16_t xx = SDL_SwapBE16(x);
-    PutData(xx, 2);
+    PutData(&xx, 2);
 }
 
 void
 FileBuffer::PutUint32LE(const uint32_t x)
 {
     uint32_t xx = SDL_SwapLE32(x);
-    PutData(xx, 4);
+    PutData(&xx, 4);
 }
 
 void
 FileBuffer::PutUint32BE(const uint32_t x)
 {
     uint32_t xx = SDL_SwapBE32(x);
-    PutData(xx, 4);
+    PutData(&xx, 4);
 }
 
 void
 FileBuffer::PutSint8(const int8_t x)
 {
     int8_t xx = x;
-    PutData(xx, 1);
+    PutData(&xx, 1);
 }
 
 void
 FileBuffer::PutSint16LE(const int16_t x)
 {
     int16_t xx = SDL_SwapLE16(x);
-    PutData(xx, 2);
+    PutData(&xx, 2);
 }
 
 void
 FileBuffer::PutSint16BE(const int16_t x)
 {
     int16_t xx = SDL_SwapBE16(x);
-    PutData(xx, 2);
+    PutData(&xx, 2);
 }
 
 void
 FileBuffer::PutSint32LE(const int32_t x)
 {
     int32_t xx = SDL_SwapLE32(x);
-    PutData(xx, 4);
+    PutData(&xx, 4);
 }
 
 void
 FileBuffer::PutSint32BE(const int32_t x)
 {
     int32_t xx = SDL_SwapBE32(x);
-    PutData(xx, 4);
+    PutData(&xx, 4);
 }
 
 void
