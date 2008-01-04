@@ -25,7 +25,7 @@
 
 static const unsigned int SAVE_BACKGROUND    = 0x0020;
 static const unsigned int DRAW_BACKGROUND    = 0x0080;
-static const unsigned int END_OF_PAGE        = 0x0ff0;
+static const unsigned int UPDATE             = 0x0ff0;
 static const unsigned int DELAY              = 0x1020;
 static const unsigned int SLOT_IMAGE         = 0x1050;
 static const unsigned int SLOT_PALETTE       = 0x1060;
@@ -169,7 +169,7 @@ MoviePlayer::PlayChunk(MediaToolkit* media)
                     backgroundImageDrawn = true;
                 }
                 break;
-            case END_OF_PAGE:
+            case UPDATE:
                 if (!paletteActivated)
                 {
                     paletteSlot[currPalette]->GetPalette()->Activate(0, VIDEO_COLORS);
