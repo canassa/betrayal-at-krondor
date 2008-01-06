@@ -38,26 +38,32 @@ Vertex::Vertex(const Vector3D &p)
 Vertex::~Vertex()
 {}
 
-Vector3D&
-Vertex::GetPosition()
+Vertex& Vertex::operator= ( const Vertex &v )
+{
+    pos = v.pos;
+    relpos = v.relpos;
+    angle = v.angle;
+    distance = v.distance;
+    distanceFactor = v.distanceFactor;
+    return *this;
+}
+
+Vector3D& Vertex::GetPosition()
 {
     return pos;
 }
 
-Vector3D&
-Vertex::GetRelativePosition()
+Vector3D& Vertex::GetRelativePosition()
 {
     return relpos;
 }
 
-int
-Vertex::GetAngle() const
+int Vertex::GetAngle() const
 {
     return angle;
 }
 
-unsigned int
-Vertex::GetDistance() const
+unsigned int Vertex::GetDistance() const
 {
     return distance;
 }
@@ -80,8 +86,7 @@ Vector2D& Vertex::ToTopDown(int w, int h)
 }
 */
 
-void
-Vertex::CalculateRelativePosition(const Vector2D &p)
+void Vertex::CalculateRelativePosition(const Vector2D &p)
 {
     relpos = pos - p;
     angle = (ANGLE_SIZE / 4 - relpos.GetTheta()) & ANGLE_MASK;
