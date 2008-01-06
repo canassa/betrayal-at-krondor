@@ -24,7 +24,6 @@
 #include "config.h"
 #endif
 
-#include <list>
 #include <map>
 
 #include "Camera.h"
@@ -38,7 +37,6 @@
 class Scene
 {
 private:
-    Zone& zone;
     Video *video;
     Image *horizon;
     Image *terrainTexture;

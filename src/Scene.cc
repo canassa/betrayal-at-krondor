@@ -21,8 +21,7 @@
 #include "Scene.h"
 
 Scene::Scene(Zone& z)
-        : zone(z)
-        , video(MediaToolkit::GetInstance()->GetVideo())
+        : video(MediaToolkit::GetInstance()->GetVideo())
         , horizon(0)
         , terrainTexture(0)
         , objects()
@@ -30,20 +29,20 @@ Scene::Scene(Zone& z)
         , terrainZBuffer()
 {
     std::vector<Image *> images;
-    images.push_back(zone.GetHorizon(3));
-    images.push_back(zone.GetHorizon(0));
-    images.push_back(zone.GetHorizon(1));
-    images.push_back(zone.GetHorizon(2));
-    images.push_back(zone.GetHorizon(3));
-    horizon = new Image(zone.GetHorizon(0)->GetWidth() * 5, zone.GetHorizon(0)->GetHeight(), images);
+    images.push_back(z.GetHorizon(3));
+    images.push_back(z.GetHorizon(0));
+    images.push_back(z.GetHorizon(1));
+    images.push_back(z.GetHorizon(2));
+    images.push_back(z.GetHorizon(3));
+    horizon = new Image(z.GetHorizon(0)->GetWidth() * 5, z.GetHorizon(0)->GetHeight(), images);
     images.clear();
-    Image terrain1(zone.GetTerrain()->GetWidth(), zone.GetTerrain()->GetHeight() - 2, zone.GetTerrain()->GetPixels());
+    Image terrain1(z.GetTerrain()->GetWidth(), z.GetTerrain()->GetHeight() - 2, z.GetTerrain()->GetPixels());
     images.push_back(&terrain1);
-    Image terrain2(zone.GetTerrain()->GetWidth(), zone.GetTerrain()->GetHeight() - 2, zone.GetTerrain()->GetPixels() + zone.GetTerrain()->GetWidth());
+    Image terrain2(z.GetTerrain()->GetWidth(), z.GetTerrain()->GetHeight() - 2, z.GetTerrain()->GetPixels() + z.GetTerrain()->GetWidth());
     images.push_back(&terrain2);
-    Image terrain3(zone.GetTerrain()->GetWidth(), zone.GetTerrain()->GetHeight() - 2, zone.GetTerrain()->GetPixels() + 2 * zone.GetTerrain()->GetWidth());
+    Image terrain3(z.GetTerrain()->GetWidth(), z.GetTerrain()->GetHeight() - 2, z.GetTerrain()->GetPixels() + 2 * z.GetTerrain()->GetWidth());
     images.push_back(&terrain3);
-    terrainTexture = new Image(zone.GetTerrain()->GetWidth() * 3, zone.GetTerrain()->GetHeight() - 2, images);
+    terrainTexture = new Image(z.GetTerrain()->GetWidth() * 3, z.GetTerrain()->GetHeight() - 2, images);
 }
 
 Scene::~Scene()
@@ -75,8 +74,8 @@ Scene::FillZBuffer(Camera *cam)
         int angle = orient.GetHeading();
         unsigned int distance = (*it).second->GetDistance();
         if ((distance < VIEW_DISTANCE) &&
-                ((((int)(ANGLE_SIZE - ANGLE_OF_VIEW) <= angle) || (angle <= (int)ANGLE_OF_VIEW)) ||
-                 (((WEST < angle) || (angle < EAST)) && (abs((int)((float)distance * orient.GetSin())) < 128))))
+            ((((int)(ANGLE_SIZE - ANGLE_OF_VIEW) <= angle) || (angle <= (int)ANGLE_OF_VIEW)) ||
+             (((WEST < angle) || (angle < EAST)) && (abs((int)((float)distance * orient.GetSin())) < 128))))
         {
             SpritedObject* sprite = dynamic_cast<SpritedObject *>((*it).second);
             if (sprite != 0)
