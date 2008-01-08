@@ -29,6 +29,7 @@ Zone::Zone()
         : horizon()
         , terrain(0)
         , sprites()
+        , tiles()
         , table(0)
 {}
 
@@ -49,6 +50,11 @@ Zone::Clear()
     {
         delete terrain;
     }
+    for (std::map<const std::pair<unsigned int, unsigned int>, TileWorldResource *>::iterator it = tiles.begin(); it != tiles.end(); ++it)
+    {
+        delete (*it).second;
+    }
+    tiles.clear();
     if (table)
     {
         delete table;
@@ -104,8 +110,8 @@ Zone::Load(const unsigned int n)
             {
                 std::stringstream tileStream;
                 tileStream << "T" << std::setw(2) << std::setfill('0') << n
-                << std::setw(2) << std::setfill('0') << x
-                << std::setw(2) << std::setfill('0') << y << ".WLD";
+                           << std::setw(2) << std::setfill('0') << x
+                           << std::setw(2) << std::setfill('0') << y << ".WLD";
                 if (FileManager::GetInstance()->ResourceExists(tileStream.str()))
                 {
                     TileWorldResource *tile = new TileWorldResource;

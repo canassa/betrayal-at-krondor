@@ -193,6 +193,7 @@ Inventory::Add(MultipleInventoryItem* item)
     {
         MultipleInventoryItem *mii = dynamic_cast<MultipleInventoryItem *>(it->item);
         mii->Add(item->GetValue());
+        delete item;
     }
     else
     {

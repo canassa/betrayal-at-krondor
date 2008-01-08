@@ -47,6 +47,10 @@ Scene::Scene(Zone& z)
 
 Scene::~Scene()
 {
+    for (std::multimap<const Vector2D, GenericObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
+    {
+        delete (*it).second;
+    }
     objects.clear();
     spriteZBuffer.clear();
     terrainZBuffer.clear();
@@ -67,7 +71,7 @@ Scene::FillZBuffer(Camera *cam)
     terrainZBuffer.clear();
     Vector2D cell = cam->GetPosition().GetCell();
     int heading = cam->GetHeading();
-    for (std::multimap<const Vector2D, GenericObject *>::iterator it = objects.lower_bound(cell); it != objects.upper_bound(cell); it++)
+    for (std::multimap<const Vector2D, GenericObject *>::iterator it = objects.lower_bound(cell); it != objects.upper_bound(cell); ++it)
     {
         (*it).second->CalculateRelativePosition(cam->GetPosition().GetPos());
         Orientation orient(((*it).second->GetAngle() - heading) & ANGLE_MASK);
