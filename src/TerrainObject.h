@@ -20,6 +20,8 @@
 #ifndef TERRAIN_OBJECT_H
 #define TERRAIN_OBJECT_H
 
+#include <vector>
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -30,10 +32,14 @@ class TerrainObject
     : public GenericObject
 {
     private:
-        Vertex vertices[4];
+        std::vector<Vertex> vertices;
     public:
         TerrainObject();
         ~TerrainObject();
+        void AddVertex ( const Vertex& v );
+        void CalculateRelativePosition ( const Vector2D &p );
+        int GetAngle();
+        unsigned int GetDistance();
         void DrawFirstPerson ( const int x, const int y, const int w, const int h, const int heading );
         void DrawTopDown();
 };

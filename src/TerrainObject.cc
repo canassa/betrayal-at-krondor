@@ -21,17 +21,50 @@
 
 TerrainObject::TerrainObject()
         : GenericObject()
+        , vertices()
 {}
 
 TerrainObject::~TerrainObject()
 {}
 
-void
-TerrainObject::DrawFirstPerson(const int x, const int y, const int w, const int h, const int heading)
+void TerrainObject::AddVertex(const Vertex& v)
+{
+    vertices.push_back(v);
+}
+
+void TerrainObject::CalculateRelativePosition(const Vector2D& p)
+{
+    for (std::vector<Vertex>::iterator it = vertices.begin(); it != vertices.end(); ++it)
+    {
+        it->CalculateRelativePosition(p);
+    }
+}
+
+int TerrainObject::GetAngle()
+{
+    int sum = 0;
+    for (std::vector<Vertex>::iterator it = vertices.begin(); it != vertices.end(); ++it)
+    {
+        sum += it->GetAngle();
+    }
+    return sum / vertices.size();
+}
+
+unsigned int TerrainObject::GetDistance()
+{
+    unsigned int sum = 0;
+    for (std::vector<Vertex>::iterator it = vertices.begin(); it != vertices.end(); ++it)
+    {
+        sum += it->GetDistance();
+    }
+    return sum / vertices.size();
+}
+
+void TerrainObject::DrawFirstPerson(const int x, const int y, const int w, const int h, const int heading)
 {
     if (x && y && w && h && heading);
 }
 
-void
-TerrainObject::DrawTopDown()
-{}
+void TerrainObject::DrawTopDown()
+{
+}
