@@ -1,5 +1,7 @@
-2007-??-??, xbak-0.1.4:
+2008-??-??, xbak-0.1.4:
+* Refactored the 3D engine.
 * Added limited support for joysticks.
+* Plugged some memory leaks.
 * Several bug fixes.
 
 2007-10-24, xbak-0.1.3:
