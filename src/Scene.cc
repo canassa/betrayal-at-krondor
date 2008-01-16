@@ -20,29 +20,14 @@
 #include "MediaToolkit.h"
 #include "Scene.h"
 
-Scene::Scene(Zone& z)
+Scene::Scene(Image *horizon, Image *terrain)
         : video(MediaToolkit::GetInstance()->GetVideo())
-        , horizon(0)
-        , terrainTexture(0)
+        , horizonTexture(horizon)
+        , terrainTexture(terrain)
         , objects()
         , spriteZBuffer()
         , terrainZBuffer()
 {
-    std::vector<Image *> images;
-    images.push_back(z.GetHorizon(3));
-    images.push_back(z.GetHorizon(0));
-    images.push_back(z.GetHorizon(1));
-    images.push_back(z.GetHorizon(2));
-    images.push_back(z.GetHorizon(3));
-    horizon = new Image(z.GetHorizon(0)->GetWidth() * 5, z.GetHorizon(0)->GetHeight(), images);
-    images.clear();
-    Image terrain1(z.GetTerrain()->GetWidth(), z.GetTerrain()->GetHeight() - 2, z.GetTerrain()->GetPixels());
-    images.push_back(&terrain1);
-    Image terrain2(z.GetTerrain()->GetWidth(), z.GetTerrain()->GetHeight() - 2, z.GetTerrain()->GetPixels() + z.GetTerrain()->GetWidth());
-    images.push_back(&terrain2);
-    Image terrain3(z.GetTerrain()->GetWidth(), z.GetTerrain()->GetHeight() - 2, z.GetTerrain()->GetPixels() + 2 * z.GetTerrain()->GetWidth());
-    images.push_back(&terrain3);
-    terrainTexture = new Image(z.GetTerrain()->GetWidth() * 3, z.GetTerrain()->GetHeight() - 2, images);
 }
 
 Scene::~Scene()
@@ -54,7 +39,7 @@ Scene::~Scene()
     objects.clear();
     spriteZBuffer.clear();
     terrainZBuffer.clear();
-    delete horizon;
+    delete horizonTexture;
     delete terrainTexture;
 }
 
@@ -96,12 +81,12 @@ Scene::FillZBuffer(Camera *cam)
 }
 
 void
-Scene::DrawHorizon(const int x, const int y, const int w, const int, const int heading)
+Scene::DrawHorizon(const int x, const int y, const int w, const int, Camera *cam)
 {
     static const int HORIZON_TOP_SIZE = 34;
-    video->FillRect(x, y, w, HORIZON_TOP_SIZE, horizon->GetPixel(0, 0));
-    int xx = (heading << 2);
-    video->FillRect(x, y + HORIZON_TOP_SIZE, w, horizon->GetHeight(), horizon->GetPixels(), xx - x, -y - HORIZON_TOP_SIZE, horizon->GetWidth());
+    video->FillRect(x, y, w, HORIZON_TOP_SIZE, horizonTexture->GetPixel(0, 0));
+    video->FillRect(x, y + HORIZON_TOP_SIZE, w, horizonTexture->GetHeight(),
+                    horizonTexture->GetPixels(), (cam->GetHeading() << 2) - x, -y - HORIZON_TOP_SIZE, horizonTexture->GetWidth());
 }
 
 void
@@ -109,19 +94,20 @@ Scene::DrawGround(const int x, const int y, const int w, const int h, Camera *ca
 {
     static const int TERRAIN_YOFFSET = 81;
     int offset = (((cam->GetHeading() * 16) + ((cam->GetPos().GetX() + cam->GetPos().GetY()) / 100)) % (terrainTexture->GetWidth() / 3));
-    video->FillRect(x, y + h - TERRAIN_HEIGHT, w, TERRAIN_HEIGHT, terrainTexture->GetPixels(), offset - x, TERRAIN_YOFFSET - y - h + TERRAIN_HEIGHT, terrainTexture->GetWidth());
+    video->FillRect(x, y + h - TERRAIN_HEIGHT, w, TERRAIN_HEIGHT, terrainTexture->GetPixels(),
+                    offset - x, TERRAIN_YOFFSET - y - h + TERRAIN_HEIGHT, terrainTexture->GetWidth());
 }
 
 void
-Scene::DrawZBuffer(const int x, const int y, const int w, const int h, const int heading)
+Scene::DrawZBuffer(const int x, const int y, const int w, const int h, Camera *cam)
 {
     for (std::multimap<const unsigned int, TerrainObject *>::reverse_iterator it = terrainZBuffer.rbegin(); it != terrainZBuffer.rend(); it++)
     {
-        (*it).second->DrawFirstPerson(x, y, w, h, heading);
+        (*it).second->DrawFirstPerson(x, y, w, h, cam);
     }
     for (std::multimap<const unsigned int, SpritedObject *>::reverse_iterator it = spriteZBuffer.rbegin(); it != spriteZBuffer.rend(); it++)
     {
-        (*it).second->DrawFirstPerson(x, y, w, h, heading);
+        (*it).second->DrawFirstPerson(x, y, w, h, cam);
     }
 }
 
@@ -129,11 +115,12 @@ void
 Scene::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
 {
     FillZBuffer(cam);
-    DrawHorizon(x, y, w, h, cam->GetHeading());
+    DrawHorizon(x, y, w, h, cam);
     DrawGround(x, y, w, h, cam);
-    DrawZBuffer(x, y, w, h, cam->GetHeading());
+    DrawZBuffer(x, y, w, h, cam);
 }
 
 void
 Scene::DrawTopDown()
-{}
+{
+}

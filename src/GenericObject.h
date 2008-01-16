@@ -24,6 +24,7 @@
 #include "config.h"
 #endif
 
+#include "Camera.h"
 #include "Vertex.h"
 
 class GenericObject
@@ -34,7 +35,7 @@ class GenericObject
         virtual void CalculateRelativePosition ( const Vector2D &p ) = 0;
         virtual int GetAngle() = 0;
         virtual unsigned int GetDistance() = 0;
-        virtual void DrawFirstPerson ( const int x, const int y, const int w, const int h, const int heading ) = 0;
+        virtual void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam ) = 0;
         virtual void DrawTopDown() = 0;
 };
 

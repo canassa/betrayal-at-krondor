@@ -17,19 +17,44 @@
  * Copyright (C) 2007 Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "MediaToolkit.h"
 #include "TerrainObject.h"
 
-TerrainObject::TerrainObject()
+TerrainObject::TerrainObject(Image *image)
         : GenericObject()
         , vertices()
-{}
+        , xCoords(0)
+        , yCoords(0)
+        , texture(image)
+{
+}
 
 TerrainObject::~TerrainObject()
-{}
+{
+    if (xCoords != 0)
+    {
+        delete xCoords;
+    }
+    if (yCoords != 0)
+    {
+        delete yCoords;
+    }
+    vertices.clear();
+}
 
 void TerrainObject::AddVertex(const Vertex& v)
 {
     vertices.push_back(v);
+    if (xCoords != 0)
+    {
+        delete xCoords;
+    }
+    if (yCoords != 0)
+    {
+        delete yCoords;
+    }
+    xCoords = new int[vertices.size()];
+    yCoords = new int[vertices.size()];
 }
 
 void TerrainObject::CalculateRelativePosition(const Vector2D& p)
@@ -60,9 +85,18 @@ unsigned int TerrainObject::GetDistance()
     return sum / vertices.size();
 }
 
-void TerrainObject::DrawFirstPerson(const int x, const int y, const int w, const int h, const int heading)
+void TerrainObject::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
 {
-    if (x && y && w && h && heading);
+    static const int TERRAIN_YOFFSET = 81;
+    int offset = (((cam->GetHeading() * 16) + ((cam->GetPos().GetX() + cam->GetPos().GetY()) / 100)) % (texture->GetWidth() / 3));
+    for (unsigned int i = 0; i < vertices.size(); i++)
+    {
+        Vector2D v = vertices[i].ToFirstPerson(w, h, cam->GetHeading());
+        xCoords[i] = v.GetX();
+        yCoords[i] = v.GetY();
+    }
+    MediaToolkit::GetInstance()->GetVideo()->FillPolygon(xCoords, yCoords, vertices.size(), texture->GetPixels(),
+                                                         offset - x, TERRAIN_YOFFSET - y, texture->GetWidth());
 }
 
 void TerrainObject::DrawTopDown()

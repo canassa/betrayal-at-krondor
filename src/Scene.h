@@ -32,27 +32,26 @@
 #include "SpritedObject.h"
 #include "TerrainObject.h"
 #include "Video.h"
-#include "Zone.h"
 
 class Scene
 {
-private:
-    Video *video;
-    Image *horizon;
-    Image *terrainTexture;
-    std::multimap<const Vector2D, GenericObject *> objects;
-    std::multimap<const unsigned int, SpritedObject *> spriteZBuffer;
-    std::multimap<const unsigned int, TerrainObject *> terrainZBuffer;
-    void FillZBuffer ( Camera *cam );
-    void DrawHorizon ( const int x, const int y, const int w, const int h, const int heading );
-    void DrawGround ( const int x, const int y, const int w, const int h, Camera *cam );
-    void DrawZBuffer ( const int x, const int y, const int w, const int h, const int heading );
-public:
-    Scene ( Zone& z );
-    ~Scene();
-    void AddObject ( const Vector2D &cell, GenericObject *obj );
-    void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam );
-    void DrawTopDown();
+    private:
+        Video *video;
+        Image *horizonTexture;
+        Image *terrainTexture;
+        std::multimap<const Vector2D, GenericObject *> objects;
+        std::multimap<const unsigned int, SpritedObject *> spriteZBuffer;
+        std::multimap<const unsigned int, TerrainObject *> terrainZBuffer;
+        void FillZBuffer ( Camera *cam );
+        void DrawHorizon ( const int x, const int y, const int w, const int h, Camera *cam );
+        void DrawGround ( const int x, const int y, const int w, const int h, Camera *cam );
+        void DrawZBuffer ( const int x, const int y, const int w, const int h, Camera *cam );
+    public:
+        Scene ( Image *horizon, Image *terrain );
+        ~Scene();
+        void AddObject ( const Vector2D &cell, GenericObject *obj );
+        void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam );
+        void DrawTopDown();
 };
 
 #endif

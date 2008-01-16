@@ -44,8 +44,8 @@ Game::Game()
             pc->SetButtonImage(buttonImages.GetImage(i));
             party->AddMember(pc);
         }
-        SceneFactory sf;
-        scene = sf.CreateScene(chapter->GetZone());
+        SceneFactory sf(chapter->GetZone());
+        scene = sf.CreateScene();
         camera = new Camera(Vector2D(0, 0), 0);
     }
     catch (Exception &e)

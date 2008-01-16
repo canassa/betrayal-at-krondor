@@ -25,14 +25,18 @@
 #endif
 
 #include "Scene.h"
+#include "Zone.h"
 
 class SceneFactory
 {
     private:
+        Zone &zone;
+        void AddFixedObjects ( Scene* scene );
+        void AddTiledObjects ( Scene* scene, unsigned int x, unsigned int y, Image *terrainTexture );
     public:
-        SceneFactory();
+        SceneFactory( Zone &z );
         ~SceneFactory();
-        Scene * CreateScene ( Zone& zone );
+        Scene * CreateScene();
 };
 
 #endif

@@ -48,10 +48,10 @@ SpritedObject::CalculateRelativePosition(const Vector2D &p)
 }
 
 void
-SpritedObject::DrawFirstPerson(const int x, const int y, const int w, const int h, const int heading)
+        SpritedObject::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
 {
     Image *image = new Image((int)((float)sprite->GetWidth() * vertex.GetDistanceFactor()), (int)((float)sprite->GetHeight() * vertex.GetDistanceFactor()), sprite);
-    int xx = (int)((float)(((vertex.GetAngle() - heading + ANGLE_OF_VIEW - 1) & ANGLE_MASK) * w) / (float)(2 * ANGLE_OF_VIEW + 1));
+    int xx = (int)((float)(((vertex.GetAngle() - cam->GetHeading() + ANGLE_OF_VIEW - 1) & ANGLE_MASK) * w) / (float)(2 * ANGLE_OF_VIEW + 1));
     int yy = h - (int)((float)TERRAIN_HEIGHT * (1.0 - vertex.GetDistanceFactor()));
     int ww = MIN(image->GetWidth(), w - xx);
     int hh = image->GetHeight();

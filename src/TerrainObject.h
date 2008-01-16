@@ -27,20 +27,24 @@
 #endif
 
 #include "GenericObject.h"
+#include "Image.h"
 
 class TerrainObject
     : public GenericObject
 {
     private:
         std::vector<Vertex> vertices;
+        int *xCoords;
+        int *yCoords;
+        Image *texture;
     public:
-        TerrainObject();
+        TerrainObject( Image *image );
         ~TerrainObject();
         void AddVertex ( const Vertex& v );
         void CalculateRelativePosition ( const Vector2D &p );
         int GetAngle();
         unsigned int GetDistance();
-        void DrawFirstPerson ( const int x, const int y, const int w, const int h, const int heading );
+        void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam );
         void DrawTopDown();
 };
 

@@ -39,8 +39,6 @@ protected:
     int angle;
     unsigned int distance;
     float distanceFactor;
-    Vector2D ToFirstPerson ( int w, int h, int heading );
-    Vector2D ToTopDown ( int w, int h );
 public:
     Vertex();
     Vertex ( const Vector3D &p );
@@ -51,6 +49,8 @@ public:
     int GetAngle() const;
     unsigned int GetDistance() const;
     float GetDistanceFactor() const;
+    Vector2D ToFirstPerson ( int w, int h, int heading );
+    Vector2D ToTopDown ( int w, int h );
     void CalculateRelativePosition ( const Vector2D &p );
 };
 

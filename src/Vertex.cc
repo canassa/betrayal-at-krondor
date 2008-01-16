@@ -80,11 +80,11 @@ Vector2D Vertex::ToFirstPerson(int w, int h, int heading)
     return Vector2D(x, y);
 }
 
-/*
-Vector2D& Vertex::ToTopDown(int w, int h)
+Vector2D Vertex::ToTopDown(int , int )
 {
+    // TODO
+    return Vector2D(0, 0);
 }
-*/
 
 void Vertex::CalculateRelativePosition(const Vector2D &p)
 {
