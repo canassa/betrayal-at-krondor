@@ -39,17 +39,20 @@ class Scene
         Video *video;
         Image *horizonTexture;
         Image *terrainTexture;
-        std::multimap<const Vector2D, GenericObject *> objects;
+        std::multimap<const Vector2D, SpritedObject *> sprites;
+        std::multimap<const Vector2D, TerrainObject *> terrains;
         std::multimap<const unsigned int, SpritedObject *> spriteZBuffer;
         std::multimap<const unsigned int, TerrainObject *> terrainZBuffer;
-        void FillZBuffer ( Camera *cam );
+        void FillSpriteZBuffer ( Camera *cam );
+        void FillTerrainZBuffer ( Camera *cam );
         void DrawHorizon ( const int x, const int y, const int w, const int h, Camera *cam );
         void DrawGround ( const int x, const int y, const int w, const int h, Camera *cam );
         void DrawZBuffer ( const int x, const int y, const int w, const int h, Camera *cam );
     public:
         Scene ( Image *horizon, Image *terrain );
         ~Scene();
-        void AddObject ( const Vector2D &cell, GenericObject *obj );
+        void AddObject ( const Vector2D &cell, SpritedObject *obj );
+        void AddObject ( const Vector2D &cell, TerrainObject *obj );
         void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam );
         void DrawTopDown();
 };

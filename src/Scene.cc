@@ -24,7 +24,8 @@ Scene::Scene(Image *horizon, Image *terrain)
         : video(MediaToolkit::GetInstance()->GetVideo())
         , horizonTexture(horizon)
         , terrainTexture(terrain)
-        , objects()
+        , sprites()
+        , terrains()
         , spriteZBuffer()
         , terrainZBuffer()
 {
@@ -32,11 +33,16 @@ Scene::Scene(Image *horizon, Image *terrain)
 
 Scene::~Scene()
 {
-    for (std::multimap<const Vector2D, GenericObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
+    for (std::multimap<const Vector2D, SpritedObject *>::iterator it = sprites.begin(); it != sprites.end(); ++it)
     {
         delete (*it).second;
     }
-    objects.clear();
+    sprites.clear();
+    for (std::multimap<const Vector2D, TerrainObject *>::iterator it = terrains.begin(); it != terrains.end(); ++it)
+    {
+        delete (*it).second;
+    }
+    terrains.clear();
     spriteZBuffer.clear();
     terrainZBuffer.clear();
     delete horizonTexture;
@@ -44,19 +50,24 @@ Scene::~Scene()
 }
 
 void
-Scene::AddObject(const Vector2D &cell, GenericObject *obj)
+Scene::AddObject(const Vector2D &cell, SpritedObject *obj)
 {
-    objects.insert(std::pair<const Vector2D, GenericObject *>(cell, obj));
+    sprites.insert(std::pair<const Vector2D, SpritedObject *>(cell, obj));
 }
 
 void
-Scene::FillZBuffer(Camera *cam)
+Scene::AddObject(const Vector2D &cell, TerrainObject *obj)
+{
+    terrains.insert(std::pair<const Vector2D, TerrainObject *>(cell, obj));
+}
+
+void
+Scene::FillSpriteZBuffer(Camera *cam)
 {
     spriteZBuffer.clear();
-    terrainZBuffer.clear();
     Vector2D cell = cam->GetPosition().GetCell();
     int heading = cam->GetHeading();
-    for (std::multimap<const Vector2D, GenericObject *>::iterator it = objects.lower_bound(cell); it != objects.upper_bound(cell); ++it)
+    for (std::multimap<const Vector2D, SpritedObject *>::iterator it = sprites.lower_bound(cell); it != sprites.upper_bound(cell); ++it)
     {
         (*it).second->CalculateRelativePosition(cam->GetPosition().GetPos());
         Orientation orient(((*it).second->GetAngle() - heading) & ANGLE_MASK);
@@ -66,16 +77,28 @@ Scene::FillZBuffer(Camera *cam)
             ((((int)(ANGLE_SIZE - ANGLE_OF_VIEW) <= angle) || (angle <= (int)ANGLE_OF_VIEW)) ||
              (((WEST < angle) || (angle < EAST)) && (abs((int)((float)distance * orient.GetSin())) < 128))))
         {
-            SpritedObject* sprite = dynamic_cast<SpritedObject *>((*it).second);
-            if (sprite != 0)
-            {
-                spriteZBuffer.insert(std::pair<int, SpritedObject *>(distance, sprite));
-            }
-            TerrainObject* terrain = dynamic_cast<TerrainObject *>((*it).second);
-            if (terrain != 0)
-            {
-                terrainZBuffer.insert(std::pair<int, TerrainObject *>(distance, terrain));
-            }
+            spriteZBuffer.insert(std::pair<int, SpritedObject *>(distance, (*it).second));
+        }
+    }
+}
+
+void
+Scene::FillTerrainZBuffer(Camera *cam)
+{
+    terrainZBuffer.clear();
+    Vector2D cell = cam->GetPosition().GetCell();
+    int heading = cam->GetHeading();
+    for (std::multimap<const Vector2D, TerrainObject *>::iterator it = terrains.lower_bound(cell); it != terrains.upper_bound(cell); ++it)
+    {
+        (*it).second->CalculateRelativePosition(cam->GetPosition().GetPos());
+        Orientation orient(((*it).second->GetAngle() - heading) & ANGLE_MASK);
+        int angle = orient.GetHeading();
+        unsigned int distance = (*it).second->GetDistance();
+        if ((distance < VIEW_DISTANCE) &&
+             ((((int)(ANGLE_SIZE - ANGLE_OF_VIEW) <= angle) || (angle <= (int)ANGLE_OF_VIEW)) ||
+             (((WEST < angle) || (angle < EAST)) && (abs((int)((float)distance * orient.GetSin())) < 128))))
+        {
+            terrainZBuffer.insert(std::pair<int, TerrainObject *>(distance, (*it).second));
         }
     }
 }
@@ -114,7 +137,8 @@ Scene::DrawZBuffer(const int x, const int y, const int w, const int h, Camera *c
 void
 Scene::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
 {
-    FillZBuffer(cam);
+    FillSpriteZBuffer(cam);
+    FillTerrainZBuffer(cam);
     DrawHorizon(x, y, w, h, cam);
     DrawGround(x, y, w, h, cam);
     DrawZBuffer(x, y, w, h, cam);
