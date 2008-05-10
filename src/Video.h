@@ -62,7 +62,7 @@ public:
     void SetScaling ( const unsigned int n );
     virtual void CreateScreen ( const int w, const int h ) = 0;
     virtual void Clear() = 0;
-    virtual void Clear ( int x, int y, int w, int h ) = 0;
+    virtual void Clear ( const int x, const int y, const int w, const int h ) = 0;
     virtual unsigned int GetPixel ( const int x, const int y ) = 0;
     virtual void PutPixel ( const int x, const int y, const unsigned int c ) = 0;
     virtual void DrawHLine ( const int x, const int y, const int w, const unsigned int c ) = 0;
