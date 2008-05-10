@@ -19,6 +19,86 @@
 
 #include "Geometry.h"
 
+float Angle::cosTbl[ANGLE_SIZE];
+float Angle::sinTbl[ANGLE_SIZE];
+
+Angle::Angle ( const int a )
+: angle(a & ANGLE_MASK)
+{
+    for (unsigned int i = 0; i < ANGLE_SIZE; i++)
+    {
+        cosTbl[i] = cos((float)i * PI2 / (float)ANGLE_SIZE);
+        sinTbl[i] = sin((float)i * PI2 / (float)ANGLE_SIZE);
+    }
+}
+
+Angle::~Angle()
+{
+}
+
+int Angle::Get() const
+{
+    return angle;
+}
+
+void Angle::Set ( const int a )
+{
+    angle = a & ANGLE_MASK;
+}
+
+float Angle::GetCos() const
+{
+    return cosTbl[angle];
+}
+
+float Angle::GetSin() const
+{
+    return sinTbl[angle];
+}
+
+Angle& Angle::operator= ( const Angle &a )
+{
+    angle = a.angle;
+    return *this;
+}
+
+Angle& Angle::operator+= ( const Angle &a )
+{
+    angle = (angle + a.angle) & ANGLE_MASK;
+    return *this;
+}
+
+Angle& Angle::operator-= ( const Angle &a )
+{
+    angle = (angle - a.angle) & ANGLE_MASK;
+    return *this;
+}
+
+Angle Angle::operator+ ( const Angle &a )
+{
+    return Angle(angle + a.angle);
+}
+
+Angle Angle::operator- ( const Angle &a )
+{
+    return Angle(angle - a.angle);
+}
+
+bool Angle::operator== ( const Angle &a ) const
+{
+    return angle == a.angle;
+}
+
+bool Angle::operator!= ( const Angle &a ) const
+{
+    return angle != a.angle;
+}
+
+bool Angle::operator< ( const Angle &a ) const
+{
+    return angle < a.angle;
+}
+
 Vector2D::Vector2D()
         : xCoord(0)
         , yCoord(0)
@@ -104,8 +184,8 @@ bool Vector2D::operator!=(const Vector2D &p) const
 
 bool Vector2D::operator<(const Vector2D &p) const
 {
-    return (xCoord < p.xCoord) ||
-           ((xCoord == p.xCoord) && (yCoord < p.yCoord));
+    return ((xCoord < p.xCoord) && (yCoord <= p.yCoord)) ||
+           ((yCoord < p.yCoord) && (xCoord <= p.xCoord));
 }
 
 int Vector2D::GetX() const
@@ -292,9 +372,9 @@ bool Vector3D::operator!=(const Vector3D &p) const
 
 bool Vector3D::operator<(const Vector3D &p) const
 {
-    return (xCoord < p.xCoord) ||
-           ((xCoord == p.xCoord) && ((yCoord < p.yCoord) ||
-                                     ((yCoord == p.yCoord) && (zCoord < p.zCoord))));
+    return ((xCoord < p.xCoord) && (yCoord <= p.yCoord) && ((zCoord <= p.zCoord))) ||
+           ((yCoord < p.yCoord) && (zCoord <= p.zCoord) && ((xCoord <= p.xCoord))) ||
+           ((zCoord < p.zCoord) && (xCoord <= p.xCoord) && ((yCoord <= p.yCoord)));
 }
 
 int Vector3D::GetX() const
