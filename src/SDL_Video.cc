@@ -90,7 +90,7 @@ void SDL_Video::Clear()
     SDL_FillRect(buffer, 0, 0);
 }
 
-void SDL_Video::Clear(int x, int y, int w, int h)
+void SDL_Video::Clear(const int x, const int y, const int w, const int h)
 {
     SDL_Rect rect = {x, y, w, h};
     SDL_FillRect(buffer, &rect, 0);
@@ -117,13 +117,27 @@ void SDL_Video::PutPixel(const int x, const int y, const unsigned int c)
 
 void SDL_Video::DrawHLine(const int x, const int y, const int w, const unsigned int c)
 {
-    SDL_Rect rect = {x, y, w, 1};
+    int xx = (x < 0 ? 0 : (x < buffer->w ? x : buffer->w));
+    int yy = (y < 0 ? 0 : (y < buffer->h ? y : buffer->h));
+    int ww = w + x - xx;
+    if (ww + xx > buffer->w)
+    {
+        ww = buffer->w - xx;
+    }
+    SDL_Rect rect = {xx, yy, ww, 1};
     SDL_FillRect(buffer, &rect, c);
 }
 
 void SDL_Video::DrawVLine(const int x, const int y, const int h, const unsigned int c)
 {
-    SDL_Rect rect = {x, y, 1, h};
+    int xx = (x < 0 ? 0 : (x < buffer->w ? x : buffer->w));
+    int yy = (y < 0 ? 0 : (y < buffer->h ? y : buffer->h));
+    int hh = h + y - yy;
+    if (hh + yy > buffer->h)
+    {
+        hh = buffer->h - yy;
+    }
+    SDL_Rect rect = {xx, yy, 1, hh};
     SDL_FillRect(buffer, &rect, c);
 }
 
@@ -355,10 +369,13 @@ void SDL_Video::FillPolygon(const int* x, const int* y, const unsigned int n,
             }
             if (draw)
             {
-                uint8_t *q = p + (yy + y0) * ww + xx + x0;
-                for (int x1 = x0; x1 < edges[i].x0 + 1; x1++)
+                if ((y0 >= 0) && (y0 < buffer->h))
                 {
-                    PutPixel(x1, y0, *q++);
+                    uint8_t *q = p + (yy + y0) * ww + xx + x0;
+                    for (int x1 = x0 < 0 ? 0 : (x0 < buffer->w ? x0 : buffer->w - 1); (x1 <= edges[i].x0) && (x1 < buffer->w); x1++)
+                    {
+                        PutPixel(x1, y0, *q++);
+                    }
                 }
             }
             x0 = edges[i].x0;

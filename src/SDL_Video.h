@@ -77,7 +77,7 @@ public:
     void GetPalette ( Color *color, const unsigned int first, const unsigned int n );
     void SetPalette ( Color *color, const unsigned int first, const unsigned int n );
     void Clear();
-    void Clear ( int x, int y, int w, int h );
+    void Clear ( const int x, const int y, const int w, const int h );
     void Refresh();
     void GrabInput ( const bool toggle );
     void SaveScreenShot ( const std::string& filename );
