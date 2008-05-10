@@ -23,7 +23,7 @@ SDL_VERSION=1.2.8
 AM_PATH_SDL($SDL_VERSION,,AC_MSG_ERROR([SDL $SDL_VERSION not found!]))
 AC_CHECK_LIB([SDL_mixer],[Mix_Linked_Version])
 AC_CHECK_LIB([SDL_sound],[Sound_GetLinkedVersion])
-SDL_LIBS=$(sh sdl-config --libs)
+#SDL_LIBS=$(sh sdl-config --libs)
 LIBS="$LIBS $SDL_LIBS"
 
 AC_CACHE_SAVE
@@ -44,7 +44,7 @@ OPT_CXXFLAGS=""
 AC_ARG_ENABLE([error-on-warning], AS_HELP_STRING([--enable-error-on-warning],[treat compiler warnings as errors (optional)]),OPT_CXXFLAGS="$OPT_CXXFLAGS -Werror")
 AC_ARG_ENABLE([debug],AS_HELP_STRING([--enable-debug],[enable debugging support (default is NO)]),CPPFLAGS="$CPPFLAGS -DDEBUG")
 CPPFLAGS="$CPPFLAGS -DDATADIR='\"$datadir\"'"
-SDL_CFLAGS=$(sh sdl-config --cflags)
+#SDL_CFLAGS=$(sh sdl-config --cflags)
 CXXFLAGS="$CXXFLAGS $SDL_CFLAGS -ansi -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -Wwrite-strings -Wshadow -Wcast-align -Winline $OPT_CXXFLAGS"
 
 AC_C_CONST
