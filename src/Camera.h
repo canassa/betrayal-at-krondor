@@ -29,22 +29,22 @@
 #include "Subject.h"
 
 class Camera
-            : public Subject
+    : public Subject
 {
-private:
-    Position position;
-    Orientation orientation;
-public:
-    Camera ( const Vector2D &p, const int heading );
-    ~Camera();
-    Position& GetPosition();
-    Vector2D& GetPos();
-    void SetPosition ( const Vector2D &p );
-    Orientation& GetOrientation();
-    int GetHeading() const;
-    void SetHeading ( const int heading );
-    void Move ( const int delta );
-    void Turn ( const int delta );
+    private:
+        Position position;
+        Orientation orientation;
+    public:
+        Camera ( const Vector2D &p, const int heading );
+        ~Camera();
+        Position& GetPosition();
+        Vector2D& GetPos();
+        void SetPosition ( const Vector2D &p );
+        Orientation& GetOrientation();
+        int GetHeading() const;
+        void SetHeading ( const int heading );
+        void Move ( const int delta );
+        void Turn ( const int delta );
 };
 
 #endif
