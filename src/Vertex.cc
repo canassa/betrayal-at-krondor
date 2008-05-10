@@ -17,6 +17,8 @@
  * Copyright (C) 2007-2008 Guido de Jong <guidoj@users.sf.net>
  */
 
+#include <cstdio>
+#include "Geometry.h"
 #include "Vertex.h"
 
 Vertex::Vertex()
@@ -25,7 +27,8 @@ Vertex::Vertex()
         , angle(0)
         , distance(0)
         , distanceFactor(1.0)
-{}
+{
+}
 
 Vertex::Vertex(const Vector3D &p)
         : pos(p)
@@ -33,10 +36,12 @@ Vertex::Vertex(const Vector3D &p)
         , angle(0)
         , distance(0)
         , distanceFactor(1.0)
-{}
+{
+}
 
 Vertex::~Vertex()
-{}
+{
+}
 
 Vertex& Vertex::operator= ( const Vertex &v )
 {
@@ -60,7 +65,7 @@ Vector3D& Vertex::GetRelativePosition()
 
 int Vertex::GetAngle() const
 {
-    return angle;
+    return angle.Get();
 }
 
 unsigned int Vertex::GetDistance() const
@@ -73,10 +78,12 @@ float Vertex::GetDistanceFactor() const
     return distanceFactor;
 }
 
-Vector2D Vertex::ToFirstPerson(int w, int h, int heading)
+Vector2D Vertex::ToFirstPerson(int w, int h, Angle heading)
 {
-    int x = (int)((float)(((angle - heading + ANGLE_OF_VIEW - 1) & ANGLE_MASK) * w) / (float)(2 * ANGLE_OF_VIEW + 1));
-    int y = h - (int)((float)TERRAIN_HEIGHT * (1.0 - distanceFactor));
+    static const Angle ANGLE_AOV = Angle(2 * ANGLE_OF_VIEW + 1);
+    Angle a(angle - heading - 1);
+    int x = (int)((0.5 + (a.GetSin() / ANGLE_AOV.GetSin())) * w);
+    int y = h - (int)((float)TERRAIN_HEIGHT * (1.0 - distanceFactor) * a.GetCos());
     return Vector2D(x, y);
 }
 
@@ -89,7 +96,7 @@ Vector2D Vertex::ToTopDown(int , int )
 void Vertex::CalculateRelativePosition(const Vector2D &p)
 {
     relpos = pos - p;
-    angle = (ANGLE_SIZE / 4 - relpos.GetTheta()) & ANGLE_MASK;
+    angle = Angle(ANGLE_SIZE / 4 - relpos.GetTheta());
     distance = relpos.GetRho();
     distanceFactor = 2.0 * (((float)VIEW_DISTANCE / ((float)VIEW_DISTANCE + (float)distance)) - 0.5);
 }

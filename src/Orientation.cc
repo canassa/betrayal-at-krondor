@@ -19,49 +19,47 @@
 
 #include "Orientation.h"
 
-float Orientation::cosTbl[ANGLE_SIZE];
-float Orientation::sinTbl[ANGLE_SIZE];
-
 Orientation::Orientation(const int head)
-        : heading(head)
+: heading(head)
 {
-    for (unsigned int i = 0; i < ANGLE_SIZE; i++)
-    {
-        cosTbl[i] = cos((float)i * PI2 / (float)ANGLE_SIZE);
-        sinTbl[i] = sin((float)i * PI2 / (float)ANGLE_SIZE);
-    }
 }
 
 Orientation::~Orientation()
-{}
+{
+}
 
 int
 Orientation::GetHeading() const
 {
-    return heading;
+    return heading.Get();
 }
 
 void
 Orientation::SetHeading(const int head)
 {
-    heading = head & ANGLE_MASK;
+    heading = Angle(head);
+}
+
+Angle
+Orientation::GetAngle() const
+{
+    return heading;
 }
 
 float
 Orientation::GetCos() const
 {
-    return cosTbl[heading];
+    return heading.GetCos();
 }
 
 float
 Orientation::GetSin() const
 {
-    return sinTbl[heading];
+    return heading.GetSin();
 }
 
 void
 Orientation::AdjustHeading(const int delta)
 {
-    heading += delta;
-    heading &= ANGLE_MASK;
+    heading += Angle(delta);
 }
