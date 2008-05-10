@@ -44,22 +44,22 @@ struct TileWorldItem
 class TileWorldResource
             : public ResourceData
 {
-private:
-    unsigned int xCenter;
-    unsigned int yCenter;
-    std::vector<TileWorldItem> items;
-public:
-    TileWorldResource();
-    virtual ~TileWorldResource();
-    unsigned int GetMinX() const;
-    unsigned int GetMaxX() const;
-    unsigned int GetMinY() const;
-    unsigned int GetMaxY() const;
-    unsigned int GetSize() const;
-    TileWorldItem& GetItem ( unsigned int i );
-    void Clear();
-    void Load ( FileBuffer *buffer );
-    unsigned int Save ( FileBuffer *buffer );
+    private:
+        unsigned int xCenter;
+        unsigned int yCenter;
+        std::vector<TileWorldItem> items;
+    public:
+        TileWorldResource();
+        virtual ~TileWorldResource();
+        unsigned int GetMinX() const;
+        unsigned int GetMaxX() const;
+        unsigned int GetMinY() const;
+        unsigned int GetMaxY() const;
+        unsigned int GetSize() const;
+        TileWorldItem& GetItem ( unsigned int i );
+        void Clear();
+        void Load ( FileBuffer *buffer );
+        unsigned int Save ( FileBuffer *buffer );
 };
 
 #endif
