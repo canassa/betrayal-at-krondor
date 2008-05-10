@@ -89,47 +89,47 @@ static const unsigned int TC_OTHER     = 2;
 
 class GidInfo
 {
-public:
-    unsigned int xoffset;
-    unsigned int yoffset;
-    unsigned int flags;
+    public:
+        unsigned int xoffset;
+        unsigned int yoffset;
+        unsigned int flags;
 };
 
 class DatInfo
 {
-public:
-    unsigned int objectFlags;
-    unsigned int objectType;
-    unsigned int terrainType;
-    unsigned int terrainClass;
-    unsigned int sprite;
-    Vector3D min;
-    Vector3D max;
-    Vector3D pos;
-    std::vector<Vector3D *> vertices;
-    DatInfo();
-    ~DatInfo();
+    public:
+        unsigned int objectFlags;
+        unsigned int objectType;
+        unsigned int terrainType;
+        unsigned int terrainClass;
+        unsigned int sprite;
+        Vector3D min;
+        Vector3D max;
+        Vector3D pos;
+        std::vector<Vector3D *> vertices;
+        DatInfo();
+        ~DatInfo();
 };
 
 class TableResource
-            : public TaggedResource
+    : public TaggedResource
 {
-private:
-    std::vector<std::string> mapItems;
-    std::vector<DatInfo *> datItems;
-    std::vector<GidInfo> gidItems;
-public:
-    TableResource();
-    virtual ~TableResource();
-    unsigned int GetMapSize() const;
-    std::string& GetMapItem ( const unsigned int i );
-    unsigned int GetDatSize() const;
-    DatInfo* GetDatItem ( const unsigned int i );
-    unsigned int GetGidSize() const;
-    GidInfo& GetGidItem ( const unsigned int i );
-    void Clear();
-    void Load ( FileBuffer *buffer );
-    unsigned int Save ( FileBuffer *buffer );
+    private:
+        std::vector<std::string> mapItems;
+        std::vector<DatInfo *> datItems;
+        std::vector<GidInfo> gidItems;
+    public:
+        TableResource();
+        virtual ~TableResource();
+        unsigned int GetMapSize() const;
+        std::string& GetMapItem ( const unsigned int i );
+        unsigned int GetDatSize() const;
+        DatInfo* GetDatItem ( const unsigned int i );
+        unsigned int GetGidSize() const;
+        GidInfo& GetGidItem ( const unsigned int i );
+        void Clear();
+        void Load ( FileBuffer *buffer );
+        unsigned int Save ( FileBuffer *buffer );
 };
 
 #endif
