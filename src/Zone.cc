@@ -52,7 +52,7 @@ Zone::Clear()
     }
     for (std::map<const std::pair<unsigned int, unsigned int>, TileWorldResource *>::iterator it = tiles.begin(); it != tiles.end(); ++it)
     {
-        delete (*it).second;
+        delete it->second;
     }
     tiles.clear();
     if (table)

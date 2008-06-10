@@ -79,7 +79,7 @@ SoundResource::Clear()
 {
     for (std::map<unsigned int, SoundData>::iterator it = soundMap.begin(); it != soundMap.end(); ++it)
     {
-        SoundData data = (*it).second;
+        SoundData data = it->second;
         for (std::vector<Sound *>::iterator it2 = data.sounds.begin(); it2 != data.sounds.end(); ++it2)
         {
             delete (*it2);

@@ -33,7 +33,7 @@ TaggedResource::ClearTags()
 {
     for (std::map<const unsigned int, FileBuffer*>::iterator it = bufferMap.begin(); it != bufferMap.end(); ++it)
     {
-        delete (*it).second;
+        delete it->second;
     }
     bufferMap.clear();
 }
@@ -70,7 +70,7 @@ TaggedResource::Split(FileBuffer *buffer)
             std::map<const unsigned int, FileBuffer*>::iterator it = bufferMap.find(label);
             if (it != bufferMap.end())
             {
-                delete (*it).second;
+                delete it->second;
                 bufferMap.erase(it);
             }
             if (size & 0x80000000)

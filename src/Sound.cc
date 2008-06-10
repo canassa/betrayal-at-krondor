@@ -240,8 +240,8 @@ Sound::GenerateMidi()
     unsigned int tick = 0;
     for (std::multimap<unsigned int, MidiEvent>::iterator it = midiEvents.begin(); it != midiEvents.end(); ++it)
     {
-        MidiEvent& me = (*it).second;
-        me.delta = (*it).first - tick;
+        MidiEvent& me = it->second;
+        me.delta = it->first - tick;
         size += 1;
         if (me.delta >= (1 << 7))
         {
@@ -256,7 +256,7 @@ Sound::GenerateMidi()
             size += 1;
         }
         size += me.size;
-        tick = (*it).first;
+        tick = it->first;
     }
     buffer = new FileBuffer(8 + SMF_HEADER_SIZE + 8 + size + 4);
     buffer->PutUint32LE(SMF_HEADER);
@@ -268,7 +268,7 @@ Sound::GenerateMidi()
     buffer->PutUint32BE(size);
     for (std::multimap<unsigned int, MidiEvent>::iterator it = midiEvents.begin(); it != midiEvents.end(); ++it)
     {
-        MidiEvent& me = (*it).second;
+        MidiEvent& me = it->second;
         PutVariableLength(buffer, me.delta);
         for (unsigned int i = 0; i < me.size; i++)
         {
