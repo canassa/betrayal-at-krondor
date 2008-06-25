@@ -56,6 +56,9 @@ class Angle
         bool operator== ( const Angle &a ) const;
         bool operator!= ( const Angle &a ) const;
         bool operator< ( const Angle &a ) const;
+        bool operator> ( const Angle &a ) const;
+        bool operator<= ( const Angle &a ) const;
+        bool operator>= ( const Angle &a ) const;
 };
 
 class Vector2D
@@ -80,6 +83,9 @@ class Vector2D
         bool operator== ( const Vector2D &p ) const;
         bool operator!= ( const Vector2D &p ) const;
         bool operator< ( const Vector2D &p ) const;
+        bool operator> ( const Vector2D &p ) const;
+        bool operator<= ( const Vector2D &p ) const;
+        bool operator>= ( const Vector2D &p ) const;
         int GetX() const;
         int GetY() const;
         void SetX ( int x );
@@ -117,6 +123,9 @@ class Vector3D
         bool operator== ( const Vector3D &p ) const;
         bool operator!= ( const Vector3D &p ) const;
         bool operator< ( const Vector3D &p ) const;
+        bool operator> ( const Vector3D &p ) const;
+        bool operator<= ( const Vector3D &p ) const;
+        bool operator>= ( const Vector3D &p ) const;
         int GetX() const;
         int GetY() const;
         int GetZ() const;
@@ -142,6 +151,9 @@ class Rectangle
         bool operator== ( const Rectangle &r );
         bool operator!= ( const Rectangle &r );
         bool operator< ( const Rectangle &r );
+        bool operator> ( const Rectangle &r );
+        bool operator<= ( const Rectangle &r );
+        bool operator>= ( const Rectangle &r );
         int GetXPos() const;
         int GetYPos() const;
         int GetXCenter() const;

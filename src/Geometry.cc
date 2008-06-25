@@ -99,6 +99,21 @@ bool Angle::operator< ( const Angle &a ) const
     return angle < a.angle;
 }
 
+bool Angle::operator> ( const Angle &a ) const
+{
+    return angle > a.angle;
+}
+
+bool Angle::operator<= ( const Angle &a ) const
+{
+    return angle <= a.angle;
+}
+
+bool Angle::operator>= ( const Angle &a ) const
+{
+    return angle >= a.angle;
+}
+
 Vector2D::Vector2D()
         : xCoord(0)
         , yCoord(0)
@@ -186,6 +201,22 @@ bool Vector2D::operator<(const Vector2D &p) const
 {
     return ((xCoord < p.xCoord) && (yCoord <= p.yCoord)) ||
            ((yCoord < p.yCoord) && (xCoord <= p.xCoord));
+}
+
+bool Vector2D::operator>(const Vector2D &p) const
+{
+    return ((xCoord > p.xCoord) && (yCoord >= p.yCoord)) ||
+           ((yCoord > p.yCoord) && (xCoord >= p.xCoord));
+}
+
+bool Vector2D::operator<=(const Vector2D &p) const
+{
+    return (xCoord <= p.xCoord) && (yCoord <= p.yCoord);
+}
+
+bool Vector2D::operator>=(const Vector2D &p) const
+{
+    return (xCoord >= p.xCoord) && (yCoord >= p.yCoord);
 }
 
 int Vector2D::GetX() const
@@ -372,9 +403,26 @@ bool Vector3D::operator!=(const Vector3D &p) const
 
 bool Vector3D::operator<(const Vector3D &p) const
 {
-    return ((xCoord < p.xCoord) && (yCoord <= p.yCoord) && ((zCoord <= p.zCoord))) ||
-           ((yCoord < p.yCoord) && (zCoord <= p.zCoord) && ((xCoord <= p.xCoord))) ||
-           ((zCoord < p.zCoord) && (xCoord <= p.xCoord) && ((yCoord <= p.yCoord)));
+    return ((xCoord < p.xCoord) && (yCoord <= p.yCoord) && (zCoord <= p.zCoord)) ||
+           ((yCoord < p.yCoord) && (zCoord <= p.zCoord) && (xCoord <= p.xCoord)) ||
+           ((zCoord < p.zCoord) && (xCoord <= p.xCoord) && (yCoord <= p.yCoord));
+}
+
+bool Vector3D::operator>(const Vector3D &p) const
+{
+    return ((xCoord > p.xCoord) && (yCoord >= p.yCoord) && (zCoord >= p.zCoord)) ||
+           ((yCoord > p.yCoord) && (zCoord >= p.zCoord) && (xCoord >= p.xCoord)) ||
+           ((zCoord > p.zCoord) && (xCoord >= p.xCoord) && (yCoord >= p.yCoord));
+}
+
+bool Vector3D::operator<=(const Vector3D &p) const
+{
+    return (xCoord <= p.xCoord) && (yCoord <= p.yCoord) && (zCoord <= p.zCoord);
+}
+
+bool Vector3D::operator>=(const Vector3D &p) const
+{
+    return (xCoord >= p.xCoord) && (yCoord >= p.yCoord) && (zCoord >= p.zCoord);
 }
 
 int Vector3D::GetX() const
@@ -481,6 +529,27 @@ bool Rectangle::operator<(const Rectangle &r)
     return (xpos < r.xpos) ||
            ((xpos == r.xpos) && (ypos < r.ypos)) ||
            ((xpos == r.xpos) && (ypos == r.ypos) && ((width * height) < (r.width * r.height)));
+}
+
+bool Rectangle::operator>(const Rectangle &r)
+{
+    return (xpos > r.xpos) ||
+            ((xpos == r.xpos) && (ypos > r.ypos)) ||
+            ((xpos == r.xpos) && (ypos == r.ypos) && ((width * height) > (r.width * r.height)));
+}
+
+bool Rectangle::operator<=(const Rectangle &r)
+{
+    return (xpos <= r.xpos) ||
+            ((xpos == r.xpos) && (ypos <= r.ypos)) ||
+            ((xpos == r.xpos) && (ypos == r.ypos) && ((width * height) <= (r.width * r.height)));
+}
+
+bool Rectangle::operator>=(const Rectangle &r)
+{
+    return (xpos >= r.xpos) ||
+            ((xpos == r.xpos) && (ypos >= r.ypos)) ||
+            ((xpos == r.xpos) && (ypos == r.ypos) && ((width * height) >= (r.width * r.height)));
 }
 
 int Rectangle::GetXPos() const
