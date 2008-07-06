@@ -26,8 +26,10 @@
 
 #include "Geometry.h"
 
-static const int ANGLE_OF_VIEW = 12;
 static const unsigned int VIEW_DISTANCE = 32000;
+
+static const int ANGLE_OF_VIEW = 12;
+static const int ANGLE_VIEW_DISTANCE = VIEW_DISTANCE / 2;
 
 static const int TERRAIN_HEIGHT = 38;
 
@@ -52,6 +54,7 @@ class Vertex
         Vector2D ToFirstPerson ( int w, int h, Angle heading );
         Vector2D ToTopDown ( int w, int h );
         void CalculateRelativePosition ( const Vector2D &p );
+        bool IsInView ( const int heading );
 };
 
 #endif

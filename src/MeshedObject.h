@@ -27,13 +27,15 @@
 #include "GenericObject.h"
 
 class MeshedObject
-            : public GenericObject
+    : public GenericObject
 {
-public:
-    MeshedObject();
-    ~MeshedObject();
-    void DrawFirstPerson ( const int x, const int y, const int w, const int h, const int heading );
-    void DrawTopDown();
+    public:
+        MeshedObject(const Vector2D& p);
+        ~MeshedObject();
+        void CalculateRelativePosition ( const Vector2D &p );
+        bool IsInView ( const int heading, unsigned int & distance );
+        void DrawFirstPerson ( const int x, const int y, const int w, const int h, const int heading );
+        void DrawTopDown();
 };
 
 #endif

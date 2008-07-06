@@ -20,8 +20,8 @@
 #include "MediaToolkit.h"
 #include "TerrainObject.h"
 
-TerrainObject::TerrainObject(Image *image)
-        : GenericObject()
+TerrainObject::TerrainObject(const Vector2D& p, Image *image)
+        : GenericObject(p)
         , vertices()
         , xCoords(0)
         , yCoords(0)
@@ -57,32 +57,41 @@ void TerrainObject::AddVertex(const Vertex& v)
     yCoords = new int[vertices.size()];
 }
 
+Vertex& TerrainObject::GetVertex(const unsigned int i)
+{
+    return vertices[i];
+}
+
+unsigned int TerrainObject::GetNumVertices()
+{
+    return vertices.size();
+}
+
 void TerrainObject::CalculateRelativePosition(const Vector2D& p)
 {
+    pos.CalculateRelativePosition(p);
     for (std::vector<Vertex>::iterator it = vertices.begin(); it != vertices.end(); ++it)
     {
         it->CalculateRelativePosition(p);
     }
 }
 
-int TerrainObject::GetAngle()
+bool TerrainObject::IsInView(const int heading, unsigned int & distance)
 {
-    int sum = 0;
+    if (pos.IsInView(heading))
+    {
+        distance = pos.GetDistance();
+        return true;
+    }
     for (std::vector<Vertex>::iterator it = vertices.begin(); it != vertices.end(); ++it)
     {
-        sum += it->GetAngle();
+        if (it->IsInView(heading))
+        {
+            distance = it->GetDistance();
+            return true;
+        }
     }
-    return sum / vertices.size();
-}
-
-unsigned int TerrainObject::GetDistance()
-{
-    unsigned int sum = 0;
-    for (std::vector<Vertex>::iterator it = vertices.begin(); it != vertices.end(); ++it)
-    {
-        sum += it->GetDistance();
-    }
-    return sum / vertices.size();
+    return false;
 }
 
 void TerrainObject::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
@@ -96,7 +105,7 @@ void TerrainObject::DrawFirstPerson(const int x, const int y, const int w, const
         yCoords[i] = v.GetY();
     }
     MediaToolkit::GetInstance()->GetVideo()->FillPolygon(xCoords, yCoords, vertices.size(), texture->GetPixels(),
-                                                         offset - x, TERRAIN_YOFFSET - y, texture->GetWidth());
+                                                         offset - x, TERRAIN_YOFFSET - y - h + TERRAIN_HEIGHT, texture->GetWidth());
 }
 
 void TerrainObject::DrawTopDown()

@@ -35,12 +35,12 @@ Scene::~Scene()
 {
     for (std::multimap<const Vector2D, SpritedObject *>::iterator it = sprites.begin(); it != sprites.end(); ++it)
     {
-        delete (*it).second;
+        delete it->second;
     }
     sprites.clear();
     for (std::multimap<const Vector2D, TerrainObject *>::iterator it = terrains.begin(); it != terrains.end(); ++it)
     {
-        delete (*it).second;
+        delete it->second;
     }
     terrains.clear();
     spriteZBuffer.clear();
@@ -49,71 +49,58 @@ Scene::~Scene()
     delete terrainTexture;
 }
 
-void
-Scene::AddObject(const Vector2D &cell, SpritedObject *obj)
+void Scene::AddObject(const Vector2D &cell, SpritedObject *obj)
 {
     sprites.insert(std::pair<const Vector2D, SpritedObject *>(cell, obj));
 }
 
-void
-Scene::AddObject(const Vector2D &cell, TerrainObject *obj)
+void Scene::AddObject(const Vector2D &cell, TerrainObject *obj)
 {
     terrains.insert(std::pair<const Vector2D, TerrainObject *>(cell, obj));
 }
 
-void
-Scene::FillSpriteZBuffer(Camera *cam)
+void Scene::FillSpriteZBuffer(Camera *cam)
 {
     spriteZBuffer.clear();
     Vector2D cell = cam->GetPosition().GetCell();
     int heading = cam->GetHeading();
     for (std::multimap<const Vector2D, SpritedObject *>::iterator it = sprites.lower_bound(cell); it != sprites.upper_bound(cell); ++it)
     {
-        (*it).second->CalculateRelativePosition(cam->GetPosition().GetPos());
-        Orientation orient(((*it).second->GetAngle() - heading) & ANGLE_MASK);
-        int angle = orient.GetHeading();
-        unsigned int distance = (*it).second->GetDistance();
-        if ((distance < VIEW_DISTANCE) &&
-            ((((int)(ANGLE_SIZE - ANGLE_OF_VIEW) <= angle) || (angle <= (int)ANGLE_OF_VIEW)) ||
-             (((WEST < angle) || (angle < EAST)) && (abs((int)((float)distance * orient.GetSin())) < 128))))
+        it->second->CalculateRelativePosition(cam->GetPosition().GetPos());
+        unsigned int distance;
+        if (it->second->IsInView(heading, distance))
         {
-            spriteZBuffer.insert(std::pair<int, SpritedObject *>(distance, (*it).second));
+            spriteZBuffer.insert(std::pair<int, SpritedObject *>(distance, it->second));
         }
     }
 }
 
-void
-Scene::FillTerrainZBuffer(Camera *cam)
+void Scene::FillTerrainZBuffer(Camera *cam)
 {
     terrainZBuffer.clear();
     Vector2D cell = cam->GetPosition().GetCell();
     int heading = cam->GetHeading();
-    for (std::multimap<const Vector2D, TerrainObject *>::iterator it = terrains.lower_bound(cell); it != terrains.upper_bound(cell); ++it)
+    for (std::multimap<const Vector2D, TerrainObject *>::iterator it = terrains.lower_bound(cell - Vector2D(1,1));
+         it != terrains.upper_bound(cell + Vector2D(1,1)); ++it)
     {
-        (*it).second->CalculateRelativePosition(cam->GetPosition().GetPos());
-        Orientation orient(((*it).second->GetAngle() - heading) & ANGLE_MASK);
-        int angle = orient.GetHeading();
-        unsigned int distance = (*it).second->GetDistance();
-        if ((distance < VIEW_DISTANCE) &&
-             ((((int)(ANGLE_SIZE - ANGLE_OF_VIEW) <= angle) || (angle <= (int)ANGLE_OF_VIEW)) ||
-             (((WEST < angle) || (angle < EAST)) && (abs((int)((float)distance * orient.GetSin())) < 128))))
+        it->second->CalculateRelativePosition(cam->GetPosition().GetPos());
+        unsigned int distance;
+        if (it->second->IsInView(heading, distance))
         {
-            terrainZBuffer.insert(std::pair<int, TerrainObject *>(distance, (*it).second));
+            terrainZBuffer.insert(std::pair<int, TerrainObject *>(distance, it->second));
         }
     }
 }
 
-void
-Scene::DrawHorizon(const int x, const int y, const int w, const int, Camera *cam)
+void Scene::DrawHorizon(const int x, const int y, const int w, const int, Camera *cam)
 {
     static const int HORIZON_TOP_SIZE = 34;
     video->FillRect(x, y, w, HORIZON_TOP_SIZE, horizonTexture->GetPixel(0, 0));
-    video->FillRect(x, y + HORIZON_TOP_SIZE, w, horizonTexture->GetHeight(),
-                    horizonTexture->GetPixels(), (cam->GetHeading() << 2) - x, -y - HORIZON_TOP_SIZE, horizonTexture->GetWidth());
+    video->FillRect(x, y + HORIZON_TOP_SIZE, w, horizonTexture->GetHeight(), horizonTexture->GetPixels(),
+                    (cam->GetHeading() << 2) - x, -y - HORIZON_TOP_SIZE, horizonTexture->GetWidth());
 }
 
-void
-Scene::DrawGround(const int x, const int y, const int w, const int h, Camera *cam)
+void Scene::DrawGround(const int x, const int y, const int w, const int h, Camera *cam)
 {
     static const int TERRAIN_YOFFSET = 81;
     int offset = (((cam->GetHeading() * 16) + ((cam->GetPos().GetX() + cam->GetPos().GetY()) / 100)) % (terrainTexture->GetWidth() / 3));
@@ -121,30 +108,27 @@ Scene::DrawGround(const int x, const int y, const int w, const int h, Camera *ca
                     offset - x, TERRAIN_YOFFSET - y - h + TERRAIN_HEIGHT, terrainTexture->GetWidth());
 }
 
-void
-Scene::DrawZBuffer(const int x, const int y, const int w, const int h, Camera *cam)
+void Scene::DrawZBuffer(const int x, const int y, const int w, const int h, Camera *cam)
 {
+    DrawGround(x, y, w, h, cam);
     for (std::multimap<const unsigned int, TerrainObject *>::reverse_iterator it = terrainZBuffer.rbegin(); it != terrainZBuffer.rend(); it++)
     {
-        (*it).second->DrawFirstPerson(x, y, w, h, cam);
+        it->second->DrawFirstPerson(x, y, w, h, cam);
     }
+    DrawHorizon(x, y, w, h, cam);
     for (std::multimap<const unsigned int, SpritedObject *>::reverse_iterator it = spriteZBuffer.rbegin(); it != spriteZBuffer.rend(); it++)
     {
-        (*it).second->DrawFirstPerson(x, y, w, h, cam);
+        it->second->DrawFirstPerson(x, y, w, h, cam);
     }
 }
 
-void
-Scene::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
+void Scene::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
 {
     FillSpriteZBuffer(cam);
     FillTerrainZBuffer(cam);
-    DrawHorizon(x, y, w, h, cam);
-    DrawGround(x, y, w, h, cam);
     DrawZBuffer(x, y, w, h, cam);
 }
 
-void
-Scene::DrawTopDown()
+void Scene::DrawTopDown()
 {
 }

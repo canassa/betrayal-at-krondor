@@ -38,12 +38,13 @@ class TerrainObject
         int *yCoords;
         Image *texture;
     public:
-        TerrainObject( Image *image );
+        TerrainObject( const Vector2D& p, Image *image );
         ~TerrainObject();
         void AddVertex ( const Vertex& v );
+        unsigned int GetNumVertices();
+        Vertex& GetVertex( const unsigned int i );
         void CalculateRelativePosition ( const Vector2D &p );
-        int GetAngle();
-        unsigned int GetDistance();
+        bool IsInView ( const int heading, unsigned int & distance );
         void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam );
         void DrawTopDown();
 };

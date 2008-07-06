@@ -18,7 +18,9 @@
  */
 
 #include <cstdio>
+#include <cstdlib>
 #include "Geometry.h"
+#include "Orientation.h"
 #include "Vertex.h"
 
 Vertex::Vertex()
@@ -99,4 +101,16 @@ void Vertex::CalculateRelativePosition(const Vector2D &p)
     angle = Angle(ANGLE_SIZE / 4 - relpos.GetTheta());
     distance = relpos.GetRho();
     distanceFactor = 2.0 * (((float)VIEW_DISTANCE / ((float)VIEW_DISTANCE + (float)distance)) - 0.5);
+}
+
+bool Vertex::IsInView(const int heading)
+{
+    if (distance > VIEW_DISTANCE)
+    {
+        return false;
+    }
+    Orientation orient((angle.Get() - heading) & ANGLE_MASK);
+    int orientHeading = orient.GetHeading();
+    return (((int)(ANGLE_SIZE - ANGLE_OF_VIEW) <= orientHeading) || (orientHeading <= (int)ANGLE_OF_VIEW)) ||
+            (((WEST <= orientHeading) || (orientHeading <= EAST)) && (abs((int)((float)distance * orient.GetSin())) < ANGLE_VIEW_DISTANCE));
 }

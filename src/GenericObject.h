@@ -29,12 +29,15 @@
 
 class GenericObject
 {
+    protected:
+        Vertex pos;
     public:
-        GenericObject();
+        GenericObject(const Vector2D& p);
         virtual ~GenericObject();
+        int GetAngle();
+        unsigned int GetDistance();
         virtual void CalculateRelativePosition ( const Vector2D &p ) = 0;
-        virtual int GetAngle() = 0;
-        virtual unsigned int GetDistance() = 0;
+        virtual bool IsInView ( const int heading, unsigned int & distance ) = 0;
         virtual void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam ) = 0;
         virtual void DrawTopDown() = 0;
 };

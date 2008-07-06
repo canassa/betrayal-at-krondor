@@ -19,8 +19,22 @@
 
 #include "GenericObject.h"
 
-GenericObject::GenericObject()
-{}
+GenericObject::GenericObject(const Vector2D& p)
+    : pos(p)
+{
+}
 
 GenericObject::~GenericObject()
-{}
+{
+}
+
+int GenericObject::GetAngle()
+{
+    return pos.GetAngle();
+}
+
+unsigned int GenericObject::GetDistance()
+{
+    return pos.GetDistance();
+}
+

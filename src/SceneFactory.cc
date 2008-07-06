@@ -41,16 +41,16 @@ void SceneFactory::AddFixedObjects(Scene* scene)
             DatInfo *dat = table->GetDatItem(i);
             switch (dat->objectType)
             {
-                case OT_FIELD:
-/*                    {
-                        TerrainObject *terrObj = new TerrainObject();
+                case OT_EXTERIOR:
+                    {
+/*                        TerrainObject *terrObj = new TerrainObject();
                         for (unsigned j = 0; j < dat->vertices.size(); j++)
                         {
                             terrObj->AddVertex(Vertex(*(dat->vertices[j])));
                         }
-                        scene->AddObject(Vector2D(x, y), terrObj);
+                        scene->AddObject(Vector2D(x, y), terrObj);*/
                     }
-                    break;*/
+                    break;
                 default:
                     break;
             }
@@ -58,7 +58,7 @@ void SceneFactory::AddFixedObjects(Scene* scene)
     }
 }
 
-void SceneFactory::AddTiledObjects(Scene* scene, unsigned int x, unsigned int y, Image *terrainTexture)
+void SceneFactory::AddTiledObjects(Scene* scene, unsigned int x, unsigned int y, Image* /*terrainTexture*/)
 {
     TableResource *table = zone.GetTable();
     TileWorldResource *tile = zone.GetTile(x, y);
@@ -72,12 +72,13 @@ void SceneFactory::AddTiledObjects(Scene* scene, unsigned int x, unsigned int y,
             {
                 case OT_TERRAIN:
                     {
-                        TerrainObject *terrObj = new TerrainObject(terrainTexture);
+                        // terrain tiles are not required and will only slow things down
+/*                        TerrainObject *terrObj = new TerrainObject(Vector2D(item.xloc, item.yloc), terrainTexture);
                         for (unsigned j = 0; j < dat->vertices.size(); j++)
                         {
-                            terrObj->AddVertex(Vertex(*(dat->vertices[j])));
+                            terrObj->AddVertex(Vertex(*(dat->vertices[j]) + Vector3D(item.xloc, item.yloc, 0)));
                         }
-                        scene->AddObject(Vector2D(x, y), terrObj);
+                        scene->AddObject(Vector2D(x, y), terrObj);*/
                     }
                     break;
                 case OT_TREE:
@@ -117,7 +118,8 @@ Scene * SceneFactory::CreateScene()
     horizonImages.push_back(zone.GetHorizon(1));
     horizonImages.push_back(zone.GetHorizon(2));
     horizonImages.push_back(zone.GetHorizon(3));
-    Image *horizonTexture = new Image(zone.GetHorizon(0)->GetWidth() * 5, zone.GetHorizon(0)->GetHeight(), horizonImages);
+    horizonImages.push_back(zone.GetHorizon(0));
+    Image *horizonTexture = new Image(zone.GetHorizon(0)->GetWidth() * horizonImages.size(), zone.GetHorizon(0)->GetHeight(), horizonImages);
     std::vector<Image *> terrainImages;
     Image terrain1(zone.GetTerrain()->GetWidth(), zone.GetTerrain()->GetHeight() - 2, zone.GetTerrain()->GetPixels());
     terrainImages.push_back(&terrain1);
@@ -125,7 +127,7 @@ Scene * SceneFactory::CreateScene()
     terrainImages.push_back(&terrain2);
     Image terrain3(zone.GetTerrain()->GetWidth(), zone.GetTerrain()->GetHeight() - 2, zone.GetTerrain()->GetPixels() + 2 * zone.GetTerrain()->GetWidth());
     terrainImages.push_back(&terrain3);
-    Image *terrainTexture = new Image(zone.GetTerrain()->GetWidth() * 3, zone.GetTerrain()->GetHeight() - 2, terrainImages);
+    Image *terrainTexture = new Image(zone.GetTerrain()->GetWidth() * terrainImages.size(), zone.GetTerrain()->GetHeight() - 2, terrainImages);
     Scene *scene = new Scene(horizonTexture, terrainTexture);
     AddFixedObjects(scene);
     for (unsigned int y = 1; y <= MAX_TILES; y++)

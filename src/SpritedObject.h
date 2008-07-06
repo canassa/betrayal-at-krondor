@@ -28,19 +28,17 @@
 #include "Image.h"
 
 class SpritedObject
-            : public GenericObject
+    : public GenericObject
 {
-private:
-    Vertex vertex;
-    Image *sprite;
-public:
-    SpritedObject ( const Vector2D &p, Image *img );
-    ~SpritedObject();
-    void CalculateRelativePosition ( const Vector2D &p );
-    int GetAngle();
-    unsigned int GetDistance();
-    void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam );
-    void DrawTopDown();
+    private:
+        Image *sprite;
+    public:
+        SpritedObject ( const Vector2D &p, Image *img );
+        ~SpritedObject();
+        void CalculateRelativePosition ( const Vector2D &p );
+        bool IsInView ( const int heading, unsigned int & distance );
+        void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam );
+        void DrawTopDown();
 };
 
 #endif

@@ -21,44 +21,40 @@
 #include "SpritedObject.h"
 
 SpritedObject::SpritedObject(const Vector2D &p, Image *img)
-        : GenericObject()
-        , vertex(p)
+        : GenericObject(p)
         , sprite(img)
-{}
+{
+}
 
 SpritedObject::~SpritedObject()
-{}
-
-int
-SpritedObject::GetAngle()
 {
-    return vertex.GetAngle();
 }
 
-unsigned int
-SpritedObject::GetDistance()
+void SpritedObject::CalculateRelativePosition(const Vector2D &p)
 {
-    return vertex.GetDistance();
+    pos.CalculateRelativePosition(p);
 }
 
-void
-SpritedObject::CalculateRelativePosition(const Vector2D &p)
+bool SpritedObject::IsInView(const int heading, unsigned int & distance)
 {
-    vertex.CalculateRelativePosition(p);
+    if (pos.IsInView(heading))
+    {
+        distance = pos.GetDistance();
+        return true;
+    }
+    return false;
 }
 
-void
-        SpritedObject::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
+void SpritedObject::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
 {
-    Image *image = new Image((int)((float)sprite->GetWidth() * vertex.GetDistanceFactor()), (int)((float)sprite->GetHeight() * vertex.GetDistanceFactor()), sprite);
-    int xx = (int)((float)(((vertex.GetAngle() - cam->GetHeading() + ANGLE_OF_VIEW - 1) & ANGLE_MASK) * w) / (float)(2 * ANGLE_OF_VIEW + 1));
-    int yy = h - (int)((float)TERRAIN_HEIGHT * (1.0 - vertex.GetDistanceFactor()));
-    int ww = MIN(image->GetWidth(), w - xx);
+    Image *image = new Image((int)((float)sprite->GetWidth() * pos.GetDistanceFactor()), (int)((float)sprite->GetHeight() * pos.GetDistanceFactor()), sprite);
+    Vector2D v = pos.ToFirstPerson(w, h, cam->GetOrientation().GetAngle());
+    int ww = MIN(image->GetWidth(), w - v.GetX());
     int hh = image->GetHeight();
-    image->Draw(x + xx, y + yy - hh, 0, 0, ww, hh, 0);
+    image->Draw(x + v.GetX(), y + v.GetY() - hh, 0, 0, ww, hh, 0);
     delete image;
 }
 
-void
-SpritedObject::DrawTopDown()
-{}
+void SpritedObject::DrawTopDown()
+{
+}
