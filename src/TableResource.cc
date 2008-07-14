@@ -21,7 +21,8 @@
 #include "TableResource.h"
 
 DatInfo::DatInfo()
-{}
+{
+}
 
 DatInfo::~DatInfo()
 {
@@ -32,10 +33,29 @@ DatInfo::~DatInfo()
     vertices.clear();
 }
 
+GidInfo::GidInfo()
+{
+}
+
+GidInfo::~GidInfo()
+{
+    for (std::vector<Vector2D*>::iterator it = textureCoords.begin(); it != textureCoords.end(); ++it)
+    {
+        delete (*it);
+    }
+    textureCoords.clear();
+    for (std::vector<Vector2D*>::iterator it = otherCoords.begin(); it != otherCoords.end(); ++it)
+    {
+        delete (*it);
+    }
+    otherCoords.clear();
+}
+
 TableResource::TableResource()
         : TaggedResource()
         , mapItems()
-{}
+{
+}
 
 TableResource::~TableResource()
 {
@@ -72,7 +92,7 @@ TableResource::GetGidSize() const
     return gidItems.size();
 }
 
-GidInfo&
+GidInfo*
 TableResource::GetGidItem(const unsigned int i)
 {
     return gidItems[i];
@@ -87,6 +107,10 @@ TableResource::Clear()
         delete (*it);
     }
     datItems.clear();
+    for (std::vector<GidInfo *>::iterator it = gidItems.begin(); it != gidItems.end(); ++it)
+    {
+        delete (*it);
+    }
     gidItems.clear();
 }
 
@@ -141,14 +165,25 @@ TableResource::Load(FileBuffer *buffer)
         for (unsigned int i = 0; i < numMapItems; i++)
         {
             gidbuf->Seek(gidOffset[i]);
-            GidInfo item;
-            item.xoffset = gidbuf->GetUint16LE();
-            item.yoffset = gidbuf->GetUint16LE();
+            GidInfo *item = new GidInfo();
+            item->xoffset = gidbuf->GetUint16LE();
+            item->yoffset = gidbuf->GetUint16LE();
             bool more = gidbuf->GetUint16LE() > 0;
-            item.flags = gidbuf->GetUint16LE();
+            item->flags = gidbuf->GetUint16LE();
             if (more)
             {
-                // TODO
+                gidbuf->Skip(2);
+                unsigned int n = gidbuf->GetUint16LE();
+                gidbuf->Skip(2);
+                for (unsigned int j = 0; j < n; j++)
+                {
+                    int u = gidbuf->GetSint8();
+                    int v = gidbuf->GetSint8();
+                    int x = gidbuf->GetSint16LE();
+                    int y = gidbuf->GetSint16LE();
+                    item->textureCoords.push_back(new Vector2D(u, v));
+                    item->otherCoords.push_back(new Vector2D(x, y));
+                }
             }
             gidItems.push_back(item);
         }

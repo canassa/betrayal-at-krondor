@@ -93,6 +93,10 @@ class GidInfo
         unsigned int xoffset;
         unsigned int yoffset;
         unsigned int flags;
+        std::vector <Vector2D *> textureCoords;
+        std::vector <Vector2D *> otherCoords;
+        GidInfo();
+        ~GidInfo();
 };
 
 class DatInfo
@@ -117,7 +121,7 @@ class TableResource
     private:
         std::vector<std::string> mapItems;
         std::vector<DatInfo *> datItems;
-        std::vector<GidInfo> gidItems;
+        std::vector<GidInfo *> gidItems;
     public:
         TableResource();
         virtual ~TableResource();
@@ -126,7 +130,7 @@ class TableResource
         unsigned int GetDatSize() const;
         DatInfo* GetDatItem ( const unsigned int i );
         unsigned int GetGidSize() const;
-        GidInfo& GetGidItem ( const unsigned int i );
+        GidInfo* GetGidItem ( const unsigned int i );
         void Clear();
         void Load ( FileBuffer *buffer );
         unsigned int Save ( FileBuffer *buffer );
