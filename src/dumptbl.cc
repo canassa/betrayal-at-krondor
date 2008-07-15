@@ -43,17 +43,20 @@ int main(int argc, char *argv[])
         FileManager::GetInstance()->Load(tbl, argv[1]);
         for (unsigned int i = 0; i < tbl->GetMapSize(); i++)
         {
-            GidInfo gid = tbl->GetGidItem(i);
+            GidInfo *gid = tbl->GetGidItem(i);
             DatInfo *dat = tbl->GetDatItem(i);
             printf("%3d: %-8s %6d %6d %04x %02x %2d %2d %2d %2d\n",
-                   i, tbl->GetMapItem(i).c_str(), gid.xoffset, gid.yoffset, gid.flags,
+                   i, tbl->GetMapItem(i).c_str(), gid->xoffset, gid->yoffset, gid->flags,
                    dat->objectFlags, dat->objectType, dat->terrainType, dat->terrainClass, dat->sprite);
             printf("\t(%6d, %6d, %6d) (%6d, %6d, %6d) (%6d, %6d, %6d)\n",
                    dat->min.GetX(), dat->min.GetY(), dat->min.GetZ(), dat->max.GetX(), dat->max.GetY(), dat->max.GetZ(),
                    dat->pos.GetX(), dat->pos.GetY(), dat->pos.GetZ());
             for (unsigned int j = 0; j < dat->vertices.size(); j++)
             {
-                printf("\t\t(%6d, %6d, %6d)\n", dat->vertices[j]->GetX(), dat->vertices[j]->GetY(), dat->vertices[j]->GetZ());
+                printf("\t\t(%6d, %6d, %6d) (%4d, %4d) (%6d, %6d)\n",
+                       dat->vertices[j]->GetX(), dat->vertices[j]->GetY(), dat->vertices[j]->GetZ(),
+                       gid->textureCoords[j]->GetX(), gid->textureCoords[j]->GetY(),
+                       gid->otherCoords[j]->GetX(), gid->otherCoords[j]->GetY());
             }
         }
         delete tbl;
