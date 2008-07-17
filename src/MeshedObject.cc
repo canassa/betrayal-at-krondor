@@ -28,13 +28,20 @@ MeshedObject::~MeshedObject()
 {
 }
 
-void
-MeshedObject::DrawFirstPerson(const int x, const int y, const int w, const int h, const int heading)
+void MeshedObject::CalculateRelativePosition(const Vector2D& /*p*/)
+{
+}
+
+bool MeshedObject::IsInView(const int /*heading*/, unsigned int & /*distance*/)
+{
+    return false;
+}
+
+void MeshedObject::DrawFirstPerson(const int x, const int y, const int w, const int h, const int heading)
 {
     if (x && y && w && h && heading);
 }
 
-void
-MeshedObject::DrawTopDown()
+void MeshedObject::DrawTopDown()
 {
 }
