@@ -51,12 +51,20 @@ int main(int argc, char *argv[])
             printf("\t(%6d, %6d, %6d) (%6d, %6d, %6d) (%6d, %6d, %6d)\n",
                    dat->min.GetX(), dat->min.GetY(), dat->min.GetZ(), dat->max.GetX(), dat->max.GetY(), dat->max.GetZ(),
                    dat->pos.GetX(), dat->pos.GetY(), dat->pos.GetZ());
+            for (unsigned int j = 0; j < gid->textureCoords.size(); j++)
+            {
+                printf("\t\t(%4d, %4d)\n",
+                       gid->textureCoords[j]->GetX(), gid->textureCoords[j]->GetY());
+            }
+            for (unsigned int j = 0; j < gid->otherCoords.size(); j++)
+            {
+                printf("\t\t(%6d, %6d)\n",
+                       gid->otherCoords[j]->GetX(), gid->otherCoords[j]->GetY());
+            }
             for (unsigned int j = 0; j < dat->vertices.size(); j++)
             {
-                printf("\t\t(%6d, %6d, %6d) (%4d, %4d) (%6d, %6d)\n",
-                       dat->vertices[j]->GetX(), dat->vertices[j]->GetY(), dat->vertices[j]->GetZ(),
-                       gid->textureCoords[j]->GetX(), gid->textureCoords[j]->GetY(),
-                       gid->otherCoords[j]->GetX(), gid->otherCoords[j]->GetY());
+                printf("\t\t(%6d, %6d, %6d)\n",
+                       dat->vertices[j]->GetX(), dat->vertices[j]->GetY(), dat->vertices[j]->GetZ());
             }
         }
         delete tbl;
