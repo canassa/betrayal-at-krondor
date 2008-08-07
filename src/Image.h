@@ -58,10 +58,10 @@ class Image
         void Load ( FileBuffer *buffer );
         unsigned int Save ( FileBuffer *buffer );
         void Read ( const int x, const int y );
-        void Draw ( const int x, const int y );
-        void Draw ( const int x, const int y, const uint8_t transparent );
-        void Draw ( const int x, const int y, const int xoff, const int yoff, const int w, const int h );
-        void Draw ( const int x, const int y, const int xoff, const int yoff, const int w, const int h, const uint8_t transparent );
+        void Draw ( const int x, const int y ) const;
+        void Draw ( const int x, const int y, const uint8_t transparent ) const;
+        void Draw ( const int x, const int y, const int xoff, const int yoff, const int w, const int h ) const;
+        void Draw ( const int x, const int y, const int xoff, const int yoff, const int w, const int h, const uint8_t transparent ) const;
 };
 
 #endif

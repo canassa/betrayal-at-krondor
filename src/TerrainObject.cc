@@ -20,7 +20,7 @@
 #include "MediaToolkit.h"
 #include "TerrainObject.h"
 
-TerrainObject::TerrainObject(const Vector2D& p, Image *image)
+TerrainObject::TerrainObject(const Vector2D& p, const Image *image)
         : GenericObject(p)
         , vertices()
         , xCoords(0)

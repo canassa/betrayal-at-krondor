@@ -390,32 +390,27 @@ Image::Save(FileBuffer *buffer)
     return 0;
 }
 
-void
-Image::Read(const int x, const int y)
+void Image::Read(const int x, const int y)
 {
     MediaToolkit::GetInstance()->GetVideo()->ReadImage(x, y, width, height, pixel);
 }
 
-void
-Image::Draw(const int x, const int y)
+void Image::Draw(const int x, const int y) const
 {
     MediaToolkit::GetInstance()->GetVideo()->DrawImage(x, y, width, height, pixel);
 }
 
-void
-Image::Draw(const int x, const int y, const uint8_t transparent)
+void Image::Draw(const int x, const int y, const uint8_t transparent) const
 {
     MediaToolkit::GetInstance()->GetVideo()->DrawImage(x, y, width, height, pixel, transparent);
 }
 
-void
-Image::Draw(const int x, const int y, const int xoff, const int yoff, const int w, const int h)
+void Image::Draw(const int x, const int y, const int xoff, const int yoff, const int w, const int h) const
 {
     MediaToolkit::GetInstance()->GetVideo()->DrawImage(x, y, width, height, xoff, yoff, w, h, pixel);
 }
 
-void
-Image::Draw(const int x, const int y, const int xoff, const int yoff, const int w, const int h, const uint8_t transparent)
+void Image::Draw(const int x, const int y, const int xoff, const int yoff, const int w, const int h, const uint8_t transparent) const
 {
     MediaToolkit::GetInstance()->GetVideo()->DrawImage(x, y, width, height, xoff, yoff, w, h, pixel, transparent);
 }

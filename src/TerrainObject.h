@@ -36,9 +36,9 @@ class TerrainObject
         std::vector<Vertex> vertices;
         int *xCoords;
         int *yCoords;
-        Image *texture;
+        const Image *texture;
     public:
-        TerrainObject( const Vector2D& p, Image *image );
+        TerrainObject( const Vector2D& p, const Image *image );
         ~TerrainObject();
         void AddVertex ( const Vertex& v );
         unsigned int GetNumVertices();
