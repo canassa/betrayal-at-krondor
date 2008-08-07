@@ -245,7 +245,7 @@ TableResource::Load(FileBuffer *buffer)
                         z = datbuf->GetSint16LE();
                     }
                 }
-                if ((item->objectFlags & OF_UNBOUNDED) && (item->objectFlags & OF_2D_OBJECT) && (n == 1)) // && (item->objectType != OT_DEADBODY1))
+                if ((item->objectFlags & OF_UNBOUNDED) && (item->objectFlags & OF_2D_OBJECT) && (n == 1))
                 {
                     datbuf->Skip(2);
                     item->sprite = datbuf->GetUint16LE();

@@ -30,8 +30,8 @@
 #include "FileManager.h"
 #include "TileWorldResource.h"
 
-static const unsigned int MAP_SIZE_X = 64;
-static const unsigned int MAP_SIZE_Y = 64;
+static const unsigned int MAP_SIZE_X = 96;
+static const unsigned int MAP_SIZE_Y = 96;
 
 int main(int argc, char *argv[])
 {
@@ -52,16 +52,27 @@ int main(int argc, char *argv[])
         for (unsigned int i = 0; i < wld->GetSize(); i++)
         {
             TileWorldItem mi = wld->GetItem(i);
-            printf("%d,%d: %3d %08x\n", mi.xloc, mi.yloc, mi.type, mi.flags);
-            unsigned int x = (mi.xloc - wld->GetMinX()) * MAP_SIZE_X / deltaX;
-            unsigned int y = (mi.yloc - wld->GetMinY()) * MAP_SIZE_Y / deltaY;
-            map[x + y * MAP_SIZE_X] = mi.type;
+            printf("%6d,%6d: %3d (%02x) %08x\n", mi.xloc, mi.yloc, mi.type, mi.type, mi.flags);
+            if (mi.type > 0)
+            {
+                unsigned int x = (mi.xloc - wld->GetMinX()) * MAP_SIZE_X / deltaX;
+                unsigned int y = (mi.yloc - wld->GetMinY()) * MAP_SIZE_Y / deltaY;
+                map[x + y * MAP_SIZE_X] = mi.type;
+            }
         }
         for (unsigned int y = 0; y < MAP_SIZE_Y; y++)
         {
             for (unsigned int x = 0; x < MAP_SIZE_X; x++)
             {
-                printf("%02x", map[x + y * MAP_SIZE_X]);
+                uint8_t m = map[x + y * MAP_SIZE_X];
+                if (m > 0)
+                {
+                    printf("%02x", m);
+                }
+                else
+                {
+                    printf("--");
+                }
             }
             printf("\n");
         }
