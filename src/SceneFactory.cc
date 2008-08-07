@@ -41,7 +41,7 @@ void SceneFactory::AddFixedObjects(Scene* scene)
             DatInfo *dat = table->GetDatItem(i);
             switch (dat->objectType)
             {
-                case OT_EXTERIOR:
+                case ET_EXTERIOR:
                     {
 /*                        TerrainObject *terrObj = new TerrainObject();
                         for (unsigned j = 0; j < dat->vertices.size(); j++)
@@ -70,7 +70,7 @@ void SceneFactory::AddTiledObjects(Scene* scene, unsigned int x, unsigned int y,
             DatInfo *dat = table->GetDatItem(item.type);
             switch (dat->objectType)
             {
-                case OT_TERRAIN:
+                case ET_TERRAIN:
                     {
                         // terrain tiles are not required and will only slow things down
 /*                        TerrainObject *terrObj = new TerrainObject(Vector2D(item.xloc, item.yloc), terrainTexture);
@@ -81,26 +81,26 @@ void SceneFactory::AddTiledObjects(Scene* scene, unsigned int x, unsigned int y,
                         scene->AddObject(Vector2D(x, y), terrObj);*/
                     }
                     break;
-                case OT_TREE:
-                case OT_TOMBSTONE:
-                case OT_SIGN:
-                case OT_DEADBODY2:
-                case OT_DIRTPILE:
-                case OT_FIRE:
-                case OT_FERN:
-                case OT_ROCKPILE:
-                case OT_BUSH1:
-                case OT_BUSH2:
-                case OT_BUSH3:
-                case OT_SLAB:
-                case OT_STUMP:
-                case OT_WELL:
-                case OT_ENGINE:
-                case OT_SCARECROW:
-                case OT_TRAP:
-                case OT_COLUMN:
-                case OT_BAG:
-                case OT_LADDER:
+                case ET_TREE:
+                case ET_TOMBSTONE:
+                case ET_SIGN:
+                case ET_DEADBODY2:
+                case ET_DIRTPILE:
+                case ET_FIRE:
+                case ET_FERN:
+                case ET_ROCKPILE:
+                case ET_BUSH1:
+                case ET_BUSH2:
+                case ET_BUSH3:
+                case ET_SLAB:
+                case ET_STUMP:
+                case ET_WELL:
+                case ET_ENGINE:
+                case ET_SCARECROW:
+                case ET_TRAP:
+                case ET_COLUMN:
+                case ET_BAG:
+                case ET_LADDER:
                     scene->AddObject(Vector2D(x, y), new SpritedObject(Vector2D(item.xloc, item.yloc), zone.GetSprite(dat->sprite)));
                     break;
                 default:

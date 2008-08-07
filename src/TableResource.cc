@@ -207,7 +207,7 @@ TableResource::Load(FileBuffer *buffer)
             datbuf->Skip(4);
             if (more)
             {
-                if (!(item->objectFlags & OF_UNBOUNDED))
+                if (!(item->objectFlags & EF_UNBOUNDED))
                 {
                     item->min.SetX(datbuf->GetSint16LE());
                     item->min.SetY(datbuf->GetSint16LE());
@@ -245,7 +245,7 @@ TableResource::Load(FileBuffer *buffer)
                         z = datbuf->GetSint16LE();
                     }
                 }
-                if ((item->objectFlags & OF_UNBOUNDED) && (item->objectFlags & OF_2D_OBJECT) && (n == 1))
+                if ((item->objectFlags & EF_UNBOUNDED) && (item->objectFlags & EF_2D_OBJECT) && (n == 1))
                 {
                     datbuf->Skip(2);
                     item->sprite = datbuf->GetUint16LE();

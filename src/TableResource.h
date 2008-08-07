@@ -29,52 +29,52 @@
 #include "Geometry.h"
 #include "TaggedResource.h"
 
-/* Object Flags */
-static const unsigned int OF_TERRAIN   = 0x00;
-static const unsigned int OF_UNBOUNDED = 0x20;
-static const unsigned int OF_2D_OBJECT = 0x40;
+/* Entity Flags */
+static const unsigned int EF_TERRAIN   = 0x00;
+static const unsigned int EF_UNBOUNDED = 0x20;
+static const unsigned int EF_2D_OBJECT = 0x40;
 
-/* Object Type */
-static const unsigned int OT_TERRAIN    =  0;
-static const unsigned int OT_EXTERIOR   =  1;
-static const unsigned int OT_BRIDGE     =  2;
-static const unsigned int OT_INTERIOR   =  3;
-static const unsigned int OT_HILL       =  4;
-static const unsigned int OT_TREE       =  5;
-static const unsigned int OT_CHEST      =  6;
-static const unsigned int OT_DEADBODY1  =  7;
-static const unsigned int OT_FENCE      =  8;
-static const unsigned int OT_GATE       =  9;
-static const unsigned int OT_BUILDING   = 10;
-static const unsigned int OT_TOMBSTONE  = 12;
-static const unsigned int OT_SIGN       = 13;
-static const unsigned int OT_ROOM       = 14;
-static const unsigned int OT_PIT        = 15;
-static const unsigned int OT_DEADBODY2  = 16;
-static const unsigned int OT_DIRTPILE   = 17;
-static const unsigned int OT_CORN       = 18;
-static const unsigned int OT_FIRE       = 19;
-static const unsigned int OT_ENTRANCE   = 20;
-static const unsigned int OT_GROVE      = 21;
-static const unsigned int OT_FERN       = 22;
-static const unsigned int OT_DOOR       = 23;
-static const unsigned int OT_CRYST      = 24;
-static const unsigned int OT_ROCKPILE   = 25;
-static const unsigned int OT_BUSH1      = 26;
-static const unsigned int OT_BUSH2      = 27;
-static const unsigned int OT_BUSH3      = 28;
-static const unsigned int OT_SLAB       = 29;
-static const unsigned int OT_STUMP      = 30;
-static const unsigned int OT_WELL       = 31;
-static const unsigned int OT_ENGINE     = 33;
-static const unsigned int OT_SCARECROW  = 34;
-static const unsigned int OT_TRAP       = 35;
-static const unsigned int OT_CATAPULT   = 36;
-static const unsigned int OT_COLUMN     = 37;
-static const unsigned int OT_LANDSCAPE  = 38;
-static const unsigned int OT_MOUNTAIN   = 39;
-static const unsigned int OT_BAG        = 41;
-static const unsigned int OT_LADDER     = 42;
+/* Entity Type */
+static const unsigned int ET_TERRAIN    =  0;
+static const unsigned int ET_EXTERIOR   =  1;
+static const unsigned int ET_BRIDGE     =  2;
+static const unsigned int ET_INTERIOR   =  3;
+static const unsigned int ET_HILL       =  4;
+static const unsigned int ET_TREE       =  5;
+static const unsigned int ET_CHEST      =  6;
+static const unsigned int ET_DEADBODY1  =  7;
+static const unsigned int ET_FENCE      =  8;
+static const unsigned int ET_GATE       =  9;
+static const unsigned int ET_BUILDING   = 10;
+static const unsigned int ET_TOMBSTONE  = 12;
+static const unsigned int ET_SIGN       = 13;
+static const unsigned int ET_ROOM       = 14;
+static const unsigned int ET_PIT        = 15;
+static const unsigned int ET_DEADBODY2  = 16;
+static const unsigned int ET_DIRTPILE   = 17;
+static const unsigned int ET_CORN       = 18;
+static const unsigned int ET_FIRE       = 19;
+static const unsigned int ET_ENTRANCE   = 20;
+static const unsigned int ET_GROVE      = 21;
+static const unsigned int ET_FERN       = 22;
+static const unsigned int ET_DOOR       = 23;
+static const unsigned int ET_CRYST      = 24;
+static const unsigned int ET_ROCKPILE   = 25;
+static const unsigned int ET_BUSH1      = 26;
+static const unsigned int ET_BUSH2      = 27;
+static const unsigned int ET_BUSH3      = 28;
+static const unsigned int ET_SLAB       = 29;
+static const unsigned int ET_STUMP      = 30;
+static const unsigned int ET_WELL       = 31;
+static const unsigned int ET_ENGINE     = 33;
+static const unsigned int ET_SCARECROW  = 34;
+static const unsigned int ET_TRAP       = 35;
+static const unsigned int ET_CATAPULT   = 36;
+static const unsigned int ET_COLUMN     = 37;
+static const unsigned int ET_LANDSCAPE  = 38;
+static const unsigned int ET_MOUNTAIN   = 39;
+static const unsigned int ET_BAG        = 41;
+static const unsigned int ET_LADDER     = 42;
 
 /* Terrain Type */
 static const unsigned int TT_NULL      = 0;
