@@ -24,8 +24,43 @@
 #include "SDL_Toolkit.h"
 #include "SDL_Video.h"
 
-static const int16_t      JOYSTICK_AXIS_FACTOR = 16384;
-static const unsigned int JOYSTICK_SPEED       = 4;
+#define GP2X_BUTTON_UP        (0)
+#define GP2X_BUTTON_UPLEFT    (1)
+#define GP2X_BUTTON_LEFT      (2)
+#define GP2X_BUTTON_DOWNLEFT  (3)
+#define GP2X_BUTTON_DOWN      (4)
+#define GP2X_BUTTON_DOWNRIGHT (5)
+#define GP2X_BUTTON_RIGHT     (6)
+#define GP2X_BUTTON_UPRIGHT   (7)
+#define GP2X_BUTTON_START     (8)
+#define GP2X_BUTTON_SELECT    (9)
+#define GP2X_BUTTON_R         (10)
+#define GP2X_BUTTON_L         (11)
+#define GP2X_BUTTON_A         (12)
+#define GP2X_BUTTON_B         (13)
+#define GP2X_BUTTON_Y         (14)
+#define GP2X_BUTTON_X         (15)
+#define GP2X_BUTTON_VOLUP     (16)
+#define GP2X_BUTTON_VOLDOWN   (17)
+#define GP2X_BUTTON_CLICK     (18)
+
+#define GP2X_AXIS_FACTOR (20000)
+#define GP2X_SPEED       (3)
+
+// for now assume GP2X mapping ...
+static const int JOYSTICK_BUTTON_UP        = GP2X_BUTTON_UP;
+static const int JOYSTICK_BUTTON_UPLEFT    = GP2X_BUTTON_UPLEFT;
+static const int JOYSTICK_BUTTON_LEFT      = GP2X_BUTTON_LEFT;
+static const int JOYSTICK_BUTTON_DOWNLEFT  = GP2X_BUTTON_DOWNLEFT;
+static const int JOYSTICK_BUTTON_DOWN      = GP2X_BUTTON_DOWN;
+static const int JOYSTICK_BUTTON_DOWNRIGHT = GP2X_BUTTON_DOWNRIGHT;
+static const int JOYSTICK_BUTTON_RIGHT     = GP2X_BUTTON_RIGHT;
+static const int JOYSTICK_BUTTON_UPRIGHT   = GP2X_BUTTON_UPRIGHT;
+static const int JOYSTICK_BUTTON_PRIMARY   = GP2X_BUTTON_R;
+static const int JOYSTICK_BUTTON_SECONDARY = GP2X_BUTTON_L;
+static const int JOYSTICK_BUTTON_TERTIARY  = GP2X_BUTTON_CLICK;
+static const int JOYSTICK_AXIS_FACTOR      = GP2X_AXIS_FACTOR;
+static const int JOYSTICK_SPEED            = GP2X_SPEED;
 
 SDL_Toolkit::SDL_Toolkit()
     : MediaToolkit()
@@ -173,11 +208,114 @@ SDL_Toolkit::HandleEvent(SDL_Event *event)
         case SDL_JOYBUTTONDOWN:
             if (event->jbutton.which == 0)
             {
+                switch (event->jbutton.button)
+                {
+                    case JOYSTICK_BUTTON_UP:
+                        yMove = -1;
+                        break;
+                    case JOYSTICK_BUTTON_UPLEFT:
+                        xMove = -1;
+                        yMove = -1;
+                        break;
+                    case JOYSTICK_BUTTON_LEFT:
+                        xMove = -1;
+                        break;
+                    case JOYSTICK_BUTTON_DOWNLEFT:
+                        xMove = -1;
+                        yMove = 1;
+                        break;
+                    case JOYSTICK_BUTTON_DOWN:
+                        yMove = 1;
+                        break;
+                    case JOYSTICK_BUTTON_DOWNRIGHT:
+                        xMove = 1;
+                        yMove = 1;
+                        break;
+                    case JOYSTICK_BUTTON_RIGHT:
+                        xMove = 1;
+                        break;
+                    case JOYSTICK_BUTTON_UPRIGHT:
+                        xMove = 1;
+                        yMove = -1;
+                        break;
+                    case JOYSTICK_BUTTON_PRIMARY:
+                        {
+                            PointerButtonEvent pbe(PB_PRIMARY, xPos, yPos);
+                            for (std::list<PointerButtonEventListener *>::iterator it = pointerButtonListeners.begin(); it != pointerButtonListeners.end(); ++it)
+                            {
+                                (*it)->PointerButtonPressed(pbe);
+                            }
+                        }
+                        break;
+                    case JOYSTICK_BUTTON_SECONDARY:
+                        {
+                            PointerButtonEvent pbe(PB_SECONDARY, xPos, yPos);
+                            for (std::list<PointerButtonEventListener *>::iterator it = pointerButtonListeners.begin(); it != pointerButtonListeners.end(); ++it)
+                            {
+                                (*it)->PointerButtonPressed(pbe);
+                            }
+                        }
+                        break;
+                    case JOYSTICK_BUTTON_TERTIARY:
+                        {
+                            PointerButtonEvent pbe(PB_TERTIARY, xPos, yPos);
+                            for (std::list<PointerButtonEventListener *>::iterator it = pointerButtonListeners.begin(); it != pointerButtonListeners.end(); ++it)
+                            {
+                                (*it)->PointerButtonPressed(pbe);
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
             break;
         case SDL_JOYBUTTONUP:
             if (event->jbutton.which == 0)
             {
+                switch (event->jbutton.button)
+                {
+                    case JOYSTICK_BUTTON_UP:
+                    case JOYSTICK_BUTTON_UPLEFT:
+                    case JOYSTICK_BUTTON_LEFT:
+                    case JOYSTICK_BUTTON_DOWNLEFT:
+                    case JOYSTICK_BUTTON_DOWN:
+                    case JOYSTICK_BUTTON_DOWNRIGHT:
+                    case JOYSTICK_BUTTON_RIGHT:
+                    case JOYSTICK_BUTTON_UPRIGHT:
+                        xMove = 0;
+                        yMove = 0;
+                        break;
+                    case JOYSTICK_BUTTON_PRIMARY:
+                        {
+                            PointerButtonEvent pbe(PB_PRIMARY, xPos, yPos);
+                            for (std::list<PointerButtonEventListener *>::iterator it = pointerButtonListeners.begin(); it != pointerButtonListeners.end(); ++it)
+                            {
+                                (*it)->PointerButtonReleased(pbe);
+                            }
+                        }
+                        break;
+                    case JOYSTICK_BUTTON_SECONDARY:
+                        {
+                            PointerButtonEvent pbe(PB_SECONDARY, xPos, yPos);
+                            for (std::list<PointerButtonEventListener *>::iterator it = pointerButtonListeners.begin(); it != pointerButtonListeners.end(); ++it)
+                            {
+                                (*it)->PointerButtonReleased(pbe);
+                            }
+                        }
+                        break;
+                    case JOYSTICK_BUTTON_TERTIARY:
+                        {
+                            PointerButtonEvent pbe(PB_TERTIARY, xPos, yPos);
+                            for (std::list<PointerButtonEventListener *>::iterator it = pointerButtonListeners.begin(); it != pointerButtonListeners.end(); ++it)
+                            {
+                                (*it)->PointerButtonReleased(pbe);
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
             break;
         case SDL_USEREVENT:
