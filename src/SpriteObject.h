@@ -17,8 +17,8 @@
  * Copyright (C) 2007-2008 Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef SPRITED_OBJECT_H
-#define SPRITED_OBJECT_H
+#ifndef SPRITE_OBJECT_H
+#define SPRITE_OBJECT_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -27,14 +27,14 @@
 #include "GenericObject.h"
 #include "Image.h"
 
-class SpritedObject
+class SpriteObject
     : public GenericObject
 {
     private:
         Image *sprite;
     public:
-        SpritedObject ( const Vector2D &p, Image *img );
-        ~SpritedObject();
+        SpriteObject ( const Vector2D &p, Image *img );
+        ~SpriteObject();
         void CalculateRelativePosition ( const Vector2D &p );
         bool IsInView ( const int heading, unsigned int & distance );
         void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam );

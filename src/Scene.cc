@@ -33,7 +33,7 @@ Scene::Scene(Image *horizon, Image *terrain)
 
 Scene::~Scene()
 {
-    for (std::multimap<const Vector2D, SpritedObject *>::iterator it = sprites.begin(); it != sprites.end(); ++it)
+    for (std::multimap<const Vector2D, SpriteObject *>::iterator it = sprites.begin(); it != sprites.end(); ++it)
     {
         delete it->second;
     }
@@ -49,9 +49,9 @@ Scene::~Scene()
     delete terrainTexture;
 }
 
-void Scene::AddObject(const Vector2D &cell, SpritedObject *obj)
+void Scene::AddObject(const Vector2D &cell, SpriteObject *obj)
 {
-    sprites.insert(std::pair<const Vector2D, SpritedObject *>(cell, obj));
+    sprites.insert(std::pair<const Vector2D, SpriteObject *>(cell, obj));
 }
 
 void Scene::AddObject(const Vector2D &cell, TerrainObject *obj)
@@ -64,13 +64,13 @@ void Scene::FillSpriteZBuffer(Camera *cam)
     spriteZBuffer.clear();
     Vector2D cell = cam->GetPosition().GetCell();
     int heading = cam->GetHeading();
-    for (std::multimap<const Vector2D, SpritedObject *>::iterator it = sprites.lower_bound(cell); it != sprites.upper_bound(cell); ++it)
+    for (std::multimap<const Vector2D, SpriteObject *>::iterator it = sprites.lower_bound(cell); it != sprites.upper_bound(cell); ++it)
     {
         it->second->CalculateRelativePosition(cam->GetPosition().GetPos());
         unsigned int distance;
         if (it->second->IsInView(heading, distance))
         {
-            spriteZBuffer.insert(std::pair<int, SpritedObject *>(distance, it->second));
+            spriteZBuffer.insert(std::pair<int, SpriteObject *>(distance, it->second));
         }
     }
 }
@@ -116,7 +116,7 @@ void Scene::DrawZBuffer(const int x, const int y, const int w, const int h, Came
         it->second->DrawFirstPerson(x, y, w, h, cam);
     }
     DrawHorizon(x, y, w, h, cam);
-    for (std::multimap<const unsigned int, SpritedObject *>::reverse_iterator it = spriteZBuffer.rbegin(); it != spriteZBuffer.rend(); it++)
+    for (std::multimap<const unsigned int, SpriteObject *>::reverse_iterator it = spriteZBuffer.rbegin(); it != spriteZBuffer.rend(); it++)
     {
         it->second->DrawFirstPerson(x, y, w, h, cam);
     }

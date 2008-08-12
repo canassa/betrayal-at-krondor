@@ -19,7 +19,7 @@
 
 #include "MeshedObject.h"
 #include "SceneFactory.h"
-#include "SpritedObject.h"
+#include "SpriteObject.h"
 #include "TerrainObject.h"
 
 SceneFactory::SceneFactory(Zone &z)
@@ -101,7 +101,7 @@ void SceneFactory::AddTiledObjects(Scene* scene, unsigned int x, unsigned int y,
                 case ET_COLUMN:
                 case ET_BAG:
                 case ET_LADDER:
-                    scene->AddObject(Vector2D(x, y), new SpritedObject(Vector2D(item.xloc, item.yloc), zone.GetSprite(dat->sprite)));
+                    scene->AddObject(Vector2D(x, y), new SpriteObject(Vector2D(item.xloc, item.yloc), zone.GetSprite(dat->sprite)));
                     break;
                 default:
                     break;

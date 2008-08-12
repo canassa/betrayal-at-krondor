@@ -29,7 +29,7 @@
 #include "Camera.h"
 #include "GenericObject.h"
 #include "Image.h"
-#include "SpritedObject.h"
+#include "SpriteObject.h"
 #include "TerrainObject.h"
 #include "Video.h"
 
@@ -39,9 +39,9 @@ class Scene
         Video *video;
         Image *horizonTexture;
         Image *terrainTexture;
-        std::multimap<const Vector2D, SpritedObject *> sprites;
+        std::multimap<const Vector2D, SpriteObject *> sprites;
         std::multimap<const Vector2D, TerrainObject *> terrains;
-        std::multimap<const unsigned int, SpritedObject *> spriteZBuffer;
+        std::multimap<const unsigned int, SpriteObject *> spriteZBuffer;
         std::multimap<const unsigned int, TerrainObject *> terrainZBuffer;
         void FillSpriteZBuffer ( Camera *cam );
         void FillTerrainZBuffer ( Camera *cam );
@@ -51,7 +51,7 @@ class Scene
     public:
         Scene ( Image *horizon, Image *terrain );
         ~Scene();
-        void AddObject ( const Vector2D &cell, SpritedObject *obj );
+        void AddObject ( const Vector2D &cell, SpriteObject *obj );
         void AddObject ( const Vector2D &cell, TerrainObject *obj );
         void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam );
         void DrawTopDown();

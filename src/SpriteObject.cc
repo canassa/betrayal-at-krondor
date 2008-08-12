@@ -18,24 +18,24 @@
  */
 
 #include "Defines.h"
-#include "SpritedObject.h"
+#include "SpriteObject.h"
 
-SpritedObject::SpritedObject(const Vector2D &p, Image *img)
+SpriteObject::SpriteObject(const Vector2D &p, Image *img)
         : GenericObject(p)
         , sprite(img)
 {
 }
 
-SpritedObject::~SpritedObject()
+SpriteObject::~SpriteObject()
 {
 }
 
-void SpritedObject::CalculateRelativePosition(const Vector2D &p)
+void SpriteObject::CalculateRelativePosition(const Vector2D &p)
 {
     pos.CalculateRelativePosition(p);
 }
 
-bool SpritedObject::IsInView(const int heading, unsigned int & distance)
+bool SpriteObject::IsInView(const int heading, unsigned int & distance)
 {
     if (pos.IsInView(heading))
     {
@@ -45,7 +45,7 @@ bool SpritedObject::IsInView(const int heading, unsigned int & distance)
     return false;
 }
 
-void SpritedObject::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
+void SpriteObject::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
 {
     Image *image = new Image((int)((float)sprite->GetWidth() * pos.GetDistanceFactor()), (int)((float)sprite->GetHeight() * pos.GetDistanceFactor()), sprite);
     Vector2D v = pos.ToFirstPerson(w, h, cam->GetOrientation().GetAngle());
@@ -55,6 +55,6 @@ void SpritedObject::DrawFirstPerson(const int x, const int y, const int w, const
     delete image;
 }
 
-void SpritedObject::DrawTopDown()
+void SpriteObject::DrawTopDown()
 {
 }

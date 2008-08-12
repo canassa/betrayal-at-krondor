@@ -90,7 +90,7 @@ noinst_HEADERS = AnimationResource.h \
                  SkillsWidget.h \
                  Sound.h \
                  SoundResource.h \
-                 SpritedObject.h \
+                 SpriteObject.h \
                  Statistics.h \
                  Subject.h \
                  TableResource.h \
@@ -183,8 +183,8 @@ libgame_a_SOURCES = Camera.cc \
                     Scene.h \
                     SceneFactory.cc \
                     SceneFactory.h \
-                    SpritedObject.cc \
-                    SpritedObject.h \
+                    SpriteObject.cc \
+                    SpriteObject.h \
                     Statistics.cc \
                     Statistics.h \
                     TerrainObject.cc \
