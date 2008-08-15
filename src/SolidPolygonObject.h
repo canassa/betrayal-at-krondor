@@ -33,9 +33,6 @@ class SolidPolygonObject
     : public PolygonObject
 {
     private:
-        std::vector<Vertex> vertices;
-        int *xCoords;
-        int *yCoords;
         const unsigned int color;
     public:
         SolidPolygonObject( const Vector2D& p, const unsigned int c );

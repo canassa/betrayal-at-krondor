@@ -38,11 +38,11 @@ class Scene
         Image *horizonTexture;
         Image *terrainTexture;
         std::multimap<const Vector2D, SpriteObject *> sprites;
-        std::multimap<const Vector2D, PatternPolygonObject *> terrains;
+        std::multimap<const Vector2D, PolygonObject *> polygons;
         std::multimap<const unsigned int, SpriteObject *> spriteZBuffer;
-        std::multimap<const unsigned int, PatternPolygonObject *> terrainZBuffer;
+        std::multimap<const unsigned int, PolygonObject *> polygonZBuffer;
         void FillSpriteZBuffer ( Camera *cam );
-        void FillTerrainZBuffer ( Camera *cam );
+        void FillPolygonZBuffer ( Camera *cam );
         void DrawHorizon ( const int x, const int y, const int w, const int h, Camera *cam );
         void DrawGround ( const int x, const int y, const int w, const int h, Camera *cam );
         void DrawZBuffer ( const int x, const int y, const int w, const int h, Camera *cam );
@@ -50,7 +50,7 @@ class Scene
         Scene ( Image *horizon, Image *terrain );
         ~Scene();
         void AddObject ( const Vector2D &cell, SpriteObject *obj );
-        void AddObject ( const Vector2D &cell, PatternPolygonObject *obj );
+        void AddObject ( const Vector2D &cell, PolygonObject *obj );
         void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam );
         void DrawTopDown();
 };

@@ -25,9 +25,9 @@ Scene::Scene(Image *horizon, Image *terrain)
         , horizonTexture(horizon)
         , terrainTexture(terrain)
         , sprites()
-        , terrains()
+        , polygons()
         , spriteZBuffer()
-        , terrainZBuffer()
+        , polygonZBuffer()
 {
 }
 
@@ -38,13 +38,13 @@ Scene::~Scene()
         delete it->second;
     }
     sprites.clear();
-    for (std::multimap<const Vector2D, PatternPolygonObject *>::iterator it = terrains.begin(); it != terrains.end(); ++it)
+    for (std::multimap<const Vector2D, PolygonObject *>::iterator it = polygons.begin(); it != polygons.end(); ++it)
     {
         delete it->second;
     }
-    terrains.clear();
+    polygons.clear();
     spriteZBuffer.clear();
-    terrainZBuffer.clear();
+    polygonZBuffer.clear();
     delete horizonTexture;
     delete terrainTexture;
 }
@@ -54,9 +54,9 @@ void Scene::AddObject(const Vector2D &cell, SpriteObject *obj)
     sprites.insert(std::pair<const Vector2D, SpriteObject *>(cell, obj));
 }
 
-void Scene::AddObject(const Vector2D &cell, PatternPolygonObject *obj)
+void Scene::AddObject(const Vector2D &cell, PolygonObject *obj)
 {
-    terrains.insert(std::pair<const Vector2D, PatternPolygonObject *>(cell, obj));
+    polygons.insert(std::pair<const Vector2D, PolygonObject *>(cell, obj));
 }
 
 void Scene::FillSpriteZBuffer(Camera *cam)
@@ -75,19 +75,19 @@ void Scene::FillSpriteZBuffer(Camera *cam)
     }
 }
 
-void Scene::FillTerrainZBuffer(Camera *cam)
+void Scene::FillPolygonZBuffer(Camera *cam)
 {
-    terrainZBuffer.clear();
+    polygonZBuffer.clear();
     Vector2D cell = cam->GetPosition().GetCell();
     int heading = cam->GetHeading();
-    for (std::multimap<const Vector2D, PatternPolygonObject *>::iterator it = terrains.lower_bound(cell - Vector2D(1,1));
-         it != terrains.upper_bound(cell + Vector2D(1,1)); ++it)
+    for (std::multimap<const Vector2D, PolygonObject *>::iterator it = polygons.lower_bound(cell - Vector2D(1,1));
+         it != polygons.upper_bound(cell + Vector2D(1,1)); ++it)
     {
         it->second->CalculateRelativePosition(cam->GetPosition().GetPos());
         unsigned int distance;
         if (it->second->IsInView(heading, distance))
         {
-            terrainZBuffer.insert(std::pair<int, PatternPolygonObject *>(distance, it->second));
+            polygonZBuffer.insert(std::pair<int, PolygonObject *>(distance, it->second));
         }
     }
 }
@@ -111,7 +111,7 @@ void Scene::DrawGround(const int x, const int y, const int w, const int h, Camer
 void Scene::DrawZBuffer(const int x, const int y, const int w, const int h, Camera *cam)
 {
     DrawGround(x, y, w, h, cam);
-    for (std::multimap<const unsigned int, PatternPolygonObject *>::reverse_iterator it = terrainZBuffer.rbegin(); it != terrainZBuffer.rend(); it++)
+    for (std::multimap<const unsigned int, PolygonObject *>::reverse_iterator it = polygonZBuffer.rbegin(); it != polygonZBuffer.rend(); it++)
     {
         it->second->DrawFirstPerson(x, y, w, h, cam);
     }
@@ -125,7 +125,7 @@ void Scene::DrawZBuffer(const int x, const int y, const int w, const int h, Came
 void Scene::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
 {
     FillSpriteZBuffer(cam);
-    FillTerrainZBuffer(cam);
+    FillPolygonZBuffer(cam);
     DrawZBuffer(x, y, w, h, cam);
 }
 

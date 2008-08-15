@@ -33,9 +33,6 @@ class PatternPolygonObject
     : public PolygonObject
 {
     private:
-        std::vector<Vertex> vertices;
-        int *xCoords;
-        int *yCoords;
         const Image *texture;
     public:
         PatternPolygonObject( const Vector2D& p, const Image *image );

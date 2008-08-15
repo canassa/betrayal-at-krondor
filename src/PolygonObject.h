@@ -31,7 +31,7 @@
 class PolygonObject
     : public GenericObject
 {
-    private:
+    protected:
         std::vector<Vertex> vertices;
         int *xCoords;
         int *yCoords;
