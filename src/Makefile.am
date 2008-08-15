@@ -52,7 +52,6 @@ noinst_HEADERS = AnimationResource.h \
                  LabelResource.h \
                  MapViewWidget.h \
                  MediaToolkit.h \
-                 PolygonObject.h \
                  MoviePlayer.h \
                  MovieResource.h \
                  NameResource.h \
@@ -65,9 +64,11 @@ noinst_HEADERS = AnimationResource.h \
                  PanelWidget.h \
                  Party.h \
                  PartyResource.h \
+                 PatternPolygonObject.h \
                  PlayerCharacter.h \
                  Pointer.h \
                  PointerManager.h \
+                 PolygonObject.h \
                  PopUpWidget.h \
                  PortraitWidget.h \
                  Position.h \
@@ -95,7 +96,6 @@ noinst_HEADERS = AnimationResource.h \
                  Subject.h \
                  TableResource.h \
                  TaggedResource.h \
-                 PatternPolygonObject.h \
                  TestApplication.h \
                  TextArea.h \
                  TextButtonWidget.h \
@@ -165,14 +165,16 @@ libgame_a_SOURCES = Camera.cc \
                     Inventory.h \
                     InventoryItem.cc \
                     InventoryItem.h \
-                    PolygonObject.cc \
-                    PolygonObject.h \
                     Orientation.cc \
                     Orientation.h \
                     Party.cc \
                     Party.h \
+                    PatternPolygonObject.cc \
+                    PatternPolygonObject.h \
                     PlayerCharacter.cc \
                     PlayerCharacter.h \
+                    PolygonObject.cc \
+                    PolygonObject.h \
                     Position.cc \
                     Position.h \
                     Preferences.cc \
@@ -183,12 +185,12 @@ libgame_a_SOURCES = Camera.cc \
                     Scene.h \
                     SceneFactory.cc \
                     SceneFactory.h \
+                    SolidPolygonObject.cc \
+                    SolidPolygonObject.h \
                     SpriteObject.cc \
                     SpriteObject.h \
                     Statistics.cc \
                     Statistics.h \
-                    PatternPolygonObject.cc \
-                    PatternPolygonObject.h \
                     Zone.cc \
                     Zone.h
 libguitoolkit_a_SOURCES = BadgeWidget.cc \
