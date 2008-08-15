@@ -52,7 +52,7 @@ noinst_HEADERS = AnimationResource.h \
                  LabelResource.h \
                  MapViewWidget.h \
                  MediaToolkit.h \
-                 MeshedObject.h \
+                 PolygonObject.h \
                  MoviePlayer.h \
                  MovieResource.h \
                  NameResource.h \
@@ -95,7 +95,7 @@ noinst_HEADERS = AnimationResource.h \
                  Subject.h \
                  TableResource.h \
                  TaggedResource.h \
-                 TerrainObject.h \
+                 PatternPolygonObject.h \
                  TestApplication.h \
                  TextArea.h \
                  TextButtonWidget.h \
@@ -165,8 +165,8 @@ libgame_a_SOURCES = Camera.cc \
                     Inventory.h \
                     InventoryItem.cc \
                     InventoryItem.h \
-                    MeshedObject.cc \
-                    MeshedObject.h \
+                    PolygonObject.cc \
+                    PolygonObject.h \
                     Orientation.cc \
                     Orientation.h \
                     Party.cc \
@@ -187,8 +187,8 @@ libgame_a_SOURCES = Camera.cc \
                     SpriteObject.h \
                     Statistics.cc \
                     Statistics.h \
-                    TerrainObject.cc \
-                    TerrainObject.h \
+                    PatternPolygonObject.cc \
+                    PatternPolygonObject.h \
                     Zone.cc \
                     Zone.h
 libguitoolkit_a_SOURCES = BadgeWidget.cc \

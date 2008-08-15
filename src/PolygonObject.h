@@ -17,36 +17,32 @@
  * Copyright (C) 2007-2008 Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef TERRAIN_OBJECT_H
-#define TERRAIN_OBJECT_H
-
-#include <vector>
+#ifndef POLYGON_OBJECT_H
+#define POLYGON_OBJECT_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "GenericObject.h"
-#include "Image.h"
+#include <vector>
 
-class TerrainObject
+#include "GenericObject.h"
+
+class PolygonObject
     : public GenericObject
 {
     private:
         std::vector<Vertex> vertices;
         int *xCoords;
         int *yCoords;
-        const Image *texture;
     public:
-        TerrainObject( const Vector2D& p, const Image *image );
-        ~TerrainObject();
+        PolygonObject(const Vector2D& p);
+        virtual ~PolygonObject();
         void AddVertex ( const Vertex& v );
         unsigned int GetNumVertices();
         Vertex& GetVertex( const unsigned int i );
         void CalculateRelativePosition ( const Vector2D &p );
         bool IsInView ( const int heading, unsigned int & distance );
-        void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam );
-        void DrawTopDown();
 };
 
 #endif

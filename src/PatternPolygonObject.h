@@ -17,24 +17,30 @@
  * Copyright (C) 2007-2008 Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef MESHED_OBJECT_H
-#define MESHED_OBJECT_H
+#ifndef PATTERN_POLYGON_OBJECT_H
+#define PATTERN_POLYGON_OBJECT_H
+
+#include <vector>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "GenericObject.h"
+#include "PolygonObject.h"
+#include "Image.h"
 
-class MeshedObject
-    : public GenericObject
+class PatternPolygonObject
+    : public PolygonObject
 {
+    private:
+        std::vector<Vertex> vertices;
+        int *xCoords;
+        int *yCoords;
+        const Image *texture;
     public:
-        MeshedObject(const Vector2D& p);
-        ~MeshedObject();
-        void CalculateRelativePosition ( const Vector2D &p );
-        bool IsInView ( const int heading, unsigned int & distance );
-        void DrawFirstPerson ( const int x, const int y, const int w, const int h, const int heading );
+        PatternPolygonObject( const Vector2D& p, const Image *image );
+        ~PatternPolygonObject();
+        void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam );
         void DrawTopDown();
 };
 

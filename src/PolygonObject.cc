@@ -17,19 +17,17 @@
  * Copyright (C) 2007-2008 Guido de Jong <guidoj@users.sf.net>
  */
 
-#include "MediaToolkit.h"
-#include "TerrainObject.h"
+#include "PolygonObject.h"
 
-TerrainObject::TerrainObject(const Vector2D& p, const Image *image)
-        : GenericObject(p)
-        , vertices()
-        , xCoords(0)
-        , yCoords(0)
-        , texture(image)
+PolygonObject::PolygonObject(const Vector2D& p)
+    : GenericObject(p)
+    , vertices()
+    , xCoords(0)
+    , yCoords(0)
 {
 }
 
-TerrainObject::~TerrainObject()
+PolygonObject::~PolygonObject()
 {
     if (xCoords != 0)
     {
@@ -42,7 +40,7 @@ TerrainObject::~TerrainObject()
     vertices.clear();
 }
 
-void TerrainObject::AddVertex(const Vertex& v)
+void PolygonObject::AddVertex(const Vertex& v)
 {
     vertices.push_back(v);
     if (xCoords != 0)
@@ -57,17 +55,17 @@ void TerrainObject::AddVertex(const Vertex& v)
     yCoords = new int[vertices.size()];
 }
 
-Vertex& TerrainObject::GetVertex(const unsigned int i)
+Vertex& PolygonObject::GetVertex(const unsigned int i)
 {
     return vertices[i];
 }
 
-unsigned int TerrainObject::GetNumVertices()
+unsigned int PolygonObject::GetNumVertices()
 {
     return vertices.size();
 }
 
-void TerrainObject::CalculateRelativePosition(const Vector2D& p)
+void PolygonObject::CalculateRelativePosition(const Vector2D & p)
 {
     pos.CalculateRelativePosition(p);
     for (std::vector<Vertex>::iterator it = vertices.begin(); it != vertices.end(); ++it)
@@ -76,7 +74,7 @@ void TerrainObject::CalculateRelativePosition(const Vector2D& p)
     }
 }
 
-bool TerrainObject::IsInView(const int heading, unsigned int & distance)
+bool PolygonObject::IsInView(const int heading, unsigned int & distance)
 {
     if (pos.IsInView(heading))
     {
@@ -92,22 +90,4 @@ bool TerrainObject::IsInView(const int heading, unsigned int & distance)
         }
     }
     return false;
-}
-
-void TerrainObject::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
-{
-    static const int TERRAIN_YOFFSET = 81;
-    int offset = (((cam->GetHeading() * 16) + ((cam->GetPos().GetX() + cam->GetPos().GetY()) / 100)) % (texture->GetWidth() / 3));
-    for (unsigned int i = 0; i < vertices.size(); i++)
-    {
-        Vector2D v = vertices[i].ToFirstPerson(w, h, cam->GetHeading());
-        xCoords[i] = v.GetX();
-        yCoords[i] = v.GetY();
-    }
-    MediaToolkit::GetInstance()->GetVideo()->FillPolygon(xCoords, yCoords, vertices.size(), texture->GetPixels(),
-                                                         offset - x, TERRAIN_YOFFSET - y - h + TERRAIN_HEIGHT, texture->GetWidth());
-}
-
-void TerrainObject::DrawTopDown()
-{
 }

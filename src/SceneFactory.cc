@@ -17,10 +17,9 @@
  * Copyright (C) 2007-2008 Guido de Jong <guidoj@users.sf.net>
  */
 
-#include "MeshedObject.h"
+#include "PatternPolygonObject.h"
 #include "SceneFactory.h"
 #include "SpriteObject.h"
-#include "TerrainObject.h"
 
 SceneFactory::SceneFactory(Zone &z)
     : zone(z)
@@ -43,7 +42,7 @@ void SceneFactory::AddFixedObjects(Scene* scene)
             {
                 case ET_EXTERIOR:
                     {
-/*                        TerrainObject *terrObj = new TerrainObject();
+/*                        PatternPolygonObject *terrObj = new PatternPolygonObject();
                         for (unsigned j = 0; j < dat->vertices.size(); j++)
                         {
                             terrObj->AddVertex(Vertex(*(dat->vertices[j])));
@@ -73,7 +72,7 @@ void SceneFactory::AddTiledObjects(Scene* scene, unsigned int x, unsigned int y,
                 case ET_TERRAIN:
                     {
                         // terrain tiles are not required and will only slow things down
-/*                        TerrainObject *terrObj = new TerrainObject(Vector2D(item.xloc, item.yloc), terrainTexture);
+/*                        PatternPolygonObject *terrObj = new PatternPolygonObject(Vector2D(item.xloc, item.yloc), terrainTexture);
                         for (unsigned j = 0; j < dat->vertices.size(); j++)
                         {
                             terrObj->AddVertex(Vertex(*(dat->vertices[j]) + Vector3D(item.xloc, item.yloc, 0)));

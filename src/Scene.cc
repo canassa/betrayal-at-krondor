@@ -38,7 +38,7 @@ Scene::~Scene()
         delete it->second;
     }
     sprites.clear();
-    for (std::multimap<const Vector2D, TerrainObject *>::iterator it = terrains.begin(); it != terrains.end(); ++it)
+    for (std::multimap<const Vector2D, PatternPolygonObject *>::iterator it = terrains.begin(); it != terrains.end(); ++it)
     {
         delete it->second;
     }
@@ -54,9 +54,9 @@ void Scene::AddObject(const Vector2D &cell, SpriteObject *obj)
     sprites.insert(std::pair<const Vector2D, SpriteObject *>(cell, obj));
 }
 
-void Scene::AddObject(const Vector2D &cell, TerrainObject *obj)
+void Scene::AddObject(const Vector2D &cell, PatternPolygonObject *obj)
 {
-    terrains.insert(std::pair<const Vector2D, TerrainObject *>(cell, obj));
+    terrains.insert(std::pair<const Vector2D, PatternPolygonObject *>(cell, obj));
 }
 
 void Scene::FillSpriteZBuffer(Camera *cam)
@@ -80,14 +80,14 @@ void Scene::FillTerrainZBuffer(Camera *cam)
     terrainZBuffer.clear();
     Vector2D cell = cam->GetPosition().GetCell();
     int heading = cam->GetHeading();
-    for (std::multimap<const Vector2D, TerrainObject *>::iterator it = terrains.lower_bound(cell - Vector2D(1,1));
+    for (std::multimap<const Vector2D, PatternPolygonObject *>::iterator it = terrains.lower_bound(cell - Vector2D(1,1));
          it != terrains.upper_bound(cell + Vector2D(1,1)); ++it)
     {
         it->second->CalculateRelativePosition(cam->GetPosition().GetPos());
         unsigned int distance;
         if (it->second->IsInView(heading, distance))
         {
-            terrainZBuffer.insert(std::pair<int, TerrainObject *>(distance, it->second));
+            terrainZBuffer.insert(std::pair<int, PatternPolygonObject *>(distance, it->second));
         }
     }
 }
@@ -111,7 +111,7 @@ void Scene::DrawGround(const int x, const int y, const int w, const int h, Camer
 void Scene::DrawZBuffer(const int x, const int y, const int w, const int h, Camera *cam)
 {
     DrawGround(x, y, w, h, cam);
-    for (std::multimap<const unsigned int, TerrainObject *>::reverse_iterator it = terrainZBuffer.rbegin(); it != terrainZBuffer.rend(); it++)
+    for (std::multimap<const unsigned int, PatternPolygonObject *>::reverse_iterator it = terrainZBuffer.rbegin(); it != terrainZBuffer.rend(); it++)
     {
         it->second->DrawFirstPerson(x, y, w, h, cam);
     }
