@@ -19,16 +19,21 @@
 
 #include "Geometry.h"
 
+bool  Angle::initialized = false;
 float Angle::cosTbl[ANGLE_SIZE];
 float Angle::sinTbl[ANGLE_SIZE];
 
 Angle::Angle ( const int a )
 : angle(a & ANGLE_MASK)
 {
-    for (unsigned int i = 0; i < ANGLE_SIZE; i++)
+    if (!initialized)
     {
-        cosTbl[i] = cos((float)i * PI2 / (float)ANGLE_SIZE);
-        sinTbl[i] = sin((float)i * PI2 / (float)ANGLE_SIZE);
+        for (unsigned int i = 0; i < ANGLE_SIZE; i++)
+        {
+            cosTbl[i] = cos((float)i * PI2 / (float)ANGLE_SIZE);
+            sinTbl[i] = sin((float)i * PI2 / (float)ANGLE_SIZE);
+        }
+        initialized = true;
     }
 }
 

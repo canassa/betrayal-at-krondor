@@ -39,6 +39,7 @@ class Angle
 {
     private:
         int angle;
+        static bool initialized;
         static float cosTbl[ANGLE_SIZE];
         static float sinTbl[ANGLE_SIZE];
     public:
