@@ -42,6 +42,7 @@ class Angle
         static bool initialized;
         static float cosTbl[ANGLE_SIZE];
         static float sinTbl[ANGLE_SIZE];
+        static float tanTbl[ANGLE_SIZE];
     public:
         Angle ( const int a );
         ~Angle();
@@ -49,6 +50,7 @@ class Angle
         void Set ( const int a );
         float GetCos() const;
         float GetSin() const;
+        float GetTan() const;
         Angle& operator= ( const Angle &a );
         Angle& operator+= ( const Angle &a );
         Angle& operator-= ( const Angle &a );

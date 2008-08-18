@@ -22,6 +22,7 @@
 bool  Angle::initialized = false;
 float Angle::cosTbl[ANGLE_SIZE];
 float Angle::sinTbl[ANGLE_SIZE];
+float Angle::tanTbl[ANGLE_SIZE];
 
 Angle::Angle ( const int a )
 : angle(a & ANGLE_MASK)
@@ -32,6 +33,7 @@ Angle::Angle ( const int a )
         {
             cosTbl[i] = cos((float)i * PI2 / (float)ANGLE_SIZE);
             sinTbl[i] = sin((float)i * PI2 / (float)ANGLE_SIZE);
+            tanTbl[i] = tan((float)i * PI2 / (float)ANGLE_SIZE);
         }
         initialized = true;
     }
@@ -59,6 +61,11 @@ float Angle::GetCos() const
 float Angle::GetSin() const
 {
     return sinTbl[angle];
+}
+
+float Angle::GetTan() const
+{
+    return tanTbl[angle];
 }
 
 Angle& Angle::operator= ( const Angle &a )
