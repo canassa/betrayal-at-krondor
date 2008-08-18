@@ -28,38 +28,32 @@ Orientation::~Orientation()
 {
 }
 
-int
-Orientation::GetHeading() const
+int Orientation::GetHeading() const
 {
     return heading.Get();
 }
 
-void
-Orientation::SetHeading(const int head)
+void Orientation::SetHeading(const int head)
 {
     heading = Angle(head);
 }
 
-Angle
-Orientation::GetAngle() const
+const Angle & Orientation::GetAngle() const
 {
     return heading;
 }
 
-float
-Orientation::GetCos() const
+float Orientation::GetCos() const
 {
     return heading.GetCos();
 }
 
-float
-Orientation::GetSin() const
+float Orientation::GetSin() const
 {
     return heading.GetSin();
 }
 
-void
-Orientation::AdjustHeading(const int delta)
+void Orientation::AdjustHeading(const int delta)
 {
     heading += Angle(delta);
 }

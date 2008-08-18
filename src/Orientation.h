@@ -42,7 +42,7 @@ class Orientation
     public:
         Orientation ( const int head );
         ~Orientation();
-        Angle GetAngle() const;
+        const Angle & GetAngle() const;
         int GetHeading() const;
         void SetHeading ( const int head );
         float GetCos() const;
