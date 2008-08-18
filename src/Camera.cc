@@ -22,59 +22,58 @@
 Camera::Camera(const Vector2D &p, const int heading)
         : position(p)
         , orientation(heading)
-{}
+{
+}
 
 Camera::~Camera()
-{}
+{
+}
 
-Position&
-Camera::GetPosition()
+const Position & Camera::GetPosition() const
 {
     return position;
 }
 
-Vector2D &
-Camera::GetPos()
+const Vector2D & Camera::GetPos() const
 {
     return position.GetPos();
 }
 
-void
-Camera::SetPosition(const Vector2D &p)
+void Camera::SetPosition(const Vector2D &p)
 {
     position.SetPos(p);
     Notify();
 }
 
-Orientation&
-Camera::GetOrientation()
+const Orientation & Camera::GetOrientation() const
 {
     return orientation;
 }
 
-int
-Camera::GetHeading() const
+const Angle & Camera::GetAngle() const
+{
+    return orientation.GetAngle();
+}
+
+int Camera::GetHeading() const
 {
     return orientation.GetHeading();
 }
 
-void
-Camera::SetHeading(const int heading)
+void Camera::SetHeading(const int heading)
 {
     orientation.SetHeading(heading);
     Notify();
 }
 
-void
-Camera::Move(const int delta)
+void Camera::Move(const int delta)
 {
     position.Adjust((int)((float)delta * orientation.GetSin()),
                     (int)((float)delta * orientation.GetCos()));
     Notify();
 }
 
-void
-Camera::Turn(const int delta)
+void Camera::Turn(const int delta)
 {
     orientation.AdjustHeading(delta);
     Notify();

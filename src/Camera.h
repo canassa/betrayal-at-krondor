@@ -37,10 +37,11 @@ class Camera
     public:
         Camera ( const Vector2D &p, const int heading );
         ~Camera();
-        Position& GetPosition();
-        Vector2D& GetPos();
+        const Position & GetPosition() const;
+        const Vector2D & GetPos() const;
         void SetPosition ( const Vector2D &p );
-        Orientation& GetOrientation();
+        const Orientation & GetOrientation() const;
+        const Angle & GetAngle() const;
         int GetHeading() const;
         void SetHeading ( const int heading );
         void Move ( const int delta );

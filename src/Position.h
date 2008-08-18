@@ -39,8 +39,8 @@ public:
     Position ( const Vector2D &p );
     Position ( const Vector2D &p, const Vector2D &c );
     ~Position();
-    Vector2D& GetCell();
-    Vector2D& GetPos();
+    const Vector2D & GetCell() const;
+    const Vector2D & GetPos() const;
     void SetPos ( const Vector2D &p );
     void Adjust ( const Vector2D &delta );
     void Adjust ( const int deltaX, const int deltaY );

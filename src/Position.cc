@@ -32,36 +32,32 @@ Position::Position(const Vector2D &p, const Vector2D &c)
 {}
 
 Position::~Position()
-{}
+{
+}
 
-Vector2D &
-Position::GetCell()
+const Vector2D & Position::GetCell() const
 {
     return cell;
 }
 
-Vector2D &
-Position::GetPos()
+const Vector2D & Position::GetPos() const
 {
     return pos;
 }
 
-void
-Position::SetPos(const Vector2D &p)
+void Position::SetPos(const Vector2D &p)
 {
     pos = p;
     cell = pos / TILE_SIZE;
 }
 
-void
-Position::Adjust(const Vector2D &delta)
+void Position::Adjust(const Vector2D &delta)
 {
     pos += delta;
     cell = pos / TILE_SIZE;
 }
 
-void
-Position::Adjust(const int deltaX, const int deltaY)
+void Position::Adjust(const int deltaX, const int deltaY)
 {
     pos += Vector2D(deltaX, deltaY);
     cell = pos / TILE_SIZE;
