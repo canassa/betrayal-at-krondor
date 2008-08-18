@@ -166,8 +166,8 @@ TableResource::Load(FileBuffer *buffer)
         {
             gidbuf->Seek(gidOffset[i]);
             GidInfo *item = new GidInfo();
-            item->xoffset = gidbuf->GetUint16LE();
-            item->yoffset = gidbuf->GetUint16LE();
+            item->xradius = gidbuf->GetUint16LE();
+            item->yradius = gidbuf->GetUint16LE();
             bool more = gidbuf->GetUint16LE() > 0;
             item->flags = gidbuf->GetUint16LE();
             if (more)
@@ -198,8 +198,8 @@ TableResource::Load(FileBuffer *buffer)
         {
             datbuf->Seek(datOffset[i]);
             DatInfo *item = new DatInfo();
-            item->objectFlags = datbuf->GetUint8();
-            item->objectType = datbuf->GetUint8();
+            item->entityFlags = datbuf->GetUint8();
+            item->entityType = datbuf->GetUint8();
             item->terrainType = datbuf->GetUint8();
             item->terrainClass = datbuf->GetUint8();
             datbuf->Skip(4);
@@ -207,7 +207,7 @@ TableResource::Load(FileBuffer *buffer)
             datbuf->Skip(4);
             if (more)
             {
-                if (!(item->objectFlags & EF_UNBOUNDED))
+                if (!(item->entityFlags & EF_UNBOUNDED))
                 {
                     item->min.SetX(datbuf->GetSint16LE());
                     item->min.SetY(datbuf->GetSint16LE());
@@ -245,7 +245,7 @@ TableResource::Load(FileBuffer *buffer)
                         z = datbuf->GetSint16LE();
                     }
                 }
-                if ((item->objectFlags & EF_UNBOUNDED) && (item->objectFlags & EF_2D_OBJECT) && (n == 1))
+                if ((item->entityFlags & EF_UNBOUNDED) && (item->entityFlags & EF_2D_OBJECT) && (n == 1))
                 {
                     datbuf->Skip(2);
                     item->sprite = datbuf->GetUint16LE();

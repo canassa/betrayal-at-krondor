@@ -46,8 +46,8 @@ int main(int argc, char *argv[])
             GidInfo *gid = tbl->GetGidItem(i);
             DatInfo *dat = tbl->GetDatItem(i);
             printf("%3d: %-8s (%6d %6d) %04x %02x %2d %2d %2d %2d\n",
-                   i, tbl->GetMapItem(i).c_str(), gid->xoffset, gid->yoffset, gid->flags,
-                   dat->objectFlags, dat->objectType, dat->terrainType, dat->terrainClass, dat->sprite);
+                   i, tbl->GetMapItem(i).c_str(), gid->xradius, gid->yradius, gid->flags,
+                   dat->entityFlags, dat->entityType, dat->terrainType, dat->terrainClass, dat->sprite);
             printf("\t(%6d, %6d, %6d)  (%6d, %6d, %6d)  (%6d, %6d, %6d)\n",
                    dat->min.GetX(), dat->min.GetY(), dat->min.GetZ(),
                    dat->max.GetX(), dat->max.GetY(), dat->max.GetZ(),

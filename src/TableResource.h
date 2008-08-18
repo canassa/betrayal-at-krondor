@@ -90,8 +90,8 @@ static const unsigned int TC_OTHER     = 2;
 class GidInfo
 {
     public:
-        unsigned int xoffset;
-        unsigned int yoffset;
+        unsigned int xradius;
+        unsigned int yradius;
         unsigned int flags;
         std::vector <Vector2D *> textureCoords;
         std::vector <Vector2D *> otherCoords;
@@ -102,8 +102,8 @@ class GidInfo
 class DatInfo
 {
     public:
-        unsigned int objectFlags;
-        unsigned int objectType;
+        unsigned int entityFlags;
+        unsigned int entityType;
         unsigned int terrainType;
         unsigned int terrainClass;
         unsigned int sprite;
