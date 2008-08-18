@@ -38,7 +38,7 @@ void SceneFactory::AddFixedObjects(Scene* scene)
         for (unsigned int i = 0; i < table->GetMapSize(); i++)
         {
             DatInfo *dat = table->GetDatItem(i);
-            switch (dat->objectType)
+            switch (dat->entityType)
             {
                 case ET_EXTERIOR:
                     {
@@ -67,7 +67,7 @@ void SceneFactory::AddTiledObjects(Scene* scene, unsigned int x, unsigned int y,
         {
             TileWorldItem item = tile->GetItem(i);
             DatInfo *dat = table->GetDatItem(item.type);
-            switch (dat->objectType)
+            switch (dat->entityType)
             {
                 case ET_TERRAIN:
                     {
