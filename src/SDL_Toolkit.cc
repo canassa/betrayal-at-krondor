@@ -211,30 +211,38 @@ SDL_Toolkit::HandleEvent(SDL_Event *event)
                 switch (event->jbutton.button)
                 {
                     case JOYSTICK_BUTTON_UP:
+                        jsState = JS_UP;
                         yMove = -1;
                         break;
                     case JOYSTICK_BUTTON_UPLEFT:
+                        jsState = JS_UP_LEFT;
                         xMove = -1;
                         yMove = -1;
                         break;
                     case JOYSTICK_BUTTON_LEFT:
+                        jsState = JS_LEFT;
                         xMove = -1;
                         break;
                     case JOYSTICK_BUTTON_DOWNLEFT:
+                        jsState = JS_DOWN_LEFT;
                         xMove = -1;
                         yMove = 1;
                         break;
                     case JOYSTICK_BUTTON_DOWN:
+                        jsState = JS_DOWN;
                         yMove = 1;
                         break;
                     case JOYSTICK_BUTTON_DOWNRIGHT:
+                        jsState = JS_DOWN_RIGHT;
                         xMove = 1;
                         yMove = 1;
                         break;
                     case JOYSTICK_BUTTON_RIGHT:
+                        jsState = JS_RIGHT;
                         xMove = 1;
                         break;
                     case JOYSTICK_BUTTON_UPRIGHT:
+                        jsState = JS_UP_RIGHT;
                         xMove = 1;
                         yMove = -1;
                         break;
@@ -276,15 +284,68 @@ SDL_Toolkit::HandleEvent(SDL_Event *event)
                 switch (event->jbutton.button)
                 {
                     case JOYSTICK_BUTTON_UP:
+                        if (jsState == JS_UP)
+                        {
+                            jsState = JS_CENTER;
+                            xMove = 0;
+                            yMove = 0;
+                        }
+                        break;
                     case JOYSTICK_BUTTON_UPLEFT:
+                        if (jsState == JS_UP_LEFT)
+                        {
+                            jsState = JS_CENTER;
+                            xMove = 0;
+                            yMove = 0;
+                        }
+                        break;
                     case JOYSTICK_BUTTON_LEFT:
+                        if (jsState == JS_LEFT)
+                        {
+                            jsState = JS_CENTER;
+                            xMove = 0;
+                            yMove = 0;
+                        }
+                        break;
                     case JOYSTICK_BUTTON_DOWNLEFT:
+                        if (jsState == JS_DOWN_LEFT)
+                        {
+                            jsState = JS_CENTER;
+                            xMove = 0;
+                            yMove = 0;
+                        }
+                        break;
                     case JOYSTICK_BUTTON_DOWN:
+                        if (jsState == JS_DOWN)
+                        {
+                            jsState = JS_CENTER;
+                            xMove = 0;
+                            yMove = 0;
+                        }
+                        break;
                     case JOYSTICK_BUTTON_DOWNRIGHT:
+                        if (jsState == JS_DOWN_RIGHT)
+                        {
+                            jsState = JS_CENTER;
+                            xMove = 0;
+                            yMove = 0;
+                        }
+                        break;
                     case JOYSTICK_BUTTON_RIGHT:
+                        if (jsState == JS_RIGHT)
+                        {
+                            jsState = JS_CENTER;
+                            xMove = 0;
+                            yMove = 0;
+                        }
+                        break;
                     case JOYSTICK_BUTTON_UPRIGHT:
-                        xMove = 0;
-                        yMove = 0;
+                        if (jsState == JS_UP_RIGHT)
+                        {
+                            jsState = JS_CENTER;
+                            xMove = 0;
+                            yMove = 0;
+                        }
                         break;
                     case JOYSTICK_BUTTON_PRIMARY:
                         {
