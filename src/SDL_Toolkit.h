@@ -30,15 +30,26 @@
 class SDL_Toolkit
     : public MediaToolkit
 {
-private:
+    enum JoystickState { JS_CENTER,
+                         JS_UP,
+                         JS_UP_LEFT,
+                         JS_LEFT,
+                         JS_DOWN_LEFT,
+                         JS_DOWN,
+                         JS_DOWN_RIGHT,
+                         JS_RIGHT,
+                         JS_UP_RIGHT };
+
+  private:
     int xPos;
     int yPos;
     int xMove;
     int yMove;
+    enum JoystickState jsState;
     SDL_Joystick *joystick;
     void HandleEvent ( SDL_Event *event );
     void UpdatePointer();
-public:
+  public:
     SDL_Toolkit();
     ~SDL_Toolkit();
     void PollEvents();
