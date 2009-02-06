@@ -12,6 +12,7 @@ noinst_HEADERS = AnimationResource.h \
                  Clock.h \
                  CombatViewWidget.h \
                  CompassWidget.h \
+                 CompoundObject.h \
                  ConfigData.h \
                  ConfigFile.h \
                  ConfigResource.h \
@@ -153,6 +154,8 @@ libgame_a_SOURCES = Camera.cc \
                     Camera.h \
                     Chapter.cc \
                     Chapter.h \
+                    CompoundObject.cc \
+                    CompoundObject.h \
                     ConfigResource.cc \
                     ConfigResource.h \
                     Game.cc \

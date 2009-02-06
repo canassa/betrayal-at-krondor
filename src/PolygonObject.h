@@ -42,7 +42,7 @@ class PolygonObject
         unsigned int GetNumVertices();
         Vertex& GetVertex( const unsigned int i );
         void CalculateRelativePosition ( const Vector2D &p );
-        bool IsInView ( const int heading, unsigned int & distance );
+        bool IsInView ( const Angle & heading, unsigned int & distance );
 };
 
 #endif

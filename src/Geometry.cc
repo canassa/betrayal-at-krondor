@@ -179,6 +179,20 @@ Vector2D& Vector2D::operator/=(const int f)
     return *this;
 }
 
+Vector2D& Vector2D::operator*=(const float f)
+{
+    xCoord = (int)((float)xCoord * f);
+    yCoord = (int)((float)yCoord * f);
+    return *this;
+}
+
+Vector2D& Vector2D::operator/=(const float f)
+{
+    xCoord = (int)((float)xCoord / f);
+    yCoord = (int)((float)yCoord / f);
+    return *this;
+}
+
 Vector2D Vector2D::operator+(const Vector2D &p)
 {
     return Vector2D(xCoord + p.xCoord, yCoord + p.yCoord);
@@ -197,6 +211,16 @@ Vector2D Vector2D::operator*(const int f)
 Vector2D Vector2D::operator/(const int f)
 {
     return Vector2D(xCoord / f, yCoord / f);
+}
+
+Vector2D Vector2D::operator*(const float f)
+{
+    return Vector2D((int)((float)xCoord * f), (int)((float)yCoord * f));
+}
+
+Vector2D Vector2D::operator/(const float f)
+{
+    return Vector2D((int)((float)xCoord / f), (int)((float)yCoord / f));
 }
 
 bool Vector2D::operator==(const Vector2D &p) const
@@ -373,6 +397,22 @@ Vector3D& Vector3D::operator/=(const int f)
     return *this;
 }
 
+Vector3D& Vector3D::operator*=(const float f)
+{
+    xCoord = (int)((float)xCoord * f);
+    yCoord = (int)((float)yCoord * f);
+    zCoord = (int)((float)zCoord * f);
+    return *this;
+}
+
+Vector3D& Vector3D::operator/=(const float f)
+{
+    xCoord = (int)((float)xCoord / f);
+    yCoord = (int)((float)yCoord / f);
+    zCoord = (int)((float)zCoord / f);
+    return *this;
+}
+
 Vector3D Vector3D::operator+(const Vector3D &p)
 {
     return Vector3D(xCoord + p.xCoord, yCoord + p.yCoord, zCoord + p.zCoord);
@@ -401,6 +441,16 @@ Vector3D Vector3D::operator*(const int f)
 Vector3D Vector3D::operator/(const int f)
 {
     return Vector3D(xCoord / f, yCoord / f, zCoord / f);
+}
+
+Vector3D Vector3D::operator*(const float f)
+{
+    return Vector3D((int)((float)xCoord * f), (int)((float)yCoord * f), (int)((float)zCoord * f));
+}
+
+Vector3D Vector3D::operator/(const float f)
+{
+    return Vector3D((int)((float)xCoord / f), (int)((float)yCoord / f), (int)((float)zCoord / f));
 }
 
 bool Vector3D::operator==(const Vector3D &p) const

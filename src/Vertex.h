@@ -26,10 +26,11 @@
 
 #include "Geometry.h"
 
-static const unsigned int VIEW_DISTANCE = 32000;
+static const unsigned int MAX_VIEW_DISTANCE = 32000;
+static const unsigned int MIN_VIEW_DISTANCE = 32;
 
 static const int ANGLE_OF_VIEW = 12;
-static const int ANGLE_VIEW_DISTANCE = VIEW_DISTANCE / 2;
+static const int ANGLE_VIEW_DISTANCE = MAX_VIEW_DISTANCE / 2;
 
 static const int TERRAIN_HEIGHT = 38;
 
@@ -46,15 +47,16 @@ class Vertex
         Vertex ( const Vector3D &p );
         virtual ~Vertex();
         Vertex& operator= ( const Vertex &v );
-        Vector3D& GetPosition();
-        Vector3D& GetRelativePosition();
+        const Vector3D& GetPosition() const;
+        const Vector3D& GetRelativePosition() const;
         int GetAngle() const;
         unsigned int GetDistance() const;
         float GetDistanceFactor() const;
-        Vector2D ToFirstPerson ( int w, int h, Angle heading );
+        Vector2D ToFirstPerson ( int w, int h, const Angle & heading );
         Vector2D ToTopDown ( int w, int h );
         void CalculateRelativePosition ( const Vector2D &p );
-        bool IsInView ( const int heading );
+        void CalculateRelativePosition ( const Vertex &v );
+        bool IsInView ( const Angle & heading );
 };
 
 #endif

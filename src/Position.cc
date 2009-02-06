@@ -48,17 +48,17 @@ const Vector2D & Position::GetPos() const
 void Position::SetPos(const Vector2D &p)
 {
     pos = p;
-    cell = pos / TILE_SIZE;
+    cell = pos / (int)TILE_SIZE;
 }
 
 void Position::Adjust(const Vector2D &delta)
 {
     pos += delta;
-    cell = pos / TILE_SIZE;
+    cell = pos / (int)TILE_SIZE;
 }
 
 void Position::Adjust(const int deltaX, const int deltaY)
 {
     pos += Vector2D(deltaX, deltaY);
-    cell = pos / TILE_SIZE;
+    cell = pos / (int)TILE_SIZE;
 }

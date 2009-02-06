@@ -17,29 +17,31 @@
  * Copyright (C) 2007-2008 Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef GENERIC_OBJECT_H
-#define GENERIC_OBJECT_H
+#ifndef COMPOUND_OBJECT_H
+#define COMPOUND_OBJECT_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "Camera.h"
-#include "Vertex.h"
+#include <vector>
 
-class GenericObject
+#include "GenericObject.h"
+#include "PolygonObject.h"
+
+class CompoundObject
+    : public GenericObject
 {
     protected:
-        Vertex pos;
+        std::vector<PolygonObject *> polygons;
     public:
-        GenericObject(const Vector2D& p);
-        virtual ~GenericObject();
-        int GetAngle();
-        unsigned int GetDistance();
-        virtual void CalculateRelativePosition ( const Vector2D &p ) = 0;
-        virtual bool IsInView ( const Angle & heading, unsigned int & distance ) = 0;
-        virtual void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam ) = 0;
-        virtual void DrawTopDown() = 0;
+        CompoundObject(const Vector2D& p);
+        virtual ~CompoundObject();
+        void AddPolygon ( PolygonObject *obj );
+        void CalculateRelativePosition ( const Vector2D &p );
+        bool IsInView ( const Angle & heading, unsigned int & distance );
+        void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam );
+        void DrawTopDown();
 };
 
 #endif

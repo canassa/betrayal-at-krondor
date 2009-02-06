@@ -27,8 +27,8 @@
 #include <map>
 
 #include "Camera.h"
-#include "PatternPolygonObject.h"
-#include "SpriteObject.h"
+#include "GenericObject.h"
+#include "Image.h"
 #include "Video.h"
 
 class Scene
@@ -37,20 +37,16 @@ class Scene
         Video *video;
         Image *horizonTexture;
         Image *terrainTexture;
-        std::multimap<const Vector2D, SpriteObject *> sprites;
-        std::multimap<const Vector2D, PolygonObject *> polygons;
-        std::multimap<const unsigned int, SpriteObject *> spriteZBuffer;
-        std::multimap<const unsigned int, PolygonObject *> polygonZBuffer;
-        void FillSpriteZBuffer ( Camera *cam );
-        void FillPolygonZBuffer ( Camera *cam );
+        std::multimap<const Vector2D, GenericObject *> objects;
+        std::multimap<const unsigned int, GenericObject *> zBuffer;
+        void FillZBuffer ( Camera *cam );
         void DrawHorizon ( const int x, const int y, const int w, const int h, Camera *cam );
         void DrawGround ( const int x, const int y, const int w, const int h, Camera *cam );
         void DrawZBuffer ( const int x, const int y, const int w, const int h, Camera *cam );
     public:
         Scene ( Image *horizon, Image *terrain );
         ~Scene();
-        void AddObject ( const Vector2D &cell, SpriteObject *obj );
-        void AddObject ( const Vector2D &cell, PolygonObject *obj );
+        void AddObject ( const Vector2D &cell, GenericObject *obj );
         void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam );
         void DrawTopDown();
 };

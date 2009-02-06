@@ -35,7 +35,7 @@ void SpriteObject::CalculateRelativePosition(const Vector2D &p)
     pos.CalculateRelativePosition(p);
 }
 
-bool SpriteObject::IsInView(const int heading, unsigned int & distance)
+bool SpriteObject::IsInView(const Angle & heading, unsigned int & distance)
 {
     if (pos.IsInView(heading))
     {

@@ -70,11 +70,11 @@ void PolygonObject::CalculateRelativePosition(const Vector2D & p)
     pos.CalculateRelativePosition(p);
     for (std::vector<Vertex>::iterator it = vertices.begin(); it != vertices.end(); ++it)
     {
-        it->CalculateRelativePosition(p);
+        it->CalculateRelativePosition(pos);
     }
 }
 
-bool PolygonObject::IsInView(const int heading, unsigned int & distance)
+bool PolygonObject::IsInView(const Angle & heading, unsigned int & distance)
 {
     if (pos.IsInView(heading))
     {

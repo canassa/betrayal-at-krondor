@@ -36,7 +36,7 @@ class SpriteObject
         SpriteObject ( const Vector2D &p, Image *img );
         ~SpriteObject();
         void CalculateRelativePosition ( const Vector2D &p );
-        bool IsInView ( const int heading, unsigned int & distance );
+        bool IsInView ( const Angle & heading, unsigned int & distance );
         void DrawFirstPerson ( const int x, const int y, const int w, const int h, Camera *cam );
         void DrawTopDown();
 };

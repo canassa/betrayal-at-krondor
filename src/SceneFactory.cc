@@ -17,8 +17,10 @@
  * Copyright (C) 2007-2008 Guido de Jong <guidoj@users.sf.net>
  */
 
+#include "CompoundObject.h"
 #include "PatternPolygonObject.h"
 #include "SceneFactory.h"
+#include "SolidPolygonObject.h"
 #include "SpriteObject.h"
 
 SceneFactory::SceneFactory(Zone &z)
@@ -70,14 +72,36 @@ void SceneFactory::AddTiledObjects(Scene* scene, unsigned int x, unsigned int y,
             switch (dat->entityType)
             {
                 case ET_TERRAIN:
+                    // terrain tiles are not required and will only slow things down
+                    break;
+                case ET_HILL:
                     {
-                        // terrain tiles are not required and will only slow things down
-/*                        PatternPolygonObject *terrObj = new PatternPolygonObject(Vector2D(item.xloc, item.yloc), terrainTexture);
-                        for (unsigned j = 0; j < dat->vertices.size(); j++)
-                        {
-                            terrObj->AddVertex(Vertex(*(dat->vertices[j]) + Vector3D(item.xloc, item.yloc, 0)));
-                        }
-                        scene->AddObject(Vector2D(x, y), terrObj);*/
+/*                        CompoundObject *cObj = new CompoundObject(Vector2D(item.xloc, item.yloc));
+                        scene->AddObject(Vector2D(x, y), cObj);
+
+                        SolidPolygonObject *spObj = new SolidPolygonObject(Vector2D(item.xloc, item.yloc), 218);
+                        spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, dat->max.GetZ() - dat->min.GetZ())));
+                        spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->max.GetX(), dat->max.GetY(), 0)));
+                        spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->max.GetX(), dat->min.GetY(), 0)));
+                        cObj->AddPolygon(spObj);
+
+                        spObj = new SolidPolygonObject(Vector2D(item.xloc, item.yloc), 219);
+                        spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, dat->max.GetZ() - dat->min.GetZ())));
+                        spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->max.GetX(), dat->min.GetY(), 0)));
+                        spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->min.GetX(), dat->min.GetY(), 0)));
+                        cObj->AddPolygon(spObj);
+
+                        spObj = new SolidPolygonObject(Vector2D(item.xloc, item.yloc), 220);
+                        spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, dat->max.GetZ() - dat->min.GetZ())));
+                        spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->min.GetX(), dat->min.GetY(), 0)));
+                        spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->min.GetX(), dat->max.GetY(), 0)));
+                        cObj->AddPolygon(spObj);
+
+                        spObj = new SolidPolygonObject(Vector2D(item.xloc, item.yloc), 221);
+                        spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, dat->max.GetZ() - dat->min.GetZ())));
+                        spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->min.GetX(), dat->max.GetY(), 0)));
+                        spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->max.GetX(), dat->max.GetY(), 0)));
+                        cObj->AddPolygon(spObj);*/
                     }
                     break;
                 case ET_TREE:

@@ -30,13 +30,13 @@ SolidPolygonObject::~SolidPolygonObject()
 {
 }
 
-void SolidPolygonObject::DrawFirstPerson(const int /*x*/, const int /*y*/, const int w, const int h, Camera *cam)
+void SolidPolygonObject::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
 {
     for (unsigned int i = 0; i < vertices.size(); i++)
     {
-        Vector2D v = vertices[i].ToFirstPerson(w, h, cam->GetHeading());
-        xCoords[i] = v.GetX();
-        yCoords[i] = v.GetY();
+        Vector2D v = vertices[i].ToFirstPerson(w, h, cam->GetAngle());
+        xCoords[i] = x + v.GetX();
+        yCoords[i] = y + v.GetY();
     }
     MediaToolkit::GetInstance()->GetVideo()->FillPolygon(xCoords, yCoords, vertices.size(), color);
 }
