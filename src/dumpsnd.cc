@@ -23,6 +23,7 @@
     This file contains the the main function of the midi data dumper.
  */
 
+#include <cstdlib>
 #include <iostream>
 #include <sstream>
 

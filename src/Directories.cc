@@ -17,6 +17,7 @@
  * Copyright (C) 2005-2009 Guido de Jong <guidoj@users.sf.net>
  */
 
+#include <cstdlib>
 #include <fstream>
 
 #include <errno.h>

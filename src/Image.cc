@@ -17,6 +17,8 @@
  * Copyright (C) 2005-2009 Guido de Jong <guidoj@users.sf.net>
  */
 
+#include <cstring>
+
 #include "Exception.h"
 #include "Image.h"
 #include "MediaToolkit.h"

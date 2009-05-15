@@ -23,6 +23,7 @@
     This file contains the the main function of the .WLD data dumper.
  */
 
+#include <cstring>
 #include <iostream>
 
 #include "Directories.h"

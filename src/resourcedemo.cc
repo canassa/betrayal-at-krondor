@@ -23,8 +23,9 @@
     This file contains the the main function of resource demo.
  */
 
-#include <iostream>
+#include <cstdlib>
 #include <cstring>
+#include <iostream>
 
 #if defined( __MACOS__) || defined(__MACOSX__) || defined(__APPLE__) || defined(__APPLE_CC__)
 #include "SDL.h"
