@@ -28,20 +28,43 @@
 
 #include "ResourceData.h"
 
-class BookResource
-            : public ResourceData
+class TextBlock
 {
-private:
-    std::vector<std::string> paragraphs;
-public:
-    BookResource();
-    virtual ~BookResource();
-    unsigned int GetNumParagraphs() const;
-    std::string& GetParagraph ( const unsigned int i );
-    void Clear();
-    void Load ( FileBuffer *buffer );
-    unsigned int Save ( FileBuffer *buffer );
+    public:
+        bool italic;
+        std::string txt;
+};
+
+class PageData
+{
+    public:
+        int xpos;
+        int ypos;
+        int width;
+        int height;
+        int number;
+        int id;
+        int prevId;
+        int nextId;
+        unsigned int flag;
+        unsigned int deco1;
+        unsigned int deco2;
+        bool showNumber;
+        std::vector<TextBlock> textBlocks;
+};
+
+class BookResource: public ResourceData
+{
+    private:
+        std::vector<PageData> pages;
+    public:
+        BookResource();
+        virtual ~BookResource();
+        unsigned int GetNumPages() const;
+        PageData& GetPage ( const unsigned int i );
+        void Clear();
+        void Load ( FileBuffer *buffer );
+        unsigned int Save ( FileBuffer *buffer );
 };
 
 #endif
-

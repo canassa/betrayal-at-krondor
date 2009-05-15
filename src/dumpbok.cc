@@ -41,9 +41,15 @@ int main(int argc, char *argv[])
         }
         BookResource *bok = new BookResource;
         FileManager::GetInstance()->Load(bok, argv[1]);
-        for (unsigned int i = 0; i < bok->GetNumParagraphs(); i++)
+        for (unsigned int i = 0; i < bok->GetNumPages(); i++)
         {
-            std::cout << i << ": " << bok->GetParagraph(i)<< std::endl;
+            PageData pd = bok->GetPage(i);
+            printf("%d: %3d %3d %3d %3d %2d %2d %2d %2d %04x %2d %2d %1d\n", i,
+                   pd.xpos, pd.ypos, pd.width, pd.height, pd.number, pd.id, pd.prevId, pd.nextId, pd.flag, pd.deco1, pd.deco2, pd.showNumber);
+            for (unsigned int j = 0; j < pd.textBlocks.size(); j++)
+            {
+                printf("%s\n", pd.textBlocks[j].txt.c_str());
+            }
         }
         delete bok;
         FileManager::CleanUp();

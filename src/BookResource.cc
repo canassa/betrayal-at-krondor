@@ -21,8 +21,9 @@
 #include "BookResource.h"
 
 BookResource::BookResource()
-        : paragraphs()
-{}
+: pages()
+{
+}
 
 BookResource::~BookResource()
 {
@@ -30,21 +31,21 @@ BookResource::~BookResource()
 }
 
 unsigned int
-BookResource::GetNumParagraphs() const
+BookResource::GetNumPages() const
 {
-    return paragraphs.size();
+    return pages.size();
 }
 
-std::string&
-BookResource::GetParagraph(const unsigned int i)
+PageData&
+BookResource::GetPage(const unsigned int i)
 {
-    return paragraphs[i];
+    return pages[i];
 }
 
 void
 BookResource::Clear()
 {
-    paragraphs.clear();
+    pages.clear();
 }
 
 void
@@ -54,57 +55,78 @@ BookResource::Load(FileBuffer *buffer)
     {
         Clear();
         buffer->Skip(4);
-        for (unsigned int i = 0; i < buffer->GetUint16LE(); i++)
+        unsigned int numPages = buffer->GetUint16LE();
+        unsigned int *pageOffset = new unsigned int [numPages];
+        for (unsigned int i = 0; i < numPages; i++)
         {
-            buffer->Skip(4);
+            pageOffset[i] = buffer->GetUint32LE();
         }
-        for (unsigned int i = 0; i < 40; i++)
+        for (unsigned int i = 0; i < numPages; i++)
         {
+            buffer->Seek(4 + pageOffset[i]);
+            PageData pd;
+            pd.xpos = buffer->GetSint16LE();
+            pd.ypos = buffer->GetSint16LE();
+            pd.width = buffer->GetSint16LE();
+            pd.height = buffer->GetSint16LE();
+            pd.number = buffer->GetSint16LE();
+            pd.id = buffer->GetSint16LE();
+            pd.prevId = buffer->GetSint16LE();
             buffer->Skip(2);
-        }
-        while (!buffer->AtEnd())
-        {
-            unsigned int code = buffer->GetUint8();
-            std::string s = "";
-            while ((code & 0xf0) != 0xf0)
+            pd.nextId = buffer->GetSint16LE();
+            pd.flag = buffer->GetUint16LE();
+            pd.deco1 = buffer->GetUint16LE();
+            pd.deco2 = buffer->GetUint16LE();
+            pd.showNumber = buffer->GetUint16LE() > 0;
+            buffer->Skip(30);
+            for (unsigned int j = 0; j < pd.deco1; j++)
             {
-                s += (char)code;
-                code = buffer->GetUint8();
+                buffer->Skip(8);
             }
-            if (s.length())
+            for (unsigned int j = 0; j < pd.deco2; j++)
             {
-                paragraphs.push_back(s);
+                buffer->Skip(8);
             }
-            switch (code)
+            bool endOfPage = false;
+            TextBlock tb;
+            while (!endOfPage && !buffer->AtEnd())
             {
-            case 0xf0:
-                do
+                unsigned char c = buffer->GetUint8();
+                if ((c & 0xf0) == 0xf0)
                 {
-                    buffer->Skip(2);
-                    if (!buffer->AtEnd())
+                    switch (c)
                     {
-                        code = buffer->GetUint8();
-                        buffer->Skip(-1);
+                        case 0xf0:
+                            endOfPage = true;
+                            break;
+                        case 0xf1:
+                            buffer->Skip(16);
+                            break;
+                        case 0xf2:
+                            endOfPage = true;
+                            break;
+                        case 0xf3:
+                            endOfPage = true;
+                            break;
+                        case 0xf4:
+                            buffer->Skip(10);
+                            break;
+                        default:
+                            break;
                     }
+                    pd.textBlocks.push_back(tb);
+                    tb.italic = false;
+                    tb.txt.clear();
                 }
-                while ((code != 0xf0) && (!buffer->AtEnd()));
-                break;
-            case 0xf1:
-                for (unsigned int i = 0; i < 8; i++)
+                else
                 {
-                    buffer->Skip(2);
+                    tb.txt.push_back(c);
                 }
-                break;
-            case 0xf4:
-                for (unsigned int i = 0; i < 5; i++)
-                {
-                    buffer->Skip(2);
-                }
-                break;
-            default:
-                break;
             }
+            pd.textBlocks.push_back(tb);
+            pages.push_back(pd);
         }
+        delete[] pageOffset;
     }
     catch (Exception &e)
     {
