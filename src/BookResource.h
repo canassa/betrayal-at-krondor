@@ -28,9 +28,18 @@
 
 #include "ResourceData.h"
 
+class Decoration
+{
+    public:
+        int xpos;
+        int ypos;
+        int id;
+};
+
 class TextBlock
 {
     public:
+        bool paragraph;
         bool italic;
         std::string txt;
 };
@@ -47,9 +56,8 @@ class PageData
         int prevId;
         int nextId;
         unsigned int flag;
-        unsigned int deco1;
-        unsigned int deco2;
         bool showNumber;
+        std::vector<Decoration> decorations;
         std::vector<TextBlock> textBlocks;
 };
 

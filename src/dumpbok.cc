@@ -44,11 +44,15 @@ int main(int argc, char *argv[])
         for (unsigned int i = 0; i < bok->GetNumPages(); i++)
         {
             PageData pd = bok->GetPage(i);
-            printf("%d: %3d %3d %3d %3d %2d %2d %2d %2d %04x %2d %2d %1d\n", i,
-                   pd.xpos, pd.ypos, pd.width, pd.height, pd.number, pd.id, pd.prevId, pd.nextId, pd.flag, pd.deco1, pd.deco2, pd.showNumber);
+            printf("%d: %3d %3d %3d %3d %2d %2d %2d %2d %04x %1d\n", i,
+                   pd.xpos, pd.ypos, pd.width, pd.height, pd.number, pd.id, pd.prevId, pd.nextId, pd.flag, pd.showNumber);
+            for (unsigned int j = 0; j < pd.decorations.size(); j++)
+            {
+                printf("Decoration %2d: %3d %3d %3d\n", j, pd.decorations[j].xpos, pd.decorations[j].ypos, pd.decorations[j].id);
+            }
             for (unsigned int j = 0; j < pd.textBlocks.size(); j++)
             {
-                printf("%s\n", pd.textBlocks[j].txt.c_str());
+                printf("Text %2d: %1d %s\n", j, pd.textBlocks[j].italic, pd.textBlocks[j].txt.c_str());
             }
         }
         delete bok;

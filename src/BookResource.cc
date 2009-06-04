@@ -75,20 +75,31 @@ BookResource::Load(FileBuffer *buffer)
             buffer->Skip(2);
             pd.nextId = buffer->GetSint16LE();
             pd.flag = buffer->GetUint16LE();
-            pd.deco1 = buffer->GetUint16LE();
-            pd.deco2 = buffer->GetUint16LE();
+            unsigned int numDecorations = buffer->GetUint16LE();
+            unsigned int numFirstLetters = buffer->GetUint16LE();
             pd.showNumber = buffer->GetUint16LE() > 0;
             buffer->Skip(30);
-            for (unsigned int j = 0; j < pd.deco1; j++)
+            for (unsigned int j = 0; j < numDecorations; j++)
             {
-                buffer->Skip(8);
+                Decoration deco;
+                deco.xpos = buffer->GetSint16LE();
+                deco.ypos = buffer->GetSint16LE();
+                deco.id = buffer->GetSint16LE();
+                buffer->Skip(2);
+                pd.decorations.push_back(deco);
             }
-            for (unsigned int j = 0; j < pd.deco2; j++)
+            for (unsigned int j = 0; j < numFirstLetters; j++)
             {
-                buffer->Skip(8);
+                Decoration deco;
+                deco.xpos = buffer->GetSint16LE();
+                deco.ypos = buffer->GetSint16LE();
+                deco.id = buffer->GetSint16LE();
+                buffer->Skip(2);
+                pd.decorations.push_back(deco);
             }
             bool endOfPage = false;
             TextBlock tb;
+            tb.italic = false;
             while (!endOfPage && !buffer->AtEnd())
             {
                 unsigned char c = buffer->GetUint8();
@@ -103,13 +114,22 @@ BookResource::Load(FileBuffer *buffer)
                             buffer->Skip(16);
                             break;
                         case 0xf2:
-                            endOfPage = true;
                             break;
                         case 0xf3:
-                            endOfPage = true;
                             break;
                         case 0xf4:
-                            buffer->Skip(10);
+                            buffer->Skip(8);
+                            switch (buffer->GetUint16LE())
+                            {
+                                case 1:
+                                    tb.italic = false;
+                                    break;
+                                case 5:
+                                    tb.italic = true;
+                                    break;
+                                default:
+                                    break;
+                            }
                             break;
                         default:
                             break;
