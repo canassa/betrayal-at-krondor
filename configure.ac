@@ -45,7 +45,7 @@ AC_ARG_ENABLE([error-on-warning], AS_HELP_STRING([--enable-error-on-warning],[tr
 AC_ARG_ENABLE([debug],AS_HELP_STRING([--enable-debug],[enable debugging support (default is NO)]),CPPFLAGS="$CPPFLAGS -DDEBUG")
 CPPFLAGS="$CPPFLAGS -DDATADIR='\"$datadir\"'"
 #SDL_CFLAGS=$(sh sdl-config --cflags)
-CXXFLAGS="$CXXFLAGS $SDL_CFLAGS -ansi -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -Wwrite-strings -Wshadow -Wcast-align -Winline $OPT_CXXFLAGS"
+CXXFLAGS="$CXXFLAGS $SDL_CFLAGS -ansi -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -Wwrite-strings -Wshadow -Wcast-align $OPT_CXXFLAGS"
 LDFLAGS="$LDFLAGS -Wl,--as-needed"
 
 AC_C_CONST
