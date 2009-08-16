@@ -19,23 +19,23 @@
 
 #include "Geometry.h"
 
-bool  Angle::initialized = false;
-float Angle::cosTbl[ANGLE_SIZE];
-float Angle::sinTbl[ANGLE_SIZE];
-float Angle::tanTbl[ANGLE_SIZE];
+bool  Angle::m_initialized = false;
+float Angle::m_cosTbl[ANGLE_SIZE];
+float Angle::m_sinTbl[ANGLE_SIZE];
+float Angle::m_tanTbl[ANGLE_SIZE];
 
 Angle::Angle ( const int a )
-: angle(a & ANGLE_MASK)
+: m_angle(a & ANGLE_MASK)
 {
-    if (!initialized)
+    if (!m_initialized)
     {
         for (unsigned int i = 0; i < ANGLE_SIZE; i++)
         {
-            cosTbl[i] = cos((float)i * PI2 / (float)ANGLE_SIZE);
-            sinTbl[i] = sin((float)i * PI2 / (float)ANGLE_SIZE);
-            tanTbl[i] = tan((float)i * PI2 / (float)ANGLE_SIZE);
+            m_cosTbl[i] = cos((float)i * PI2 / (float)ANGLE_SIZE);
+            m_sinTbl[i] = sin((float)i * PI2 / (float)ANGLE_SIZE);
+            m_tanTbl[i] = tan((float)i * PI2 / (float)ANGLE_SIZE);
         }
-        initialized = true;
+        m_initialized = true;
     }
 }
 
@@ -45,246 +45,250 @@ Angle::~Angle()
 
 int Angle::Get() const
 {
-    return angle;
+    return m_angle;
 }
 
 void Angle::Set ( const int a )
 {
-    angle = a & ANGLE_MASK;
+    m_angle = a & ANGLE_MASK;
 }
 
 float Angle::GetCos() const
 {
-    return cosTbl[angle];
+    return m_cosTbl[m_angle];
 }
 
 float Angle::GetSin() const
 {
-    return sinTbl[angle];
+    return m_sinTbl[m_angle];
 }
 
 float Angle::GetTan() const
 {
-    return tanTbl[angle];
+    return m_tanTbl[m_angle];
 }
 
 Angle& Angle::operator= ( const Angle &a )
 {
-    angle = a.angle;
+    m_angle = a.m_angle;
     return *this;
 }
 
 Angle& Angle::operator+= ( const Angle &a )
 {
-    angle = (angle + a.angle) & ANGLE_MASK;
+    m_angle = (m_angle + a.m_angle) & ANGLE_MASK;
     return *this;
 }
 
 Angle& Angle::operator-= ( const Angle &a )
 {
-    angle = (angle - a.angle) & ANGLE_MASK;
+    m_angle = (m_angle - a.m_angle) & ANGLE_MASK;
     return *this;
 }
 
 Angle Angle::operator+ ( const Angle &a )
 {
-    return Angle(angle + a.angle);
+    return Angle(m_angle + a.m_angle);
 }
 
 Angle Angle::operator- ( const Angle &a )
 {
-    return Angle(angle - a.angle);
+    return Angle(m_angle - a.m_angle);
 }
 
 bool Angle::operator== ( const Angle &a ) const
 {
-    return angle == a.angle;
+    return m_angle == a.m_angle;
 }
 
 bool Angle::operator!= ( const Angle &a ) const
 {
-    return angle != a.angle;
+    return m_angle != a.m_angle;
 }
 
 bool Angle::operator< ( const Angle &a ) const
 {
-    return angle < a.angle;
+    return m_angle < a.m_angle;
 }
 
 bool Angle::operator> ( const Angle &a ) const
 {
-    return angle > a.angle;
+    return m_angle > a.m_angle;
 }
 
 bool Angle::operator<= ( const Angle &a ) const
 {
-    return angle <= a.angle;
+    return m_angle <= a.m_angle;
 }
 
 bool Angle::operator>= ( const Angle &a ) const
 {
-    return angle >= a.angle;
+    return m_angle >= a.m_angle;
 }
 
 Vector2D::Vector2D()
-        : xCoord(0)
-        , yCoord(0)
-{}
+        : m_x(0)
+        , m_y(0)
+{
+}
 
 Vector2D::Vector2D(const int x, const int y)
-        : xCoord(x)
-        , yCoord(y)
-{}
+        : m_x(x)
+        , m_y(y)
+{
+}
 
 Vector2D::Vector2D(const Vector2D &p)
-        : xCoord(p.xCoord)
-        , yCoord(p.yCoord)
-{}
+        : m_x(p.m_x)
+        , m_y(p.m_y)
+{
+}
 
 Vector2D::~Vector2D()
-{}
+{
+}
 
 Vector2D& Vector2D::operator=(const Vector2D &p)
 {
-    xCoord = p.xCoord;
-    yCoord = p.yCoord;
+    m_x = p.m_x;
+    m_y = p.m_y;
     return *this;
 }
 
 Vector2D& Vector2D::operator+=(const Vector2D &p)
 {
-    xCoord += p.xCoord;
-    yCoord += p.yCoord;
+    m_x += p.m_x;
+    m_y += p.m_y;
     return *this;
 }
 
 Vector2D& Vector2D::operator-=(const Vector2D &p)
 {
-    xCoord -= p.xCoord;
-    yCoord -= p.yCoord;
+    m_x -= p.m_x;
+    m_y -= p.m_y;
     return *this;
 }
 
 Vector2D& Vector2D::operator*=(const int f)
 {
-    xCoord *= f;
-    yCoord *= f;
+    m_x *= f;
+    m_y *= f;
     return *this;
 }
 
 Vector2D& Vector2D::operator/=(const int f)
 {
-    xCoord /= f;
-    yCoord /= f;
+    m_x /= f;
+    m_y /= f;
     return *this;
 }
 
 Vector2D& Vector2D::operator*=(const float f)
 {
-    xCoord = (int)((float)xCoord * f);
-    yCoord = (int)((float)yCoord * f);
+    m_x = (int)((float)m_x * f);
+    m_y = (int)((float)m_y * f);
     return *this;
 }
 
 Vector2D& Vector2D::operator/=(const float f)
 {
-    xCoord = (int)((float)xCoord / f);
-    yCoord = (int)((float)yCoord / f);
+    m_x = (int)((float)m_x / f);
+    m_y = (int)((float)m_y / f);
     return *this;
 }
 
 Vector2D Vector2D::operator+(const Vector2D &p)
 {
-    return Vector2D(xCoord + p.xCoord, yCoord + p.yCoord);
+    return Vector2D(m_x + p.m_x, m_y + p.m_y);
 }
 
 Vector2D Vector2D::operator-(const Vector2D &p)
 {
-    return Vector2D(xCoord - p.xCoord, yCoord - p.yCoord);
+    return Vector2D(m_x - p.m_x, m_y - p.m_y);
 }
 
 Vector2D Vector2D::operator*(const int f)
 {
-    return Vector2D(xCoord * f, yCoord * f);
+    return Vector2D(m_x * f, m_y * f);
 }
 
 Vector2D Vector2D::operator/(const int f)
 {
-    return Vector2D(xCoord / f, yCoord / f);
+    return Vector2D(m_x / f, m_y / f);
 }
 
 Vector2D Vector2D::operator*(const float f)
 {
-    return Vector2D((int)((float)xCoord * f), (int)((float)yCoord * f));
+    return Vector2D((int)((float)m_x * f), (int)((float)m_y * f));
 }
 
 Vector2D Vector2D::operator/(const float f)
 {
-    return Vector2D((int)((float)xCoord / f), (int)((float)yCoord / f));
+    return Vector2D((int)((float)m_x / f), (int)((float)m_y / f));
 }
 
 bool Vector2D::operator==(const Vector2D &p) const
 {
-    return (xCoord == p.xCoord) && (yCoord == p.yCoord);
+    return (m_x == p.m_x) && (m_y == p.m_y);
 }
 
 bool Vector2D::operator!=(const Vector2D &p) const
 {
-    return (xCoord != p.xCoord) || (yCoord != p.yCoord);
+    return (m_x != p.m_x) || (m_y != p.m_y);
 }
 
 bool Vector2D::operator<(const Vector2D &p) const
 {
-    return ((xCoord < p.xCoord) && (yCoord <= p.yCoord)) ||
-           ((yCoord < p.yCoord) && (xCoord <= p.xCoord));
+    return ((m_x < p.m_x) && (m_y <= p.m_y)) ||
+           ((m_y < p.m_y) && (m_x <= p.m_x));
 }
 
 bool Vector2D::operator>(const Vector2D &p) const
 {
-    return ((xCoord > p.xCoord) && (yCoord >= p.yCoord)) ||
-           ((yCoord > p.yCoord) && (xCoord >= p.xCoord));
+    return ((m_x > p.m_x) && (m_y >= p.m_y)) ||
+           ((m_y > p.m_y) && (m_x >= p.m_x));
 }
 
 bool Vector2D::operator<=(const Vector2D &p) const
 {
-    return (xCoord <= p.xCoord) && (yCoord <= p.yCoord);
+    return (m_x <= p.m_x) && (m_y <= p.m_y);
 }
 
 bool Vector2D::operator>=(const Vector2D &p) const
 {
-    return (xCoord >= p.xCoord) && (yCoord >= p.yCoord);
+    return (m_x >= p.m_x) && (m_y >= p.m_y);
 }
 
 int Vector2D::GetX() const
 {
-    return xCoord;
+    return m_x;
 }
 
 int Vector2D::GetY() const
 {
-    return yCoord;
+    return m_y;
 }
 
-void Vector2D::SetX(int x)
+void Vector2D::SetX(const int x)
 {
-    xCoord = x;
+    m_x = x;
 }
 
-void Vector2D::SetY(int y)
+void Vector2D::SetY(const int y)
 {
-    yCoord = y;
+    m_y = y;
 }
 
 unsigned int Vector2D::GetRho() const
 {
-    return (unsigned int)sqrt(((float)xCoord * (float)xCoord) + ((float)yCoord * (float)yCoord));
+    return (unsigned int)sqrt(((float)m_x * (float)m_x) + ((float)m_y * (float)m_y));
 }
 
 int Vector2D::GetTheta() const
 {
-    if (xCoord == 0)
+    if (m_x == 0)
     {
-        if (yCoord >= 0)
+        if (m_y >= 0)
         {
             return ANGLE_SIZE / 4;
         }
@@ -295,8 +299,8 @@ int Vector2D::GetTheta() const
     }
     else
     {
-        int angle = (int)((atan((float)yCoord / (float)xCoord) / PI2) * (float)ANGLE_SIZE);
-        if (xCoord > 0)
+        int angle = (int)((atan((float)m_y / (float)m_x) / PI2) * (float)ANGLE_SIZE);
+        if (m_x > 0)
         {
             return angle & ANGLE_MASK;
         }
@@ -309,224 +313,229 @@ int Vector2D::GetTheta() const
 
 
 Vector3D::Vector3D()
-        : xCoord(0)
-        , yCoord(0)
-        , zCoord(0)
-{}
+        : m_x(0)
+        , m_y(0)
+        , m_z(0)
+{
+}
 
 Vector3D::Vector3D(const int x, const int y, const int z)
-        : xCoord(x)
-        , yCoord(y)
-        , zCoord(z)
-{}
+        : m_x(x)
+        , m_y(y)
+        , m_z(z)
+{
+}
 
 Vector3D::Vector3D(const Vector3D &p)
-        : xCoord(p.xCoord)
-        , yCoord(p.yCoord)
-        , zCoord(p.zCoord)
-{}
+        : m_x(p.m_x)
+        , m_y(p.m_y)
+        , m_z(p.m_z)
+{
+}
 
 Vector3D::Vector3D(const Vector2D &p)
-    : xCoord(p.GetX())
-    , yCoord(p.GetY())
-    , zCoord(0)
-{}
+    : m_x(p.GetX())
+    , m_y(p.GetY())
+    , m_z(0)
+{
+}
 
 Vector3D::~Vector3D()
-{}
+{
+}
 
 Vector3D& Vector3D::operator=(const Vector3D &p)
 {
-    xCoord = p.xCoord;
-    yCoord = p.yCoord;
-    zCoord = p.zCoord;
+    m_x = p.m_x;
+    m_y = p.m_y;
+    m_z = p.m_z;
     return *this;
 }
 
 Vector3D& Vector3D::operator+=(const Vector3D &p)
 {
-    xCoord += p.xCoord;
-    yCoord += p.yCoord;
-    zCoord += p.zCoord;
+    m_x += p.m_x;
+    m_y += p.m_y;
+    m_z += p.m_z;
     return *this;
 }
 
 Vector3D& Vector3D::operator-=(const Vector3D &p)
 {
-    xCoord -= p.xCoord;
-    yCoord -= p.yCoord;
-    zCoord -= p.zCoord;
+    m_x -= p.m_x;
+    m_y -= p.m_y;
+    m_z -= p.m_z;
     return *this;
 }
 
 Vector3D& Vector3D::operator=(const Vector2D &p)
 {
-    xCoord = p.GetX();
-    yCoord = p.GetY();
-    zCoord = 0;
+    m_x = p.GetX();
+    m_y = p.GetY();
+    m_z = 0;
     return *this;
 }
 
 Vector3D& Vector3D::operator+=(const Vector2D &p)
 {
-    xCoord += p.GetX();
-    yCoord += p.GetY();
+    m_x += p.GetX();
+    m_y += p.GetY();
     return *this;
 }
 
 Vector3D& Vector3D::operator-=(const Vector2D &p)
 {
-    xCoord -= p.GetX();
-    yCoord -= p.GetY();
+    m_x -= p.GetX();
+    m_y -= p.GetY();
     return *this;
 }
 
 Vector3D& Vector3D::operator*=(const int f)
 {
-    xCoord *= f;
-    yCoord *= f;
-    zCoord *= f;
+    m_x *= f;
+    m_y *= f;
+    m_z *= f;
     return *this;
 }
 
 Vector3D& Vector3D::operator/=(const int f)
 {
-    xCoord /= f;
-    yCoord /= f;
-    zCoord /= f;
+    m_x /= f;
+    m_y /= f;
+    m_z /= f;
     return *this;
 }
 
 Vector3D& Vector3D::operator*=(const float f)
 {
-    xCoord = (int)((float)xCoord * f);
-    yCoord = (int)((float)yCoord * f);
-    zCoord = (int)((float)zCoord * f);
+    m_x = (int)((float)m_x * f);
+    m_y = (int)((float)m_y * f);
+    m_z = (int)((float)m_z * f);
     return *this;
 }
 
 Vector3D& Vector3D::operator/=(const float f)
 {
-    xCoord = (int)((float)xCoord / f);
-    yCoord = (int)((float)yCoord / f);
-    zCoord = (int)((float)zCoord / f);
+    m_x = (int)((float)m_x / f);
+    m_y = (int)((float)m_y / f);
+    m_z = (int)((float)m_z / f);
     return *this;
 }
 
 Vector3D Vector3D::operator+(const Vector3D &p)
 {
-    return Vector3D(xCoord + p.xCoord, yCoord + p.yCoord, zCoord + p.zCoord);
+    return Vector3D(m_x + p.m_x, m_y + p.m_y, m_z + p.m_z);
 }
 
 Vector3D Vector3D::operator-(const Vector3D &p)
 {
-    return Vector3D(xCoord - p.xCoord, yCoord - p.yCoord, zCoord - p.zCoord);
+    return Vector3D(m_x - p.m_x, m_y - p.m_y, m_z - p.m_z);
 }
 
 Vector3D Vector3D::operator+(const Vector2D &p)
 {
-    return Vector3D(xCoord + p.GetX(), yCoord + p.GetY(), zCoord);
+    return Vector3D(m_x + p.GetX(), m_y + p.GetY(), m_z);
 }
 
 Vector3D Vector3D::operator-(const Vector2D &p)
 {
-    return Vector3D(xCoord - p.GetX(), yCoord - p.GetY(), zCoord);
+    return Vector3D(m_x - p.GetX(), m_y - p.GetY(), m_z);
 }
 
 Vector3D Vector3D::operator*(const int f)
 {
-    return Vector3D(xCoord * f, yCoord * f, zCoord * f);
+    return Vector3D(m_x * f, m_y * f, m_z * f);
 }
 
 Vector3D Vector3D::operator/(const int f)
 {
-    return Vector3D(xCoord / f, yCoord / f, zCoord / f);
+    return Vector3D(m_x / f, m_y / f, m_z / f);
 }
 
 Vector3D Vector3D::operator*(const float f)
 {
-    return Vector3D((int)((float)xCoord * f), (int)((float)yCoord * f), (int)((float)zCoord * f));
+    return Vector3D((int)((float)m_x * f), (int)((float)m_y * f), (int)((float)m_z * f));
 }
 
 Vector3D Vector3D::operator/(const float f)
 {
-    return Vector3D((int)((float)xCoord / f), (int)((float)yCoord / f), (int)((float)zCoord / f));
+    return Vector3D((int)((float)m_x / f), (int)((float)m_y / f), (int)((float)m_z / f));
 }
 
 bool Vector3D::operator==(const Vector3D &p) const
 {
-    return (xCoord == p.xCoord) && (yCoord == p.yCoord) && (zCoord == p.zCoord);
+    return (m_x == p.m_x) && (m_y == p.m_y) && (m_z == p.m_z);
 }
 
 bool Vector3D::operator!=(const Vector3D &p) const
 {
-    return (xCoord != p.xCoord) || (yCoord != p.yCoord) || (zCoord != p.zCoord);
+    return (m_x != p.m_x) || (m_y != p.m_y) || (m_z != p.m_z);
 }
 
 bool Vector3D::operator<(const Vector3D &p) const
 {
-    return ((xCoord < p.xCoord) && (yCoord <= p.yCoord) && (zCoord <= p.zCoord)) ||
-           ((yCoord < p.yCoord) && (zCoord <= p.zCoord) && (xCoord <= p.xCoord)) ||
-           ((zCoord < p.zCoord) && (xCoord <= p.xCoord) && (yCoord <= p.yCoord));
+    return ((m_x < p.m_x) && (m_y <= p.m_y) && (m_z <= p.m_z)) ||
+           ((m_y < p.m_y) && (m_z <= p.m_z) && (m_x <= p.m_x)) ||
+           ((m_z < p.m_z) && (m_x <= p.m_x) && (m_y <= p.m_y));
 }
 
 bool Vector3D::operator>(const Vector3D &p) const
 {
-    return ((xCoord > p.xCoord) && (yCoord >= p.yCoord) && (zCoord >= p.zCoord)) ||
-           ((yCoord > p.yCoord) && (zCoord >= p.zCoord) && (xCoord >= p.xCoord)) ||
-           ((zCoord > p.zCoord) && (xCoord >= p.xCoord) && (yCoord >= p.yCoord));
+    return ((m_x > p.m_x) && (m_y >= p.m_y) && (m_z >= p.m_z)) ||
+           ((m_y > p.m_y) && (m_z >= p.m_z) && (m_x >= p.m_x)) ||
+           ((m_z > p.m_z) && (m_x >= p.m_x) && (m_y >= p.m_y));
 }
 
 bool Vector3D::operator<=(const Vector3D &p) const
 {
-    return (xCoord <= p.xCoord) && (yCoord <= p.yCoord) && (zCoord <= p.zCoord);
+    return (m_x <= p.m_x) && (m_y <= p.m_y) && (m_z <= p.m_z);
 }
 
 bool Vector3D::operator>=(const Vector3D &p) const
 {
-    return (xCoord >= p.xCoord) && (yCoord >= p.yCoord) && (zCoord >= p.zCoord);
+    return (m_x >= p.m_x) && (m_y >= p.m_y) && (m_z >= p.m_z);
 }
 
 int Vector3D::GetX() const
 {
-    return xCoord;
+    return m_x;
 }
 
 int Vector3D::GetY() const
 {
-    return yCoord;
+    return m_y;
 }
 
 int Vector3D::GetZ() const
 {
-    return zCoord;
+    return m_z;
 }
 
-void Vector3D::SetX(int x)
+void Vector3D::SetX(const int x)
 {
-    xCoord = x;
+    m_x = x;
 }
 
-void Vector3D::SetY(int y)
+void Vector3D::SetY(const int y)
 {
-    yCoord = y;
+    m_y = y;
 }
 
-void Vector3D::SetZ(int z)
+void Vector3D::SetZ(const int z)
 {
-    zCoord = z;
+    m_z = z;
 }
 
 unsigned int Vector3D::GetRho() const
 {
-    return (unsigned int)sqrt(((float)xCoord * (float)xCoord) + ((float)yCoord * (float)yCoord) + ((float)zCoord * (float)zCoord));
+    return (unsigned int)sqrt(((float)m_x * (float)m_x) + ((float)m_y * (float)m_y) + ((float)m_z * (float)m_z));
 }
 
 int Vector3D::GetTheta() const
 {
-    if (xCoord == 0)
+    if (m_x == 0)
     {
-        if (yCoord >= 0)
+        if (m_y >= 0)
         {
             return ANGLE_SIZE / 4;
         }
@@ -537,8 +546,8 @@ int Vector3D::GetTheta() const
     }
     else
     {
-        int angle = (int)((atan((float)yCoord / (float)xCoord) / PI2) * (float)ANGLE_SIZE);
-        if (xCoord > 0)
+        int angle = (int)((atan((float)m_y / (float)m_x) / PI2) * (float)ANGLE_SIZE);
+        if (m_x > 0)
         {
             return angle & ANGLE_MASK;
         }
@@ -551,121 +560,124 @@ int Vector3D::GetTheta() const
 
 
 Rectangle::Rectangle(const int x, const int y, const int w, const int h)
-        : xpos(x)
-        , ypos(y)
-        , width(w)
-        , height(h)
-{}
+        : m_x(x)
+        , m_y(y)
+        , m_width(w)
+        , m_height(h)
+{
+}
 
 Rectangle::Rectangle(const Rectangle &r)
-        : xpos(r.xpos)
-        , ypos(r.ypos)
-        , width(r.width)
-        , height(r.height)
-{}
+        : m_x(r.m_x)
+        , m_y(r.m_y)
+        , m_width(r.m_width)
+        , m_height(r.m_height)
+{
+}
 
 Rectangle::~Rectangle()
-{}
+{
+}
 
 Rectangle& Rectangle::operator=(const Rectangle &r)
 {
-    xpos = r.xpos;
-    ypos = r.ypos;
-    width = r.width;
-    height = r.height;
+    m_x = r.m_x;
+    m_y = r.m_y;
+    m_width = r.m_width;
+    m_height = r.m_height;
     return *this;
 }
 
 bool Rectangle::operator==(const Rectangle &r)
 {
-    return (xpos == r.xpos) && (ypos == r.ypos) && (width == r.width) && (height == r.height);
+    return (m_x == r.m_x) && (m_y == r.m_y) && (m_width == r.m_width) && (m_height == r.m_height);
 }
 
 bool Rectangle::operator!=(const Rectangle &r)
 {
-    return (xpos != r.xpos) || (ypos != r.ypos) || (width != r.width) || (height != r.height);
+    return (m_x != r.m_x) || (m_y != r.m_y) || (m_width != r.m_width) || (m_height != r.m_height);
 }
 
 bool Rectangle::operator<(const Rectangle &r)
 {
-    return (xpos < r.xpos) ||
-           ((xpos == r.xpos) && (ypos < r.ypos)) ||
-           ((xpos == r.xpos) && (ypos == r.ypos) && ((width * height) < (r.width * r.height)));
+    return (m_x < r.m_x) ||
+           ((m_x == r.m_x) && (m_y < r.m_y)) ||
+            ((m_x == r.m_x) && (m_y == r.m_y) && ((m_width * m_height) < (r.m_width * r.m_height)));
 }
 
 bool Rectangle::operator>(const Rectangle &r)
 {
-    return (xpos > r.xpos) ||
-            ((xpos == r.xpos) && (ypos > r.ypos)) ||
-            ((xpos == r.xpos) && (ypos == r.ypos) && ((width * height) > (r.width * r.height)));
+    return (m_x > r.m_x) ||
+            ((m_x == r.m_x) && (m_y > r.m_y)) ||
+            ((m_x == r.m_x) && (m_y == r.m_y) && ((m_width * m_height) > (r.m_width * r.m_height)));
 }
 
 bool Rectangle::operator<=(const Rectangle &r)
 {
-    return (xpos <= r.xpos) ||
-            ((xpos == r.xpos) && (ypos <= r.ypos)) ||
-            ((xpos == r.xpos) && (ypos == r.ypos) && ((width * height) <= (r.width * r.height)));
+    return (m_x <= r.m_x) ||
+            ((m_x == r.m_x) && (m_y <= r.m_y)) ||
+            ((m_x == r.m_x) && (m_y == r.m_y) && ((m_width * m_height) <= (r.m_width * r.m_height)));
 }
 
 bool Rectangle::operator>=(const Rectangle &r)
 {
-    return (xpos >= r.xpos) ||
-            ((xpos == r.xpos) && (ypos >= r.ypos)) ||
-            ((xpos == r.xpos) && (ypos == r.ypos) && ((width * height) >= (r.width * r.height)));
+    return (m_x >= r.m_x) ||
+            ((m_x == r.m_x) && (m_y >= r.m_y)) ||
+            ((m_x == r.m_x) && (m_y == r.m_y) && ((m_width * m_height) >= (r.m_width * r.m_height)));
 }
 
 int Rectangle::GetXPos() const
 {
-    return xpos;
+    return m_x;
 }
 
 int Rectangle::GetYPos() const
 {
-    return ypos;
+    return m_y;
 }
 
 int Rectangle::GetXCenter() const
 {
-    return xpos + width / 2;
+    return m_x + m_width / 2;
 }
 
 int Rectangle::GetYCenter() const
 {
-    return ypos + height / 2;
+    return m_y + m_height / 2;
 }
 
 int Rectangle::GetWidth() const
 {
-    return width;
+    return m_width;
 }
 
 int Rectangle::GetHeight() const
 {
-    return height;
+    return m_height;
 }
 
-void Rectangle::SetXPos(int x)
+void Rectangle::SetXPos(const int x)
 {
-    xpos = x;
+    m_x = x;
 }
 
-void Rectangle::SetYPos(int y)
+void Rectangle::SetYPos(const int y)
 {
-    ypos = y;
+    m_y = y;
 }
 
-void Rectangle::SetWidth(int w)
+void Rectangle::SetWidth(const int w)
 {
-    width = w;
+    m_width = w;
 }
 
-void Rectangle::SetHeight(int h)
+void Rectangle::SetHeight(const int h)
 {
-    height = h;
+    m_height = h;
 }
 
 bool Rectangle::IsInside(const Vector2D &p)
 {
-    return ((xpos <= p.GetX()) && (p.GetX() < xpos + width) &&
-            (ypos <= p.GetY()) && (p.GetY() < ypos + height));
+    return ((m_x <= p.GetX()) && (p.GetX() < m_x + m_width) &&
+            (m_y <= p.GetY()) && (p.GetY() < m_y + m_height));
 }

@@ -38,11 +38,11 @@ static const unsigned int ANGLE_MASK = ANGLE_SIZE - 1;
 class Angle
 {
     private:
-        int angle;
-        static bool initialized;
-        static float cosTbl[ANGLE_SIZE];
-        static float sinTbl[ANGLE_SIZE];
-        static float tanTbl[ANGLE_SIZE];
+        int m_angle;
+        static bool m_initialized;
+        static float m_cosTbl[ANGLE_SIZE];
+        static float m_sinTbl[ANGLE_SIZE];
+        static float m_tanTbl[ANGLE_SIZE];
     public:
         Angle ( const int a );
         ~Angle();
@@ -67,8 +67,8 @@ class Angle
 class Vector2D
 {
     private:
-        int xCoord;
-        int yCoord;
+        int m_x;
+        int m_y;
     public:
         Vector2D();
         Vector2D ( const int x, const int y );
@@ -95,8 +95,8 @@ class Vector2D
         bool operator>= ( const Vector2D &p ) const;
         int GetX() const;
         int GetY() const;
-        void SetX ( int x );
-        void SetY ( int y );
+        void SetX ( const int x );
+        void SetY ( const int y );
         unsigned int GetRho() const;
         int GetTheta() const;
 };
@@ -104,9 +104,9 @@ class Vector2D
 class Vector3D
 {
     private:
-        int xCoord;
-        int yCoord;
-        int zCoord;
+        int m_x;
+        int m_y;
+        int m_z;
     public:
         Vector3D();
         Vector3D ( const int x, const int y, const int z );
@@ -140,9 +140,9 @@ class Vector3D
         int GetX() const;
         int GetY() const;
         int GetZ() const;
-        void SetX ( int x );
-        void SetY ( int y );
-        void SetZ ( int z );
+        void SetX ( const int x );
+        void SetY ( const int y );
+        void SetZ ( const int z );
         unsigned int GetRho() const;
         int GetTheta() const;
 };
@@ -150,10 +150,10 @@ class Vector3D
 class Rectangle
 {
     private:
-        int xpos;
-        int ypos;
-        int width;
-        int height;
+        int m_x;
+        int m_y;
+        int m_width;
+        int m_height;
     public:
         Rectangle ( const int x, const int y, const int w, const int h );
         Rectangle ( const Rectangle &r );
@@ -171,10 +171,10 @@ class Rectangle
         int GetYCenter() const;
         int GetWidth() const;
         int GetHeight() const;
-        void SetXPos ( int x );
-        void SetYPos ( int x );
-        void SetWidth ( int w );
-        void SetHeight ( int h );
+        void SetXPos ( const int x );
+        void SetYPos ( const int x );
+        void SetWidth ( const int w );
+        void SetHeight ( const int h );
         bool IsInside ( const Vector2D &p );
 };
 
