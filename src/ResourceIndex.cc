@@ -26,15 +26,15 @@ ResourceIndex::ResourceIndex()
         , numResources(0)
         , resIdxMap()
         , resIdxIterator(resIdxMap.begin())
-{}
+{
+}
 
 ResourceIndex::~ResourceIndex()
 {
     resIdxMap.clear();
 }
 
-void
-ResourceIndex::Load(const std::string &filename)
+void ResourceIndex::Load(const std::string &filename)
 {
     try
     {
@@ -76,8 +76,7 @@ ResourceIndex::Load(const std::string &filename)
     }
 }
 
-void
-ResourceIndex::Save(const std::string &filename)
+void ResourceIndex::Save(const std::string &filename)
 {
     try
     {
@@ -116,20 +115,17 @@ ResourceIndex::Save(const std::string &filename)
     }
 }
 
-std::string
-ResourceIndex::GetResourceFilename() const
+std::string ResourceIndex::GetResourceFilename() const
 {
     return resourceFilename;
 }
 
-unsigned int
-ResourceIndex::GetNumResources() const
+unsigned int ResourceIndex::GetNumResources() const
 {
     return numResources;
 }
 
-bool
-ResourceIndex::Find(const std::string &name, ResourceIndexData &data)
+bool ResourceIndex::Find(const std::string &name, ResourceIndexData &data)
 {
     std::map<const std::string, ResourceIndexData>::iterator it = resIdxMap.find(name);
     if (it != resIdxMap.end())
@@ -140,8 +136,7 @@ ResourceIndex::Find(const std::string &name, ResourceIndexData &data)
     return false;
 }
 
-bool
-ResourceIndex::GetFirst(std::string& name, ResourceIndexData &data)
+bool ResourceIndex::GetFirst(std::string& name, ResourceIndexData &data)
 {
     resIdxIterator = resIdxMap.begin();
     if (resIdxIterator != resIdxMap.end())
@@ -154,8 +149,7 @@ ResourceIndex::GetFirst(std::string& name, ResourceIndexData &data)
 }
 
 
-bool
-ResourceIndex::GetNext(std::string& name, ResourceIndexData &data)
+bool ResourceIndex::GetNext(std::string& name, ResourceIndexData &data)
 {
     if (resIdxIterator == resIdxMap.end())
     {
