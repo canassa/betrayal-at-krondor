@@ -120,6 +120,10 @@ void SDL_Video::DrawHLine(const int x, const int y, const int w, const unsigned 
     int xx = (x < 0 ? 0 : (x < buffer->w ? x : buffer->w));
     int yy = (y < 0 ? 0 : (y < buffer->h ? y : buffer->h));
     int ww = w + x - xx;
+    if (ww <= 0)
+    {
+        return;
+    }
     if (ww + xx > buffer->w)
     {
         ww = buffer->w - xx;
