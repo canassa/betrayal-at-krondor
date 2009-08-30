@@ -76,7 +76,7 @@ void SceneFactory::AddTiledObjects(Scene* scene, unsigned int x, unsigned int y,
                     break;
                 case ET_HILL:
                     {
-/*                        CompoundObject *cObj = new CompoundObject(Vector2D(item.xloc, item.yloc));
+                        CompoundObject *cObj = new CompoundObject(Vector2D(item.xloc, item.yloc));
                         scene->AddObject(Vector2D(x, y), cObj);
 
                         SolidPolygonObject *spObj = new SolidPolygonObject(Vector2D(item.xloc, item.yloc), 218);
@@ -101,7 +101,7 @@ void SceneFactory::AddTiledObjects(Scene* scene, unsigned int x, unsigned int y,
                         spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, dat->max.GetZ() - dat->min.GetZ())));
                         spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->min.GetX(), dat->max.GetY(), 0)));
                         spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->max.GetX(), dat->max.GetY(), 0)));
-                        cObj->AddPolygon(spObj);*/
+                        cObj->AddPolygon(spObj);
                     }
                     break;
                 case ET_TREE:

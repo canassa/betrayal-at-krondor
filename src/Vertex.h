@@ -55,7 +55,6 @@ class Vertex
         Vector2D ToFirstPerson ( int w, int h, const Angle & heading );
         Vector2D ToTopDown ( int w, int h );
         void CalculateRelativePosition ( const Vector2D &p );
-        void CalculateRelativePosition ( const Vertex &v );
         bool IsInView ( const Angle & heading );
 };
 

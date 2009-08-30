@@ -1,4 +1,4 @@
-/*
+    /*
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or (at
@@ -82,9 +82,9 @@ float Vertex::GetDistanceFactor() const
 
 Vector2D Vertex::ToFirstPerson(int w, int h, const Angle &heading)
 {
-    static const Angle ANGLE_AOV = Angle(2 * ANGLE_OF_VIEW + 1);
-    int x = (int)((float)w * (float)Angle(angle - heading + ANGLE_OF_VIEW - 1).Get() / (float)ANGLE_AOV.Get());
-    int y = h - (int)((float)TERRAIN_HEIGHT * (1.0 - distanceFactor) + ((float)relpos.GetZ() * distanceFactor));
+    static const int ANGLE_AOV = 2 * ANGLE_OF_VIEW + 1;
+    int x = (int)((float)w * (float)(angle.Get() - heading.Get() + ANGLE_OF_VIEW - 1) / (float)ANGLE_AOV);
+    int y = h - (int)((float)TERRAIN_HEIGHT * (1.0 - distanceFactor) + ((float)relpos.GetZ() * (0.05 + 0.45 * distanceFactor)));
     return Vector2D(x, y);
 }
 
@@ -103,28 +103,11 @@ void Vertex::CalculateRelativePosition(const Vector2D &p)
     //distanceFactor = 1.0 - ((float)MAX_VIEW_DISTANCE / ((float)MAX_VIEW_DISTANCE + (float)distance));
 }
 
-void Vertex::CalculateRelativePosition(const Vertex &v)
-{
-    relpos = pos - v.GetPosition();
-    relpos.SetX((int)((float)relpos.GetX() * distanceFactor + (float)v.GetRelativePosition().GetX()));
-    relpos.SetY((int)((float)relpos.GetY() * distanceFactor + (float)v.GetRelativePosition().GetY()));
-    angle = Angle((ANGLE_SIZE / 4) - relpos.GetTheta());
-    distance = relpos.GetRho();
-    distanceFactor = 2.0 * ((float)MAX_VIEW_DISTANCE / ((float)MAX_VIEW_DISTANCE + (float)distance)) - 1.0;
-    //distanceFactor = 1.0 - ((float)MAX_VIEW_DISTANCE / ((float)MAX_VIEW_DISTANCE + (float)distance));
-}
-
 bool Vertex::IsInView(const Angle &heading)
 {
     if ((distance > MAX_VIEW_DISTANCE) || (distance < MIN_VIEW_DISTANCE))
     {
         return false;
     }
-    Angle a(angle - heading);
-    return (((int)(ANGLE_SIZE - ANGLE_OF_VIEW) <= a.Get()) || (a.Get() <= (int)ANGLE_OF_VIEW)) ||
-            (((WEST <= a.Get()) || (a.Get() <= EAST)) && (abs((int)((float)distance * a.GetSin())) < ANGLE_VIEW_DISTANCE));
-/*    Orientation orient((angle.Get() - heading) & ANGLE_MASK);
-    int orientHeading = orient.GetHeading();
-    return (((int)(ANGLE_SIZE - ANGLE_OF_VIEW) <= orientHeading) || (orientHeading <= (int)ANGLE_OF_VIEW)) ||
-            (((WEST <= orientHeading) || (orientHeading <= EAST)) && (abs((int)((float)distance * orient.GetSin())) < ANGLE_VIEW_DISTANCE));*/
+    return (abs(angle.Get() - heading.Get()) <= ANGLE_OF_VIEW);
 }

@@ -70,7 +70,7 @@ void PolygonObject::CalculateRelativePosition(const Vector2D & p)
     pos.CalculateRelativePosition(p);
     for (std::vector<Vertex>::iterator it = vertices.begin(); it != vertices.end(); ++it)
     {
-        it->CalculateRelativePosition(pos);
+        it->CalculateRelativePosition(p);
     }
 }
 
