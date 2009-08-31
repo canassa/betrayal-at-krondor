@@ -105,7 +105,7 @@ void Vertex::CalculateRelativePosition(const Vector2D &p)
 
 bool Vertex::IsInView(const Angle &heading)
 {
-    if ((distance > MAX_VIEW_DISTANCE) || (distance < MIN_VIEW_DISTANCE))
+    if (distance > MAX_VIEW_DISTANCE)
     {
         return false;
     }

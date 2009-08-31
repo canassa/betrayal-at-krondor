@@ -76,32 +76,29 @@ void SceneFactory::AddTiledObjects(Scene* scene, unsigned int x, unsigned int y,
                     break;
                 case ET_HILL:
                     {
-                        CompoundObject *cObj = new CompoundObject(Vector2D(item.xloc, item.yloc));
-                        scene->AddObject(Vector2D(x, y), cObj);
-
-                        SolidPolygonObject *spObj = new SolidPolygonObject(Vector2D(item.xloc, item.yloc), 218);
+                        SolidPolygonObject *spObj = new SolidPolygonObject(Vector2D(item.xloc + dat->max.GetX() / 2, item.yloc), 218);
                         spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, dat->max.GetZ() - dat->min.GetZ())));
                         spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->max.GetX(), dat->max.GetY(), 0)));
                         spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->max.GetX(), dat->min.GetY(), 0)));
-                        cObj->AddPolygon(spObj);
+                        scene->AddObject(Vector2D(x, y), spObj);
 
-                        spObj = new SolidPolygonObject(Vector2D(item.xloc, item.yloc), 219);
+                        spObj = new SolidPolygonObject(Vector2D(item.xloc, item.yloc + dat->min.GetY() / 2), 219);
                         spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, dat->max.GetZ() - dat->min.GetZ())));
                         spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->max.GetX(), dat->min.GetY(), 0)));
                         spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->min.GetX(), dat->min.GetY(), 0)));
-                        cObj->AddPolygon(spObj);
+                        scene->AddObject(Vector2D(x, y), spObj);
 
-                        spObj = new SolidPolygonObject(Vector2D(item.xloc, item.yloc), 220);
+                        spObj = new SolidPolygonObject(Vector2D(item.xloc + dat->min.GetX() / 2, item.yloc), 220);
                         spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, dat->max.GetZ() - dat->min.GetZ())));
                         spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->min.GetX(), dat->min.GetY(), 0)));
                         spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->min.GetX(), dat->max.GetY(), 0)));
-                        cObj->AddPolygon(spObj);
+                        scene->AddObject(Vector2D(x, y), spObj);
 
-                        spObj = new SolidPolygonObject(Vector2D(item.xloc, item.yloc), 221);
+                        spObj = new SolidPolygonObject(Vector2D(item.xloc, item.yloc + dat->max.GetY() / 2), 221);
                         spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, dat->max.GetZ() - dat->min.GetZ())));
                         spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->min.GetX(), dat->max.GetY(), 0)));
                         spObj->AddVertex(Vertex(Vector3D(item.xloc, item.yloc, 0) + Vector3D(dat->max.GetX(), dat->max.GetY(), 0)));
-                        cObj->AddPolygon(spObj);
+                        scene->AddObject(Vector2D(x, y), spObj);
                     }
                     break;
                 case ET_TREE:
