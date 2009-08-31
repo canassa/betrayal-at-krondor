@@ -1,5 +1,5 @@
 2008-??-??, xbak-0.1.4:
-* Refactored the 3D engine.
+* Refactored and enhanced the 3D engine.
 * Added limited support for joysticks.
 * Improved interpretation of BOK resource files
 * Plugged some memory leaks.
