@@ -17,7 +17,6 @@
  * Copyright (C) 2007-2009 Guido de Jong <guidoj@users.sf.net>
  */
 
-#include "CompoundObject.h"
 #include "PatternPolygonObject.h"
 #include "SceneFactory.h"
 #include "SolidPolygonObject.h"
