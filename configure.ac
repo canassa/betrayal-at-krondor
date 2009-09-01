@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
-AC_PREREQ(2.59)
-AC_INIT(xbak, 0.1.4-svn, guidoj@users.sf.net)
+AC_PREREQ(2.63)
+AC_INIT(xbak, 0.1.4, guidoj@users.sf.net)
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADER([config.h])
 AC_CANONICAL_TARGET
@@ -19,7 +19,7 @@ AC_PROG_RANLIB
 AC_CACHE_SAVE
 
 # Checks for libraries.
-SDL_VERSION=1.2.8
+SDL_VERSION=1.2.13
 AM_PATH_SDL($SDL_VERSION,,AC_MSG_ERROR([SDL $SDL_VERSION not found!]))
 AC_CHECK_LIB([SDL_mixer],[Mix_Linked_Version])
 AC_CHECK_LIB([SDL_sound],[Sound_GetLinkedVersion])
