@@ -41,7 +41,7 @@ static const unsigned int DRAW_SPRITE0       = 0xa500;
 static const unsigned int DRAW_SPRITE1       = 0xa510;
 static const unsigned int DRAW_SPRITE2       = 0xa520;
 static const unsigned int DRAW_SPRITE3       = 0xa530;
-static const unsigned int READ_IMAGE         = 0xb600;
+static const unsigned int DRAW_SCREEN        = 0xb600;
 static const unsigned int LOAD_SOUNDRESOURCE = 0xc020;
 static const unsigned int SELECT_SOUND       = 0xc030;
 static const unsigned int DESELECT_SOUND     = 0xc040;
@@ -80,8 +80,6 @@ MoviePlayer::Play(std::vector<MovieChunk *> *movie, const bool repeat)
         memset(paletteSlot, 0, sizeof(Palette*) * MAX_PALETTE_SLOTS);
         backgroundImage = 0;
         backgroundImageDrawn = false;
-        savedImage = 0;
-        savedImageDrawn = false;
         currFrame = 0;
         currImage = 0;
         currPalette = 0;
@@ -115,11 +113,6 @@ MoviePlayer::Play(std::vector<MovieChunk *> *movie, const bool repeat)
         {
             delete backgroundImage;
             backgroundImage = 0;
-        }
-        if (savedImage)
-        {
-            delete savedImage;
-            savedImage = 0;
         }
         if (screenSlot)
         {
@@ -184,7 +177,6 @@ MoviePlayer::PlayChunk(MediaToolkit* media)
                     media->GetClock()->StartTimer(TMR_MOVIE_PLAYER, currDelay);
                 }
                 backgroundImageDrawn = false;
-                savedImageDrawn = false;
                 break;
             case DELAY:
                 currDelay = mc->data[0] * 10;
@@ -243,24 +235,21 @@ MoviePlayer::PlayChunk(MediaToolkit* media)
                     backgroundImage->Draw(0, 0);
                     backgroundImageDrawn = true;
                 }
-                if ((savedImage) && (!savedImageDrawn))
-                {
-                    savedImage->Draw(0, 0);
-                    savedImageDrawn = true;
-                }
                 if (imageSlot[mc->data[3]])
                 {
                     imageSlot[mc->data[3]]->GetImage(mc->data[2])->Draw(mc->data[0], mc->data[1], 0);
                 }
                 break;
-            case READ_IMAGE:
-                if (savedImage)
+            case DRAW_SCREEN:
+                if ((backgroundImage) && (!backgroundImageDrawn))
                 {
-                    delete savedImage;
+                    backgroundImage->Draw(0, 0);
+                    backgroundImageDrawn = true;
                 }
-                savedImage = new Image(mc->data[2], mc->data[3]);
-                savedImage->Read(mc->data[0], mc->data[1]);
-                savedImageDrawn = false;
+                if (screenSlot)
+                {
+                    screenSlot->GetImage()->Draw(mc->data[0], mc->data[1]);
+                }
                 break;
             case LOAD_SOUNDRESOURCE:
                 break;
@@ -359,11 +348,6 @@ MoviePlayer::PlayChunk(MediaToolkit* media)
                     {
                         delete backgroundImage;
                         backgroundImage = 0;
-                    }
-                    if (savedImage)
-                    {
-                        delete savedImage;
-                        savedImage = 0;
                     }
                 }
                 else

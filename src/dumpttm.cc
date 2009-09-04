@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
             case 0xa600:
                 break;
             case 0xb600:
-                printf(" read image (x, y, w, h, ?, ?)");
+                printf(" draw screen (x, y, w, h, ?, ?)");
                 break;
             case 0xc020:
                 printf(" load sound resource");
