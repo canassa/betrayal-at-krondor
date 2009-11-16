@@ -24,10 +24,8 @@
 #include "config.h"
 #endif
 
-#include "Image.h"
 #include "PlayerCharacter.h"
 #include "TextWidget.h"
-#include "Widget.h"
 
 class RatingsWidget
             : public Widget

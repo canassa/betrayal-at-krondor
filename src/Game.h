@@ -24,9 +24,7 @@
 #include "config.h"
 #endif
 
-#include "Camera.h"
 #include "Chapter.h"
-#include "ImageResource.h"
 #include "Party.h"
 #include "PartyResource.h"
 #include "Scene.h"

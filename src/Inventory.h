@@ -24,8 +24,6 @@
 #include "config.h"
 #endif
 
-#include <list>
-
 #include "InventoryItem.h"
 #include "Subject.h"
 

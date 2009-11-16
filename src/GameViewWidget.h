@@ -26,7 +26,6 @@
 
 #include "ContainerWidget.h"
 #include "Game.h"
-#include "Observer.h"
 
 class GameViewWidget
             : public ContainerWidget

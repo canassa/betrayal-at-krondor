@@ -27,7 +27,6 @@
 #include "Image.h"
 #include "ObjectResource.h"
 #include "TextWidget.h"
-#include "Widget.h"
 
 static const int MAX_EQUIPMENT_ITEM_WIDGET_WIDTH  = 80;
 static const int MAX_EQUIPMENT_ITEM_WIDGET_HEIGHT = 58;

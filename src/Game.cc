@@ -21,7 +21,6 @@
 #include "FileManager.h"
 #include "Game.h"
 #include "ObjectResource.h"
-#include "PlayerCharacter.h"
 #include "SceneFactory.h"
 
 Game::Game()

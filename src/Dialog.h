@@ -25,9 +25,7 @@
 #endif
 
 #include "DialogWindow.h"
-#include "EventListener.h"
 #include "Observer.h"
-#include "Palette.h"
 
 class Dialog
         : public ActionEventListener

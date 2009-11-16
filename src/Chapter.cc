@@ -24,8 +24,8 @@
 #include "Chapter.h"
 #include "Exception.h"
 #include "FileManager.h"
-#include "GameApplication.h"
 #include "MoviePlayer.h"
+#include "Widget.h"
 
 Chapter::Chapter(const int n)
         : number(n)

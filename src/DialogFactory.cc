@@ -19,7 +19,6 @@
 
 #include "Defines.h"
 #include "DialogFactory.h"
-#include "DialogWindow.h"
 #include "Exception.h"
 #include "FileManager.h"
 #include "GameApplication.h"

@@ -27,7 +27,6 @@
 #include "Image.h"
 #include "Inventory.h"
 #include "Statistics.h"
-#include "Subject.h"
 
 typedef enum _CharacterClass {
     CLASS_WARRIOR,

@@ -24,7 +24,6 @@
 #include "config.h"
 #endif
 
-#include "MediaToolkit.h"
 #include "MovieResource.h"
 #include "ImageResource.h"
 #include "PaletteResource.h"

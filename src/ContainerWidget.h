@@ -20,8 +20,6 @@
 #ifndef CONTAINER_WIDGET_H
 #define CONTAINER_WIDGET_H
 
-#include <list>
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif

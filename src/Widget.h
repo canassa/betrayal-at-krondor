@@ -26,7 +26,6 @@
 #include "config.h"
 #endif
 
-#include "Event.h"
 #include "EventListener.h"
 #include "Geometry.h"
 

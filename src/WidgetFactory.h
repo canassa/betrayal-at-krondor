@@ -32,9 +32,7 @@
 #include "EquipmentItemWidget.h"
 #include "EquipmentWidget.h"
 #include "FontResource.h"
-#include "Game.h"
 #include "ImageButtonWidget.h"
-#include "ImageResource.h"
 #include "ImageWidget.h"
 #include "InventoryItemWidget.h"
 #include "InventoryWidget.h"
@@ -47,7 +45,6 @@
 #include "ScreenResource.h"
 #include "SkillsWidget.h"
 #include "TextButtonWidget.h"
-#include "TextWidget.h"
 #include "WorldViewWidget.h"
 
 class WidgetFactory

@@ -20,8 +20,6 @@
 #ifndef IMAGE_RESOURCE_H
 #define IMAGE_RESOURCE_H
 
-#include <vector>
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif

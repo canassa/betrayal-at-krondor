@@ -20,8 +20,6 @@
 #ifndef FONT_RESOURCE_H
 #define FONT_RESOURCE_H
 
-#include <vector>
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif

@@ -19,7 +19,6 @@
 
 #include "EquipmentItemWidget.h"
 #include "Exception.h"
-#include "ObjectResource.h"
 #include "PointerManager.h"
 
 EquipmentItemWidget::EquipmentItemWidget(const Rectangle &r, const ObjectType t)

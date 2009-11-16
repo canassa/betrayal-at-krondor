@@ -20,8 +20,6 @@
 #ifndef SOLID_POLYGON_OBJECT_H
 #define SOLID_POLYGON_OBJECT_H
 
-#include <vector>
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif

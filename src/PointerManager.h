@@ -20,14 +20,10 @@
 #ifndef POINTER_MANAGER_H
 #define POINTER_MANAGER_H
 
-#include <string>
-#include <vector>
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "EventListener.h"
 #include "InventoryItemWidget.h"
 #include "Pointer.h"
 

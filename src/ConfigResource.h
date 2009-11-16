@@ -25,7 +25,6 @@
 #endif
 
 #include "ConfigData.h"
-#include "FileBuffer.h"
 #include "Preferences.h"
 
 class ConfigResource

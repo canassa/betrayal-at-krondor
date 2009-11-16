@@ -26,7 +26,6 @@
 
 #include <map>
 
-#include "Camera.h"
 #include "GenericObject.h"
 #include "Image.h"
 #include "Video.h"

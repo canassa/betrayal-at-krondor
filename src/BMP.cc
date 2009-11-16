@@ -19,8 +19,6 @@
 
 #include "BMP.h"
 #include "Exception.h"
-#include "FileBuffer.h"
-#include "Video.h"
 
 typedef struct _BitmapFileHeader
 {

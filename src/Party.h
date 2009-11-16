@@ -20,8 +20,6 @@
 #ifndef PARTY_H
 #define PARTY_H
 
-#include <vector>
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif

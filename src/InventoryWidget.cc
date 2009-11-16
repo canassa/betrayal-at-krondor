@@ -19,7 +19,6 @@
 
 #include "Exception.h"
 #include "InventoryWidget.h"
-#include "ObjectResource.h"
 #include "WidgetFactory.h"
 
 InventoryWidget::InventoryWidget(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Font *f)

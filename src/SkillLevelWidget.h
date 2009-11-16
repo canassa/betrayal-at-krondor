@@ -24,11 +24,8 @@
 #include "config.h"
 #endif
 
-#include <string>
-
 #include "Image.h"
 #include "TextWidget.h"
-#include "Widget.h"
 
 typedef enum _Side {
     LEFT_SIDE, RIGHT_SIDE

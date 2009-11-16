@@ -24,7 +24,6 @@
 #include "config.h"
 #endif
 
-#include "Dialog.h"
 #include "DialogFactory.h"
 
 class GameState

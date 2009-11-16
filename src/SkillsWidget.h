@@ -24,11 +24,8 @@
 #include "config.h"
 #endif
 
-#include "Font.h"
-#include "Image.h"
 #include "PlayerCharacter.h"
 #include "SkillLevelWidget.h"
-#include "Widget.h"
 
 class SkillsWidget
             : public Widget

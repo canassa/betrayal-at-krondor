@@ -21,7 +21,6 @@
 
 #include "Exception.h"
 #include "FileManager.h"
-#include "MediaToolkit.h"
 #include "MoviePlayer.h"
 #include "PointerManager.h"
 

@@ -24,9 +24,6 @@
 #include "config.h"
 #endif
 
-#include <map>
-#include <vector>
-
 #include "ImageResource.h"
 #include "TableResource.h"
 #include "TileWorldResource.h"

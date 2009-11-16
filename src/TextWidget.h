@@ -24,8 +24,6 @@
 #include "config.h"
 #endif
 
-#include <string>
-
 #include "Font.h"
 #include "Widget.h"
 

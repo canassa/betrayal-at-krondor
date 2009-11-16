@@ -26,7 +26,6 @@
 
 #include "ContainerWidget.h"
 #include "Font.h"
-#include "Image.h"
 #include "ImageResource.h"
 #include "Observer.h"
 #include "PlayerCharacter.h"

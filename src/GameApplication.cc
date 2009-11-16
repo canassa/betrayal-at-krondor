@@ -27,11 +27,8 @@
 #include "FontResource.h"
 #include "GameApplication.h"
 #include "MoviePlayer.h"
-#include "MovieResource.h"
 #include "ObjectResource.h"
-#include "PaletteResource.h"
 #include "PointerManager.h"
-#include "ScreenResource.h"
 #include "SDL_Toolkit.h"
 #include "TextArea.h"
 

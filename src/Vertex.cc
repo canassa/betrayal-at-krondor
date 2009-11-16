@@ -17,9 +17,8 @@
  * Copyright (C) 2007-2009 Guido de Jong <guidoj@users.sf.net>
  */
 
-#include <cstdio>
 #include <cstdlib>
-#include "Geometry.h"
+
 #include "Orientation.h"
 #include "Vertex.h"
 

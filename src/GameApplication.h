@@ -25,7 +25,6 @@
 #endif
 
 #include "ConfigResource.h"
-#include "EventListener.h"
 #include "GameResource.h"
 #include "GameState.h"
 

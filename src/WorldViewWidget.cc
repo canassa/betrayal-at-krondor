@@ -17,7 +17,6 @@
  * Copyright (C) 2005-2009 Guido de Jong <guidoj@users.sf.net>
  */
 
-#include "Image.h"
 #include "MediaToolkit.h"
 #include "WorldViewWidget.h"
 

@@ -20,8 +20,6 @@
 #ifndef TEST_APPLICATION_H
 #define TEST_APPLICATION_H
 
-#include <string>
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif

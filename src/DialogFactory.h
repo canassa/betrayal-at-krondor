@@ -24,8 +24,6 @@
 #include "config.h"
 #endif
 
-#include <vector>
-
 #include "Dialog.h"
 #include "PaletteResource.h"
 #include "WidgetFactory.h"

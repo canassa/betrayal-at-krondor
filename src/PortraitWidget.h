@@ -24,7 +24,6 @@
 #include "config.h"
 #endif
 
-#include "Image.h"
 #include "PlayerCharacter.h"
 #include "Widget.h"
 

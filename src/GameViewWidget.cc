@@ -18,7 +18,6 @@
  */
 
 #include "GameViewWidget.h"
-#include "MediaToolkit.h"
 
 GameViewWidget::GameViewWidget(const Rectangle &r, Game *g)
         : ContainerWidget(r)
