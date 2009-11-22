@@ -26,281 +26,296 @@
 
 #include "DialogFactory.h"
 
+class GameApplication;
+
 class GameState
 {
-protected:
-    DialogFactory dialogFactory;
-    GameState *prevState;
-    void ChangeState ( GameState *state, const bool savePreviousState = false );
-public:
-    GameState();
-    virtual ~GameState();
-    virtual void Enter();
-    virtual void Leave();
-    virtual void Execute();
+    protected:
+        GameApplication *gameApp;
+        DialogFactory dialogFactory;
+        GameState *prevState;
+        void ChangeState ( GameState *state, const bool savePreviousState = false );
+    public:
+        GameState();
+        virtual ~GameState();
+        virtual void Enter() = 0;
+        virtual void Leave() = 0;
+        virtual void Execute() = 0;
+        virtual void Move();
+        virtual void Turn();
 };
 
 class GameStateCamp
-            : public GameState
+: public GameState
 {
-private:
-    Dialog *dialog;
-    static GameStateCamp *instance;
-protected:
-    GameStateCamp();
-public:
-    ~GameStateCamp();
-    static GameStateCamp* GetInstance();
-    static void CleanUp();
-    void Enter();
-    void Leave();
-    void Execute();
+    private:
+        Dialog *dialog;
+        static GameStateCamp *instance;
+    protected:
+        GameStateCamp();
+    public:
+        ~GameStateCamp();
+        static GameStateCamp* GetInstance();
+        static void CleanUp();
+        void Enter();
+        void Leave();
+        void Execute();
 };
 
 class GameStateCast
-            : public GameState
+: public GameState
 {
-private:
-    Dialog *dialog;
-    static GameStateCast *instance;
-protected:
-    GameStateCast();
-public:
-    ~GameStateCast();
-    static GameStateCast* GetInstance();
-    static void CleanUp();
-    void Enter();
-    void Leave();
-    void Execute();
+    private:
+        Dialog *dialog;
+        static GameStateCast *instance;
+    protected:
+        GameStateCast();
+    public:
+        ~GameStateCast();
+        static GameStateCast* GetInstance();
+        static void CleanUp();
+        void Enter();
+        void Leave();
+        void Execute();
 };
 
 class GameStateChapter
-            : public GameState
+: public GameState
 {
-private:
-    static GameStateChapter *instance;
-protected:
-    GameStateChapter();
-public:
-    ~GameStateChapter();
-    static GameStateChapter* GetInstance();
-    static void CleanUp();
-    void Execute();
+    private:
+        static GameStateChapter *instance;
+    protected:
+        GameStateChapter();
+    public:
+        ~GameStateChapter();
+        static GameStateChapter* GetInstance();
+        static void CleanUp();
+        void Enter();
+        void Leave();
+        void Execute();
 };
 
 class GameStateCombat
-            : public GameState
+: public GameState
 {
-private:
-    static GameStateCombat *instance;
-protected:
-    GameStateCombat();
-public:
-    ~GameStateCombat();
-    static GameStateCombat* GetInstance();
-    static void CleanUp();
-    void Execute();
+    private:
+        static GameStateCombat *instance;
+    protected:
+        GameStateCombat();
+    public:
+        ~GameStateCombat();
+        static GameStateCombat* GetInstance();
+        static void CleanUp();
+        void Enter();
+        void Leave();
+        void Execute();
 };
 
 class GameStateContents
-            : public GameState
+: public GameState
 {
-private:
-    Dialog *dialog;
-    static GameStateContents *instance;
-protected:
-    GameStateContents();
-public:
-    ~GameStateContents();
-    static GameStateContents* GetInstance();
-    static void CleanUp();
-    void Enter();
-    void Leave();
-    void Execute();
+    private:
+        Dialog *dialog;
+        static GameStateContents *instance;
+    protected:
+        GameStateContents();
+    public:
+        ~GameStateContents();
+        static GameStateContents* GetInstance();
+        static void CleanUp();
+        void Enter();
+        void Leave();
+        void Execute();
 };
 
 class GameStateFullMap
-            : public GameState
+: public GameState
 {
-private:
-    Dialog *dialog;
-    static GameStateFullMap *instance;
-protected:
-    GameStateFullMap();
-public:
-    ~GameStateFullMap();
-    static GameStateFullMap* GetInstance();
-    static void CleanUp();
-    void Enter();
-    void Leave();
-    void Execute();
+    private:
+        Dialog *dialog;
+        static GameStateFullMap *instance;
+    protected:
+        GameStateFullMap();
+    public:
+        ~GameStateFullMap();
+        static GameStateFullMap* GetInstance();
+        static void CleanUp();
+        void Enter();
+        void Leave();
+        void Execute();
 };
 
 class GameStateInitialOptions
-            : public GameState
+: public GameState
 {
-private:
-    Dialog *dialog;
-    static GameStateInitialOptions *instance;
-protected:
-    GameStateInitialOptions();
-public:
-    ~GameStateInitialOptions();
-    static GameStateInitialOptions* GetInstance();
-    static void CleanUp();
-    void Enter();
-    void Leave();
-    void Execute();
+    private:
+        Dialog *dialog;
+        static GameStateInitialOptions *instance;
+    protected:
+        GameStateInitialOptions();
+    public:
+        ~GameStateInitialOptions();
+        static GameStateInitialOptions* GetInstance();
+        static void CleanUp();
+        void Enter();
+        void Leave();
+        void Execute();
 };
 
 class GameStateIntro
-            : public GameState
+: public GameState
 {
-private:
-    static GameStateIntro *instance;
-protected:
-    GameStateIntro();
-public:
-    ~GameStateIntro();
-    static GameStateIntro* GetInstance();
-    static void CleanUp();
-    void Execute();
+    private:
+        static GameStateIntro *instance;
+    protected:
+        GameStateIntro();
+    public:
+        ~GameStateIntro();
+        static GameStateIntro* GetInstance();
+        static void CleanUp();
+        void Enter();
+        void Leave();
+        void Execute();
 };
 
 class GameStateInventory
-            : public GameState
+: public GameState
 {
-private:
-    Dialog *dialog;
-    static GameStateInventory *instance;
-protected:
-    GameStateInventory();
-public:
-    ~GameStateInventory();
-    static GameStateInventory* GetInstance();
-    static void CleanUp();
-    void Enter();
-    void Leave();
-    void Execute();
+    private:
+        Dialog *dialog;
+        static GameStateInventory *instance;
+    protected:
+        GameStateInventory();
+    public:
+        ~GameStateInventory();
+        static GameStateInventory* GetInstance();
+        static void CleanUp();
+        void Enter();
+        void Leave();
+        void Execute();
 };
 
 class GameStateLoad
-            : public GameState
+: public GameState
 {
-private:
-    Dialog *dialog;
-    static GameStateLoad *instance;
-protected:
-    GameStateLoad();
-public:
-    ~GameStateLoad();
-    static GameStateLoad* GetInstance();
-    static void CleanUp();
-    void Enter();
-    void Leave();
-    void Execute();
+    private:
+        Dialog *dialog;
+        static GameStateLoad *instance;
+    protected:
+        GameStateLoad();
+    public:
+        ~GameStateLoad();
+        static GameStateLoad* GetInstance();
+        static void CleanUp();
+        void Enter();
+        void Leave();
+        void Execute();
 };
 
 class GameStateMap
-            : public GameState
+: public GameState
 {
-private:
-    Dialog *dialog;
-    static GameStateMap *instance;
-protected:
-    GameStateMap();
-public:
-    ~GameStateMap();
-    static GameStateMap* GetInstance();
-    static void CleanUp();
-    void Enter();
-    void Leave();
-    void Execute();
+    private:
+        Dialog *dialog;
+        static GameStateMap *instance;
+    protected:
+        GameStateMap();
+    public:
+        ~GameStateMap();
+        static GameStateMap* GetInstance();
+        static void CleanUp();
+        void Enter();
+        void Leave();
+        void Execute();
 };
 
 class GameStateOptions
-            : public GameState
+: public GameState
 {
-private:
-    Dialog *dialog;
-    static GameStateOptions *instance;
-protected:
-    GameStateOptions();
-public:
-    ~GameStateOptions();
-    static GameStateOptions* GetInstance();
-    static void CleanUp();
-    void Enter();
-    void Leave();
-    void Execute();
+    private:
+        Dialog *dialog;
+        static GameStateOptions *instance;
+    protected:
+        GameStateOptions();
+    public:
+        ~GameStateOptions();
+        static GameStateOptions* GetInstance();
+        static void CleanUp();
+        void Enter();
+        void Leave();
+        void Execute();
 };
 
 class GameStatePreferences
-            : public GameState
+: public GameState
 {
-private:
-    Dialog *dialog;
-    static GameStatePreferences *instance;
-protected:
-    GameStatePreferences();
-public:
-    ~GameStatePreferences();
-    static GameStatePreferences* GetInstance();
-    static void CleanUp();
-    void Enter();
-    void Leave();
-    void Execute();
+    private:
+        Dialog *dialog;
+        static GameStatePreferences *instance;
+    protected:
+        GameStatePreferences();
+    public:
+        ~GameStatePreferences();
+        static GameStatePreferences* GetInstance();
+        static void CleanUp();
+        void Enter();
+        void Leave();
+        void Execute();
 };
 
 class GameStateInfo
-            : public GameState
+: public GameState
 {
-private:
-    Dialog *dialog;
-    static GameStateInfo *instance;
-protected:
-    GameStateInfo();
-public:
-    ~GameStateInfo();
-    static GameStateInfo* GetInstance();
-    static void CleanUp();
-    void Enter();
-    void Leave();
-    void Execute();
+    private:
+        Dialog *dialog;
+        static GameStateInfo *instance;
+    protected:
+        GameStateInfo();
+    public:
+        ~GameStateInfo();
+        static GameStateInfo* GetInstance();
+        static void CleanUp();
+        void Enter();
+        void Leave();
+        void Execute();
 };
 
 class GameStateSave
-            : public GameState
+: public GameState
 {
-private:
-    Dialog *dialog;
-    static GameStateSave *instance;
-protected:
-    GameStateSave();
-public:
-    ~GameStateSave();
-    static GameStateSave* GetInstance();
-    static void CleanUp();
-    void Enter();
-    void Leave();
-    void Execute();
+    private:
+        Dialog *dialog;
+        static GameStateSave *instance;
+    protected:
+        GameStateSave();
+    public:
+        ~GameStateSave();
+        static GameStateSave* GetInstance();
+        static void CleanUp();
+        void Enter();
+        void Leave();
+        void Execute();
 };
 
 class GameStateWorld
-            : public GameState
+: public GameState
 {
-private:
-    Dialog *dialog;
-    static GameStateWorld *instance;
-protected:
-    GameStateWorld();
-public:
-    ~GameStateWorld();
-    static GameStateWorld* GetInstance();
-    static void CleanUp();
-    void Enter();
-    void Leave();
-    void Execute();
+    private:
+        Dialog *dialog;
+        int moving;
+        int turning;
+        static GameStateWorld *instance;
+    protected:
+        GameStateWorld();
+    public:
+        ~GameStateWorld();
+        static GameStateWorld* GetInstance();
+        static void CleanUp();
+        void Enter();
+        void Leave();
+        void Execute();
+        void Move();
+        void Turn();
 };
 
 #endif

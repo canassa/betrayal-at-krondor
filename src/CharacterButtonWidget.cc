@@ -25,8 +25,8 @@
 Image* CharacterButtonWidget::selectedImage = 0;
 
 CharacterButtonWidget::CharacterButtonWidget(const Rectangle &r, const int a)
-        : ButtonWidget(r, a)
-        , character(0)
+: ButtonWidget(r, a)
+, character(0)
 {}
 
 CharacterButtonWidget::~CharacterButtonWidget()
@@ -73,10 +73,7 @@ CharacterButtonWidget::LeftClick(const bool toggle, const int, const int)
 {
     if (IsVisible())
     {
-        if (toggle)
-        {
-            GenerateActionEvent(GetAction());
-        }
+        GenerateActionEvent(toggle ? GetAction() : ACT_STOP);
     }
 }
 
@@ -85,10 +82,7 @@ CharacterButtonWidget::RightClick(const bool toggle, const int, const int)
 {
     if (IsVisible())
     {
-        if (toggle)
-        {
-            GenerateActionEvent(GetAction() + RIGHT_CLICK_OFFSET);
-        }
+        GenerateActionEvent(toggle ? (GetAction() + RIGHT_CLICK_OFFSET) : ACT_STOP);
     }
 }
 

@@ -18,12 +18,14 @@
  */
 
 #include "MediaToolkit.h"
+#include "RequestResource.h"
 #include "TextButtonWidget.h"
 
 TextButtonWidget::TextButtonWidget(const Rectangle &r, const int a)
-        : ButtonWidget(r, a)
-        , label(0)
-{}
+: ButtonWidget(r, a)
+, label(0)
+{
+}
 
 TextButtonWidget::~TextButtonWidget()
 {
@@ -94,10 +96,7 @@ TextButtonWidget::LeftClick(const bool toggle, const int, const int)
     if (IsVisible())
     {
         SetPressed(toggle);
-        if (toggle)
-        {
-            GenerateActionEvent(GetAction());
-        }
+        GenerateActionEvent(toggle ? GetAction() : ACT_STOP);
     }
 }
 
@@ -107,6 +106,7 @@ TextButtonWidget::RightClick(const bool toggle, const int, const int)
     if (IsVisible())
     {
         if (toggle)
-        {}
+        {
+        }
     }
 }

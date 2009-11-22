@@ -69,10 +69,6 @@ void SDL_Video::CreateScreen(const int w, const int h)
     }
     SDL_ShowCursor(SDL_DISABLE);
     SDL_WM_SetCaption(WINDOW_TITLE, 0);
-    if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL) < 0)
-    {
-        throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
-    }
     stretched = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, VIDEO_BPP, 0, 0, 0, 0);
     if (!stretched)
     {
@@ -554,7 +550,8 @@ void SDL_Video::Refresh()
 
 #ifdef DEBUG
 void SDL_Video::GrabInput(const bool)
-{}
+{
+}
 #else
 void SDL_Video::GrabInput(const bool toggle)
 {

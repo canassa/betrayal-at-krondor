@@ -18,28 +18,28 @@
  */
 
 #include "HotspotWidget.h"
+#include "RequestResource.h"
 
 HotspotWidget::HotspotWidget(const Rectangle &r, const int a)
-        : ActiveWidget(r, a)
+: ActiveWidget(r, a)
 {
     SetFocusable(false);
 }
 
 HotspotWidget::~HotspotWidget()
-{}
+{
+}
 
 void
 HotspotWidget::LeftClick(const bool toggle)
 {
-    if (toggle)
-    {
-        GenerateActionEvent(GetAction());
-    }
+    GenerateActionEvent(toggle ? GetAction() : ACT_STOP);
 }
 
 void
 HotspotWidget::RightClick(const bool toggle)
 {
     if (toggle)
-    {}
+    {
+    }
 }

@@ -35,11 +35,11 @@
 GameApplication* GameApplication::instance = 0;
 
 GameApplication::GameApplication()
-        : done(false)
-        , inputGrabbed(false)
-        , game()
-        , state(GameStateIntro::GetInstance())
-        , screenSaveCount(0)
+: done(false)
+, inputGrabbed(false)
+, game()
+, state(0)
+, screenSaveCount(0)
 {
     MediaToolkit* media = MediaToolkit::GetInstance();
     media->GetVideo()->SetScaling(2);
@@ -93,8 +93,7 @@ GameApplication::~GameApplication()
     FileManager::CleanUp();
 }
 
-GameApplication*
-GameApplication::GetInstance()
+GameApplication* GameApplication::GetInstance()
 {
     if (!instance)
     {
@@ -103,8 +102,7 @@ GameApplication::GetInstance()
     return instance;
 }
 
-void
-GameApplication::CleanUp()
+void GameApplication::CleanUp()
 {
     GameStateCast::CleanUp();
     GameStateCamp::CleanUp();
@@ -129,26 +127,22 @@ GameApplication::CleanUp()
     }
 }
 
-Preferences *
-GameApplication::GetPreferences()
+Preferences * GameApplication::GetPreferences()
 {
     return config->GetPreferences();
 }
 
-Game *
-GameApplication::GetGame()
+Game * GameApplication::GetGame()
 {
     return game->GetGame();
 }
 
-void
-GameApplication::SetState(GameState *st)
+void GameApplication::SetState(GameState *st)
 {
     state = st;
 }
 
-void
-GameApplication::PlayIntro()
+void GameApplication::PlayIntro()
 {
     try
     {
@@ -165,8 +159,7 @@ GameApplication::PlayIntro()
     }
 }
 
-void
-GameApplication::StartNewGame()
+void GameApplication::StartNewGame()
 {
     FileManager::GetInstance()->Load(game, "startup.gam");
     game->GetGame()->GetParty()->ActivateMember(0, 0);
@@ -176,25 +169,24 @@ GameApplication::StartNewGame()
     game->GetGame()->GetCamera()->SetHeading(SOUTH);
 }
 
-void
-GameApplication::QuitGame()
+void GameApplication::QuitGame()
 {
     done = true;
 }
 
-void
-GameApplication::SaveConfig()
+void GameApplication::SaveConfig()
 {
     FileManager::GetInstance()->Save(config, "krondor.cfg");
 }
 
-void
-GameApplication::Run()
+void GameApplication::Run()
 {
     try
     {
+        state = GameStateIntro::GetInstance();
         MediaToolkit::GetInstance()->AddKeyboardListener(this);
         MediaToolkit::GetInstance()->AddPointerButtonListener(this);
+        MediaToolkit::GetInstance()->AddTimerListener(this);
         state->Enter();
         GameState *savedState = state;
         done = false;
@@ -211,6 +203,7 @@ GameApplication::Run()
         savedState->Leave();
         MediaToolkit::GetInstance()->RemoveKeyboardListener(this);
         MediaToolkit::GetInstance()->RemovePointerButtonListener(this);
+        MediaToolkit::GetInstance()->RemoveTimerListener(this);
     }
     catch (Exception &e)
     {
@@ -218,8 +211,7 @@ GameApplication::Run()
     }
 }
 
-void
-GameApplication::KeyPressed(const KeyboardEvent& kbe)
+void GameApplication::KeyPressed(const KeyboardEvent& kbe)
 {
     switch (kbe.GetKey())
     {
@@ -241,8 +233,7 @@ GameApplication::KeyPressed(const KeyboardEvent& kbe)
     }
 }
 
-void
-GameApplication::KeyReleased(const KeyboardEvent& kbe)
+void GameApplication::KeyReleased(const KeyboardEvent& kbe)
 {
     switch (kbe.GetKey())
     {
@@ -251,8 +242,7 @@ GameApplication::KeyReleased(const KeyboardEvent& kbe)
     }
 }
 
-void
-GameApplication::PointerButtonPressed(const PointerButtonEvent& pbe)
+void GameApplication::PointerButtonPressed(const PointerButtonEvent& pbe)
 {
     switch (pbe.GetButton())
     {
@@ -276,12 +266,23 @@ GameApplication::PointerButtonPressed(const PointerButtonEvent& pbe)
     }
 }
 
-void
-GameApplication::PointerButtonReleased(const PointerButtonEvent& pbe)
+void GameApplication::PointerButtonReleased(const PointerButtonEvent& pbe)
 {
     switch (pbe.GetButton())
     {
         default:
             break;
+    }
+}
+
+void GameApplication::TimerExpired(const TimerEvent& te)
+{
+    if (te.GetID() == TMR_MOVING)
+    {
+        state->Move();
+    }
+    if (te.GetID() == TMR_TURNING)
+    {
+        state->Turn();
     }
 }

@@ -181,6 +181,8 @@ static const unsigned long TMR_GAME_APP     = 2;
 static const unsigned long TMR_CHAPTER      = 3;
 static const unsigned long TMR_MOVIE_PLAYER = 4;
 static const unsigned long TMR_PALETTE      = 5;
+static const unsigned long TMR_MOVING       = 6;
+static const unsigned long TMR_TURNING      = 7;
 
 
 typedef enum

@@ -29,36 +29,38 @@
 #include "GameState.h"
 
 class GameApplication
-            : public KeyboardEventListener
-            , public PointerButtonEventListener
+: public KeyboardEventListener
+, public PointerButtonEventListener
+, public TimerEventListener
 {
-private:
-    friend class GameState;
-    bool done;
-    bool inputGrabbed;
-    ConfigResource *config;
-    GameResource *game;
-    GameState *state;
-    int screenSaveCount;
-    static GameApplication *instance;
-    void SetState ( GameState *st );
-protected:
-    GameApplication();
-public:
-    ~GameApplication();
-    static GameApplication* GetInstance();
-    static void CleanUp();
-    Preferences* GetPreferences();
-    Game* GetGame();
-    void PlayIntro();
-    void StartNewGame();
-    void QuitGame();
-    void SaveConfig();
-    void Run();
-    void KeyPressed ( const KeyboardEvent& kbe );
-    void KeyReleased ( const KeyboardEvent& kbe );
-    void PointerButtonPressed ( const PointerButtonEvent& pbe );
-    void PointerButtonReleased ( const PointerButtonEvent& pbe );
+    private:
+        friend class GameState;
+        bool done;
+        bool inputGrabbed;
+        ConfigResource *config;
+        GameResource *game;
+        GameState *state;
+        int screenSaveCount;
+        static GameApplication *instance;
+        void SetState ( GameState *st );
+    protected:
+        GameApplication();
+    public:
+        ~GameApplication();
+        static GameApplication* GetInstance();
+        static void CleanUp();
+        Preferences* GetPreferences();
+        Game* GetGame();
+        void PlayIntro();
+        void StartNewGame();
+        void QuitGame();
+        void SaveConfig();
+        void Run();
+        void KeyPressed ( const KeyboardEvent& kbe );
+        void KeyReleased ( const KeyboardEvent& kbe );
+        void PointerButtonPressed ( const PointerButtonEvent& pbe );
+        void PointerButtonReleased ( const PointerButtonEvent& pbe );
+        void TimerExpired ( const TimerEvent& te );
 };
 
 #endif

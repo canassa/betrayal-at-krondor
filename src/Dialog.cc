@@ -23,10 +23,10 @@
 #include "RequestResource.h"
 
 Dialog::Dialog(Palette *pal, DialogWindow *dialogWin)
-        : window(dialogWin)
-        , palette(pal)
-        , action(0)
-        , running(false)
+: window(dialogWin)
+, palette(pal)
+, action(0)
+, running(false)
 {
     try
     {
@@ -180,7 +180,7 @@ Dialog::PointerDragged(const DragEvent& de)
 
 
 GameDialog::GameDialog(Palette *pal, DialogWindow *dialogwin)
-        : Dialog(pal, dialogwin)
+: Dialog(pal, dialogwin)
 {}
 
 GameDialog::~GameDialog()
@@ -226,16 +226,27 @@ GameDialog::KeyPressed(const KeyboardEvent& kbe)
 void
 GameDialog::KeyReleased(const KeyboardEvent& kbe)
 {
-    switch (kbe.GetKey())
+    if (running)
     {
-        default:
-            break;
+        switch (kbe.GetKey())
+        {
+            case KEY_UP:
+            case KEY_DOWN:
+            case KEY_LEFT:
+            case KEY_RIGHT:
+                action = ACT_STOP;
+                running = false;
+                break;
+            default:
+                break;
+        }
     }
+    window->Draw();
 }
 
 
 OptionsDialog::OptionsDialog(Palette *pal, DialogWindow *dialogwin)
-        : Dialog(pal, dialogwin)
+: Dialog(pal, dialogwin)
 {}
 
 OptionsDialog::~OptionsDialog()
@@ -275,12 +286,12 @@ OptionsDialog::KeyReleased(const KeyboardEvent& kbe)
 {
     switch (kbe.GetKey())
     {
-    case KEY_RETURN:
-    case KEY_SPACE:
-        window->LeftClickWidget(false);
-        break;
-    default:
-        break;
+        case KEY_RETURN:
+        case KEY_SPACE:
+            window->LeftClickWidget(false);
+            break;
+        default:
+            break;
     }
     window->Draw();
 }

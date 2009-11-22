@@ -19,15 +19,18 @@
 
 #include "Exception.h"
 #include "ImageButtonWidget.h"
+#include "RequestResource.h"
 
 ImageButtonWidget::ImageButtonWidget(const Rectangle &r, const int a)
-        : ButtonWidget(r, a)
-        , normalImage(0)
-        , pressedImage(0)
-{}
+: ButtonWidget(r, a)
+, normalImage(0)
+, pressedImage(0)
+{
+}
 
 ImageButtonWidget::~ImageButtonWidget()
-{}
+{
+}
 
 void
 ImageButtonWidget::SetImage(Image *normal, Image *press)
@@ -71,10 +74,7 @@ ImageButtonWidget::LeftClick(const bool toggle, const int, const int)
     if (IsVisible())
     {
         SetPressed(toggle);
-        if (toggle)
-        {
-            GenerateActionEvent(GetAction());
-        }
+        GenerateActionEvent(toggle ? GetAction() : ACT_STOP);
     }
 }
 
@@ -84,6 +84,7 @@ ImageButtonWidget::RightClick(const bool toggle, const int, const int)
     if (IsVisible())
     {
         if (toggle)
-        {}
+        {
+        }
     }
 }

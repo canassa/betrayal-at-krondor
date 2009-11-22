@@ -20,14 +20,15 @@
 #include "Exception.h"
 #include "InventoryItemWidget.h"
 #include "PointerManager.h"
+#include "RequestResource.h"
 
 InventoryItemWidget::InventoryItemWidget(const Rectangle &r, const int a)
-        : ActiveWidget(r, a)
-        , invItem(0)
-        , iconImage(0)
-        , label(0)
-        , dragged(false)
-        , selected(false)
+: ActiveWidget(r, a)
+, invItem(0)
+, iconImage(0)
+, label(0)
+, dragged(false)
+, selected(false)
 {
     SetFocusable(false);
 }
@@ -93,7 +94,8 @@ InventoryItemWidget::Draw()
     if (IsVisible())
     {
         if (selected)
-        {}
+        {
+        }
         if (!dragged)
         {
             if (iconImage)
@@ -114,10 +116,7 @@ InventoryItemWidget::LeftClick(const bool toggle, const int, const int)
 {
     if (IsVisible())
     {
-        if (toggle)
-        {
-            GenerateActionEvent(GetAction());
-        }
+        GenerateActionEvent(toggle ? GetAction() : ACT_STOP);
     }
 }
 
@@ -127,10 +126,7 @@ InventoryItemWidget::RightClick(const bool toggle, const int, const int)
     if (IsVisible())
     {
         selected = toggle;
-        if (toggle)
-        {
-            GenerateActionEvent(GetAction() + RIGHT_CLICK_OFFSET);
-        }
+        GenerateActionEvent(toggle ? (GetAction() + RIGHT_CLICK_OFFSET) : ACT_STOP);
     }
 }
 
@@ -139,10 +135,11 @@ InventoryItemWidget::Drag(const int x, const int y)
 {
     dragged = true;
     PointerManager::GetInstance()->SetDraggedWidget(this,
-            rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2 - x,
-            rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2 - y);
+                                                    rect.GetXPos() + (rect.GetWidth() - iconImage->GetWidth()) / 2 - x,
+                                                    rect.GetYPos() + (rect.GetHeight() - iconImage->GetHeight()) / 2 - y);
 }
 
 void
 InventoryItemWidget::Drop(const int, const int)
-{}
+{
+}
