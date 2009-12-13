@@ -74,6 +74,7 @@ noinst_HEADERS = AnimationResource.h \
                  Position.h \
                  Preferences.h \
                  PreferencesDialogBridge.h \
+                 RampResource.h \
                  RatingsWidget.h \
                  RequestResource.h \
                  ResourceArchive.h \
@@ -311,6 +312,8 @@ libresdata_a_SOURCES = AnimationResource.cc \
                        PaletteResource.h \
                        PartyResource.cc \
                        PartyResource.h \
+                       RampResource.cc \
+                       RampResource.h \
                        RequestResource.cc \
                        RequestResource.h \
                        ScreenResource.cc \
