@@ -24,7 +24,8 @@ DialogData::DialogData()
         : childDialogs(0)
         , text()
         , childData()
-{}
+{
+}
 
 DialogData::~DialogData()
 {
@@ -38,21 +39,20 @@ DialogData::~DialogData()
 
 DialogResource::DialogResource()
         : dialogMap()
-{}
+{
+}
 
 DialogResource::~DialogResource()
 {
     Clear();
 }
 
-unsigned int
-DialogResource::GetSize() const
+unsigned int DialogResource::GetSize() const
 {
     return dialogMap.size();
 }
 
-bool
-DialogResource::Find(const unsigned int n, DialogData* data)
+bool DialogResource::Find(const unsigned int n, DialogData* data)
 {
     std::map<const unsigned int, DialogData*>::iterator it = dialogMap.find(n);
     if (it != dialogMap.end())
@@ -63,8 +63,7 @@ DialogResource::Find(const unsigned int n, DialogData* data)
     return false;
 }
 
-void
-DialogResource::Clear()
+void DialogResource::Clear()
 {
     for (std::map<const unsigned int, DialogData*>::iterator it = dialogMap.begin(); it != dialogMap.end(); ++it)
     {
@@ -80,15 +79,14 @@ typedef struct _DialogPageOffset
 }
 DialogPageOffset;
 
-void
-DialogResource::ReadDialogData(FileBuffer *buffer, DialogData *data)
+void DialogResource::ReadDialogData(FileBuffer *buffer, DialogData *data)
 {
     try
     {
         buffer->Skip(5);
         data->childDialogs = buffer->GetUint8();
         unsigned int n = buffer->GetUint8();
-        buffer->Skip(2);
+        unsigned int length = buffer->GetUint16LE();
         std::vector<DialogPageOffset> pageOffset;
         for (unsigned int i = 0; i < data->childDialogs; i++)
         {
@@ -98,36 +96,22 @@ DialogResource::ReadDialogData(FileBuffer *buffer, DialogData *data)
             dpo.offset = buffer->GetUint32LE();
             pageOffset.push_back(dpo);
         }
-        bool done = false;
         for (unsigned int i = 0; i < data->childDialogs; i++)
         {
-            if (pageOffset[i].type >= 0)
+            if (pageOffset[i].type != 0)
             {
-                buffer->Seek(pageOffset[i].offset);
+                buffer->Seek(pageOffset[i].offset & 0x7fffffff);
                 DialogData* child = new DialogData;
                 ReadDialogData(buffer, child);
                 data->childData.push_back(child);
-                done = true;
             }
         }
-        if (!done)
+        for (unsigned int j = 0; j < n; j++)
         {
-            for (unsigned int j = 0; j < n; j++)
-            {
-                buffer->Skip(10);
-            }
-            for (unsigned int i = 0; i < data->childDialogs; i++)
-            {
-                std::string s = buffer->GetString();
-                data->text.push_back(s);
-                done = true;
-            }
-            if (!done)
-            {
-                std::string s = buffer->GetString();
-                data->text.push_back(s);
-            }
+            buffer->Skip(10);
         }
+        std::string s = buffer->GetString(length);
+        data->text.push_back(s);
         pageOffset.clear();
     }
     catch (Exception &e)
@@ -137,8 +121,7 @@ DialogResource::ReadDialogData(FileBuffer *buffer, DialogData *data)
     }
 }
 
-void
-DialogResource::Load(FileBuffer *buffer)
+void DialogResource::Load(FileBuffer *buffer)
 {
     try
     {
@@ -151,7 +134,7 @@ DialogResource::Load(FileBuffer *buffer)
             unsigned int value = buffer->GetUint32LE();
             offset.insert(std::pair<const unsigned int, unsigned int>(key, value));
         }
-        for (std::map<const unsigned int, unsigned int>::iterator it = offset.begin(); it != offset.end(); ++it)
+        for (std::map<const unsigned int, unsigned int>::const_iterator it = offset.begin(); it != offset.end(); ++it)
         {
             buffer->Seek(it->second);
             DialogData* data = new DialogData;
@@ -167,8 +150,7 @@ DialogResource::Load(FileBuffer *buffer)
     }
 }
 
-unsigned int
-DialogResource::Save(FileBuffer *buffer)
+unsigned int DialogResource::Save(FileBuffer *buffer)
 {
     try
     {
