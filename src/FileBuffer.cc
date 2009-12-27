@@ -153,7 +153,7 @@ FileBuffer::Dump(const unsigned int n)
             std::cout << "| ";
         }
     }
-    std::cout << std::endl;
+    std::cout << std::setbase(10) << std::setfill(' ') << std::endl;
 }
 
 void
