@@ -220,38 +220,32 @@ Image::~Image()
     }
 }
 
-int
-Image::GetWidth() const
+int Image::GetWidth() const
 {
     return width;
 }
 
-int
-Image::GetHeight() const
+int Image::GetHeight() const
 {
     return height;
 }
 
-unsigned int
-Image::GetSize() const
+unsigned int Image::GetSize() const
 {
     return (unsigned int)width * height;
 }
 
-unsigned int
-Image::GetFlags() const
+unsigned int Image::GetFlags() const
 {
     return flags;
 }
 
-void
-Image::SetFlags(const unsigned int f)
+void Image::SetFlags(const unsigned int f)
 {
     flags = f;
 }
 
-uint8_t
-Image::GetPixel(const int x, const int y) const
+uint8_t Image::GetPixel(const int x, const int y) const
 {
     if ((pixel) && (x >= 0) && (x < width) && (y >= 0) && (y < height))
     {
@@ -260,14 +254,12 @@ Image::GetPixel(const int x, const int y) const
     return 0;
 }
 
-uint8_t *
-Image::GetPixels() const
+uint8_t * Image::GetPixels() const
 {
     return pixel;
 }
 
-void
-Image::SetPixel(const int x, const int y, const uint8_t color)
+void Image::SetPixel(const int x, const int y, const uint8_t color)
 {
     if ((pixel) && (x >= 0) && (x < width) && (y >= 0) && (y < height))
     {
@@ -275,8 +267,7 @@ Image::SetPixel(const int x, const int y, const uint8_t color)
     }
 }
 
-void
-Image::SetPixels(uint8_t *data, unsigned int size)
+void Image::SetPixels(uint8_t *data, unsigned int size)
 {
     if ((pixel) && (data))
     {
@@ -288,8 +279,7 @@ Image::SetPixels(uint8_t *data, unsigned int size)
     }
 }
 
-void
-Image::Fill(const uint8_t color)
+void Image::Fill(const uint8_t color)
 {
     if (pixel)
     {
@@ -297,8 +287,7 @@ Image::Fill(const uint8_t color)
     }
 }
 
-void
-Image::HorizontalFlip()
+void Image::HorizontalFlip()
 {
     for (int y = 0; y < height; y++)
     {
@@ -311,8 +300,7 @@ Image::HorizontalFlip()
     }
 }
 
-void
-Image::VerticalFlip()
+void Image::VerticalFlip()
 {
     uint8_t *row = new uint8_t[width];
     for (int y = 0; y < height / 2; y++)
@@ -324,8 +312,7 @@ Image::VerticalFlip()
     delete[] row;
 }
 
-void
-Image::Load(FileBuffer *buffer)
+void Image::Load(FileBuffer *buffer)
 {
     try
     {
@@ -384,8 +371,7 @@ Image::Load(FileBuffer *buffer)
     }
 }
 
-unsigned int
-Image::Save(FileBuffer *buffer)
+unsigned int Image::Save(FileBuffer *buffer)
 {
     try
     {

@@ -30,40 +30,40 @@
 
 class Image
 {
-    private:
-        int width;
-        int height;
-        unsigned int flags;
-        bool highres_lowcol;
-        uint8_t *pixel;
-    public:
-        Image ( const int w, const int h );
-        Image ( const int w, const int h, const unsigned int f );
-        Image ( const int w, const int h, const bool hrlc );
-        Image ( const int w, const int h, const uint8_t *p );
-        Image ( Image *img );
-        Image ( const int w, const int h, Image *img );
-        Image ( const int w, const int h, std::vector<Image *> &img );
-        ~Image();
-        int GetWidth() const;
-        int GetHeight() const;
-        unsigned int GetSize() const;
-        unsigned int GetFlags() const;
-        void SetFlags ( const unsigned int f );
-        uint8_t GetPixel ( const int x, const int y ) const;
-        uint8_t * GetPixels() const;
-        void SetPixel ( const int x, const int y, const uint8_t color );
-        void SetPixels ( uint8_t *data, unsigned int size = 0 );
-        void HorizontalFlip();
-        void VerticalFlip();
-        void Fill ( const uint8_t color );
-        void Load ( FileBuffer *buffer );
-        unsigned int Save ( FileBuffer *buffer );
-        void Read ( const int x, const int y );
-        void Draw ( const int x, const int y ) const;
-        void Draw ( const int x, const int y, const uint8_t transparent ) const;
-        void Draw ( const int x, const int y, const int xoff, const int yoff, const int w, const int h ) const;
-        void Draw ( const int x, const int y, const int xoff, const int yoff, const int w, const int h, const uint8_t transparent ) const;
+private:
+    int width;
+    int height;
+    unsigned int flags;
+    bool highres_lowcol;
+    uint8_t *pixel;
+public:
+    Image ( const int w, const int h );
+    Image ( const int w, const int h, const unsigned int f );
+    Image ( const int w, const int h, const bool hrlc );
+    Image ( const int w, const int h, const uint8_t *p );
+    Image ( Image *img );
+    Image ( const int w, const int h, Image *img );
+    Image ( const int w, const int h, std::vector<Image *> &img );
+    ~Image();
+    int GetWidth() const;
+    int GetHeight() const;
+    unsigned int GetSize() const;
+    unsigned int GetFlags() const;
+    void SetFlags ( const unsigned int f );
+    uint8_t GetPixel ( const int x, const int y ) const;
+    uint8_t * GetPixels() const;
+    void SetPixel ( const int x, const int y, const uint8_t color );
+    void SetPixels ( uint8_t *data, unsigned int size = 0 );
+    void HorizontalFlip();
+    void VerticalFlip();
+    void Fill ( const uint8_t color );
+    void Load ( FileBuffer *buffer );
+    unsigned int Save ( FileBuffer *buffer );
+    void Read ( const int x, const int y );
+    void Draw ( const int x, const int y ) const;
+    void Draw ( const int x, const int y, const uint8_t transparent ) const;
+    void Draw ( const int x, const int y, const int xoff, const int yoff, const int w, const int h ) const;
+    void Draw ( const int x, const int y, const int xoff, const int yoff, const int w, const int h, const uint8_t transparent ) const;
 };
 
 #endif

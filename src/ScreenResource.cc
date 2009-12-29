@@ -22,21 +22,20 @@
 
 ScreenResource::ScreenResource()
         : image(0)
-{}
+{
+}
 
 ScreenResource::~ScreenResource()
 {
     Clear();
 }
 
-Image *
-ScreenResource::GetImage()
+Image * ScreenResource::GetImage()
 {
     return image;
 }
 
-void
-ScreenResource::Clear()
+void ScreenResource::Clear()
 {
     if (image)
     {
@@ -45,8 +44,7 @@ ScreenResource::Clear()
     }
 }
 
-void
-ScreenResource::Load(FileBuffer *buffer)
+void ScreenResource::Load(FileBuffer *buffer)
 {
     try
     {
@@ -74,8 +72,7 @@ ScreenResource::Load(FileBuffer *buffer)
     }
 }
 
-unsigned int
-ScreenResource::Save(FileBuffer *buffer)
+unsigned int ScreenResource::Save(FileBuffer *buffer)
 {
     try
     {
