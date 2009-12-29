@@ -1,6 +1,8 @@
 20xx-xx-xx, xbak-0.1.5:
 * Improved handling arrow buttons and keys.
+* Support for loading RMP rosource files
 * Removed unnecessary includes.
+* Several bug fixes.
 
 2009-09-01, xbak-0.1.4:
 * Refactored and enhanced the 3D engine.
