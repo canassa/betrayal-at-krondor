@@ -50,10 +50,12 @@ ScreenResource::Load(FileBuffer *buffer)
 {
     try
     {
+        bool isBookScreen = false;
         Clear();
         if (buffer->GetUint16LE() != 0x27b6)
         {
             buffer->Rewind();
+            isBookScreen = true;
         }
         if (buffer->GetUint8() != 0x02)
         {
@@ -61,7 +63,7 @@ ScreenResource::Load(FileBuffer *buffer)
         }
         FileBuffer *decompressed = new FileBuffer(buffer->GetUint32LE());
         buffer->DecompressLZW(decompressed);
-        image = new Image(SCREEN_WIDTH, SCREEN_HEIGHT);
+        image = isBookScreen ? new Image(BOOK_SCREEN_WIDTH, BOOK_SCREEN_HEIGHT, true) : new Image(SCREEN_WIDTH, SCREEN_HEIGHT);
         image->Load(decompressed);
         delete decompressed;
     }

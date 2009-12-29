@@ -34,10 +34,12 @@ class Image
         int width;
         int height;
         unsigned int flags;
+        bool highres_lowcol;
         uint8_t *pixel;
     public:
         Image ( const int w, const int h );
         Image ( const int w, const int h, const unsigned int f );
+        Image ( const int w, const int h, const bool hrlc );
         Image ( const int w, const int h, const uint8_t *p );
         Image ( Image *img );
         Image ( const int w, const int h, Image *img );

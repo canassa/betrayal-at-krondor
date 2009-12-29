@@ -31,6 +31,7 @@ Image::Image(const int w, const int h)
         : width(w)
         , height(h)
         , flags(0)
+        , highres_lowcol(false)
         , pixel(0)
 {
     if ((width > 0) && (height > 0))
@@ -49,6 +50,26 @@ Image::Image(const int w, const int h, const unsigned int f)
         : width(w)
         , height(h)
         , flags(f)
+        , highres_lowcol(false)
+        , pixel(0)
+{
+    if ((width > 0) && (height > 0))
+    {
+        pixel = new uint8_t[width * height];
+        memset(pixel, 0, width * height);
+    }
+    else
+    {
+        width = 0;
+        height = 0;
+    }
+}
+
+Image::Image(const int w, const int h, const bool hrlc)
+        : width(w)
+        , height(h)
+        , flags(0)
+        , highres_lowcol(hrlc)
         , pixel(0)
 {
     if ((width > 0) && (height > 0))
@@ -67,6 +88,7 @@ Image::Image(const int w, const int h, const uint8_t *p)
         : width(w)
         , height(h)
         , flags(0)
+        , highres_lowcol(false)
         , pixel(0)
 {
     if ((width > 0) && (height > 0))
@@ -84,7 +106,8 @@ Image::Image(const int w, const int h, const uint8_t *p)
 Image::Image(Image *img)
         : width(img->width)
         , height(img->height)
-        , flags(0)
+        , flags(img->flags)
+        , highres_lowcol(img->highres_lowcol)
         , pixel(0)
 {
     if ((width > 0) && (height > 0))
@@ -102,7 +125,8 @@ Image::Image(Image *img)
 Image::Image(const int w, const int h, Image *img)
         : width(w)
         , height(h)
-        , flags(0)
+        , flags(img->flags)
+        , highres_lowcol(img->highres_lowcol)
         , pixel(0)
 {
     if ((width > 0) && (height > 0))
@@ -130,7 +154,8 @@ Image::Image(const int w, const int h, Image *img)
 Image::Image(const int w, const int h, std::vector<Image *> &img)
         : width(w)
         , height(h)
-        , flags(0)
+        , flags(img[0]->flags)
+        , highres_lowcol(img[0]->highres_lowcol)
         , pixel(0)
 {
     if ((width > 0) && (height > 0))
@@ -176,7 +201,7 @@ Image::Image(const int w, const int h, std::vector<Image *> &img)
                         i = 0;
                     }
                 }
-                while(x < width);
+                while (x < width);
             }
         }
     }
@@ -328,7 +353,23 @@ Image::Load(FileBuffer *buffer)
             }
             else
             {
-                imgbuf->GetData(pixel, width * height);
+                if (highres_lowcol)
+                {
+                    for (int y = 0; y < height; y++)
+                    {
+                        for (int x = 0; x < width; x++)
+                        {
+                            uint8_t c = imgbuf->GetUint8();
+                            SetPixel(x, y, (c & 0xf0) >> 4);
+                            x++;
+                            SetPixel(x, y, c & 0x0f);
+                        }
+                    }
+                }
+                else
+                {
+                    imgbuf->GetData(pixel, width * height);
+                }
             }
             if (flags & FLAG_COMPRESSED)
             {
@@ -363,7 +404,23 @@ Image::Save(FileBuffer *buffer)
             }
             else
             {
-                imgbuf->PutData(pixel, width * height);
+                if (highres_lowcol)
+                {
+                    for (int y = 0; y < height; y++)
+                    {
+                        for (int x = 0; x < width; x++)
+                        {
+                            uint8_t c1 = GetPixel(x, y);
+                            x++;
+                            uint8_t c2 = GetPixel(x, y);
+                            imgbuf->PutUint8(((c1 & 0x0f) << 4) | (c2 & 0x0f));
+                        }
+                    }
+                }
+                else
+                {
+                    imgbuf->PutData(pixel, width * height);
+                }
             }
             imgbuf->Rewind();
             unsigned int size;
