@@ -22,7 +22,8 @@
 
 DialogWindow::DialogWindow(PanelWidget *panelwidget)
         : panel(panelwidget)
-{}
+{
+}
 
 DialogWindow::~DialogWindow()
 {
@@ -32,16 +33,19 @@ DialogWindow::~DialogWindow()
     }
 }
 
-void
-DialogWindow::Draw()
+const Rectangle& DialogWindow::GetRectangle() const
+{
+    return panel->GetRectangle();
+}
+
+void DialogWindow::Draw()
 {
     panel->Draw();
     PointerManager::GetInstance()->GetCurrentPointer()->Draw();
     MediaToolkit::GetInstance()->GetVideo()->Refresh();
 }
 
-void
-DialogWindow::FadeIn(Palette* pal)
+void DialogWindow::FadeIn(Palette* pal)
 {
     panel->Reset();
     panel->Draw();
@@ -49,65 +53,55 @@ DialogWindow::FadeIn(Palette* pal)
     pal->FadeIn(0, VIDEO_COLORS, 64, 5);
 }
 
-void
-DialogWindow::FadeOut(Palette* pal)
+void DialogWindow::FadeOut(Palette* pal)
 {
     panel->Draw();
     PointerManager::GetInstance()->GetCurrentPointer()->Draw();
     pal->FadeOut(0, VIDEO_COLORS, 64, 5);
 }
 
-void
-DialogWindow::LeftClickWidget(const bool toggle)
+void DialogWindow::LeftClickWidget(const bool toggle)
 {
     panel->LeftClick(toggle);
 }
 
-void
-DialogWindow::RightClickWidget(const bool toggle)
+void DialogWindow::RightClickWidget(const bool toggle)
 {
     panel->RightClick(toggle);
 }
 
-void
-DialogWindow::LeftClickWidget(const bool toggle, const int x, const int y)
+void DialogWindow::LeftClickWidget(const bool toggle, const int x, const int y)
 {
     panel->LeftClick(toggle, x, y);
 }
 
-void
-DialogWindow::RightClickWidget(const bool toggle, const int x, const int y)
+void DialogWindow::RightClickWidget(const bool toggle, const int x, const int y)
 {
     panel->RightClick(toggle, x, y);
 }
 
-void
-DialogWindow::DragWidget(const int x, const int y)
+void DialogWindow::DragWidget(const int x, const int y)
 {
     panel->Drag(x, y);
 }
 
-void
-DialogWindow::DropWidget(const int x, const int y)
+void DialogWindow::DropWidget(const int x, const int y)
 {
     panel->Drop(x, y);
     PointerManager::GetInstance()->SetDraggedWidget(0, 0, 0);
 }
 
-void
-DialogWindow::PointerOverWidget(const int x, const int y)
+void DialogWindow::PointerOverWidget(const int x, const int y)
 {
     panel->PointerOver(x, y);
 }
 
-void
-DialogWindow::SelectNextWidget()
+void DialogWindow::SelectNextWidget()
 {
     panel->NextWidget();
 }
 
-void
-DialogWindow::SelectPreviousWidget()
+void DialogWindow::SelectPreviousWidget()
 {
     panel->PreviousWidget();
 }

@@ -53,7 +53,7 @@ protected:
 public:
     Widget ( const Rectangle &r );
     virtual ~Widget();
-    Rectangle& GetRectangle();
+    const Rectangle& GetRectangle() const;
     void SetPosition ( const int x, const int y );
     void SetVisible ( const bool toggle );
     bool IsVisible() const;

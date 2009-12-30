@@ -676,7 +676,7 @@ void Rectangle::SetHeight(const int h)
     m_height = h;
 }
 
-bool Rectangle::IsInside(const Vector2D &p)
+bool Rectangle::IsInside(const Vector2D &p) const
 {
     return ((m_x <= p.GetX()) && (p.GetX() < m_x + m_width) &&
             (m_y <= p.GetY()) && (p.GetY() < m_y + m_height));

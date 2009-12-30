@@ -23,32 +23,30 @@
 Widget::Widget(const Rectangle &r)
         : rect(r)
         , visible(true)
-{}
+{
+}
 
 Widget::~Widget()
-{}
+{
+}
 
-Rectangle&
-Widget::GetRectangle()
+const Rectangle& Widget::GetRectangle() const
 {
     return rect;
 }
 
-void
-Widget::SetPosition(const int x, const int y)
+void Widget::SetPosition(const int x, const int y)
 {
     rect.SetXPos(x);
     rect.SetYPos(y);
 }
 
-void
-Widget::SetVisible(const bool toggle)
+void Widget::SetVisible(const bool toggle)
 {
     visible = toggle;
 }
 
-bool
-Widget::IsVisible() const
+bool Widget::IsVisible() const
 {
     return visible;
 }
@@ -60,45 +58,40 @@ ActiveWidget::ActiveWidget(const Rectangle &r, const int a)
         , draggable(false)
         , focusable(true)
         , actionListeners()
-{}
+{
+}
 
 ActiveWidget::~ActiveWidget()
 {
     actionListeners.clear();
 }
 
-int
-ActiveWidget::GetAction() const
+int ActiveWidget::GetAction() const
 {
     return action;
 }
 
-bool
-ActiveWidget::IsDraggable() const
+bool ActiveWidget::IsDraggable() const
 {
     return draggable;
 }
 
-void
-ActiveWidget::SetDraggable(const bool toggle)
+void ActiveWidget::SetDraggable(const bool toggle)
 {
     draggable = toggle;
 }
 
-bool
-ActiveWidget::IsFocusable() const
+bool ActiveWidget::IsFocusable() const
 {
     return focusable;
 }
 
-void
-ActiveWidget::SetFocusable(const bool toggle)
+void ActiveWidget::SetFocusable(const bool toggle)
 {
     focusable = toggle;
 }
 
-void
-ActiveWidget::GenerateActionEvent(const int a)
+void ActiveWidget::GenerateActionEvent(const int a)
 {
     ActionEvent ae(a, rect.GetXCenter(), rect.GetYCenter());
     for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it)
@@ -107,8 +100,7 @@ ActiveWidget::GenerateActionEvent(const int a)
     }
 }
 
-void
-ActiveWidget::GenerateActionEvent(const int a, const int x, const int y)
+void ActiveWidget::GenerateActionEvent(const int a, const int x, const int y)
 {
     ActionEvent ae(a, x, y);
     for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it)
@@ -117,8 +109,7 @@ ActiveWidget::GenerateActionEvent(const int a, const int x, const int y)
     }
 }
 
-void
-ActiveWidget::GenerateActionEvent(const ActionEvent& ae)
+void ActiveWidget::GenerateActionEvent(const ActionEvent& ae)
 {
     for (std::list<ActionEventListener *>::iterator it = actionListeners.begin(); it != actionListeners.end(); ++it)
     {
@@ -126,20 +117,17 @@ ActiveWidget::GenerateActionEvent(const ActionEvent& ae)
     }
 }
 
-void
-ActiveWidget::AddActionListener(ActionEventListener *ael)
+void ActiveWidget::AddActionListener(ActionEventListener *ael)
 {
     actionListeners.push_back(ael);
 }
 
-void
-ActiveWidget::RemoveActionListener(ActionEventListener *ael)
+void ActiveWidget::RemoveActionListener(ActionEventListener *ael)
 {
     actionListeners.remove(ael);
 }
 
-void
-ActiveWidget::Focus()
+void ActiveWidget::Focus()
 {
     if (focusable)
     {
@@ -147,6 +135,6 @@ ActiveWidget::Focus()
     }
 }
 
-void
-ActiveWidget::Reset()
-{}
+void ActiveWidget::Reset()
+{
+}

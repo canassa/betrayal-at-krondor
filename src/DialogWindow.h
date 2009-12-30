@@ -34,6 +34,7 @@ private:
 public:
     DialogWindow ( PanelWidget *panelwidget );
     ~DialogWindow();
+    const Rectangle& GetRectangle() const;
     void Draw();
     void FadeIn ( Palette* pal );
     void FadeOut ( Palette* pal );
@@ -49,4 +50,3 @@ public:
 };
 
 #endif
-
