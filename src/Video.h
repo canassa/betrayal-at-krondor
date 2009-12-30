@@ -54,14 +54,14 @@ struct Color
 class Video
 {
 protected:
-    unsigned int width;
-    unsigned int height;
+    int width;
+    int height;
     unsigned int scaling;
 public:
     Video();
     virtual ~Video();
-    unsigned int GetWidth() const;
-    unsigned int GetHeight() const;
+    int GetWidth() const;
+    int GetHeight() const;
     unsigned int GetScaling() const;
     void SetScaling ( const unsigned int n );
     virtual void CreateScreen ( const int w, const int h ) = 0;

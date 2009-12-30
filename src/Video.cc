@@ -30,12 +30,12 @@ Video::~Video()
 {
 }
 
-unsigned int Video::GetWidth() const
+int Video::GetWidth() const
 {
     return width;
 }
 
-unsigned int Video::GetHeight() const
+int Video::GetHeight() const
 {
     return height;
 }

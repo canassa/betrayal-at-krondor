@@ -405,9 +405,9 @@ SDL_Toolkit::UpdatePointer()
         {
             xPos = 0;
         }
-        else if (xPos > VIDEO_WIDTH)
+        else if (xPos > video->GetWidth())
         {
-            xPos = VIDEO_WIDTH;
+            xPos = video->GetWidth();
         }
     }
     if (yMove)
@@ -417,9 +417,9 @@ SDL_Toolkit::UpdatePointer()
         {
             yPos = 0;
         }
-        else if (yPos > VIDEO_HEIGHT)
+        else if (yPos > video->GetHeight())
         {
-            yPos = VIDEO_HEIGHT;
+            yPos = video->GetHeight();
         }
     }
     if (xMove || yMove)
