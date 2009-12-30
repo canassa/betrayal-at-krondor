@@ -26,7 +26,8 @@ SDL_Video::SDL_Video()
         , disp(0)
         , stretched(0)
         , buffer(0)
-{}
+{
+}
 
 SDL_Video::~SDL_Video()
 {
@@ -46,8 +47,8 @@ SDL_Video::~SDL_Video()
 
 void SDL_Video::CreateScreen(const int w, const int h)
 {
-    int width = w * scaling;
-    int height = h * scaling;
+    width = w * scaling;
+    height = h * scaling;
     unsigned int flags = SDL_ANYFORMAT;
     if (info->hw_available)
     {

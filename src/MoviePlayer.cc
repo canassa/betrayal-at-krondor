@@ -64,8 +64,7 @@ MoviePlayer::~MoviePlayer()
     MediaToolkit::GetInstance()->RemoveTimerListener(this);
 }
 
-void
-MoviePlayer::Play(std::vector<MovieChunk *> *movie, const bool repeat)
+void MoviePlayer::Play(std::vector<MovieChunk *> *movie, const bool repeat)
 {
     try
     {
@@ -139,8 +138,7 @@ MoviePlayer::Play(std::vector<MovieChunk *> *movie, const bool repeat)
     }
 }
 
-void
-MoviePlayer::PlayChunk(MediaToolkit* media)
+void MoviePlayer::PlayChunk(MediaToolkit* media)
 {
     try
     {
@@ -152,7 +150,7 @@ MoviePlayer::PlayChunk(MediaToolkit* media)
             case SAVE_BACKGROUND:
                 if (!backgroundImage)
                 {
-                    backgroundImage = new Image(VIDEO_WIDTH, VIDEO_HEIGHT);
+                    backgroundImage = new Image(media->GetVideo()->GetWidth(), media->GetVideo()->GetHeight());
                 }
                 backgroundImage->Read(0, 0);
                 break;
@@ -363,56 +361,51 @@ MoviePlayer::PlayChunk(MediaToolkit* media)
     }
 }
 
-void
-MoviePlayer::KeyPressed(const KeyboardEvent& kbe)
+void MoviePlayer::KeyPressed(const KeyboardEvent& kbe)
 {
     switch (kbe.GetKey())
     {
-        case KEY_ESCAPE:
-        case KEY_RETURN:
-        case KEY_SPACE:
-            playing = false;
-            break;
-        default:
-            break;
+    case KEY_ESCAPE:
+    case KEY_RETURN:
+    case KEY_SPACE:
+        playing = false;
+        break;
+    default:
+        break;
     }
 }
 
-void
-MoviePlayer::KeyReleased(const KeyboardEvent& kbe)
+void MoviePlayer::KeyReleased(const KeyboardEvent& kbe)
 {
     switch (kbe.GetKey())
     {
-        default:
-            break;
+    default:
+        break;
     }
 }
 
-void
-MoviePlayer::PointerButtonPressed(const PointerButtonEvent& pbe)
+void MoviePlayer::PointerButtonPressed(const PointerButtonEvent& pbe)
 {
     switch (pbe.GetButton())
     {
-        case PB_PRIMARY:
-            playing = false;
-            break;
-        default:
-            break;
+    case PB_PRIMARY:
+        playing = false;
+        break;
+    default:
+        break;
     }
 }
 
-void
-MoviePlayer::PointerButtonReleased(const PointerButtonEvent& pbe)
+void MoviePlayer::PointerButtonReleased(const PointerButtonEvent& pbe)
 {
     switch (pbe.GetButton())
     {
-        default:
-            break;
+    default:
+        break;
     }
 }
 
-void
-MoviePlayer::TimerExpired(const TimerEvent& te)
+void MoviePlayer::TimerExpired(const TimerEvent& te)
 {
     if (te.GetID() == TMR_MOVIE_PLAYER)
     {

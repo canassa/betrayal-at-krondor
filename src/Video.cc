@@ -20,21 +20,32 @@
 #include "Video.h"
 
 Video::Video()
-        : scaling(1)
-{}
+        : width(0)
+        , height(0)
+        , scaling(1)
+{
+}
 
 Video::~Video()
-{}
+{
+}
 
-unsigned int
-Video::GetScaling() const
+unsigned int Video::GetWidth() const
+{
+    return width;
+}
+
+unsigned int Video::GetHeight() const
+{
+    return height;
+}
+
+unsigned int Video::GetScaling() const
 {
     return scaling;
 }
 
-void
-Video::SetScaling(const unsigned int n)
+void Video::SetScaling(const unsigned int n)
 {
     scaling = n;
 }
-
