@@ -35,20 +35,20 @@
 GameApplication* GameApplication::instance = 0;
 
 GameApplication::GameApplication()
-: done(false)
-, inputGrabbed(false)
-, game()
-, state(0)
-, screenSaveCount(0)
+        : done(false)
+        , inputGrabbed(false)
+        , game()
+        , state(0)
+        , screenSaveCount(0)
 {
     MediaToolkit* media = MediaToolkit::GetInstance();
-    media->GetVideo()->SetScaling(2);
-    media->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
+    media->GetVideo()->CreateWindow(1);
+    media->GetVideo()->SetMode(LORES_HICOL);
     media->GetVideo()->Clear();
 
     PaletteResource pal;
     pal.GetPalette()->Fill();
-    pal.GetPalette()->Activate(0, VIDEO_COLORS);
+    pal.GetPalette()->Activate(0, WINDOW_COLORS);
     FontResource fnt;
     FileManager::GetInstance()->Load(&fnt, "GAME.FNT");
     TextArea ta(240, 16, fnt.GetFont());
@@ -215,21 +215,21 @@ void GameApplication::KeyPressed(const KeyboardEvent& kbe)
 {
     switch (kbe.GetKey())
     {
-        case KEY_F11:
-        {
-            screenSaveCount++;
-            std::stringstream filenameStream;
-            filenameStream << Directories::GetInstance()->GetCapturePath();
-            filenameStream << "xbak_" << std::setw(3) << std::setfill('0') << screenSaveCount << ".bmp";
-            MediaToolkit::GetInstance()->GetVideo()->SaveScreenShot(filenameStream.str());
-        }
+    case KEY_F11:
+    {
+        screenSaveCount++;
+        std::stringstream filenameStream;
+        filenameStream << Directories::GetInstance()->GetCapturePath();
+        filenameStream << "xbak_" << std::setw(3) << std::setfill('0') << screenSaveCount << ".bmp";
+        MediaToolkit::GetInstance()->GetVideo()->SaveScreenShot(filenameStream.str());
+    }
+    break;
+    case KEY_F12:
+        inputGrabbed = !inputGrabbed;
+        MediaToolkit::GetInstance()->GetVideo()->GrabInput(inputGrabbed);
         break;
-        case KEY_F12:
-            inputGrabbed = !inputGrabbed;
-            MediaToolkit::GetInstance()->GetVideo()->GrabInput(inputGrabbed);
-            break;
-        default:
-            break;
+    default:
+        break;
     }
 }
 
@@ -237,8 +237,8 @@ void GameApplication::KeyReleased(const KeyboardEvent& kbe)
 {
     switch (kbe.GetKey())
     {
-        default:
-            break;
+    default:
+        break;
     }
 }
 
@@ -246,23 +246,23 @@ void GameApplication::PointerButtonPressed(const PointerButtonEvent& pbe)
 {
     switch (pbe.GetButton())
     {
-        case PB_PRIMARY:
-        case PB_SECONDARY:
-            if (!inputGrabbed)
-            {
-                inputGrabbed = true;
-                MediaToolkit::GetInstance()->GetVideo()->GrabInput(true);
-            }
-            break;
-        case PB_TERTIARY:
-            if (inputGrabbed)
-            {
-                inputGrabbed = false;
-                MediaToolkit::GetInstance()->GetVideo()->GrabInput(false);
-            }
-            break;
-        default:
-            break;
+    case PB_PRIMARY:
+    case PB_SECONDARY:
+        if (!inputGrabbed)
+        {
+            inputGrabbed = true;
+            MediaToolkit::GetInstance()->GetVideo()->GrabInput(true);
+        }
+        break;
+    case PB_TERTIARY:
+        if (inputGrabbed)
+        {
+            inputGrabbed = false;
+            MediaToolkit::GetInstance()->GetVideo()->GrabInput(false);
+        }
+        break;
+    default:
+        break;
     }
 }
 
@@ -270,8 +270,8 @@ void GameApplication::PointerButtonReleased(const PointerButtonEvent& pbe)
 {
     switch (pbe.GetButton())
     {
-        default:
-            break;
+    default:
+        break;
     }
 }
 

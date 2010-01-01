@@ -23,32 +23,56 @@
 SDL_Video::SDL_Video()
         : Video()
         , info(SDL_GetVideoInfo())
-        , disp(0)
-        , stretched(0)
-        , buffer(0)
+        , window(0)
+        , windowBuffer(0)
+        , hireslocolSurface()
+        , loreshicolSurface()
+        , currentSurface(loreshicolSurface)
 {
 }
 
 SDL_Video::~SDL_Video()
 {
-    if (disp)
+    if (window != 0)
     {
-        SDL_FreeSurface(disp);
+        SDL_FreeSurface(window);
     }
-    if (stretched)
+    if (windowBuffer != 0)
     {
-        SDL_FreeSurface(stretched);
+        SDL_FreeSurface(windowBuffer);
     }
-    if (buffer)
+    if (hireslocolSurface.buffer != 0)
     {
-        SDL_FreeSurface(buffer);
+        SDL_FreeSurface(hireslocolSurface.buffer);
+    }
+    if (loreshicolSurface.buffer != 0)
+    {
+        SDL_FreeSurface(loreshicolSurface.buffer);
     }
 }
 
-void SDL_Video::CreateScreen(const int w, const int h)
+void SDL_Video::SetMode ( const VideoMode m )
 {
-    width = w * scaling;
-    height = h * scaling;
+    mode = m;
+    switch (mode)
+    {
+    case HIRES_LOWCOL:
+        currentSurface = hireslocolSurface;
+        break;
+    case LORES_HICOL:
+        currentSurface = loreshicolSurface;
+        break;
+    default:
+        break;
+    }
+}
+
+void SDL_Video::CreateWindow ( const unsigned int sc )
+{
+    scaling = sc;
+    width = WINDOW_WIDTH * scaling;
+    height = WINDOW_HEIGHT * scaling;
+
     unsigned int flags = SDL_ANYFORMAT;
     if (info->hw_available)
     {
@@ -58,25 +82,41 @@ void SDL_Video::CreateScreen(const int w, const int h)
     {
         flags |= SDL_SWSURFACE;
     }
-    int bpp = SDL_VideoModeOK(width, height, VIDEO_BPP, flags);
+
+    int bpp = SDL_VideoModeOK(width, height, WINDOW_BPP, flags);
     if (bpp <= 0)
     {
         throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
     }
-    disp = SDL_SetVideoMode(width, height, 0, flags);
-    if (!disp)
+
+    window = SDL_SetVideoMode(width, height, 0, flags);
+    if (window == 0)
     {
         throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
     }
     SDL_ShowCursor(SDL_DISABLE);
     SDL_WM_SetCaption(WINDOW_TITLE, 0);
-    stretched = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, VIDEO_BPP, 0, 0, 0, 0);
-    if (!stretched)
+
+    windowBuffer = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, WINDOW_BPP, 0, 0, 0, 0);
+    if (windowBuffer == 0)
     {
         throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
     }
-    buffer = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, VIDEO_BPP, 0, 0, 0, 0);
-    if (!buffer)
+
+    hireslocolSurface.xOffset = 0;
+    hireslocolSurface.yOffset = (WINDOW_HEIGHT - HIRES_LOCOL_HEIGHT) / 2;
+    hireslocolSurface.scaling = scaling;
+    hireslocolSurface.buffer = SDL_CreateRGBSurface(SDL_SWSURFACE, HIRES_LOCOL_WIDTH, HIRES_LOCOL_HEIGHT, HIRES_LOCOL_BPP, 0, 0, 0, 0);
+    if (hireslocolSurface.buffer == 0)
+    {
+        throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
+    }
+
+    loreshicolSurface.xOffset = 0;
+    loreshicolSurface.yOffset = 0;
+    loreshicolSurface.scaling = 2 * scaling;
+    loreshicolSurface.buffer = SDL_CreateRGBSurface(SDL_SWSURFACE, LORES_HICOL_WIDTH, LORES_HICOL_HEIGHT, LORES_HICOL_BPP, 0, 0, 0, 0);
+    if (loreshicolSurface.buffer == 0)
     {
         throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
     }
@@ -84,20 +124,20 @@ void SDL_Video::CreateScreen(const int w, const int h)
 
 void SDL_Video::Clear()
 {
-    SDL_FillRect(buffer, 0, 0);
+    SDL_FillRect(currentSurface.buffer, 0, 0);
 }
 
 void SDL_Video::Clear(const int x, const int y, const int w, const int h)
 {
     SDL_Rect rect = {x, y, w, h};
-    SDL_FillRect(buffer, &rect, 0);
+    SDL_FillRect(currentSurface.buffer, &rect, 0);
 }
 
 unsigned int SDL_Video::GetPixel(const int x, const int y)
 {
-    if ((x >= 0) && (x < buffer->w) && (y >= 0) && (y < buffer->h))
+    if ((x >= 0) && (x < currentSurface.buffer->w) && (y >= 0) && (y < currentSurface.buffer->h))
     {
-        uint8_t *p = (uint8_t *)buffer->pixels + y * buffer->pitch + x;
+        uint8_t *p = (uint8_t *)currentSurface.buffer->pixels + y * currentSurface.buffer->pitch + x;
         return (unsigned int)(*p);
     }
     return 0;
@@ -105,41 +145,41 @@ unsigned int SDL_Video::GetPixel(const int x, const int y)
 
 void SDL_Video::PutPixel(const int x, const int y, const unsigned int c)
 {
-    if ((x >= 0) && (x < buffer->w) && (y >= 0) && (y < buffer->h))
+    if ((x >= 0) && (x < currentSurface.buffer->w) && (y >= 0) && (y < currentSurface.buffer->h))
     {
-        uint8_t *p = (uint8_t *)buffer->pixels + y * buffer->pitch + x;
+        uint8_t *p = (uint8_t *)currentSurface.buffer->pixels + y * currentSurface.buffer->pitch + x;
         *p = (uint8_t)c;
     }
 }
 
 void SDL_Video::DrawHLine(const int x, const int y, const int w, const unsigned int c)
 {
-    int xx = (x < 0 ? 0 : (x < buffer->w ? x : buffer->w));
-    int yy = (y < 0 ? 0 : (y < buffer->h ? y : buffer->h));
+    int xx = (x < 0 ? 0 : (x < currentSurface.buffer->w ? x : currentSurface.buffer->w));
+    int yy = (y < 0 ? 0 : (y < currentSurface.buffer->h ? y : currentSurface.buffer->h));
     int ww = w + x - xx;
     if (ww <= 0)
     {
         return;
     }
-    if (ww + xx > buffer->w)
+    if (ww + xx > currentSurface.buffer->w)
     {
-        ww = buffer->w - xx;
+        ww = currentSurface.buffer->w - xx;
     }
     SDL_Rect rect = {xx, yy, ww, 1};
-    SDL_FillRect(buffer, &rect, c);
+    SDL_FillRect(currentSurface.buffer, &rect, c);
 }
 
 void SDL_Video::DrawVLine(const int x, const int y, const int h, const unsigned int c)
 {
-    int xx = (x < 0 ? 0 : (x < buffer->w ? x : buffer->w));
-    int yy = (y < 0 ? 0 : (y < buffer->h ? y : buffer->h));
+    int xx = (x < 0 ? 0 : (x < currentSurface.buffer->w ? x : currentSurface.buffer->w));
+    int yy = (y < 0 ? 0 : (y < currentSurface.buffer->h ? y : currentSurface.buffer->h));
     int hh = h + y - yy;
-    if (hh + yy > buffer->h)
+    if (hh + yy > currentSurface.buffer->h)
     {
-        hh = buffer->h - yy;
+        hh = currentSurface.buffer->h - yy;
     }
     SDL_Rect rect = {xx, yy, 1, hh};
-    SDL_FillRect(buffer, &rect, c);
+    SDL_FillRect(currentSurface.buffer, &rect, c);
 }
 
 #define swap(a,b) { int h = a; a = b; b = h; }
@@ -193,19 +233,19 @@ void SDL_Video::DrawLine(int x1, int y1, int x2, int y2, const unsigned int c)
 void SDL_Video::DrawRect(const int x, const int y, const int w, const int h, const unsigned int c)
 {
     SDL_Rect top = {x, y, w, 1};
-    SDL_FillRect(buffer, &top, c);
+    SDL_FillRect(currentSurface.buffer, &top, c);
     SDL_Rect left = {x, y, 1, h};
-    SDL_FillRect(buffer, &left, c);
+    SDL_FillRect(currentSurface.buffer, &left, c);
     SDL_Rect right = {x + w - 1, y, 1, h};
-    SDL_FillRect(buffer, &right, c);
+    SDL_FillRect(currentSurface.buffer, &right, c);
     SDL_Rect bottom = {x, y + h - 1, w, 1};
-    SDL_FillRect(buffer, &bottom, c);
+    SDL_FillRect(currentSurface.buffer, &bottom, c);
 }
 
 void SDL_Video::FillRect(const int x, const int y, const int w, const int h, const unsigned int c)
 {
     SDL_Rect rect = {x, y, w, h};
-    SDL_FillRect(buffer, &rect, c);
+    SDL_FillRect(currentSurface.buffer, &rect, c);
 }
 
 void SDL_Video::FillRect(const int x, const int y, const int w, const int h,
@@ -370,10 +410,10 @@ void SDL_Video::FillPolygon(const int* x, const int* y, const unsigned int n,
             }
             if (draw)
             {
-                if ((y0 >= 0) && (y0 < buffer->h))
+                if ((y0 >= 0) && (y0 < currentSurface.buffer->h))
                 {
                     uint8_t *q = p + (yy + y0) * ww + xx + x0;
-                    for (int x1 = x0 < 0 ? 0 : (x0 < buffer->w ? x0 : buffer->w - 1); (x1 <= edges[i].x0) && (x1 < buffer->w); x1++)
+                    for (int x1 = x0 < 0 ? 0 : (x0 < currentSurface.buffer->w ? x0 : currentSurface.buffer->w - 1); (x1 <= edges[i].x0) && (x1 < currentSurface.buffer->w); x1++)
                     {
                         PutPixel(x1, y0, *q++);
                     }
@@ -508,45 +548,45 @@ void SDL_Video::DrawGlyphItalic(const int x, const int y, const int w, const int
 
 void SDL_Video::GetPalette(Color *color, const unsigned int first, const unsigned int n)
 {
-    if (buffer->format->palette)
+    if (currentSurface.buffer->format->palette)
     {
-        memcpy(color, &(buffer->format->palette->colors[first]), n * sizeof(SDL_Color));
+        memcpy(color, &(currentSurface.buffer->format->palette->colors[first]), n * sizeof(SDL_Color));
     }
 }
 
 void SDL_Video::SetPalette(Color *color, const unsigned int first, const unsigned int n)
 {
-    if (buffer->format->palette)
+    if (currentSurface.buffer->format->palette)
     {
-        SDL_SetPalette(buffer, SDL_LOGPAL, (SDL_Color *)color, first, n);
+        SDL_SetPalette(currentSurface.buffer, SDL_LOGPAL, (SDL_Color *)color, first, n);
     }
-    if (stretched->format->palette)
+    if (windowBuffer->format->palette)
     {
-        SDL_SetPalette(stretched, SDL_LOGPAL, (SDL_Color *)color, first, n);
+        SDL_SetPalette(windowBuffer, SDL_LOGPAL, (SDL_Color *)color, first, n);
     }
 }
 
 void SDL_Video::Refresh()
 {
-    SDL_UpdateRect(buffer, 0, 0, 0, 0);
-    for (int y = 0; y < buffer->h; y++)
+    SDL_UpdateRect(currentSurface.buffer, 0, 0, 0, 0);
+    for (int y = 0; y < currentSurface.buffer->h; y++)
     {
-        for (int x = 0; x < buffer->w; x++)
+        for (int x = 0; x < currentSurface.buffer->w; x++)
         {
-            memset((uint8_t *)stretched->pixels + y * scaling * stretched->pitch + x * scaling,
-                   *((uint8_t *)buffer->pixels + y * buffer->pitch + x), scaling);
+            memset((uint8_t *)windowBuffer->pixels + (y + currentSurface.yOffset) * currentSurface.scaling * windowBuffer->pitch + (x + currentSurface.xOffset) * currentSurface.scaling,
+                   *((uint8_t *)currentSurface.buffer->pixels + (y + currentSurface.yOffset) * currentSurface.buffer->pitch + (x + currentSurface.xOffset)), currentSurface.scaling);
         }
-        for (unsigned int i = 1; i < scaling; i++)
+        for (unsigned int i = 1; i < currentSurface.scaling; i++)
         {
-            memcpy((uint8_t *)stretched->pixels + (y * scaling + i) * stretched->pitch,
-                   (uint8_t *)stretched->pixels + y * scaling * stretched->pitch, stretched->w);
+            memcpy((uint8_t *)windowBuffer->pixels + ((y + currentSurface.yOffset) * currentSurface.scaling + i) * windowBuffer->pitch,
+                   (uint8_t *)windowBuffer->pixels + (y + currentSurface.yOffset) * currentSurface.scaling * windowBuffer->pitch, windowBuffer->w);
         }
     }
-    SDL_UpdateRect(stretched, 0, 0, 0, 0);
-    SDL_Surface *tmp = SDL_DisplayFormat(stretched);
-    SDL_BlitSurface(tmp, 0, disp, 0);
+    SDL_UpdateRect(windowBuffer, 0, 0, 0, 0);
+    SDL_Surface *tmp = SDL_DisplayFormat(windowBuffer);
+    SDL_BlitSurface(tmp, 0, window, 0);
     SDL_FreeSurface(tmp);
-    SDL_Flip(disp);
+    SDL_Flip(window);
 }
 
 #ifdef DEBUG
@@ -562,6 +602,6 @@ void SDL_Video::GrabInput(const bool toggle)
 
 void SDL_Video::SaveScreenShot(const std::string& filename)
 {
-    SDL_UpdateRect(buffer, 0, 0, 0, 0);
-    SDL_SaveBMP(buffer, filename.c_str());
+    SDL_UpdateRect(windowBuffer, 0, 0, 0, 0);
+    SDL_SaveBMP(windowBuffer, filename.c_str());
 }

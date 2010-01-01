@@ -32,10 +32,20 @@
 
 #include <string>
 
-static const int VIDEO_WIDTH  = 320;
-static const int VIDEO_HEIGHT = 200;
-static const int VIDEO_COLORS = 256;
-static const int VIDEO_BPP    = 8;
+static const int WINDOW_WIDTH  = 640;
+static const int WINDOW_HEIGHT = 400;
+static const int WINDOW_COLORS = 256;
+static const int WINDOW_BPP    = 8;
+
+static const int HIRES_LOCOL_WIDTH  = 640;
+static const int HIRES_LOCOL_HEIGHT = 350;
+static const int HIRES_LOCOL_COLORS = 16;
+static const int HIRES_LOCOL_BPP    = 4;
+
+static const int LORES_HICOL_WIDTH  = 320;
+static const int LORES_HICOL_HEIGHT = 200;
+static const int LORES_HICOL_COLORS = 256;
+static const int LORES_HICOL_BPP    = 8;
 
 #ifdef PACKAGE_STRING
 static const char WINDOW_TITLE[] = PACKAGE_STRING;
@@ -51,20 +61,28 @@ struct Color
     uint8_t a;
 };
 
+typedef enum
+{
+    HIRES_LOWCOL,
+    LORES_HICOL
+}
+VideoMode;
+
 class Video
 {
 protected:
     int width;
     int height;
     unsigned int scaling;
+    VideoMode mode;
 public:
     Video();
     virtual ~Video();
     int GetWidth() const;
     int GetHeight() const;
     unsigned int GetScaling() const;
-    void SetScaling ( const unsigned int n );
-    virtual void CreateScreen ( const int w, const int h ) = 0;
+    virtual void SetMode ( const VideoMode m ) = 0;
+    virtual void CreateWindow ( const unsigned int sc ) = 0;
     virtual void Clear() = 0;
     virtual void Clear ( const int x, const int y, const int w, const int h ) = 0;
     virtual unsigned int GetPixel ( const int x, const int y ) = 0;

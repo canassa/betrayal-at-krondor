@@ -37,20 +37,31 @@ struct PolygonEdge
     float dxdy;
 };
 
+struct Surface
+{
+    int xOffset;
+    int yOffset;
+    unsigned int scaling;
+    SDL_Surface* buffer;
+};
+
 class SDL_Video
             : public Video
 {
 private:
     const SDL_VideoInfo *info;
-    SDL_Surface* disp;
-    SDL_Surface* stretched;
-    SDL_Surface* buffer;
+    SDL_Surface* window;
+    SDL_Surface* windowBuffer;
+    Surface hireslocolSurface;
+    Surface loreshicolSurface;
+    Surface& currentSurface;
     bool CreateEdge ( PolygonEdge &edge, const int x1, const int y1, const int x2, const int y2 );
     void SortEdges ( PolygonEdge* &edges, const unsigned int n );
 public:
     SDL_Video();
     ~SDL_Video();
-    void CreateScreen ( const int w, const int h );
+    void SetMode ( const VideoMode m );
+    void CreateWindow ( const unsigned int sc );
     unsigned int GetPixel ( const int x, const int y );
     void PutPixel ( const int x, const int y, const unsigned int c );
     void DrawHLine ( const int x, const int y, const int w, const unsigned int c );

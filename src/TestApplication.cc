@@ -36,8 +36,8 @@ TestApplication::TestApplication()
         , wld()
 {
     MediaToolkit *media = MediaToolkit::GetInstance();
-    media->GetVideo()->SetScaling(2);
-    media->GetVideo()->CreateScreen(VIDEO_WIDTH, VIDEO_HEIGHT);
+    media->GetVideo()->CreateWindow(1);
+    media->GetVideo()->SetMode(LORES_HICOL);
     PointerManager::GetInstance()->AddPointer("POINTER.BMX");
     media->AddKeyboardListener(this);
     media->AddTimerListener(this);
@@ -247,16 +247,16 @@ TestApplication::KeyPressed(const KeyboardEvent &kbe)
 {
     switch (kbe.GetKey())
     {
-        case KEY_ESCAPE:
-        case KEY_RETURN:
-        case KEY_SPACE:
-            MediaToolkit::GetInstance()->TerminateEventLoop();
-            break;
-        case KEY_F11:
-            MediaToolkit::GetInstance()->GetVideo()->SaveScreenShot("screenshot.bmp");
-            break;
-        default:
-            break;
+    case KEY_ESCAPE:
+    case KEY_RETURN:
+    case KEY_SPACE:
+        MediaToolkit::GetInstance()->TerminateEventLoop();
+        break;
+    case KEY_F11:
+        MediaToolkit::GetInstance()->GetVideo()->SaveScreenShot("screenshot.bmp");
+        break;
+    default:
+        break;
     }
 }
 
@@ -265,8 +265,8 @@ TestApplication::KeyReleased(const KeyboardEvent &kbe)
 {
     switch (kbe.GetKey())
     {
-        default:
-            break;
+    default:
+        break;
     }
 }
 

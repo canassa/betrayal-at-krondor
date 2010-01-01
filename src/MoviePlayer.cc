@@ -86,7 +86,7 @@ void MoviePlayer::Play(std::vector<MovieChunk *> *movie, const bool repeat)
         currSound = 0;
         soundMap.clear();
         paletteSlot[currPalette] = new PaletteResource;
-        paletteSlot[currPalette]->GetPalette()->Retrieve(0, VIDEO_COLORS);
+        paletteSlot[currPalette]->GetPalette()->Retrieve(0, WINDOW_COLORS);
         paletteActivated = false;
 
         PointerManager::GetInstance()->GetCurrentPointer()->SetVisible(false);
@@ -103,7 +103,7 @@ void MoviePlayer::Play(std::vector<MovieChunk *> *movie, const bool repeat)
         {
             MediaToolkit::GetInstance()->GetClock()->CancelTimer(TMR_MOVIE_PLAYER);
         }
-        paletteSlot[currPalette]->GetPalette()->FadeOut(0, VIDEO_COLORS, 64, 5);
+        paletteSlot[currPalette]->GetPalette()->FadeOut(0, WINDOW_COLORS, 64, 5);
 
         PointerManager::GetInstance()->GetCurrentPointer()->SetVisible(true);
 
@@ -164,7 +164,7 @@ void MoviePlayer::PlayChunk(MediaToolkit* media)
             case UPDATE:
                 if (!paletteActivated)
                 {
-                    paletteSlot[currPalette]->GetPalette()->Activate(0, VIDEO_COLORS);
+                    paletteSlot[currPalette]->GetPalette()->Activate(0, WINDOW_COLORS);
                     paletteActivated = true;
                 }
                 media->GetVideo()->Refresh();

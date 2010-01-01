@@ -44,8 +44,3 @@ unsigned int Video::GetScaling() const
 {
     return scaling;
 }
-
-void Video::SetScaling(const unsigned int n)
-{
-    scaling = n;
-}

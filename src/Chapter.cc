@@ -122,14 +122,14 @@ Chapter::ShowMap()
         video->DrawHLine(14, 188, 157, SHADOW_COLOR);
         video->DrawVLine(12, 162, 26, COLOR_BLACK);
         video->DrawHLine(12, 189, 157, COLOR_BLACK);
-        pal->GetPalette()->FadeIn(0, VIDEO_COLORS, 64, 5);
+        pal->GetPalette()->FadeIn(0, WINDOW_COLORS, 64, 5);
         MediaToolkit::GetInstance()->GetClock()->StartTimer(TMR_CHAPTER, 4000);
         delayed = true;
         while (delayed)
         {
             MediaToolkit::GetInstance()->WaitEvents();
         }
-        pal->GetPalette()->FadeOut(0, VIDEO_COLORS, 64, 5);
+        pal->GetPalette()->FadeOut(0, WINDOW_COLORS, 64, 5);
         delete pal;
         delete scr;
     }
@@ -182,13 +182,13 @@ Chapter::KeyPressed(const KeyboardEvent &kbe)
 {
     switch (kbe.GetKey())
     {
-        case KEY_ESCAPE:
-        case KEY_RETURN:
-        case KEY_SPACE:
-            delayed = false;
-            break;
-        default:
-            break;
+    case KEY_ESCAPE:
+    case KEY_RETURN:
+    case KEY_SPACE:
+        delayed = false;
+        break;
+    default:
+        break;
     }
 }
 
@@ -197,8 +197,8 @@ Chapter::KeyReleased(const KeyboardEvent &kbe)
 {
     switch (kbe.GetKey())
     {
-        default:
-            break;
+    default:
+        break;
     }
 }
 
@@ -207,11 +207,11 @@ Chapter::PointerButtonPressed(const PointerButtonEvent &pbe)
 {
     switch (pbe.GetButton())
     {
-        case PB_PRIMARY:
-            delayed = false;
-            break;
-        default:
-            break;
+    case PB_PRIMARY:
+        delayed = false;
+        break;
+    default:
+        break;
     }
 }
 
@@ -220,8 +220,8 @@ Chapter::PointerButtonReleased(const PointerButtonEvent &pbe)
 {
     switch (pbe.GetButton())
     {
-        default:
-            break;
+    default:
+        break;
     }
 }
 
