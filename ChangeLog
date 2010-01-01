@@ -1,6 +1,7 @@
-20xx-xx-xx, xbak-0.1.5:
+2010-xx-xx, xbak-0.1.5:
 * Improved handling arrow buttons and keys.
-* Support for loading RMP rosource files
+* Support for loading RMP rosource files.
+* Updated to license GPL v3
 * Removed unnecessary includes.
 * Several bug fixes.
 
