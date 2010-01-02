@@ -54,7 +54,7 @@ private:
     SDL_Surface* windowBuffer;
     Surface hireslocolSurface;
     Surface loreshicolSurface;
-    Surface& currentSurface;
+    Surface* currentSurface;
     bool CreateEdge ( PolygonEdge &edge, const int x1, const int y1, const int x2, const int y2 );
     void SortEdges ( PolygonEdge* &edges, const unsigned int n );
 public:

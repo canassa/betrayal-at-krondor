@@ -27,27 +27,29 @@ SDL_Video::SDL_Video()
         , windowBuffer(0)
         , hireslocolSurface()
         , loreshicolSurface()
-        , currentSurface(loreshicolSurface)
+        , currentSurface(&loreshicolSurface)
 {
+    hireslocolSurface.buffer = 0;
+    loreshicolSurface.buffer = 0;
 }
 
 SDL_Video::~SDL_Video()
 {
-    if (window != 0)
+    if (loreshicolSurface.buffer != 0)
     {
-        SDL_FreeSurface(window);
-    }
-    if (windowBuffer != 0)
-    {
-        SDL_FreeSurface(windowBuffer);
+        SDL_FreeSurface(loreshicolSurface.buffer);
     }
     if (hireslocolSurface.buffer != 0)
     {
         SDL_FreeSurface(hireslocolSurface.buffer);
     }
-    if (loreshicolSurface.buffer != 0)
+    if (windowBuffer != 0)
     {
-        SDL_FreeSurface(loreshicolSurface.buffer);
+        SDL_FreeSurface(windowBuffer);
+    }
+    if (window != 0)
+    {
+        SDL_FreeSurface(window);
     }
 }
 
@@ -57,10 +59,10 @@ void SDL_Video::SetMode ( const VideoMode m )
     switch (mode)
     {
     case HIRES_LOWCOL:
-        currentSurface = hireslocolSurface;
+        currentSurface = &hireslocolSurface;
         break;
     case LORES_HICOL:
-        currentSurface = loreshicolSurface;
+        currentSurface = &loreshicolSurface;
         break;
     default:
         break;
@@ -106,7 +108,7 @@ void SDL_Video::CreateWindow ( const unsigned int sc )
     hireslocolSurface.xOffset = 0;
     hireslocolSurface.yOffset = (WINDOW_HEIGHT - HIRES_LOCOL_HEIGHT) / 2;
     hireslocolSurface.scaling = scaling;
-    hireslocolSurface.buffer = SDL_CreateRGBSurface(SDL_SWSURFACE, HIRES_LOCOL_WIDTH, HIRES_LOCOL_HEIGHT, HIRES_LOCOL_BPP, 0, 0, 0, 0);
+    hireslocolSurface.buffer = SDL_CreateRGBSurface(SDL_SWSURFACE, HIRES_LOCOL_WIDTH, HIRES_LOCOL_HEIGHT, WINDOW_BPP, 0, 0, 0, 0);
     if (hireslocolSurface.buffer == 0)
     {
         throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
@@ -115,7 +117,7 @@ void SDL_Video::CreateWindow ( const unsigned int sc )
     loreshicolSurface.xOffset = 0;
     loreshicolSurface.yOffset = 0;
     loreshicolSurface.scaling = 2 * scaling;
-    loreshicolSurface.buffer = SDL_CreateRGBSurface(SDL_SWSURFACE, LORES_HICOL_WIDTH, LORES_HICOL_HEIGHT, LORES_HICOL_BPP, 0, 0, 0, 0);
+    loreshicolSurface.buffer = SDL_CreateRGBSurface(SDL_SWSURFACE, LORES_HICOL_WIDTH, LORES_HICOL_HEIGHT, WINDOW_BPP, 0, 0, 0, 0);
     if (loreshicolSurface.buffer == 0)
     {
         throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
@@ -124,20 +126,20 @@ void SDL_Video::CreateWindow ( const unsigned int sc )
 
 void SDL_Video::Clear()
 {
-    SDL_FillRect(currentSurface.buffer, 0, 0);
+    SDL_FillRect(currentSurface->buffer, 0, 0);
 }
 
 void SDL_Video::Clear(const int x, const int y, const int w, const int h)
 {
     SDL_Rect rect = {x, y, w, h};
-    SDL_FillRect(currentSurface.buffer, &rect, 0);
+    SDL_FillRect(currentSurface->buffer, &rect, 0);
 }
 
 unsigned int SDL_Video::GetPixel(const int x, const int y)
 {
-    if ((x >= 0) && (x < currentSurface.buffer->w) && (y >= 0) && (y < currentSurface.buffer->h))
+    if ((x >= 0) && (x < currentSurface->buffer->w) && (y >= 0) && (y < currentSurface->buffer->h))
     {
-        uint8_t *p = (uint8_t *)currentSurface.buffer->pixels + y * currentSurface.buffer->pitch + x;
+        uint8_t *p = (uint8_t *)currentSurface->buffer->pixels + y * currentSurface->buffer->pitch + x;
         return (unsigned int)(*p);
     }
     return 0;
@@ -145,41 +147,41 @@ unsigned int SDL_Video::GetPixel(const int x, const int y)
 
 void SDL_Video::PutPixel(const int x, const int y, const unsigned int c)
 {
-    if ((x >= 0) && (x < currentSurface.buffer->w) && (y >= 0) && (y < currentSurface.buffer->h))
+    if ((x >= 0) && (x < currentSurface->buffer->w) && (y >= 0) && (y < currentSurface->buffer->h))
     {
-        uint8_t *p = (uint8_t *)currentSurface.buffer->pixels + y * currentSurface.buffer->pitch + x;
+        uint8_t *p = (uint8_t *)currentSurface->buffer->pixels + y * currentSurface->buffer->pitch + x;
         *p = (uint8_t)c;
     }
 }
 
 void SDL_Video::DrawHLine(const int x, const int y, const int w, const unsigned int c)
 {
-    int xx = (x < 0 ? 0 : (x < currentSurface.buffer->w ? x : currentSurface.buffer->w));
-    int yy = (y < 0 ? 0 : (y < currentSurface.buffer->h ? y : currentSurface.buffer->h));
+    int xx = (x < 0 ? 0 : (x < currentSurface->buffer->w ? x : currentSurface->buffer->w));
+    int yy = (y < 0 ? 0 : (y < currentSurface->buffer->h ? y : currentSurface->buffer->h));
     int ww = w + x - xx;
     if (ww <= 0)
     {
         return;
     }
-    if (ww + xx > currentSurface.buffer->w)
+    if (ww + xx > currentSurface->buffer->w)
     {
-        ww = currentSurface.buffer->w - xx;
+        ww = currentSurface->buffer->w - xx;
     }
     SDL_Rect rect = {xx, yy, ww, 1};
-    SDL_FillRect(currentSurface.buffer, &rect, c);
+    SDL_FillRect(currentSurface->buffer, &rect, c);
 }
 
 void SDL_Video::DrawVLine(const int x, const int y, const int h, const unsigned int c)
 {
-    int xx = (x < 0 ? 0 : (x < currentSurface.buffer->w ? x : currentSurface.buffer->w));
-    int yy = (y < 0 ? 0 : (y < currentSurface.buffer->h ? y : currentSurface.buffer->h));
+    int xx = (x < 0 ? 0 : (x < currentSurface->buffer->w ? x : currentSurface->buffer->w));
+    int yy = (y < 0 ? 0 : (y < currentSurface->buffer->h ? y : currentSurface->buffer->h));
     int hh = h + y - yy;
-    if (hh + yy > currentSurface.buffer->h)
+    if (hh + yy > currentSurface->buffer->h)
     {
-        hh = currentSurface.buffer->h - yy;
+        hh = currentSurface->buffer->h - yy;
     }
     SDL_Rect rect = {xx, yy, 1, hh};
-    SDL_FillRect(currentSurface.buffer, &rect, c);
+    SDL_FillRect(currentSurface->buffer, &rect, c);
 }
 
 #define swap(a,b) { int h = a; a = b; b = h; }
@@ -233,19 +235,19 @@ void SDL_Video::DrawLine(int x1, int y1, int x2, int y2, const unsigned int c)
 void SDL_Video::DrawRect(const int x, const int y, const int w, const int h, const unsigned int c)
 {
     SDL_Rect top = {x, y, w, 1};
-    SDL_FillRect(currentSurface.buffer, &top, c);
+    SDL_FillRect(currentSurface->buffer, &top, c);
     SDL_Rect left = {x, y, 1, h};
-    SDL_FillRect(currentSurface.buffer, &left, c);
+    SDL_FillRect(currentSurface->buffer, &left, c);
     SDL_Rect right = {x + w - 1, y, 1, h};
-    SDL_FillRect(currentSurface.buffer, &right, c);
+    SDL_FillRect(currentSurface->buffer, &right, c);
     SDL_Rect bottom = {x, y + h - 1, w, 1};
-    SDL_FillRect(currentSurface.buffer, &bottom, c);
+    SDL_FillRect(currentSurface->buffer, &bottom, c);
 }
 
 void SDL_Video::FillRect(const int x, const int y, const int w, const int h, const unsigned int c)
 {
     SDL_Rect rect = {x, y, w, h};
-    SDL_FillRect(currentSurface.buffer, &rect, c);
+    SDL_FillRect(currentSurface->buffer, &rect, c);
 }
 
 void SDL_Video::FillRect(const int x, const int y, const int w, const int h,
@@ -410,10 +412,10 @@ void SDL_Video::FillPolygon(const int* x, const int* y, const unsigned int n,
             }
             if (draw)
             {
-                if ((y0 >= 0) && (y0 < currentSurface.buffer->h))
+                if ((y0 >= 0) && (y0 < currentSurface->buffer->h))
                 {
                     uint8_t *q = p + (yy + y0) * ww + xx + x0;
-                    for (int x1 = x0 < 0 ? 0 : (x0 < currentSurface.buffer->w ? x0 : currentSurface.buffer->w - 1); (x1 <= edges[i].x0) && (x1 < currentSurface.buffer->w); x1++)
+                    for (int x1 = x0 < 0 ? 0 : (x0 < currentSurface->buffer->w ? x0 : currentSurface->buffer->w - 1); (x1 <= edges[i].x0) && (x1 < currentSurface->buffer->w); x1++)
                     {
                         PutPixel(x1, y0, *q++);
                     }
@@ -548,17 +550,17 @@ void SDL_Video::DrawGlyphItalic(const int x, const int y, const int w, const int
 
 void SDL_Video::GetPalette(Color *color, const unsigned int first, const unsigned int n)
 {
-    if (currentSurface.buffer->format->palette)
+    if (currentSurface->buffer->format->palette)
     {
-        memcpy(color, &(currentSurface.buffer->format->palette->colors[first]), n * sizeof(SDL_Color));
+        memcpy(color, &(currentSurface->buffer->format->palette->colors[first]), n * sizeof(SDL_Color));
     }
 }
 
 void SDL_Video::SetPalette(Color *color, const unsigned int first, const unsigned int n)
 {
-    if (currentSurface.buffer->format->palette)
+    if (currentSurface->buffer->format->palette)
     {
-        SDL_SetPalette(currentSurface.buffer, SDL_LOGPAL, (SDL_Color *)color, first, n);
+        SDL_SetPalette(currentSurface->buffer, SDL_LOGPAL, (SDL_Color *)color, first, n);
     }
     if (windowBuffer->format->palette)
     {
@@ -568,18 +570,18 @@ void SDL_Video::SetPalette(Color *color, const unsigned int first, const unsigne
 
 void SDL_Video::Refresh()
 {
-    SDL_UpdateRect(currentSurface.buffer, 0, 0, 0, 0);
-    for (int y = 0; y < currentSurface.buffer->h; y++)
+    SDL_UpdateRect(currentSurface->buffer, 0, 0, 0, 0);
+    for (int y = 0; y < currentSurface->buffer->h; y++)
     {
-        for (int x = 0; x < currentSurface.buffer->w; x++)
+        for (int x = 0; x < currentSurface->buffer->w; x++)
         {
-            memset((uint8_t *)windowBuffer->pixels + ((y + currentSurface.yOffset) * windowBuffer->pitch + (x + currentSurface.xOffset)) * currentSurface.scaling,
-                   *((uint8_t *)currentSurface.buffer->pixels + y * currentSurface.buffer->pitch + x), currentSurface.scaling);
+            memset((uint8_t *)windowBuffer->pixels + ((y + currentSurface->yOffset) * windowBuffer->pitch + (x + currentSurface->xOffset)) * currentSurface->scaling,
+                   *((uint8_t *)currentSurface->buffer->pixels + y * currentSurface->buffer->pitch + x), currentSurface->scaling);
         }
-        for (unsigned int i = 1; i < currentSurface.scaling; i++)
+        for (unsigned int i = 1; i < currentSurface->scaling; i++)
         {
-            memcpy((uint8_t *)windowBuffer->pixels + ((y + currentSurface.yOffset) * currentSurface.scaling + i) * windowBuffer->pitch,
-                   (uint8_t *)windowBuffer->pixels + (y + currentSurface.yOffset) * currentSurface.scaling * windowBuffer->pitch, windowBuffer->w);
+            memcpy((uint8_t *)windowBuffer->pixels + ((y + currentSurface->yOffset) * currentSurface->scaling + i) * windowBuffer->pitch,
+                   (uint8_t *)windowBuffer->pixels + (y + currentSurface->yOffset) * currentSurface->scaling * windowBuffer->pitch, windowBuffer->w);
         }
     }
     SDL_UpdateRect(windowBuffer, 0, 0, 0, 0);
