@@ -50,6 +50,7 @@ public:
     unsigned int GetSize() const;
     unsigned int GetFlags() const;
     void SetFlags ( const unsigned int f );
+    bool IsHighResLowCol() const;
     uint8_t GetPixel ( const int x, const int y ) const;
     uint8_t * GetPixels() const;
     void SetPixel ( const int x, const int y, const uint8_t color );

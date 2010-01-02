@@ -573,8 +573,8 @@ void SDL_Video::Refresh()
     {
         for (int x = 0; x < currentSurface.buffer->w; x++)
         {
-            memset((uint8_t *)windowBuffer->pixels + (y + currentSurface.yOffset) * currentSurface.scaling * windowBuffer->pitch + (x + currentSurface.xOffset) * currentSurface.scaling,
-                   *((uint8_t *)currentSurface.buffer->pixels + (y + currentSurface.yOffset) * currentSurface.buffer->pitch + (x + currentSurface.xOffset)), currentSurface.scaling);
+            memset((uint8_t *)windowBuffer->pixels + ((y + currentSurface.yOffset) * windowBuffer->pitch + (x + currentSurface.xOffset)) * currentSurface.scaling,
+                   *((uint8_t *)currentSurface.buffer->pixels + y * currentSurface.buffer->pitch + x), currentSurface.scaling);
         }
         for (unsigned int i = 1; i < currentSurface.scaling; i++)
         {

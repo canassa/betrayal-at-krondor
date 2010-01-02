@@ -245,6 +245,11 @@ void Image::SetFlags(const unsigned int f)
     flags = f;
 }
 
+bool Image::IsHighResLowCol() const
+{
+    return highres_lowcol;
+}
+
 uint8_t Image::GetPixel(const int x, const int y) const
 {
     if ((pixel) && (x >= 0) && (x < width) && (y >= 0) && (y < height))
