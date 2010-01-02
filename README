@@ -13,7 +13,7 @@ xBaK README
 ---------------
 xBaK ("http:://xbak.sourceforge.net") is a fan-made remake of the classic Sierra
 computer RPG "Betrayal at Krondor" running on linux. xBaK is licensed under the
-GPL version 2. See COPYING for more information.
+GPL version 3. See COPYING for more information.
 
 2. Requirements
 ---------------
@@ -21,7 +21,7 @@ Required tools and software (minimum version is listed):
 * SDL-1.2.13      ("http://www.libsdl.org/")
 
 Recommended tools and software (minimum version is listed):
-* SDL_mixer-1.2.8 ("http://www.libsdl.org/projects/SDL_mixer/")
+* SDL_mixer-1.2.11 ("http://www.libsdl.org/projects/SDL_mixer/")
 * SDL_sound-1.0.3 ("http://icculus.org/SDL_sound/")
 SDL_sound also requires a GUS compatible set of sound patches. xBaK should
 build and run without SDL_mixer and SDL_sound, but there will be no sound.
