@@ -36,14 +36,14 @@ static const unsigned int AUDIO_RAW_BUFFER_SIZE = 16384;
 SDL_mutex    *audioMutex;
 Sound_Sample *audioSample[AUDIO_CHANNELS];
 
-void
-ChannelDone(int channel)
+void ChannelDone(int channel)
 {
     Mix_FreeChunk(Mix_GetChunk(channel));
     SDL_LockMutex(audioMutex);
     if (audioSample[channel])
     {
         Sound_FreeSample(audioSample[channel]);
+        audioSample[channel] = 0;
     }
     SDL_UnlockMutex(audioMutex);
 }
@@ -56,10 +56,7 @@ SDL_Audio::SDL_Audio()
     {
         throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
     }
-    if (!Sound_Init())
-    {
-        throw SDL_Exception(__FILE__, __LINE__, Sound_GetError());
-    }
+    Mix_Init(0);
     if (Mix_OpenAudio(AUDIO_FREQUENCY, AUDIO_FORMAT, AUDIO_STEREO, AUDIO_BUFFER_SIZE) < 0)
     {
         throw SDL_Exception(__FILE__, __LINE__, Mix_GetError());
@@ -70,29 +67,39 @@ SDL_Audio::SDL_Audio()
     {
         throw SDL_Exception(__FILE__, __LINE__, Mix_GetError());
     }
+    if (!Sound_Init())
+    {
+        throw SDL_Exception(__FILE__, __LINE__, Sound_GetError());
+    }
 }
 
 SDL_Audio::~SDL_Audio()
 {
     Mix_HaltChannel(-1);
-    Mix_CloseAudio();
     if (!Sound_Quit())
     {
         throw SDL_Exception(__FILE__, __LINE__, Sound_GetError());
     }
+    int frequency;
+    Uint16 format;
+    int channels;
+    if (Mix_QuerySpec(&frequency, &format, &channels) > 0)
+    {
+//         Mix_CloseAudio();
+    }
+    Mix_Quit();
     if (audioMutex)
     {
         SDL_DestroyMutex(audioMutex);
     }
 }
 
-int
-SDL_Audio::PlaySound(FileBuffer *buffer, const int repeat)
+int SDL_Audio::PlaySound(FileBuffer *buffer, const int repeat)
 {
     static Sound_AudioInfo info =
-        {
-            AUDIO_FORMAT, AUDIO_STEREO, AUDIO_FREQUENCY
-        };
+    {
+        AUDIO_FORMAT, AUDIO_STEREO, AUDIO_FREQUENCY
+    };
     buffer->Rewind();
     SDL_RWops *rwops = SDL_RWFromMem(buffer->GetCurrent(), buffer->GetSize());
     if (!rwops)
@@ -131,8 +138,7 @@ SDL_Audio::PlaySound(FileBuffer *buffer, const int repeat)
     return channel;
 }
 
-void
-SDL_Audio::StopSound(const int channel)
+void SDL_Audio::StopSound(const int channel)
 {
     Mix_HaltChannel(channel);
 }
