@@ -80,13 +80,7 @@ SDL_Audio::~SDL_Audio()
     {
         throw SDL_Exception(__FILE__, __LINE__, Sound_GetError());
     }
-    int frequency;
-    Uint16 format;
-    int channels;
-    if (Mix_QuerySpec(&frequency, &format, &channels) > 0)
-    {
-//         Mix_CloseAudio();
-    }
+    Mix_CloseAudio();
     Mix_Quit();
     if (audioMutex)
     {

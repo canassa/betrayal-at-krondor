@@ -11,9 +11,9 @@ xBaK README
 
 1. Introduction
 ---------------
-xBaK ("http:://xbak.sourceforge.net") is a fan-made remake of the classic Sierra
-computer RPG "Betrayal at Krondor" running on linux. xBaK is licensed under the
-GPL version 3. See COPYING for more information.
+xBaK ("http:://xbak.sourceforge.net") is a fan-made remake of the classic
+Sierra computer RPG "Betrayal at Krondor" running on linux. xBaK is licensed
+under the GPL version 3. See COPYING for more information.
 
 2. Requirements
 ---------------
@@ -23,8 +23,19 @@ Required tools and software (minimum version is listed):
 Recommended tools and software (minimum version is listed):
 * SDL_mixer-1.2.11 ("http://www.libsdl.org/projects/SDL_mixer/")
 * SDL_sound-1.0.3 ("http://icculus.org/SDL_sound/")
-SDL_sound also requires a GUS compatible set of sound patches. xBaK should
-build and run without SDL_mixer and SDL_sound, but there will be no sound.
+
+xBaK uses SDL_sound to convert the MIDI sound to WAV format. Therefore
+SDL_sound must be built with Timidity++ support. SDL_sound also requires a GUS
+compatible set of sound patches. These should probably come with your linux
+distribution.
+
+Note that SDL_mixer must be built _without_ Timidity++ support! Building both
+SDL_Sound and SDL_mixer with Timidity++ support will result in both libraries
+providing the same functions originally from Timidity++. This will inevitably
+lead to either build time or run time problems.
+
+xBaK should build and run without SDL_mixer and SDL_sound, but there will be no
+sound.
 
 3. Building
 -----------
