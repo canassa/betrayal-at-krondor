@@ -116,6 +116,7 @@ noinst_HEADERS = AnimationResource.h \
                  Subject.h \
                  TableResource.h \
                  TaggedResource.h \
+                 TaggedImageResource.h \
                  TestApplication.h \
                  TextArea.h \
                  TextButtonWidget.h \
@@ -341,6 +342,8 @@ libresdata_a_SOURCES = AnimationResource.cc \
                        SoundResource.h \
                        TableResource.cc \
                        TableResource.h \
+                       TaggedImageResource.cc \
+                       TaggedImageResource.h \
                        TileDataResource.cc \
                        TileDataResource.h \
                        TileWorldResource.cc \
@@ -379,6 +382,8 @@ dumpbmx_SOURCES = Image.cc \
                   Image.h \
                   ImageResource.cc \
                   ImageResource.h \
+                  TaggedImageResource.cc \
+                  TaggedImageResource.h \
                   dumpbmx.cc
 dumpbmx_LDADD   = libresbase.a \
                   libdriver.a \

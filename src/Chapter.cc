@@ -25,6 +25,7 @@
 #include "Exception.h"
 #include "FileManager.h"
 #include "MoviePlayer.h"
+#include "TaggedImageResource.h"
 #include "Widget.h"
 
 Chapter::Chapter ( const int n )
@@ -94,6 +95,8 @@ void Chapter::ReadBook ( const int scene )
         FileManager::GetInstance()->Load ( &pal, "BOOK.PAL" );
         ScreenResource scr;
         FileManager::GetInstance()->Load ( &scr, "BOOK.SCX" );
+        TaggedImageResource img;
+        FileManager::GetInstance()->Load ( &img, "BOOK.BMX" );
         BookResource bok;
         std::stringstream filenameStream;
         filenameStream << "C" << number << scene << ".BOK";

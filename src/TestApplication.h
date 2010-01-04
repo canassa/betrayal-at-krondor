@@ -30,6 +30,7 @@
 #include "PaletteResource.h"
 #include "ScreenResource.h"
 #include "SoundResource.h"
+#include "TaggedImageResource.h"
 #include "TileWorldResource.h"
 
 class TestApplication
@@ -42,6 +43,7 @@ private:
     ImageResource img;
     ScreenResource scr;
     MovieResource ttm;
+    TaggedImageResource timg;
     TileWorldResource wld;
     SoundResource* snd;
     static TestApplication *instance;
@@ -54,6 +56,7 @@ public:
     void ActivatePalette();
     void ActivatePalette ( const std::string& name );
     void ShowImage ( const std::string& name );
+    void ShowTaggedImage ( const std::string& name );
     void ShowScreen ( const std::string& name );
     void DrawFont ( const std::string& name );
     void PlayMovie ( const std::string& name );

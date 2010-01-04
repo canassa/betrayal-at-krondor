@@ -120,15 +120,37 @@ void TestApplication::ShowImage ( const std::string& name )
     }
 }
 
+void TestApplication::ShowTaggedImage ( const std::string& name )
+{
+    try
+    {
+        MediaToolkit *media = MediaToolkit::GetInstance();
+        FileManager::GetInstance()->Load ( &timg, name );
+        for ( unsigned int i = 0; i < timg.GetNumImages(); i++ )
+        {
+            media->GetVideo()->Clear();
+            timg.GetImage ( i )->Draw ( 0, 0 );
+            media->GetVideo()->Refresh();
+            media->GetClock()->StartTimer ( TMR_TEST_APP, 5000 );
+            media->WaitEventLoop();
+            media->GetClock()->CancelTimer ( TMR_TEST_APP );
+        }
+    }
+    catch ( Exception &e )
+    {
+        e.Print ( "TestApplication::ShowImage" );
+    }
+}
+
 void TestApplication::ShowScreen ( const std::string& name )
 {
     try
     {
         MediaToolkit *media = MediaToolkit::GetInstance();
         FileManager::GetInstance()->Load ( &scr, name );
-        if (scr.GetImage()->IsHighResLowCol())
+        if ( scr.GetImage()->IsHighResLowCol() )
         {
-            media->GetVideo()->SetMode(HIRES_LOWCOL);
+            media->GetVideo()->SetMode ( HIRES_LOWCOL );
         }
         media->GetVideo()->Clear();
         scr.GetImage()->Draw ( 0, 0 );

@@ -29,40 +29,65 @@
 #include "Exception.h"
 #include "FileManager.h"
 #include "ImageResource.h"
+#include "TaggedImageResource.h"
 
-int main(int argc, char *argv[])
+int main ( int argc, char *argv[] )
 {
     try
     {
-        if (argc != 2)
+        if ( ! ( ( argc == 2 ) || ( ( argc == 3 ) && ( std::string ( argv[2] ) == "TAG" ) ) ) )
         {
-            std::cerr << "Usage: " << argv[0] << " <BMX-file>" << std::endl;
+            std::cerr << "Usage: " << argv[0] << " <BMX-file> [TAG]" << std::endl;
             return 1;
         }
-        ImageResource *bmx = new ImageResource;
-        FileManager::GetInstance()->Load(bmx, argv[1]);
-        for (unsigned int i = 0; i < bmx->GetNumImages(); i++)
+        if ( argc == 2 )
         {
-            Image *image = bmx->GetImage(i);
-            printf("%2d  %dx%d\n", i, image->GetWidth(), image->GetHeight());
-            for (int y = 0; y < image->GetHeight(); y++)
+            ImageResource *bmx = new ImageResource;
+            FileManager::GetInstance()->Load ( bmx, argv[1] );
+            for ( unsigned int i = 0; i < bmx->GetNumImages(); i++ )
             {
-                for (int x = 0; x < image->GetWidth(); x++)
+                Image *image = bmx->GetImage ( i );
+                printf ( "%2d  %dx%d\n", i, image->GetWidth(), image->GetHeight() );
+                for ( int y = 0; y < image->GetHeight(); y++ )
                 {
-                    printf("%02x ", image->GetPixel(x, y));
+                    for ( int x = 0; x < image->GetWidth(); x++ )
+                    {
+                        printf ( "%02x ", image->GetPixel ( x, y ) );
+                    }
+                    printf ( "\n" );
                 }
-                printf("\n");
             }
+            delete bmx;
+            FileManager::CleanUp();
+            Directories::CleanUp();
         }
-        delete bmx;
-        FileManager::CleanUp();
-        Directories::CleanUp();
+        else
+        {
+            TaggedImageResource *bmx = new TaggedImageResource;
+            FileManager::GetInstance()->Load ( bmx, argv[1] );
+            for ( unsigned int i = 0; i < bmx->GetNumImages(); i++ )
+            {
+                Image *image = bmx->GetImage ( i );
+                printf ( "%2d  %dx%d\n", i, image->GetWidth(), image->GetHeight() );
+                for ( int y = 0; y < image->GetHeight(); y++ )
+                {
+                    for ( int x = 0; x < image->GetWidth(); x++ )
+                    {
+                        printf ( "%02x ", image->GetPixel ( x, y ) );
+                    }
+                    printf ( "\n" );
+                }
+            }
+            delete bmx;
+            FileManager::CleanUp();
+            Directories::CleanUp();
+        }
     }
-    catch (Exception &e)
+    catch ( Exception &e )
     {
-        e.Print("main");
+        e.Print ( "main" );
     }
-    catch (...)
+    catch ( ... )
     {
         /* every exception should have been handled before */
         std::cerr << "Unhandled exception" << std::endl;

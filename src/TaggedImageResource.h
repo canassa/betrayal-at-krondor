@@ -17,30 +17,26 @@
  * Copyright (C) Guido de Jong <guidoj@users.sf.net>
  */
 
-#ifndef IMAGE_RESOURCE_H
-#define IMAGE_RESOURCE_H
+#ifndef TAGGED_IMAGE_RESOURCE_H
+#define TAGGED_IMAGE_RESOURCE_H
+
+#include <vector>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
 #include "Image.h"
-#include "ResourceData.h"
+#include "TaggedResource.h"
 
-class ImageResource : public ResourceData
+class TaggedImageResource : public TaggedResource
 {
 private:
-    unsigned int compression;
     unsigned int numImages;
     std::vector<Image *> images;
-    void DecompressLZW ( FileBuffer *from, FileBuffer *to );
-    void DecompressLZ ( FileBuffer *from, FileBuffer *to );
-    void DecompressRLE ( FileBuffer *from, FileBuffer *to );
 public:
-    ImageResource();
-    virtual ~ImageResource();
-    unsigned int GetCompression() const;
-    void SetCompression ( const unsigned int c );
+    TaggedImageResource();
+    ~TaggedImageResource();
     unsigned int GetNumImages() const;
     Image * GetImage ( unsigned int n ) const;
     void Clear();
@@ -49,4 +45,3 @@ public:
 };
 
 #endif
-
