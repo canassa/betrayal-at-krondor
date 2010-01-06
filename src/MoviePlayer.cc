@@ -35,7 +35,7 @@ static const unsigned int SET_FRAME0         = 0x2000;
 static const unsigned int SET_FRAME1         = 0x2010;
 static const unsigned int FADE_OUT           = 0x4110;
 static const unsigned int FADE_IN            = 0x4120;
-static const unsigned int DRAW_IMAGE         = 0xa100;
+static const unsigned int SET_WINDOW         = 0xa100;
 static const unsigned int DRAW_SPRITE0       = 0xa500;
 static const unsigned int DRAW_SPRITE1       = 0xa510;
 static const unsigned int DRAW_SPRITE2       = 0xa520;
@@ -52,19 +52,19 @@ static const unsigned int LOAD_PALETTE       = 0xf050;
 
 MoviePlayer::MoviePlayer()
 {
-    MediaToolkit::GetInstance()->AddKeyboardListener(this);
-    MediaToolkit::GetInstance()->AddPointerButtonListener(this);
-    MediaToolkit::GetInstance()->AddTimerListener(this);
+    MediaToolkit::GetInstance()->AddKeyboardListener ( this );
+    MediaToolkit::GetInstance()->AddPointerButtonListener ( this );
+    MediaToolkit::GetInstance()->AddTimerListener ( this );
 }
 
 MoviePlayer::~MoviePlayer()
 {
-    MediaToolkit::GetInstance()->RemoveKeyboardListener(this);
-    MediaToolkit::GetInstance()->RemovePointerButtonListener(this);
-    MediaToolkit::GetInstance()->RemoveTimerListener(this);
+    MediaToolkit::GetInstance()->RemoveKeyboardListener ( this );
+    MediaToolkit::GetInstance()->RemovePointerButtonListener ( this );
+    MediaToolkit::GetInstance()->RemoveTimerListener ( this );
 }
 
-void MoviePlayer::Play(std::vector<MovieChunk *> *movie, const bool repeat)
+void MoviePlayer::Play ( std::vector<MovieChunk *> *movie, const bool repeat )
 {
     try
     {
@@ -74,8 +74,8 @@ void MoviePlayer::Play(std::vector<MovieChunk *> *movie, const bool repeat)
         playing = true;
         screenSlot = 0;
         soundSlot = SoundResource::GetInstance();
-        memset(imageSlot, 0, sizeof(ImageResource*) * MAX_IMAGE_SLOTS);
-        memset(paletteSlot, 0, sizeof(Palette*) * MAX_PALETTE_SLOTS);
+        memset ( imageSlot, 0, sizeof ( ImageResource* ) * MAX_IMAGE_SLOTS );
+        memset ( paletteSlot, 0, sizeof ( Palette* ) * MAX_PALETTE_SLOTS );
         backgroundImage = 0;
         backgroundImageDrawn = false;
         currFrame = 0;
@@ -86,92 +86,92 @@ void MoviePlayer::Play(std::vector<MovieChunk *> *movie, const bool repeat)
         currSound = 0;
         soundMap.clear();
         paletteSlot[currPalette] = new PaletteResource;
-        paletteSlot[currPalette]->GetPalette()->Retrieve(0, WINDOW_COLORS);
+        paletteSlot[currPalette]->GetPalette()->Retrieve ( 0, WINDOW_COLORS );
         paletteActivated = false;
 
-        PointerManager::GetInstance()->GetCurrentPointer()->SetVisible(false);
+        PointerManager::GetInstance()->GetCurrentPointer()->SetVisible ( false );
 
-        while (playing)
+        while ( playing )
         {
-            PlayChunk(MediaToolkit::GetInstance());
-            if (playing)
+            PlayChunk ( MediaToolkit::GetInstance() );
+            if ( playing )
             {
                 MediaToolkit::GetInstance()->WaitEvents();
             }
         }
-        if (delayed)
+        if ( delayed )
         {
-            MediaToolkit::GetInstance()->GetClock()->CancelTimer(TMR_MOVIE_PLAYER);
+            MediaToolkit::GetInstance()->GetClock()->CancelTimer ( TMR_MOVIE_PLAYER );
         }
-        paletteSlot[currPalette]->GetPalette()->FadeOut(0, WINDOW_COLORS, 64, 5);
+        paletteSlot[currPalette]->GetPalette()->FadeOut ( 0, WINDOW_COLORS, 64, 5 );
 
-        PointerManager::GetInstance()->GetCurrentPointer()->SetVisible(true);
+        PointerManager::GetInstance()->GetCurrentPointer()->SetVisible ( true );
 
-        if (backgroundImage)
+        if ( backgroundImage )
         {
             delete backgroundImage;
             backgroundImage = 0;
         }
-        if (screenSlot)
+        if ( screenSlot )
         {
             delete screenSlot;
         }
-        for (unsigned int i = 0; i < MAX_IMAGE_SLOTS; i++)
+        for ( unsigned int i = 0; i < MAX_IMAGE_SLOTS; i++ )
         {
-            if (imageSlot[i])
+            if ( imageSlot[i] )
             {
                 delete imageSlot[i];
             }
         }
-        for (unsigned int i = 0; i < MAX_PALETTE_SLOTS; i++)
+        for ( unsigned int i = 0; i < MAX_PALETTE_SLOTS; i++ )
         {
-            if (paletteSlot[i])
+            if ( paletteSlot[i] )
             {
                 delete paletteSlot[i];
             }
         }
     }
-    catch (Exception &e)
+    catch ( Exception &e )
     {
-        e.Print("MoviePlayer::Play");
+        e.Print ( "MoviePlayer::Play" );
         throw;
     }
 }
 
-void MoviePlayer::PlayChunk(MediaToolkit* media)
+void MoviePlayer::PlayChunk ( MediaToolkit* media )
 {
     try
     {
-        while ((playing) && (!delayed))
+        while ( ( playing ) && ( !delayed ) )
         {
-            MovieChunk *mc = (*chunkVec)[currChunk];
-            switch (mc->code)
+            MovieChunk *mc = ( *chunkVec ) [currChunk];
+            switch ( mc->code )
             {
             case SAVE_BACKGROUND:
-                if (!backgroundImage)
+                if ( !backgroundImage )
                 {
-                    backgroundImage = new Image(media->GetVideo()->GetWidth(), media->GetVideo()->GetHeight());
+                    backgroundImage = new Image ( media->GetVideo()->GetWidth(), media->GetVideo()->GetHeight() );
                 }
-                backgroundImage->Read(0, 0);
+                backgroundImage->Read ( 0, 0 );
                 break;
             case DRAW_BACKGROUND:
-                if (backgroundImage)
+                if ( backgroundImage )
                 {
-                    backgroundImage->Draw(0, 0);
+                    backgroundImage->Draw ( 0, 0 );
                     backgroundImageDrawn = true;
                 }
                 break;
             case UPDATE:
-                if (!paletteActivated)
+                if ( !paletteActivated )
                 {
-                    paletteSlot[currPalette]->GetPalette()->Activate(0, WINDOW_COLORS);
+                    paletteSlot[currPalette]->GetPalette()->Activate ( 0, WINDOW_COLORS );
                     paletteActivated = true;
                 }
                 media->GetVideo()->Refresh();
-                if (currDelay > 0)
+                if ( currDelay > 0 )
                 {
                     delayed = true;
-                    media->GetClock()->StartTimer(TMR_MOVIE_PLAYER, currDelay);
+                    media->GetClock()->StartTimer ( TMR_MOVIE_PLAYER, currDelay );
                 }
                 backgroundImageDrawn = false;
                 break;
@@ -192,156 +192,147 @@ void MoviePlayer::PlayChunk(MediaToolkit* media)
                 currFrame = mc->data[1];
                 break;
             case FADE_OUT:
-                paletteSlot[currPalette]->GetPalette()->FadeOut(mc->data[0], mc->data[1], 64 << (mc->data[2] & 0x0f), 2 << mc->data[3]);
+                paletteSlot[currPalette]->GetPalette()->FadeOut ( mc->data[0], mc->data[1], 64 << ( mc->data[2] & 0x0f ), 2 << mc->data[3] );
                 media->GetVideo()->Clear();
                 paletteActivated = true;
                 break;
             case FADE_IN:
-                paletteSlot[currPalette]->GetPalette()->FadeIn(mc->data[0], mc->data[1], 64 << (mc->data[2] & 0x0f), 2 << mc->data[3]);
+                paletteSlot[currPalette]->GetPalette()->FadeIn ( mc->data[0], mc->data[1], 64 << ( mc->data[2] & 0x0f ), 2 << mc->data[3] );
                 paletteActivated = true;
                 break;
-            case DRAW_IMAGE:
-                if ((backgroundImage) && (!backgroundImageDrawn))
-                {
-                    backgroundImage->Draw(0, 0);
-                    backgroundImageDrawn = true;
-                }
-                if (imageSlot[currImage])
-                {
-                    imageSlot[currImage]->GetImage(currFrame)->Draw(mc->data[0], mc->data[1], 0, 0, mc->data[2], mc->data[3]);
-                }
+            case SET_WINDOW:
                 break;
             case DRAW_SPRITE3:
-                if (currDelay > 0)
+                if ( currDelay > 0 )
                 {
-                    media->GetClock()->Delay(currDelay);
+                    media->GetClock()->Delay ( currDelay );
                 }
             case DRAW_SPRITE2:
-                if (currDelay > 0)
+                if ( currDelay > 0 )
                 {
-                    media->GetClock()->Delay(currDelay);
+                    media->GetClock()->Delay ( currDelay );
                 }
             case DRAW_SPRITE1:
-                if (currDelay > 0)
+                if ( currDelay > 0 )
                 {
-                    media->GetClock()->Delay(currDelay);
+                    media->GetClock()->Delay ( currDelay );
                 }
             case DRAW_SPRITE0:
-                if ((backgroundImage) && (!backgroundImageDrawn))
+                if ( ( backgroundImage ) && ( !backgroundImageDrawn ) )
                 {
-                    backgroundImage->Draw(0, 0);
+                    backgroundImage->Draw ( 0, 0 );
                     backgroundImageDrawn = true;
                 }
-                if (imageSlot[mc->data[3]])
+                if ( imageSlot[mc->data[3]] )
                 {
-                    imageSlot[mc->data[3]]->GetImage(mc->data[2])->Draw(mc->data[0], mc->data[1], 0);
+                    imageSlot[mc->data[3]]->GetImage ( mc->data[2] )->Draw ( mc->data[0], mc->data[1], 0 );
                 }
                 break;
             case DRAW_SCREEN:
-                if ((backgroundImage) && (!backgroundImageDrawn))
+                if ( ( backgroundImage ) && ( !backgroundImageDrawn ) )
                 {
-                    backgroundImage->Draw(0, 0);
+                    backgroundImage->Draw ( 0, 0 );
                     backgroundImageDrawn = true;
                 }
-                if (screenSlot)
+                if ( screenSlot )
                 {
-                    screenSlot->GetImage()->Draw(mc->data[0], mc->data[1]);
+                    screenSlot->GetImage()->Draw ( mc->data[0], mc->data[1] );
                 }
                 break;
             case LOAD_SOUNDRESOURCE:
                 break;
             case SELECT_SOUND:
             {
-                std::map<unsigned int, int>::iterator it = soundMap.find(mc->data[0]);
-                if (it != soundMap.end())
+                std::map<unsigned int, int>::iterator it = soundMap.find ( mc->data[0] );
+                if ( it != soundMap.end() )
                 {
-                    if (it->second >= 0)
+                    if ( it->second >= 0 )
                     {
-                        media->GetAudio()->StopSound(it->second);
+                        media->GetAudio()->StopSound ( it->second );
                     }
-                    soundMap.erase(it);
+                    soundMap.erase ( it );
                 }
-                soundMap.insert(std::pair<unsigned int, int>(mc->data[0], -1));
+                soundMap.insert ( std::pair<unsigned int, int> ( mc->data[0], -1 ) );
             }
             break;
             case DESELECT_SOUND:
             {
-                std::map<unsigned int, int>::iterator it = soundMap.find(mc->data[0]);
-                if (it != soundMap.end())
+                std::map<unsigned int, int>::iterator it = soundMap.find ( mc->data[0] );
+                if ( it != soundMap.end() )
                 {
-                    if (it->second >= 0)
+                    if ( it->second >= 0 )
                     {
-                        media->GetAudio()->StopSound(it->second);
+                        media->GetAudio()->StopSound ( it->second );
                     }
-                    soundMap.erase(it);
+                    soundMap.erase ( it );
                 }
             }
             break;
             case PLAY_SOUND:
             {
-                std::map<unsigned int, int>::iterator it = soundMap.find(mc->data[0]);
-                if (it != soundMap.end())
+                std::map<unsigned int, int>::iterator it = soundMap.find ( mc->data[0] );
+                if ( it != soundMap.end() )
                 {
-                    if (it->second >= 0)
+                    if ( it->second >= 0 )
                     {
-                        media->GetAudio()->StopSound(it->second);
+                        media->GetAudio()->StopSound ( it->second );
                     }
-                    SoundData data = soundSlot->GetSoundData(it->first);
-                    it->second = media->GetAudio()->PlaySound(data.sounds[0]->GetSamples());
+                    SoundData data = soundSlot->GetSoundData ( it->first );
+                    it->second = media->GetAudio()->PlaySound ( data.sounds[0]->GetSamples() );
                 }
             }
             break;
             case STOP_SOUND:
             {
-                std::map<unsigned int, int>::iterator it = soundMap.find(mc->data[0]);
-                if (it != soundMap.end())
+                std::map<unsigned int, int>::iterator it = soundMap.find ( mc->data[0] );
+                if ( it != soundMap.end() )
                 {
-                    if (it->second >= 0)
+                    if ( it->second >= 0 )
                     {
-                        media->GetAudio()->StopSound(it->second);
+                        media->GetAudio()->StopSound ( it->second );
                     }
-                    soundMap.erase(it);
+                    soundMap.erase ( it );
                 }
             }
             break;
             case LOAD_SCREEN:
-                if (screenSlot)
+                if ( screenSlot )
                 {
                     delete screenSlot;
                 }
                 mc->name[mc->name.length() - 1] = 'X';
                 screenSlot = new ScreenResource;
-                FileManager::GetInstance()->Load(screenSlot, mc->name);
-                screenSlot->GetImage()->Draw(0, 0);
+                FileManager::GetInstance()->Load ( screenSlot, mc->name );
+                screenSlot->GetImage()->Draw ( 0, 0 );
                 break;
             case LOAD_IMAGE:
-                if (imageSlot[currImage])
+                if ( imageSlot[currImage] )
                 {
                     delete imageSlot[currImage];
                 }
                 mc->name[mc->name.length() - 1] = 'X';
                 imageSlot[currImage] = new ImageResource;
-                FileManager::GetInstance()->Load(imageSlot[currImage], mc->name);
+                FileManager::GetInstance()->Load ( imageSlot[currImage], mc->name );
                 break;
             case LOAD_PALETTE:
-                if (paletteSlot[currPalette])
+                if ( paletteSlot[currPalette] )
                 {
                     delete paletteSlot[currPalette];
                 }
                 paletteSlot[currPalette] = new PaletteResource;
-                FileManager::GetInstance()->Load(paletteSlot[currPalette], mc->name);
+                FileManager::GetInstance()->Load ( paletteSlot[currPalette], mc->name );
                 paletteActivated = false;
                 break;
             default:
                 break;
             }
             currChunk++;
-            if (currChunk == chunkVec->size())
+            if ( currChunk == chunkVec->size() )
             {
-                if (looped)
+                if ( looped )
                 {
                     currChunk = 0;
-                    if (backgroundImage)
+                    if ( backgroundImage )
                     {
                         delete backgroundImage;
                         backgroundImage = 0;
@@ -354,16 +345,16 @@ void MoviePlayer::PlayChunk(MediaToolkit* media)
             }
         }
     }
-    catch (Exception &e)
+    catch ( Exception &e )
     {
-        e.Print("MoviePlayer::PlayChunk");
+        e.Print ( "MoviePlayer::PlayChunk" );
         throw;
     }
 }
 
-void MoviePlayer::KeyPressed(const KeyboardEvent& kbe)
+void MoviePlayer::KeyPressed ( const KeyboardEvent& kbe )
 {
-    switch (kbe.GetKey())
+    switch ( kbe.GetKey() )
     {
     case KEY_ESCAPE:
     case KEY_RETURN:
@@ -375,18 +366,18 @@ void MoviePlayer::KeyPressed(const KeyboardEvent& kbe)
     }
 }
 
-void MoviePlayer::KeyReleased(const KeyboardEvent& kbe)
+void MoviePlayer::KeyReleased ( const KeyboardEvent& kbe )
 {
-    switch (kbe.GetKey())
+    switch ( kbe.GetKey() )
     {
     default:
         break;
     }
 }
 
-void MoviePlayer::PointerButtonPressed(const PointerButtonEvent& pbe)
+void MoviePlayer::PointerButtonPressed ( const PointerButtonEvent& pbe )
 {
-    switch (pbe.GetButton())
+    switch ( pbe.GetButton() )
     {
     case PB_PRIMARY:
         playing = false;
@@ -396,18 +387,18 @@ void MoviePlayer::PointerButtonPressed(const PointerButtonEvent& pbe)
     }
 }
 
-void MoviePlayer::PointerButtonReleased(const PointerButtonEvent& pbe)
+void MoviePlayer::PointerButtonReleased ( const PointerButtonEvent& pbe )
 {
-    switch (pbe.GetButton())
+    switch ( pbe.GetButton() )
     {
     default:
         break;
     }
 }
 
-void MoviePlayer::TimerExpired(const TimerEvent& te)
+void MoviePlayer::TimerExpired ( const TimerEvent& te )
 {
-    if (te.GetID() == TMR_MOVIE_PLAYER)
+    if ( te.GetID() == TMR_MOVIE_PLAYER )
     {
         delayed = false;
     }

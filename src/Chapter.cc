@@ -58,6 +58,8 @@ void Chapter::PlayIntro()
         FileManager::GetInstance()->Load ( &ttm, anim.GetAnimationData ( 1 ).resource );
         MoviePlayer moviePlayer;
         moviePlayer.Play ( &ttm.GetMovieChunks(), false );
+        MediaToolkit::GetInstance()->GetVideo()->Clear();
+        MediaToolkit::GetInstance()->GetVideo()->Refresh();
     }
     catch ( Exception &e )
     {
