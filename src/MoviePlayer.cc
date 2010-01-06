@@ -26,6 +26,7 @@
 
 static const unsigned int SAVE_BACKGROUND    = 0x0020;
 static const unsigned int DRAW_BACKGROUND    = 0x0080;
+static const unsigned int PURGE              = 0x0110;
 static const unsigned int UPDATE             = 0x0ff0;
 static const unsigned int DELAY              = 0x1020;
 static const unsigned int SLOT_IMAGE         = 0x1050;
@@ -35,6 +36,8 @@ static const unsigned int SET_FRAME0         = 0x2000;
 static const unsigned int SET_FRAME1         = 0x2010;
 static const unsigned int FADE_OUT           = 0x4110;
 static const unsigned int FADE_IN            = 0x4120;
+static const unsigned int SAVE_IMAGE0        = 0x4200;
+static const unsigned int SAVE_IMAGE1        = 0x4210;
 static const unsigned int SET_WINDOW         = 0xa100;
 static const unsigned int DRAW_SPRITE0       = 0xa500;
 static const unsigned int DRAW_SPRITE1       = 0xa510;
@@ -78,6 +81,8 @@ void MoviePlayer::Play ( std::vector<MovieChunk *> *movie, const bool repeat )
         memset ( paletteSlot, 0, sizeof ( Palette* ) * MAX_PALETTE_SLOTS );
         backgroundImage = 0;
         backgroundImageDrawn = false;
+        savedImage = 0;
+        savedImageDrawn = false;
         currFrame = 0;
         currImage = 0;
         currPalette = 0;
@@ -107,25 +112,30 @@ void MoviePlayer::Play ( std::vector<MovieChunk *> *movie, const bool repeat )
 
         PointerManager::GetInstance()->GetCurrentPointer()->SetVisible ( true );
 
-        if ( backgroundImage )
+        if ( backgroundImage != 0 )
         {
             delete backgroundImage;
             backgroundImage = 0;
         }
-        if ( screenSlot )
+        if ( savedImage != 0 )
+        {
+            delete savedImage;
+            savedImage = 0;
+        }
+        if ( screenSlot != 0 )
         {
             delete screenSlot;
         }
         for ( unsigned int i = 0; i < MAX_IMAGE_SLOTS; i++ )
         {
-            if ( imageSlot[i] )
+            if ( imageSlot[i] != 0 )
             {
                 delete imageSlot[i];
             }
         }
         for ( unsigned int i = 0; i < MAX_PALETTE_SLOTS; i++ )
         {
-            if ( paletteSlot[i] )
+            if ( paletteSlot[i] != 0 )
             {
                 delete paletteSlot[i];
             }
@@ -148,20 +158,43 @@ void MoviePlayer::PlayChunk ( MediaToolkit* media )
             switch ( mc->code )
             {
             case SAVE_BACKGROUND:
-                if ( !backgroundImage )
+                if ( backgroundImage == 0 )
                 {
                     backgroundImage = new Image ( media->GetVideo()->GetWidth(), media->GetVideo()->GetHeight() );
                 }
                 backgroundImage->Read ( 0, 0 );
+                backgroundImageDrawn = false;
                 break;
             case DRAW_BACKGROUND:
-                if ( backgroundImage )
+                if ( backgroundImage != 0 )
                 {
                     backgroundImage->Draw ( 0, 0 );
                     backgroundImageDrawn = true;
                 }
                 break;
+            case PURGE:
+                if ( backgroundImage != 0 )
+                {
+                    delete backgroundImage;
+                    backgroundImage = 0;
+                }
+                if ( savedImage != 0 )
+                {
+                    delete savedImage;
+                    savedImage = 0;
+                }
+                break;
             case UPDATE:
+                if ( ( backgroundImage != 0 ) && ( !backgroundImageDrawn ) )
+                {
+                    backgroundImage->Draw ( 0, 0 );
+                    backgroundImageDrawn = true;
+                }
+                if ( ( savedImage != 0 ) && ( !savedImageDrawn ) )
+                {
+                    savedImage->Draw ( xSavedImage, ySavedImage );
+                    savedImageDrawn = true;
+                }
                 if ( !paletteActivated )
                 {
                     paletteSlot[currPalette]->GetPalette()->Activate ( 0, WINDOW_COLORS );
@@ -174,6 +207,7 @@ void MoviePlayer::PlayChunk ( MediaToolkit* media )
                     media->GetClock()->StartTimer ( TMR_MOVIE_PLAYER, currDelay );
                 }
                 backgroundImageDrawn = false;
+                savedImageDrawn = false;
                 break;
             case DELAY:
                 currDelay = mc->data[0] * 10;
@@ -200,28 +234,33 @@ void MoviePlayer::PlayChunk ( MediaToolkit* media )
                 paletteSlot[currPalette]->GetPalette()->FadeIn ( mc->data[0], mc->data[1], 64 << ( mc->data[2] & 0x0f ), 2 << mc->data[3] );
                 paletteActivated = true;
                 break;
+            case SAVE_IMAGE0:
+            case SAVE_IMAGE1:
+                if ( savedImage != 0 )
+                {
+                    delete savedImage;
+                }
+                xSavedImage = mc->data[0];
+                ySavedImage = mc->data[1];
+                savedImage = new Image ( mc->data[2], mc->data[3] );
+                savedImage->Read ( xSavedImage, ySavedImage );
+                savedImageDrawn = false;
+                break;
             case SET_WINDOW:
                 break;
-            case DRAW_SPRITE3:
-                if ( currDelay > 0 )
-                {
-                    media->GetClock()->Delay ( currDelay );
-                }
-            case DRAW_SPRITE2:
-                if ( currDelay > 0 )
-                {
-                    media->GetClock()->Delay ( currDelay );
-                }
-            case DRAW_SPRITE1:
-                if ( currDelay > 0 )
-                {
-                    media->GetClock()->Delay ( currDelay );
-                }
             case DRAW_SPRITE0:
-                if ( ( backgroundImage ) && ( !backgroundImageDrawn ) )
+            case DRAW_SPRITE1:
+            case DRAW_SPRITE2:
+            case DRAW_SPRITE3:
+                if ( ( backgroundImage != 0 ) && ( !backgroundImageDrawn ) )
                 {
                     backgroundImage->Draw ( 0, 0 );
                     backgroundImageDrawn = true;
+                }
+                if ( ( savedImage != 0 ) && ( !savedImageDrawn ) )
+                {
+                    savedImage->Draw ( xSavedImage, ySavedImage );
+                    savedImageDrawn = true;
                 }
                 if ( imageSlot[mc->data[3]] )
                 {
@@ -229,7 +268,7 @@ void MoviePlayer::PlayChunk ( MediaToolkit* media )
                 }
                 break;
             case DRAW_SCREEN:
-                if ( ( backgroundImage ) && ( !backgroundImageDrawn ) )
+                if ( ( backgroundImage != 0 ) && ( !backgroundImageDrawn ) )
                 {
                     backgroundImage->Draw ( 0, 0 );
                     backgroundImageDrawn = true;
@@ -332,10 +371,15 @@ void MoviePlayer::PlayChunk ( MediaToolkit* media )
                 if ( looped )
                 {
                     currChunk = 0;
-                    if ( backgroundImage )
+                    if ( backgroundImage != 0 )
                     {
                         delete backgroundImage;
                         backgroundImage = 0;
+                    }
+                    if ( savedImage != 0 )
+                    {
+                        delete savedImage;
+                        savedImage = 0;
                     }
                 }
                 else

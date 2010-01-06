@@ -65,6 +65,7 @@ int main ( int argc, char *argv[] )
             case 0x00c0:
                 break;
             case 0x0110:
+                printf ( " purge saved images" );
                 break;
             case 0x0400:
                 break;
@@ -119,10 +120,10 @@ int main ( int argc, char *argv[] )
                 printf ( " fade in (first, n, steps, delay)" );
                 break;
             case 0x4200:
-                printf ( " external image (x, y, w, h)" );
+                printf ( " save image (x, y, w, h)" );
                 break;
             case 0x4210:
-                printf ( " external image (x, y, w, h)" );
+                printf ( " save image (x, y, w, h)" );
                 break;
             case 0xa010:
                 break;

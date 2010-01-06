@@ -47,6 +47,8 @@ private:
     Image *backgroundImage;
     bool backgroundImageDrawn;
     Image *savedImage;
+    int xSavedImage;
+    int ySavedImage;
     bool savedImageDrawn;
     unsigned int currFrame;
     unsigned int currImage;
