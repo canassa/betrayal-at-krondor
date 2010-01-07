@@ -105,15 +105,42 @@ void Chapter::ReadBook ( const int scene )
         FileManager::GetInstance()->Load ( &bok, filenameStream.str() );
         Video *video = MediaToolkit::GetInstance()->GetVideo();
         video->SetMode ( HIRES_LOWCOL );
-        scr.GetImage()->Draw ( 0, 0 );
-        pal.GetPalette()->FadeIn ( 0, WINDOW_COLORS, 64, 5 );
-        MediaToolkit::GetInstance()->GetClock()->StartTimer ( TMR_CHAPTER, 4000 );
-        delayed = true;
-        while ( delayed )
+        for ( unsigned int i = 0; i < bok.GetNumPages(); i++ )
         {
-            MediaToolkit::GetInstance()->WaitEvents();
+            scr.GetImage()->Draw ( 0, 0 );
+            PageData pd = bok.GetPage ( i );
+            for ( unsigned int j = 0; j < pd.decorations.size(); j++ )
+            {
+                if ( pd.decorations[j].id < img.GetNumImages() )
+                {
+                    Image deco(img.GetImage ( pd.decorations[j].id ));
+                    if (pd.decorations[j].flag & DECO_HORIZONTAL_FLIP)
+                    {
+                        deco.HorizontalFlip();
+                    }
+                    if (pd.decorations[j].flag & DECO_VERTICAL_FLIP)
+                    {
+                        deco.VerticalFlip();
+                    }
+                    deco.Draw ( pd.decorations[j].xpos, pd.decorations[j].ypos, 0 );
+                }
+            }
+            for ( unsigned int j = 0; j < pd.firstLetters.size(); j++ )
+            {
+                if ( pd.firstLetters[j].id < img.GetNumImages() )
+                {
+                    img.GetImage ( pd.firstLetters[j].id )->Draw ( pd.firstLetters[j].xpos, pd.firstLetters[j].ypos, 0 );
+                }
+            }
+            pal.GetPalette()->FadeIn ( 0, WINDOW_COLORS, 64, 5 );
+            MediaToolkit::GetInstance()->GetClock()->StartTimer ( TMR_CHAPTER, 4000 );
+            delayed = true;
+            while ( delayed )
+            {
+                MediaToolkit::GetInstance()->WaitEvents();
+            }
+            pal.GetPalette()->FadeOut ( 0, WINDOW_COLORS, 64, 5 );
         }
-        pal.GetPalette()->FadeOut ( 0, WINDOW_COLORS, 64, 5 );
         video->SetMode ( LORES_HICOL );
     }
     catch ( Exception &e )

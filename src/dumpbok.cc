@@ -48,7 +48,11 @@ int main(int argc, char *argv[])
                    pd.xpos, pd.ypos, pd.width, pd.height, pd.number, pd.id, pd.prevId, pd.nextId, pd.flag, pd.showNumber);
             for (unsigned int j = 0; j < pd.decorations.size(); j++)
             {
-                printf("Decoration %2d: %3d %3d %3d\n", j, pd.decorations[j].xpos, pd.decorations[j].ypos, pd.decorations[j].id);
+                printf("Decoration %2d: %3d %3d %3d %02x\n", j, pd.decorations[j].xpos, pd.decorations[j].ypos, pd.decorations[j].id, pd.decorations[j].flag);
+            }
+            for (unsigned int j = 0; j < pd.firstLetters.size(); j++)
+            {
+                printf("FirstLetter %2d: %3d %3d %3d %02x\n", j, pd.firstLetters[j].xpos, pd.firstLetters[j].ypos, pd.firstLetters[j].id, pd.firstLetters[j].flag);
             }
             for (unsigned int j = 0; j < pd.textBlocks.size(); j++)
             {

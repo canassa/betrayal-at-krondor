@@ -28,51 +28,56 @@
 
 #include "ResourceData.h"
 
-class Decoration
+static const unsigned DECO_HORIZONTAL_FLIP = 0x01;
+static const unsigned DECO_VERTICAL_FLIP   = 0x02;
+
+class ImageInfo
 {
-    public:
-        int xpos;
-        int ypos;
-        int id;
+public:
+    int xpos;
+    int ypos;
+    unsigned int id;
+    unsigned int flag;
 };
 
 class TextBlock
 {
-    public:
-        bool paragraph;
-        bool italic;
-        std::string txt;
+public:
+    bool paragraph;
+    bool italic;
+    std::string txt;
 };
 
 class PageData
 {
-    public:
-        int xpos;
-        int ypos;
-        int width;
-        int height;
-        int number;
-        int id;
-        int prevId;
-        int nextId;
-        unsigned int flag;
-        bool showNumber;
-        std::vector<Decoration> decorations;
-        std::vector<TextBlock> textBlocks;
+public:
+    int xpos;
+    int ypos;
+    int width;
+    int height;
+    unsigned int number;
+    unsigned int id;
+    unsigned int prevId;
+    unsigned int nextId;
+    unsigned int flag;
+    bool showNumber;
+    std::vector<ImageInfo> decorations;
+    std::vector<ImageInfo> firstLetters;
+    std::vector<TextBlock> textBlocks;
 };
 
 class BookResource: public ResourceData
 {
-    private:
-        std::vector<PageData> pages;
-    public:
-        BookResource();
-        virtual ~BookResource();
-        unsigned int GetNumPages() const;
-        PageData& GetPage ( const unsigned int i );
-        void Clear();
-        void Load ( FileBuffer *buffer );
-        unsigned int Save ( FileBuffer *buffer );
+private:
+    std::vector<PageData> pages;
+public:
+    BookResource();
+    virtual ~BookResource();
+    unsigned int GetNumPages() const;
+    PageData& GetPage ( const unsigned int i );
+    void Clear();
+    void Load ( FileBuffer *buffer );
+    unsigned int Save ( FileBuffer *buffer );
 };
 
 #endif

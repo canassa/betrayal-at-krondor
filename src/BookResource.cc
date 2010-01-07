@@ -21,7 +21,7 @@
 #include "BookResource.h"
 
 BookResource::BookResource()
-: pages()
+        : pages()
 {
 }
 
@@ -30,133 +30,128 @@ BookResource::~BookResource()
     Clear();
 }
 
-unsigned int
-BookResource::GetNumPages() const
+unsigned int BookResource::GetNumPages() const
 {
     return pages.size();
 }
 
-PageData&
-BookResource::GetPage(const unsigned int i)
+PageData& BookResource::GetPage ( const unsigned int i )
 {
     return pages[i];
 }
 
-void
-BookResource::Clear()
+void BookResource::Clear()
 {
     pages.clear();
 }
 
-void
-BookResource::Load(FileBuffer *buffer)
+void BookResource::Load ( FileBuffer *buffer )
 {
     try
     {
         Clear();
-        buffer->Skip(4);
+        buffer->Skip ( 4 ); // file size
         unsigned int numPages = buffer->GetUint16LE();
         unsigned int *pageOffset = new unsigned int [numPages];
-        for (unsigned int i = 0; i < numPages; i++)
+        for ( unsigned int i = 0; i < numPages; i++ )
         {
             pageOffset[i] = buffer->GetUint32LE();
         }
-        for (unsigned int i = 0; i < numPages; i++)
+        for ( unsigned int i = 0; i < numPages; i++ )
         {
-            buffer->Seek(4 + pageOffset[i]);
+            buffer->Seek ( 4 + pageOffset[i] );
             PageData pd;
             pd.xpos = buffer->GetSint16LE();
             pd.ypos = buffer->GetSint16LE();
             pd.width = buffer->GetSint16LE();
             pd.height = buffer->GetSint16LE();
-            pd.number = buffer->GetSint16LE();
-            pd.id = buffer->GetSint16LE();
-            pd.prevId = buffer->GetSint16LE();
-            buffer->Skip(2);
-            pd.nextId = buffer->GetSint16LE();
+            pd.number = buffer->GetUint16LE();
+            pd.id = buffer->GetUint16LE();
+            pd.prevId = buffer->GetUint16LE();
+            buffer->Skip ( 2 );
+            pd.nextId = buffer->GetUint16LE();
             pd.flag = buffer->GetUint16LE();
             unsigned int numDecorations = buffer->GetUint16LE();
             unsigned int numFirstLetters = buffer->GetUint16LE();
             pd.showNumber = buffer->GetUint16LE() > 0;
-            buffer->Skip(30);
-            for (unsigned int j = 0; j < numDecorations; j++)
+            buffer->Skip ( 30 );
+            for ( unsigned int j = 0; j < numDecorations; j++ )
             {
-                Decoration deco;
-                deco.xpos = buffer->GetSint16LE();
-                deco.ypos = buffer->GetSint16LE();
-                deco.id = buffer->GetSint16LE();
-                buffer->Skip(2);
-                pd.decorations.push_back(deco);
+                ImageInfo info;
+                info.xpos = buffer->GetSint16LE();
+                info.ypos = buffer->GetSint16LE();
+                info.id = buffer->GetUint16LE();
+                info.flag = buffer->GetUint16LE();
+                pd.decorations.push_back ( info );
             }
-            for (unsigned int j = 0; j < numFirstLetters; j++)
+            for ( unsigned int j = 0; j < numFirstLetters; j++ )
             {
-                Decoration deco;
-                deco.xpos = buffer->GetSint16LE();
-                deco.ypos = buffer->GetSint16LE();
-                deco.id = buffer->GetSint16LE();
-                buffer->Skip(2);
-                pd.decorations.push_back(deco);
+                ImageInfo info;
+                info.xpos = buffer->GetSint16LE();
+                info.ypos = buffer->GetSint16LE();
+                info.id = buffer->GetUint16LE();
+                info.flag = buffer->GetUint16LE();
+                pd.firstLetters.push_back ( info );
             }
             bool endOfPage = false;
             TextBlock tb;
             tb.italic = false;
-            while (!endOfPage && !buffer->AtEnd())
+            while ( !endOfPage && !buffer->AtEnd() )
             {
                 unsigned char c = buffer->GetUint8();
-                if ((c & 0xf0) == 0xf0)
+                if ( ( c & 0xf0 ) == 0xf0 )
                 {
-                    switch (c)
+                    switch ( c )
                     {
-                        case 0xf0:
-                            endOfPage = true;
+                    case 0xf0:
+                        endOfPage = true;
+                        break;
+                    case 0xf1:
+                        buffer->Skip ( 16 );
+                        break;
+                    case 0xf2:
+                        break;
+                    case 0xf3:
+                        break;
+                    case 0xf4:
+                        buffer->Skip ( 8 );
+                        switch ( buffer->GetUint16LE() )
+                        {
+                        case 1:
+                            tb.italic = false;
                             break;
-                        case 0xf1:
-                            buffer->Skip(16);
-                            break;
-                        case 0xf2:
-                            break;
-                        case 0xf3:
-                            break;
-                        case 0xf4:
-                            buffer->Skip(8);
-                            switch (buffer->GetUint16LE())
-                            {
-                                case 1:
-                                    tb.italic = false;
-                                    break;
-                                case 5:
-                                    tb.italic = true;
-                                    break;
-                                default:
-                                    break;
-                            }
+                        case 5:
+                            tb.italic = true;
                             break;
                         default:
                             break;
+                        }
+                        break;
+                    default:
+                        break;
                     }
-                    pd.textBlocks.push_back(tb);
+                    pd.textBlocks.push_back ( tb );
                     tb.italic = false;
                     tb.txt.clear();
                 }
                 else
                 {
-                    tb.txt.push_back(c);
+                    tb.txt.push_back ( c );
                 }
             }
-            pd.textBlocks.push_back(tb);
-            pages.push_back(pd);
+            pd.textBlocks.push_back ( tb );
+            pages.push_back ( pd );
         }
         delete[] pageOffset;
     }
-    catch (Exception &e)
+    catch ( Exception &e )
     {
-        e.Print("BookResource::Load");
+        e.Print ( "BookResource::Load" );
         throw;
     }
 }
 
-unsigned int
-BookResource::Save(FileBuffer *buffer)
+unsigned int BookResource::Save ( FileBuffer *buffer )
 {
     try
     {
@@ -164,9 +159,9 @@ BookResource::Save(FileBuffer *buffer)
         buffer = buffer;
         return 0;
     }
-    catch (Exception &e)
+    catch ( Exception &e )
     {
-        e.Print("BookResource::Save");
+        e.Print ( "BookResource::Save" );
         throw;
     }
 }
