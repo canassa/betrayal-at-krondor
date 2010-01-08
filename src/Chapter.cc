@@ -23,10 +23,11 @@
 #include "BookResource.h"
 #include "Chapter.h"
 #include "Exception.h"
+#include "FontResource.h"
 #include "FileManager.h"
 #include "MoviePlayer.h"
 #include "TaggedImageResource.h"
-#include "Widget.h"
+#include "TextWidget.h"
 
 Chapter::Chapter ( const int n )
         : number ( n )
@@ -91,6 +92,8 @@ void Chapter::PlayScene ( const int scene )
 
 void Chapter::ReadBook ( const int scene )
 {
+    static const std::string ROMAN_NUMBER[] = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV"};
+
     try
     {
         PaletteResource pal;
@@ -99,6 +102,8 @@ void Chapter::ReadBook ( const int scene )
         FileManager::GetInstance()->Load ( &scr, "BOOK.SCX" );
         TaggedImageResource img;
         FileManager::GetInstance()->Load ( &img, "BOOK.BMX" );
+        FontResource fnt;
+        FileManager::GetInstance()->Load ( &fnt, "BOOK.FNT" );
         BookResource bok;
         std::stringstream filenameStream;
         filenameStream << "C" << number << scene << ".BOK";
@@ -107,18 +112,23 @@ void Chapter::ReadBook ( const int scene )
         video->SetMode ( HIRES_LOWCOL );
         for ( unsigned int i = 0; i < bok.GetNumPages(); i++ )
         {
-            scr.GetImage()->Draw ( 0, 0 );
             PageData pd = bok.GetPage ( i );
+            Image page ( scr.GetImage() );
+            if ( pd.number & 1 )
+            {
+                page.VerticalFlip();
+            }
+            page.Draw ( 0, 0 );
             for ( unsigned int j = 0; j < pd.decorations.size(); j++ )
             {
                 if ( pd.decorations[j].id < img.GetNumImages() )
                 {
-                    Image deco(img.GetImage ( pd.decorations[j].id ));
-                    if (pd.decorations[j].flag & DECO_HORIZONTAL_FLIP)
+                    Image deco ( img.GetImage ( pd.decorations[j].id ) );
+                    if ( pd.decorations[j].flag & DECO_HORIZONTAL_FLIP )
                     {
                         deco.HorizontalFlip();
                     }
-                    if (pd.decorations[j].flag & DECO_VERTICAL_FLIP)
+                    if ( pd.decorations[j].flag & DECO_VERTICAL_FLIP )
                     {
                         deco.VerticalFlip();
                     }
@@ -132,6 +142,11 @@ void Chapter::ReadBook ( const int scene )
                     img.GetImage ( pd.firstLetters[j].id )->Draw ( pd.firstLetters[j].xpos, pd.firstLetters[j].ypos, 0 );
                 }
             }
+            TextWidget pageNumberWidget ( Rectangle ( pd.xpos + 2, pd.ypos + pd.height + 11, pd.width - 4, fnt.GetFont()->GetHeight() ), fnt.GetFont() );
+            pageNumberWidget.SetAlignment ( ( pd.number & 1 ) ? HA_RIGHT : HA_LEFT, VA_CENTER );
+            pageNumberWidget.SetText ( ROMAN_NUMBER[pd.number] );
+            pageNumberWidget.Draw();
+
             pal.GetPalette()->FadeIn ( 0, WINDOW_COLORS, 64, 5 );
             MediaToolkit::GetInstance()->GetClock()->StartTimer ( TMR_CHAPTER, 4000 );
             delayed = true;
