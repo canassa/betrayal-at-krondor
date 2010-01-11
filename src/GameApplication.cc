@@ -30,59 +30,59 @@
 #include "ObjectResource.h"
 #include "PointerManager.h"
 #include "SDL_Toolkit.h"
-#include "TextArea.h"
+#include "TextWidget.h"
 
 GameApplication* GameApplication::instance = 0;
 
 GameApplication::GameApplication()
-        : done(false)
-        , inputGrabbed(false)
+        : done ( false )
+        , inputGrabbed ( false )
         , game()
-        , state(0)
-        , screenSaveCount(0)
+        , state ( 0 )
+        , screenSaveCount ( 0 )
 {
     MediaToolkit* media = MediaToolkit::GetInstance();
-    media->GetVideo()->CreateWindow(1);
-    media->GetVideo()->SetMode(LORES_HICOL);
+    media->GetVideo()->CreateWindow ( 1 );
+    media->GetVideo()->SetMode ( LORES_HICOL );
     media->GetVideo()->Clear();
 
     PaletteResource pal;
     pal.GetPalette()->Fill();
-    pal.GetPalette()->Activate(0, WINDOW_COLORS);
+    pal.GetPalette()->Activate ( 0, WINDOW_COLORS );
     FontResource fnt;
-    FileManager::GetInstance()->Load(&fnt, "GAME.FNT");
-    TextArea ta(240, 16, fnt.GetFont());
-    ta.SetText("xBaK: Betrayal at Krondor  A fan-made remake");
-    ta.SetColor(15);
-    ta.Draw(16, 16);
+    FileManager::GetInstance()->Load ( &fnt, "GAME.FNT" );
+    TextWidget txt ( Rectangle ( 16, 16, 240, 16 ), fnt.GetFont() );
+    txt.SetText ( "xBaK: Betrayal at Krondor  A fan-made remake" );
+    txt.SetColor ( 15 );
+    txt.Draw();
     media->GetVideo()->Refresh();
 
     config = new ConfigResource;
-    if (FileManager::GetInstance()->ConfigExists("krondor.cfg"))
+    if ( FileManager::GetInstance()->ConfigExists ( "krondor.cfg" ) )
     {
-        FileManager::GetInstance()->Load(config, "krondor.cfg");
+        FileManager::GetInstance()->Load ( config, "krondor.cfg" );
     }
     else
     {
         Preferences *prefs = new Preferences();
         prefs->SetDefaults();
-        config->SetPreferences(prefs);
-        FileManager::GetInstance()->Save(config, "krondor.cfg");
+        config->SetPreferences ( prefs );
+        FileManager::GetInstance()->Save ( config, "krondor.cfg" );
     }
     game = new GameResource;
-    PointerManager::GetInstance()->AddPointer("POINTER.BMX");
-    PointerManager::GetInstance()->AddPointer("POINTERG.BMX");
+    PointerManager::GetInstance()->AddPointer ( "POINTER.BMX" );
+    PointerManager::GetInstance()->AddPointer ( "POINTERG.BMX" );
 
-    media->GetClock()->Delay(500);
+    media->GetClock()->Delay ( 500 );
 }
 
 GameApplication::~GameApplication()
 {
-    if (config)
+    if ( config )
     {
         delete config;
     }
-    if (game)
+    if ( game )
     {
         delete game;
     }
@@ -95,7 +95,7 @@ GameApplication::~GameApplication()
 
 GameApplication* GameApplication::GetInstance()
 {
-    if (!instance)
+    if ( !instance )
     {
         instance = new GameApplication();
     }
@@ -120,7 +120,7 @@ void GameApplication::CleanUp()
     GameStatePreferences::CleanUp();
     GameStateSave::CleanUp();
     GameStateWorld::CleanUp();
-    if (instance)
+    if ( instance )
     {
         delete instance;
         instance = 0;
@@ -137,7 +137,7 @@ Game * GameApplication::GetGame()
     return game->GetGame();
 }
 
-void GameApplication::SetState(GameState *st)
+void GameApplication::SetState ( GameState *st )
 {
     state = st;
 }
@@ -147,26 +147,26 @@ void GameApplication::PlayIntro()
     try
     {
         AnimationResource anim;
-        FileManager::GetInstance()->Load(&anim, "INTRO.ADS");
+        FileManager::GetInstance()->Load ( &anim, "INTRO.ADS" );
         MovieResource ttm;
-        FileManager::GetInstance()->Load(&ttm, anim.GetAnimationData(1).resource);
+        FileManager::GetInstance()->Load ( &ttm, anim.GetAnimationData ( 1 ).resource );
         MoviePlayer moviePlayer;
-        moviePlayer.Play(&ttm.GetMovieChunks(), true);
+        moviePlayer.Play ( &ttm.GetMovieChunks(), true );
     }
-    catch (Exception &e)
+    catch ( Exception &e )
     {
-        e.Print("GameApplication::Intro");
+        e.Print ( "GameApplication::Intro" );
     }
 }
 
 void GameApplication::StartNewGame()
 {
-    FileManager::GetInstance()->Load(game, "startup.gam");
-    game->GetGame()->GetParty()->ActivateMember(0, 0);
-    game->GetGame()->GetParty()->ActivateMember(1, 2);
-    game->GetGame()->GetParty()->ActivateMember(2, 1);
-    game->GetGame()->GetCamera()->SetPosition(Vector2D(669600, 1064800));
-    game->GetGame()->GetCamera()->SetHeading(SOUTH);
+    FileManager::GetInstance()->Load ( game, "startup.gam" );
+    game->GetGame()->GetParty()->ActivateMember ( 0, 0 );
+    game->GetGame()->GetParty()->ActivateMember ( 1, 2 );
+    game->GetGame()->GetParty()->ActivateMember ( 2, 1 );
+    game->GetGame()->GetCamera()->SetPosition ( Vector2D ( 669600, 1064800 ) );
+    game->GetGame()->GetCamera()->SetHeading ( SOUTH );
 }
 
 void GameApplication::QuitGame()
@@ -176,7 +176,7 @@ void GameApplication::QuitGame()
 
 void GameApplication::SaveConfig()
 {
-    FileManager::GetInstance()->Save(config, "krondor.cfg");
+    FileManager::GetInstance()->Save ( config, "krondor.cfg" );
 }
 
 void GameApplication::Run()
@@ -184,15 +184,15 @@ void GameApplication::Run()
     try
     {
         state = GameStateIntro::GetInstance();
-        MediaToolkit::GetInstance()->AddKeyboardListener(this);
-        MediaToolkit::GetInstance()->AddPointerButtonListener(this);
-        MediaToolkit::GetInstance()->AddTimerListener(this);
+        MediaToolkit::GetInstance()->AddKeyboardListener ( this );
+        MediaToolkit::GetInstance()->AddPointerButtonListener ( this );
+        MediaToolkit::GetInstance()->AddTimerListener ( this );
         state->Enter();
         GameState *savedState = state;
         done = false;
-        while (!done)
+        while ( !done )
         {
-            if (state != savedState)
+            if ( state != savedState )
             {
                 savedState->Leave();
                 state->Enter();
@@ -201,64 +201,64 @@ void GameApplication::Run()
             state->Execute();
         }
         savedState->Leave();
-        MediaToolkit::GetInstance()->RemoveKeyboardListener(this);
-        MediaToolkit::GetInstance()->RemovePointerButtonListener(this);
-        MediaToolkit::GetInstance()->RemoveTimerListener(this);
+        MediaToolkit::GetInstance()->RemoveKeyboardListener ( this );
+        MediaToolkit::GetInstance()->RemovePointerButtonListener ( this );
+        MediaToolkit::GetInstance()->RemoveTimerListener ( this );
     }
-    catch (Exception &e)
+    catch ( Exception &e )
     {
-        e.Print("GameApplication::Run");
+        e.Print ( "GameApplication::Run" );
     }
 }
 
-void GameApplication::KeyPressed(const KeyboardEvent& kbe)
+void GameApplication::KeyPressed ( const KeyboardEvent& kbe )
 {
-    switch (kbe.GetKey())
+    switch ( kbe.GetKey() )
     {
     case KEY_F11:
     {
         screenSaveCount++;
         std::stringstream filenameStream;
         filenameStream << Directories::GetInstance()->GetCapturePath();
-        filenameStream << "xbak_" << std::setw(3) << std::setfill('0') << screenSaveCount << ".bmp";
-        MediaToolkit::GetInstance()->GetVideo()->SaveScreenShot(filenameStream.str());
+        filenameStream << "xbak_" << std::setw ( 3 ) << std::setfill ( '0' ) << screenSaveCount << ".bmp";
+        MediaToolkit::GetInstance()->GetVideo()->SaveScreenShot ( filenameStream.str() );
     }
     break;
     case KEY_F12:
         inputGrabbed = !inputGrabbed;
-        MediaToolkit::GetInstance()->GetVideo()->GrabInput(inputGrabbed);
+        MediaToolkit::GetInstance()->GetVideo()->GrabInput ( inputGrabbed );
         break;
     default:
         break;
     }
 }
 
-void GameApplication::KeyReleased(const KeyboardEvent& kbe)
+void GameApplication::KeyReleased ( const KeyboardEvent& kbe )
 {
-    switch (kbe.GetKey())
+    switch ( kbe.GetKey() )
     {
     default:
         break;
     }
 }
 
-void GameApplication::PointerButtonPressed(const PointerButtonEvent& pbe)
+void GameApplication::PointerButtonPressed ( const PointerButtonEvent& pbe )
 {
-    switch (pbe.GetButton())
+    switch ( pbe.GetButton() )
     {
     case PB_PRIMARY:
     case PB_SECONDARY:
-        if (!inputGrabbed)
+        if ( !inputGrabbed )
         {
             inputGrabbed = true;
-            MediaToolkit::GetInstance()->GetVideo()->GrabInput(true);
+            MediaToolkit::GetInstance()->GetVideo()->GrabInput ( true );
         }
         break;
     case PB_TERTIARY:
-        if (inputGrabbed)
+        if ( inputGrabbed )
         {
             inputGrabbed = false;
-            MediaToolkit::GetInstance()->GetVideo()->GrabInput(false);
+            MediaToolkit::GetInstance()->GetVideo()->GrabInput ( false );
         }
         break;
     default:
@@ -266,22 +266,22 @@ void GameApplication::PointerButtonPressed(const PointerButtonEvent& pbe)
     }
 }
 
-void GameApplication::PointerButtonReleased(const PointerButtonEvent& pbe)
+void GameApplication::PointerButtonReleased ( const PointerButtonEvent& pbe )
 {
-    switch (pbe.GetButton())
+    switch ( pbe.GetButton() )
     {
     default:
         break;
     }
 }
 
-void GameApplication::TimerExpired(const TimerEvent& te)
+void GameApplication::TimerExpired ( const TimerEvent& te )
 {
-    if (te.GetID() == TMR_MOVING)
+    if ( te.GetID() == TMR_MOVING )
     {
         state->Move();
     }
-    if (te.GetID() == TMR_TURNING)
+    if ( te.GetID() == TMR_TURNING )
     {
         state->Turn();
     }

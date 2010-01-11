@@ -23,7 +23,7 @@
 #include "PointerManager.h"
 #include "SDL_Toolkit.h"
 #include "TestApplication.h"
-#include "TextArea.h"
+#include "TextWidget.h"
 
 TestApplication* TestApplication::instance = 0;
 
@@ -172,14 +172,15 @@ void TestApplication::DrawFont ( const std::string& name )
         MediaToolkit *media = MediaToolkit::GetInstance();
         FileManager::GetInstance()->Load ( &fnt, name );
         media->GetVideo()->Clear();
-        TextArea ta1 ( 280, 180, fnt.GetFont() );
-        ta1.SetText ( "The quick brown fox jumped over the lazy dog." );
-        ta1.SetColor ( 15 );
-        ta1.Draw ( 10, 10, false );
-        TextArea ta2 ( 280, 180, fnt.GetFont() );
-        ta2.SetText ( "The quick brown fox jumped over the lazy dog." );
-        ta2.SetColor ( 15 );
-        ta2.Draw ( 10, 50, true );
+        TextWidget tw1 ( Rectangle ( 10, 10, 280, 180 ), fnt.GetFont() );
+        tw1.SetText ( "The quick brown fox jumped over the lazy dog." );
+        tw1.SetColor ( 15 );
+        tw1.Draw();
+        TextWidget tw2 ( Rectangle ( 10,50, 280, 180 ), fnt.GetFont() );
+        tw2.SetText ( "The quick brown fox jumped over the lazy dog." );
+        tw2.SetColor ( 15 );
+        tw2.SetItalic ( true );
+        tw2.Draw();
         media->GetVideo()->Refresh();
         media->GetClock()->StartTimer ( TMR_TEST_APP, 5000 );
         media->WaitEventLoop();

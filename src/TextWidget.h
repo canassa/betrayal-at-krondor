@@ -53,6 +53,7 @@ private:
     int shadowYoff;
     HorizontalAlignment horAlign;
     VerticalAlignment vertAlign;
+    bool italic;
 public:
     TextWidget ( const Rectangle &r, Font *f );
     virtual ~TextWidget();
@@ -60,6 +61,7 @@ public:
     void SetText ( const std::string& s );
     void SetShadow ( const int s, const int xoff, const int yoff );
     void SetAlignment ( const HorizontalAlignment ha, const VerticalAlignment va );
+    void SetItalic ( const bool it );
     void Draw();
     void Drag ( const int x, const int y );
     void Drop ( const int x, const int y );

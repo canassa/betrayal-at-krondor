@@ -19,115 +19,118 @@
 
 #include "TextWidget.h"
 
-TextWidget::TextWidget(const Rectangle &r, Font *f)
-        : Widget(r)
-        , font(f)
-        , text("")
-        , textWidth(0)
-        , textHeight(0)
-        , color(0)
-        , shadow(NO_SHADOW)
-        , shadowXoff(0)
-        , shadowYoff(0)
-        , horAlign(HA_CENTER)
-        , vertAlign(VA_CENTER)
-{}
+TextWidget::TextWidget ( const Rectangle &r, Font *f )
+        : Widget ( r )
+        , font ( f )
+        , text ( "" )
+        , textWidth ( 0 )
+        , textHeight ( 0 )
+        , color ( 0 )
+        , shadow ( NO_SHADOW )
+        , shadowXoff ( 0 )
+        , shadowYoff ( 0 )
+        , horAlign ( HA_CENTER )
+        , vertAlign ( VA_CENTER )
+        , italic ( false )
+{
+}
 
 TextWidget::~TextWidget()
-{}
+{
+}
 
-void
-TextWidget::SetText(const std::string &s)
+void TextWidget::SetText ( const std::string &s )
 {
     text = s;
     textWidth = 0;
-    for (unsigned int i = 0; i < text.length(); i++)
+    for ( unsigned int i = 0; i < text.length(); i++ )
     {
-        textWidth += font->GetWidth(text[i] - font->GetFirst());
+        textWidth += font->GetWidth ( text[i] - font->GetFirst() );
     }
     textHeight = font->GetHeight();
 }
 
-void
-TextWidget::SetColor(const int c)
+void TextWidget::SetColor ( const int c )
 {
     color = c;
 }
 
-void
-TextWidget::SetShadow(const int s, const int xoff, const int yoff)
+void TextWidget::SetShadow ( const int s, const int xoff, const int yoff )
 {
     shadow = s;
     shadowXoff = xoff;
     shadowYoff = yoff;
 }
 
-void
-TextWidget::SetAlignment(const HorizontalAlignment ha, const VerticalAlignment va)
+void TextWidget::SetAlignment ( const HorizontalAlignment ha, const VerticalAlignment va )
 {
     horAlign = ha;
     vertAlign = va;
 }
 
-void
-TextWidget::Draw()
+void TextWidget::SetItalic ( const bool it )
 {
-    if (IsVisible())
+    italic = it;
+}
+
+void TextWidget::Draw()
+{
+    if ( IsVisible() )
     {
         unsigned int i;
         unsigned int w;
         int xoff = 0;
         int yoff = 0;
-        switch (horAlign)
+        switch ( horAlign )
         {
         case HA_LEFT:
             xoff = 0;
             break;
         case HA_CENTER:
-            xoff = (rect.GetWidth() - textWidth) / 2;
+            xoff = ( rect.GetWidth() - textWidth ) / 2;
             break;
         case HA_RIGHT:
             xoff = rect.GetWidth() - textWidth;
             break;
         }
-        switch (vertAlign)
+        switch ( vertAlign )
         {
         case VA_TOP:
             yoff = 0;
             break;
         case VA_CENTER:
-            yoff = (rect.GetHeight() - textHeight) / 2;
+            yoff = ( rect.GetHeight() - textHeight ) / 2;
             break;
         case VA_BOTTOM:
             yoff = rect.GetHeight() - textHeight;
             break;
         }
-        if ((shadow > NO_SHADOW) && ((shadowXoff != 0) || (shadowYoff != 0)))
+        if ( ( shadow > NO_SHADOW ) && ( ( shadowXoff != 0 ) || ( shadowYoff != 0 ) ) )
         {
             i = 0;
             w = 0;
-            while ((i < text.length()) && (w + font->GetWidth(text[i] - font->GetFirst()) < (unsigned)rect.GetWidth()))
+            while ( ( i < text.length() ) && ( w + font->GetWidth ( text[i] - font->GetFirst() ) < ( unsigned ) rect.GetWidth() ) )
             {
-                font->DrawChar(rect.GetXPos() + xoff + shadowXoff + w, rect.GetYPos() + yoff + shadowYoff, text[i], shadow, false);
-                w += font->GetWidth((unsigned int)text[i] - font->GetFirst());
+                font->DrawChar ( rect.GetXPos() + xoff + shadowXoff + w, rect.GetYPos() + yoff + shadowYoff, text[i], shadow, italic );
+                w += font->GetWidth ( ( unsigned int ) text[i] - font->GetFirst() );
                 i++;
             }
         }
         i = 0;
         w = 0;
-        while ((i < text.length()) && (w + font->GetWidth(text[i] - font->GetFirst()) < (unsigned)rect.GetWidth()))
+        while ( ( i < text.length() ) && ( w + font->GetWidth ( text[i] - font->GetFirst() ) < ( unsigned ) rect.GetWidth() ) )
         {
-            font->DrawChar(rect.GetXPos() + xoff + w, rect.GetYPos() + yoff, text[i], color, false);
-            w += font->GetWidth((unsigned int)text[i] - font->GetFirst());
+            font->DrawChar ( rect.GetXPos() + xoff + w, rect.GetYPos() + yoff, text[i], color, italic );
+            w += font->GetWidth ( ( unsigned int ) text[i] - font->GetFirst() );
             i++;
         }
     }
 }
 
-void
-TextWidget::Drag(const int, const int)
-{}
+void TextWidget::Drag ( const int, const int )
+{
+}
 
-void
-TextWidget::Drop(const int, const int)
-{}
+void TextWidget::Drop ( const int, const int )
+{
+}
