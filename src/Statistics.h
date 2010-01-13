@@ -24,30 +24,30 @@
 #include "config.h"
 #endif
 
-static const unsigned int STAT_HEALTH            =  0;
-static const unsigned int STAT_STAMINA           =  1;
-static const unsigned int STAT_SPEED             =  2;
-static const unsigned int STAT_STRENGTH          =  3;
-static const unsigned int STAT_DEFENSE           =  4;
-static const unsigned int STAT_CROSSBOW_ACCURACY =  5;
-static const unsigned int STAT_MELEE_ACCURACY    =  6;
-static const unsigned int STAT_CASTING_ACCURACY  =  7;
-static const unsigned int STAT_ASSESSMENT        =  8;
-static const unsigned int STAT_ARMORCRAFT        =  9;
-static const unsigned int STAT_WEAPONCRAFT       = 10;
-static const unsigned int STAT_BARDING           = 11;
-static const unsigned int STAT_HAGGLING          = 12;
-static const unsigned int STAT_LOCKPICK          = 13;
-static const unsigned int STAT_SCOUTING          = 14;
-static const unsigned int STAT_STEALTH           = 15;
-static const unsigned int NUM_STATS              = 16;
+const unsigned int STAT_HEALTH            =  0;
+const unsigned int STAT_STAMINA           =  1;
+const unsigned int STAT_SPEED             =  2;
+const unsigned int STAT_STRENGTH          =  3;
+const unsigned int STAT_DEFENSE           =  4;
+const unsigned int STAT_CROSSBOW_ACCURACY =  5;
+const unsigned int STAT_MELEE_ACCURACY    =  6;
+const unsigned int STAT_CASTING_ACCURACY  =  7;
+const unsigned int STAT_ASSESSMENT        =  8;
+const unsigned int STAT_ARMORCRAFT        =  9;
+const unsigned int STAT_WEAPONCRAFT       = 10;
+const unsigned int STAT_BARDING           = 11;
+const unsigned int STAT_HAGGLING          = 12;
+const unsigned int STAT_LOCKPICK          = 13;
+const unsigned int STAT_SCOUTING          = 14;
+const unsigned int STAT_STEALTH           = 15;
+const unsigned int NUM_STATS              = 16;
 
-static const unsigned int STAT_MAXIMUM    = 0;
-static const unsigned int STAT_CURRENT    = 1;
-static const unsigned int STAT_ACTUAL     = 2;
-static const unsigned int STAT_EXPERIENCE = 3;
-static const unsigned int STAT_MODIFIER   = 4;
-static const unsigned int NUM_STAT_VALUES = 5;
+const unsigned int STAT_MAXIMUM    = 0;
+const unsigned int STAT_CURRENT    = 1;
+const unsigned int STAT_ACTUAL     = 2;
+const unsigned int STAT_EXPERIENCE = 3;
+const unsigned int STAT_MODIFIER   = 4;
+const unsigned int NUM_STAT_VALUES = 5;
 
 typedef int StatValues[NUM_STAT_VALUES];
 

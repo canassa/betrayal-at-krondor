@@ -22,7 +22,8 @@
 
 ConfigResource::ConfigResource()
         : prefs(0)
-{}
+{
+}
 
 ConfigResource::~ConfigResource()
 {
@@ -32,26 +33,23 @@ ConfigResource::~ConfigResource()
     }
 }
 
-Preferences *
-ConfigResource::GetPreferences()
+Preferences * ConfigResource::GetPreferences()
 {
     return prefs;
 }
 
-void
-ConfigResource::SetPreferences(Preferences *p)
+void ConfigResource::SetPreferences(Preferences *p)
 {
     prefs = p;
 }
 
-static const unsigned int PREF_SOUND_MASK        = 0x01;
-static const unsigned int PREF_MUSIC_MASK        = 0x02;
-static const unsigned int PREF_COMBATMUSIC_MASK  = 0x04;
-static const unsigned int PREF_INTRODUCTION_MASK = 0x08;
-static const unsigned int PREF_CD_MUSIC_MASK     = 0x10;
+const unsigned int PREF_SOUND_MASK        = 0x01;
+const unsigned int PREF_MUSIC_MASK        = 0x02;
+const unsigned int PREF_COMBATMUSIC_MASK  = 0x04;
+const unsigned int PREF_INTRODUCTION_MASK = 0x08;
+const unsigned int PREF_CD_MUSIC_MASK     = 0x10;
 
-void
-ConfigResource::Load(FileBuffer *buffer)
+void ConfigResource::Load(FileBuffer *buffer)
 {
     if (!prefs)
     {
@@ -77,8 +75,7 @@ ConfigResource::Load(FileBuffer *buffer)
     }
 }
 
-unsigned int
-ConfigResource::Save(FileBuffer *buffer)
+unsigned int ConfigResource::Save(FileBuffer *buffer)
 {
     if (!prefs)
     {

@@ -32,7 +32,7 @@ PatternPolygonObject::~PatternPolygonObject()
 
 void PatternPolygonObject::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
 {
-    static const int TERRAIN_YOFFSET = 81;
+    const int TERRAIN_YOFFSET = 81;
     int offset = (((cam->GetHeading() * 16) + ((cam->GetPos().GetX() + cam->GetPos().GetY()) / 100)) % (texture->GetWidth() / 3));
     for (unsigned int i = 0; i < vertices.size(); i++)
     {

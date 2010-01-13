@@ -23,9 +23,9 @@
 #include "Image.h"
 #include "MediaToolkit.h"
 
-static const unsigned int FLAG_XYSWAPPED  = 0x20;
-static const unsigned int FLAG_UNKNOWN    = 0x40;
-static const unsigned int FLAG_COMPRESSED = 0x80;
+const unsigned int FLAG_XYSWAPPED  = 0x20;
+const unsigned int FLAG_UNKNOWN    = 0x40;
+const unsigned int FLAG_COMPRESSED = 0x80;
 
 Image::Image(const int w, const int h)
         : width(w)

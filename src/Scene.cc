@@ -65,7 +65,7 @@ void Scene::FillZBuffer(Camera *cam)
 
 void Scene::DrawHorizon(const int x, const int y, const int w, const int, Camera *cam)
 {
-    static const int HORIZON_TOP_SIZE = 34;
+    const int HORIZON_TOP_SIZE = 34;
     video->FillRect(x, y, w, HORIZON_TOP_SIZE, horizonTexture->GetPixel(0, 0));
     video->FillRect(x, y + HORIZON_TOP_SIZE, w, horizonTexture->GetHeight(), horizonTexture->GetPixels(),
                     (cam->GetHeading() << 2) - x, -y - HORIZON_TOP_SIZE, horizonTexture->GetWidth());
@@ -73,7 +73,7 @@ void Scene::DrawHorizon(const int x, const int y, const int w, const int, Camera
 
 void Scene::DrawGround(const int x, const int y, const int w, const int h, Camera *cam)
 {
-    static const int TERRAIN_YOFFSET = 81;
+    const int TERRAIN_YOFFSET = 81;
     int offset = (((cam->GetHeading() * 16) + ((cam->GetPos().GetX() + cam->GetPos().GetY()) / 100)) % (terrainTexture->GetWidth() / 3));
     video->FillRect(x, y + h - TERRAIN_HEIGHT, w, TERRAIN_HEIGHT, terrainTexture->GetPixels(),
                     offset - x, TERRAIN_YOFFSET - y - h + TERRAIN_HEIGHT, terrainTexture->GetWidth());

@@ -22,8 +22,8 @@
 #include "ObjectResource.h"
 #include "WidgetFactory.h"
 
-static const unsigned int ARMOR_OFFSET    = 60;
-static const unsigned int CROSSBOW_OFFSET = 30;
+const unsigned int ARMOR_OFFSET    = 60;
+const unsigned int CROSSBOW_OFFSET = 30;
 
 EquipmentWidget::EquipmentWidget(const Rectangle &r, PlayerCharacter *pc, ImageResource& img, Image *as, Image *cbs, Font *f)
         : ContainerWidget(r)

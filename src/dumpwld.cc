@@ -31,8 +31,8 @@
 #include "FileManager.h"
 #include "TileWorldResource.h"
 
-static const unsigned int MAP_SIZE_X = 96;
-static const unsigned int MAP_SIZE_Y = 96;
+const unsigned int MAP_SIZE_X = 96;
+const unsigned int MAP_SIZE_Y = 96;
 
 int main(int argc, char *argv[])
 {

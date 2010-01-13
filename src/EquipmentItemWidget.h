@@ -28,11 +28,10 @@
 #include "ObjectResource.h"
 #include "TextWidget.h"
 
-static const int MAX_EQUIPMENT_ITEM_WIDGET_WIDTH  = 80;
-static const int MAX_EQUIPMENT_ITEM_WIDGET_HEIGHT = 58;
+const int MAX_EQUIPMENT_ITEM_WIDGET_WIDTH  = 80;
+const int MAX_EQUIPMENT_ITEM_WIDGET_HEIGHT = 58;
 
-class EquipmentItemWidget
-            : public Widget
+class EquipmentItemWidget : public Widget
 {
 private:
     ObjectType type;

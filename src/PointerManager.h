@@ -27,8 +27,8 @@
 #include "InventoryItemWidget.h"
 #include "Pointer.h"
 
-static const unsigned int NORMAL_POINTER = 0;
-static const unsigned int SPECIAL_POINTER = 1;
+const unsigned int NORMAL_POINTER = 0;
+const unsigned int SPECIAL_POINTER = 1;
 
 class PointerManager
             : public PointerButtonEventListener

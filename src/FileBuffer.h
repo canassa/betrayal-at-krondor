@@ -33,9 +33,9 @@
 #include "alt_stdint.h"
 #endif
 
-static const unsigned int COMPRESSION_LZW  = 0;
-static const unsigned int COMPRESSION_LZSS = 1;
-static const unsigned int COMPRESSION_RLE  = 2;
+const unsigned int COMPRESSION_LZW  = 0;
+const unsigned int COMPRESSION_LZSS = 1;
+const unsigned int COMPRESSION_RLE  = 2;
 
 class FileBuffer
 {

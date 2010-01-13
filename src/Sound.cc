@@ -28,7 +28,8 @@ Sound::Sound(const unsigned int t)
         , format(SF_UNKNOWN)
         , buffer()
         , midiEvents()
-{}
+{
+}
 
 Sound::~Sound()
 {
@@ -36,38 +37,33 @@ Sound::~Sound()
     midiEvents.clear();
 }
 
-unsigned int
-Sound::GetType() const
+unsigned int Sound::GetType() const
 {
     return type;
 }
 
-unsigned int
-Sound::GetChannel() const
+unsigned int Sound::GetChannel() const
 {
     return channel;
 }
 
-SoundFormat
-Sound::GetFormat() const
+SoundFormat Sound::GetFormat() const
 {
     return format;
 }
 
-FileBuffer *
-Sound::GetSamples()
+FileBuffer * Sound::GetSamples()
 {
     return buffer;
 }
 
 /* WAVE/RIFF tags & constants */
-static const uint32_t RIFF_ID         = 0x46464952;
-static const uint32_t WAVE_ID         = 0x45564157;
-static const uint32_t FMT_ID          = 0x20746d66;
-static const uint32_t DATA_ID         = 0x61746164;
+const uint32_t RIFF_ID         = 0x46464952;
+const uint32_t WAVE_ID         = 0x45564157;
+const uint32_t FMT_ID          = 0x20746d66;
+const uint32_t DATA_ID         = 0x61746164;
 
-void
-Sound::CreateWaveSamples(FileBuffer *buf)
+void Sound::CreateWaveSamples(FileBuffer *buf)
 {
     buf->Skip(1);
     unsigned int rate = buf->GetUint16LE();
@@ -91,52 +87,51 @@ Sound::CreateWaveSamples(FileBuffer *buf)
     buffer->Rewind();
 }
 
-void
-Sound::GenerateWave()
-{}
+void Sound::GenerateWave()
+{
+}
 
 /* Standard MIDI File tags & constants */
-static const uint32_t SMF_HEADER      = 0x6468544d;
-static const uint32_t SMF_TRACK       = 0x6b72544d;
-static const uint16_t SMF_FORMAT      = 0;
-static const uint32_t SMF_HEADER_SIZE = 6;
-static const uint16_t SMF_PPQN        = 32;
+const uint32_t SMF_HEADER      = 0x6468544d;
+const uint32_t SMF_TRACK       = 0x6b72544d;
+const uint16_t SMF_FORMAT      = 0;
+const uint32_t SMF_HEADER_SIZE = 6;
+const uint16_t SMF_PPQN        = 32;
 
 /* MIDI event codes */
-static const uint8_t MIDI_NOTE_OFF  = 0x80;
-static const uint8_t MIDI_NOTE_ON   = 0x90;
-static const uint8_t MIDI_KEY       = 0xa0;
-static const uint8_t MIDI_CONTROL   = 0xb0;
-static const uint8_t MIDI_PATCH     = 0xc0;
-static const uint8_t MIDI_CHANNEL   = 0xd0;
-static const uint8_t MIDI_PITCH     = 0xe0;
-static const uint8_t MIDI_SYSEX     = 0xf0;
-static const uint8_t MIDI_TIMING    = 0xf8;
-static const uint8_t MIDI_SEQ_START = 0xfa;
-static const uint8_t MIDI_SEQ_CONT  = 0xfb;
-static const uint8_t MIDI_SEQ_END   = 0xfc;
-static const uint8_t MIDI_META      = 0xff;
+const uint8_t MIDI_NOTE_OFF  = 0x80;
+const uint8_t MIDI_NOTE_ON   = 0x90;
+const uint8_t MIDI_KEY       = 0xa0;
+const uint8_t MIDI_CONTROL   = 0xb0;
+const uint8_t MIDI_PATCH     = 0xc0;
+const uint8_t MIDI_CHANNEL   = 0xd0;
+const uint8_t MIDI_PITCH     = 0xe0;
+const uint8_t MIDI_SYSEX     = 0xf0;
+const uint8_t MIDI_TIMING    = 0xf8;
+const uint8_t MIDI_SEQ_START = 0xfa;
+const uint8_t MIDI_SEQ_CONT  = 0xfb;
+const uint8_t MIDI_SEQ_END   = 0xfc;
+const uint8_t MIDI_META      = 0xff;
 
 /* MIDI Meta events */
-static const uint8_t META_SEQNUM     = 0x00;
-static const uint8_t META_TEXT       = 0x01;
-static const uint8_t META_COPYRIGHT  = 0x02;
-static const uint8_t META_TRACK      = 0x03;
-static const uint8_t META_INSTRUMENT = 0x04;
-static const uint8_t META_LYRIC      = 0x05;
-static const uint8_t META_MARKER     = 0x06;
-static const uint8_t META_CUE        = 0x07;
-static const uint8_t META_CHANNEL    = 0x20;
-static const uint8_t META_PORT       = 0x21;
-static const uint8_t META_EOT        = 0x2f;
-static const uint8_t META_TEMPO      = 0x51;
-static const uint8_t META_SMPTE      = 0x54;
-static const uint8_t META_TIME       = 0x58;
-static const uint8_t META_KEY        = 0x59;
-static const uint8_t META_SEQDATA    = 0x7f;
+const uint8_t META_SEQNUM     = 0x00;
+const uint8_t META_TEXT       = 0x01;
+const uint8_t META_COPYRIGHT  = 0x02;
+const uint8_t META_TRACK      = 0x03;
+const uint8_t META_INSTRUMENT = 0x04;
+const uint8_t META_LYRIC      = 0x05;
+const uint8_t META_MARKER     = 0x06;
+const uint8_t META_CUE        = 0x07;
+const uint8_t META_CHANNEL    = 0x20;
+const uint8_t META_PORT       = 0x21;
+const uint8_t META_EOT        = 0x2f;
+const uint8_t META_TEMPO      = 0x51;
+const uint8_t META_SMPTE      = 0x54;
+const uint8_t META_TIME       = 0x58;
+const uint8_t META_KEY        = 0x59;
+const uint8_t META_SEQDATA    = 0x7f;
 
-void
-Sound::PutVariableLength(FileBuffer *buf, unsigned int n)
+void Sound::PutVariableLength(FileBuffer *buf, unsigned int n)
 {
     unsigned int tmp = (n & 0x7f);
     unsigned int k = 1;
@@ -153,8 +148,7 @@ Sound::PutVariableLength(FileBuffer *buf, unsigned int n)
     }
 }
 
-void
-Sound::CreateMidiEvents(FileBuffer *buf)
+void Sound::CreateMidiEvents(FileBuffer *buf)
 {
     unsigned int delta;
     unsigned int code;
@@ -235,8 +229,7 @@ Sound::CreateMidiEvents(FileBuffer *buf)
     }
 }
 
-void
-Sound::GenerateMidi()
+void Sound::GenerateMidi()
 {
     unsigned int size = 0;
     unsigned int tick = 0;
@@ -285,8 +278,7 @@ Sound::GenerateMidi()
     buffer->Rewind();
 }
 
-void
-Sound::AddVoice(FileBuffer *buf)
+void Sound::AddVoice(FileBuffer *buf)
 {
     unsigned int code = buf->GetUint8();
     channel = code & 0x0f;
@@ -302,8 +294,7 @@ Sound::AddVoice(FileBuffer *buf)
     }
 }
 
-void
-Sound::GenerateBuffer()
+void Sound::GenerateBuffer()
 {
     if (format == SF_MIDI)
     {

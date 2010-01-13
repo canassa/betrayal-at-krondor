@@ -115,8 +115,8 @@ Directories::CreatePath(const std::string &path)
 #endif
 }
 
-static const std::string SEARCH_RESOURCE_FILE = "krondor.001";
-static const std::string SEARCH_RESOURCE_PATH[] =
+const std::string SEARCH_RESOURCE_FILE = "krondor.001";
+const std::string SEARCH_RESOURCE_PATH[] =
     {
         "./",
         "/krondor/",

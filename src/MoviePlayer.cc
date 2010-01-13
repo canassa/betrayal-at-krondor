@@ -24,34 +24,34 @@
 #include "MoviePlayer.h"
 #include "PointerManager.h"
 
-static const unsigned int SAVE_BACKGROUND    = 0x0020;
-static const unsigned int DRAW_BACKGROUND    = 0x0080;
-static const unsigned int PURGE              = 0x0110;
-static const unsigned int UPDATE             = 0x0ff0;
-static const unsigned int DELAY              = 0x1020;
-static const unsigned int SLOT_IMAGE         = 0x1050;
-static const unsigned int SLOT_PALETTE       = 0x1060;
-static const unsigned int SET_SCENE          = 0x1110;
-static const unsigned int SET_FRAME0         = 0x2000;
-static const unsigned int SET_FRAME1         = 0x2010;
-static const unsigned int FADE_OUT           = 0x4110;
-static const unsigned int FADE_IN            = 0x4120;
-static const unsigned int SAVE_IMAGE0        = 0x4200;
-static const unsigned int SAVE_IMAGE1        = 0x4210;
-static const unsigned int SET_WINDOW         = 0xa100;
-static const unsigned int DRAW_SPRITE0       = 0xa500;
-static const unsigned int DRAW_SPRITE1       = 0xa510;
-static const unsigned int DRAW_SPRITE2       = 0xa520;
-static const unsigned int DRAW_SPRITE3       = 0xa530;
-static const unsigned int DRAW_SCREEN        = 0xb600;
-static const unsigned int LOAD_SOUNDRESOURCE = 0xc020;
-static const unsigned int SELECT_SOUND       = 0xc030;
-static const unsigned int DESELECT_SOUND     = 0xc040;
-static const unsigned int PLAY_SOUND         = 0xc050;
-static const unsigned int STOP_SOUND         = 0xc060;
-static const unsigned int LOAD_SCREEN        = 0xf010;
-static const unsigned int LOAD_IMAGE         = 0xf020;
-static const unsigned int LOAD_PALETTE       = 0xf050;
+const unsigned int SAVE_BACKGROUND    = 0x0020;
+const unsigned int DRAW_BACKGROUND    = 0x0080;
+const unsigned int PURGE              = 0x0110;
+const unsigned int UPDATE             = 0x0ff0;
+const unsigned int DELAY              = 0x1020;
+const unsigned int SLOT_IMAGE         = 0x1050;
+const unsigned int SLOT_PALETTE       = 0x1060;
+const unsigned int SET_SCENE          = 0x1110;
+const unsigned int SET_FRAME0         = 0x2000;
+const unsigned int SET_FRAME1         = 0x2010;
+const unsigned int FADE_OUT           = 0x4110;
+const unsigned int FADE_IN            = 0x4120;
+const unsigned int SAVE_IMAGE0        = 0x4200;
+const unsigned int SAVE_IMAGE1        = 0x4210;
+const unsigned int SET_WINDOW         = 0xa100;
+const unsigned int DRAW_SPRITE0       = 0xa500;
+const unsigned int DRAW_SPRITE1       = 0xa510;
+const unsigned int DRAW_SPRITE2       = 0xa520;
+const unsigned int DRAW_SPRITE3       = 0xa530;
+const unsigned int DRAW_SCREEN        = 0xb600;
+const unsigned int LOAD_SOUNDRESOURCE = 0xc020;
+const unsigned int SELECT_SOUND       = 0xc030;
+const unsigned int DESELECT_SOUND     = 0xc040;
+const unsigned int PLAY_SOUND         = 0xc050;
+const unsigned int STOP_SOUND         = 0xc060;
+const unsigned int LOAD_SCREEN        = 0xf010;
+const unsigned int LOAD_IMAGE         = 0xf020;
+const unsigned int LOAD_PALETTE       = 0xf050;
 
 MoviePlayer::MoviePlayer()
 {

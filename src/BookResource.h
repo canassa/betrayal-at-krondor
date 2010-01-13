@@ -28,21 +28,19 @@
 
 #include "ResourceData.h"
 
-static const unsigned DECO_HORIZONTAL_FLIP = 0x01;
-static const unsigned DECO_VERTICAL_FLIP   = 0x02;
+const unsigned DECO_HORIZONTAL_FLIP = 0x01;
+const unsigned DECO_VERTICAL_FLIP   = 0x02;
 
-class ImageInfo
+struct ImageInfo
 {
-public:
     int xpos;
     int ypos;
     unsigned int id;
     unsigned int flag;
 };
 
-class TextBlock
+struct TextBlock
 {
-public:
     bool paragraph;
     bool italic;
     std::string txt;
@@ -74,7 +72,7 @@ public:
     BookResource();
     virtual ~BookResource();
     unsigned int GetNumPages() const;
-    PageData& GetPage ( const unsigned int i );
+    const PageData& GetPage ( const unsigned int i ) const;
     void Clear();
     void Load ( FileBuffer *buffer );
     unsigned int Save ( FileBuffer *buffer );

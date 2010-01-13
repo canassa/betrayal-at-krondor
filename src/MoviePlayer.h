@@ -30,8 +30,8 @@
 #include "SoundResource.h"
 #include "ScreenResource.h"
 
-static const unsigned int MAX_IMAGE_SLOTS   = 4;
-static const unsigned int MAX_PALETTE_SLOTS = 4;
+const unsigned int MAX_IMAGE_SLOTS   = 4;
+const unsigned int MAX_PALETTE_SLOTS = 4;
 
 class MoviePlayer
             : public KeyboardEventListener

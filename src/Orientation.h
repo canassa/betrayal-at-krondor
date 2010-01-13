@@ -26,14 +26,14 @@
 
 #include "Geometry.h"
 
-static const int NORTH = 0;
-static const int EAST  = ANGLE_SIZE / 4;
-static const int SOUTH = ANGLE_SIZE / 2;
-static const int WEST  = 3 * ANGLE_SIZE / 4;
+const int NORTH = 0;
+const int EAST  = ANGLE_SIZE / 4;
+const int SOUTH = ANGLE_SIZE / 2;
+const int WEST  = 3 * ANGLE_SIZE / 4;
 
-static const int TURN_SIZE  = 2;
-static const int TURN_LEFT  = -1 * TURN_SIZE;
-static const int TURN_RIGHT = +1 * TURN_SIZE;
+const int TURN_SIZE  = 2;
+const int TURN_LEFT  = -1 * TURN_SIZE;
+const int TURN_RIGHT = +1 * TURN_SIZE;
 
 class Orientation
 {

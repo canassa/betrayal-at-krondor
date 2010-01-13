@@ -28,10 +28,10 @@
 
 #include "ResourceData.h"
 
-static const unsigned int TILE_SIZE   = 64000;
-static const unsigned int TILE_SIZE_2 = TILE_SIZE / 2;
+const unsigned int TILE_SIZE   = 64000;
+const unsigned int TILE_SIZE_2 = TILE_SIZE / 2;
 
-static const unsigned int OBJECT_CENTER = 0;
+const unsigned int OBJECT_CENTER = 0;
 
 struct TileWorldItem
 {

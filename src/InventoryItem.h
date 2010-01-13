@@ -26,8 +26,8 @@
 
 #include <string>
 
-static const unsigned int REPAIRABLE_MASK = 0x0020;
-static const unsigned int EQUIPED_MASK    = 0x0040;
+const unsigned int REPAIRABLE_MASK = 0x0020;
+const unsigned int EQUIPED_MASK    = 0x0040;
 
 class InventoryItem
 {

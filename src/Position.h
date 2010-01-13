@@ -26,9 +26,9 @@
 
 #include "Geometry.h"
 
-static const int MOVE_SIZE     = 400;
-static const int MOVE_FORWARD  = +1 * MOVE_SIZE;
-static const int MOVE_BACKWARD = -1 * MOVE_SIZE;
+const int MOVE_SIZE     = 400;
+const int MOVE_FORWARD  = +1 * MOVE_SIZE;
+const int MOVE_BACKWARD = -1 * MOVE_SIZE;
 
 class Position
 {

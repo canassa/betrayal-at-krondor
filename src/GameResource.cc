@@ -21,13 +21,14 @@
 #include "GameResource.h"
 #include "ObjectResource.h"
 
-static const unsigned int INVENTORY_SLOTS = 24;
+const unsigned int INVENTORY_SLOTS = 24;
 
 GameResource::GameResource()
         : game(0)
         , xloc(0)
         , yloc(0)
-{}
+{
+}
 
 GameResource::~GameResource()
 {
@@ -37,56 +38,47 @@ GameResource::~GameResource()
     }
 }
 
-Game *
-GameResource::GetGame()
+Game * GameResource::GetGame()
 {
     return game;
 }
 
-void
-GameResource::SetGame(Game *g)
+void GameResource::SetGame(Game *g)
 {
     game = g;
 }
 
-unsigned int
-GameResource::GetZone() const
+unsigned int GameResource::GetZone() const
 {
     return zone;
 }
 
-void
-GameResource::SetZone(const unsigned int z)
+void GameResource::SetZone(const unsigned int z)
 {
     zone = z;
 }
 
-unsigned int
-GameResource::GetXLoc() const
+unsigned int GameResource::GetXLoc() const
 {
     return xloc;
 }
 
-void
-GameResource::SetXLoc(const unsigned int x)
+void GameResource::SetXLoc(const unsigned int x)
 {
     xloc = x;
 }
 
-unsigned int
-GameResource::GetYLoc() const
+unsigned int GameResource::GetYLoc() const
 {
     return yloc;
 }
 
-void
-GameResource::SetYLoc(const unsigned int y)
+void GameResource::SetYLoc(const unsigned int y)
 {
     yloc = y;
 }
 
-void
-GameResource::Load(FileBuffer *buffer)
+void GameResource::Load(FileBuffer *buffer)
 {
     try
     {
@@ -236,8 +228,7 @@ GameResource::Load(FileBuffer *buffer)
     }
 }
 
-unsigned int
-GameResource::Save(FileBuffer *buffer)
+unsigned int GameResource::Save(FileBuffer *buffer)
 {
     if (!game)
     {

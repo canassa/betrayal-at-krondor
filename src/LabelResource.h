@@ -28,8 +28,8 @@
 
 #include "ResourceData.h"
 
-static const int LBL_STANDARD = 0;
-static const int LBL_TITLE    = 3;
+const int LBL_STANDARD = 0;
+const int LBL_TITLE    = 3;
 
 struct LabelData
 {

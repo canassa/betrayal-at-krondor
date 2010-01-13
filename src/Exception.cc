@@ -23,18 +23,18 @@
 
 #include "Exception.h"
 
-static const std::string BUFFER_EMPTY       = "Buffer is empty";
-static const std::string BUFFER_FULL        = "Buffer is full";
-static const std::string COMPRESSION_ERROR  = "Unknown compression method";
-static const std::string DATA_CORRUPTION    = "Data corruption";
-static const std::string FILE_NOT_FOUND     = "File not found";
-static const std::string INDEX_OUT_OF_RANGE = "Index out of range";
-static const std::string IO_ERROR           = "Read/write error";
-static const std::string MEMORY_ERROR       = "Out of memory";
-static const std::string NULL_POINTER       = "Null pointer";
-static const std::string OPEN_ERROR         = "File not open";
-static const std::string SDL_EXCEPTION      = "SDL error";
-static const std::string UNEXPECTED_VALUE   = "Unexpected value";
+const std::string BUFFER_EMPTY       = "Buffer is empty";
+const std::string BUFFER_FULL        = "Buffer is full";
+const std::string COMPRESSION_ERROR  = "Unknown compression method";
+const std::string DATA_CORRUPTION    = "Data corruption";
+const std::string FILE_NOT_FOUND     = "File not found";
+const std::string INDEX_OUT_OF_RANGE = "Index out of range";
+const std::string IO_ERROR           = "Read/write error";
+const std::string MEMORY_ERROR       = "Out of memory";
+const std::string NULL_POINTER       = "Null pointer";
+const std::string OPEN_ERROR         = "File not open";
+const std::string SDL_EXCEPTION      = "SDL error";
+const std::string UNEXPECTED_VALUE   = "Unexpected value";
 
 Exception::Exception(const std::string &file, const unsigned int line, const std::string &msg)
         : filename(file)

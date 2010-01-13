@@ -27,10 +27,9 @@
 #include "ButtonWidget.h"
 #include "PlayerCharacter.h"
 
-static const unsigned int SELECTED_IMAGE = 7;
+const unsigned int SELECTED_IMAGE = 7;
 
-class CharacterButtonWidget
-            : public ButtonWidget
+class CharacterButtonWidget : public ButtonWidget
 {
 private:
     PlayerCharacter *character;

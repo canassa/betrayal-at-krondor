@@ -26,12 +26,12 @@
 #include "SDL_mixer.h"
 #include "SDL_sound.h"
 
-static const unsigned int AUDIO_FREQUENCY       = 11025;
-static const unsigned int AUDIO_FORMAT          = AUDIO_U8;
-static const unsigned int AUDIO_STEREO          = 2;
-static const unsigned int AUDIO_CHANNELS        = 8;
-static const unsigned int AUDIO_BUFFER_SIZE     = 4096;
-static const unsigned int AUDIO_RAW_BUFFER_SIZE = 16384;
+const unsigned int AUDIO_FREQUENCY       = 11025;
+const unsigned int AUDIO_FORMAT          = AUDIO_U8;
+const unsigned int AUDIO_STEREO          = 2;
+const unsigned int AUDIO_CHANNELS        = 8;
+const unsigned int AUDIO_BUFFER_SIZE     = 4096;
+const unsigned int AUDIO_RAW_BUFFER_SIZE = 16384;
 
 SDL_mutex    *audioMutex;
 Sound_Sample *audioSample[AUDIO_CHANNELS];

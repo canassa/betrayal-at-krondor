@@ -22,13 +22,14 @@
 #include "SoundResource.h"
 #include "ResourceTag.h"
 
-static const unsigned int MAX_NUM_SFX = 1000;
+const unsigned int MAX_NUM_SFX = 1000;
 
 SoundData::SoundData()
         : name()
         , type(0)
         , sounds()
-{}
+{
+}
 
 SoundData::~SoundData()
 {
@@ -40,17 +41,17 @@ SoundResource* SoundResource::instance = 0;
 SoundResource::SoundResource()
         : TaggedResource()
         , soundMap()
-{}
+{
+}
 
 SoundResource::~SoundResource()
 {
     Clear();
 }
 
-SoundResource*
-SoundResource::GetInstance()
+SoundResource* SoundResource::GetInstance()
 {
-    if (!instance)
+    if (instance == 0)
     {
         instance = new SoundResource();
         FileManager::GetInstance()->Load(instance, "frp.sx");
@@ -58,24 +59,21 @@ SoundResource::GetInstance()
     return instance;
 }
 
-void
-SoundResource::CleanUp()
+void SoundResource::CleanUp()
 {
-    if (instance)
+    if (instance != 0)
     {
         delete instance;
         instance = 0;
     }
 }
 
-SoundData&
-SoundResource::GetSoundData(unsigned int id)
+SoundData& SoundResource::GetSoundData(unsigned int id)
 {
     return soundMap[id];
 }
 
-void
-SoundResource::Clear()
+void SoundResource::Clear()
 {
     for (std::map<unsigned int, SoundData>::iterator it = soundMap.begin(); it != soundMap.end(); ++it)
     {
@@ -88,8 +86,7 @@ SoundResource::Clear()
     soundMap.clear();
 }
 
-void
-SoundResource::Load(FileBuffer *buffer)
+void SoundResource::Load(FileBuffer *buffer)
 {
     try
     {
@@ -173,8 +170,7 @@ SoundResource::Load(FileBuffer *buffer)
     }
 }
 
-unsigned int
-SoundResource::Save(FileBuffer *buffer)
+unsigned int SoundResource::Save(FileBuffer *buffer)
 {
     try
     {

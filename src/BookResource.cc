@@ -35,7 +35,7 @@ unsigned int BookResource::GetNumPages() const
     return pages.size();
 }
 
-PageData& BookResource::GetPage ( const unsigned int i )
+const PageData& BookResource::GetPage ( const unsigned int i ) const
 {
     return pages[i];
 }
@@ -95,6 +95,7 @@ void BookResource::Load ( FileBuffer *buffer )
             }
             bool endOfPage = false;
             TextBlock tb;
+            tb.paragraph = true;
             tb.italic = false;
             while ( !endOfPage && !buffer->AtEnd() )
             {
@@ -107,6 +108,7 @@ void BookResource::Load ( FileBuffer *buffer )
                         endOfPage = true;
                         break;
                     case 0xf1:
+                        // end of paragraph
                         buffer->Skip ( 16 );
                         break;
                     case 0xf2:

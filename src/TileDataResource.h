@@ -26,8 +26,7 @@
 
 #include "ResourceData.h"
 
-class TileDataResource
-            : public ResourceData
+class TileDataResource : public ResourceData
 {
 private:
 public:

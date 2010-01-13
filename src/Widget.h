@@ -29,21 +29,21 @@
 #include "EventListener.h"
 #include "Geometry.h"
 
-static const int NO_SHADOW            = -1;
-static const int COLOR_BLACK          = 0;
-static const int SHADOW_COLOR         = 1;
-static const int LIGHT_COLOR          = 4;
-static const int TEXT_COLOR_NORMAL    = 10;
-static const int TEXT_COLOR_DISABLED  = 11;
-static const int TEXT_COLOR_PRESSED   = 6;
-static const int BUTTON_COLOR_NORMAL  = 14;
-static const int BUTTON_COLOR_PRESSED = 11;
-static const int POPUP_COLOR          = 14;
-static const int INFO_TEXT_COLOR      = 159;
+const int NO_SHADOW            = -1;
+const int COLOR_BLACK          = 0;
+const int SHADOW_COLOR         = 1;
+const int LIGHT_COLOR          = 4;
+const int TEXT_COLOR_NORMAL    = 10;
+const int TEXT_COLOR_DISABLED  = 11;
+const int TEXT_COLOR_PRESSED   = 6;
+const int BUTTON_COLOR_NORMAL  = 14;
+const int BUTTON_COLOR_PRESSED = 11;
+const int POPUP_COLOR          = 14;
+const int INFO_TEXT_COLOR      = 159;
 
-static const int RIGHT_CLICK_OFFSET   = 256;
-static const int RELEASE_OFFSET       = 512;
-static const int INVENTORY_OFFSET     = 1024;
+const int RIGHT_CLICK_OFFSET   = 256;
+const int RELEASE_OFFSET       = 512;
+const int INVENTORY_OFFSET     = 1024;
 
 class Widget
 {

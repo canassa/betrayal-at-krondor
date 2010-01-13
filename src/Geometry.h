@@ -29,12 +29,12 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-static const float PI  = M_PI;
-static const float PI2 = M_PI + M_PI;
+const float PI  = M_PI;
+const float PI2 = M_PI + M_PI;
 
-static const unsigned int ANGLE_BITS = 8;
-static const unsigned int ANGLE_SIZE = 1 << ANGLE_BITS;
-static const unsigned int ANGLE_MASK = ANGLE_SIZE - 1;
+const unsigned int ANGLE_BITS = 8;
+const unsigned int ANGLE_SIZE = 1 << ANGLE_BITS;
+const unsigned int ANGLE_MASK = ANGLE_SIZE - 1;
 
 class Angle
 {

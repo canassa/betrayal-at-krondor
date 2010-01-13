@@ -27,13 +27,12 @@
 #include "Image.h"
 #include "ResourceData.h"
 
-static const unsigned int SCREEN_WIDTH       = 320;
-static const unsigned int SCREEN_HEIGHT      = 200;
-static const unsigned int BOOK_SCREEN_WIDTH  = 640;
-static const unsigned int BOOK_SCREEN_HEIGHT = 350;
+const unsigned int SCREEN_WIDTH       = 320;
+const unsigned int SCREEN_HEIGHT      = 200;
+const unsigned int BOOK_SCREEN_WIDTH  = 640;
+const unsigned int BOOK_SCREEN_HEIGHT = 350;
 
-class ScreenResource
-            : public ResourceData
+class ScreenResource : public ResourceData
 {
 private:
     Image *image;

@@ -159,30 +159,30 @@ typedef enum
 } Key;
 
 /* Keyboard modifiers */
-static const int MOD_NONE   = 0x0000;
+const int MOD_NONE   = 0x0000;
 
-static const int MOD_LSHIFT = 0x0001;
-static const int MOD_RSHIFT = 0x0002;
-static const int MOD_LCTRL  = 0x0040;
-static const int MOD_RCTRL  = 0x0080;
-static const int MOD_LALT   = 0x0100;
-static const int MOD_RALT   = 0x0200;
+const int MOD_LSHIFT = 0x0001;
+const int MOD_RSHIFT = 0x0002;
+const int MOD_LCTRL  = 0x0040;
+const int MOD_RCTRL  = 0x0080;
+const int MOD_LALT   = 0x0100;
+const int MOD_RALT   = 0x0200;
 
-static const int MOD_NUM    = 0x1000;
-static const int MOD_CAPS   = 0x2000;
+const int MOD_NUM    = 0x1000;
+const int MOD_CAPS   = 0x2000;
 
-static const int MOD_CTRL   = MOD_LCTRL | MOD_RCTRL;
-static const int MOD_SHIFT  = MOD_LSHIFT | MOD_RSHIFT;
-static const int MOD_ALT    = MOD_LALT | MOD_RALT;
+const int MOD_CTRL   = MOD_LCTRL | MOD_RCTRL;
+const int MOD_SHIFT  = MOD_LSHIFT | MOD_RSHIFT;
+const int MOD_ALT    = MOD_LALT | MOD_RALT;
 
 /* Timer ID's */
-static const unsigned long TMR_TEST_APP     = 1;
-static const unsigned long TMR_GAME_APP     = 2;
-static const unsigned long TMR_CHAPTER      = 3;
-static const unsigned long TMR_MOVIE_PLAYER = 4;
-static const unsigned long TMR_PALETTE      = 5;
-static const unsigned long TMR_MOVING       = 6;
-static const unsigned long TMR_TURNING      = 7;
+const unsigned long TMR_TEST_APP     = 1;
+const unsigned long TMR_GAME_APP     = 2;
+const unsigned long TMR_CHAPTER      = 3;
+const unsigned long TMR_MOVIE_PLAYER = 4;
+const unsigned long TMR_PALETTE      = 5;
+const unsigned long TMR_MOVING       = 6;
+const unsigned long TMR_TURNING      = 7;
 
 
 typedef enum

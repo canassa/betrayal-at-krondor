@@ -32,7 +32,7 @@
 #include "alt_stdint.h"
 #endif
 
-static const unsigned int MAX_FONT_HEIGHT = 16;
+const unsigned int MAX_FONT_HEIGHT = 16;
 
 typedef uint16_t GlyphData[MAX_FONT_HEIGHT];
 

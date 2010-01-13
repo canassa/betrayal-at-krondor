@@ -26,13 +26,13 @@
 
 #include "Geometry.h"
 
-static const unsigned int MAX_VIEW_DISTANCE = 32000;
-static const unsigned int MIN_VIEW_DISTANCE = 32;
+const unsigned int MAX_VIEW_DISTANCE = 32000;
+const unsigned int MIN_VIEW_DISTANCE = 32;
 
-static const int ANGLE_OF_VIEW = 12;
-static const int ANGLE_VIEW_DISTANCE = MAX_VIEW_DISTANCE / 2;
+const int ANGLE_OF_VIEW = 12;
+const int ANGLE_VIEW_DISTANCE = MAX_VIEW_DISTANCE / 2;
 
-static const int TERRAIN_HEIGHT = 38;
+const int TERRAIN_HEIGHT = 38;
 
 class Vertex
 {

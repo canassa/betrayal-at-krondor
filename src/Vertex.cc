@@ -81,7 +81,7 @@ float Vertex::GetDistanceFactor() const
 
 Vector2D Vertex::ToFirstPerson(int w, int h, const Angle &heading)
 {
-    static const int ANGLE_AOV = 2 * ANGLE_OF_VIEW + 1;
+    const int ANGLE_AOV = 2 * ANGLE_OF_VIEW + 1;
     int x = (int)((float)w * (float)(angle.Get() - heading.Get() + ANGLE_OF_VIEW - 1) / (float)ANGLE_AOV);
     int y = h - (int)((float)TERRAIN_HEIGHT * (1.0 - distanceFactor) + ((float)relpos.GetZ() * (0.05 + 0.45 * distanceFactor)));
     return Vector2D(x, y);

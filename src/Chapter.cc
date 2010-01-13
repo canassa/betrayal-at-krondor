@@ -92,7 +92,7 @@ void Chapter::PlayScene ( const int scene )
 
 void Chapter::ReadBook ( const int scene )
 {
-    static const std::string ROMAN_NUMBER[] = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV"};
+    const std::string ROMAN_NUMBER[] = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV"};
 
     try
     {

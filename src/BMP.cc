@@ -46,43 +46,40 @@ typedef struct _BitmapInfoHeader
 }
 BitmapInfoHeader;
 
-static const unsigned int BITMAP_FILE_HEADER_SIZE = 14;
-static const unsigned int BITMAP_INFO_HEADER_SIZE = 40;
+const unsigned int BITMAP_FILE_HEADER_SIZE = 14;
+const unsigned int BITMAP_INFO_HEADER_SIZE = 40;
 
 BMP::BMP()
         : image(0)
         , palette(0)
-{}
+{
+}
 
 BMP::~BMP()
-{}
+{
+}
 
-Image *
-BMP::GetImage() const
+Image * BMP::GetImage() const
 {
     return image;
 }
 
-void
-BMP::SetImage(Image *img)
+void BMP::SetImage(Image *img)
 {
     image = img;
 }
 
-Palette *
-BMP::GetPalette() const
+Palette * BMP::GetPalette() const
 {
     return palette;
 }
 
-void
-BMP::SetPalette(Palette *pal)
+void BMP::SetPalette(Palette *pal)
 {
     palette = pal;
 }
 
-void
-BMP::Load(const std::string &name)
+void BMP::Load(const std::string &name)
 {
     std::ifstream ifs;
     ifs.open(name.c_str(), std::ios::in | std::ios::binary);
@@ -171,8 +168,7 @@ BMP::Load(const std::string &name)
     ifs.close();
 }
 
-void
-BMP::Save(const std::string &name)
+void BMP::Save(const std::string &name)
 {
     std::ofstream ofs;
 

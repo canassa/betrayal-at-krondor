@@ -19,12 +19,12 @@
 
 #include "CompassWidget.h"
 
-static const int COMPASS_WIDGET_XPOS   = 144;
-static const int COMPASS_WIDGET_YPOS   = 121;
-static const int COMPASS_WIDGET_WIDTH  = 32;
-static const int COMPASS_WIDGET_HEIGHT = 11;
+const int COMPASS_WIDGET_XPOS   = 144;
+const int COMPASS_WIDGET_YPOS   = 121;
+const int COMPASS_WIDGET_WIDTH  = 32;
+const int COMPASS_WIDGET_HEIGHT = 11;
 
-static const Rectangle COMPASS_WIDGET_RECTANGLE = Rectangle(COMPASS_WIDGET_XPOS, COMPASS_WIDGET_YPOS, COMPASS_WIDGET_WIDTH, COMPASS_WIDGET_HEIGHT);
+const Rectangle COMPASS_WIDGET_RECTANGLE = Rectangle(COMPASS_WIDGET_XPOS, COMPASS_WIDGET_YPOS, COMPASS_WIDGET_WIDTH, COMPASS_WIDGET_HEIGHT);
 
 CompassWidget::CompassWidget(Camera *cam, Image *img)
         : Widget(COMPASS_WIDGET_RECTANGLE)
@@ -46,8 +46,7 @@ CompassWidget::~CompassWidget()
     }
 }
 
-void
-CompassWidget::Draw()
+void CompassWidget::Draw()
 {
     if (IsVisible())
     {
@@ -58,8 +57,7 @@ CompassWidget::Draw()
     }
 }
 
-void
-CompassWidget::Update()
+void CompassWidget::Update()
 {
     if (compassImage)
     {
@@ -77,10 +75,10 @@ CompassWidget::Update()
     }
 }
 
-void
-CompassWidget::Drag(const int, const int)
-{}
+void CompassWidget::Drag(const int, const int)
+{
+}
 
-void
-CompassWidget::Drop(const int, const int)
-{}
+void CompassWidget::Drop(const int, const int)
+{
+}

@@ -32,25 +32,25 @@
 
 #include <string>
 
-static const int WINDOW_WIDTH  = 640;
-static const int WINDOW_HEIGHT = 400;
-static const int WINDOW_COLORS = 256;
-static const int WINDOW_BPP    = 8;
+const int WINDOW_WIDTH  = 640;
+const int WINDOW_HEIGHT = 400;
+const int WINDOW_COLORS = 256;
+const int WINDOW_BPP    = 8;
 
-static const int HIRES_LOCOL_WIDTH  = 640;
-static const int HIRES_LOCOL_HEIGHT = 350;
-static const int HIRES_LOCOL_COLORS = 16;
-static const int HIRES_LOCOL_BPP    = 4;
+const int HIRES_LOCOL_WIDTH  = 640;
+const int HIRES_LOCOL_HEIGHT = 350;
+const int HIRES_LOCOL_COLORS = 16;
+const int HIRES_LOCOL_BPP    = 4;
 
-static const int LORES_HICOL_WIDTH  = 320;
-static const int LORES_HICOL_HEIGHT = 200;
-static const int LORES_HICOL_COLORS = 256;
-static const int LORES_HICOL_BPP    = 8;
+const int LORES_HICOL_WIDTH  = 320;
+const int LORES_HICOL_HEIGHT = 200;
+const int LORES_HICOL_COLORS = 256;
+const int LORES_HICOL_BPP    = 8;
 
 #ifdef PACKAGE_STRING
-static const char WINDOW_TITLE[] = PACKAGE_STRING;
+const char WINDOW_TITLE[] = PACKAGE_STRING;
 #else
-static const char WINDOW_TITLE[] = "xbak";
+const char WINDOW_TITLE[] = "xbak";
 #endif
 
 struct Color

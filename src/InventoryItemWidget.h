@@ -27,8 +27,8 @@
 #include "Image.h"
 #include "TextWidget.h"
 
-static const int MAX_INVENTORY_ITEM_WIDGET_WIDTH  = 80;
-static const int MAX_INVENTORY_ITEM_WIDGET_HEIGHT = 58;
+const int MAX_INVENTORY_ITEM_WIDGET_WIDTH  = 80;
+const int MAX_INVENTORY_ITEM_WIDGET_HEIGHT = 58;
 
 class InventoryItemWidget
             : public ActiveWidget

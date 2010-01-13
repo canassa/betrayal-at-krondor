@@ -28,7 +28,7 @@
 #include "TableResource.h"
 #include "TileWorldResource.h"
 
-static const unsigned int MAX_TILES = 32;
+const unsigned int MAX_TILES = 32;
 
 class Zone
 {

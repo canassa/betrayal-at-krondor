@@ -72,8 +72,8 @@ Zone::Load(const unsigned int n)
         horizonStream << "Z" << std::setw(2) << std::setfill('0') << n << "H.BMX";
         FileManager::GetInstance()->Load(&horizon, horizonStream.str());
 
-        static const int TERRAIN_IMAGE_WIDTH = 172;
-        static const int TERRAIN_IMAGE_HEIGHT = 130;
+        const int TERRAIN_IMAGE_WIDTH = 172;
+        const int TERRAIN_IMAGE_HEIGHT = 130;
         std::stringstream textureStream;
         textureStream << "Z" << std::setw(2) << std::setfill('0') << n << "L.SCX";
         ScreenResource textures;
