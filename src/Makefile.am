@@ -118,7 +118,6 @@ noinst_HEADERS = AnimationResource.h \
                  TaggedResource.h \
                  TaggedImageResource.h \
                  TestApplication.h \
-                 Text.h \
                  TextButtonWidget.h \
                  TextWidget.h \
                  TileDataResource.h \
@@ -278,8 +277,6 @@ libguitoolkit_a_SOURCES = BadgeWidget.cc \
                           SkillsWidget.h \
                           Sound.cc \
                           Sound.h \
-                          Text.cc \
-                          Text.h \
                           TextButtonWidget.cc \
                           TextButtonWidget.h \
                           TextWidget.cc \
