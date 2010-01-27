@@ -43,7 +43,7 @@ void TextWidget::SetText ( const std::string &s )
 {
     text = s;
     textWidth = 0;
-    for ( unsigned int i = 0; i < text.length(); i++ )
+    for ( unsigned int i = 0; i < text.size(); i++ )
     {
         textWidth += font->GetWidth ( text[i] - font->GetFirst() );
     }

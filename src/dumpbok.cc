@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
         }
         BookResource *bok = new BookResource;
         FileManager::GetInstance()->Load(bok, argv[1]);
-        for (unsigned int i = 0; i < bok->GetNumPages(); i++)
+        for (unsigned int i = 0; i < bok->GetSize(); i++)
         {
             PageData pd = bok->GetPage(i);
             printf("%d: %3d %3d %3d %3d %2d %2d %2d %2d %04x %1d\n", i,

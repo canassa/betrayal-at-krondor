@@ -30,7 +30,7 @@ BookResource::~BookResource()
     Clear();
 }
 
-unsigned int BookResource::GetNumPages() const
+unsigned int BookResource::GetSize() const
 {
     return pages.size();
 }
@@ -94,9 +94,9 @@ void BookResource::Load ( FileBuffer *buffer )
                 pd.firstLetters.push_back ( info );
             }
             bool endOfPage = false;
-            TextBlock tb;
-            tb.paragraph = true;
-            tb.italic = false;
+            TextInfo ti;
+            ti.paragraph = true;
+            ti.italic = false;
             while ( !endOfPage && !buffer->AtEnd() )
             {
                 unsigned char c = buffer->GetUint8();
@@ -120,10 +120,10 @@ void BookResource::Load ( FileBuffer *buffer )
                         switch ( buffer->GetUint16LE() )
                         {
                         case 1:
-                            tb.italic = false;
+                            ti.italic = false;
                             break;
                         case 5:
-                            tb.italic = true;
+                            ti.italic = true;
                             break;
                         default:
                             break;
@@ -132,16 +132,16 @@ void BookResource::Load ( FileBuffer *buffer )
                     default:
                         break;
                     }
-                    pd.textBlocks.push_back ( tb );
-                    tb.italic = false;
-                    tb.txt.clear();
+                    pd.textBlocks.push_back ( ti );
+                    ti.italic = false;
+                    ti.txt.clear();
                 }
                 else
                 {
-                    tb.txt.push_back ( c );
+                    ti.txt.push_back ( c );
                 }
             }
-            pd.textBlocks.push_back ( tb );
+            pd.textBlocks.push_back ( ti );
             pages.push_back ( pd );
         }
         delete[] pageOffset;

@@ -110,7 +110,7 @@ void Chapter::ReadBook ( const int scene )
         FileManager::GetInstance()->Load ( &bok, filenameStream.str() );
         Video *video = MediaToolkit::GetInstance()->GetVideo();
         video->SetMode ( HIRES_LOWCOL );
-        for ( unsigned int i = 0; i < bok.GetNumPages(); i++ )
+        for ( unsigned int i = 0; i < bok.GetSize(); i++ )
         {
             PageData pd = bok.GetPage ( i );
             Image page ( scr.GetImage() );

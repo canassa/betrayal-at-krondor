@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
         {
             printf("%2d: '%c' (%d)\n", i, i + font->GetFirst(), font->GetWidth(i));
             FontGlyph glyph = font->GetGlyph(i);
-            for (unsigned int j = 0; j < font->GetHeight(); j++)
+            for (int j = 0; j < font->GetHeight(); j++)
             {
                 for (unsigned int k = 0; k < glyph.width; k++)
                 {

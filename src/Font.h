@@ -46,20 +46,20 @@ class Font
 {
 private:
     unsigned int first;
-    unsigned int height;
+    int height;
     std::vector<FontGlyph> fontGlyphs;
 public:
     Font();
     virtual ~Font();
     unsigned int GetFirst() const;
-    void SetFirst ( const unsigned int n );
-    unsigned int GetHeight() const;
-    void SetHeight ( const unsigned int h );
-    unsigned int GetWidth ( const unsigned int n ) const;
+    void SetFirst ( unsigned int n );
+    int GetHeight() const;
+    void SetHeight ( int h );
+    int GetWidth ( unsigned int n ) const;
     unsigned int GetSize() const;
-    FontGlyph& GetGlyph ( const unsigned int n );
+    FontGlyph& GetGlyph ( unsigned int n );
     void AddGlyph ( FontGlyph& glyph );
-    void DrawChar ( const unsigned int x, const unsigned int y, const unsigned int ch, const unsigned int color, const bool italic );
+    void DrawChar ( int x, int y, int ch, int color, bool italic );
 };
 
 #endif

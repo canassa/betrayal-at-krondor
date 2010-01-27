@@ -83,7 +83,7 @@ FontResource::Load(FileBuffer *buffer)
             glyphbuf->Seek(glyphDataStart + i);
             glyph.width = (unsigned int)glyphbuf->GetUint8();
             glyphbuf->Seek(glyphDataStart + numChars + glyphOffset[i]);
-            for (unsigned int j = 0; j < font->GetHeight(); j++)
+            for (int j = 0; j < font->GetHeight(); j++)
             {
                 glyph.data[j] = (uint16_t)glyphbuf->GetUint8() << 8;
                 if (glyph.width > 8)

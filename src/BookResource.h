@@ -39,7 +39,7 @@ struct ImageInfo
     unsigned int flag;
 };
 
-struct TextBlock
+struct TextInfo
 {
     bool paragraph;
     bool italic;
@@ -61,7 +61,7 @@ public:
     bool showNumber;
     std::vector<ImageInfo> decorations;
     std::vector<ImageInfo> firstLetters;
-    std::vector<TextBlock> textBlocks;
+    std::vector<TextInfo> textBlocks;
 };
 
 class BookResource: public ResourceData
@@ -71,7 +71,7 @@ private:
 public:
     BookResource();
     virtual ~BookResource();
-    unsigned int GetNumPages() const;
+    unsigned int GetSize() const;
     const PageData& GetPage ( const unsigned int i ) const;
     void Clear();
     void Load ( FileBuffer *buffer );
