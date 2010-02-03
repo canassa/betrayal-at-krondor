@@ -25,21 +25,8 @@
 #endif
 
 #include "Font.h"
+#include "Text.h"
 #include "Widget.h"
-
-typedef enum
-{
-    HA_LEFT,
-    HA_CENTER,
-    HA_RIGHT
-} HorizontalAlignment;
-
-typedef enum
-{
-    VA_TOP,
-    VA_CENTER,
-    VA_BOTTOM
-} VerticalAlignment;
 
 class TextWidget : public Widget
 {

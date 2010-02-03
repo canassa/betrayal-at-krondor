@@ -23,6 +23,7 @@
 #include "PointerManager.h"
 #include "SDL_Toolkit.h"
 #include "TestApplication.h"
+#include "Text.h"
 #include "TextWidget.h"
 
 TestApplication* TestApplication::instance = 0;
@@ -172,15 +173,20 @@ void TestApplication::DrawFont ( const std::string& name )
         MediaToolkit *media = MediaToolkit::GetInstance();
         FileManager::GetInstance()->Load ( &fnt, name );
         media->GetVideo()->Clear();
-        TextWidget tw1 ( Rectangle ( 10, 10, 280, 180 ), fnt.GetFont() );
-        tw1.SetText ( "The quick brown fox jumped over the lazy dog." );
-        tw1.SetColor ( 15 );
-        tw1.Draw();
-        TextWidget tw2 ( Rectangle ( 10,50, 280, 180 ), fnt.GetFont() );
-        tw2.SetText ( "The quick brown fox jumped over the lazy dog." );
-        tw2.SetColor ( 15 );
-        tw2.SetItalic ( true );
-        tw2.Draw();
+        Text txt;
+        Paragraph pg1 ( fnt.GetFont() );
+        TextBlock tb1a ( "The quick brown fox jumped over the lazy dog.", 15, NO_SHADOW, 0, 0, false );
+        pg1.AddTextBlock ( tb1a );
+        TextBlock tb1b ( "The quick brown fox jumped over the lazy dog.", 15, NO_SHADOW, 0, 0, true );
+        pg1.AddTextBlock ( tb1b );
+        txt.AddParagraph ( pg1 );
+        Paragraph pg2 ( fnt.GetFont() );
+        pg2.SetIndent( 20 );
+        TextBlock tb2 ( "This is just a rather long text to test wrapping lines at the end of the text box. Just some more text to be sure that the text will be wrapped around at the edges.", 15, NO_SHADOW, 0, 0, false );
+        pg2.AddTextBlock ( tb2 );
+        txt.AddParagraph ( pg2 );
+        txt.GenerateLines ( 280, 0 );
+        txt.DrawPage ( 10, 10, 280, 180 );
         media->GetVideo()->Refresh();
         media->GetClock()->StartTimer ( TMR_TEST_APP, 5000 );
         media->WaitEventLoop();

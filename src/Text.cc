@@ -32,16 +32,6 @@ TextBlock::TextBlock ( const std::string& s, int c, int sh, int shx, int shy, bo
 {
 }
 
-TextBlock::TextBlock ( const TextBlock& tb )
-        : words()
-        , color ( tb.color )
-        , shadow ( tb.shadow )
-        , shadowXoff ( tb.shadowXoff )
-        , shadowYoff ( tb.shadowYoff )
-        , italic ( tb.italic )
-{
-}
-
 TextBlock::~TextBlock()
 {
 }
@@ -55,6 +45,12 @@ unsigned int TextBlock::GetSize() const
 void TextBlock::AddWords ( const std::string& s )
 {
     words += s;
+}
+
+
+void TextBlock::EraseWords ( unsigned int n )
+{
+    words.erase ( 0, n );
 }
 
 const std::string& TextBlock::GetWords() const
@@ -88,16 +84,28 @@ int TextBlock::Draw ( int x, int y, int w, int, Font* f ) const
     return xoff;
 }
 
-Line::Line ( Font *f, int i )
+Line::Line ( Font *f )
         : font ( f )
         , textBlocks()
-        , indent ( i )
+        , indent ( 0 )
         , width ( 0 )
 {
 }
 
 Line::~Line()
 {
+    textBlocks.clear();
+}
+
+void Line::SetIndent ( int i )
+{
+    indent = i;
+}
+
+void Line::Clear()
+{
+    textBlocks.clear();
+    width = 0;
 }
 
 void Line::CopyFirstWord ( std::string& s, std::string& word, int& wordWidth )
@@ -109,37 +117,44 @@ void Line::CopyFirstWord ( std::string& s, std::string& word, int& wordWidth )
         s.erase ( 0, 1 );
     }
     unsigned int i = 0;
-    while ( s[i] != ' ' )
+    while ( ( i < s.size() ) && ( s[i] > ' ' ) )
     {
-        i++;
         wordWidth += font->GetWidth ( s[i] - font->GetFirst() );
+        i++;
     }
     word = s.substr ( 0, i );
 }
 
-
 void Line::AddWords ( TextBlock& tb, int w )
 {
-    int wordWidth = 0;
-    std::string words ( tb.GetWords() );
+    std::string words = tb.GetWords();
     std::string word;
-    CopyFirstWord ( words, word, wordWidth );
-    for ( unsigned int i = 0; i < word.size(); i++ )
+    int wordWidth = 0;
+    TextBlock tmp ( "", tb.GetColor(), tb.GetShadow(), tb.GetShadowXOff(), tb.GetShadowYOff(), tb.GetItalic() );
+    bool isFirstWord = true;
+    while ( ( !words.empty() ) && ( ( width + wordWidth ) <= w ) )
     {
-        wordWidth += font->GetWidth ( word[i] - font->GetFirst() );
-    }
-    TextBlock tmp ( tb );
-    while ( ( width + wordWidth ) <= w )
-    {
-        tmp.AddWords ( word );
-        width += wordWidth;
+        CopyFirstWord ( words, word, wordWidth );
+        wordWidth = isFirstWord ? 0 : font->GetWidth ( ' ' - font->GetFirst() );
+        for ( unsigned int i = 0; i < word.size(); i++ )
+        {
+            wordWidth += font->GetWidth ( word[i] - font->GetFirst() );
+        }
+        if ( ( width + wordWidth ) <= w )
+        {
+            if ( !isFirstWord )
+            {
+                tmp.AddWords ( " " );
+                tb.EraseWords ( 1 );
+            }
+            tmp.AddWords ( word );
+            words.erase ( 0, word.size() );
+            tb.EraseWords ( word.size() );
+            width += wordWidth;
+            isFirstWord = false;
+        }
     }
     textBlocks.push_back ( tmp );
-}
-
-int Line::GetWidth() const
-{
-    return width;
 }
 
 void Line::Draw ( int x, int y, int w, int h ) const
@@ -147,7 +162,7 @@ void Line::Draw ( int x, int y, int w, int h ) const
     int xoff = indent;
     for ( unsigned int i = 0; i < textBlocks.size(); i++ )
     {
-        xoff = textBlocks[i].Draw ( x, y, w - xoff, h, font );
+        xoff = textBlocks[i].Draw ( x + xoff, y, w - xoff, h, font );
     }
 }
 
@@ -164,13 +179,14 @@ Paragraph::Paragraph ( Font *f )
 
 Paragraph::~Paragraph()
 {
+    textBlocks.clear();
+    lines.clear();
 }
 
 unsigned int Paragraph::GetSize() const
 {
     return textBlocks.size();
 }
-
 
 const std::vector< Line >& Paragraph::GetLines() const
 {
@@ -192,27 +208,39 @@ void Paragraph::GenerateLines ( int width, int extraIndent )
 {
     lines.clear();
     int lineIndent = indent + extraIndent;
-    Line line ( font, lineIndent );
+    Line line ( font );
+    line.SetIndent( lineIndent );
     for ( unsigned int i = 0; i < textBlocks.size(); i++ )
     {
         TextBlock tb = textBlocks[i];
-        line.AddWords ( tb, width - lineIndent );
-        if ( tb.GetSize() > 0 )
+        while ( tb.GetSize() > 0 )
         {
-            lines.push_back ( line );
-            lineIndent = 0;
+            line.AddWords ( tb, width - lineIndent );
+            if ( ( line.GetWidth() > 0 ) && ( tb.GetSize() > 0 ) )
+            {
+                lines.push_back ( line );
+                line.Clear();
+                lineIndent = 0;
+                line.SetIndent( lineIndent );
+                if ( tb.GetWords()[0] == ' ' )
+                {
+                    tb.EraseWords ( 1 );
+                }
+            }
         }
     }
-    lines.push_back ( line );
+    if ( line.GetWidth() > 0 )
+    {
+        lines.push_back ( line );
+    }
 }
-
 
 void Paragraph::SetIndent ( int i )
 {
     indent = i;
 }
 
-int Paragraph::Draw ( int x, int y, int w, int h, unsigned int& l ) const
+void Paragraph::Draw ( int x, int &y, int w, int &h, unsigned int& l ) const
 {
     while ( ( h > font->GetHeight() ) && ( l < lines.size() ) )
     {
@@ -221,13 +249,11 @@ int Paragraph::Draw ( int x, int y, int w, int h, unsigned int& l ) const
         y += font->GetHeight();
         h -= font->GetHeight();
     }
-    return h;
 }
 
 
-Text::Text ( Font *f )
-        : font ( f )
-        , paragraphs()
+Text::Text()
+        : paragraphs()
         , currentParagraph ( 0 )
         , currentLine ( 0 )
 {
@@ -235,6 +261,7 @@ Text::Text ( Font *f )
 
 Text::~Text()
 {
+    paragraphs.clear();
 }
 
 unsigned int Text::GetSize() const
@@ -264,11 +291,13 @@ void Text::DrawPage ( int x, int y, int w, int h )
     while ( ( h > 0 ) && ( currentParagraph < paragraphs.size() ) )
     {
         Paragraph p = paragraphs[currentParagraph];
-        h = p.Draw ( x, y, w, h, currentLine );
+        p.Draw ( x, y, w, h, currentLine );
         if ( currentLine >= p.GetLines().size() )
         {
             currentParagraph++;
-            h += font->GetHeight() / 2;
+            currentLine = 0;
+            h -= 4;
+            y += 4;
         }
     }
 }

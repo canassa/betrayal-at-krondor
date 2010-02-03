@@ -54,10 +54,30 @@ private:
     bool italic;
 public:
     TextBlock ( const std::string& s, int c, int sh, int shx, int shy, bool it );
-    TextBlock ( const TextBlock& tb );
     ~TextBlock();
+    int GetColor() const
+    {
+        return color;
+    }
+    int GetShadow() const
+    {
+        return shadow;
+    }
+    int GetShadowXOff() const
+    {
+        return shadowXoff;
+    }
+    int GetShadowYOff() const
+    {
+        return shadowYoff;
+    }
+    int GetItalic() const
+    {
+        return italic;
+    }
     unsigned int GetSize() const;
     void AddWords ( const std::string& s );
+    void EraseWords( unsigned int n );
     const std::string& GetWords() const;
     int Draw ( int x, int y, int w, int h, Font *f ) const;
 };
@@ -71,10 +91,15 @@ private:
     int width;
     void CopyFirstWord ( std::string& s, std::string& word, int& wordWidth );
 public:
-    Line ( Font *f, int i );
+    Line ( Font *f );
     ~Line();
-    void AddWords ( TextBlock &tb, int w );
-    int GetWidth() const;
+    void SetIndent ( int i );
+    void Clear();
+    void AddWords ( TextBlock& tb, int w );
+    int GetWidth() const
+    {
+        return width;
+    }
     void Draw ( int x, int y, int w, int h ) const;
 };
 
@@ -92,22 +117,21 @@ public:
     ~Paragraph();
     unsigned int GetSize() const;
     const std::vector<Line>& GetLines() const;
-    void AddTextBlock ( const TextBlock &tb );
+    void AddTextBlock ( const TextBlock& tb );
     void SetAlignment ( const HorizontalAlignment ha, const VerticalAlignment va );
     void SetIndent ( int i );
     void GenerateLines ( int width, int extraIndent );
-    int Draw ( int x, int y, int w, int h, unsigned int& l ) const;
+    void Draw ( int x, int &y, int w, int &h, unsigned int& l ) const;
 };
 
 class Text
 {
 private:
-    Font *font;
     std::vector<Paragraph> paragraphs;
     unsigned int currentParagraph;
     unsigned int currentLine;
 public:
-    Text ( Font *f );
+    Text();
     ~Text();
     unsigned int GetSize() const;
     void AddParagraph ( const Paragraph& p );
