@@ -30,7 +30,7 @@
 #include "ObjectResource.h"
 #include "PointerManager.h"
 #include "SDL_Toolkit.h"
-#include "TextWidget.h"
+#include "Text.h"
 
 GameApplication* GameApplication::instance = 0;
 
@@ -51,10 +51,8 @@ GameApplication::GameApplication()
     pal.GetPalette()->Activate ( 0, WINDOW_COLORS );
     FontResource fnt;
     FileManager::GetInstance()->Load ( &fnt, "GAME.FNT" );
-    TextWidget txt ( Rectangle ( 16, 16, 240, 16 ), fnt.GetFont() );
-    txt.SetText ( "xBaK: Betrayal at Krondor  A fan-made remake" );
-    txt.SetColor ( 15 );
-    txt.Draw();
+    TextBlock txt ( "xBaK: Betrayal at Krondor  A fan-made remake", 15, 0, 0, 0, false );
+    txt.Draw ( 16, 16, 240, 16, fnt.GetFont() );
     media->GetVideo()->Refresh();
 
     config = new ConfigResource;
