@@ -89,7 +89,7 @@ public:
     int Draw ( int x, int y, int w, int h, Font *f ) const;
 };
 
-class Line
+class TextLine
 {
 private:
     Font *font;
@@ -98,8 +98,8 @@ private:
     int width;
     void CopyFirstWord ( std::string& s, std::string& word, int& wordWidth );
 public:
-    Line ( Font *f );
-    ~Line();
+    TextLine ( Font *f );
+    ~TextLine();
     void SetIndent ( int i );
     void Clear();
     void AddWords ( TextBlock& tb, int w );
@@ -115,7 +115,7 @@ class Paragraph
 private:
     Font *font;
     std::vector<TextBlock> textBlocks;
-    std::vector<Line> lines;
+    std::vector<TextLine> lines;
     HorizontalAlignment horAlign;
     VerticalAlignment vertAlign;
     int indent;
@@ -123,7 +123,7 @@ public:
     Paragraph ( Font *f );
     ~Paragraph();
     unsigned int GetSize() const;
-    const std::vector<Line>& GetLines() const;
+    const std::vector<TextLine>& GetLines() const;
     void AddTextBlock ( const TextBlock& tb );
     void SetAlignment ( const HorizontalAlignment ha, const VerticalAlignment va );
     void SetIndent ( int i );

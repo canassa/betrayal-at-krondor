@@ -122,7 +122,7 @@ int TextBlock::Draw ( int x, int y, int w, int, Font* f ) const
     return xoff;
 }
 
-Line::Line ( Font *f )
+TextLine::TextLine ( Font *f )
         : font ( f )
         , textBlocks()
         , indent ( 0 )
@@ -130,23 +130,23 @@ Line::Line ( Font *f )
 {
 }
 
-Line::~Line()
+TextLine::~TextLine()
 {
     textBlocks.clear();
 }
 
-void Line::SetIndent ( int i )
+void TextLine::SetIndent ( int i )
 {
     indent = i;
 }
 
-void Line::Clear()
+void TextLine::Clear()
 {
     textBlocks.clear();
     width = 0;
 }
 
-void Line::CopyFirstWord ( std::string& s, std::string& word, int& wordWidth )
+void TextLine::CopyFirstWord ( std::string& s, std::string& word, int& wordWidth )
 {
     wordWidth = 0;
     if ( s[0] == ' ' )
@@ -163,7 +163,7 @@ void Line::CopyFirstWord ( std::string& s, std::string& word, int& wordWidth )
     word = s.substr ( 0, i );
 }
 
-void Line::AddWords ( TextBlock& tb, int w )
+void TextLine::AddWords ( TextBlock& tb, int w )
 {
     std::string words = tb.GetWords();
     std::string word;
@@ -195,7 +195,7 @@ void Line::AddWords ( TextBlock& tb, int w )
     textBlocks.push_back ( tmp );
 }
 
-void Line::Draw ( int x, int y, int w, int h ) const
+void TextLine::Draw ( int x, int y, int w, int h ) const
 {
     int xoff = indent;
     for ( unsigned int i = 0; i < textBlocks.size(); i++ )
@@ -226,7 +226,7 @@ unsigned int Paragraph::GetSize() const
     return textBlocks.size();
 }
 
-const std::vector< Line >& Paragraph::GetLines() const
+const std::vector< TextLine >& Paragraph::GetLines() const
 {
     return lines;
 }
@@ -246,7 +246,7 @@ void Paragraph::GenerateLines ( int width, int extraIndent )
 {
     lines.clear();
     int lineIndent = indent + extraIndent;
-    Line line ( font );
+    TextLine line ( font );
     line.SetIndent ( lineIndent );
     for ( unsigned int i = 0; i < textBlocks.size(); i++ )
     {
@@ -340,6 +340,6 @@ void Text::DrawPage ( int x, int y, int w, int h )
     }
 }
 
-void Text::DrawScroll ( int x, int y, int w, int h )
+void Text::DrawScroll ( int, int, int, int )
 {
 }
