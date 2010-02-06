@@ -53,32 +53,39 @@ private:
     int shadowYoff;
     bool italic;
 public:
+    TextBlock();
     TextBlock ( const std::string& s, int c, int sh, int shx, int shy, bool it );
     ~TextBlock();
+    void SetColor ( int c );
     int GetColor() const
     {
         return color;
     }
+    void SetShadow ( int sh );
     int GetShadow() const
     {
         return shadow;
     }
+    void SetShadowXOff ( int shx );
     int GetShadowXOff() const
     {
         return shadowXoff;
     }
+    void SetShadowYOff ( int shy );
     int GetShadowYOff() const
     {
         return shadowYoff;
     }
+    void SetItalic ( bool it );
     int GetItalic() const
     {
         return italic;
     }
-    unsigned int GetSize() const;
-    void AddWords ( const std::string& s );
-    void EraseWords( unsigned int n );
+    void SetWords ( const std::string& s );
     const std::string& GetWords() const;
+    void AddWords ( const std::string& s );
+    void EraseWords ( unsigned int n );
+    unsigned int GetSize() const;
     int Draw ( int x, int y, int w, int h, Font *f ) const;
 };
 

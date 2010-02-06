@@ -22,6 +22,16 @@
 #include "Text.h"
 #include "Widget.h"
 
+TextBlock::TextBlock()
+        : words()
+        , color ( 0 )
+        , shadow ( 0 )
+        , shadowXoff ( 0 )
+        , shadowYoff ( 0 )
+        , italic ( false )
+{
+}
+
 TextBlock::TextBlock ( const std::string& s, int c, int sh, int shx, int shy, bool it )
         : words ( s )
         , color ( c )
@@ -36,6 +46,35 @@ TextBlock::~TextBlock()
 {
 }
 
+void TextBlock::SetWords ( const std::string& s )
+{
+    words = s;
+}
+
+void TextBlock::SetColor ( int c )
+{
+    color = c;
+}
+
+void TextBlock::SetShadow ( int sh )
+{
+    shadow = sh;
+}
+
+void TextBlock::SetShadowXOff ( int shx )
+{
+    shadowXoff = shx;
+}
+
+void TextBlock::SetShadowYOff ( int shy )
+{
+    shadowYoff = shy;
+}
+
+void TextBlock::SetItalic ( bool it )
+{
+    italic = it;
+}
 
 unsigned int TextBlock::GetSize() const
 {
@@ -46,7 +85,6 @@ void TextBlock::AddWords ( const std::string& s )
 {
     words += s;
 }
-
 
 void TextBlock::EraseWords ( unsigned int n )
 {
@@ -209,7 +247,7 @@ void Paragraph::GenerateLines ( int width, int extraIndent )
     lines.clear();
     int lineIndent = indent + extraIndent;
     Line line ( font );
-    line.SetIndent( lineIndent );
+    line.SetIndent ( lineIndent );
     for ( unsigned int i = 0; i < textBlocks.size(); i++ )
     {
         TextBlock tb = textBlocks[i];
@@ -221,8 +259,8 @@ void Paragraph::GenerateLines ( int width, int extraIndent )
                 lines.push_back ( line );
                 line.Clear();
                 lineIndent = 0;
-                line.SetIndent( lineIndent );
-                if ( tb.GetWords()[0] == ' ' )
+                line.SetIndent ( lineIndent );
+                if ( tb.GetWords() [0] == ' ' )
                 {
                     tb.EraseWords ( 1 );
                 }

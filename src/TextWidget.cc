@@ -22,16 +22,11 @@
 TextWidget::TextWidget ( const Rectangle &r, Font *f )
         : Widget ( r )
         , font ( f )
-        , text ( "" )
+        , textBlock()
         , textWidth ( 0 )
         , textHeight ( 0 )
-        , color ( 0 )
-        , shadow ( NO_SHADOW )
-        , shadowXoff ( 0 )
-        , shadowYoff ( 0 )
         , horAlign ( HA_CENTER )
         , vertAlign ( VA_CENTER )
-        , italic ( false )
 {
 }
 
@@ -41,25 +36,25 @@ TextWidget::~TextWidget()
 
 void TextWidget::SetText ( const std::string &s )
 {
-    text = s;
+    textBlock.SetWords ( s );
     textWidth = 0;
-    for ( unsigned int i = 0; i < text.size(); i++ )
+    for ( unsigned int i = 0; i < s.size(); i++ )
     {
-        textWidth += font->GetWidth ( text[i] - font->GetFirst() );
+        textWidth += font->GetWidth ( s[i] - font->GetFirst() );
     }
     textHeight = font->GetHeight();
 }
 
 void TextWidget::SetColor ( const int c )
 {
-    color = c;
+    textBlock.SetColor ( c );
 }
 
 void TextWidget::SetShadow ( const int s, const int xoff, const int yoff )
 {
-    shadow = s;
-    shadowXoff = xoff;
-    shadowYoff = yoff;
+    textBlock.SetShadow ( s );
+    textBlock.SetShadowXOff ( xoff );
+    textBlock.SetShadowYOff ( yoff );
 }
 
 void TextWidget::SetAlignment ( const HorizontalAlignment ha, const VerticalAlignment va )
@@ -70,15 +65,13 @@ void TextWidget::SetAlignment ( const HorizontalAlignment ha, const VerticalAlig
 
 void TextWidget::SetItalic ( const bool it )
 {
-    italic = it;
+    textBlock.SetItalic ( it );
 }
 
 void TextWidget::Draw()
 {
     if ( IsVisible() )
     {
-        unsigned int i;
-        unsigned int w;
         int xoff = 0;
         int yoff = 0;
         switch ( horAlign )
@@ -105,25 +98,7 @@ void TextWidget::Draw()
             yoff = rect.GetHeight() - textHeight;
             break;
         }
-        if ( ( shadow > NO_SHADOW ) && ( ( shadowXoff != 0 ) || ( shadowYoff != 0 ) ) )
-        {
-            i = 0;
-            w = 0;
-            while ( ( i < text.length() ) && ( w + font->GetWidth ( text[i] - font->GetFirst() ) < ( unsigned ) rect.GetWidth() ) )
-            {
-                font->DrawChar ( rect.GetXPos() + xoff + shadowXoff + w, rect.GetYPos() + yoff + shadowYoff, text[i], shadow, italic );
-                w += font->GetWidth ( ( unsigned int ) text[i] - font->GetFirst() );
-                i++;
-            }
-        }
-        i = 0;
-        w = 0;
-        while ( ( i < text.length() ) && ( w + font->GetWidth ( text[i] - font->GetFirst() ) < ( unsigned ) rect.GetWidth() ) )
-        {
-            font->DrawChar ( rect.GetXPos() + xoff + w, rect.GetYPos() + yoff, text[i], color, italic );
-            w += font->GetWidth ( ( unsigned int ) text[i] - font->GetFirst() );
-            i++;
-        }
+        textBlock.Draw(rect.GetXPos() + xoff, rect.GetYPos() + yoff, rect.GetWidth(), rect.GetHeight(), font);
     }
 }
 

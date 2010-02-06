@@ -32,16 +32,11 @@ class TextWidget : public Widget
 {
 private:
     Font *font;
-    std::string text;
+    TextBlock textBlock;
     int textWidth;
     int textHeight;
-    int color;
-    int shadow;
-    int shadowXoff;
-    int shadowYoff;
     HorizontalAlignment horAlign;
     VerticalAlignment vertAlign;
-    bool italic;
 public:
     TextWidget ( const Rectangle &r, Font *f );
     virtual ~TextWidget();
