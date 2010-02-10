@@ -26,6 +26,7 @@
 #include "FontResource.h"
 #include "FileManager.h"
 #include "MoviePlayer.h"
+#include "PopUpWidget.h"
 #include "TaggedImageResource.h"
 #include "TextWidget.h"
 
@@ -173,14 +174,8 @@ void Chapter::ShowMap()
         ScreenResource scr;
         FileManager::GetInstance()->Load ( &scr, "FULLMAP.SCX" );
         scr.GetImage()->Draw ( 0, 0 );
-        Video *video = MediaToolkit::GetInstance()->GetVideo();
-        video->FillRect ( 14, 161, 157, 27, BUTTON_COLOR_NORMAL );
-        video->DrawVLine ( 13, 161, 29, SHADOW_COLOR );
-        video->DrawHLine ( 13, 160, 160, LIGHT_COLOR );
-        video->DrawVLine ( 171, 161, 28, LIGHT_COLOR );
-        video->DrawHLine ( 14, 188, 157, SHADOW_COLOR );
-        video->DrawVLine ( 12, 162, 26, COLOR_BLACK );
-        video->DrawHLine ( 12, 189, 157, COLOR_BLACK );
+        PopUpWidget popup ( Rectangle ( 13, 160, 159, 29 ) );
+        popup.Draw();
         pal.GetPalette()->FadeIn ( 0, WINDOW_COLORS, 64, 5 );
         MediaToolkit::GetInstance()->GetClock()->StartTimer ( TMR_CHAPTER, 4000 );
         delayed = true;
