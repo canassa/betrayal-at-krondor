@@ -287,6 +287,10 @@ void Paragraph::Draw ( int x, int &y, int w, int &h, unsigned int& l ) const
         y += font->GetHeight();
         h -= font->GetHeight();
     }
+    if ( h < font->GetHeight() )
+    {
+        h = 0;
+    }
 }
 
 
