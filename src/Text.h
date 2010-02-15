@@ -124,6 +124,7 @@ public:
     ~Paragraph();
     unsigned int GetSize() const;
     const std::vector<TextLine>& GetLines() const;
+    void Clear();
     void AddTextBlock ( const TextBlock& tb );
     void SetAlignment ( const HorizontalAlignment ha, const VerticalAlignment va );
     void SetIndent ( int i );

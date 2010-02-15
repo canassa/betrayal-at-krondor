@@ -231,6 +231,12 @@ const std::vector< TextLine >& Paragraph::GetLines() const
     return lines;
 }
 
+void Paragraph::Clear()
+{
+    textBlocks.clear();
+    lines.clear();
+}
+
 void Paragraph::AddTextBlock ( const TextBlock& tb )
 {
     textBlocks.push_back ( tb );
@@ -280,7 +286,7 @@ void Paragraph::SetIndent ( int i )
 
 void Paragraph::Draw ( int x, int &y, int w, int &h, unsigned int& l ) const
 {
-    while ( ( h > font->GetHeight() ) && ( l < lines.size() ) )
+    while ( ( h >= font->GetHeight() ) && ( l < lines.size() ) )
     {
         lines[l].Draw ( x, y, w, font->GetHeight() );
         l++;
