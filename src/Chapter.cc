@@ -120,6 +120,7 @@ void Chapter::ReadBook ( const int scene )
                 page.VerticalFlip();
             }
             page.Draw ( 0, 0 );
+
             for ( unsigned int j = 0; j < pd.decorations.size(); j++ )
             {
                 if ( pd.decorations[j].id < img.GetNumImages() )
@@ -136,20 +137,54 @@ void Chapter::ReadBook ( const int scene )
                     deco.Draw ( pd.decorations[j].xpos, pd.decorations[j].ypos, 0 );
                 }
             }
+
+            int xoff = 0;
             for ( unsigned int j = 0; j < pd.firstLetters.size(); j++ )
             {
                 if ( pd.firstLetters[j].id < img.GetNumImages() )
                 {
-                    img.GetImage ( pd.firstLetters[j].id )->Draw ( pd.firstLetters[j].xpos, pd.firstLetters[j].ypos, 0 );
+                    Image* letter = img.GetImage ( pd.firstLetters[j].id );
+                    letter->Draw ( pd.firstLetters[j].xpos, pd.firstLetters[j].ypos, 0 );
+                    xoff = letter->GetWidth() - 49;
                 }
             }
+
+            Text txt;
+            Paragraph paragraph ( fnt.GetFont() );
+            paragraph.SetIndent ( 30 );
+            for ( unsigned int j = 0; j < pd.textBlocks.size() ; j++ )
+            {
+                if ( pd.textBlocks[j].txt.size() > 0 )
+                {
+                    TextBlock tb ( pd.textBlocks[j].txt, 0, NO_SHADOW, 0, 0, pd.textBlocks[j].italic );
+                    if ( pd.textBlocks[j].paragraph )
+                    {
+                        paragraph.AddTextBlock ( tb );
+                    }
+                }
+                else
+                {
+                    if ( paragraph.GetSize() > 0 )
+                    {
+                        txt.AddParagraph ( paragraph );
+                        paragraph.Clear();
+                    }
+                }
+            }
+            if ( paragraph.GetSize() > 0 )
+            {
+                txt.AddParagraph ( paragraph );
+            }
+            txt.GenerateLines ( pd.width - 4, xoff );
+            txt.DrawPage ( pd.xpos + 10, pd.ypos + 4, pd.width - 20, pd.height - 4 );
+
             TextWidget pageNumberWidget ( Rectangle ( pd.xpos + 2, pd.ypos + pd.height + 11, pd.width - 4, fnt.GetFont()->GetHeight() ), fnt.GetFont() );
             pageNumberWidget.SetAlignment ( ( pd.number & 1 ) ? HA_RIGHT : HA_LEFT, VA_CENTER );
             pageNumberWidget.SetText ( ROMAN_NUMBER[pd.number] );
             pageNumberWidget.Draw();
 
             pal.GetPalette()->FadeIn ( 0, WINDOW_COLORS, 64, 5 );
-            MediaToolkit::GetInstance()->GetClock()->StartTimer ( TMR_CHAPTER, 4000 );
+            MediaToolkit::GetInstance()->GetClock()->StartTimer ( TMR_CHAPTER, 10000 );
             delayed = true;
             while ( delayed )
             {
