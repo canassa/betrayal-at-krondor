@@ -111,6 +111,8 @@ void Chapter::ReadBook ( const int scene )
         FileManager::GetInstance()->Load ( &bok, filenameStream.str() );
         Video *video = MediaToolkit::GetInstance()->GetVideo();
         video->SetMode ( HIRES_LOWCOL );
+
+        Text txt;
         for ( unsigned int i = 0; i < bok.GetSize(); i++ )
         {
             PageData pd = bok.GetPage ( i );
@@ -149,10 +151,10 @@ void Chapter::ReadBook ( const int scene )
                 }
             }
 
-            Text txt;
             Paragraph paragraph ( fnt.GetFont() );
             paragraph.SetAlignment ( HA_FILL, VA_TOP );
             paragraph.SetIndent ( 30 );
+            bool paragraphAdded = false;
             for ( unsigned int j = 0; j < pd.textBlocks.size() ; j++ )
             {
                 if ( pd.textBlocks[j].txt.size() > 0 )
@@ -168,6 +170,7 @@ void Chapter::ReadBook ( const int scene )
                     if ( paragraph.GetSize() > 0 )
                     {
                         txt.AddParagraph ( paragraph );
+                        paragraphAdded = true;
                         paragraph.Clear();
                     }
                 }
@@ -175,8 +178,12 @@ void Chapter::ReadBook ( const int scene )
             if ( paragraph.GetSize() > 0 )
             {
                 txt.AddParagraph ( paragraph );
+                paragraphAdded = true;
             }
-            txt.GenerateLines ( pd.width - 20, xoff );
+            if ( paragraphAdded )
+            {
+                txt.GenerateLines ( pd.width - 20, xoff );
+            }
             txt.DrawPage ( pd.xpos + 10, pd.ypos + 4, pd.width - 20, pd.height - 4 );
 
             TextWidget pageNumberWidget ( Rectangle ( pd.xpos + 2, pd.ypos + pd.height + 11, pd.width - 4, fnt.GetFont()->GetHeight() ), fnt.GetFont() );
