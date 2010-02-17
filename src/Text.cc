@@ -207,11 +207,6 @@ void TextLine::AddWords ( TextBlock& tb, int w )
     while ( ( !words.empty() ) && ( ( width + wordWidth ) <= w ) )
     {
         CopyFirstWord ( words, word, wordWidth );
-        wordWidth = isFirstWord ? 0 : font->GetWidth ( ' ' - font->GetFirst() );
-        for ( unsigned int i = 0; i < word.size(); i++ )
-        {
-            wordWidth += font->GetWidth ( word[i] - font->GetFirst() );
-        }
         if ( ( width + wordWidth ) <= w )
         {
             if ( !isFirstWord )
@@ -223,6 +218,7 @@ void TextLine::AddWords ( TextBlock& tb, int w )
             words.erase ( 0, word.size() );
             tb.EraseWords ( word.size() );
             width += wordWidth;
+            wordWidth = 0;
             isFirstWord = false;
         }
     }
