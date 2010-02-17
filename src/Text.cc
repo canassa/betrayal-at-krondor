@@ -96,30 +96,64 @@ const std::string& TextBlock::GetWords() const
     return words;
 }
 
-int TextBlock::Draw ( int x, int y, int w, int, Font* f ) const
+int TextBlock::Draw ( int x, int y, int w, int, Font* f, int extraWhiteSpace ) const
 {
-    unsigned int i;
-    int xoff;
+    if ( extraWhiteSpace < 0 )
+    {
+        extraWhiteSpace = 0;
+    }
+    unsigned int i = 1;
+    int numSpaces = 0;
+    while ( i < words.size() )
+    {
+        if ( ( words[i - 1] > ' ' ) && ( words[i] == ' ' ) )
+        {
+            numSpaces++;
+        }
+        i++;
+    }
+    int offset = 0;
+    int extraOff = 0;
+    int space = 0;
+    bool prevWasWS = false;
     if ( ( shadow > NO_SHADOW ) && ( ( shadowXoff != 0 ) || ( shadowYoff != 0 ) ) )
     {
         i = 0;
-        xoff = 0;
-        while ( ( i < words.size() ) && ( xoff + f->GetWidth ( words[i] - f->GetFirst() ) < w ) )
+        offset = 0;
+        extraOff = 0;
+        space = 0;
+        prevWasWS = false;
+        while ( ( i < words.size() ) && ( offset + extraOff + f->GetWidth ( words[i] - f->GetFirst() ) <= w ) )
         {
-            f->DrawChar ( x + shadowXoff + xoff, y + shadowYoff, words[i], shadow, italic );
-            xoff += f->GetWidth ( ( unsigned int ) words[i] - f->GetFirst() );
+            if ( !prevWasWS && ( words[i] == ' ' ) )
+            {
+                space++;
+                extraOff = ( int ) ( ( double ) extraWhiteSpace * ( double ) space / ( double ) numSpaces );
+            }
+            f->DrawChar ( x + shadowXoff + offset + extraOff, y + shadowYoff, words[i], shadow, italic );
+            offset += f->GetWidth ( ( unsigned int ) words[i] - f->GetFirst() );
+            prevWasWS = words[i] == ' ';
             i++;
         }
     }
     i = 0;
-    xoff = 0;
-    while ( ( i < words.size() ) && ( xoff + f->GetWidth ( words[i] - f->GetFirst() ) < w ) )
+    offset = 0;
+    extraOff = 0;
+    space = 0;
+    prevWasWS = false;
+    while ( ( i < words.size() ) && ( offset + extraOff + f->GetWidth ( words[i] - f->GetFirst() ) <= w ) )
     {
-        f->DrawChar ( x + xoff, y, words[i], color, italic );
-        xoff += f->GetWidth ( ( unsigned int ) words[i] - f->GetFirst() );
+        if ( !prevWasWS && ( words[i] == ' ' ) )
+        {
+            space++;
+            extraOff = ( int ) ( ( double ) extraWhiteSpace * ( double ) space / ( double ) numSpaces );
+        }
+        f->DrawChar ( x + offset + extraOff, y, words[i], color, italic );
+        offset += f->GetWidth ( ( unsigned int ) words[i] - f->GetFirst() );
+        prevWasWS = words[i] == ' ';
         i++;
     }
-    return xoff;
+    return offset + extraOff;
 }
 
 TextLine::TextLine ( Font *f )
@@ -195,12 +229,12 @@ void TextLine::AddWords ( TextBlock& tb, int w )
     textBlocks.push_back ( tmp );
 }
 
-void TextLine::Draw ( int x, int y, int w, int h ) const
+void TextLine::Draw ( int x, int y, int w, int h, int extraWhiteSpace ) const
 {
     int xoff = indent;
     for ( unsigned int i = 0; i < textBlocks.size(); i++ )
     {
-        xoff = textBlocks[i].Draw ( x + xoff, y, w - xoff, h, font );
+        xoff = textBlocks[i].Draw ( x + xoff, y, w - xoff, h, font, extraWhiteSpace - xoff);
     }
 }
 
@@ -288,7 +322,31 @@ void Paragraph::Draw ( int x, int &y, int w, int &h, unsigned int& l ) const
 {
     while ( ( h >= font->GetHeight() ) && ( l < lines.size() ) )
     {
-        lines[l].Draw ( x, y, w, font->GetHeight() );
+        int xoff = 0;
+        int extraWS = 0;
+        if ( ( ( l + 1 ) < lines.size() ) && ( lines[l + 1].GetWidth() > 0 ) )
+        {
+            switch ( horAlign )
+            {
+            case HA_LEFT:
+                xoff = 0;
+                extraWS = 0;
+                break;
+            case HA_CENTER:
+                xoff = ( w - lines[l].GetWidth() ) / 2;
+                extraWS = 0;
+                break;
+            case HA_RIGHT:
+                xoff = w - lines[l].GetWidth();
+                extraWS = 0;
+                break;
+            case HA_FILL:
+                xoff = 0;
+                extraWS = w - lines[l].GetWidth();
+                break;
+            }
+        }
+        lines[l].Draw ( x + xoff, y, w, font->GetHeight(), extraWS );
         l++;
         y += font->GetHeight();
         h -= font->GetHeight();
@@ -316,7 +374,6 @@ unsigned int Text::GetSize() const
 {
     return paragraphs.size();
 }
-
 
 void Text::AddParagraph ( const Paragraph& p )
 {

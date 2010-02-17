@@ -151,6 +151,7 @@ void Chapter::ReadBook ( const int scene )
 
             Text txt;
             Paragraph paragraph ( fnt.GetFont() );
+            paragraph.SetAlignment ( HA_FILL, VA_TOP );
             paragraph.SetIndent ( 30 );
             for ( unsigned int j = 0; j < pd.textBlocks.size() ; j++ )
             {
@@ -175,7 +176,7 @@ void Chapter::ReadBook ( const int scene )
             {
                 txt.AddParagraph ( paragraph );
             }
-            txt.GenerateLines ( pd.width - 4, xoff );
+            txt.GenerateLines ( pd.width - 20, xoff );
             txt.DrawPage ( pd.xpos + 10, pd.ypos + 4, pd.width - 20, pd.height - 4 );
 
             TextWidget pageNumberWidget ( Rectangle ( pd.xpos + 2, pd.ypos + pd.height + 11, pd.width - 4, fnt.GetFont()->GetHeight() ), fnt.GetFont() );

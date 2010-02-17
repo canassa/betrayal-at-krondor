@@ -85,6 +85,9 @@ void TextWidget::Draw()
         case HA_RIGHT:
             xoff = rect.GetWidth() - textWidth;
             break;
+        case HA_FILL:
+            xoff = 0;
+            break;
         }
         switch ( vertAlign )
         {

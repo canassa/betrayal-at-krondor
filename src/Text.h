@@ -33,7 +33,8 @@ typedef enum
 {
     HA_LEFT,
     HA_CENTER,
-    HA_RIGHT
+    HA_RIGHT,
+    HA_FILL
 } HorizontalAlignment;
 
 typedef enum
@@ -86,7 +87,7 @@ public:
     void AddWords ( const std::string& s );
     void EraseWords ( unsigned int n );
     unsigned int GetSize() const;
-    int Draw ( int x, int y, int w, int h, Font *f ) const;
+    int Draw ( int x, int y, int w, int h, Font *f, int extraWhiteSpace = 0 ) const;
 };
 
 class TextLine
@@ -107,7 +108,7 @@ public:
     {
         return width;
     }
-    void Draw ( int x, int y, int w, int h ) const;
+    void Draw ( int x, int y, int w, int h, int extraWhiteSpace ) const;
 };
 
 class Paragraph
