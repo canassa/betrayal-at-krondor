@@ -133,8 +133,8 @@ Image::Image(const int w, const int h, Image *img)
     {
         pixel = new uint8_t[width * height];
         uint8_t *p = pixel;
-        float fx = (float)img->width / (float)width;
-        float fy = (float)img->height / (float)height;
+        double fx = (double)img->width / (double)width;
+        double fy = (double)img->height / (double)height;
         for (int y = 0; y < height; y++)
         {
             uint8_t *prow = img->pixel + (int)(y * fy) * img->width;

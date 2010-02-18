@@ -43,12 +43,12 @@ const Angle & Orientation::GetAngle() const
     return heading;
 }
 
-float Orientation::GetCos() const
+double Orientation::GetCos() const
 {
     return heading.GetCos();
 }
 
-float Orientation::GetSin() const
+double Orientation::GetSin() const
 {
     return heading.GetSin();
 }

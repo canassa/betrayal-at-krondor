@@ -47,7 +47,7 @@ bool SpriteObject::IsInView(const Angle & heading, unsigned int & distance)
 
 void SpriteObject::DrawFirstPerson(const int x, const int y, const int w, const int h, Camera *cam)
 {
-    Image *image = new Image((int)((float)sprite->GetWidth() * pos.GetDistanceFactor()), (int)((float)sprite->GetHeight() * pos.GetDistanceFactor()), sprite);
+    Image *image = new Image((int)((double)sprite->GetWidth() * pos.GetDistanceFactor()), (int)((double)sprite->GetHeight() * pos.GetDistanceFactor()), sprite);
     Vector2D v = pos.ToFirstPerson(w, h, cam->GetOrientation().GetAngle());
     int ww = MIN(image->GetWidth(), w - v.GetX());
     int hh = image->GetHeight();

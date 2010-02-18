@@ -45,8 +45,8 @@ class Orientation
         const Angle & GetAngle() const;
         int GetHeading() const;
         void SetHeading ( const int head );
-        float GetCos() const;
-        float GetSin() const;
+        double GetCos() const;
+        double GetSin() const;
         void AdjustHeading ( const int delta );
 };
 

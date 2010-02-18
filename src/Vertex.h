@@ -41,7 +41,7 @@ class Vertex
         Vector3D relpos;
         Angle angle;
         unsigned int distance;
-        float distanceFactor;
+        double distanceFactor;
     public:
         Vertex();
         Vertex ( const Vector3D &p );
@@ -51,7 +51,7 @@ class Vertex
         const Vector3D& GetRelativePosition() const;
         int GetAngle() const;
         unsigned int GetDistance() const;
-        float GetDistanceFactor() const;
+        double GetDistanceFactor() const;
         Vector2D ToFirstPerson ( int w, int h, const Angle & heading );
         Vector2D ToTopDown ( int w, int h );
         void CalculateRelativePosition ( const Vector2D &p );

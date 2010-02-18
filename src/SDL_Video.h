@@ -34,7 +34,7 @@ struct PolygonEdge
     int y0;
     int x1;
     int y1;
-    float dxdy;
+    double dxdy;
 };
 
 struct Surface

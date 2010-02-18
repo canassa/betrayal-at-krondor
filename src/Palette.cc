@@ -103,7 +103,7 @@ Palette::FadeFrom(Color* from, const unsigned int first, const unsigned int n, c
     Color* tmp = new Color[WINDOW_COLORS];
     for (unsigned int i = 0; i <= steps; i++)
     {
-        float x = (float)i / (float)steps;
+        double x = (double)i / (double)steps;
         for (unsigned int j = first; j < first + n; j++)
         {
             tmp[j].r = from[j].r + (int)((colors[j].r - from[j].r) * x);
@@ -125,7 +125,7 @@ Palette::FadeTo(Color* to, const unsigned int first, const unsigned int n, const
     media->GetVideo()->GetPalette(tmp, 0, WINDOW_COLORS);
     for (unsigned int i = 0; i <= steps; i++)
     {
-        float x = (float)i / (float)steps;
+        double x = (double)i / (double)steps;
         for (unsigned int j = first; j < first + n; j++)
         {
             tmp[j].r = colors[j].r + (int)((to[j].r - colors[j].r) * x);

@@ -295,7 +295,7 @@ bool SDL_Video::CreateEdge(PolygonEdge &edge, const int x1, const int y1, const 
             edge.x1 = x1;
             edge.y1 = y1;
         }
-        edge.dxdy = (float)(edge.x1 - edge.x0) / (float)(edge.y1 - edge.y0);
+        edge.dxdy = (double)(edge.x1 - edge.x0) / (double)(edge.y1 - edge.y0);
         return true;
     }
 }
@@ -367,7 +367,7 @@ void SDL_Video::FillPolygon(const int* x, const int* y, const unsigned int n, co
             {
                 edges[i].y0++;
             }
-            edges[i].x0 = edges[i].x1 - (int)(((float)(edges[i].y1 - edges[i].y0) * edges[i].dxdy) - 0.5);
+            edges[i].x0 = edges[i].x1 - (int)(((double)(edges[i].y1 - edges[i].y0) * edges[i].dxdy) - 0.5);
             i++;
         }
         SortEdges(edges, m);
@@ -432,7 +432,7 @@ void SDL_Video::FillPolygon(const int* x, const int* y, const unsigned int n,
             {
                 edges[i].y0++;
             }
-            edges[i].x0 = edges[i].x1 - (int)(((float)(edges[i].y1 - edges[i].y0) * edges[i].dxdy) - 0.5);
+            edges[i].x0 = edges[i].x1 - (int)(((double)(edges[i].y1 - edges[i].y0) * edges[i].dxdy) - 0.5);
             i++;
         }
         SortEdges(edges, m);

@@ -68,8 +68,8 @@ void Camera::SetHeading(const int heading)
 
 void Camera::Move(const int delta)
 {
-    position.Adjust((int)((float)delta * orientation.GetSin()),
-                    (int)((float)delta * orientation.GetCos()));
+    position.Adjust((int)((double)delta * orientation.GetSin()),
+                    (int)((double)delta * orientation.GetCos()));
     Notify();
 }
 

@@ -74,7 +74,7 @@ unsigned int Vertex::GetDistance() const
     return distance;
 }
 
-float Vertex::GetDistanceFactor() const
+double Vertex::GetDistanceFactor() const
 {
     return distanceFactor;
 }
@@ -82,8 +82,8 @@ float Vertex::GetDistanceFactor() const
 Vector2D Vertex::ToFirstPerson(int w, int h, const Angle &heading)
 {
     const int ANGLE_AOV = 2 * ANGLE_OF_VIEW + 1;
-    int x = (int)((float)w * (float)(angle.Get() - heading.Get() + ANGLE_OF_VIEW - 1) / (float)ANGLE_AOV);
-    int y = h - (int)((float)TERRAIN_HEIGHT * (1.0 - distanceFactor) + ((float)relpos.GetZ() * (0.05 + 0.45 * distanceFactor)));
+    int x = (int)((double)w * (double)(angle.Get() - heading.Get() + ANGLE_OF_VIEW - 1) / (double)ANGLE_AOV);
+    int y = h - (int)((double)TERRAIN_HEIGHT * (1.0 - distanceFactor) + ((double)relpos.GetZ() * (0.05 + 0.45 * distanceFactor)));
     return Vector2D(x, y);
 }
 
@@ -98,8 +98,8 @@ void Vertex::CalculateRelativePosition(const Vector2D &p)
     relpos = pos - p;
     angle = Angle((ANGLE_SIZE / 4) - relpos.GetTheta());
     distance = relpos.GetRho();
-    distanceFactor = 2.0 * ((float)MAX_VIEW_DISTANCE / ((float)MAX_VIEW_DISTANCE + (float)distance)) - 1.0;
-    //distanceFactor = 1.0 - ((float)MAX_VIEW_DISTANCE / ((float)MAX_VIEW_DISTANCE + (float)distance));
+    distanceFactor = 2.0 * ((double)MAX_VIEW_DISTANCE / ((double)MAX_VIEW_DISTANCE + (double)distance)) - 1.0;
+    //distanceFactor = 1.0 - ((double)MAX_VIEW_DISTANCE / ((double)MAX_VIEW_DISTANCE + (double)distance));
 }
 
 bool Vertex::IsInView(const Angle &heading)
