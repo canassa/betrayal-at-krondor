@@ -56,7 +56,9 @@ SDL_Audio::SDL_Audio()
     {
         throw SDL_Exception(__FILE__, __LINE__, SDL_GetError());
     }
+#ifdef HAVE_MIX_INIT
     Mix_Init(0);
+#endif
     if (Mix_OpenAudio(AUDIO_FREQUENCY, AUDIO_FORMAT, AUDIO_STEREO, AUDIO_BUFFER_SIZE) < 0)
     {
         throw SDL_Exception(__FILE__, __LINE__, Mix_GetError());
@@ -81,7 +83,9 @@ SDL_Audio::~SDL_Audio()
         throw SDL_Exception(__FILE__, __LINE__, Sound_GetError());
     }
     Mix_CloseAudio();
+#ifdef HAVE_MIX_QUIT
     Mix_Quit();
+#endif
     if (audioMutex)
     {
         SDL_DestroyMutex(audioMutex);
