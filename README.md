@@ -1,8 +1,8 @@
 xBaK README
 ===========
 
-# About this forked
-This is an unoficial fork of the original xBak project by Guido de Jong.
+# About this fork
+This is an unofficial fork of the original xBak project by Guido de Jong.
 
 # Introduction
 
