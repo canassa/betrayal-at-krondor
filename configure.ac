@@ -65,7 +65,18 @@ AC_ARG_ENABLE([debug],AS_HELP_STRING([--enable-debug],[enable debugging support 
 CPPFLAGS="$CPPFLAGS -DDATADIR='\"$datadir\"'"
 #SDL_CFLAGS=$(sh sdl-config --cflags)
 CXXFLAGS="$CXXFLAGS $SDL_CFLAGS -ansi -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -Wwrite-strings -Wshadow -Wcast-align $OPT_CXXFLAGS"
-LDFLAGS="$LDFLAGS -Wl,--as-needed"
+
+
+# Check if we are running on OS X, for special link handling.
+case "$host_os" in
+    *darwin* | *rhapsody* | *macosx*)
+        LDFLAGS="$LDFLAGS -Wl"
+        ;;
+    *)
+        LDFLAGS="$LDFLAGS -Wl,--as-needed"
+        ;;
+esac
+
 
 AC_C_CONST
 AC_FUNC_STAT
