@@ -34,6 +34,17 @@ sound.
 
 # Building
 
+### On OS X
+
+```
+brew install automake autoconf sdl sdl_mixer sdl_sound
+brew link automake
+brew link autoconf
+./autogen.sh
+./configure
+make
+```
+
 To build on linux change to the directory where the xBaK sources are extracted.
 Next run "./configure" and, if no errors are reported, continu to run "make".
 There is no need to run "make install" yet. The resulting executables can be
