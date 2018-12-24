@@ -131,7 +131,7 @@ void SDL_Video::Clear()
 
 void SDL_Video::Clear(const int x, const int y, const int w, const int h)
 {
-    SDL_Rect rect = {x, y, w, h};
+    SDL_Rect rect = {(Sint16) x, (Sint16) y, (Uint16) w, (Uint16) h};
     SDL_FillRect(currentSurface->buffer, &rect, 0);
 }
 
@@ -167,7 +167,7 @@ void SDL_Video::DrawHLine(const int x, const int y, const int w, const unsigned 
     {
         ww = currentSurface->buffer->w - xx;
     }
-    SDL_Rect rect = {xx, yy, ww, 1};
+    SDL_Rect rect = {static_cast<Sint16>(xx), static_cast<Sint16>(yy), static_cast<Uint16>(ww), 1};
     SDL_FillRect(currentSurface->buffer, &rect, c);
 }
 
@@ -180,7 +180,7 @@ void SDL_Video::DrawVLine(const int x, const int y, const int h, const unsigned 
     {
         hh = currentSurface->buffer->h - yy;
     }
-    SDL_Rect rect = {xx, yy, 1, hh};
+    SDL_Rect rect = {static_cast<Sint16>(xx), static_cast<Sint16>(yy), 1, static_cast<Uint16>(hh)};
     SDL_FillRect(currentSurface->buffer, &rect, c);
 }
 
@@ -234,19 +234,19 @@ void SDL_Video::DrawLine(int x1, int y1, int x2, int y2, const unsigned int c)
 
 void SDL_Video::DrawRect(const int x, const int y, const int w, const int h, const unsigned int c)
 {
-    SDL_Rect top = {x, y, w, 1};
+    SDL_Rect top = {(Sint16) x, (Sint16) y, (Uint16) w, 1};
     SDL_FillRect(currentSurface->buffer, &top, c);
-    SDL_Rect left = {x, y, 1, h};
+    SDL_Rect left = {(Sint16) x, (Sint16) y, 1, (Uint16) h};
     SDL_FillRect(currentSurface->buffer, &left, c);
-    SDL_Rect right = {x + w - 1, y, 1, h};
+    SDL_Rect right = {static_cast<Sint16>(x + w - 1), (Sint16) y, 1, (Uint16) h};
     SDL_FillRect(currentSurface->buffer, &right, c);
-    SDL_Rect bottom = {x, y + h - 1, w, 1};
+    SDL_Rect bottom = {(Sint16) x, static_cast<Sint16>(y + h - 1), (Uint16) w, 1};
     SDL_FillRect(currentSurface->buffer, &bottom, c);
 }
 
 void SDL_Video::FillRect(const int x, const int y, const int w, const int h, const unsigned int c)
 {
-    SDL_Rect rect = {x, y, w, h};
+    SDL_Rect rect = {(Sint16) x, (Sint16) y, (Uint16) w, (Uint16) h};
     SDL_FillRect(currentSurface->buffer, &rect, c);
 }
 

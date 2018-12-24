@@ -598,7 +598,7 @@ bool Rectangle::operator!=(const Rectangle &r)
     return (m_x != r.m_x) || (m_y != r.m_y) || (m_width != r.m_width) || (m_height != r.m_height);
 }
 
-bool Rectangle::operator<(const Rectangle &r)
+bool Rectangle::operator<(const Rectangle &r) const
 {
     return (m_x < r.m_x) ||
            ((m_x == r.m_x) && (m_y < r.m_y)) ||

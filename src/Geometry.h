@@ -162,7 +162,7 @@ public:
     Rectangle& operator= ( const Rectangle &r );
     bool operator== ( const Rectangle &r );
     bool operator!= ( const Rectangle &r );
-    bool operator< ( const Rectangle &r );
+    bool operator< ( const Rectangle &r ) const;
     bool operator> ( const Rectangle &r );
     bool operator<= ( const Rectangle &r );
     bool operator>= ( const Rectangle &r );

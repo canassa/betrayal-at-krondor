@@ -1,4 +1,0 @@
-#!/bin/bash
-./xbak
-cd /usr/gp2x
-exec ./gp2xmenu
