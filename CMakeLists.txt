@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.13)
 project(xbak)
 
 find_package(SDL REQUIRED)
-find_package(SDL_MIXER REQUIRED)
-find_package(SDL_SOUND REQUIRED)
+find_package(SDL_mixer REQUIRED)
+find_package(SDL_sound REQUIRED)
 
 include_directories(${SDL_INCLUDE_DIR})
 include_directories(${SDL_MIXER_INCLUDE_DIR})
