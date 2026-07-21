@@ -1,0 +1,22 @@
+# Style for the project's C sources. Applied explicitly by bakbuild.format (`bak
+# format`) — NEVER dropped as a tree-wide .clang-format, so editors and other
+# tools can't auto-reformat the byte-match-sensitive units behind our back
+# (Borland inline `asm` statements are newline-terminated; line-joining them
+# would break the parse and the byte-exact build).
+Language: Cpp
+BasedOnStyle: LLVM
+IndentWidth: 4
+UseTab: Never
+ColumnLimit: 100
+PointerAlignment: Right
+DerivePointerAlignment: false
+AlignConsecutiveDeclarations: false
+SortIncludes: Never
+ReflowComments: false
+MaxEmptyLinesToKeep: 2
+AllowShortEnumsOnASingleLine: false
+# Keep bodies expanded — function bodies stay multi-line and readable.
+AllowShortFunctionsOnASingleLine: None
+AllowShortBlocksOnASingleLine: Never
+AllowShortIfStatementsOnASingleLine: Never
+AttributeMacros: [far, near, huge, interrupt, cdecl, _cdecl, pascal]

@@ -1,0 +1,17 @@
+# Git hooks for the project. Install once with `lefthook install` (lefthook is provided
+# by the nix devShell). Re-run `lefthook install` only after changing which hook
+# *types* appear below.
+#
+#   pre-commit — clang-format the staged C in place, under the pinned style
+#                (bakbuild/clang-format.yaml), and re-stage the result.
+#
+# The byte-match build gate (`uv run bak build`) is deliberately NOT a hook: it
+# spins up the FreeDOS VMs and takes minutes, so run it by hand before pushing.
+
+pre-commit:
+  jobs:
+    - name: clang-format (C)
+      # DOS 8.3 sources carry uppercase names (IO.C) — match both cases.
+      glob: "*.{c,h,C,H}"
+      run: uv run bak format {staged_files}
+      stage_fixed: true

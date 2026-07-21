@@ -1,0 +1,96 @@
+# Doxyfile — C-only, 16-bit DOS (Borland) reverse-engineered source.
+# Sparse on purpose: only keys that differ from Doxygen defaults are set.
+# Build:  doxygen Doxyfile         (from the repo root, inside `nix develop`)
+# Output: work/doxygen/html/index.html   (work/ is gitignored)
+
+#---------------------------------------------------------------------------
+# Project
+#---------------------------------------------------------------------------
+PROJECT_NAME           = "Betrayal at Krondor"
+PROJECT_BRIEF          = "1993-authentic Borland build of KRONDOR.EXE (Betrayal at Krondor)"
+OUTPUT_DIRECTORY       = work/doxygen
+CREATE_SUBDIRS         = NO
+
+#---------------------------------------------------------------------------
+# C mode
+#---------------------------------------------------------------------------
+OPTIMIZE_OUTPUT_FOR_C  = YES    # "Functions"/"Data Fields", not C++ "Members"
+TYPEDEF_HIDES_STRUCT   = YES    # `typedef struct {..} Foo;` documents under Foo
+JAVADOC_AUTOBRIEF      = YES    # first sentence = brief (explicit @brief still wins)
+MARKDOWN_SUPPORT       = YES
+AUTOLINK_SUPPORT       = YES    # bare ::Type / fn() auto-link; our comments rely on this
+
+#---------------------------------------------------------------------------
+# What to extract — keep gaps visible instead of masking them
+#---------------------------------------------------------------------------
+EXTRACT_ALL            = NO     # undocumented items are omitted (and warned about, below)
+EXTRACT_STATIC         = YES    # file-static helpers in the .C files
+EXTRACT_LOCAL_CLASSES  = YES    # structs declared inside a .C (e.g. PolyListBlock)
+HIDE_UNDOC_MEMBERS     = NO
+HIDE_UNDOC_CLASSES     = NO
+
+#---------------------------------------------------------------------------
+# Input
+#---------------------------------------------------------------------------
+# The C source + the repo README as the landing page. The hand-written docs/*.md
+# use @-prefixed tokens (@offset, ...) that collide with Doxygen commands, so they
+# are kept out to keep the warning log about code refs only.
+INPUT                  = README.md bak/INCLUDE bak/SRC
+FILE_PATTERNS          = *.c *.C *.h *.H *.md
+RECURSIVE              = YES
+USE_MDFILE_AS_MAINPAGE = README.md
+EXCLUDE_PATTERNS       = */work/* */.git/*
+
+#---------------------------------------------------------------------------
+# Preprocessor — strip DOS/Borland dialect keywords Doxygen's C parser
+# does not know, so `Shape far *far *` etc. parse as plain pointers.
+#---------------------------------------------------------------------------
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = YES
+EXPAND_ONLY_PREDEF     = YES
+SEARCH_INCLUDES        = YES
+INCLUDE_PATH           = bak bak/INCLUDE
+PREDEFINED             = far= \
+                         near= \
+                         huge= \
+                         _far= \
+                         _near= \
+                         __far= \
+                         __near= \
+                         cdecl= \
+                         __cdecl= \
+                         __interrupt= \
+                         __loadds=
+
+#---------------------------------------------------------------------------
+# Warnings — this is the point: a renamed/removed symbol makes a stale
+# @ref / ::Type / fn() reference warn loudly. Gate CI on it with:
+#   doxygen Doxyfile 2>&1 | tee w; test ! -s work/doxygen/doxygen.warn
+# or flip WARN_AS_ERROR to FAIL_ON_WARNINGS below.
+#---------------------------------------------------------------------------
+QUIET                  = YES
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = NO     # partial coverage today — flip to YES as docs fill in
+WARN_IF_DOC_ERROR      = YES    # bad @param names, malformed commands
+WARN_IF_INCOMPLETE_DOC = YES
+WARN_NO_PARAMDOC       = YES    # enforces the skill's "every parameter gets @param"
+WARN_AS_ERROR          = NO     # set FAIL_ON_WARNINGS in CI to make stale refs fail the build
+WARN_LOGFILE           = work/doxygen/doxygen.warn
+
+#---------------------------------------------------------------------------
+# Output — HTML only
+#---------------------------------------------------------------------------
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+SOURCE_BROWSER         = YES    # cross-linked source listings
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+
+#---------------------------------------------------------------------------
+# Diagrams (graphviz)
+#---------------------------------------------------------------------------
+HAVE_DOT               = YES
+COLLABORATION_GRAPH    = YES    # struct field-type relationships
+INCLUDED_BY_GRAPH      = NO     # "who includes structs.h" is 335 nodes of noise
+CALL_GRAPH             = NO     # per-function call graphs are slow; enable ad hoc
+CALLER_GRAPH           = NO

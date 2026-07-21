@@ -1,0 +1,38 @@
+; SX.PAK -- pack spec for SX.OVL (the sound & music driver archive).
+;
+; This is the fossil of the 1993 packer's control file: a Dynamix "RES" container
+; tagged "SSM:" holding 14 leaves IN THIS EXACT ORDER -- 11 sound/music drivers
+; followed by 3 data blobs.  The chunk ORDER is byte-load-bearing (a flat running
+; concatenation, no index): reorder a leaf and every following offset shifts, so
+; the file no longer matches the shipped SX.OVL.  Do not sort or regroup.
+;
+; Format (read by PACKOVL):
+;   line 1        the 4-byte root container tag
+;   each line     "TAG: <inputpath>"   ; ':' is part of the 4-byte tag
+;   ';' / blank   comment / ignored
+; Method is always LZW (code 0x02) and is implicit -- see PACKOVL.C for the method
+; table; only 0x02 ever ships here.
+;
+; The 11 drivers (GMD..APA) are .MODEL TINY / ORG 0 flat images; TASM -> TLINK
+; links each as an MZ .EXE and PACKOVL strips the MZ header to the flat ORG-0
+; image before LZW-packing (same path as the video drivers).
+;
+; The last 3 leaves (001/003/004) are NOT drivers: they are DATA blobs the 1993
+; build consumed as-is -- an instrument bank (001) and two tables (003/004).  There
+; is no code source to reconstruct; the verified extracted blobs are checked in
+; under SX\ (see SX\BINDATA.TXT) and packed like any other chunk (no MZ, raw).
+SSM:
+GMD: OUT\GMD.EXE
+SBP: OUT\SBP.EXE
+M32: OUT\M32.EXE
+NLD: OUT\NLD.EXE
+ADL: OUT\ADL.EXE
+PRO: OUT\PRO.EXE
+PS1: OUT\PS1.EXE
+STD: OUT\STD.EXE
+ASB: OUT\ASB.EXE
+ADS: OUT\ADS.EXE
+APA: OUT\APA.EXE
+001: SRC\DRIVERS\SX\001.BIN
+003: SRC\DRIVERS\SX\003.BIN
+004: SRC\DRIVERS\SX\004.BIN

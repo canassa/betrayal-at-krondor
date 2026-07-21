@@ -1,0 +1,7 @@
+# CHAR module -- object list + rules (byte-verified recipes; hand-curate).
+CHAR_OBJS = OUT\CHARSCRN.OBJ OUT\STAT.OBJ
+
+OUT\CHARSCRN.OBJ : SRC\CHAR\CHARSCRN.C
+	$(C_3O1Y) $(INC) -c -zCS584c_TEXT -nOUT SRC\CHAR\CHARSCRN.C
+OUT\STAT.OBJ : SRC\CHAR\STAT.C
+	$(C_3O1Y) $(INC) -c -zCS42c0_TEXT -nOUT SRC\CHAR\STAT.C

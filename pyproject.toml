@@ -1,0 +1,28 @@
+[project]
+name = "krondor"
+version = "0.1.0"
+description = "CLI to build, diff, and verify the byte-exact Betrayal at Krondor reconstruction (drives the period Borland/DOS toolchain)"
+readme = "README.md"
+requires-python = ">=3.14"
+# The build CLI lives in the `bakbuild` package (cli/, a workspace member).
+# Depending on it here exposes the `bak` script workspace-wide via `uv run bak`.
+dependencies = ["bakbuild"]
+
+[dependency-groups]
+dev = ["ruff>=0.6", "mypy>=1.11"]
+
+[tool.uv]
+# Python is uv-managed (latest, pinned in .python-version) — not from nix.
+python-preference = "only-managed"
+# The root isn't a package — it's the workspace shell. The `bakbuild` member is.
+package = false
+
+[tool.uv.workspace]
+members = ["cli"]
+
+[tool.uv.sources]
+bakbuild = { workspace = true }
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"

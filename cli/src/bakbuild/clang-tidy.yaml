@@ -1,0 +1,34 @@
+# Naming lint for the project's C sources (the CLAUDE.md conventions), applied
+# explicitly by bakbuild.lint (`bak lint`) — NEVER dropped as a tree-wide
+# .clang-tidy, same policy as clang-format.yaml.
+#
+# Check-only by design: do NOT run clang-tidy --fix on this tree. Renaming an
+# uninitialized (_BSS) global permutes bccx's hash-ordered layout and diverges
+# KRONDOR.EXE; renames must stay manual, verified by `bak build`.
+#
+# Not expressible here (known gaps): per-module function prefixes
+# ("ts_* in SHAPETBL.C"), static-vs-public function distinction, and the
+# p/lp far-pointer marker (far-ness is erased by the IDE shim before clang
+# ever sees it).
+Checks: '-*,readability-identifier-naming'
+HeaderFilterRegex: '.*/bak/.*'
+CheckOptions:
+  # Globals: bare g_ + camelCase, even pointers (gp_/gf_ markers are banned —
+  # they perturb the BSS hash). GlobalPointer/GlobalConstant fall back to
+  # GlobalVariable when unset.
+  readability-identifier-naming.GlobalVariableCase: camelBack
+  readability-identifier-naming.GlobalVariablePrefix: g_
+  # Leading underscore = Borland CRT/linker-owned (_ovrbuffer), not ours.
+  readability-identifier-naming.GlobalVariableIgnoredRegexp: '^_.*'
+  readability-identifier-naming.LocalVariableCase: camelBack
+  readability-identifier-naming.MemberCase: camelBack
+  readability-identifier-naming.StructCase: CamelCase
+  readability-identifier-naming.UnionCase: CamelCase
+  readability-identifier-naming.EnumCase: CamelCase
+  readability-identifier-naming.TypedefCase: CamelCase
+  readability-identifier-naming.EnumConstantCase: UPPER_CASE
+  readability-identifier-naming.MacroDefinitionCase: UPPER_CASE
+  # module_snake_case; the leading-underscore exemption covers the Borland
+  # CRT-shim names (_freemem, _open_far_thunk, ...).
+  readability-identifier-naming.FunctionCase: lower_case
+  readability-identifier-naming.FunctionIgnoredRegexp: '^_.*'

@@ -1,0 +1,9 @@
+# IO module -- object list + rules (byte-verified recipes; hand-curate).
+IO_OBJS = OUT\DOSRW.OBJ OUT\IO.OBJ OUT\IOCHUNK.OBJ
+
+OUT\DOSRW.OBJ : SRC\IO\DOSRW.ASM
+	$(AS) $(ASFLAGS) SRC\IO\DOSRW.ASM,OUT\DOSRW.OBJ
+OUT\IO.OBJ : SRC\IO\IO.C
+	$(C_3NY) $(INC) -c -zC_TEXT -nOUT SRC\IO\IO.C
+OUT\IOCHUNK.OBJ : SRC\IO\IOCHUNK.C
+	$(C_3NY) $(INC) -c -zC_TEXT -nOUT SRC\IO\IOCHUNK.C

@@ -1,0 +1,24 @@
+SX.OVL DATA BLOBS -- 001.BIN, 003.BIN, 004.BIN
+==============================================
+
+Three of the fourteen chunks in SX.OVL are not drivers -- they are DATA the sound
+engine loads by tag, so they have no code source to reconstruct.  They are stored
+here as verified extracted blobs and packed by PACKOVL exactly like any other
+chunk (LZW, method 0x02).  The pack spec SRC\DRIVERS\SX.PAK feeds them straight
+from this directory (no MZ strip, no assemble/link step).
+
+    file     tag   raw bytes   role
+    001.BIN  001:  19554       instrument bank (patch/timbre data)
+    003.BIN  003:   5384       lookup / mapping table
+    004.BIN  004:   1312       lookup / mapping table
+
+These are the raw, uncompressed images -- their sizes equal the `uncompressed_size`
+field PACKOVL writes into each leaf, and PACKOVL LZW-compresses them at build time.
+Being pure data (not machine code), they are not derivable from any source we could
+compile; they are a build INPUT, checked in as-is.  The proof they are correct is
+end-to-end: SX.OVL only matches the shipped 1993 archive byte-for-byte when these
+exact blobs are packed in the exact SX.PAK order.
+
+IMPORTANT: they are binary.  The build launcher copies them into the DOS image
+byte-raw (no CR/LF text translation) precisely because any 0x0A->0x0D0A rewrite or
+trailing 0x1A would corrupt them.

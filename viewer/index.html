@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>BaK Asset Explorer</title>
+  <style>
+    :root {
+      --bg: #1a1c20;
+      --panel: #24272e;
+      --panel2: #2c303a;
+      --fg: #d6dae0;
+      --muted: #8b93a0;
+      --accent: #6fb3ff;
+      --sel: #37507a;
+      --err: #ff6b6b;
+      --badge: #556;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      background: var(--bg); color: var(--fg);
+      font: 13px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      display: flex; height: 100vh; overflow: hidden;
+    }
+    #sidebar {
+      width: 340px; min-width: 340px; height: 100%;
+      background: var(--panel); border-right: 1px solid #000;
+      display: flex; flex-direction: column;
+    }
+    #sidebar h1 { font-size: 14px; margin: 0; padding: 10px 12px; background: var(--panel2); }
+    .ctl { padding: 8px 12px; border-bottom: 1px solid #14161a; }
+    .ctl label { display: block; color: var(--muted); margin-bottom: 3px; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; }
+    select, input[type=text] {
+      width: 100%; background: var(--panel2); color: var(--fg);
+      border: 1px solid #14161a; border-radius: 3px; padding: 4px 6px; font: inherit;
+    }
+    .row { display: flex; gap: 6px; }
+    .row > * { flex: 1; }
+    #modelListWrap { flex: 1; overflow-y: auto; }
+    #modelList { list-style: none; margin: 0; padding: 0; }
+    #modelList li {
+      padding: 3px 12px; cursor: pointer; white-space: nowrap;
+      display: flex; align-items: center; gap: 6px;
+    }
+    #modelList li:hover { background: var(--panel2); }
+    #modelList li.sel { background: var(--sel); }
+    #modelList .idx { color: var(--muted); min-width: 34px; display: inline-block; }
+    #modelList .nm { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+    #modelList .kind { color: var(--muted); }
+    #modelList .tile { color: var(--muted); font-size: 11px; }
+    #modelList li.gaprow { color: var(--err); cursor: default; }
+    #modelList li.gaprow:hover { background: none; }
+    #modelList li.footrow { color: var(--muted); cursor: default; font-style: italic; }
+    #modelList li.footrow:hover { background: none; }
+    .badge { font-size: 10px; padding: 0 4px; border-radius: 3px; background: var(--badge); color: #cdd; }
+    .badge.empty { background: #443; color: #cc9; }
+    .badge.sprite { background: #530; color: #fb7; }
+    .badge.err { background: #522; color: #f88; }
+    .badge.gam { background: #4a3a10; color: #ffd54a; }
+    .badge.obj { background: #123a55; color: #6fb3ff; }
+    .badge.spawn { background: #33184a; color: #c79bff; }
+    #segCtl .seg { display: flex; gap: 0; }
+    #segCtl .seg button {
+      flex: 1; background: var(--panel2); color: var(--muted);
+      border: 1px solid #14161a; font: inherit; padding: 4px 0; cursor: pointer;
+      text-transform: uppercase; font-size: 11px; letter-spacing: .5px;
+    }
+    #segCtl .seg button:first-child { border-radius: 3px 0 0 3px; }
+    #segCtl .seg button:last-child { border-radius: 0 3px 3px 0; border-left: 0; }
+    #segCtl .seg button.sel { background: var(--sel); color: var(--fg); }
+    #info { padding: 8px 12px; border-top: 1px solid #000; background: var(--panel2); max-height: 34%; overflow-y: auto; }
+    #info h2 { font-size: 12px; margin: 0 0 4px; color: var(--accent); }
+    #info table { width: 100%; border-collapse: collapse; }
+    #info td { padding: 1px 4px 1px 0; vertical-align: top; }
+    #info td.k { color: var(--muted); width: 42%; }
+    #status { padding: 6px 12px; background: #000; color: var(--muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #status.err { color: var(--err); }
+    #status.ready { color: #7fdb7f; }
+    #tabs { display: flex; background: var(--panel2); border-bottom: 1px solid #000; }
+    #tabs button {
+      flex: 1; background: none; border: 0; color: var(--muted);
+      font: inherit; padding: 7px 0; cursor: pointer; text-transform: uppercase;
+      font-size: 11px; letter-spacing: .5px; border-bottom: 2px solid transparent;
+    }
+    #tabs button:hover { color: var(--fg); }
+    #tabs button.sel { color: var(--accent); border-bottom-color: var(--accent); }
+    .hidden { display: none !important; }
+    /* ?bare=1 : graph-only mode — hide the sidebar and all floating panels,
+       leaving just the dialog canvas (+ its toolbar) full-width. */
+    body.bare #sidebar,
+    body.bare #inspector,
+    body.bare #dlgInspector,
+    body.bare #helpBtn,
+    body.bare #helpPanel { display: none !important; }
+    #view { flex: 1; position: relative; }
+    #view canvas { display: block; width: 100%; height: 100%; }
+    #helpBtn {
+      position: absolute; top: 10px; right: 10px; z-index: 10;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--panel2); color: var(--accent);
+      border: 1px solid #14161a; font: bold 14px/1 ui-monospace, monospace;
+      cursor: pointer;
+    }
+    #helpBtn:hover { background: var(--sel); }
+    #helpPanel {
+      position: absolute; top: 46px; right: 10px; z-index: 10;
+      width: 340px; max-height: calc(100% - 60px); overflow-y: auto;
+      background: rgba(36, 39, 46, .96); border: 1px solid #14161a;
+      border-radius: 4px; padding: 12px 14px; font-size: 12px;
+    }
+    #helpPanel h3 { margin: 10px 0 4px; font-size: 12px; color: var(--accent); }
+    #helpPanel h3:first-child { margin-top: 0; }
+    #helpPanel table { border-collapse: collapse; width: 100%; }
+    #helpPanel td { padding: 1px 6px 1px 0; vertical-align: top; }
+    #helpPanel td.k { color: var(--accent); white-space: nowrap; }
+    #helpPanel p { margin: 4px 0; color: var(--fg); }
+    #helpPanel .muted { color: var(--muted); }
+    #inspector {
+      position: absolute; top: 10px; right: 46px; z-index: 9;
+      width: 380px; max-height: calc(100% - 20px); overflow-y: auto;
+      background: rgba(36, 39, 46, .97); border: 1px solid #14161a;
+      border-radius: 4px; padding: 10px 12px; font-size: 12px;
+    }
+    #inspector .close {
+      position: absolute; top: 6px; right: 8px; cursor: pointer;
+      color: var(--muted); font: bold 15px/1 monospace; background: none; border: 0;
+    }
+    #inspector .close:hover { color: var(--fg); }
+    #inspector h2 { font-size: 13px; margin: 0 0 8px; color: var(--fg); }
+    #inspector h3 {
+      font-size: 11px; margin: 12px 0 3px; color: var(--accent);
+      text-transform: uppercase; letter-spacing: .5px;
+    }
+    #inspector .prov { color: var(--muted); font-size: 11px; margin: 2px 0 4px; }
+    #inspector table { width: 100%; border-collapse: collapse; }
+    #inspector td { padding: 1px 4px 1px 0; vertical-align: top; word-break: break-all; }
+    #inspector td.k { color: var(--muted); width: 40%; }
+    #inspector .raw { color: #6b7280; font-size: 10px; }
+    /* Confidence dot: verified = no dot, inferred = amber, unknown = red. The
+       name cell carries a native title= tooltip with meaning + raw hex. */
+    #inspector .dot {
+      display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+      margin-left: 5px; vertical-align: middle; cursor: help;
+    }
+    #inspector .dot.inferred { background: #d9a441; }
+    #inspector .dot.unknown { background: #d95c5c; }
+    #inspector td.k[title] { cursor: help; }
+    /* Collapsed default/zero-valued fields — muted, terse. */
+    #inspector details.defaults { margin: 2px 0; }
+    #inspector details.defaults > summary {
+      color: var(--muted); font-size: 11px; list-style: none;
+    }
+    #inspector details.defaults > summary::before { content: '▸ '; }
+    #inspector details.defaults[open] > summary::before { content: '▾ '; }
+    #inspector .gap { color: #f88; }
+    #inspector .link { color: var(--accent); cursor: pointer; text-decoration: underline; }
+    #inspector .itemtbl td { padding: 1px 6px 1px 0; }
+    #inspector .itemtbl td.raw { white-space: nowrap; }
+    #inspector details { margin: 3px 0; }
+    #inspector summary { cursor: pointer; color: var(--fg); }
+    #inspector pre { margin: 3px 0; white-space: pre-wrap; word-break: break-all; color: var(--muted); font-size: 11px; }
+    #inspector .muted { color: var(--muted); }
+    /* Tabbed inspector: sticky header + tab bar, scrollable bodies. */
+    #inspector { padding: 0; }
+    #inspector .insphead {
+      position: sticky; top: 0; z-index: 2; padding: 10px 12px 6px;
+      background: rgba(36, 39, 46, .99); border-bottom: 1px solid #14161a;
+    }
+    #inspector .subtitle { color: var(--muted); font-size: 11px; margin-top: 2px; }
+    #inspector .insphead .badge { vertical-align: middle; }
+    #inspector .badge.spawn { background: #33184a; color: #c79bff; }
+    #inspector .badge.kind { background: #123a55; color: #6fb3ff; }
+    #inspector .itabs {
+      position: sticky; top: 42px; z-index: 2; display: flex;
+      background: var(--panel2); border-bottom: 1px solid #000;
+    }
+    #inspector .itab {
+      flex: 1; background: none; border: 0; color: var(--muted);
+      font: inherit; font-size: 10px; padding: 6px 0; cursor: pointer;
+      text-transform: uppercase; letter-spacing: .5px;
+      border-bottom: 2px solid transparent;
+    }
+    #inspector .itab:hover { color: var(--fg); }
+    #inspector .itab.sel { color: var(--accent); border-bottom-color: var(--accent); }
+    #inspector .itabwrap { padding: 6px 12px 12px; }
+    #inspector .ovline {
+      padding: 4px 6px; margin: 3px 0; border-radius: 3px;
+      background: var(--panel2); cursor: pointer;
+    }
+    #inspector .ovline:hover { background: var(--sel); }
+    #inspector .lock { color: #ffd54a; }
+    #inspector .chips { margin-top: 8px; display: flex; gap: 5px; flex-wrap: wrap; }
+    #inspector .chip {
+      font-size: 10px; padding: 1px 6px; border-radius: 3px; cursor: pointer;
+      text-transform: uppercase; letter-spacing: .5px; background: var(--badge); color: #cdd;
+    }
+    #inspector .chip.wld { background: #26323f; color: #9fc; }
+    #inspector .chip.gam { background: #4a3a10; color: #ffd54a; }
+    #inspector .chip.obj { background: #123a55; color: #6fb3ff; }
+    #inspector .chip.tdat { background: #3a1030; color: #f7a; }
+    #inspector .def { color: var(--fg); margin: 3px 0; }
+    #inspector .ambush { color: #ff8a6b; font-weight: bold; }
+    #inspector .combatant {
+      margin: 3px 0; padding: 3px 6px; border-left: 2px solid #445; background: rgba(0,0,0,.15);
+    }
+    #inspector .mono { color: #9fc; }
+    /* Dialog condition-branch entry header (`if state N in lo..hi →` / `else →`). */
+    #inspector .branch {
+      color: #7fd6a6; font-size: 11px; margin: 4px 0 1px; font-style: italic;
+    }
+    /* Compact dialog reference row: one clickable accent card per dialog key —
+       label + key, truncated preview, "graph ⤴" affordance. Content lives in
+       the node viewer; this row is the pointer. */
+    #inspector .dlgrow {
+      display: flex; align-items: baseline; gap: 8px;
+      margin: 6px 0; padding: 5px 9px; border-radius: 4px; cursor: pointer;
+      background: rgba(95,155,215,.10); border: 1px solid rgba(95,155,215,.25);
+    }
+    #inspector .dlgrow:hover {
+      background: rgba(95,155,215,.18); border-color: rgba(95,155,215,.45);
+    }
+    #inspector .dlglabel { color: var(--muted); font-size: 11px; white-space: nowrap; }
+    #inspector .dlgkey { color: #7fc0ff; }
+    #inspector .dlgprev {
+      color: var(--fg); flex: 1; min-width: 0;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    #inspector .dlgopen { color: #7fc0ff; font-size: 11px; white-space: nowrap; }
+    #inspector .dlgrow:hover .dlgopen { text-decoration: underline; }
+    /* Tile-view per-hotspot card. */
+    #inspector details.hscard {
+      margin: 4px 0; padding: 4px 8px; border-radius: 4px; background: var(--panel2);
+    }
+    #inspector details.hscard > summary { color: var(--fg); }
+    /* Left info panel stats as a compact 2-column grid. */
+    #info .grid { display: grid; grid-template-columns: auto 1fr; gap: 1px 8px; }
+    #info .grid .k { color: var(--muted); white-space: nowrap; }
+    #info .grid .v { word-break: break-word; }
+
+    /* ---- Dialog tab ---- */
+    #dialogSidebar { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+    .dgroup { border-bottom: 1px solid #14161a; }
+    .dgroup > .dghead {
+      padding: 6px 12px; cursor: pointer; color: var(--accent);
+      text-transform: uppercase; font-size: 11px; letter-spacing: .5px;
+      background: var(--panel2); display: flex; align-items: center; gap: 6px;
+      position: sticky; top: 0; z-index: 1;
+    }
+    .dgroup > .dghead:hover { color: var(--fg); }
+    .dgroup > .dghead .cnt { color: var(--muted); margin-left: auto; }
+    .dgroup > .dghead::before { content: '▾'; font-size: 9px; }
+    .dgroup.collapsed > .dghead::before { content: '▸'; }
+    .dgroup.collapsed > .dgbody { display: none; }
+    .dgbody { padding: 2px 0; }
+    .drow {
+      padding: 4px 12px; cursor: pointer; display: flex; align-items: center; gap: 6px;
+      border-left: 3px solid transparent;
+    }
+    .drow:hover { background: var(--panel2); }
+    .drow.sel { background: var(--sel); }
+    .drow .dtxt { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    /* A `#title#`-form dialog body rendered as a bare title reads as a heading. */
+    .drow .dtxt.dtitle { color: var(--accent); font-variant: small-caps; letter-spacing: .3px; }
+    .drow .dcnt { color: var(--muted); font-size: 10px; white-space: nowrap; }
+    .drow .dchips { display: flex; gap: 3px; }
+    .dpv { font-size: 9px; padding: 0 3px; border-radius: 2px; text-transform: uppercase; letter-spacing: .3px; }
+    .dpv.obj { background: #123a55; color: #6fb3ff; }
+    .dpv.hot { background: #33184a; color: #c79bff; }
+    .dpv.cipher { background: #183a24; color: #5fcf7f; }
+    .dpv.eng { background: #4a3a10; color: #ffd54a; }
+    .drow.moar { color: var(--muted); font-style: italic; justify-content: center; }
+    .demptyhits { padding: 8px 12px; color: var(--muted); font-style: italic; }
+    /* Class accent dot on conversation rows. */
+    .drow .cdot { width: 8px; height: 8px; border-radius: 2px; flex: 0 0 auto; }
+
+    /* Dialog canvas + breadcrumb overlay. */
+    /* SCX screen viewer: a flat 2D overlay over the 3D canvas. The canvas keeps
+       its native pixel size; CSS scales it up with nearest-neighbor. */
+    #scxView {
+      position: absolute; inset: 0; display: flex;
+      align-items: center; justify-content: center;
+      background: var(--bg); z-index: 4;
+    }
+    #scxView canvas {
+      image-rendering: pixelated; height: auto;
+      max-width: 95%; max-height: 95%;
+      border: 1px solid #14161a;
+    }
+    #dialogView { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--bg); z-index: 5; }
+    #dlgCanvasHost { background: var(--bg); position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+    #dlgCanvasHost svg.dlgcanvas { width: 100%; height: 100%; display: block; touch-action: none; }
+    #dlgCrumbs {
+      padding: 5px 10px; background: var(--panel2); border-bottom: 1px solid #000;
+      /* Keep the toolbar (layout dropdown etc.) clear of the iOS status bar /
+         notch by adding the top/left safe-area insets. */
+      padding-top: max(5px, env(safe-area-inset-top, 0px));
+      padding-left: max(10px, env(safe-area-inset-left, 0px));
+      font-size: 11px; color: var(--muted); white-space: nowrap; overflow-x: auto;
+      display: flex; align-items: center; gap: 4px; min-height: 26px;
+    }
+    #dlgCrumbs .crumb { color: var(--accent); cursor: pointer; }
+    #dlgCrumbs .crumb:hover { text-decoration: underline; }
+    #dlgCrumbs .crumb.cur { color: var(--fg); cursor: default; text-decoration: none; }
+    #dlgCrumbs .sep { color: var(--muted); }
+    #dlgCrumbs .spacer { flex: 1; }
+    #dlgCrumbs button {
+      background: var(--panel); color: var(--accent); border: 1px solid #14161a;
+      border-radius: 3px; font: inherit; font-size: 11px; padding: 2px 8px; cursor: pointer;
+    }
+    #dlgCrumbs button:hover { background: var(--sel); }
+    /* Layout-engine selector label lives in the crumb bar. */
+    #dlgCrumbs .plumb {
+      display: inline-flex; align-items: center; gap: 4px; color: var(--muted);
+      font-size: 11px; cursor: pointer; user-select: none; margin-left: 6px;
+    }
+    /* Manual-layout mode chip (● manual) in the crumb bar. */
+    #dlgCrumbs .crumb.cur[style*="ffd54a"] {
+      border: 1px solid #ffd54a; border-radius: 10px; padding: 1px 8px;
+    }
+    /* Merge-mark controls (unmerge / reference / clear) in the crumb bar. */
+    #dlgCrumbs .dlgMarkTools { display: inline-flex; align-items: center; gap: 4px; margin-left: 4px; }
+    #dlgCrumbs .dlgMarkLabel { color: var(--muted); font-size: 11px; }
+    #dlgCrumbs .dlgMarkHint { color: var(--muted); font-size: 11px; font-style: italic; }
+    #dlgCrumbs .dlgMarkTools button.on { border-color: #f2b134; color: #f2b134; }
+    #dlgCrumbs .dlgMarkTools button.disabled,
+    #dlgCrumbs .dlgMarkTools button:disabled {
+      opacity: 0.4; cursor: default; background: var(--panel);
+    }
+    /* Inline unmerge validation error. */
+    #dlgCrumbs .dlgMarkErr {
+      color: #ff8a6b; font-size: 11px; border: 1px solid #ff8a6b; border-radius: 10px;
+      padding: 1px 8px; margin-left: 6px; white-space: nowrap;
+    }
+
+    /* ---- Layout TUNE control (⚙ button + popover), shared by the crumb bar
+       and the overlay header. The popover is position:fixed (JS-anchored under
+       the button) so neither toolbar's clipping context hides it. ---- */
+    .ptune { display: inline-flex; align-items: center; position: relative; }
+    .tuneBtn {
+      background: var(--panel); color: var(--accent); border: 1px solid #14161a;
+      border-radius: 3px; font: inherit; font-size: 11px; padding: 2px 8px; cursor: pointer;
+    }
+    .tuneBtn:hover:not(:disabled) { background: var(--sel); }
+    .tuneBtn.on { border-color: #5fd6d6; color: #5fd6d6; }
+    .tuneBtn.active { background: var(--sel); box-shadow: inset 0 0 0 1px #5fd6d6; }
+    .tuneBtn:disabled { color: var(--muted); opacity: .5; cursor: not-allowed; }
+    .tunePanel {
+      position: fixed; z-index: 60; width: 250px;
+      background: rgba(30, 33, 40, .99); border: 1px solid #14161a;
+      border-radius: 5px; box-shadow: 0 10px 30px rgba(0,0,0,.6);
+      padding: 8px 10px; font-size: 11px; color: var(--fg);
+    }
+    .tuneHead {
+      color: var(--accent); font-size: 10px; text-transform: uppercase;
+      letter-spacing: .5px; margin-bottom: 6px; border-bottom: 1px solid #14161a; padding-bottom: 4px;
+    }
+    .tuneRow {
+      display: grid; grid-template-columns: 82px 1fr; align-items: center;
+      gap: 6px; margin: 5px 0;
+    }
+    .tuneLbl { color: var(--muted); }
+    .tuneRow.tuned .tuneLbl { color: #5fd6d6; }
+    .tuneSel {
+      font: inherit; font-size: 11px; background: var(--panel); color: var(--accent);
+      border: 1px solid #14161a; border-radius: 3px; padding: 1px 3px; cursor: pointer; width: 100%;
+    }
+    .tuneRange { display: flex; align-items: center; gap: 6px; }
+    .tuneRange input[type=range] { flex: 1; min-width: 0; accent-color: #5fd6d6; height: 14px; }
+    .tuneNum { color: var(--fg); font-variant-numeric: tabular-nums; min-width: 30px; text-align: right; }
+    .tuneFoot {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 8px; border-top: 1px solid #14161a; padding-top: 6px;
+    }
+    .tuneInfo { color: var(--muted); font-size: 10px; }
+    .tuneReset {
+      background: var(--panel); color: var(--accent); border: 1px solid #14161a;
+      border-radius: 3px; font: inherit; font-size: 11px; padding: 2px 10px; cursor: pointer;
+    }
+    .tuneReset:hover:not(:disabled) { background: var(--sel); }
+    .tuneReset:disabled { color: var(--muted); opacity: .5; cursor: not-allowed; }
+    #dlgCanvasWrap { flex: 1; position: relative; overflow: hidden; }
+    #dlgEmpty {
+      position: absolute; inset: 0; display: flex; align-items: center;
+      justify-content: center; color: var(--muted); font-style: italic; text-align: center;
+      padding: 20px; pointer-events: none;
+    }
+    /* The dialog inspector reuses #inspector styling; it lives in #dialogView. */
+    #dlgInspector {
+      position: absolute; top: 10px; right: 10px; z-index: 9;
+      width: 400px; max-height: calc(100% - 20px); overflow-y: auto;
+      background: rgba(36, 39, 46, .98); border: 1px solid #14161a;
+      border-radius: 4px; font-size: 12px; padding: 0;
+    }
+    #dlgInspector.hidden { display: none; }
+    #dlgInspector .insphead {
+      position: sticky; top: 0; z-index: 2; padding: 10px 12px 6px;
+      background: rgba(36, 39, 46, .99); border-bottom: 1px solid #14161a;
+    }
+    #dlgInspector .close {
+      position: absolute; top: 6px; right: 8px; cursor: pointer;
+      color: var(--muted); font: bold 15px/1 monospace; background: none; border: 0;
+    }
+    #dlgInspector .close:hover { color: var(--fg); }
+    #dlgInspector h2 { font-size: 13px; margin: 0 0 4px; color: var(--fg); padding-right: 16px; }
+    #dlgInspector .subtitle { color: var(--muted); font-size: 11px; }
+    #dlgInspector .ibody { padding: 8px 12px 14px; }
+    #dlgInspector h3 {
+      font-size: 11px; margin: 12px 0 3px; color: var(--accent);
+      text-transform: uppercase; letter-spacing: .5px;
+    }
+    #dlgInspector table { width: 100%; border-collapse: collapse; }
+    #dlgInspector td { padding: 1px 4px 1px 0; vertical-align: top; word-break: break-word; }
+    #dlgInspector td.k { color: var(--muted); width: 34%; }
+    #dlgInspector .raw { color: #6b7280; font-size: 10px; }
+    #dlgInspector pre { margin: 3px 0; white-space: pre-wrap; word-break: break-word; color: var(--fg); font-size: 11px; }
+    #dlgInspector .prov { color: var(--muted); font-size: 11px; margin: 2px 0; }
+    #dlgInspector .link { color: var(--accent); cursor: pointer; text-decoration: underline; }
+    #dlgInspector details { margin: 4px 0; }
+    #dlgInspector summary { cursor: pointer; color: var(--fg); }
+    #dlgInspector .badge { font-size: 10px; padding: 0 5px; border-radius: 3px; vertical-align: middle; }
+    #dlgInspector .flags { display: flex; flex-wrap: wrap; gap: 3px; margin: 3px 0; }
+    #dlgInspector .flag { font-size: 10px; padding: 0 4px; border-radius: 2px; background: var(--badge); color: #cdd; }
+    .dlgClassBadge { color: #14161a; font-weight: bold; }
+
+    /* ---- Dialog graph OVERLAY (floating over any tab) ---- */
+    #dlgOverlay { position: absolute; inset: 0; z-index: 30; }
+    #dlgOverlay.hidden { display: none; }
+    #dlgOvlBackdrop { position: absolute; inset: 0; background: rgba(0,0,0,.55); }
+    #dlgOvlPanel {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 85%; height: 85%; display: flex; flex-direction: column;
+      background: var(--bg); border: 1px solid #14161a; border-radius: 6px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.6); overflow: hidden;
+    }
+    #dlgOvlHeader {
+      display: flex; align-items: center; gap: 8px; padding: 6px 10px;
+      background: var(--panel2); border-bottom: 1px solid #000;
+      font-size: 12px; white-space: nowrap;
+    }
+    #dlgOvlHeader .ovlTitle { color: var(--fg); font-weight: bold; overflow: hidden; text-overflow: ellipsis; max-width: 40%; }
+    #dlgOvlHeader .ovlCrumbs {
+      display: flex; align-items: center; gap: 4px; overflow-x: auto;
+      color: var(--muted); font-size: 11px; flex: 0 1 auto; min-width: 0;
+    }
+    #dlgOvlHeader .ovlCrumbs .crumb { color: var(--accent); cursor: pointer; }
+    #dlgOvlHeader .ovlCrumbs .crumb:hover { text-decoration: underline; }
+    #dlgOvlHeader .ovlCrumbs .crumb.cur { color: var(--fg); cursor: default; }
+    #dlgOvlHeader .ovlCrumbs .sep { color: var(--muted); }
+    #dlgOvlHeader .ovlSpacer { flex: 1 1 auto; }
+    /* The shared toolbar (buildDialogToolbar) — its many controls can scroll
+       horizontally rather than push the open/close buttons off the header. */
+    #dlgOvlHeader .ovlToolbar {
+      display: flex; align-items: center; gap: 4px; flex: 0 1 auto;
+      min-width: 0; overflow-x: auto;
+    }
+    #dlgOvlHeader .ovlToolbar .plumb { display: inline-flex; align-items: center; gap: 3px; color: var(--muted); }
+    #dlgOvlHeader .ovlToolbar .dlgMarkTools { display: inline-flex; align-items: center; gap: 4px; }
+    #dlgOvlHeader .ovlToolbar .dlgMarkLabel, #dlgOvlHeader .ovlToolbar .dlgMarkHint { color: var(--muted); font-size: 11px; }
+    #dlgOvlHeader .ovlToolbar .crumb.cur { padding: 1px 5px; border: 1px solid; border-radius: 3px; }
+    #dlgOvlHeader button {
+      background: var(--panel); color: var(--accent); border: 1px solid #14161a;
+      border-radius: 3px; font: inherit; font-size: 11px; padding: 3px 8px; cursor: pointer;
+    }
+    #dlgOvlHeader button:hover { background: var(--sel); }
+    #dlgOvlHeader #dlgOvlClose { color: var(--muted); font-weight: bold; padding: 3px 9px; }
+    #dlgOvlHeader #dlgOvlClose:hover { color: var(--fg); }
+    #dlgOvlBody { flex: 1; position: relative; overflow: hidden; }
+    #dlgOvlCanvasHost { position: absolute; inset: 0; background: var(--bg); }
+    #dlgOvlCanvasHost svg.dlgcanvas { width: 100%; height: 100%; display: block; touch-action: none; }
+    /* Compact collapsible node-inspector strip along the overlay's bottom. */
+    #dlgOvlInspStrip {
+      border-top: 1px solid #000; background: var(--panel);
+      max-height: 40%; display: flex; flex-direction: column;
+    }
+    #dlgOvlInspStrip.hidden { display: none; }
+    #dlgOvlInspToggle {
+      padding: 3px 10px; background: var(--panel2); color: var(--accent);
+      font-size: 11px; text-transform: uppercase; letter-spacing: .5px; cursor: pointer;
+      border-bottom: 1px solid #000;
+    }
+    #dlgOvlInspToggle:hover { color: var(--fg); }
+    #dlgOvlInspStrip.collapsed #dlgOvlInsp { display: none; }
+    #dlgOvlInsp { overflow-y: auto; font-size: 12px; }
+    /* Reuse the dialog inspector look inside the strip (no floating chrome). */
+    #dlgOvlInsp .insphead { padding: 8px 12px 6px; border-bottom: 1px solid #14161a; }
+    #dlgOvlInsp .insphead .close { display: none; }
+    #dlgOvlInsp h2 { font-size: 13px; margin: 0 0 4px; color: var(--fg); }
+    #dlgOvlInsp .subtitle { color: var(--muted); font-size: 11px; }
+    #dlgOvlInsp .ibody { padding: 8px 12px 12px; }
+    #dlgOvlInsp h3 { font-size: 11px; margin: 10px 0 3px; color: var(--accent); text-transform: uppercase; letter-spacing: .5px; }
+    #dlgOvlInsp table { width: 100%; border-collapse: collapse; }
+    #dlgOvlInsp td { padding: 1px 4px 1px 0; vertical-align: top; word-break: break-word; }
+    #dlgOvlInsp td.k { color: var(--muted); width: 34%; }
+    #dlgOvlInsp .raw { color: #6b7280; font-size: 10px; }
+    #dlgOvlInsp pre { margin: 3px 0; white-space: pre-wrap; word-break: break-word; color: var(--fg); font-size: 11px; }
+    #dlgOvlInsp .prov { color: var(--muted); font-size: 11px; margin: 2px 0; }
+    #dlgOvlInsp .link { color: var(--accent); cursor: pointer; text-decoration: underline; }
+    #dlgOvlInsp details { margin: 4px 0; }
+    #dlgOvlInsp summary { cursor: pointer; color: var(--fg); }
+    #dlgOvlInsp .badge { font-size: 10px; padding: 0 5px; border-radius: 3px; vertical-align: middle; }
+    #dlgOvlInsp .flags { display: flex; flex-wrap: wrap; gap: 3px; margin: 3px 0; }
+    #dlgOvlInsp .flag { font-size: 10px; padding: 0 4px; border-radius: 2px; background: var(--badge); color: #cdd; }
+</style>
+</head>
+<body>
+  <div id="sidebar">
+    <h1>BaK Asset Explorer</h1>
+    <div id="tabs">
+      <button id="tabModels" class="sel">Models</button>
+      <button id="tabZones">Zones</button>
+      <button id="tabScx">Images</button>
+      <button id="tabDialog">Dialog</button>
+    </div>
+    <div class="ctl" id="tblCtl">
+      <label>TBL resource</label>
+      <select id="tblSelect"></select>
+    </div>
+    <div class="ctl hidden" id="scxPalCtl">
+      <label>Palette</label>
+      <select id="scxPalSelect"></select>
+    </div>
+    <div class="ctl" id="modeCtl">
+      <div class="row">
+        <div>
+          <label>Mode</label>
+          <select id="modeSelect">
+            <option value="solid">solid</option>
+            <option value="wireframe">wireframe</option>
+            <option value="both" selected>both</option>
+          </select>
+        </div>
+        <div id="lodCtl">
+          <label>LOD</label>
+          <select id="lodSelect"></select>
+        </div>
+        <div>
+          <label>Palette</label>
+          <select id="palSelect">
+            <option value="day" selected>day</option>
+            <option value="night">night</option>
+          </select>
+        </div>
+        <div id="navCtl" class="hidden">
+          <label>Nav</label>
+          <select id="navSelect">
+            <option value="fly" selected>fly</option>
+            <option value="walk">walk</option>
+            <option value="orbit">orbit</option>
+          </select>
+        </div>
+        <div id="gridCtl" class="hidden" style="flex:0 0 auto">
+          <label>Grid</label>
+          <input type="checkbox" id="gridChk" style="margin-top:6px" />
+        </div>
+        <div id="chapterCtl" class="hidden">
+          <label>Chapter</label>
+          <select id="chapterSelect"></select>
+        </div>
+        <div id="dataCtl" class="hidden" style="flex:0 0 auto">
+          <label>Data</label>
+          <input type="checkbox" id="dataChk" style="margin-top:6px" />
+        </div>
+        <div id="encCtl" class="hidden" style="flex:0 0 auto">
+          <label title="combat spawn markers">Enc</label>
+          <input type="checkbox" id="encChk" style="margin-top:6px" />
+        </div>
+      </div>
+    </div>
+    <div class="ctl hidden" id="segCtl">
+      <label>List</label>
+      <div class="seg">
+        <button id="segZones" class="sel">Zones</button>
+        <button id="segEntities">Entities</button>
+      </div>
+    </div>
+    <div class="ctl hidden" id="kindCtl">
+      <label>Show</label>
+      <select id="kindSelect">
+        <option value="all" selected>all</option>
+        <option value="withdata">with data</option>
+        <option value="containers">containers</option>
+        <option value="text">text objects</option>
+        <option value="hotspot">hotspot tiles</option>
+      </select>
+    </div>
+    <div class="ctl" id="filterCtl">
+      <label>Filter</label>
+      <input type="text" id="filter" placeholder="name / idx substring" />
+    </div>
+    <div class="ctl hidden" id="dlgSearchCtl">
+      <label>Search dialog</label>
+      <input type="text" id="dlgSearch" placeholder="text substring / numeric key" />
+    </div>
+    <div id="modelListWrap"><ul id="modelList"></ul></div>
+    <div id="dialogSidebar" class="hidden"></div>
+    <div id="info"><h2>Info</h2><div id="infoBody">—</div></div>
+    <div id="status">loading…</div>
+  </div>
+  <div id="view">
+    <div id="inspector" class="hidden"></div>
+    <div id="scxView" class="hidden">
+      <canvas id="scxCanvas" width="320" height="200"></canvas>
+    </div>
+    <div id="dialogView" class="hidden">
+      <div id="dlgCrumbs"></div>
+      <div id="dlgCanvasWrap">
+        <div id="dlgEmpty">Select a conversation, keyword hub, or popup from the sidebar.</div>
+        <div id="dlgCanvasHost" style="position:absolute;inset:0"></div>
+      </div>
+      <div id="dlgInspector" class="hidden"></div>
+    </div>
+    <div id="dlgOverlay" class="hidden">
+      <div id="dlgOvlBackdrop"></div>
+      <div id="dlgOvlPanel">
+        <div id="dlgOvlHeader">
+          <span id="dlgOvlTitle" class="ovlTitle"></span>
+          <span id="dlgOvlCrumbs" class="ovlCrumbs"></span>
+          <span class="ovlSpacer"></span>
+          <!-- The overlay's toolbar (layout / chapter / dev / tune / fit / snap /
+               manual / marks) is built here by buildDialogToolbar — the SAME
+               controls the DIALOG tab uses, so the overlay has full parity. -->
+          <span id="dlgOvlTuneHolder" class="ovlToolbar" style="margin-right:8px"></span>
+          <button id="dlgOvlOpenTab" title="open this view in the DIALOG tab">open in DIALOG tab ⇗</button>
+          <button id="dlgOvlClose" title="close (Esc)">×</button>
+        </div>
+        <div id="dlgOvlBody">
+          <div id="dlgOvlCanvasHost"></div>
+        </div>
+        <div id="dlgOvlInspStrip" class="hidden">
+          <div id="dlgOvlInspToggle" title="collapse / expand">▾ node</div>
+          <div id="dlgOvlInsp"></div>
+        </div>
+      </div>
+    </div>
+    <button id="helpBtn" title="controls help">?</button>
+    <div id="helpPanel" class="hidden">
+      <h3>First-person view (Zones tab)</h3>
+      <p>1. Open the <b>Zones</b> tab and pick a zone.</p>
+      <p>2. Set <b>Nav</b> to <b>fly</b> or <b>walk</b>.</p>
+      <p>3. <b>Drag</b> anywhere to look around (touchpad-friendly); a short
+         <b>click</b> inspects. Or <b>double-click</b> to toggle hands-free
+         look (<b>Esc</b> or a click exits).</p>
+      <table>
+        <tr><td class="k">drag (1&nbsp;finger)</td><td>look around</td></tr>
+        <tr><td class="k">double-click</td><td>toggle look; Esc / click exits</td></tr>
+        <tr><td class="k">right drag</td><td>look around (mouse captured while held)</td></tr>
+        <tr><td class="k">short click</td><td>inspect object</td></tr>
+        <tr><td class="k">W A S D</td><td>move</td></tr>
+        <tr><td class="k">E / Space</td><td>up <span class="muted">(fly only)</span></td></tr>
+        <tr><td class="k">Q / C</td><td>down <span class="muted">(fly only)</span></td></tr>
+        <tr><td class="k">Shift</td><td>4&times; speed boost</td></tr>
+        <tr><td class="k">two-finger scroll</td><td>adjust fly speed</td></tr>
+        <tr><td class="k">pinch (ctrl+wheel)</td><td>dolly forward / back</td></tr>
+      </table>
+      <p class="muted">Walk mode keeps you at eye height over the ground.</p>
+      <h3>Orbit (Models tab, or Nav = orbit)</h3>
+      <table>
+        <tr><td class="k">left drag</td><td>rotate</td></tr>
+        <tr><td class="k">right drag</td><td>pan</td></tr>
+        <tr><td class="k">wheel</td><td>zoom</td></tr>
+      </table>
+      <h3>Display</h3>
+      <table>
+        <tr><td class="k">Mode</td><td>solid / wireframe / both (fill + outlines)</td></tr>
+        <tr><td class="k">Palette</td><td>day / night colors</td></tr>
+        <tr><td class="k">LOD</td><td>model detail level (Models tab)</td></tr>
+      </table>
+      <h3>Inspector (Zones tab)</h3>
+      <p>With <b>Nav = orbit</b>, <b>click a placement</b> in the 3D view to
+        inspect it: placement, shape, state record and behavior/hotspots.</p>
+      <p>The inspector is tabbed: <b>Overview</b> (curated summary, deep-links),
+        <b>Placement/Spawn</b>, <b>Shape</b>, <b>State</b>, <b>Behavior</b>
+        (decoded DEF records behind tile hotspots). Empty tabs are hidden.</p>
+      <table>
+        <tr><td class="k">Chapter</td><td>which chapter's hotspots to list/mark</td></tr>
+        <tr><td class="k">Data</td><td>gold points = state records, red = hotspot bboxes</td></tr>
+        <tr><td class="k">Enc</td><td>combat spawn markers (red combat / orange trap); click to inspect</td></tr>
+      </table>
+      <h3>Entity browser (Zones tab)</h3>
+      <p>Toggle the sidebar list to <b>Entities</b> to list the zone's
+        placements. The <b>Show</b> dropdown filters by kind
+        (containers, text objects, hotspot tiles); the filter box matches
+        shape name and <code>#index</code>. Click a row to inspect it and
+        move the camera to it.</p>
+      <p class="muted"><code>?list=entities</code> opens the entity list;
+        <code>?select=&lt;i&gt;</code> auto-opens a placement;
+        <code>?selectat=&lt;x&gt;,&lt;y&gt;</code> picks the nearest;
+        <code>?chapter=&lt;n&gt;</code> sets the chapter;
+        <code>?tab=&lt;name&gt;</code> opens a specific inspector tab;
+        <code>?enc=1</code> shows encounter markers.</p>
+      <h3>Dialog graph (Dialog tab)</h3>
+      <p>A conversation renders as a <b>raw, flat tree</b>: every node is a card
+        (colored by class) and every edge a labeled arrow (<code>if night</code>,
+        <code>else</code>, <code>chapter == 1</code>, keyword topics, and
+        <span class="muted">&#9195;</span> chain page-turns). Nothing is
+        collapsed or capped by default — a conversation that chains into the
+        keyword web pulls the whole reachable subgraph.</p>
+      <p>A <b>switch</b> (a branch that tests one state with mutually-exclusive
+        arms) renders as an amber <b>&#9155; <i>state</i>?</b> card; its arm
+        edges (<code>= 1</code>, <code>3..6</code>, <code>else</code>) are
+        <b>hue-tinted</b> so parallel storylines are traceable. <b>Click an arm
+        pill</b> to collapse that arm to a dashed stub (<code>&#8853; = 2 · N
+        nodes</code>); click the stub to re-expand. Shared nodes reachable from
+        other arms stay.</p>
+      <p>A <b>shared</b> node (reached by two or more parents) creates a MERGE
+        that makes the graph read as a DAG rather than a tree. Select it, then
+        use the crumb bar’s <b>merge:</b> controls to break the merge:
+        <b>unmerge</b> clones the node’s self-contained leaf block once per
+        parent (dashed teal <code>&#10696;</code> clone cards) — allowed only
+        when the block is entered solely through the shared node and never leaks
+        out (otherwise an inline <span class="muted">&#9888;</span> error names
+        the offending edge); <b>reference</b> shows the block once, detached,
+        with a dashed <b>&#10303; reference</b> link from each parent (click a
+        link to jump to the real block). Marks persist with the manual layout.</p>
+      <table>
+        <tr><td class="k">click card</td><td>inspect the node</td></tr>
+        <tr><td class="k">click arm pill / stub</td><td>collapse / re-expand a switch arm</td></tr>
+        <tr><td class="k">merge: unmerge / reference</td><td>break a shared-node merge (clone per parent, or a detached reference link)</td></tr>
+        <tr><td class="k">double-click ghost stub</td><td>drill in (open its own view)</td></tr>
+        <tr><td class="k">layout: &lt;preset&gt;</td><td>switch the layout preset (layered = default; classic = instant fallback; tree/force/stress/radial/rectpacking = ELK algorithms). ?layout=&lt;preset&gt; deep-links it.</td></tr>
+        <tr><td class="k">chapter: &lt;n&gt;</td><td>prune the view to what a chapter reaches: chapter-gated arms (chapter == N) keep only the matching branch; flag/keyword branches are untouched. all = no filter. ?chapter=&lt;n&gt; deep-links it.</td></tr>
+        <tr><td class="k">drag / wheel</td><td>pan / zoom · <b>fit</b> reframes</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/controls/OrbitControls.js": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js"
+    }
+  }
+  </script>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

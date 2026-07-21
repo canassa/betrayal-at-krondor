@@ -1,0 +1,26 @@
+; VMCODE.PAK -- pack spec for VMCODE.OVL (the per-adapter video driver archive).
+;
+; This is the fossil of the 1993 packer's control file: a Dynamix "RES" container
+; tagged "OVL:" holding one leaf per video adapter, IN THIS EXACT ORDER.  The chunk
+; ORDER is byte-load-bearing -- the archive is a flat running concatenation with no
+; index, so a reordered leaf shifts every following offset and the file no longer
+; matches the shipped VMCODE.OVL.  Do not sort or regroup these lines.
+;
+; Format (read by PACKOVL):
+;   line 1        the 4-byte root container tag
+;   each line     "TAG: <inputpath>"   ; ':' is part of the 4-byte tag
+;   ';' / blank   comment / ignored
+; Method is always LZW (code 0x02) and is implicit -- see PACKOVL.C for the full
+; method table (0x00 raw, 0x01 RLE, 0x02 LZW, 0x03 LH1); only 0x02 ever ships here.
+;
+; Each input is a TLINK'd DOS .EXE (an MZ load module); PACKOVL strips the MZ
+; header + relocation table and LZW-packs the flat image.
+OVL:
+VGA: OUT\VGA.EXE
+EGA: OUT\EGA.EXE
+MCG: OUT\MCG.EXE
+CGA: OUT\CGA.EXE
+TAN: OUT\TAN.EXE
+HEG: OUT\HEG.EXE
+EVG: OUT\EVG.EXE
+EVA: OUT\EVA.EXE
