@@ -40,11 +40,11 @@ int g_cfgTempDrive = 0x0000;
  * overwrites the existing one; while FALSE the save is silent.
  */
 bool16 g_cfgBookmarkVerify = TRUE;
-char g_szDrvAdl[8] = "adl.drv";
-char g_szDrvMt32[9] = "mt32.drv";
-char g_szDrvSndblast[13] = "sndblast.drv";
-char g_szDrvStd[8] = "std.drv";
-char g_szDrvGenmidi[12] = "genmidi.drv";
+char g_szDrvAdl[] = "adl.drv";
+char g_szDrvMt32[] = "mt32.drv";
+char g_szDrvSndblast[] = "sndblast.drv";
+char g_szDrvStd[] = "std.drv";
+char g_szDrvGenmidi[] = "genmidi.drv";
 
 void parse_krondor_cfg(void) {
     char token[40];
