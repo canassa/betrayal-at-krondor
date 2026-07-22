@@ -293,7 +293,7 @@ void evtcond_dialog_action_dispatch(DdxOp far *action_record) {
             return;
         }
         actor->itemCount = 0;
-        actor->dirty_flag = 1;
+        actor->needsFlush = 1;
         actorspawn_destroy_and_persist(actor);
         break;
     }

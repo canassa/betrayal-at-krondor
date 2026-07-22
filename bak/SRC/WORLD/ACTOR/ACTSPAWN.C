@@ -18,8 +18,8 @@ static Actor far *actorspawn_clone_from_template(Actor far *tmpl_far, int actor_
 
     dst = alloc_far(actorrec_payload_size(tmpl_far) + sizeof(Actor), ALLOC_FAR_ZERO_FILL);
     *dst = *tmpl_far;
-    dst->dirty_flag = 0;
-    dst->persist_gate = (uchar)actor_kind;
+    dst->needsFlush = 0;
+    dst->canFlush = (uchar)actor_kind;
     return dst;
 }
 
@@ -130,7 +130,7 @@ Actor far *actorspawn_objfixed(int kind, long world_x, long world_y) {
 void far actorspawn_persist_to_temp(Actor far *actor) {
     ActorSubrec10_LastTouch far *sub;
 
-    if (actor->dirty_flag != '\0' && actor->persist_gate != '\0') {
+    if (actor->needsFlush != '\0' && actor->canFlush != '\0') {
         sub = (ActorSubrec10_LastTouch far *)actorrec_get_subrecord(actor, SUBREC_LAST_TOUCH);
         if (sub != (ActorSubrec10_LastTouch far *)0) {
             sub->dwLast_touch_time = g_gameState.game_time;
@@ -139,7 +139,7 @@ void far actorspawn_persist_to_temp(Actor far *actor) {
         gstate_temp_file_write_at(&actor->kind, *(ulong far *)actor->temp_file_off,
                                   actorrec_payload_size(actor) + sizeof(Actor) - 6);
     }
-    actor->dirty_flag = '\0';
+    actor->needsFlush = '\0';
 }
 
 void far actorspawn_destroy_and_persist(Actor far *actor) {
@@ -234,7 +234,7 @@ Actor far *actorspawn_enc_location(int kind, long world_x, long world_y) {
     result->bResidence = RES_ENCOUNTER;
     result->flags |= 0x80;
     *(long far *)result->temp_file_off = cur_off;
-    result->dirty_flag = '\x01';
+    result->needsFlush = '\x01';
     actorspawn_persist_to_temp(result);
     return result;
 }
@@ -316,6 +316,6 @@ void far actorspawn_npc_prox_periodic(Actor far *actor) {
 
     if ((long)RND(10000u) < score || gstate_event_read(0xdc54)) {
         actor->itemCount = 0;
-        actor->dirty_flag = 1;
+        actor->needsFlush = 1;
     }
 }

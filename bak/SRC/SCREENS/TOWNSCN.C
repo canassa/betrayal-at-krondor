@@ -138,7 +138,7 @@ static int far townscene_load(int chapter, int sub, int preserve) {
         pSub = actorrec_get_subrecord(g_pCurrentTownScene->pActor, SUBREC_EVENT_STATE);
         if ((pSub != (ActorSubrecord far *)0) &&
             (pSub->event_state.bRest_last_chapter_done < g_gameState.nChapter)) {
-            ((Actor far *)g_pCurrentTownScene->pActor)->dirty_flag = 1;
+            ((Actor far *)g_pCurrentTownScene->pActor)->needsFlush = 1;
             {
                 int q;
                 q = (int)((long)((ulong)pSub->event_state.bRest_gold_unit *
@@ -279,7 +279,7 @@ static int far townscene_resolv_enc_outcome(Actor far *actor) {
         }
         if (gold != 0) {
             pSub->event_state.bPopup_retry_counter = 0;
-            actor->dirty_flag = 1;
+            actor->needsFlush = 1;
             g_gameState.nParty_gold += (long)(int)gold;
             g_gameState.lEvtArgGoldCost = (long)(int)gold;
         }

@@ -573,7 +573,7 @@ void far wcursor_click_inn_or_lock_npc(WorldHotspot *pHotspot) {
                     if ((int)(uint)pInteract->interact_msg.bFlags < (int)(uint)stat_val) {
                         dialog_play_record(0xbf, 1);
                         *((unsigned char far *)&pInteract->interact_msg.dwMessage_id + 1) = 0;
-                        pActor->dirty_flag = '\x01';
+                        pActor->needsFlush = '\x01';
                         stat_combatant_modify(&g_gameState.party_members[member_idx], 0xd, 2, 3);
                     apply_bonus:
                         bHandled = 1;
@@ -668,7 +668,7 @@ void far wcursor_click_inn_or_lock_npc(WorldHotspot *pHotspot) {
                             << 8),
                     100);
                 *((unsigned char far *)&pInteract->interact_msg.dwMessage_id + 1) = 0;
-                pActor->dirty_flag = '\x01';
+                pActor->needsFlush = '\x01';
             }
         }
         goto cleanup;

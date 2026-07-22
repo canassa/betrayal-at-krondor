@@ -1130,7 +1130,7 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                                         (ACTOR_ITEM(pActor, slotIdx).item_id != 'x' ||
                                          (uint)ACTOR_ITEM(pActor, slotIdx).condition ==
                                              (uint)op->nA2)) {
-                                        pActor->dirty_flag = 1;
+                                        pActor->needsFlush = 1;
                                         ACTOR_ITEM(pActor, slotIdx) = ACTOR_ITEM(
                                             pActor, pActor->itemCount = pActor->itemCount - 1);
 

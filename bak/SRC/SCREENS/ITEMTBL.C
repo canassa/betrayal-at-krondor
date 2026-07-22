@@ -148,7 +148,7 @@ int itemtbl_inv_consume_one_by_kind(Actor far *inv, uint kind) {
     int old_count;
     int i;
 
-    inv->dirty_flag = 1;
+    inv->needsFlush = 1;
     for (i = 0; i < (int)inv->itemCount; i++) {
         if (ACTOR_ITEM(inv, i).item_id != kind || kind == 0x54) {
             continue;

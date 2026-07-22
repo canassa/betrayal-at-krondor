@@ -1450,12 +1450,12 @@ void mainmenu_save_party_to_tmp(void) {
     g_wLastTempWriteRecordKind = 0;
 
     gstate_temp_file_write_at((uchar far *)&g_gameState, 0L, 0xad7);
-    g_gameState.shared_inventory->dirty_flag = 1;
+    g_gameState.shared_inventory->needsFlush = 1;
     actorspawn_persist_to_temp(g_gameState.shared_inventory);
-    g_gameState.ground_pile->dirty_flag = 1;
+    g_gameState.ground_pile->needsFlush = 1;
     actorspawn_persist_to_temp(g_gameState.ground_pile);
     for (i = 0; i < 6; i++) {
-        g_gameState.party_members[i].actor_record->dirty_flag = 1;
+        g_gameState.party_members[i].actor_record->needsFlush = 1;
         actorspawn_persist_to_temp(g_gameState.party_members[i].actor_record);
     }
 }
