@@ -13,6 +13,7 @@ so names and sizes are read from the archive at the offsets the RMF gives.
     bak rmf extract PATH [NAMES]...   pull one or more resources out
     bak rmf extract PATH --all        pull everything
     bak rmf dump PATH NAME            decode a .TBL model table (chunks + per-model geometry)
+    bak rmf dialog PATH KEY...         decode dialog record text from the DIAL_Z0N.DDX files
 
 A .TBL is IFF-style chunks
 MAP: (names) / APP: (empty) / GID: (2D collision zones) / DAT: (records + 3D mesh);
@@ -312,6 +313,103 @@ def dump(
         f"distinct bKind: {kinds}",
         fg="cyan",
     )
+
+
+# A DDX record header is 9 bytes, packed, matching struct DDXRecord:
+# bStyle u8 | wSpeaker_id u16 | wFlags u16 | bCnt1 u8 | bCnt2 u8 | wBody_len u16.
+# The count bytes give (bCnt1 + bCnt2) * 10 bytes of sub-records before the body.
+_DDX_HDR = struct.Struct("<BHHBBH")
+
+
+def _ddx_filename(key: int) -> str:
+    """The chapter file a record lives in, chosen from the key exactly as
+    dialog_load_record_by_key does: chapter = key / 100000, two decimal digits."""
+    chapter = key // 100000
+    return f"DIAL_Z{chapter // 10}{chapter % 10}.DDX"
+
+
+def _ddx_render(body: bytes) -> str:
+    """Render a record body: printable ASCII literal, ``\\n`` for the 0x0a break,
+    every other control byte shown as ``[xx]``. Drops one trailing NUL terminator."""
+    if body.endswith(b"\x00"):
+        body = body[:-1]
+    out: list[str] = []
+    for b in body:
+        if b == 0x0A:
+            out.append("\n")
+        elif 0x20 <= b < 0x7F:
+            out.append(chr(b))
+        else:
+            out.append(f"[{b:02x}]")
+    return "".join(out)
+
+
+@dataclass(frozen=True)
+class DialogRecord:
+    style: int
+    speaker: int
+    flags: int
+    body_len: int
+    text: str
+
+
+def _ddx_lookup(payload: bytes, key: int) -> DialogRecord | None:
+    """Find a record in a DDX payload by key: a ``u16`` count, then that many
+    ``(u32 node_id, u32 file_off)`` directory entries, then the record at the
+    matching offset. Returns None when the key is absent."""
+    (count,) = struct.unpack_from("<H", payload, 0)
+    pos = 2
+    file_off = 0
+    for _ in range(count):
+        node_id, off = struct.unpack_from("<II", payload, pos)
+        pos += 8
+        if node_id == key:
+            file_off = off
+            break
+    if file_off == 0:
+        return None
+    style, speaker, flags, cnt1, cnt2, body_len = _DDX_HDR.unpack_from(payload, file_off)
+    start = file_off + _DDX_HDR.size + (cnt1 + cnt2) * 10
+    body = payload[start : start + body_len]
+    return DialogRecord(style, speaker, flags, body_len, _ddx_render(body))
+
+
+@app.command()
+def dialog(
+    rmf_path: _PathArg,
+    keys: Annotated[
+        list[str],
+        typer.Argument(help="dialog record key(s), decimal or 0x-hex (e.g. 332 or 0x14c)"),
+    ],
+) -> None:
+    """Decode dialog record text from the DIAL_Z0N.DDX files.
+
+    The chapter file is chosen from each key (key // 100000), matching the game's
+    dialog_load_record_by_key. Non-printable control bytes are shown as [xx]."""
+    _, archive, entries = _load(rmf_path)
+    by_name = {e.name.lower(): e for e in entries}
+    for raw in keys:
+        try:
+            key = int(raw, 0)
+        except ValueError:
+            raise typer.BadParameter(f"not a number: {raw}") from None
+        fname = _ddx_filename(key)
+        entry = by_name.get(fname.lower())
+        if entry is None:
+            typer.secho(f"{key:#x} ({key}): {fname} not in container", fg="yellow")
+            continue
+        payload = archive[entry.data_offset : entry.data_offset + entry.size]
+        rec = _ddx_lookup(payload, key)
+        if rec is None:
+            typer.secho(f"{key:#x} ({key}): not found in {fname}", fg="yellow")
+            continue
+        typer.secho(
+            f"{key:#x} ({key})  {fname}  style={rec.style} "
+            f"speaker={rec.speaker} flags={rec.flags:#06x} bodyLen={rec.body_len}",
+            fg="cyan",
+        )
+        typer.echo(rec.text)
+        typer.echo("")
 
 
 def register(root: typer.Typer) -> None:
