@@ -12,24 +12,24 @@ unsigned short g_awSoundDriverCodes[5] = {0x0002, 0x0003, 0x0004, 0x0000, 0x0007
 /**
  * @brief Cheat-menu unlock flag, read by the 3-D world view.
  *
- * FALSE on a stock install; set TRUE only when @c resource.cfg carries a
- * @c knockknock line whose argument is exactly 29 characters. While TRUE,
+ * FALSE on a stock install; set TRUE only when `resource.cfg` carries a
+ * `knockknock` line whose argument is exactly 29 characters. While TRUE,
  * the RShift+Alt+tilde chord opens the hidden cheat menu.
  */
 bool16 g_cfgKnockKnock = FALSE;
 unsigned short g_cfgCycle = 0x0000;
 /**
- * @brief Drive letter for the @c TEMP.GAM swap file (0 = current drive).
+ * @brief Drive letter for the `TEMP.GAM` swap file (0 = current drive).
  *
- * Set from the @c tempdrive line in @c resource.cfg (its first character,
- * upper-cased). When non-zero the swap path is drive-relative @c D:TEMP.GAM;
- * when 0 (the default) the file is the bare @c TEMP.GAM on the current drive.
+ * Set from the `tempdrive` line in `resource.cfg` (its first character,
+ * upper-cased). When non-zero the swap path is drive-relative `D:TEMP.GAM`;
+ * when 0 (the default) the file is the bare `TEMP.GAM` on the current drive.
  */
 int g_cfgTempDrive = 0x0000;
 /**
  * @brief Bookmark-overwrite confirmation flag.
  *
- * TRUE by default; set from the @c bookmarkverify line in @c resource.cfg.
+ * TRUE by default; set from the `bookmarkverify` line in `resource.cfg`.
  * While TRUE, saving a bookmark first prompts to confirm before it
  * overwrites the existing one; while FALSE the save is silent.
  */
