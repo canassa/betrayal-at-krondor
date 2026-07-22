@@ -12,15 +12,29 @@
 #include "SRC/GAME/GSTATE.H"
 #include "SRC/WORLD/ACTOR/ACTORREC.H"
 #include "SRC/WORLD/ENC/RGNENC.H"
-#include "defines.h"
 
-static Actor far *actorspawn_clone_from_template(Actor far *tmpl_far, int actor_kind) {
+/**
+ * @brief Allocate a live heap @ref Actor for a template record and copy the
+ *        template's header into it.
+ *
+ * Only the fixed @ref Actor header is copied; the variable-length payload
+ * (item array and optional subrecords) is left zero-filled for the caller to
+ * read in. Free the result with @ref _freemem (directly, or via
+ * @ref actorspawn_destroy_and_persist).
+ *
+ * @param actor    Template record; supplies the copied header and, through
+ *                 @ref actorrec_payload_size, the payload size to allocate.
+ * @param canFlush Initial @ref Actor::canFlush: @ref TRUE if the clone owns a
+ *                 temp-file write-back slot and so may be persisted.
+ * @return Far pointer to the new @ref Actor; header copied, payload zeroed.
+ */
+static Actor far *actor_alloc_from_template(Actor far *actor, bool16 canFlush) {
     Actor far *dst;
 
-    dst = alloc_far(actorrec_payload_size(tmpl_far) + sizeof(Actor), ALLOC_FAR_ZERO_FILL);
-    *dst = *tmpl_far;
+    dst = alloc_far(actorrec_payload_size(actor) + sizeof(Actor), ALLOC_FAR_ZERO_FILL);
+    *dst = *actor;
     dst->needsFlush = FALSE;
-    dst->canFlush = (unsigned char)actor_kind;
+    dst->canFlush = canFlush;
     return dst;
 }
 
@@ -113,7 +127,7 @@ Actor far *actorspawn_objfixed(int kind, long world_x, long world_y) {
             if (tmpl.header.kind == kind && tmpl.header.nWorld_x == world_x &&
                 tmpl.header.nWorld_y == world_y && g_gameState.nChapter >= chap_min &&
                 g_gameState.nChapter <= chap_max) {
-                spawned = actorspawn_clone_from_template((Actor far *)&tmpl, ipass == 0);
+                spawned = actor_alloc_from_template((Actor far *)&tmpl, ipass == 0);
                 *(long far *)spawned->temp_file_off = offset;
                 bak_fread_chunked((unsigned char huge *)((char far *)spawned + sizeof(Actor)), 1,
                                   actorrec_payload_size((Actor far *)&tmpl), stream);
@@ -196,7 +210,7 @@ Actor far *actorspawn_enc_location(int kind, long world_x, long world_y) {
             cur_off = bak_ftell(g_pTempGamFp);
             bak_fread(&actor_hdr.kind, 0x10, 1, g_pTempGamFp);
             if (actor_hdr.flags & 0x80) {
-                tmp_clone = actorspawn_clone_from_template(&actor_hdr, 0);
+                tmp_clone = actor_alloc_from_template(&actor_hdr, FALSE);
                 bak_fread_chunked((unsigned char far *)((char far *)tmp_clone + sizeof(Actor)), 1L,
                                   actorrec_payload_size(&actor_hdr), g_pTempGamFp);
                 p_touch = (ActorSubrec10_LastTouch far *)actorrec_get_subrecord(tmp_clone,
@@ -230,7 +244,7 @@ Actor far *actorspawn_enc_location(int kind, long world_x, long world_y) {
     if (g_wInCombatMode == 0) {
         rgnenc_visible_pool_append_spawn(&actor_hdr.kind);
     }
-    result = actorspawn_clone_from_template(&actor_hdr, 1);
+    result = actor_alloc_from_template(&actor_hdr, TRUE);
     result->itemCount = '\0';
     result->bResidence = RES_ENCOUNTER;
     result->flags |= 0x80;
