@@ -45,13 +45,13 @@ typedef struct Actor {
      * its temp-file slot; set on any change, cleared once the write
      * completes. Flushed only when @ref Actor::canFlush is also set.
      */
-    unsigned char needsFlush;
+    bool8 needsFlush;
     /**
      * The actor has a temp-file slot to be written back to, so it may be
      * persisted; gates the flush together with @ref Actor::needsFlush. It
      * is not a type discriminant; the record's kind is @ref Actor::kind.
      */
-    unsigned char canFlush;
+    bool8 canFlush;
     unsigned char temp_file_off[4];
     unsigned char kind;
     unsigned char chap_band;
