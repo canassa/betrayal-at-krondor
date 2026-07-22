@@ -71,18 +71,18 @@ void monstat_roll_stats_from_file(CombatActor *actor) {
 
     bak_fread(&min_val, 2, 1, stream);
     bak_fread(&max_val, 2, 1, stream);
-    actor->inner->pad_e[1] = (uchar)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
+    actor->inner->pad_e[1] = (unsigned char)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
     bak_fread(&min_val, 2, 1, stream);
     bak_fread(&max_val, 2, 1, stream);
-    actor->inner->pad_e[2] = (uchar)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
+    actor->inner->pad_e[2] = (unsigned char)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
     bak_fread(&min_val, 2, 1, stream);
     bak_fread(&max_val, 2, 1, stream);
-    actor->inner->pad_e[3] = (uchar)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
+    actor->inner->pad_e[3] = (unsigned char)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
 
     bak_fread(&min_val, 2, 1, stream);
     bak_fread(&max_val, 2, 1, stream);
     if (actor->inner->pad_e[0] != '\0') {
-        actor->inner->pad_e[0] = (uchar)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
+        actor->inner->pad_e[0] = (unsigned char)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
     }
     bak_fclose(stream);
 }

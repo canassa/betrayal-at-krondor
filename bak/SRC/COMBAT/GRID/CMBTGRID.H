@@ -8,15 +8,15 @@ extern void combatgrid_combatants_table_free(void);
 extern int combatgrid_coord_valid(int x, int y);
 extern void combatgrid_remove_cmbt_at_tile(int tile_x, int tile_y);
 extern void combatgrid_kill_cmbt_at_tile(int tile_x, int tile_y);
-extern uint combatgrid_tile_terrain(char tile_x, char tile_y);
+extern unsigned int combatgrid_tile_terrain(char tile_x, char tile_y);
 extern GridCombatant *combatgrid_find_cmbt_at_tile(char tile_x, char tile_y);
-extern uint combatgrid_tile_blockd_cmbt(char tile_x, char tile_y);
-extern uint combatgrid_tile_is_blocked(char tile_x, char tile_y);
-extern void combatgrid_tile_set_word(char x, char y, uint value);
-extern uint combatgrid_tile_terrain_field(char x, char y);
+extern unsigned int combatgrid_tile_blockd_cmbt(char tile_x, char tile_y);
+extern unsigned int combatgrid_tile_is_blocked(char tile_x, char tile_y);
+extern void combatgrid_tile_set_word(char x, char y, unsigned int value);
+extern unsigned int combatgrid_tile_terrain_field(char x, char y);
 extern int combatgrid_tile_field4(char x, char y);
 extern void combatgrid_tick_tile_effect(char x, char y);
-extern void combatgrid_set_tile_effect(char x, char y, ushort type, int timer);
+extern void combatgrid_set_tile_effect(char x, char y, unsigned short type, int timer);
 extern int combatgrid_prox_check_kind_set(WorldPos2 *pos);
 extern void combatgrid_world_to_view_2d(WorldPos2 *origin, int angle, WorldPos2 far *point,
                                         int *out_xy);
@@ -40,7 +40,7 @@ extern void combatgrid_apply_tile_status_fx(int tile_x, int tile_y, int target_a
 extern void combatgrid_mark_engagement_line(int x1, int y1, int x2, int y2, short paged_id,
                                             int do_register);
 extern int combatgrid_place_actor_on_tile(int tile_x, int tile_y, int new_tile_x, int new_tile_y);
-extern void combatgrid_find_adj_pass_tile(int x, int y, uint terrain_mask, int *out_dx,
+extern void combatgrid_find_adj_pass_tile(int x, int y, unsigned int terrain_mask, int *out_dx,
                                           int *out_dy);
 extern void combatgrid_spread_tile_fx_line(int x, int y);
 extern void combatgrid_line_effect_propagate(int x, int y);
@@ -55,7 +55,7 @@ extern void combatgrid_clear_tile_effects(void);
 extern void combatgrid_save_traps_terr(int encounter_idx);
 extern int combatgrid_can_engage_same_kind(int idx_a, int idx_b);
 extern void combatgrid_apply_engage_links(int start_idx);
-extern void combatgrid_place_tile_fx_at_cur(ushort type, int timer);
+extern void combatgrid_place_tile_fx_at_cur(unsigned short type, int timer);
 extern void combatgrid_clear_terr_6_effects(void);
 extern int combatgrid_actor_past_terr6_row(void);
 extern int combatgrid_any_terrain_6(void);
@@ -74,7 +74,7 @@ extern int combatgrid_tile_passable_check(int required_terrain, int tile_x, int 
                                           CombatActor *mover);
 extern void combatgrid_step_search(CombatActor *actor, int preferred_dir);
 extern void combatgrid_rndr_engagement_lines(void);
-extern void combatgrid_unhighlight_terr_type(ushort terrain);
+extern void combatgrid_unhighlight_terr_type(unsigned short terrain);
 extern int combatgrid_tile_has_mobility(int col, int row, int tile_count);
 
 #endif

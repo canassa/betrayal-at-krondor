@@ -41,7 +41,7 @@
  * @note The (entry, entry_seg) pair is one far pointer split into offset and
  *       segment words; the caller passes (ptr, FP_SEG(ptr)).
  */
-extern void r3d_setup_actor_in_camera_space(WorldObject *entry, ushort entry_seg);
+extern void r3d_setup_actor_in_camera_space(WorldObject *entry, unsigned short entry_seg);
 
 /**
  * Assembles the transform that places one actor's mesh into camera space.

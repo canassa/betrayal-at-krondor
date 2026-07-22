@@ -10,13 +10,13 @@
 #include "SRC/SYS/EMS.H"
 
 ImageRecord **emsimg_migrate_to_ems(ImageRecord **image_record_list) {
-    ulong sizeBytes;
+    unsigned long sizeBytes;
     int i;
     int page_id;
-    uchar far *firstbuf;
-    uchar far *dst;
-    ulong linear_base;
-    ulong linear_cur;
+    unsigned char far *firstbuf;
+    unsigned char far *dst;
+    unsigned long linear_base;
+    unsigned long linear_cur;
 
     sizeBytes = (*(unsigned long(far *)(unsigned short *,
                                         unsigned short *))g_renderer_vtable.pfn_image_install)(
@@ -27,18 +27,18 @@ ImageRecord **emsimg_migrate_to_ems(ImageRecord **image_record_list) {
         dst = ems_map_resource_pages(page_id);
 
         firstbuf =
-            (uchar far *)MK_FP(image_record_list[0]->wImageData, image_record_list[0]->wImageOff);
+            (unsigned char far *)MK_FP(image_record_list[0]->wImageData, image_record_list[0]->wImageOff);
 
-        fmemcpy_far((ulong)dst, (ulong)firstbuf, (uint)sizeBytes);
+        fmemcpy_far((unsigned long)dst, (unsigned long)firstbuf, (unsigned int)sizeBytes);
 
         linear_base =
-            ((ulong)image_record_list[0]->wImageData << 4) | image_record_list[0]->wImageOff;
+            ((unsigned long)image_record_list[0]->wImageData << 4) | image_record_list[0]->wImageOff;
 
         i = null_terminated_count(image_record_list) - 1;
         while (i >= 0) {
 
             linear_cur =
-                ((ulong)image_record_list[i]->wImageData << 4) | image_record_list[i]->wImageOff;
+                ((unsigned long)image_record_list[i]->wImageData << 4) | image_record_list[i]->wImageOff;
 
             image_record_list[i]->wImageData = page_id;
             image_record_list[i]->wImageOff = linear_cur - linear_base;
@@ -112,9 +112,9 @@ void emsimg_polygon_quad_canonicalize(int *xs, int *ys) {
     }
 }
 
-void emsimg_gouraud_blit_paged(uint *page_ptr, int *xs, int *ys) {
-    uint page_id;
-    uchar far *mapped;
+void emsimg_gouraud_blit_paged(unsigned int *page_ptr, int *xs, int *ys) {
+    unsigned int page_id;
+    unsigned char far *mapped;
 
     page_id = *page_ptr;
     if (page_id < 300) {
@@ -126,10 +126,10 @@ void emsimg_gouraud_blit_paged(uint *page_ptr, int *xs, int *ys) {
     *page_ptr = page_id;
 }
 
-void emsimg_sprite_blit_scaled_paged(ImageRecord *sprite, int dst_x, int dst_y, uint frame,
+void emsimg_sprite_blit_scaled_paged(ImageRecord *sprite, int dst_x, int dst_y, unsigned int frame,
                                      int width, int height) {
-    uint page_id;
-    uchar far *mapped;
+    unsigned int page_id;
+    unsigned char far *mapped;
 
     page_id = sprite->wImageData;
     if (page_id < 300) {
@@ -137,14 +137,14 @@ void emsimg_sprite_blit_scaled_paged(ImageRecord *sprite, int dst_x, int dst_y, 
         sprite->wImageData = FP_SEG(mapped);
     }
 
-    (*(void (*)(void *, int, int, uint, int, int))polyrast_spr_scaled_blit_planar)(
+    (*(void (*)(void *, int, int, unsigned int, int, int))polyrast_spr_scaled_blit_planar)(
         sprite, dst_x, dst_y, frame, width, height);
     sprite->wImageData = page_id;
 }
 
-void emsimg_putsprite_ems_swap(uint *img_ptr, int x, int y) {
-    uint page_id;
-    uchar far *mapped;
+void emsimg_putsprite_ems_swap(unsigned int *img_ptr, int x, int y) {
+    unsigned int page_id;
+    unsigned char far *mapped;
 
     page_id = *img_ptr;
     if (page_id < 300) {
@@ -155,9 +155,9 @@ void emsimg_putsprite_ems_swap(uint *img_ptr, int x, int y) {
     *img_ptr = page_id;
 }
 
-void emsimg_map_then_call_180c(uint *p_id_or_ptr, int x, int y, uint flip_flags) {
-    uint page_id;
-    uchar far *mapped;
+void emsimg_map_then_call_180c(unsigned int *p_id_or_ptr, int x, int y, unsigned int flip_flags) {
+    unsigned int page_id;
+    unsigned char far *mapped;
 
     page_id = *p_id_or_ptr;
     if (page_id < 300) {

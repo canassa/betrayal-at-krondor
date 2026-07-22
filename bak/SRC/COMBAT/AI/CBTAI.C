@@ -140,7 +140,7 @@ L_phase2:
     return 0;
 }
 
-int far combat_ai_execute_turn(CombatActor *actor, int param_2, uint param_3) {
+int far combat_ai_execute_turn(CombatActor *actor, int param_2, unsigned int param_3) {
     int ret;
     int clearance;
     int spell_id;
@@ -180,9 +180,9 @@ int far combat_ai_execute_turn(CombatActor *actor, int param_2, uint param_3) {
 }
 
 int far combat_ai_pick_heal_spell(CombatActor *caster, CombatActor *target) {
-    uint curHp;
-    uint min_hp_pct;
-    uint threshold;
+    unsigned int curHp;
+    unsigned int min_hp_pct;
+    unsigned int threshold;
     register int i;
     int result;
 

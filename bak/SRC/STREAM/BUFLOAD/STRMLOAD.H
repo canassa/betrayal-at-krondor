@@ -3,7 +3,7 @@
 
 #include "structs.h"
 
-extern void far *stream_load_to_buffer(BakFile *file, ulong size, ulong *out_desc,
-                                       ushort codec_kind);
+extern void far *stream_load_to_buffer(BakFile *file, unsigned long size, unsigned long *out_desc,
+                                       unsigned short codec_kind);
 
 #endif

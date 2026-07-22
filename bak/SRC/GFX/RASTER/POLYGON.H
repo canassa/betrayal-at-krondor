@@ -3,8 +3,8 @@
 
 #include "structs.h"
 
-extern void fill_spans_dispatch(ushort off, ushort seg);
-extern void blit_rect_buf_dispatch(uchar far *far_ptr);
+extern void fill_spans_dispatch(unsigned short off, unsigned short seg);
+extern void blit_rect_buf_dispatch(unsigned char far *far_ptr);
 extern int draw_polygon(int count, int *xs, int *ys);
 extern void near draw_polygon_edges(void);
 extern void near state_machine_enter_state2_a(void);

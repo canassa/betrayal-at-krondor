@@ -3,8 +3,8 @@
 
 #include "structs.h"
 
-extern uchar bios_palette_read(int reg_index);
-extern void vga_read_palette(uchar *buf, int start, int count);
-extern void vga_write_palette(uchar *src, int start_index, int num_colors);
+extern unsigned char bios_palette_read(int reg_index);
+extern void vga_read_palette(unsigned char *buf, int start, int count);
+extern void vga_write_palette(unsigned char *src, int start_index, int num_colors);
 
 #endif

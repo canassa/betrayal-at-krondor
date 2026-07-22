@@ -9,7 +9,7 @@ int *namedtbl_load(char *filename) {
     int *ptr;
     BakFile *stream;
     void *strPool;
-    uint poolSize;
+    unsigned int poolSize;
     int i;
 
     strPool = (void *)0;

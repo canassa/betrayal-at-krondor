@@ -5,6 +5,6 @@
 
 extern int video_shutdown(void);
 extern int near video_detect_adapter(void);
-extern uchar near crtc_probe_data_register(void);
+extern unsigned char near crtc_probe_data_register(void);
 
 #endif

@@ -17,7 +17,7 @@ void vislist_free(void) {
     return;
 }
 
-void vislist_sort(ushort seg, ushort *ids, long *vals, int count) {
+void vislist_sort(unsigned short seg, unsigned short *ids, long *vals, int count) {
     int far *pId;
     Shape far *rec;
     long tmpVal;
@@ -25,7 +25,7 @@ void vislist_sort(ushort seg, ushort *ids, long *vals, int count) {
     int pivot;
     int best_i;
     int prio;
-    ushort tmpId;
+    unsigned short tmpId;
     int i;
     int j;
 

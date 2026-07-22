@@ -48,14 +48,14 @@ void far explore_req_map_screen_free(void) {
 
 void explore_color_remap_load(char *filename) {
     int i;
-    byte idx;
-    uchar val;
+    unsigned char idx;
+    unsigned char val;
     BakFile *stream;
 
     g_pColorRemap = galloc_safe_zcalloc(256);
     i = 0;
     do {
-        g_pColorRemap[i] = (uchar)i;
+        g_pColorRemap[i] = (unsigned char)i;
         i++;
     } while (i < 256);
     stream = bak_fopen(filename, "rb");
@@ -76,9 +76,9 @@ void explore_color_remap_load(char *filename) {
 }
 
 void explore_color_remap_free(void) {
-    if (g_pColorRemap != (uchar *)0x0) {
+    if (g_pColorRemap != (unsigned char *)0x0) {
         galloc_zfree(g_pColorRemap);
-        g_pColorRemap = (uchar *)0x0;
+        g_pColorRemap = (unsigned char *)0x0;
     }
     return;
 }
@@ -457,7 +457,7 @@ void far explore_main_loop(void) {
 
 void far explore_camera_snap_face_south(long *pSavedZ, short *pSavedYaw) {
     if (g_full_redraw_needed == 0) {
-        if (g_pColorRemap != (uchar *)0x0) {
+        if (g_pColorRemap != (unsigned char *)0x0) {
             g_world_widget->colorRemap = g_pColorRemap;
         }
         *pSavedZ = g_world_camera->base.pos.nWorld_z;
@@ -499,8 +499,8 @@ void far explore_animate_camera_to_tile(TileMoveRecord *ptr) {
     short step_speed;
     int saved_redraw;
     int out_target;
-    uchar tile_x;
-    uchar tile_y;
+    unsigned char tile_x;
+    unsigned char tile_y;
     int out_dir;
     WorldPos saved_pos;
 

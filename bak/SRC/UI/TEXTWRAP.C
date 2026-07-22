@@ -92,14 +92,14 @@ int far textwrap_compute_lines(long text, int max_width, int *out_lines, int max
 #pragma option -Od
 
 void textwrap_draw_aligned(long text, int x, int y, int max_width, int max_height, int line_spacing,
-                           uint flags, int first_line) {
+                           unsigned int flags, int first_line) {
     struct textline lines[90];
     int line_height;
     int count;
     int hoff;
     int voff;
     char saved;
-    register uint f = flags;
+    register unsigned int f = flags;
     register int fl = first_line;
 
     line_height = g_graphics_context.pFont_height[0];

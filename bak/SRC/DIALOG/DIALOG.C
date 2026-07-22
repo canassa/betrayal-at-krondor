@@ -78,8 +78,8 @@ DialogStyleDescriptor g_dialog_style_table[7] = {
 unsigned short g_bDialogWorldAnchorValid = 0x0000;
 unsigned char g_dialog_running = 0x00;
 
-int dialog_freemem_if_not_null(uchar far *ptr) {
-    if ((ulong)ptr != 0)
+int dialog_freemem_if_not_null(unsigned char far *ptr) {
+    if ((unsigned long)ptr != 0)
         _freemem(ptr);
 }
 
@@ -92,7 +92,7 @@ PDdxRecord dialog_load_record_by_key(unsigned long record_key, int use_offset) {
         unsigned long node_id;
         unsigned long file_off;
     } dir_entry;
-    uchar far *body_ptr;
+    unsigned char far *body_ptr;
     int alloc_size;
     char filename[16];
     BakFile *stream;
@@ -130,16 +130,16 @@ PDdxRecord dialog_load_record_by_key(unsigned long record_key, int use_offset) {
         alloc_size = sub_size + header.wBody_len + 9;
         record = (DDXRecord far *)alloc_far((long)alloc_size, 0);
         *record = header;
-        bak_fread_chunked((uchar far *)record + 9, 1, (long)sub_size, stream);
-        body_ptr = (uchar far *)record + sub_size + 9;
+        bak_fread_chunked((unsigned char far *)record + 9, 1, (long)sub_size, stream);
+        body_ptr = (unsigned char far *)record + sub_size + 9;
         bak_fread_chunked(body_ptr, 1, (unsigned long)header.wBody_len, stream);
     }
     bak_fclose(stream);
     return record;
 }
 
-uint far dialog_poll_arrow_or_button(void) {
-    uint sc;
+unsigned int far dialog_poll_arrow_or_button(void) {
+    unsigned int sc;
 
     if ((g_dwDialogInputCooldown != 0) && (g_timer_ticks > g_dwDialogInputCooldown)) {
         g_dwDialogInputCooldown = 0;
@@ -252,13 +252,13 @@ void far dialog_input_wait_with_cooldown(int mode) {
     }
 }
 
-void dialog_cutscene_op_noop(uchar far *record, int a, unsigned int flags) {
+void dialog_cutscene_op_noop(unsigned char far *record, int a, unsigned int flags) {
     if (flags & 0x80) {
     }
 }
 
 static DialogStyleDescriptor *dialog_resolve_style(DDXRecord far *record) {
-    uint styleNum;
+    unsigned int styleNum;
 
     styleNum = 2;
     if (g_inventory_screen_mode != 0) {
@@ -270,9 +270,9 @@ static DialogStyleDescriptor *dialog_resolve_style(DDXRecord far *record) {
         styleNum = 1;
     }
     if (record->bStyle != '\0') {
-        styleNum = (uint)record->bStyle;
+        styleNum = (unsigned int)record->bStyle;
     }
-    record->bStyle = (uchar)styleNum;
+    record->bStyle = (unsigned char)styleNum;
     return &g_dialog_style_table[styleNum] - 1;
 }
 
@@ -545,7 +545,7 @@ void dialog_render_text_with_tokens(DDXRecord far *record, char far *text, int f
     int idx;
     char *pName;
     char *pEnd;
-    uint flags;
+    unsigned int flags;
 
     pStyle = dialog_resolve_style(record);
     nScratchLen = 0;
@@ -644,12 +644,12 @@ void dialog_render_text_with_tokens(DDXRecord far *record, char far *text, int f
                               applied[1] + y_off + 1, applied[2], applied[3], 1, flags,
                               scroll_start);
     }
-    g_graphics_context.bText_fg_color = fg_color >= 0 ? (uchar)fg_color : pStyle->header[2];
+    g_graphics_context.bText_fg_color = fg_color >= 0 ? (unsigned char)fg_color : pStyle->header[2];
     textwrap_draw_aligned((long)g_pMainScratchBuf, applied[0] + x_off, applied[1] + y_off,
                           applied[2], applied[3], 1, flags, scroll_start);
 }
 
-int far dialog_show_by_key(ulong key, int interactive) {
+int far dialog_show_by_key(unsigned long key, int interactive) {
     int rect[4];
     DDXRecord far *record;
     int iResult;
@@ -662,19 +662,19 @@ int far dialog_show_by_key(ulong key, int interactive) {
             interactive = 0;
         dialog_apply_style_state(record, (void far *)rect);
         if (interactive)
-            dialog_cutscene_op_noop((uchar far *)rect, 0, record->wFlags);
+            dialog_cutscene_op_noop((unsigned char far *)rect, 0, record->wFlags);
         dialog_frame_draw(record, (int far *)rect);
-        dialog_render_text_with_tokens(record, (uchar far *)0, -1, 0, 0, 0);
+        dialog_render_text_with_tokens(record, (unsigned char far *)0, -1, 0, 0, 0);
         if (interactive) {
             screen_frame_present();
             screen_frame_sync_buffers_rect(0, 200);
             iResult = dialog_wait_for_acknowledge(g_wTextWrapXAccum, record->wFlags, 1, 1);
-            dialog_cutscene_op_noop((uchar far *)rect, 1, record->wFlags);
+            dialog_cutscene_op_noop((unsigned char far *)rect, 1, record->wFlags);
             screen_frame_present();
-            dialog_cutscene_op_noop((uchar far *)rect, 1, record->wFlags);
-            dialog_cutscene_op_noop((uchar far *)rect, 2, record->wFlags);
+            dialog_cutscene_op_noop((unsigned char far *)rect, 1, record->wFlags);
+            dialog_cutscene_op_noop((unsigned char far *)rect, 2, record->wFlags);
         }
-        dialog_freemem_if_not_null((uchar far *)record);
+        dialog_freemem_if_not_null((unsigned char far *)record);
         return iResult;
     }
     return 0;
@@ -775,28 +775,28 @@ void far dialog_combatant_name_table_init(void) {
     dialog_cmbt_name_assign_kind(0, 0x1f, 0, 0);
 }
 
-int far dialog_play_record(ulong record_key, int modal_flag) {
+int far dialog_play_record(unsigned long record_key, int modal_flag) {
     int done;
     int scrLoaded;
     int screenDirty;
     int bFirstOpen;
-    ushort partySpeaker;
-    ushort npcSpeaker;
+    unsigned short partySpeaker;
+    unsigned short npcSpeaker;
     int nSavedMusic;
     int nResult;
     int bNeedImageFree;
     int bAllowFallback;
     int bTopicEmpty;
-    uchar styleRect[8];
+    unsigned char styleRect[8];
     DDXRecord far *record;
     DdxOp far *op;
-    ushort savedPalBlend;
-    uchar far *pSavedPalette;
-    uchar *pSpeakerName;
+    unsigned short savedPalBlend;
+    unsigned char far *pSavedPalette;
+    unsigned char *pSpeakerName;
     int chapterStack[5];
     int stackDepth;
     long lTimeAccum;
-    ulong keyStack[5];
+    unsigned long keyStack[5];
 
     int i;
     int j;
@@ -812,8 +812,8 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
     bNeedImageFree = 0;
     bAllowFallback = 1;
     savedPalBlend = g_nPalBlendMode;
-    pSavedPalette = (uchar far *)0L;
-    pSpeakerName = (uchar *)0;
+    pSavedPalette = (unsigned char far *)0L;
+    pSpeakerName = (unsigned char *)0;
     stackDepth = 0;
     lTimeAccum = 0;
     g_dialog_running = 1;
@@ -830,11 +830,11 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
             {
                 j = 0;
                 op = (DdxOp far *)(record + 1) + record->bCnt1;
-                while ((int)(uint)record->bCnt2 > j) {
+                while ((int)(unsigned int)record->bCnt2 > j) {
                     if (op->wOp == 1) {
                         dialog_cmbt_name_assign_kind(op->nA1, op->nA2, op->nA3, npcSpeaker);
                     } else if ((op->wOp == 0xc) && (op->nA2 == 0)) {
-                        if ((uint)op->nA1 < 1000) {
+                        if ((unsigned int)op->nA1 < 1000) {
                             audio_sfx_play_n_times(op->nA1, 0, 1);
                         } else {
                             audio_music_play(op->nA1);
@@ -875,7 +875,7 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                 DdxChoice far *p = (DdxChoice far *)(record + 1);
                 int j;
                 j = i = 0;
-                while ((int)(uint)record->bCnt1 > j) {
+                while ((int)(unsigned int)record->bCnt1 > j) {
                     if (askabout_dispatch_topic(p->wCond) != 0) {
                         i = i + 1;
                     }
@@ -885,19 +885,19 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                 if (i == 0) {
                     j = 0;
                     op = (DdxOp far *)(record + 1) + record->bCnt1;
-                    while ((int)(uint)record->bCnt2 > j) {
+                    while ((int)(unsigned int)record->bCnt2 > j) {
                         if (op->wOp == 4) {
                             if (op->nA1 == 0x7534) {
                                 partySpeaker = op->nA4;
                                 g_gameState.nEvtArgActor0 = partySpeaker - 1;
                             } else if (op->nA1 == 0x7538) {
                                 npcSpeaker = op->nA4;
-                            } else if (((uint)op->nA1 >= 56000) && ((uint)op->nA1 % 10 == 0)) {
+                            } else if (((unsigned int)op->nA1 >= 56000) && ((unsigned int)op->nA1 % 10 == 0)) {
 
-                                int bmi = (int)((long)((ulong)(uint)op->nA1 + -56000) / 10);
-                                g_gameState.event_bitmap_hi[bmi] &= ((uchar far *)op)[4];
-                                g_gameState.event_bitmap_hi[bmi] |= ((uchar far *)op)[5];
-                                g_gameState.event_bitmap_hi[bmi] ^= ((uchar far *)op)[6];
+                                int bmi = (int)((long)((unsigned long)(unsigned int)op->nA1 + -56000) / 10);
+                                g_gameState.event_bitmap_hi[bmi] &= ((unsigned char far *)op)[4];
+                                g_gameState.event_bitmap_hi[bmi] |= ((unsigned char far *)op)[5];
+                                g_gameState.event_bitmap_hi[bmi] ^= ((unsigned char far *)op)[6];
                             } else {
                                 if (op->nA1 != 0) {
                                     gstate_event_write(op->nA1, op->nA4);
@@ -937,24 +937,24 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
             }
 
             if ((record->wSpeaker_id != 0) || (record->wBody_len != 0)) {
-                pSpeakerName = (uchar *)askabout_name_or_keyword_lookup(record->wSpeaker_id & 0xff);
+                pSpeakerName = (unsigned char *)askabout_name_or_keyword_lookup(record->wSpeaker_id & 0xff);
                 if ((record->wFlags & 1) == 0) {
-                    pSpeakerName = (uchar *)0;
+                    pSpeakerName = (unsigned char *)0;
                 }
                 dialog_apply_style_state(record, (void far *)styleRect);
-                dialog_cutscene_op_noop((uchar far *)styleRect, 0, record->wFlags);
+                dialog_cutscene_op_noop((unsigned char far *)styleRect, 0, record->wFlags);
                 if ((record->wFlags & 2) != 0) {
-                    if (pSavedPalette == (uchar far *)0L) {
-                        pSavedPalette = palette_set((uchar far *)0L);
+                    if (pSavedPalette == (unsigned char far *)0L) {
+                        pSavedPalette = palette_set((unsigned char far *)0L);
                     }
                     bNeedImageFree = 1;
                     if (g_dialog_in_scene != 0) {
                         townscene_anim_channel_play_sync(g_dialog_anim_channel);
                         if ((record->wSpeaker_id <= 6) &&
                             (g_pCurScriptObject->pAhPagedImage[5] != 0)) {
-                            uint *p = (uint *)g_pCurScriptObject->pAhPagedImage[5];
-                            if (p != (uint *)0) {
-                                emsimg_map_then_call_180c((uint *)*p, 0xf, 0xb, 0);
+                            unsigned int *p = (unsigned int *)g_pCurScriptObject->pAhPagedImage[5];
+                            if (p != (unsigned int *)0) {
+                                emsimg_map_then_call_180c((unsigned int *)*p, 0xf, 0xb, 0);
                             }
                             askabout_actor_spr_blit_pal_swap(
                                 record->wSpeaker_id & 0xff, 0, record->wSpeaker_id >> 8,
@@ -1015,7 +1015,7 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                         *g_world_camera = camera_save;
                         *g_world_widget = widget_save;
                         askabout_actor_spr_blit_pal_swap(record->wSpeaker_id & 0xff, 0,
-                                                         record->wSpeaker_id >> 8, (uchar far *)0L);
+                                                         record->wSpeaker_id >> 8, (unsigned char far *)0L);
                         g_graphics_context.bClip_enabled = '\x01';
                     }
                 } else {
@@ -1034,22 +1034,22 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                 if (record->wSpeaker_id != 0) {
                     if (record->wBody_len != 0) {
                         dialog_frame_draw(record, (int far *)0L);
-                        dialog_render_text_with_tokens(record, (uchar far *)0L, -1, 0, 0, 0);
+                        dialog_render_text_with_tokens(record, (unsigned char far *)0L, -1, 0, 0, 0);
                     }
                     if (record->wSpeaker_id < 0x46) {
-                        dialog_draw_speech_bubble((uchar far *)pSpeakerName, 0);
+                        dialog_draw_speech_bubble((unsigned char far *)pSpeakerName, 0);
                     }
                 } else {
                     if ((g_bDialogWorldAnchorValid != 0) && (bFirstOpen != 0)) {
                         dialog_animate_open(record, 0x14);
                         if (record->wBody_len != 0) {
                             dialog_frame_draw(record, (int far *)0L);
-                            dialog_render_text_with_tokens(record, (uchar far *)0L, -1, 0, 0, 0);
+                            dialog_render_text_with_tokens(record, (unsigned char far *)0L, -1, 0, 0, 0);
                         }
                     } else {
                         if (record->wBody_len != 0) {
                             dialog_frame_draw(record, (int far *)0L);
-                            dialog_render_text_with_tokens(record, (uchar far *)0L, -1, 0, 0, 0);
+                            dialog_render_text_with_tokens(record, (unsigned char far *)0L, -1, 0, 0, 0);
                         }
                         if ((record->wFlags & 0x2000) == 0) {
                             dialog_screen_wipe_rect_or_full(
@@ -1066,28 +1066,28 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
             {
                 j = 0;
                 op = (DdxOp far *)(record + 1) + record->bCnt1;
-                while ((int)(uint)record->bCnt2 > j) {
+                while ((int)(unsigned int)record->bCnt2 > j) {
                     switch (op->wOp) {
                     case 2:
                         if ((char)op->nA1 == '5') {
-                            g_gameState.nParty_gold += (long)(uint)op->nA2 * 10;
+                            g_gameState.nParty_gold += (long)(unsigned int)op->nA2 * 10;
                         } else if ((char)op->nA1 == '6') {
-                            g_gameState.nParty_gold += (long)(uint)op->nA2;
+                            g_gameState.nParty_gold += (long)(unsigned int)op->nA2;
                         } else {
                             ItemSlot slot;
                             int handle;
-                            uint speakerSel;
-                            speakerSel = (uint)((uchar far *)&op->nA1)[1] & 0x7f;
+                            unsigned int speakerSel;
+                            speakerSel = (unsigned int)((unsigned char far *)&op->nA1)[1] & 0x7f;
                             handle = itemtbl_load();
-                            slot.item_id = (uchar)op->nA1;
-                            slot.condition = (uchar)op->nA2;
+                            slot.item_id = (unsigned char)op->nA1;
+                            slot.condition = (unsigned char)op->nA2;
                             slot.flags = 0;
                             if ((int)speakerSel > 1) {
                                 if (cmbinv_actor_acquire_item(
                                         g_gameState.party_members[(g_speaker_kinds - 2)[speakerSel]]
                                             .actor_record,
                                         (ItemSlot far *)&slot) != 0) {
-                                    g_gameState.nParty_gold -= (long)(uint)op->nA3;
+                                    g_gameState.nParty_gold -= (long)(unsigned int)op->nA3;
                                 }
                             } else {
                                 for (i = 0; i < g_gameState.party_count; i = i + 1) {
@@ -1095,7 +1095,7 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                                             gstate_party_member_record(i)->actor_record,
                                             (ItemSlot far *)&slot) != 0) {
                                         g_gameState.nParty_gold -=
-                                            (uint)op->nA3 / (uint)(int)g_gameState.party_count;
+                                            (unsigned int)op->nA3 / (unsigned int)(int)g_gameState.party_count;
                                     }
                                 }
                             }
@@ -1109,11 +1109,11 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                         break;
                     case 3:
                         if (op->nA1 == 0x35) {
-                            g_gameState.nParty_gold -= (long)(uint)op->nA2 * 10;
+                            g_gameState.nParty_gold -= (long)(unsigned int)op->nA2 * 10;
                         } else if (op->nA1 == 0x36) {
-                            g_gameState.nParty_gold -= (long)(uint)op->nA2;
+                            g_gameState.nParty_gold -= (long)(unsigned int)op->nA2;
                         } else {
-                            uint tblLoadedHere;
+                            unsigned int tblLoadedHere;
                             Actor far *pActor;
                             int slotIdx;
                             tblLoadedHere = itemtbl_load();
@@ -1126,11 +1126,11 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                                               .actor_record;
                                 for (slotIdx = 0; slotIdx < pActor->itemCount;
                                      slotIdx = slotIdx + 1) {
-                                    if (((uint)ACTOR_ITEM(pActor, slotIdx).item_id ==
-                                         (uint)op->nA1) &&
+                                    if (((unsigned int)ACTOR_ITEM(pActor, slotIdx).item_id ==
+                                         (unsigned int)op->nA1) &&
                                         (ACTOR_ITEM(pActor, slotIdx).item_id != 'x' ||
-                                         (uint)ACTOR_ITEM(pActor, slotIdx).condition ==
-                                             (uint)op->nA2)) {
+                                         (unsigned int)ACTOR_ITEM(pActor, slotIdx).condition ==
+                                             (unsigned int)op->nA2)) {
                                         pActor->needsFlush = TRUE;
                                         ACTOR_ITEM(pActor, slotIdx) = ACTOR_ITEM(
                                             pActor, pActor->itemCount = pActor->itemCount - 1);
@@ -1148,8 +1148,8 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                         }
                         break;
                     case 23: {
-                        uint n;
-                        for (n = 0; (n < (uint)op->nA2); n = n + 1) {
+                        unsigned int n;
+                        for (n = 0; (n < (unsigned int)op->nA2); n = n + 1) {
                             itemtbl_pty_consum_one_kind(op->nA1);
                         }
                     } break;
@@ -1159,12 +1159,12 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                             g_gameState.nEvtArgActor0 = partySpeaker - 1;
                         } else if (op->nA1 == 0x7538) {
                             npcSpeaker = op->nA4;
-                        } else if (((uint)op->nA1 >= 56000) && ((uint)op->nA1 % 10 == 0)) {
+                        } else if (((unsigned int)op->nA1 >= 56000) && ((unsigned int)op->nA1 % 10 == 0)) {
 
-                            int bmi = (int)((long)((ulong)(uint)op->nA1 + -56000) / 10);
-                            g_gameState.event_bitmap_hi[bmi] &= ((uchar far *)op)[4];
-                            g_gameState.event_bitmap_hi[bmi] |= ((uchar far *)op)[5];
-                            g_gameState.event_bitmap_hi[bmi] ^= ((uchar far *)op)[6];
+                            int bmi = (int)((long)((unsigned long)(unsigned int)op->nA1 + -56000) / 10);
+                            g_gameState.event_bitmap_hi[bmi] &= ((unsigned char far *)op)[4];
+                            g_gameState.event_bitmap_hi[bmi] |= ((unsigned char far *)op)[5];
+                            g_gameState.event_bitmap_hi[bmi] ^= ((unsigned char far *)op)[6];
                         } else {
                             if (op->nA1 != 0) {
                                 gstate_event_write(op->nA1, op->nA4);
@@ -1182,7 +1182,7 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                         screen_cursor_show_busy();
                         bNeedImageFree = 1;
                         for (i = 0; *q != 0 && i < 4; i = i + 1, q++) {
-                            askabout_actor_spr_cache_get((ushort)*q, 0);
+                            askabout_actor_spr_cache_get((unsigned short)*q, 0);
                         }
                     } break;
                     case 17:
@@ -1193,9 +1193,9 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                         worldloop_pty_stat7_flag_cd();
                         break;
                     case 10:
-                        if ((uint)op->nA1 > 1) {
+                        if ((unsigned int)op->nA1 > 1) {
                             g_gameState.nEvtArgDlgResult = stat_actor_get(
-                                &g_gameState.party_members[g_speaker_kinds[(ushort)op->nA1 - 2]],
+                                &g_gameState.party_members[g_speaker_kinds[(unsigned short)op->nA1 - 2]],
                                 op->nA2, 0);
                         } else {
                             g_gameState.nEvtArgDlgResult =
@@ -1203,16 +1203,16 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                         }
                         break;
                     case 9: {
-                        uint speakerSel;
+                        unsigned int speakerSel;
                         int val;
                         int amt;
-                        uint amt_snap;
-                        uint nA4_snap;
-                        speakerSel = (uint)(uchar)op->nA1;
-                        val = ((uchar far *)&op->nA1)[1];
-                        amt = (ushort)op->nA3;
-                        amt_snap = (ushort)op->nA3;
-                        nA4_snap = (ushort)op->nA4;
+                        unsigned int amt_snap;
+                        unsigned int nA4_snap;
+                        speakerSel = (unsigned int)(unsigned char)op->nA1;
+                        val = ((unsigned char far *)&op->nA1)[1];
+                        amt = (unsigned short)op->nA3;
+                        amt_snap = (unsigned short)op->nA3;
+                        nA4_snap = (unsigned short)op->nA4;
                         if (nA4_snap != amt_snap) {
                             amt = amt + RND(nA4_snap - amt_snap);
                         }
@@ -1228,18 +1228,18 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                         }
                     } break;
                     case 8: {
-                        uint amt;
-                        uint amt_snap;
-                        uint nA4_snap;
-                        amt = (ushort)op->nA3;
-                        amt_snap = (ushort)op->nA3;
-                        nA4_snap = (ushort)op->nA4;
+                        unsigned int amt;
+                        unsigned int amt_snap;
+                        unsigned int nA4_snap;
+                        amt = (unsigned short)op->nA3;
+                        amt_snap = (unsigned short)op->nA3;
+                        nA4_snap = (unsigned short)op->nA4;
                         if (nA4_snap != amt_snap) {
                             amt = amt + RND(nA4_snap - amt_snap);
                         }
-                        if ((uint)op->nA1 > 1) {
+                        if ((unsigned int)op->nA1 > 1) {
                             stat_combatant_apply_delta(
-                                &g_gameState.party_members[g_speaker_kinds[(ushort)op->nA1 - 2]],
+                                &g_gameState.party_members[g_speaker_kinds[(unsigned short)op->nA1 - 2]],
                                 op->nA2, amt);
                         } else {
                             i = 0;
@@ -1252,9 +1252,9 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                         }
                     } break;
                     case 18:
-                        if ((uint)op->nA1 > 1) {
+                        if ((unsigned int)op->nA1 > 1) {
                             stat_combatant_heal(
-                                &g_gameState.party_members[g_speaker_kinds[(ushort)op->nA1 - 2]],
+                                &g_gameState.party_members[g_speaker_kinds[(unsigned short)op->nA1 - 2]],
                                 op->nA2);
                         } else {
                             stat_party_heal_all(op->nA2);
@@ -1262,7 +1262,7 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                         break;
                     case 12:
                         if (op->nA2 == 1) {
-                            if ((uint)op->nA1 < 1000) {
+                            if ((unsigned int)op->nA1 < 1000) {
 
                                 audio_sfx_play_n_times(op->nA1, 0, 1);
                                 break;
@@ -1278,18 +1278,18 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                         break;
                     case 14:
                         gstate_event_write(op->nA1, 1);
-                        timerpool_upsert(4, op->nA1, 0x40, *(ulong far *)&op->nA3);
+                        timerpool_upsert(4, op->nA1, 0x40, *(unsigned long far *)&op->nA3);
                         break;
                     case 22:
-                        timerpool_upsert((uint)(uchar)op->nA1, op->nA2,
-                                         (uint)((uchar far *)&op->nA1)[1], *(ulong far *)&op->nA3);
+                        timerpool_upsert((unsigned int)(unsigned char)op->nA1, op->nA2,
+                                         (unsigned int)((unsigned char far *)&op->nA1)[1], *(unsigned long far *)&op->nA3);
                         break;
                     case 11:
                         audio_sfx_play_n_times(op->nA1, 0, 1);
                         break;
                     case 19:
                         combat_actor_bitmap_set_bit(
-                            (int)&g_gameState.party_members[g_speaker_kinds[(ushort)op->nA1 - 2]],
+                            (int)&g_gameState.party_members[g_speaker_kinds[(unsigned short)op->nA1 - 2]],
                             op->nA2);
                         break;
                     case 20:
@@ -1317,9 +1317,9 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                 i = 0;
                 while (g_wTextWrapLinesRemaining != 0) {
                     dialog_frame_draw(record, (int far *)0L);
-                    dialog_render_text_with_tokens(record, (uchar far *)0L, -1, 0, 0, i);
+                    dialog_render_text_with_tokens(record, (unsigned char far *)0L, -1, 0, 0, i);
                     if (record->wSpeaker_id < 0x46) {
-                        dialog_draw_speech_bubble((uchar far *)pSpeakerName, 0);
+                        dialog_draw_speech_bubble((unsigned char far *)pSpeakerName, 0);
                     }
                     screen_frame_present();
                     screen_frame_sync_buffers_rect(0, 200);
@@ -1349,9 +1349,9 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                             break;
                         i = i + g_wTextWrapLinesDrawn;
                         dialog_frame_draw(record, (int far *)0L);
-                        dialog_render_text_with_tokens(record, (uchar far *)0L, -1, 0, 0, i);
+                        dialog_render_text_with_tokens(record, (unsigned char far *)0L, -1, 0, 0, i);
                         if (record->wSpeaker_id < 0x46) {
-                            dialog_draw_speech_bubble((uchar far *)pSpeakerName, 0);
+                            dialog_draw_speech_bubble((unsigned char far *)pSpeakerName, 0);
                         }
                         screen_frame_present();
                         screen_frame_sync_buffers_rect(0, 200);
@@ -1364,20 +1364,20 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                 } else {
 
                     {
-                        uint bMatched;
+                        unsigned int bMatched;
                         DdxChoice far *pChoice;
                         pChoice = (DdxChoice far *)(record + 1);
-                        j = (int)(record_key = (ulong)(uint)(bMatched = 0));
-                        for (; bMatched == 0 && (int)(uint)record->bCnt1 > j; j++, pChoice++) {
+                        j = (int)(record_key = (unsigned long)(unsigned int)(bMatched = 0));
+                        for (; bMatched == 0 && (int)(unsigned int)record->bCnt1 > j; j++, pChoice++) {
                             if (pChoice->wCond != 0) {
                                 if ((pChoice->wCond >= 56000) && (pChoice->wCond % 10 == 0)) {
-                                    byte far *pc = (byte far *)pChoice;
-                                    byte bMask;
+                                    unsigned char far *pc = (unsigned char far *)pChoice;
+                                    unsigned char bMask;
                                     int bmi;
                                     bMask = (g_gameState.nChapter < 9)
-                                                ? (byte)(1 << (g_gameState.nChapter - 1))
+                                                ? (unsigned char)(1 << (g_gameState.nChapter - 1))
                                                 : 0x80;
-                                    bmi = (int)((long)((ulong)pChoice->wCond + -56000) / 10);
+                                    bmi = (int)((long)((unsigned long)pChoice->wCond + -56000) / 10);
                                     if (pc[4] != '\0') {
                                         if ((((g_gameState.event_bitmap_hi[bmi] ^ pc[2]) & pc[3]) !=
                                              pc[3]) ||
@@ -1395,7 +1395,7 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                                     continue;
                                 }
                                 {
-                                    ushort eventVal;
+                                    unsigned short eventVal;
                                     eventVal = gstate_event_read(pChoice->wCond);
                                     if ((eventVal < pChoice->wRange_min_or_mask) ||
                                         (pChoice->wRange_max_or_chapbits < eventVal))
@@ -1411,13 +1411,13 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
             {
                 int j = 0;
                 op = (DdxOp far *)(record + 1) + record->bCnt1;
-                while ((int)(uint)record->bCnt2 > j) {
+                while ((int)(unsigned int)record->bCnt2 > j) {
                     if ((op->wOp == 0x10) && (record_key != 0)) {
                         chapterStack[stackDepth] = g_nDialogChapterId;
-                        keyStack[stackDepth] = *(ulong far *)&op->nA1;
+                        keyStack[stackDepth] = *(unsigned long far *)&op->nA1;
                         stackDepth++;
                     } else if ((op->wOp == 0xc) && (op->nA2 == 2)) {
-                        if ((uint)op->nA1 < 1000) {
+                        if ((unsigned int)op->nA1 < 1000) {
                             audio_sfx_play_n_times(op->nA1, 0, 1);
                         } else {
                             audio_music_play(op->nA1);
@@ -1432,10 +1432,10 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
             }
 
             if ((record->wSpeaker_id != 0) || (record->wBody_len != 0)) {
-                dialog_cutscene_op_noop((uchar far *)styleRect, 1, record->wFlags);
+                dialog_cutscene_op_noop((unsigned char far *)styleRect, 1, record->wFlags);
                 screen_frame_present();
-                dialog_cutscene_op_noop((uchar far *)styleRect, 1, record->wFlags);
-                dialog_cutscene_op_noop((uchar far *)styleRect, 2, record->wFlags);
+                dialog_cutscene_op_noop((unsigned char far *)styleRect, 1, record->wFlags);
+                dialog_cutscene_op_noop((unsigned char far *)styleRect, 2, record->wFlags);
             }
             dialog_freemem_if_not_null(&record->bStyle);
             record = (DDXRecord far *)0L;
@@ -1448,7 +1448,7 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                 }
             }
             if ((record_key != 0) && (done == 0)) {
-                uint useOffset = (uint)((record_key & 0x80000000UL) == 0);
+                unsigned int useOffset = (unsigned int)((record_key & 0x80000000UL) == 0);
                 record = dialog_load_record_by_key(record_key & 0x7fffffffUL, useOffset);
             }
         }
@@ -1458,7 +1458,7 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
             askabout_free_paged_image_table();
         }
         askabout_keyword_table_free();
-        if (pSavedPalette != (uchar far *)0L) {
+        if (pSavedPalette != (unsigned char far *)0L) {
             g_pPalQueuedForFlip = pSavedPalette;
             g_nPalBlendMode = savedPalBlend;
         }
@@ -1475,9 +1475,9 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
         }
         g_dialog_running = 0;
         if (lTimeAccum != 0) {
-            uint recomputeParty;
+            unsigned int recomputeParty;
             int over = (0x5460 < lTimeAccum);
-            recomputeParty = (uint)(g_dwDialogInputCooldown == 0);
+            recomputeParty = (unsigned int)(g_dwDialogInputCooldown == 0);
             for (; 0 < lTimeAccum; lTimeAccum -= 0x708) {
                 if (over) {
                     g_gameState.dwLastActionTimeSnapshot = g_gameState.game_time;

@@ -12,7 +12,7 @@ unsigned short g_nActorShakeX = 0x0000;
 unsigned short g_nActorShakeY = 0x0000;
 unsigned short g_bForceOverlay = 0x0000;
 
-void *actormotion_xzmalloc(uint size) {
+void *actormotion_xzmalloc(unsigned int size) {
     void *p;
 
     p = malloc(size);
@@ -27,7 +27,7 @@ void actormotion_xzfree(void *ptr) {
     free(ptr);
 }
 
-WorldEntity *actormotion_vec_alloc(ushort type_tag) {
+WorldEntity *actormotion_vec_alloc(unsigned short type_tag) {
     WorldEntity *entity;
 
     entity = actormotion_xzmalloc(0x24);
@@ -35,8 +35,8 @@ WorldEntity *actormotion_vec_alloc(ushort type_tag) {
     return entity;
 }
 
-uint *actormotion_alloc_24b_bit800(uint tag) {
-    uint *rec;
+unsigned int *actormotion_alloc_24b_bit800(unsigned int tag) {
+    unsigned int *rec;
 
     rec = actormotion_xzmalloc(0x18);
     rec[1] = tag;

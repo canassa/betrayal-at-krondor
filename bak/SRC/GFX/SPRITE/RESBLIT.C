@@ -23,8 +23,8 @@ int g_nFrameScxEmsHandle = 0;
 ImageRecord **g_pHeadsBmxAssetTable = 0;
 
 void resblit_alloc_ems_64k(char *path, int *out_handle) {
-    uchar far *dest_far;
-    ushort saved_src_page;
+    unsigned char far *dest_far;
+    unsigned short saved_src_page;
 
     g_graphics_context.wGfxBlitDstPage = g_graphics_context.wVgaPage1Base;
     resblit_load_pal_or_stream(path);
@@ -54,8 +54,8 @@ ImageRecord **resblit_load_asset_table(char *path, int storage_mode) {
     int i;
     ImageRecord **tbl = 0;
     BakFile *fp;
-    uchar huge *pPayload;
-    uchar huge *cursor;
+    unsigned char huge *pPayload;
+    unsigned char huge *cursor;
     int published = 0;
     int ems_handle;
     unsigned ems_off;
@@ -125,10 +125,10 @@ ImageRecord **resblit_load_asset_table(char *path, int storage_mode) {
                             scratch = malloc(i);
                         } while (scratch == 0 && i > 50);
                         if (hdr.wCompression == 2)
-                            decomp_rle((uchar far *)pPayload, hdr.wCompressedSize, (int)scratch, i,
+                            decomp_rle((unsigned char far *)pPayload, hdr.wCompressedSize, (int)scratch, i,
                                        fp);
                         else
-                            decomp_lzss((uchar far *)pPayload, hdr.wCompressedSize, scratch, i, fp);
+                            decomp_lzss((unsigned char far *)pPayload, hdr.wCompressedSize, scratch, i, fp);
                         free(scratch);
                         published = 1;
                     } else {
@@ -139,7 +139,7 @@ ImageRecord **resblit_load_asset_table(char *path, int storage_mode) {
                             chunk = ((long)hdr.dwDecompressedSize > 0xfa00L)
                                         ? 0xfa00U
                                         : (unsigned)hdr.dwDecompressedSize;
-                            stream_read(i, (uchar far *)pPayload, chunk);
+                            stream_read(i, (unsigned char far *)pPayload, chunk);
                             pPayload += chunk;
                             hdr.dwDecompressedSize -= chunk;
                         }
@@ -159,9 +159,9 @@ ImageRecord **resblit_load_asset_table(char *path, int storage_mode) {
     return tbl;
 }
 
-void resblit_list_remap_palette(ResourceRemapDesc **resource_list, uchar *palette_lut) {
+void resblit_list_remap_palette(ResourceRemapDesc **resource_list, unsigned char *palette_lut) {
     register int i;
-    uchar far *p;
+    unsigned char far *p;
 
     for (i = 0; null_terminated_count((ImageRecord **)resource_list) > i; i++) {
         if (resource_list[i]->wFlags & 0x80) {
@@ -237,7 +237,7 @@ void resblit_load_pal_or_stream(char *filename) {
     int local;
     int sHandle;
     BakFile *stream;
-    uchar huge *buf = 0;
+    unsigned char huge *buf = 0;
 
     pHandle = 0;
     fn[strlen(fn) - 1] = 'x';
@@ -249,7 +249,7 @@ void resblit_load_pal_or_stream(char *filename) {
         pHandle = &g_nFrameScxEmsHandle;
 
     if (pHandle != 0 && *pHandle != 0) {
-        uchar far *dest_far = ems_map_resource_pages(*pHandle);
+        unsigned char far *dest_far = ems_map_resource_pages(*pHandle);
 
         cga_rect_paste_from_buffer(dest_far, 0, 0, 0x140, 200);
     } else {
@@ -268,7 +268,7 @@ void resblit_load_pal_or_stream(char *filename) {
                     local = 0;
                     do {
                         stream_read(sHandle, buf, size);
-                        cga_rect_paste_from_buffer((uchar far *)buf, 0, local, 0x140, rows);
+                        cga_rect_paste_from_buffer((unsigned char far *)buf, 0, local, 0x140, rows);
                         local += rows;
                     } while (local < 200);
                     stream_close(sHandle);

@@ -11,7 +11,7 @@
 #include "SRC/WORLD/ACTOR/ACTORREC.H"
 
 
-static int shop_rand_max_of_3(uint modulus) {
+static int shop_rand_max_of_3(unsigned int modulus) {
     int i;
     int max;
     int roll;
@@ -202,7 +202,7 @@ int far shop_sell_item(Actor far *shop_inv, Actor far *actor, ItemSlot far *item
     best_slot = (ItemSlot far *)0;
     is_new_slot = 0;
     if (((rec->nBase_price == 0) || ((rec->wSub_flags & sub->wShop_disposition_flags) == 0)) &&
-        (itemtbl_inv_count_by_kind(shop_inv, (uint)item_slot->item_id) == 0)) {
+        (itemtbl_inv_count_by_kind(shop_inv, (unsigned int)item_slot->item_id) == 0)) {
         dialog_play_record(0x1b7759, 0);
         return 0;
     } else {
@@ -210,11 +210,11 @@ int far shop_sell_item(Actor far *shop_inv, Actor far *actor, ItemSlot far *item
             best_slot = &ACTOR_ITEM(shop_inv, shop_inv->itemCount);
             is_new_slot = 1;
         } else {
-            for (i = 0; i < (int)(uint)shop_inv->itemCount; i++) {
+            for (i = 0; i < (int)(unsigned int)shop_inv->itemCount; i++) {
                 if ((ACTOR_ITEM(shop_inv, i).flags & 2) != 0) {
                     if (best_slot != (ItemSlot far *)0) {
-                        if ((uint)itemtbl_record_ptr(best_slot)->nBase_price >=
-                            (uint)itemtbl_record_ptr(&ACTOR_ITEM(shop_inv, i))->nBase_price) {
+                        if ((unsigned int)itemtbl_record_ptr(best_slot)->nBase_price >=
+                            (unsigned int)itemtbl_record_ptr(&ACTOR_ITEM(shop_inv, i))->nBase_price) {
                             continue;
                         }
                     }
@@ -227,7 +227,7 @@ int far shop_sell_item(Actor far *shop_inv, Actor far *actor, ItemSlot far *item
             dialog_play_record(0x1b7748, 0);
             return 0;
         }
-        price = itemtbl_compute_value(item_slot) * (long)(int)(uint)sub->bArg3 / 100;
+        price = itemtbl_compute_value(item_slot) * (long)(int)(unsigned int)sub->bArg3 / 100;
         if (itemtbl_record_ptr(item_slot)->wCategory == 4) {
             price /= 2;
         }

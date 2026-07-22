@@ -34,10 +34,10 @@ struct BookLayoutHdr {
 };
 
 typedef struct {
-    uchar b[16];
+    unsigned char b[16];
 } Block16;
 typedef struct {
-    uchar b[10];
+    unsigned char b[10];
 } Block10;
 
 static void bookview_render_hook_noop(BookPage far *page) {
@@ -171,8 +171,8 @@ static void booktext_compute_justify_spacing(int remaining_pixels) {
 }
 
 static int booktext_draw_glyph_kerned(char ch, int x, int y) {
-    uint width;
-    uint height;
+    unsigned int width;
+    unsigned int height;
 
     font_render_glyph_or_ctrl(ch, x, y + g_pBookViewer->nBaselineYOff);
     font_glyph_metrics(ch, &width, &height);
@@ -416,18 +416,18 @@ static void booktext_draw_page_number(BookPage far *page) {
     return;
 }
 
-static uchar far *booktext_page_entry_offset(BookPage far *page) {
+static unsigned char far *booktext_page_entry_offset(BookPage far *page) {
     char far *p;
 
     p = (char far *)page + page->wReservedCount * sizeof(BookReservedRect) + (int)sizeof(BookPage);
     p = p + page->wImageCount * sizeof(BookImage);
-    return (uchar far *)p;
+    return (unsigned char far *)p;
 }
 
 int booktext_render_page(PageDirectory far *page_directory, BookPage far *page, int redraw_bg) {
     BookPage far *pageFirst;
     BookImage far *pImg;
-    uchar far *pRes;
+    unsigned char far *pRes;
     register int result;
     register int i;
 
@@ -435,7 +435,7 @@ int booktext_render_page(PageDirectory far *page_directory, BookPage far *page, 
     pageFirst = page;
 
     if (redraw_bg) {
-        uchar far *pSrc;
+        unsigned char far *pSrc;
         int rowStride;
         int rowBias;
         int rowStep;
@@ -475,7 +475,7 @@ int booktext_render_page(PageDirectory far *page_directory, BookPage far *page, 
         g_graphics_context.bGfx_fill_enabled = 0;
 
         i = 0;
-        pRes = (uchar far *)page + sizeof(BookPage);
+        pRes = (unsigned char far *)page + sizeof(BookPage);
         while ((short)page->wReservedCount > i) {
             i++;
             pRes += sizeof(BookReservedRect);
@@ -485,7 +485,7 @@ int booktext_render_page(PageDirectory far *page_directory, BookPage far *page, 
         pImg = (BookImage far *)pRes;
         while ((short)page->wImageCount > i) {
             if (null_terminated_count(g_pBookViewer->pImageRecord) > (short)pImg->wImage) {
-                blit_sprite_indirect((ushort)g_pBookViewer->pImageRecord[pImg->wImage], pImg->nX,
+                blit_sprite_indirect((unsigned short)g_pBookViewer->pImageRecord[pImg->wImage], pImg->nX,
                                      pImg->nY, pImg->wMirroring);
             }
             i++;
@@ -498,11 +498,11 @@ int booktext_render_page(PageDirectory far *page_directory, BookPage far *page, 
 
         if ((*(int far *)&page->pReserved[0] | *(int far *)&page->pReserved[2]) != 0) {
 
-            g_pBookViewer->pCurChar = *(uchar far *far *)&page->pReserved[0];
+            g_pBookViewer->pCurChar = *(unsigned char far *far *)&page->pReserved[0];
             *(Block16 *)&g_pBookViewer->nMarginTop = *(Block16 far *)&page->pReserved[4];
             *(Block10 *)&g_pBookViewer->nFontSlot = *(Block10 far *)&page->pReserved[20];
             booktext_font_select(g_pBookViewer->nFontSlot);
-            g_graphics_context.bText_style_flags = (uchar)g_pBookViewer->wStyleFlags;
+            g_graphics_context.bText_style_flags = (unsigned char)g_pBookViewer->wStyleFlags;
         } else {
             g_pBookViewer->pCurChar = booktext_page_entry_offset(page);
         }
@@ -523,7 +523,7 @@ int booktext_render_page(PageDirectory far *page_directory, BookPage far *page, 
             pNext = bookview_find_page_by_number(page_directory, page->wPagePointer);
             if (pNext != 0) {
 
-                *(uchar far *far *)&pNext->pReserved[0] = g_pBookViewer->pResumeSave;
+                *(unsigned char far *far *)&pNext->pReserved[0] = g_pBookViewer->pResumeSave;
                 *(Block10 far *)&pNext->pReserved[20] = *(Block10 *)&g_pBookViewer->nFontSlot;
                 *(Block16 far *)&pNext->pReserved[4] = *(Block16 *)&g_pBookViewer->nMarginTop;
             }

@@ -6,7 +6,7 @@
 
 AudioTrackHandle far *g_apSfxSlotPool[7];
 
-AudioTrackHandle far *sfx_play_in_slot(uchar far *script_data, int sfx_id, uchar loop) {
+AudioTrackHandle far *sfx_play_in_slot(unsigned char far *script_data, int sfx_id, unsigned char loop) {
     int i;
     AudioTrackHandle far *h = 0;
 
@@ -23,7 +23,7 @@ AudioTrackHandle far *sfx_play_in_slot(uchar far *script_data, int sfx_id, uchar
                 } else {
                     h->bLoop = loop;
                     h->bPriority = 1;
-                    h->bVolume = (uchar)sfx_id;
+                    h->bVolume = (unsigned char)sfx_id;
                 }
                 midi_track_init_thunk(h, 0);
                 return h;

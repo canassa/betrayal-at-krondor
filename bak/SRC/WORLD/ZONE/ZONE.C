@@ -70,7 +70,7 @@ void far zone_load(void) {
     long inset_z;
     ImageRecord **render_table;
 
-    sprintf(g_szZoneMapFilename, "Z%02uDEF.DAT", (uint)g_gameState.nZoneId);
+    sprintf(g_szZoneMapFilename, "Z%02uDEF.DAT", (unsigned int)g_gameState.nZoneId);
     stream = bak_fopen(g_szZoneMapFilename, "rb");
     bak_fread(&g_game_mode, 2, 1, stream);
     bak_fread(g_world_widget, 2, 1, stream);
@@ -117,42 +117,42 @@ void far zone_load(void) {
     }
     g_world_camera->base.orientation.roll = 0;
     g_world_camera->base.orientation.yaw = g_gameState.wZoneDefaultCameraHeading;
-    sprintf(g_szZoneMapFilename, "Z%02u.RMP", (uint)g_gameState.nZoneId);
+    sprintf(g_szZoneMapFilename, "Z%02u.RMP", (unsigned int)g_gameState.nZoneId);
     stream = bak_fopen(g_szZoneMapFilename, "rb");
     bak_fread_chunked(g_abFogRemapTable, 0x100, (long)(int)g_nFogRemapTableCount, stream);
     bak_fclose(stream);
     combat_arena_load_remap_pals();
-    sprintf(g_szZoneMapFilename, "Z%02u.PAL", (uint)g_gameState.nZoneId);
+    sprintf(g_szZoneMapFilename, "Z%02u.PAL", (unsigned int)g_gameState.nZoneId);
     palette_buffers_alloc(g_szZoneMapFilename);
     uiwidget_compass_load();
     world_render_sky_texture_load();
     if ((g_wZoneFlags & 1) == 0) {
-        sprintf(g_szZoneMapFilename, "Z%02uH.BMX", (uint)g_gameState.nZoneId);
-        g_pSkyPanoAssetTable = (ushort *)resblit_load_asset_table(g_szZoneMapFilename, 1);
+        sprintf(g_szZoneMapFilename, "Z%02uH.BMX", (unsigned int)g_gameState.nZoneId);
+        g_pSkyPanoAssetTable = (unsigned short *)resblit_load_asset_table(g_szZoneMapFilename, 1);
     } else {
-        g_pSkyPanoAssetTable = (ushort *)0x0;
+        g_pSkyPanoAssetTable = (unsigned short *)0x0;
     }
     actoroverlay_image_1ff4_load();
     slot = 0;
     do {
-        sprintf(g_szZoneMapFilename, "Z%02uSLOT%d.BMX", (uint)g_gameState.nZoneId, slot);
+        sprintf(g_szZoneMapFilename, "Z%02uSLOT%d.BMX", (unsigned int)g_gameState.nZoneId, slot);
         render_table = worldrender_table_load(slot, g_szZoneMapFilename);
         if (render_table == 0)
             break;
         slot = slot + 1;
     } while (slot < 7);
     g_nZoneRenderTableCount = slot;
-    sprintf(g_szZoneMapFilename, "Z%02u.TBL", (uint)g_gameState.nZoneId);
+    sprintf(g_szZoneMapFilename, "Z%02u.TBL", (unsigned int)g_gameState.nZoneId);
     ts_load_shape_tbl(0, g_szZoneMapFilename);
     ts_load_shape_tbl(1, "combat.tbl");
     if (g_game_mode == 2) {
-        sprintf(g_szZoneMapFilename, "Z%02uM.TBL", (uint)g_gameState.nZoneId);
+        sprintf(g_szZoneMapFilename, "Z%02uM.TBL", (unsigned int)g_gameState.nZoneId);
         ts_load_shape_tbl(2, g_szZoneMapFilename);
     }
     zone_load_scx_image();
     zone_alloc_400byte_buffer();
     zone_map_data_load(g_gameState.nZoneId);
-    sprintf(g_szZoneMapFilename, "Z%02u.DAT", (uint)g_gameState.nZoneId);
+    sprintf(g_szZoneMapFilename, "Z%02u.DAT", (unsigned int)g_gameState.nZoneId);
     explore_color_remap_load(g_szZoneMapFilename);
     proxscan_scratch_alloc();
     vislist_alloc();
@@ -214,9 +214,9 @@ void far zone_world_scene_teardown(void) {
 
 void far zone_combat_camera_set_world_pos(PlayerSpawnRecord *pos) {
     g_world_camera->base.pos.xy.nWorld_x =
-        (long)(int)(uint)pos->bTileX * 64000 + (long)(int)(uint)pos->bSubX * 0x640 + 800;
+        (long)(int)(unsigned int)pos->bTileX * 64000 + (long)(int)(unsigned int)pos->bSubX * 0x640 + 800;
     g_world_camera->base.pos.xy.nWorld_y =
-        (long)(int)(uint)pos->bTileY * 64000 + (long)(int)(uint)pos->bSubY * 0x640 + 800;
+        (long)(int)(unsigned int)pos->bTileY * 64000 + (long)(int)(unsigned int)pos->bSubY * 0x640 + 800;
     if (g_full_redraw_needed == 0) {
         g_world_camera->base.pos.nWorld_z = g_lZoneDefaultZ;
         g_world_camera->base.orientation.pitch = g_wZoneDefaultYaw;
@@ -236,7 +236,7 @@ void far zone_combat_camera_set_world_pos(PlayerSpawnRecord *pos) {
 }
 
 void far zone_load_shape_sprite(void) {
-    sprintf(g_szZoneMapFilename, "Z%02uSHP.DAT", (uint)g_gameState.nZoneId);
+    sprintf(g_szZoneMapFilename, "Z%02uSHP.DAT", (unsigned int)g_gameState.nZoneId);
     rgnenc_load_zone_shape_index(g_szZoneMapFilename);
 }
 
@@ -246,7 +246,7 @@ void far zone_release_object_states(void) {
 
 void far zone_load_audio_proximity(void) {
     audio_sfx_register_world_bank();
-    sprintf(g_szZoneMapFilename, "Z%02u.TBL", (uint)g_gameState.nZoneId);
+    sprintf(g_szZoneMapFilename, "Z%02u.TBL", (unsigned int)g_gameState.nZoneId);
     proximity_table_load(g_szZoneMapFilename);
     czone_subsystem_init();
 }
@@ -284,33 +284,33 @@ void zone_free_400byte_buffer(void) {
     galloc_zfree(g_pZoneGridData);
 }
 
-void far zone_map_data_load(uchar zone_id) {
+void far zone_map_data_load(unsigned char zone_id) {
     BakFile *stream;
 
-    sprintf(g_szZoneMapFilename, "Z%02uMAP.DAT", (uint)zone_id);
+    sprintf(g_szZoneMapFilename, "Z%02uMAP.DAT", (unsigned int)zone_id);
     stream = bak_fopen(g_szZoneMapFilename, "rb");
     bak_fread(g_pZoneGridData, 400, 1, stream);
     bak_fclose(stream);
 }
 
-int far zone_grid_bit_get(uchar x, uchar y) {
+int far zone_grid_bit_get(unsigned char x, unsigned char y) {
     int offset;
-    uchar mask;
+    unsigned char mask;
 
     if (x >= 50 || y >= 50)
         return 0;
 
     offset = y * 8 + (x >> 3);
     mask = 1 << (x % 8);
-    return ((uchar *)g_pZoneGridData)[offset] & mask;
+    return ((unsigned char *)g_pZoneGridData)[offset] & mask;
 }
 
-uchar zone_ref_find_pair_index(uchar zone, byte key1, byte key2) {
+unsigned char zone_ref_find_pair_index(unsigned char zone, unsigned char key1, unsigned char key2) {
     BakFile *stream;
-    byte record_count;
-    byte index;
-    byte rec_key1;
-    byte rec_key2;
+    unsigned char record_count;
+    unsigned char index;
+    unsigned char rec_key1;
+    unsigned char rec_key2;
 
     g_szZoneRefFilenameTmpl[1] = 0x30 | zone / 10;
     g_szZoneRefFilenameTmpl[2] = 0x30 | zone % 10;
@@ -351,6 +351,6 @@ void far zone_savegame_snap_world_state(void) {
 
 void far zone_load_scx_image(void) {
     g_graphics_context.wGfxBlitDstPage = g_wVgaScratchPageBase;
-    sprintf(g_szZoneMapFilename, "Z%02uL.SCX", (uint)g_gameState.nZoneId);
+    sprintf(g_szZoneMapFilename, "Z%02uL.SCX", (unsigned int)g_gameState.nZoneId);
     resblit_load_pal_or_stream(g_szZoneMapFilename);
 }

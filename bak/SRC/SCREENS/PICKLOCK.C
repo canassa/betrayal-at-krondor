@@ -88,7 +88,7 @@ int far picklock_screen_run(int score, int mode, Actor far *record) {
             g_bInventoryShopMode = '\0';
             screen_render_main_frame(0);
             g_nSceneReloadPending = 0;
-            return (uint)g_bPicklockSuccess;
+            return (unsigned int)g_bPicklockSuccess;
         }
     } else {
         g_bInventoryShopMode = '\0';

@@ -3,8 +3,8 @@
 
 #include "structs.h"
 
-extern ushort gstate_event_read(ushort event_idx);
-extern int gstate_event_write(uint event_id, uint value);
+extern unsigned short gstate_event_read(unsigned short event_idx);
+extern int gstate_event_write(unsigned int event_id, unsigned int value);
 
 #define HOTSPOT_SCOUT_TRIED(idx) ((idx) + 5200)
 #define HOTSPOT_SCOUTED(idx) ((idx) + 5210)
@@ -21,8 +21,8 @@ extern int gstate_event_write(uint event_id, uint value);
 #define KEYWORD_ASKED(idx) ((idx) + 7500)
 extern int gstate_temp_file_open(void);
 extern void gstate_temp_file_close(void);
-extern int gstate_temp_file_read_at(uchar far *dst_far, ulong offset, uint bytes);
-extern int gstate_temp_file_write_at(uchar far *src_far, ulong offset, uint bytes);
+extern int gstate_temp_file_read_at(unsigned char far *dst_far, unsigned long offset, unsigned int bytes);
+extern int gstate_temp_file_write_at(unsigned char far *src_far, unsigned long offset, unsigned int bytes);
 
 /* TEMP.GAM layout: GameState at 0, then EncounterTable, then the keyed
    record regions below, each based at the end of the previous one (the
@@ -33,8 +33,8 @@ extern int gstate_temp_file_write_at(uchar far *src_far, ulong offset, uint byte
 #define GAM_OBJFIXED_LOCATION(idx)                                                                 \
     ((idx) * sizeof(ObjFixedLocationCacheEntry) + (GAM_ENCOUNTER_TABLE + sizeof(EncounterTable)))
 #define GAM_ENC_ROSTER(idx) ((idx) * (7 * sizeof(short)) + (GAM_OBJFIXED_LOCATION(20) + 0x28))
-#define GAM_ENC_FOUGHT_TIME(idx) ((idx) * sizeof(ulong) + GAM_ENC_ROSTER(700))
-#define GAM_ENC_VISITED_TIME(idx) ((idx) * sizeof(ulong) + GAM_ENC_FOUGHT_TIME(700))
+#define GAM_ENC_FOUGHT_TIME(idx) ((idx) * sizeof(unsigned long) + GAM_ENC_ROSTER(700))
+#define GAM_ENC_VISITED_TIME(idx) ((idx) * sizeof(unsigned long) + GAM_ENC_FOUGHT_TIME(700))
 #define GAM_ENC_OBJ_STATE(idx) ((idx) * sizeof(EncounterObjectState) + GAM_ENC_VISITED_TIME(700))
 #define GAM_COMBAT_ACTOR(idx) ((idx) * sizeof(CombatActor) + GAM_ENC_OBJ_STATE(40 * 5 * 7))
 #define GAM_COMBAT_ACTOR_INNER(idx) ((idx) * sizeof(CombatActorInner) + GAM_COMBAT_ACTOR(1730L))

@@ -10,7 +10,7 @@ extern void mouse_event_callback(void);
 extern void vga_save_and_setup_gc_sc(void);
 extern void vga_restore_registers(void);
 extern int mouse_restore_handler(void);
-extern uint mouse_get_position(uint *out_x, uint *out_y);
+extern unsigned int mouse_get_position(unsigned int *out_x, unsigned int *out_y);
 extern int mouse_set_position(int x, int y);
 extern int mouse_button_pressed(int button);
 

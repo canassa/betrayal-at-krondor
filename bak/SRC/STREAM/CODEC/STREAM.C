@@ -10,7 +10,7 @@
 #undef fmemcpy_far
 extern void fmemcpy_far();
 
-int stream_open(int codec_kind, BakFile *file, char *mode, ulong size) {
+int stream_open(int codec_kind, BakFile *file, char *mode, unsigned long size) {
     int slot;
     char buf[4];
 
@@ -46,7 +46,7 @@ int stream_open(int codec_kind, BakFile *file, char *mode, ulong size) {
     return slot;
 }
 
-int stream_open_from_memory(int codec_id, byte huge *pSrc, char *mode, ulong size) {
+int stream_open_from_memory(int codec_id, unsigned char huge *pSrc, char *mode, unsigned long size) {
     int slot;
 
     if ((slot = stream_alloc_slot(mode)) == -1)
@@ -95,7 +95,7 @@ int stream_close(int stream_id) {
     return g_nStreamBytesWritten;
 }
 
-uint stream_read(int handle, void far *dest, uint count) {
+unsigned int stream_read(int handle, void far *dest, unsigned int count) {
     if (stream_select(handle) == 0)
         return 0xffff;
     g_pStreamReadDst = normalize_far_ptr_thunk((unsigned char far *)dest);
@@ -103,7 +103,7 @@ uint stream_read(int handle, void far *dest, uint count) {
     return stream_consume(handle, count);
 }
 
-uint stream_write(int stream_id, void far *pSrc, uint count) {
+unsigned int stream_write(int stream_id, void far *pSrc, unsigned int count) {
     register unsigned char *pBuf; /* held in DI as the ring-buffer base across the copy loop */
     unsigned char huge *src;
     unsigned ring_head, ring_end;
@@ -165,7 +165,7 @@ long stream_seek(int handle, long position, int origin) {
             pos -= (long)g_pCurStreamDesc->dwOutPos;
         }
     }
-    while ((pos -= stream_consume(handle, pos < 32000L ? (uint)pos : 32000)) != 0) {
+    while ((pos -= stream_consume(handle, pos < 32000L ? (unsigned int)pos : 32000)) != 0) {
         g_pCurStreamSrcCursor = (char huge *)normalize_far_ptr_thunk(
             g_pCurStreamDesc->src.pBufBase + g_pCurStreamDesc->dwInPos);
     }

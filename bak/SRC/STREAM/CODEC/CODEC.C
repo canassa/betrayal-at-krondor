@@ -66,20 +66,20 @@ int near codec_rle_read(void) {
 }
 
 int near codec_flush_ring(void) {
-    register uchar *ringBuf;
-    uint tail;
+    register unsigned char *ringBuf;
+    unsigned int tail;
 
-    tail = (uint)g_pCurStreamDesc->bRingTail;
+    tail = (unsigned int)g_pCurStreamDesc->bRingTail;
     ringBuf = g_pCurStreamRingBuf;
     while (g_pCurStreamDesc->bRingHead != tail) {
         stream_putc(ringBuf[tail++]);
         tail &= 0x7f;
     }
-    g_pCurStreamDesc->bRingTail = (uchar)tail;
+    g_pCurStreamDesc->bRingTail = (unsigned char)tail;
     return 0;
 }
 
-int near codec_raw_read(uchar huge *dst, uint count) {
+int near codec_raw_read(unsigned char huge *dst, unsigned int count) {
     int chunk;
     int nread;
 
@@ -87,7 +87,7 @@ int near codec_raw_read(uchar huge *dst, uint count) {
     while (count > 0 && nread > 0) {
         chunk = count > 0x32 ? 0x32 : count;
         count -= (nread = bak_fread(g_codecRawTransitBuf, 1, chunk, g_pCurStreamFp));
-        fmemcpy_far((uchar far *)dst, (uchar far *)g_codecRawTransitBuf, nread);
+        fmemcpy_far((unsigned char far *)dst, (unsigned char far *)g_codecRawTransitBuf, nread);
         dst += nread;
     }
     return 0;
@@ -102,7 +102,7 @@ int near stream_getc(void) {
     return *g_pCurStreamSrcCursor++ & 0xff;
 }
 
-int near codec_raw_block_read(register void *dest, register uint count) {
+int near codec_raw_block_read(register void *dest, register unsigned int count) {
     long remaining;
 
     if ((remaining = g_pCurStreamDesc->dwInSize - g_pCurStreamDesc->dwInPos) == 0)
@@ -110,13 +110,13 @@ int near codec_raw_block_read(register void *dest, register uint count) {
     remaining = count > remaining ? remaining : count;
     g_pCurStreamDesc->dwInPos += remaining;
     if (g_bCurStreamDescFlags & 0x20)
-        return bak_fread(dest, 1, (uint)remaining, g_pCurStreamFp);
-    fmemcpy_far((uchar far *)dest, (uchar far *)g_pCurStreamSrcCursor, (uint)remaining);
+        return bak_fread(dest, 1, (unsigned int)remaining, g_pCurStreamFp);
+    fmemcpy_far((unsigned char far *)dest, (unsigned char far *)g_pCurStreamSrcCursor, (unsigned int)remaining);
     g_pCurStreamSrcCursor += remaining;
     return (int)remaining;
 }
 
-int near codec_rle_literal_run(uint count) {
+int near codec_rle_literal_run(unsigned int count) {
     g_pCurStreamDesc->dwInPos += count;
     if (g_wCodecBytesRemaining >= count) {
         if (g_bCurStreamOpMode & 0x40)
@@ -256,11 +256,11 @@ int near codec_init(int codec_id, char *mode) {
 }
 
 void near stream_drain_chunk_window(void) {
-    uint count;
-    uint tail;
+    unsigned int count;
+    unsigned int tail;
 
     tail = g_pCurStreamDesc->bRingTail;
-    count = (uint)g_pCurStreamDesc->bRingHead - tail;
+    count = (unsigned int)g_pCurStreamDesc->bRingHead - tail;
     if (count > g_wCodecBytesRemaining) {
         g_pCurStreamDesc->bRingTail += (count = g_wCodecBytesRemaining);
     } else {
@@ -268,7 +268,7 @@ void near stream_drain_chunk_window(void) {
     }
     if (count != 0) {
         if ((g_bCurStreamOpMode & 0x40) != 0) {
-            fmemcpy_far((uchar far *)g_pStreamReadDst, (uchar far *)(g_pCurStreamRingBuf + tail),
+            fmemcpy_far((unsigned char far *)g_pStreamReadDst, (unsigned char far *)(g_pCurStreamRingBuf + tail),
                         count);
         }
         g_wCodecBytesRemaining -= count;
@@ -276,8 +276,8 @@ void near stream_drain_chunk_window(void) {
     }
 }
 
-uint near stream_consume(int stream_id, uint count) {
-    uint delivered;
+unsigned int near stream_consume(int stream_id, unsigned int count) {
+    unsigned int delivered;
     delivered = count;
     g_wCodecBytesRemaining = delivered;
     stream_drain_chunk_window();

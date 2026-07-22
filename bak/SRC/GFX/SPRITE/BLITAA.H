@@ -3,6 +3,6 @@
 
 #include "structs.h"
 
-extern void blit_sprite_aa_edges(ImageRecord *sprite, int dst_x, int dst_y, uchar far *palette);
+extern void blit_sprite_aa_edges(ImageRecord *sprite, int dst_x, int dst_y, unsigned char far *palette);
 
 #endif

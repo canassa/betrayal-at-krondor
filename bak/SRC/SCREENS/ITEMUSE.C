@@ -80,8 +80,8 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
     ItemRecord far *rec;
     int result;
     int combat_result;
-    uint flags;
-    ushort category;
+    unsigned int flags;
+    unsigned short category;
     CombatActor *member;
     int outcome;
     int i;
@@ -148,11 +148,11 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
                 goto done;
             }
 
-            combat_result = (uint)item->item_id;
+            combat_result = (unsigned int)item->item_id;
             outcome = 1;
             goto done;
         } else if (memberIdx != 0 && cmbinv_member_can_equip_cat(memberIdx, item) != 0) {
-            for (i = 0; i < (int)(uint)actor->itemCount; i++) {
+            for (i = 0; i < (int)(unsigned int)actor->itemCount; i++) {
                 if (itemtbl_record_ptr(ACTOR_ITEMS(actor) + i)->wCategory == category) {
                     ACTOR_ITEM(actor, i).flags &= ~0x40;
                 }
@@ -215,17 +215,17 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
             if (trec->wCategory == rec->wEffect_arg_a && (target->flags & 0x10) == 0) {
                 if ((target->flags & 0x20) != 0) {
                     int stat_idx = (rec->wEffect_arg_a == 4) ? 9 : 10;
-                    uint skill = stat_actor_get(member, stat_idx, 0);
+                    unsigned int skill = stat_actor_get(member, stat_idx, 0);
                     stat_combatant_modify(member, stat_idx, 1, 3);
                     target->condition =
                         target->condition +
-                        (char)((int)((100 - (uint)target->condition) * (int)skill) / 100);
+                        (char)((int)((100 - (unsigned int)target->condition) * (int)skill) / 100);
                     target->flags &= ~0x20;
                     outcome = 1;
                 } else {
                     g_gameState.nEvtArgItemId = (short)target->item_id;
                     dialog_play_record(0x1b775e, 0);
-                    g_gameState.nEvtArgItemId = (uint)item->item_id;
+                    g_gameState.nEvtArgItemId = (unsigned int)item->item_id;
                     return -1;
                 }
             }
@@ -254,7 +254,7 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
         outcome = 1;
     } else if (category == 0xd) {
 
-        outcome = combat_actor_bitmap_set_bit((int)member, (uint)item->condition);
+        outcome = combat_actor_bitmap_set_bit((int)member, (unsigned int)item->condition);
     } else if (category == 0x11) {
 
         itemuse_apply_stat_effects(member, item, rec);
@@ -304,12 +304,12 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
         modifier.payload.wStatMask = rec->wEffect_arg_b;
         modifier.payload.nValue = rec->wEffect_chance_pct;
         modifier.payload.dwTApply = g_gameState.game_time;
-        modifier.payload.dwTExpiry = g_gameState.game_time + (ulong)rec->wEffect_stat_value * 0x708;
+        modifier.payload.dwTExpiry = g_gameState.game_time + (unsigned long)rec->wEffect_stat_value * 0x708;
         i = 0;
         outcome = 1;
         slot_mods = g_gameState.aActorStatModifiers[slot_idx];
         while (i < 8) {
-            stat_apply_modifier((ushort *)slot_mods, &stat_out);
+            stat_apply_modifier((unsigned short *)slot_mods, &stat_out);
             if (slot_mods->wMaskFlags != 0 &&
                 slot_mods->payload.wStatMask == modifier.payload.wStatMask) {
                 outcome = 0;
@@ -372,15 +372,15 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
             }
             outcome = -2;
             item->flags |= 1;
-            palette_fade_run_scheduled(palette_fade_schedule(0, (ulong)rec->wEffect_arg_a * 0x708));
+            palette_fade_run_scheduled(palette_fade_schedule(0, (unsigned long)rec->wEffect_arg_a * 0x708));
         }
     } else if (category == 0x16 && g_wInCombatMode != 0) {
 
-        combat_result = (uint)item->item_id;
+        combat_result = (unsigned int)item->item_id;
         outcome = 1;
     } else if (category == 0x19) {
 
-        switch ((uint)item->item_id) {
+        switch ((unsigned int)item->item_id) {
         case 0x66:
             if (g_dialog_in_scene == 0 && g_wInCombatMode == 0 && g_game_mode != 2 &&
                 g_full_redraw_needed == 0) {
@@ -409,7 +409,7 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
              * from that same AX, and the argument push reads it too
              * (`mov [bp-0x12],ax; push ax`).  A named `int track` instead homes
              * the value in DX and breaks both the store and the push. */
-            ulong music;
+            unsigned long music;
             int hp = stat_actor_get(member, 0xb, 0);
 
             ((int *)&music)[0] = audio_music_play(((int *)&music)[1] = (hp > 0x50   ? 0x3ef
@@ -418,7 +418,7 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
                                                                                     : 0x3f0));
             dialog_play_record(0x1b7742, 0);
             audio_music_play((int)music);
-            stat_combatant_modify(member, 0xb, (ulong)RNDR(0x28, 0x9f), 0);
+            stat_combatant_modify(member, 0xb, (unsigned long)RNDR(0x28, 0x9f), 0);
             outcome = -1;
             break;
         }
@@ -446,7 +446,7 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
             }
             i = 0;
             outcome = 1;
-            for (; i < (int)(uint)actor->itemCount; i++) {
+            for (; i < (int)(unsigned int)actor->itemCount; i++) {
                 if (ACTOR_ITEM(actor, i).item_id == '\x17') {
                     ACTOR_ITEM(actor, i).item_id = '\x16';
                 }
@@ -454,7 +454,7 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
             break;
         case 8:
             if (gstate_is_party_member(3) != 0) {
-                uint bits;
+                unsigned int bits;
                 g_gameState.lEvtArgGoldCost = 0;
                 g_gameState.lEvtArgGoldCost = (long)combat_actor_bitmap_set_bit(
                     (int)&g_gameState.party_members[CHR_PUG], RND(0x2d));
@@ -547,7 +547,7 @@ rand_path:
     } while (i < 0x10);
 }
 
-void far itemuse_actor_spawn_clone_inv(Actor far *src_actor, uint kind, long world_x,
+void far itemuse_actor_spawn_clone_inv(Actor far *src_actor, unsigned int kind, long world_x,
                                        long world_y) {
     Actor far *new_actor;
     int i;
@@ -567,10 +567,10 @@ void far itemuse_ground_pile_open_inv(void) {
     int i;
 
     if ((actor =
-             actorspawn_objfixed((uint)g_gameState.nZoneId, g_world_camera->base.pos.xy.nWorld_x,
+             actorspawn_objfixed((unsigned int)g_gameState.nZoneId, g_world_camera->base.pos.xy.nWorld_x,
                                  g_world_camera->base.pos.xy.nWorld_y)) == 0) {
         actor =
-            actorspawn_enc_location((uint)g_gameState.nZoneId, g_world_camera->base.pos.xy.nWorld_x,
+            actorspawn_enc_location((unsigned int)g_gameState.nZoneId, g_world_camera->base.pos.xy.nWorld_x,
                                     g_world_camera->base.pos.xy.nWorld_y);
     }
     actor->needsFlush = TRUE;

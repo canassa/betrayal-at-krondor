@@ -37,7 +37,7 @@ int ems_init(void) {
     return 0;
 }
 
-ushort ems_get_free_memory(void) {
+unsigned short ems_get_free_memory(void) {
     return g_free_memory_kb;
 }
 
@@ -60,7 +60,7 @@ void ems_shutdown(void) {
     }
 }
 
-int ems_alloc_pages(ulong size_bytes) {
+int ems_alloc_pages(unsigned long size_bytes) {
     int pages;
     int idx;
     int first;
@@ -105,18 +105,18 @@ void ems_free_pages(int page_chain_1based) {
     g_free_memory_kb += count;
 }
 
-uchar far *ems_map_at_offset(int page_chain_1based, long offset) {
+unsigned char far *ems_map_at_offset(int page_chain_1based, long offset) {
     int page_idx;
-    uint within;
+    unsigned int within;
     int chain_node;
     int phys_slot;
     int *mapEntry;
 
     page_idx = (int)(offset >> 14);
-    within = (uint)offset & 0x3fff;
+    within = (unsigned int)offset & 0x3fff;
 
     if (g_ems_present == 0 || page_chain_1based == 0)
-        return (uchar far *)MK_FP(0, 0);
+        return (unsigned char far *)MK_FP(0, 0);
 
     chain_node = page_chain_1based - 1;
     while (page_idx > 0 && chain_node != -1) {
@@ -141,16 +141,16 @@ uchar far *ems_map_at_offset(int page_chain_1based, long offset) {
         mov ax, 5000h
         int 67h
     }
-    return (uchar far *)MK_FP(g_ems_free_pages, within);
+    return (unsigned char far *)MK_FP(g_ems_free_pages, within);
 }
 
-uchar far *ems_map_resource_pages(int page_id) {
+unsigned char far *ems_map_resource_pages(int page_id) {
     int cur;
     int count;
     int *mapEntry;
 
     if (g_ems_present == 0 || page_id == 0)
-        return (uchar far *)MK_FP(0, 0);
+        return (unsigned char far *)MK_FP(0, 0);
 
     cur = page_id - 1;
     count = 0;
@@ -170,5 +170,5 @@ uchar far *ems_map_resource_pages(int page_id) {
         mov ax, 5000h
         int 67h
     }
-    return (uchar far *)MK_FP(g_ems_free_pages, 0);
+    return (unsigned char far *)MK_FP(g_ems_free_pages, 0);
 }

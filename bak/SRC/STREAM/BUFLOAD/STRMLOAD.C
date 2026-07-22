@@ -3,8 +3,8 @@
 #include "SRC/STREAM/RESLOAD/RELBUF.H"
 #include "SRC/STREAM/CODEC/STREAM.H"
 
-void far *stream_load_to_buffer(BakFile *file, ulong size, unsigned long *out_desc,
-                                ushort codec_kind) {
+void far *stream_load_to_buffer(BakFile *file, unsigned long size, unsigned long *out_desc,
+                                unsigned short codec_kind) {
     register int stream_id;
     unsigned long stream_size_full;
     void far *block_far;
@@ -16,7 +16,7 @@ void far *stream_load_to_buffer(BakFile *file, ulong size, unsigned long *out_de
 
         if ((block_far = pool_acquire_buffer(stream_size_full, codec_kind)) != (void far *)0) {
 
-            if ((unsigned long)stream_read(stream_id, block_far, (ushort)stream_size_full) !=
+            if ((unsigned long)stream_read(stream_id, block_far, (unsigned short)stream_size_full) !=
                 stream_size_full) {
                 release_buffer(block_far, codec_kind);
                 block_far = (void far *)0;

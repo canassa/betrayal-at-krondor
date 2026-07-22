@@ -5,7 +5,7 @@
 #include "SRC/GAME/GSTATE.H"
 #include "SRC/COMBAT/SPELL/SPELLFX.H"
 
-TimerEventEntry *far timerpool_upsert(ushort kind, ushort sub_id, ushort mode, long value) {
+TimerEventEntry *far timerpool_upsert(unsigned short kind, unsigned short sub_id, unsigned short mode, long value) {
     int i;
     TimerEventEntry *p;
 
@@ -71,7 +71,7 @@ void timerpool_tick(int delta_ticks) {
     }
 }
 
-int far timerpool_contains(ushort kind, ushort sub_id) {
+int far timerpool_contains(unsigned short kind, unsigned short sub_id) {
     int i;
     TimerEventEntry *p;
 

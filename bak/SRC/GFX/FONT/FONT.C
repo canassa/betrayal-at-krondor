@@ -53,23 +53,23 @@ int far font_activate(int slot) {
 }
 
 int font_get_line_height(int slot) {
-    byte widthBits;
+    unsigned char widthBits;
 
     if (font_slot_in_use(slot) != 0 || slot == 0)
         widthBits = g_graphics_context.pFont_glyph_width_bits[slot];
     else
         widthBits = 0;
-    return (uint)widthBits;
+    return (unsigned int)widthBits;
 }
 
 int font_height_get(int slot) {
-    byte height;
+    unsigned char height;
 
     if (font_slot_in_use(slot) != 0 || slot == 0)
         height = g_graphics_context.pFont_height[slot];
     else
         height = 0;
-    return (uint)height;
+    return (unsigned int)height;
 }
 
 int font_slot_in_use(int slot) {
@@ -78,7 +78,7 @@ int font_slot_in_use(int slot) {
 }
 
 int font_text_width_ds(char *text) {
-    return font_text_pixel_width((uchar far *)text);
+    return font_text_pixel_width((unsigned char far *)text);
 }
 
 int font_text_pixel_width(char far *str) {
@@ -88,7 +88,7 @@ int font_text_pixel_width(char far *str) {
     total = 0;
     has_width_table = (*(unsigned long *)&g_font_glyph_offset_table[0] != 0);
     while (*str != '\0') {
-        idx = (byte)*str - g_graphics_context.pFont_base_char[0];
+        idx = (unsigned char)*str - g_graphics_context.pFont_base_char[0];
         str++;
         if (idx >= 0 && idx < g_graphics_context.pFont_glyph_count[0]) {
             total += has_width_table ? g_font_width_table[0][idx]
@@ -98,17 +98,17 @@ int font_text_pixel_width(char far *str) {
     return total;
 }
 
-uint font_draw_char(uchar ch, int x, int y) {
-    uchar far *glyph_ptr;
-    uchar saved_fg;
-    uchar pix;
-    uint col;
-    uint row;
+unsigned int font_draw_char(unsigned char ch, int x, int y) {
+    unsigned char far *glyph_ptr;
+    unsigned char saved_fg;
+    unsigned char pix;
+    unsigned int col;
+    unsigned int row;
     int pixel_x;
-    uchar bit_mask;
+    unsigned char bit_mask;
     char is_packed;
-    uint width;
-    uint height;
+    unsigned int width;
+    unsigned int height;
     PutpixelFn putpixel_fp;
     register int i;
     int styleFlags;
@@ -133,8 +133,8 @@ uint font_draw_char(uchar ch, int x, int y) {
     }
 
     if (x < g_graphics_context.clip.xmin || y < g_graphics_context.clip.ymin ||
-        (uint)g_graphics_context.clip.xmax < x + width ||
-        (uint)g_graphics_context.clip.ymax < y + height) {
+        (unsigned int)g_graphics_context.clip.xmax < x + width ||
+        (unsigned int)g_graphics_context.clip.ymax < y + height) {
         putpixel_fp = putpixel;
     } else {
         putpixel_fp = (PutpixelFn)RENDERER_VTABLE.pfn_putpixel;
@@ -213,9 +213,9 @@ int font_render_glyph_or_ctrl(char ch, int x, int y) {
     int height;
     int i;
     int glyph_size;
-    uchar far *glyph_ptr;
+    unsigned char far *glyph_ptr;
 
-    c = (uchar)ch;
+    c = (unsigned char)ch;
     hi = c & 0xf0;
     if (hi == 0xf0 || hi == 0xe0) {
         int nib;
@@ -262,7 +262,7 @@ int font_render_glyph_or_ctrl(char ch, int x, int y) {
     width = g_graphics_context.pFont_glyph_width_bits[0];
     if ((char)g_graphics_context.bText_style_flags <= 1 &&
         !(char)g_graphics_context.bClip_enabled && g_font_format[0] <= 1 && width <= 8) {
-        i = (uchar)c - g_graphics_context.pFont_base_char[0];
+        i = (unsigned char)c - g_graphics_context.pFont_base_char[0];
         if (*(unsigned long *)&g_font_glyph_offset_table[0] != 0) {
             width = g_font_width_table[0][i];
             height = g_graphics_context.pFont_height[0];
@@ -289,7 +289,7 @@ int font_render_glyph_or_ctrl(char ch, int x, int y) {
             pop bp
         }
     } else {
-        width = font_draw_char((uchar)c, x, y);
+        width = font_draw_char((unsigned char)c, x, y);
         if (g_graphics_context.bText_style_flags & 2)
             width++;
     }
@@ -297,7 +297,7 @@ int font_render_glyph_or_ctrl(char ch, int x, int y) {
 }
 
 void font_draw_text_ds(char *text, int x, int y) {
-    font_draw_text_far((uchar far *)text, x, y);
+    font_draw_text_far((unsigned char far *)text, x, y);
     return;
 }
 
@@ -321,14 +321,14 @@ void font_draw_text_far(char far *text, int x, int y) {
     g_graphics_context.bText_fg_color = g_saved_text_fg_color;
 }
 
-int font_glyph_metrics(register int ch, uint *out_width, uint *out_height) {
-    uint width;
-    register uint height;
+int font_glyph_metrics(register int ch, unsigned int *out_width, unsigned int *out_height) {
+    unsigned int width;
+    register unsigned int height;
 
     width = 0;
-    ch -= (uint)g_graphics_context.pFont_base_char[0];
+    ch -= (unsigned int)g_graphics_context.pFont_base_char[0];
     if (ch < 0 || g_graphics_context.pFont_glyph_count[0] <= ch) {
-        if (ch + (uint)g_graphics_context.pFont_base_char[0] == 9) {
+        if (ch + (unsigned int)g_graphics_context.pFont_base_char[0] == 9) {
             width = g_nTabWidth;
         }
         if (out_width != 0) {

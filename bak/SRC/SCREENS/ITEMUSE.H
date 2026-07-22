@@ -7,7 +7,7 @@ extern int itemuse_dispatch_on_target(Actor far *param_1, ItemSlot far *param_2,
                                       ItemSlot far *param_3, int param_4);
 extern void itemuse_apply_stat_effects(CombatActor *actor, ItemSlot far *item,
                                        ItemRecord far *record);
-extern void itemuse_actor_spawn_clone_inv(Actor far *src_actor, uint kind, long world_x,
+extern void itemuse_actor_spawn_clone_inv(Actor far *src_actor, unsigned int kind, long world_x,
                                           long world_y);
 extern void itemuse_ground_pile_open_inv(void);
 extern void itemuse_party_tick_temporary(void);

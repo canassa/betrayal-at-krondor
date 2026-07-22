@@ -17,9 +17,9 @@ extern void dlgwidget_dlg_focus_first_wdg(Dialog *dialog);
 extern int dlgwidget_text_input_dialog_pump(Dialog *pDialog);
 extern void dlgwidget_dialog_rstrip_widgets(Dialog *dialog);
 extern void dlgwidget_dialog_render(Dialog *dialog, int show_selection);
-extern DialogWidget *dlgwidget_create(uint capacity, short rect_x, short rect_y, short rect_w,
-                                      byte bg_color, byte fg_color, byte cursor_color,
-                                      byte label_fg, byte selection_color, int has_fill_image);
+extern DialogWidget *dlgwidget_create(unsigned int capacity, short rect_x, short rect_y, short rect_w,
+                                      unsigned char bg_color, unsigned char fg_color, unsigned char cursor_color,
+                                      unsigned char label_fg, unsigned char selection_color, int has_fill_image);
 extern void dlgwidget_destroy(DialogWidget *widget);
 extern void dlgwidget_set_text(DialogWidget *widget, char *text);
 extern void dlgwidget_set_label_pos(DialogWidget *widget, char *label, short label_x,
@@ -32,8 +32,8 @@ extern void dlgwidget_text_compact_delete(DialogWidget *widget);
 extern void dlgwidget_text_forward_delete(DialogWidget *widget);
 extern void dlgwidget_text_cursor_home(DialogWidget *widget);
 extern void dlgwidget_text_cursor_end(DialogWidget *widget);
-extern void dlgwidget_text_insert_char(DialogWidget *widget, uchar ch);
+extern void dlgwidget_text_insert_char(DialogWidget *widget, unsigned char ch);
 extern void dlgwidget_draw_text_input_widget(DialogWidget *widget, int in_input_mode);
-extern uchar dlgwidget_text_input_disp_key(void);
+extern unsigned char dlgwidget_text_input_disp_key(void);
 
 #endif

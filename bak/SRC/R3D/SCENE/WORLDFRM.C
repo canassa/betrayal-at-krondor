@@ -24,12 +24,12 @@ EncounterTable *g_pEncounterTable = {0};
 
 void far worldframe_encounter_table_load(void) {
     g_pEncounterTable = galloc_safe_zcalloc(0x668);
-    gstate_temp_file_read_at((byte far *)g_pEncounterTable, GAM_ENCOUNTER_TABLE, 0x668);
+    gstate_temp_file_read_at((unsigned char far *)g_pEncounterTable, GAM_ENCOUNTER_TABLE, 0x668);
 }
 
 void far worldframe_encounter_table_apply(void) {
     g_wLastTempWriteRecordKind = 1;
-    gstate_temp_file_write_at((uchar far *)g_pEncounterTable, GAM_ENCOUNTER_TABLE, 0x668);
+    gstate_temp_file_write_at((unsigned char far *)g_pEncounterTable, GAM_ENCOUNTER_TABLE, 0x668);
     galloc_zfree(g_pEncounterTable);
     g_pEncounterTable = 0;
 }
@@ -38,12 +38,12 @@ void worldframe_enc_tbl_reapply_chap(void) {
     if (g_game_mode == 2 && g_pEncounterTable != 0) {
 
         g_wLastTempWriteRecordKind = 1;
-        gstate_temp_file_write_at((uchar far *)g_pEncounterTable, GAM_ENCOUNTER_TABLE,
+        gstate_temp_file_write_at((unsigned char far *)g_pEncounterTable, GAM_ENCOUNTER_TABLE,
                                   sizeof(EncounterTable));
     }
 }
 
-void worldframe_enc_rec_prox(uchar *record, int direction) {
+void worldframe_enc_rec_prox(unsigned char *record, int direction) {
     int i;
     int found;
 
@@ -70,25 +70,25 @@ void worldframe_enc_rec_prox(uchar *record, int direction) {
         } while (i < 0x28);
     }
     if (found) {
-        g_pEncounterTable->flags[i][direction >> 3] |= (uchar)(1 << ((uchar)direction & 7));
+        g_pEncounterTable->flags[i][direction >> 3] |= (unsigned char)(1 << ((unsigned char)direction & 7));
     }
 }
 
-int worldframe_enc_check_visited(uchar *pRecord, int bitIndex) {
+int worldframe_enc_check_visited(unsigned char *pRecord, int bitIndex) {
     int i;
 
     for (i = 0; i < 40; i++) {
         if (*pRecord == g_pEncounterTable->xCoord[i] &&
             pRecord[1] == g_pEncounterTable->yCoord[i] &&
             pRecord[2] == g_pEncounterTable->zCoord[i]) {
-            return (uint)g_pEncounterTable->flags[i][bitIndex >> 3] & 1 << ((byte)bitIndex & 7);
+            return (unsigned int)g_pEncounterTable->flags[i][bitIndex >> 3] & 1 << ((unsigned char)bitIndex & 7);
         }
     }
     return 0;
 }
 
-static uint far worldframe_compass_classifier(WorldObject far *entry) {
-    uint mask;
+static unsigned int far worldframe_compass_classifier(WorldObject far *entry) {
+    unsigned int mask;
     int rot;
     int n;
 
@@ -142,7 +142,7 @@ void far worldframe_debug_print_compass(WorldObject far *entry) {
     mdacon_printf(0x14, 0x16, "East : %s", (mask & 8) ? "WALL" : "    ");
 }
 
-void far worldframe_vislist_cull_occl(ushort seg, ushort *offsets, long *data, int *count) {
+void far worldframe_vislist_cull_occl(unsigned short seg, unsigned short *offsets, long *data, int *count) {
     long boundNorth = 0x7fffffff;
     long boundEast = 0x7fffffff;
     long boundSouth = 0;
@@ -150,7 +150,7 @@ void far worldframe_vislist_cull_occl(ushort seg, ushort *offsets, long *data, i
     long refX;
     long refY;
     WorldObject far *pEntry;
-    uint mask;
+    unsigned int mask;
     register int i;
 
     if (*count >= 2) {
@@ -230,7 +230,7 @@ void far worldframe_render_chapter_full(void) {
         uCount = g_apCombat_zone_actor_lists[zoneIdx]->wEntry_count;
         pEntry = g_apCombat_zone_actor_lists[zoneIdx]->pEntries;
         for (bitIndex = 0; bitIndex < uCount; bitIndex++, pEntry++) {
-            if (worldframe_enc_check_visited((uchar *)g_apCombat_zone_actor_lists[zoneIdx],
+            if (worldframe_enc_check_visited((unsigned char *)g_apCombat_zone_actor_lists[zoneIdx],
                                              bitIndex) != 0) {
                 if (pEntry->shapeId == 0x5d || pEntry->shapeId == 0x5c) {
                     worlddoor_rndr_enc_mark_actor(pEntry);
@@ -426,17 +426,17 @@ void far worldframe_chapter_tick_objects(void) {
     return;
 }
 
-void far worldframe_vislist_reorder(ushort visible_seg, ushort *visible_offsets, int count) {
+void far worldframe_vislist_reorder(unsigned short visible_seg, unsigned short *visible_offsets, int count) {
     int outerIdx;
     int innerIdx;
-    ushort *pOuterSlot;
-    ushort savedSlot;
+    unsigned short *pOuterSlot;
+    unsigned short savedSlot;
     WorldObject far *pOuter;
     WorldObject far *pInner;
-    ushort *pDst;
-    ushort *pInnerSlot;
-    uint outerKind;
-    uint innerKind;
+    unsigned short *pDst;
+    unsigned short *pInnerSlot;
+    unsigned int outerKind;
+    unsigned int innerKind;
     int i;
 
     pOuterSlot = &visible_offsets[count - 1];
@@ -446,7 +446,7 @@ void far worldframe_vislist_reorder(ushort visible_seg, ushort *visible_offsets,
         if (pOuter->shapeId == g_nProximityTableCount) {
             outerKind = 0x10;
         } else {
-            outerKind = (uint)ts_get_shape(pOuter->shapeId)->kind;
+            outerKind = (unsigned int)ts_get_shape(pOuter->shapeId)->kind;
         }
         switch (outerKind) {
         case 6:
@@ -475,7 +475,7 @@ void far worldframe_vislist_reorder(ushort visible_seg, ushort *visible_offsets,
                 if (pInner->shapeId == g_nProximityTableCount) {
                     innerKind = 0x10;
                 } else {
-                    innerKind = (uint)ts_get_shape(pInner->shapeId)->kind;
+                    innerKind = (unsigned int)ts_get_shape(pInner->shapeId)->kind;
                 }
                 if ((((innerKind != 0xe) && (innerKind != 0xf)) && (innerKind != 0x14) &&
                      (innerKind != 0x17)) ||

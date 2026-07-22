@@ -73,7 +73,7 @@ extern void ts_pack_vertex(Vec3Short far *dstShort3, Vec3Long far *srcLong3);
  * @param[in] vtxCount Number of input vertices (>= 3).
  * @param[in] radiusIn Ribbon half-width, before scaling.
  */
-extern void ts_project_shape(Vec3Long *vtxData, uint vtxSeg, int vtxCount, int radiusIn);
+extern void ts_project_shape(Vec3Long *vtxData, unsigned int vtxSeg, int vtxCount, int radiusIn);
 
 /**
  * @brief Reserve @p size bytes from the shape block (bump allocation; never individually freed).
@@ -113,7 +113,7 @@ extern void ts_alloc_shape_block(int recordCount);
  * @param[in] color2      Second fill color of the ribbon.
  * @return    The built @ref Shape (also stored in @p slot), or NULL if @p vtxCount < 3 or the slot rejects it.
  */
-extern Shape far *ts_build_shape(int slot, Vec3Long *vtxData, uint vtxSeg, int vtxCount,
+extern Shape far *ts_build_shape(int slot, Vec3Long *vtxData, unsigned int vtxSeg, int vtxCount,
                                  int ribbonWidth, int color1, int color2);
 
 #endif

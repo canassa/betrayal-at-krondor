@@ -5,6 +5,6 @@
 
 extern void near lzw_decompress();
 extern void near lzw_decode_step(void);
-extern uint near lzw_get_next_code(void);
+extern unsigned int near lzw_get_next_code(void);
 
 #endif

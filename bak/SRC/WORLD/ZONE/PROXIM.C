@@ -34,11 +34,11 @@ void far proximity_table_free(void) {
     return;
 }
 
-uchar far proximity_scan_list(ProximityScanHit *out_hit, WorldPos2 *pos, ushort record_seg,
-                              ushort *record_offsets, int count) {
+unsigned char far proximity_scan_list(ProximityScanHit *out_hit, WorldPos2 *pos, unsigned short record_seg,
+                              unsigned short *record_offsets, int count) {
     int i;
     ProximityRecord far *pRecord;
-    ushort *pOffset;
+    unsigned short *pOffset;
 
     pOffset = record_offsets + (count - 1);
     if (g_pProximityTable != (ProximityZone far *far *)0) {
@@ -83,23 +83,23 @@ void proximity_vec2_long_rotate_q14(long *xy, int angle) {
     }
 }
 
-uchar far *proximity_record_vertex_ptr(ProximityZone far *zone, int vertex_idx) {
-    uchar far *result;
+unsigned char far *proximity_record_vertex_ptr(ProximityZone far *zone, int vertex_idx) {
+    unsigned char far *result;
     int stride;
 
-    result = (uchar far *)MK_FP(FP_SEG(zone), zone->wVertex_table_offset);
+    result = (unsigned char far *)MK_FP(FP_SEG(zone), zone->wVertex_table_offset);
     stride = (zone->bFlags & 2) ? 10 : 6;
     result = result + vertex_idx * stride;
     return result;
 }
 
-uchar far proximity_point_test(ProximityScanHit *out_hit, WorldPos2 *pos, ProximityZone far *zone,
+unsigned char far proximity_point_test(ProximityScanHit *out_hit, WorldPos2 *pos, ProximityZone far *zone,
                                ProximityRecord far *pRecord, char check_first_vertex) {
     int xi;
     int yi;
     long lx;
     long ly;
-    uint idx;
+    unsigned int idx;
     ProximityPolygon far *polyIter;
     int stride;
     long vec[3];
@@ -124,18 +124,18 @@ uchar far proximity_point_test(ProximityScanHit *out_hit, WorldPos2 *pos, Proxim
     if (!(zone->bFlags & 1)) {
         if (check_first_vertex != '\0') {
             polyIter = (ProximityPolygon
-                        far *)proximity_record_vertex_ptr(zone, (uint)out_hit->bHit_index);
+                        far *)proximity_record_vertex_ptr(zone, (unsigned int)out_hit->bHit_index);
             if ((char)proximity_polygon_contains(polyIter, xi, yi) != '\0') {
-                idx = (uint)out_hit->bHit_index;
+                idx = (unsigned int)out_hit->bHit_index;
                 goto hit_found;
             }
             polyIter = MK_FP(FP_SEG(zone), zone->wVertex_table_offset);
         }
-        while ((int)idx < (int)(uint)zone->bVertex_count) {
+        while ((int)idx < (int)(unsigned int)zone->bVertex_count) {
             if ((char)proximity_polygon_contains(polyIter, xi, yi) != '\0') {
                 break;
             }
-            polyIter = (ProximityPolygon far *)((uchar far *)polyIter + stride);
+            polyIter = (ProximityPolygon far *)((unsigned char far *)polyIter + stride);
             idx++;
         }
         if (zone->bVertex_count == idx) {
@@ -160,7 +160,7 @@ hit_found:
     return '\x01';
 }
 
-uchar proximity_polygon_contains(ProximityPolygon far *poly, int point_x, int point_y) {
+unsigned char proximity_polygon_contains(ProximityPolygon far *poly, int point_x, int point_y) {
     long side;
     ProximityVertex far *v;
     int count;

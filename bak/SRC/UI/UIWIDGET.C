@@ -47,7 +47,7 @@ static void uiwidget_tile_sprite_fill_rect(int x, int y, int w, int h, int sprit
             iy = 0;
             if (iy < g_graphics_context.clip.ymax) {
                 do {
-                    blit_sprite_indirect((ushort)g_tile_sprite[sprite_index], x + ix, y + iy, 0);
+                    blit_sprite_indirect((unsigned short)g_tile_sprite[sprite_index], x + ix, y + iy, 0);
                     iy += step_y;
                 } while (iy < g_graphics_context.clip.ymax);
             }
@@ -57,26 +57,26 @@ static void uiwidget_tile_sprite_fill_rect(int x, int y, int w, int h, int sprit
     g_graphics_context.bClip_enabled = 0;
 }
 
-static uint uiwidget_glyph_blit(uchar ch, int x, int y) {
-    byte far *glyph_data;
-    uint row;
-    byte mask;
-    uint width;
-    uint height;
-    byte pixel;
+static unsigned int uiwidget_glyph_blit(unsigned char ch, int x, int y) {
+    unsigned char far *glyph_data;
+    unsigned int row;
+    unsigned char mask;
+    unsigned int width;
+    unsigned int height;
+    unsigned char pixel;
     int glyph_index;
-    uint color;
-    byte prev_pixel;
-    uint col;
+    unsigned int color;
+    unsigned char prev_pixel;
+    unsigned int col;
 
-    glyph_index = (uint)ch - (uint)g_graphics_context.pFont_base_char[0];
+    glyph_index = (unsigned int)ch - (unsigned int)g_graphics_context.pFont_base_char[0];
     if (g_font_glyph_offset_table[0] != 0) {
-        width = (uint)g_font_width_table[0][glyph_index];
-        height = (uint)g_graphics_context.pFont_height[0];
+        width = (unsigned int)g_font_width_table[0][glyph_index];
+        height = (unsigned int)g_graphics_context.pFont_height[0];
         glyph_data = g_font_bitmap_data[0] + g_font_glyph_offset_table[0][glyph_index];
     } else {
-        width = (uint)g_graphics_context.pFont_glyph_width_bits[0];
-        height = (uint)g_graphics_context.pFont_height[0];
+        width = (unsigned int)g_graphics_context.pFont_glyph_width_bits[0];
+        height = (unsigned int)g_graphics_context.pFont_height[0];
         glyph_data = g_font_bitmap_data[0] + glyph_index * ((width + 7) >> 3) * height;
     }
     row = 0;
@@ -114,7 +114,7 @@ static uint uiwidget_glyph_blit(uchar ch, int x, int y) {
     return width;
 }
 
-static void far uiwidget_draw_text_string(uchar *str, int x, int y) {
+static void far uiwidget_draw_text_string(unsigned char *str, int x, int y) {
     while (*str != '\0') {
         x += uiwidget_glyph_blit(*str++, x, y);
         if ((g_graphics_context.bText_style_flags & 2) != 0) {
@@ -133,7 +133,7 @@ void uiwidget_draw_text_shadowed_dflt(char *text, int shadow_color, int color, i
         if (text == (char *)0x0) {
             return;
         }
-        g_graphics_context.bText_fg_color = (uchar)color;
+        g_graphics_context.bText_fg_color = (unsigned char)color;
     }
     font_draw_text_ds(text, x, y + -1);
     return;
@@ -165,14 +165,14 @@ int uiwidget_midpoint_int(int a, int b) {
 void uiwidget_panel_draw_3edge_bevel(int x, int y, int width, int height, int fill_color,
                                      int color1, int color2, int color3, int color4) {
     g_graphics_context.bGfx_fill_enabled = '\x01';
-    g_graphics_context.bGfx_fill_color = (uchar)fill_color;
-    g_graphics_context.bGfx_outline_color = (uchar)color1;
+    g_graphics_context.bGfx_fill_color = (unsigned char)fill_color;
+    g_graphics_context.bGfx_outline_color = (unsigned char)color1;
     draw_rect_filled(x, y, width, height);
-    g_graphics_context.bGfx_outline_color = (uchar)color2;
+    g_graphics_context.bGfx_outline_color = (unsigned char)color2;
     draw_line(x, y + 1, x, y + height - 1);
-    g_graphics_context.bGfx_outline_color = (uchar)color3;
+    g_graphics_context.bGfx_outline_color = (unsigned char)color3;
     draw_line(x + width - 1, y, x + width - 1, y + height - 1);
-    g_graphics_context.bGfx_outline_color = (uchar)color4;
+    g_graphics_context.bGfx_outline_color = (unsigned char)color4;
     draw_line(x, y + height - 1, x + width - 1, y + height - 1);
     putpixel(x, y, uiwidget_midpoint_int(color1, color2));
     putpixel(x + width - 1, y, uiwidget_midpoint_int(color1, color3));

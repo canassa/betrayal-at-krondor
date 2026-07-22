@@ -174,7 +174,7 @@ int credits_draw_scroll_pass(int x_left, int width, int reset) {
 
 int far credits_run(void) {
     int scroll_done;
-    uint sc;
+    unsigned int sc;
 
     scroll_done = 0;
 

@@ -6,21 +6,21 @@
 void near codec_rle_emit_run(int flush) {
     unsigned char tail;
     unsigned char head;
-    uint remaining;
+    unsigned int remaining;
     int runLen;
-    uint scanIdx;
+    unsigned int scanIdx;
     unsigned char isRepeat;
     unsigned char nextTail;
     register unsigned char *pRing;
-    uint runByte;
+    unsigned int runByte;
 
     pRing = g_pCurStreamRingBuf;
     tail = g_pCurStreamDesc->bRingTail;
     head = g_pCurStreamDesc->bRingHead;
 
-    while ((remaining = (uint)head - (uint)tail & 0x7f) != 0) {
+    while ((remaining = (unsigned int)head - (unsigned int)tail & 0x7f) != 0) {
         runByte = 0xffff;
-        scanIdx = (uint)tail;
+        scanIdx = (unsigned int)tail;
         runLen = 1;
         do {
             if (pRing[scanIdx] == runByte) {
@@ -30,9 +30,9 @@ void near codec_rle_emit_run(int flush) {
                     break;
                 runLen = 1;
             }
-            runByte = (uint)pRing[scanIdx];
+            runByte = (unsigned int)pRing[scanIdx];
             ++scanIdx;
-        } while ((uint)head != (scanIdx &= 0x7f));
+        } while ((unsigned int)head != (scanIdx &= 0x7f));
 
         isRepeat = 0;
         if (runLen >= 3) {
@@ -44,16 +44,16 @@ void near codec_rle_emit_run(int flush) {
         } else {
             nextTail = head;
         }
-        runLen = (uint)nextTail - (uint)tail & 0x7f;
+        runLen = (unsigned int)nextTail - (unsigned int)tail & 0x7f;
         if (runLen == (int)remaining && runLen < 0x7f && flush == 0)
             break;
-        stream_putc((uint)runLen | isRepeat);
+        stream_putc((unsigned int)runLen | isRepeat);
         if (isRepeat & 0x80) {
             stream_putc(runByte);
             tail = tail + (char)runLen & 0x7f;
         } else {
             while (runLen-- != 0) {
-                stream_putc((uint)pRing[tail++]);
+                stream_putc((unsigned int)pRing[tail++]);
                 tail &= 0x7f;
             }
         }

@@ -18,10 +18,10 @@ extern void bak_setbuf(BakFile *stream, char *buffer);
 extern void bak_init_resources(void);
 extern void bak_shutdown_resources(void);
 extern void bak_invalidate_archives(void);
-extern ulong bak_filename_hash(char *filename);
+extern unsigned long bak_filename_hash(char *filename);
 extern int bak_resource_lookup(BakHandle *slot);
 extern void bak_select_archive(int archive_index);
-extern void bak_archive_seek(ulong absolute_offset);
+extern void bak_archive_seek(unsigned long absolute_offset);
 extern BakHandle *bak_find_handle(BakFile *stream);
 
 extern void interrupt far bak_int24_critical_handler();

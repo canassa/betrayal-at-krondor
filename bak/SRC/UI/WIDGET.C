@@ -67,7 +67,7 @@ void widget_free_button_sprite_pair(void) {
     return;
 }
 
-void widget_blit_button_sprite(uint sprite_idx, int x, int y, int palette, int center, int rect_w,
+void widget_blit_button_sprite(unsigned int sprite_idx, int x, int y, int palette, int center, int rect_w,
                                int rect_h) {
     ImageRecord **sheet;
 
@@ -79,7 +79,7 @@ void widget_blit_button_sprite(uint sprite_idx, int x, int y, int palette, int c
     } else {
         sheet = g_pButtonSpriteUp;
     }
-    sprite_idx = (uint)((int)sprite_idx >> 1);
+    sprite_idx = (unsigned int)((int)sprite_idx >> 1);
     if (center != 0) {
         x = x + ((rect_w >> 1) - (sheet[sprite_idx]->nWidth >> 1));
         y += (rect_h >> 1) - (sheet[sprite_idx]->nHeight >> 1);
@@ -256,15 +256,15 @@ void widget_menu_draw(MenuEntry *widget, int x, int y, int hover_flag) {
         return;
     }
     if ((widget->wWidget_type == 3) || ((widget->wWidget_type == 4 && (widget->wSub_state != 0))))
-        widget_blit_button_sprite(widget->wSprite_base + (uint)(hover_flag != 0),
+        widget_blit_button_sprite(widget->wSprite_base + (unsigned int)(hover_flag != 0),
                                   x + widget->rect.x, y + widget->rect.y, 0, 0, 0, 0);
     else
-        widget_blit_button_sprite(widget->wSprite_base + (uint)(hover_flag != 0) + 2,
+        widget_blit_button_sprite(widget->wSprite_base + (unsigned int)(hover_flag != 0) + 2,
                                   x + widget->rect.x, y + widget->rect.y, 0, 0, 0, 0);
 }
 
 void widget_button_render_full(MenuEntry *button, int x, int y, int pressed, int sprite_set) {
-    ushort base_color;
+    unsigned short base_color;
     int bx;
     int by;
     int hy;
@@ -426,7 +426,7 @@ void widget_draw_iconbox(MenuEntry *widget, int x, int y, int pressed, int sprit
     draw_line(x, y, x, y + widget->rect.height - 1);
     draw_line(x, y + widget->rect.height - 1, x + widget->rect.width - 1,
               y + widget->rect.height - 1);
-    widget_blit_button_sprite(widget->wSprite_base + (uint)(pressed != 0), x, y, sprite_flags, 1,
+    widget_blit_button_sprite(widget->wSprite_base + (unsigned int)(pressed != 0), x, y, sprite_flags, 1,
                               widget->rect.width, widget->rect.height);
     return;
 }
@@ -471,7 +471,7 @@ void widget_draw_scrollbar(MenuEntry *widget, int x, int y, int pressed_part) {
     iconBtn.pPrimary_label = (char *)0x0;
     iconBtn.pAlt_label = (char *)0x0;
     iconBtn.wCursor_shape = widget->wCursor_shape;
-    widget_draw_iconbox(&iconBtn, sx, sy, (uint)(pressed_part == 2), 0);
+    widget_draw_iconbox(&iconBtn, sx, sy, (unsigned int)(pressed_part == 2), 0);
 
     if (1 < (int)widget->wEnable_gate) {
         thumbOff = (int)widget->wSub_state * (trackLen + -7) / ((int)widget->wEnable_gate - 1);
@@ -494,7 +494,7 @@ void widget_draw_scrollbar(MenuEntry *widget, int x, int y, int pressed_part) {
         iconBtn.rect.x = (widget->rect.width - btnSize) + -2;
         sprite_flags = 2;
     }
-    widget_draw_iconbox(&iconBtn, sx, sy, (uint)(pressed_part == 4), sprite_flags);
+    widget_draw_iconbox(&iconBtn, sx, sy, (unsigned int)(pressed_part == 4), sprite_flags);
 }
 
 void widget_render_button(MenuEntry *widget, int x_off, int y_off, int hover_flag) {
@@ -503,7 +503,7 @@ void widget_render_button(MenuEntry *widget, int x_off, int y_off, int hover_fla
                                   y_off + widget->rect.y, 0, 0, 0, 0);
         return;
     }
-    widget_blit_button_sprite(widget->wSprite_base + (uint)(hover_flag != 0),
+    widget_blit_button_sprite(widget->wSprite_base + (unsigned int)(hover_flag != 0),
                               x_off + widget->rect.x, y_off + widget->rect.y, 0, 0, 0, 0);
     return;
 }

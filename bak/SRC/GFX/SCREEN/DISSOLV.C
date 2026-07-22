@@ -10,16 +10,16 @@ static unsigned int tap_table[62] = {
     0x0000, 0x00D8, 0x0000, 0x0120, 0x0000, 0x0388, 0x0000, 0x0720, 0x0000, 0x0900, 0x0000,
     0x1400, 0x0000, 0x3280, 0x0000, 0x4800, 0x0000, 0xA300};
 
-ushort dissolve_transition_lfsr(int origin_x, int origin_y, uint width, uint height) {
-    uint width_m1;
-    uint height_m1;
-    uint x_coord;
-    uint y_coord;
+unsigned short dissolve_transition_lfsr(int origin_x, int origin_y, unsigned int width, unsigned int height) {
+    unsigned int width_m1;
+    unsigned int height_m1;
+    unsigned int x_coord;
+    unsigned int y_coord;
     unsigned long lfsr_mask;
     unsigned long taps;
     unsigned long lfsr_state;
     int height_bits;
-    uint s;
+    unsigned int s;
     int total_bits;
 
     lfsr_mask = 0;
@@ -51,22 +51,22 @@ ushort dissolve_transition_lfsr(int origin_x, int origin_y, uint width, uint hei
     g_graphics_context.wGfxBlitSrcPage = g_graphics_context.wVgaPage2Base;
 
     do {
-        if (((uint)lfsr_state & lfsr_mask) <= height_m1 &&
-            (uint)(lfsr_state >> height_bits) <= width_m1) {
-            y_coord = ((uint)lfsr_state & lfsr_mask) + origin_y;
-            x_coord = (uint)(lfsr_state >> height_bits) + origin_x;
-            (*(void(far *)(uint, uint, uint))g_renderer_vtable.pfn_putpixel)(
+        if (((unsigned int)lfsr_state & lfsr_mask) <= height_m1 &&
+            (unsigned int)(lfsr_state >> height_bits) <= width_m1) {
+            y_coord = ((unsigned int)lfsr_state & lfsr_mask) + origin_y;
+            x_coord = (unsigned int)(lfsr_state >> height_bits) + origin_x;
+            (*(void(far *)(unsigned int, unsigned int, unsigned int))g_renderer_vtable.pfn_putpixel)(
                 x_coord, y_coord,
-                (*(uint(far *)(uint, uint))g_renderer_vtable.pfn_getpixel)(x_coord, y_coord));
+                (*(unsigned int(far *)(unsigned int, unsigned int))g_renderer_vtable.pfn_getpixel)(x_coord, y_coord));
         }
-        if ((uint)lfsr_state & 1)
+        if ((unsigned int)lfsr_state & 1)
             lfsr_state = (lfsr_state >> 1) ^ taps;
         else
             lfsr_state = lfsr_state >> 1;
     } while (lfsr_state != 1);
 
-    (*(void(far *)(int, int, uint))g_renderer_vtable.pfn_putpixel)(
+    (*(void(far *)(int, int, unsigned int))g_renderer_vtable.pfn_putpixel)(
         origin_x, origin_y,
-        (*(uint(far *)(int, int))g_renderer_vtable.pfn_getpixel)(origin_x, origin_y));
+        (*(unsigned int(far *)(int, int))g_renderer_vtable.pfn_getpixel)(origin_x, origin_y));
     return 1;
 }

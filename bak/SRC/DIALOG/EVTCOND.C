@@ -52,7 +52,7 @@ void evtcond_pty_inv_repair_cnt(int *count_out, int *repair_out, int do_repair) 
     }
 }
 
-int evtcond_range_d_read_handler(uint cond) {
+int evtcond_range_d_read_handler(unsigned int cond) {
     int i;
     int j;
     int c4res;
@@ -68,7 +68,7 @@ int evtcond_range_d_read_handler(uint cond) {
             j = 0;
             slot = ACTOR_ITEMS(actor);
             for (; j < (int)actor->itemCount; j++, slot++) {
-                if (slot->item_id == 'x' && (uint)slot->condition == cond) {
+                if (slot->item_id == 'x' && (unsigned int)slot->condition == cond) {
                 L_match:
                     return 1;
                 }
@@ -170,7 +170,7 @@ L_def0:
     return 0;
 }
 
-void evtcond_range_d_write_stub(uint event_id, uint value) {
+void evtcond_range_d_write_stub(unsigned int event_id, unsigned int value) {
     (void)event_id;
     (void)value;
     return;
@@ -192,10 +192,10 @@ void evtcond_dialog_action_dispatch(DdxOp far *action_record) {
         evtcond_pty_inv_repair_cnt(&temp, &temp, 1);
         break;
     case 3:
-        rgnenc_complete_consume((ulong)(unsigned int)action_record->nA2);
+        rgnenc_complete_consume((unsigned long)(unsigned int)action_record->nA2);
         break;
     case 4:
-        rgnenc_mark_defended((ulong)(unsigned int)action_record->nA2);
+        rgnenc_mark_defended((unsigned long)(unsigned int)action_record->nA2);
         break;
     case 5: {
         Actor far *actor = actorspawn_objfixed(0, 0x14L, 0L);
@@ -402,7 +402,7 @@ void evtcond_pty_dirty_flags_process(void) {
     g_gameState.bPartyDirtyFlags = 0;
 }
 
-void evtcond_dispatch_key_to_handler(uint event_id) {
+void evtcond_dispatch_key_to_handler(unsigned int event_id) {
     switch (event_id) {
     case 0x4a:
         dialog_play_record(0x1cfdf1, 0);
@@ -435,7 +435,7 @@ void evtcond_dispatch_key_to_handler(uint event_id) {
     case 0x19a:
     case 0x1ad:
     case 0x1ae:
-        rgnenc_complete_consume((ulong)event_id);
+        rgnenc_complete_consume((unsigned long)event_id);
         return;
     case 0x262:
     case 0x265:

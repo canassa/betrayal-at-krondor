@@ -72,7 +72,7 @@ void far spellfx_cast_and_dispatch(void) {
 }
 
 void far spellfx_palette_fade_slot0(short caster_slot, short damage, int effect_param) {
-    ulong duration;
+    unsigned long duration;
 
     audio_play(0x3a);
     dialog_play_record(199, 0);
@@ -87,7 +87,7 @@ void far spellfx_palette_fade_slot0(short caster_slot, short damage, int effect_
 }
 
 void far spellfx_combat_play_hit_effect(short caster_slot, short damage, int effect_param) {
-    ulong duration;
+    unsigned long duration;
 
     if (g_game_mode == 2) {
         audio_play(0x3a);
@@ -104,7 +104,7 @@ void far spellfx_combat_play_hit_effect(short caster_slot, short damage, int eff
 }
 
 void far spellfx_overworld_pal_fade_slot2(short caster_slot, short damage, int effect_param) {
-    ulong duration;
+    unsigned long duration;
 
     if (g_game_mode != 2) {
         audio_play(0x3a);
@@ -147,7 +147,7 @@ void far spellfx_palette_event_with_sound(short caster_slot, short damage, int e
 }
 
 void far spellfx_show_msg_pal_fade(short caster_slot, short damage, int effect_param) {
-    ulong duration;
+    unsigned long duration;
 
     audio_play(0xc);
     dialog_play_record(0xcc, 0);
@@ -189,7 +189,7 @@ void far spellfx_save_cmap_scene_events(short target, short damage) {
     }
 }
 
-TimerEventEntry *far spellfx_pal_event_timer_upsert(ushort subId, long value) {
+TimerEventEntry *far spellfx_pal_event_timer_upsert(unsigned short subId, long value) {
     return timerpool_upsert(2, subId, 0x80, value);
 }
 
@@ -214,10 +214,10 @@ short far spellfx_actor_has_ration(WorldObject far *entry) {
     int i;
 
     result = 0;
-    actor = actorspawn_objfixed((uint)g_gameState.nZoneId, entry->pos.xy.nWorld_x,
+    actor = actorspawn_objfixed((unsigned int)g_gameState.nZoneId, entry->pos.xy.nWorld_x,
                                 entry->pos.xy.nWorld_y);
     if (actor != 0) {
-        for (i = 0; i < (int)(uint)actor->itemCount; i++) {
+        for (i = 0; i < (int)(unsigned int)actor->itemCount; i++) {
             switch (ACTOR_ITEM(actor, i).item_id) {
             case 0x48:
             case 0x49:
@@ -236,7 +236,7 @@ short far spellfx_actor_has_special_item(WorldObject far *entry) {
     int i;
 
     result = 0;
-    actor = actorspawn_objfixed((uint)g_gameState.nZoneId, entry->pos.xy.nWorld_x,
+    actor = actorspawn_objfixed((unsigned int)g_gameState.nZoneId, entry->pos.xy.nWorld_x,
                                 entry->pos.xy.nWorld_y);
     if (actor != 0) {
         for (i = 0; i < actor->itemCount; i++) {
@@ -281,7 +281,7 @@ void far spellfx_run_request_cmap_dialog(int request_type) {
     short saved_viewport_y;
     short saved_viewport_w;
     short saved_viewport_h;
-    ushort redrawMenu;
+    unsigned short redrawMenu;
     int renderScene;
 
     running = 1;

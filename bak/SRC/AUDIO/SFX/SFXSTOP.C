@@ -3,7 +3,7 @@
 #include "SRC/AUDIO/SFX/SFXSTOP.H"
 #include "SRC/AUDIO/DRIVER/MIDI.H"
 
-void sfx_stop_in_slot(uchar far *script) {
+void sfx_stop_in_slot(unsigned char far *script) {
     int i;
     AudioTrackHandle far *h;
 

@@ -34,16 +34,16 @@ unsigned char far g_skyHorizonStrips[863] = {
 };
 
 void sky_horizon_strip_compute_slope(SkyStrip far *pStrip) {
-    uint yTop;
-    uint yBot;
-    uint baseOff;
-    uint endOff;
+    unsigned int yTop;
+    unsigned int yBot;
+    unsigned int baseOff;
+    unsigned int endOff;
     int slope;
 
-    yTop = (uint)pStrip->bYTop;
-    yBot = (uint)pStrip->bYBot;
-    baseOff = (uint)pStrip->bBaseRow * 0x50;
-    endOff = baseOff + (uint)pStrip->bEndRow * 0x50;
+    yTop = (unsigned int)pStrip->bYTop;
+    yBot = (unsigned int)pStrip->bYBot;
+    baseOff = (unsigned int)pStrip->bBaseRow * 0x50;
+    endOff = baseOff + (unsigned int)pStrip->bEndRow * 0x50;
     if (yBot == yTop) {
         slope = 0;
     } else {
@@ -99,7 +99,7 @@ void sky_draw_ground_band(void) {
 
     g_vgablit_si_base = rec->wSiBase + (int)(g_nWorldRenderJitter & 0x3f);
     g_vgablit_si_stride = rec->nSiStride;
-    g_vgablit_row_sub = (uint)rec->bYTop;
+    g_vgablit_row_sub = (unsigned int)rec->bYTop;
     g_vgablit_row_count = 0;
 
     save_fill = g_renderer_vtable.pfn_fill_spans_dithered_modey;
@@ -116,7 +116,7 @@ void sky_draw_ground_band(void) {
     g_renderer_vtable.pfn_fill_spans_dithered_modey = save_fill;
 }
 
-void sky_polygon_draw_dispatch(uint vcount, int *xs, int *ys) {
+void sky_polygon_draw_dispatch(unsigned int vcount, int *xs, int *ys) {
     SkyStrip far *rec;
     int fill_clr;
     Slot27Fn far *save_fill;
@@ -135,10 +135,10 @@ void sky_polygon_draw_dispatch(uint vcount, int *xs, int *ys) {
 
     g_vgablit_si_base = rec->wSiBase + (int)(g_nWorldRenderJitter & 0x3f);
     g_vgablit_si_stride = rec->nSiStride;
-    g_vgablit_row_sub = (uint)rec->bYTop;
+    g_vgablit_row_sub = (unsigned int)rec->bYTop;
 
     if (rec->bFlags & 1) {
-        g_vgablit_row_count = (uint)rec->bEndRow - 1;
+        g_vgablit_row_count = (unsigned int)rec->bEndRow - 1;
         g_vgablit_si_stride = 0x50;
     } else {
         g_vgablit_row_count = 0;

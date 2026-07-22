@@ -59,7 +59,7 @@ void far combatenc_pty_load_chap_state(void) {
     g_inner_pool_B = (unsigned short)galloc_safe_zcalloc(0x9a);
     g_anim_pool_B = (AnimSlot *)galloc_safe_zcalloc(0x77);
 
-    gstate_temp_file_read_at((byte far *)g_chapter_roster, (ulong)GAM_ENC_ROSTER(g_encounter_id),
+    gstate_temp_file_read_at((unsigned char far *)g_chapter_roster, (unsigned long)GAM_ENC_ROSTER(g_encounter_id),
                              0xe);
     g_combat_count_B = 0;
     slot = 0;
@@ -72,12 +72,12 @@ void far combatenc_pty_load_chap_state(void) {
     slot = 0;
     if (slot < g_combat_count_B) {
         do {
-            gstate_temp_file_read_at((byte far *)&g_combat_actors_B[slot],
+            gstate_temp_file_read_at((unsigned char far *)&g_combat_actors_B[slot],
                                      GAM_COMBAT_ACTOR((long)g_chapter_roster[slot]), 0x5f);
-            gstate_temp_file_read_at((byte far *)((CombatActorInner *)g_inner_pool_B + slot),
+            gstate_temp_file_read_at((unsigned char far *)((CombatActorInner *)g_inner_pool_B + slot),
                                      GAM_COMBAT_ACTOR_INNER((long)g_chapter_roster[slot]), 0x16);
-            gstate_temp_file_read_at((byte far *)&last_visit_time,
-                                     (ulong)GAM_ENC_FOUGHT_TIME(g_encounter_id), 4);
+            gstate_temp_file_read_at((unsigned char far *)&last_visit_time,
+                                     (unsigned long)GAM_ENC_FOUGHT_TIME(g_encounter_id), 4);
             if (last_visit_time != 0) {
                 elapsed_time_units = (int)((g_gameState.game_time - last_visit_time) / 0x708);
                 stat_combatant_modify(&g_combat_actors_B[slot], 0x10,
@@ -116,19 +116,19 @@ void combatenc_persist_actors_to_temp(int srcEncounterId) {
     short roster[7];
     int i;
 
-    gstate_temp_file_read_at((byte far *)roster, (ulong)(unsigned)GAM_ENC_ROSTER(srcEncounterId),
+    gstate_temp_file_read_at((unsigned char far *)roster, (unsigned long)(unsigned)GAM_ENC_ROSTER(srcEncounterId),
                              0xe);
     g_wLastTempWriteRecordKind = 1;
-    gstate_temp_file_write_at((uchar far *)roster, (ulong)(unsigned)GAM_ENC_ROSTER(g_encounter_id),
+    gstate_temp_file_write_at((unsigned char far *)roster, (unsigned long)(unsigned)GAM_ENC_ROSTER(g_encounter_id),
                               0xe);
     i = 0;
     if (i < g_combat_count_B) {
         do {
             g_wLastTempWriteRecordKind = 2;
-            gstate_temp_file_write_at((uchar far *)&g_combat_actors_B[i],
+            gstate_temp_file_write_at((unsigned char far *)&g_combat_actors_B[i],
                                       GAM_COMBAT_ACTOR((long)roster[i]), 0x5f);
             g_wLastTempWriteRecordKind = 3;
-            gstate_temp_file_write_at((uchar far *)g_combat_actors_B[i].inner,
+            gstate_temp_file_write_at((unsigned char far *)g_combat_actors_B[i].inner,
                                       GAM_COMBAT_ACTOR_INNER((long)roster[i]), 0x16);
             i++;
         } while (i < g_combat_count_B);
@@ -157,7 +157,7 @@ void far combatenc_vis_actors_call_rev(void) {
 }
 
 void far combatenc_mnames_lookup_dest(int index, char **p_dest) {
-    uint blob_size;
+    unsigned int blob_size;
     int count;
     char *blob;
     BakFile *stream;
@@ -396,7 +396,7 @@ void far combatenc_apply_flee_tile_team(int team_id) {
 #include "structs.h"
 
 int far combatenc_actor_stat_above_table(int threshold_idx, CombatActor *actor) {
-    return (uint)((int)stat_actor_get(actor, 0, 0) > g_anStatCheckThreshold[threshold_idx]);
+    return (unsigned int)((int)stat_actor_get(actor, 0, 0) > g_anStatCheckThreshold[threshold_idx]);
 }
 
 #include "globals.h"
@@ -811,7 +811,7 @@ void far combatenc_actor_enter_defense(CombatActor *actor) {
     int healAmt;
     int sumMax;
 
-    sumMax = (int)((uint)actor->stats->max + (uint)(actor->stats + 1)->max);
+    sumMax = (int)((unsigned int)actor->stats->max + (unsigned int)(actor->stats + 1)->max);
     healAmt = sumMax / 0x1e;
     if (healAmt < 1) {
         healAmt = 1;
@@ -1026,7 +1026,7 @@ Actor far *combatenc_corpse_tbl_spawn_actor(long record_id, int slot) {
     Actor far *spawned;
 
     spawned = (Actor far *)0;
-    gstate_temp_file_read_at((byte far *)rec, GAM_ENC_ROSTER(record_id), 0xe);
+    gstate_temp_file_read_at((unsigned char far *)rec, GAM_ENC_ROSTER(record_id), 0xe);
     if (slot < 7 && rec[slot] != -1) {
         spawned = actorspawn_objfixed(100, (long)slot, record_id);
     }
@@ -1149,13 +1149,13 @@ char g_combat_save_filename[14];
 unsigned short g_inner_pool_B;
 
 void combatenc_chap_load_party_grn(int chapter) {
-    byte actorBuf[95];
-    byte innerBuf[22];
+    unsigned char actorBuf[95];
+    unsigned char innerBuf[22];
     short roster[7];
     int i;
     int count;
 
-    gstate_temp_file_read_at((byte far *)roster, (ulong)(unsigned)GAM_ENC_ROSTER(chapter), 0xe);
+    gstate_temp_file_read_at((unsigned char far *)roster, (unsigned long)(unsigned)GAM_ENC_ROSTER(chapter), 0xe);
 
     count = 0;
     i = 0;
@@ -1168,16 +1168,16 @@ void combatenc_chap_load_party_grn(int chapter) {
     i = 0;
     if (i < count) {
         do {
-            gstate_temp_file_read_at((byte far *)actorBuf, GAM_COMBAT_ACTOR((long)roster[i]), 0x5f);
-            gstate_temp_file_read_at((byte far *)innerBuf, GAM_COMBAT_ACTOR_INNER((long)roster[i]),
+            gstate_temp_file_read_at((unsigned char far *)actorBuf, GAM_COMBAT_ACTOR((long)roster[i]), 0x5f);
+            gstate_temp_file_read_at((unsigned char far *)innerBuf, GAM_COMBAT_ACTOR_INNER((long)roster[i]),
                                      0x16);
             innerBuf[8] = 1;
             actorBuf[9] = actorBuf[8];
             g_wLastTempWriteRecordKind = 2;
-            gstate_temp_file_write_at((uchar far *)actorBuf, GAM_COMBAT_ACTOR((long)roster[i]),
+            gstate_temp_file_write_at((unsigned char far *)actorBuf, GAM_COMBAT_ACTOR((long)roster[i]),
                                       0x5f);
             g_wLastTempWriteRecordKind = 3;
-            gstate_temp_file_write_at((uchar far *)innerBuf,
+            gstate_temp_file_write_at((unsigned char far *)innerBuf,
                                       GAM_COMBAT_ACTOR_INNER((long)roster[i]), 0x16);
             i++;
         } while (i < count);

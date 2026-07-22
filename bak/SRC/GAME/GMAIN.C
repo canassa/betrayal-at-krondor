@@ -52,7 +52,7 @@ unsigned char g_bCutsceneEscPressed = 0x00;
 int far gmain_start_dispatch(int mode) {
     register int iMode;
     register char *path;
-    uchar far *pal;
+    unsigned char far *pal;
     int chapter;
     int iconX;
     int iconY;
@@ -144,7 +144,7 @@ int far gmain_start_dispatch(int mode) {
         font_activate(g_wGameFontSlot);
         pal = chunk_load_into_slot("FULLMAP.PAL");
         palette_set(pal);
-        g_pPalQueuedForFlip = (uchar far *)0;
+        g_pPalQueuedForFlip = (unsigned char far *)0;
         palette_set_scaled(0, 0x100, 0, 0);
         g_graphics_context.wGfxBlitDstPage = g_graphics_context.wVgaPage2Base;
         resblit_load_pal_or_stream("FULLMAP.SCX");
@@ -201,7 +201,7 @@ int far gmain_start_dispatch(int mode) {
     palette_set_scaled(0, 0x100, 0, 0x3f);
     font_activate(g_wGameFontSlot);
     iMode = worldloop_main();
-    g_pPalQueuedForFlip = (uchar far *)0;
+    g_pPalQueuedForFlip = (unsigned char far *)0;
     zone_world_scene_teardown();
     combatgrid_combatants_table_free();
     boot_active_window_free();
@@ -216,8 +216,8 @@ int far gmain_start_dispatch(int mode) {
 
 void far gmain_play_intro_animation(void) {
     int scriptHandle;
-    uchar far *pal;
-    ulong deadline;
+    unsigned char far *pal;
+    unsigned long deadline;
     register int done;
     register int channel;
 
@@ -374,7 +374,7 @@ void far gmain_screen_fade_to_black(void) {
 }
 
 void far gmain_cutsc_play_fullmap_scene(int scene_index) {
-    uchar far *pal = (uchar far *)0;
+    unsigned char far *pal = (unsigned char far *)0;
 
     gmain_screen_fade_to_black();
     pal = chunk_load_into_slot("fullmap.pal");
@@ -399,8 +399,8 @@ void far gmain_cutsc_play_fullmap_scene(int scene_index) {
 }
 
 void far gmain_restart_from_save_flow(void) {
-    uint run_result;
-    ushort do_cutscene;
+    unsigned int run_result;
+    unsigned short do_cutscene;
     int chapter_arg;
     int channel_arg;
     int sec_ch_arg;
@@ -408,8 +408,8 @@ void far gmain_restart_from_save_flow(void) {
     int track_id;
     int state_eq2;
     int exit_flag;
-    uchar far *palette_result;
-    uchar far *chunk_ptr;
+    unsigned char far *palette_result;
+    unsigned char far *chunk_ptr;
     register MenuPage *page;
     register int scene_index;
     int i;
@@ -418,10 +418,10 @@ void far gmain_restart_from_save_flow(void) {
     scene_index = -1;
     highest_slot = mainmenu_save_scan_highest_slot();
     exit_flag = 0;
-    chunk_ptr = (uchar far *)0;
+    chunk_ptr = (unsigned char far *)0;
     track_id = audio_music_play(-999);
     gmain_screen_fade_to_black();
-    palette_result = palette_set((uchar far *)0);
+    palette_result = palette_set((unsigned char far *)0);
     chunk_ptr = chunk_load_into_slot("contents.pal");
     g_graphics_context.wGfxBlitDstPage = g_graphics_context.wVgaPage2Base;
     screen_cursor_hide();
@@ -638,7 +638,7 @@ void far gmain_restart_from_save_flow(void) {
             g_graphics_context.bClip_enabled = '\0';
             g_graphics_context.bGfx_fill_enabled = '\x01';
             draw_rect_filled(0, 0, 0x140, 200);
-            if (chunk_ptr != (uchar far *)0) {
+            if (chunk_ptr != (unsigned char far *)0) {
                 cache_release(chunk_ptr);
             }
             chunk_ptr = chunk_load_into_slot("contents.pal");

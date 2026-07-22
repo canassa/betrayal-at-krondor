@@ -41,7 +41,7 @@ long *itemtbl_count(void) {
 void itemtbl_free(void) {
     my_free(g_pItemPriceTable);
     _freemem(g_pItemDefTable);
-    g_pItemPriceTable = (ulong *)0x0;
+    g_pItemPriceTable = (unsigned long *)0x0;
     g_pItemDefTable = (ItemRecord far *)0x0;
     return;
 }
@@ -55,7 +55,7 @@ int itemtbl_load(void) {
         size = 0x2b7a;
         fp = bak_fopen("OBJINFO.DAT", "rb");
         g_pItemDefTable = (ItemRecord far *)alloc_far((long)size, 0);
-        bak_fread_chunked((uchar far *)g_pItemDefTable, 1, (long)size, fp);
+        bak_fread_chunked((unsigned char far *)g_pItemDefTable, 1, (long)size, fp);
         bak_fclose(fp);
         g_pItemPriceTable = (unsigned long *)my_malloc(0x228);
         return 1;
@@ -78,7 +78,7 @@ long itemtbl_compute_value(ItemSlot far *slot) {
         if (rec->wFlags & 0x1000) {
             value = value * itemtbl_slot_value_modifier(slot) / 100L;
         } else if (rec->wFlags & 0xa000) {
-            value = value * slot->condition / (long)(ulong)rec->bCharges_per_use;
+            value = value * slot->condition / (long)(unsigned long)rec->bCharges_per_use;
         }
     }
     if ((long)g_pItemPriceTable[slot->item_id] >= 0) {
@@ -89,7 +89,7 @@ long itemtbl_compute_value(ItemSlot far *slot) {
     return value;
 }
 
-int itemtbl_inv_count_by_kind(Actor far *inv, uint kind) {
+int itemtbl_inv_count_by_kind(Actor far *inv, unsigned int kind) {
     int total;
     int i;
 
@@ -106,7 +106,7 @@ int itemtbl_inv_count_by_kind(Actor far *inv, uint kind) {
     return total;
 }
 
-int itemtbl_party_count_by_kind(uint kind) {
+int itemtbl_party_count_by_kind(unsigned int kind) {
     int n;
     int slot;
     int total;
@@ -145,7 +145,7 @@ int far itemtbl_slot_value_modifier(ItemSlot far *slot) {
     return val;
 }
 
-int itemtbl_inv_consume_one_by_kind(Actor far *inv, uint kind) {
+int itemtbl_inv_consume_one_by_kind(Actor far *inv, unsigned int kind) {
     int old_count;
     int i;
 
@@ -176,7 +176,7 @@ int itemtbl_inv_consume_one_by_kind(Actor far *inv, uint kind) {
     return 0;
 }
 
-int itemtbl_pty_consum_one_kind(uint kind) {
+int itemtbl_pty_consum_one_kind(unsigned int kind) {
     int slot;
 
     g_gameState.nEvtArgActor0 = g_gameState.party_roster[0];

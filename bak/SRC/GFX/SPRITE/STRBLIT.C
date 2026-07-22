@@ -28,10 +28,10 @@ int stretch_step_init(register int *step, register int dest_steps) {
     return 1;
 }
 
-void blit_image_stretched(ImageRecord *image, int dst_x, int dst_y, uint flags, int dst_w,
+void blit_image_stretched(ImageRecord *image, int dst_x, int dst_y, unsigned int flags, int dst_w,
                           int dst_h) {
-    ushort srcSeg;
-    ushort srcOff;
+    unsigned short srcSeg;
+    unsigned short srcOff;
     int i;
     int row;
     int rowStride;
@@ -167,7 +167,7 @@ void blit_image_stretched(ImageRecord *image, int dst_x, int dst_y, uint flags, 
     }
 }
 
-void blit_image_scaled_centered(register ImageRecord *image, int cx, int cy, ulong scale_q16) {
+void blit_image_scaled_centered(register ImageRecord *image, int cx, int cy, unsigned long scale_q16) {
     register int scale_hi;
     int dst_w;
     int dst_h;
@@ -175,7 +175,7 @@ void blit_image_scaled_centered(register ImageRecord *image, int cx, int cy, ulo
     scale_hi = (int)(scale_q16 >> 16);
     dst_w = (int)((long)image->nWidth * (long)scale_hi >> 10);
     dst_h = (int)((long)image->nHeight * (long)scale_hi >> 10);
-    blit_image_stretched(image, cx - (dst_w >> 1), cy - (dst_h >> 1), (uint)scale_q16, dst_w,
+    blit_image_stretched(image, cx - (dst_w >> 1), cy - (dst_h >> 1), (unsigned int)scale_q16, dst_w,
                          dst_h);
     return;
 }

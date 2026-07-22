@@ -41,7 +41,7 @@ int adscript_resource_load(BakFileRef *file) {
     int tt3_bytes_read;
     int tt3_stream_size;
     char far *tt3_buf;
-    ulong tt3_size_packed;
+    unsigned long tt3_size_packed;
     int stream_id;
     int was_opened;
     int page_count;
@@ -77,14 +77,14 @@ int adscript_resource_load(BakFileRef *file) {
         return -1;
     }
     tt3_stream_size = (int)stream_size(stream_id);
-    tt3_buf = (char far *)alloc_far((ulong)tt3_stream_size, 0L);
+    tt3_buf = (char far *)alloc_far((unsigned long)tt3_stream_size, 0L);
     if (tt3_buf == (char far *)0L) {
         stream_close(stream_id);
         if (was_opened)
             cached_file_close(file);
         return -1;
     }
-    tt3_bytes_read = (int)stream_read(stream_id, tt3_buf, (uint)tt3_stream_size);
+    tt3_bytes_read = (int)stream_read(stream_id, tt3_buf, (unsigned int)tt3_stream_size);
     stream_close(stream_id);
     if (was_opened)
         cached_file_close(file);
@@ -101,7 +101,7 @@ int adscript_resource_load(BakFileRef *file) {
         while ((ScriptObject far *)pTail->pNext != (ScriptObject far *)0L) {
             pTail = (ScriptObject far *)pTail->pNext;
         }
-        g_pCurScriptObject = (ScriptObject far *)(pTail->pNext = (uchar far *)alloc_far(
+        g_pCurScriptObject = (ScriptObject far *)(pTail->pNext = (unsigned char far *)alloc_far(
                                                       sizeof(ScriptObject), ALLOC_FAR_ZERO_FILL));
     }
     if (g_pCurScriptObject == (ScriptObject far *)0L) {
@@ -109,9 +109,9 @@ int adscript_resource_load(BakFileRef *file) {
     }
     g_pCurScriptObject->nBlockCount = (short)page_count;
     g_pCurScriptObject->pBlocks = (ScriptBlock far *far *)alloc_far(
-        (ulong)((uint)(page_count + 1) << 2), ALLOC_FAR_ZERO_FILL);
-    g_pCurScriptObject->pTt3_data = (uchar far *)tt3_buf;
-    g_pCurScriptObject->pTt3_end = (uchar far *)(tt3_buf + (uint)tt3_stream_size - 1);
+        (unsigned long)((unsigned int)(page_count + 1) << 2), ALLOC_FAR_ZERO_FILL);
+    g_pCurScriptObject->pTt3_data = (unsigned char far *)tt3_buf;
+    g_pCurScriptObject->pTt3_end = (unsigned char far *)(tt3_buf + (unsigned int)tt3_stream_size - 1);
     if (g_pCurScriptObject->pBlocks == (ScriptBlock far *far *)0L) {
         return -1;
     }
@@ -129,7 +129,7 @@ int adscript_select_object(int id) {
     return 0;
 }
 
-static void adscript_object_chain_append(ushort id_a, ushort tag, ushort id_b) {
+static void adscript_object_chain_append(unsigned short id_a, unsigned short tag, unsigned short id_b) {
     ScriptAnimNode *pTail;
 
     if (g_pScriptObjectChainHead == (ScriptAnimNode *)0x0) {
@@ -164,13 +164,13 @@ char far *adscript_skip_aligned_cstring(char far *p) {
     return p;
 }
 
-short adscript_channel_dispatch_loop(ushort script_obj_id) {
+short adscript_channel_dispatch_loop(unsigned short script_obj_id) {
     unsigned char far *saved;
     unsigned char far *cur;
     short bi;
-    ushort id_a;
-    ushort cx;
-    ushort dx;
+    unsigned short id_a;
+    unsigned short cx;
+    unsigned short dx;
 
     id_a = 0;
     if (adscript_select_object(script_obj_id) && g_pCurScriptObject != (ScriptObject far *)0L &&
@@ -189,7 +189,7 @@ short adscript_channel_dispatch_loop(ushort script_obj_id) {
                 if (FP_OFF(g_pCurScriptObject->pTt3_end) <= FP_OFF(cur))
                     return 0;
                 FP_OFF(cur) += 2;
-                cx = *(ushort far *)saved;
+                cx = *(unsigned short far *)saved;
 
                 if (cx == 0xff0) {
 
@@ -203,7 +203,7 @@ short adscript_channel_dispatch_loop(ushort script_obj_id) {
                 case 15:
 
                     if (cx == 0xaf1f || cx == 0xaf2f) {
-                        dx = *(ushort far *)cur;
+                        dx = *(unsigned short far *)cur;
                         dx <<= 1;
                         do {
                             FP_OFF(cur) += 2;
@@ -215,7 +215,7 @@ short adscript_channel_dispatch_loop(ushort script_obj_id) {
 
                 case 1:
 
-                    dx = *(ushort far *)cur;
+                    dx = *(unsigned short far *)cur;
                     FP_OFF(cur) += 2;
                     if (cx == 0x1111)
                         adscript_object_chain_append(id_a, script_obj_id, dx);

@@ -26,7 +26,7 @@ MenuPage *menupage_load(char *filename) {
     MenuPage *page;
     int i;
     void *stringBlob;
-    uint blobSize;
+    unsigned int blobSize;
 
     stringBlob = (void *)0;
     stream = bak_fopen(filename, "rb");
@@ -130,7 +130,7 @@ void menupage_end(MenuPage *page) {
 }
 
 void menupage_draw(MenuPage *page) {
-    ushort bgColor;
+    unsigned short bgColor;
 
     bgColor = page->wBg_color;
     g_graphics_context.bClip_enabled = 0;
@@ -188,7 +188,7 @@ void menupage_cur_set_pos_clamped(int x, int y) {
 }
 
 void menupage_cursor_joystick_step(void) {
-    uint state;
+    unsigned int state;
 
     state = key_state_get_via_2cf8_table(0);
     if (state & 4) {
@@ -314,9 +314,9 @@ void menupage_navigate(MenuPage *page, int dx_sign, int dy_sign, int tab_mode) {
     return;
 }
 
-int menupage_run(MenuPage *page, ushort *out_consumed) {
+int menupage_run(MenuPage *page, unsigned short *out_consumed) {
     int i;
-    uint key;
+    unsigned int key;
     MenuEntry *entry;
 
     i = 0;
@@ -329,7 +329,7 @@ int menupage_run(MenuPage *page, ushort *out_consumed) {
         if ((((g_pMenuPressAnchor != (MenuEntry *)0x0) && (g_wMenuDragState == 1)) &&
              (g_pMenuPressAnchor->wWidget_type == 2)) &&
             (g_wMenuDragSubMode == 3)) {
-            ushort sub_state;
+            unsigned short sub_state;
             sub_state = g_pMenuPressAnchor->wSub_state;
             widget_scrollbar_update(g_pMenuPressAnchor);
             if (g_pMenuPressAnchor->wSub_state != sub_state) {
@@ -341,7 +341,7 @@ int menupage_run(MenuPage *page, ushort *out_consumed) {
         if (menupage_input_poll_key() == 0) {
             return 0;
         }
-        key = (uint)g_key_scancode;
+        key = (unsigned int)g_key_scancode;
         /* ENTER (scancode 0x1c) is already mapped to a confirm-click by
          * menupage_input_poll when wWants_screen_save != 2; whatever special
          * ENTER handling once lived here was stubbed out. */
@@ -382,7 +382,7 @@ int menupage_run(MenuPage *page, ushort *out_consumed) {
             } else if (g_wMenuDragSubMode == 4) {
                 widget_list_scroll(g_pMenuClickedEntry, 0);
             } else if (g_wMenuDragSubMode == 3) {
-                ushort sub_state;
+                unsigned short sub_state;
                 sub_state = g_pMenuClickedEntry->wSub_state;
                 widget_scrollbar_update(g_pMenuClickedEntry);
                 if (g_pMenuPressAnchor->wSub_state != sub_state) {
@@ -405,20 +405,20 @@ int menupage_run(MenuPage *page, ushort *out_consumed) {
         if ((page->wWants_screen_save == 2) && (key_is_down(0x1d) == 0)) {
             return key;
         }
-        menupage_navigate(page, (uint)(key == 0x4d) - (uint)(key == 0x4b),
-                          (uint)(key == 0x50) - (uint)(key == 0x48), (uint)(key == 0xf));
+        menupage_navigate(page, (unsigned int)(key == 0x4d) - (unsigned int)(key == 0x4b),
+                          (unsigned int)(key == 0x50) - (unsigned int)(key == 0x48), (unsigned int)(key == 0xf));
     }
     g_key_scancode = key = 0;
     return key;
 }
 
-int far menupage_input_poll(MenuPage *page, ushort *out_consumed) {
-    register ushort *pConsumed;
+int far menupage_input_poll(MenuPage *page, unsigned short *out_consumed) {
+    register unsigned short *pConsumed;
     int actionId;
     int relX;
     int relY;
     int i;
-    ushort prevDragState;
+    unsigned short prevDragState;
     int input;
     MenuEntry *prevAnchor;
     register MenuEntry *widget;
@@ -532,20 +532,20 @@ MenuEntry *menupage_state_0e80(void) {
     return g_pMenuClickedEntry;
 }
 
-uint menupage_highlight_color(void) {
+unsigned int menupage_highlight_color(void) {
     return g_wMenuDragSubMode;
 }
 
-uint menupage_state_0e7c(void) {
+unsigned int menupage_state_0e7c(void) {
     return g_wMenuDragState;
 }
 
-uint menupage_input_poll_key(void) {
+unsigned int menupage_input_poll_key(void) {
     int key;
 
     key = kbhit_read();
     if (key != 0) {
-        g_key_held = (uchar)key_is_down(g_key_scancode = (uchar)(key >> 8));
+        g_key_held = (unsigned char)key_is_down(g_key_scancode = (unsigned char)(key >> 8));
         g_key_shift_held = key_is_down(0x2a) || key_is_down(0x36);
         g_key_ascii = key & 0xff;
     } else {

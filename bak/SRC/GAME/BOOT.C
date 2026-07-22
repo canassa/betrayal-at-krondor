@@ -102,7 +102,7 @@ void boot_sfx_resources_release(void) {
 void far boot_party_state_load_from_temp(void) {
     int i;
 
-    gstate_temp_file_read_at((byte far *)&g_gameState, 0L, 0xad7);
+    gstate_temp_file_read_at((unsigned char far *)&g_gameState, 0L, 0xad7);
     for (i = 0; i < 6; i++) {
         g_gameState.party_members[i].name = g_gameState.pParty_names[i];
         g_gameState.party_members[i].actor_record = actorspawn_objfixed(0, i + 1, 0L);
@@ -116,7 +116,7 @@ void far boot_party_state_save_to_temp(void) {
     int i;
 
     g_wLastTempWriteRecordKind = 0;
-    gstate_temp_file_write_at((uchar far *)&g_gameState, 0L, 0xad7);
+    gstate_temp_file_write_at((unsigned char far *)&g_gameState, 0L, 0xad7);
     actorspawn_destroy_and_persist(g_gameState.shared_inventory);
     actorspawn_destroy_and_persist(g_gameState.ground_pile);
     for (i = 0; i < 6; i++) {
@@ -138,9 +138,9 @@ void boot_video_init_for_mode(int mode) {
 void boot_check_memory_or_die(void) {
     BakFile *stream;
     int file_missing;
-    ushort emmPagesFree;
-    ulong requiredBytes;
-    ulong freeBytes;
+    unsigned short emmPagesFree;
+    unsigned long requiredBytes;
+    unsigned long freeBytes;
 
     stream = bak_fopen("mem.dat", "rb");
     if (stream != (BakFile *)0x0) {
@@ -152,7 +152,7 @@ void boot_check_memory_or_die(void) {
         file_missing = 1;
     }
     emmPagesFree = ems_get_free_memory();
-    freeBytes = (ulong)(long)alloc_far(0xffffffff, 0);
+    freeBytes = (unsigned long)(long)alloc_far(0xffffffff, 0);
     if (((int)emmPagesFree < 0x40) || (freeBytes < requiredBytes)) {
         boot_sfx_resources_release();
         if (g_pSfxArchiveStream != (BakFile *)0x0) {
@@ -202,7 +202,7 @@ void far boot_engine_teardown_and_exit(void) {
 }
 
 void boot_startup_screen_show(void) {
-    uchar far *pal;
+    unsigned char far *pal;
 
     pal = chunk_load_into_slot("options.pal");
     palette_set(pal);

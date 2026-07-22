@@ -72,7 +72,7 @@ static int far townscene_load(int chapter, int sub, int preserve) {
     static char g_szTownSceneFilenameSuffix[6] = "?.DAT";
     char fname[16];
     int i;
-    uint size;
+    unsigned int size;
     MenuEntry *pEntry;
     BakFile *stream;
     TownSceneActor *pActor;
@@ -116,8 +116,8 @@ static int far townscene_load(int chapter, int sub, int preserve) {
                             : (void far *)0;
         if ((preserve != 0) || ((pActor->wChapterMask & (1 << (g_gameState.nChapter - 1))) == 0)) {
             if ((pActor->nGateEventId == 0) ||
-                (((uint)pActor->nGateMin <= gstate_event_read(pActor->nGateEventId)) &&
-                 (gstate_event_read(pActor->nGateEventId) <= (uint)pActor->nGateMax))) {
+                (((unsigned int)pActor->nGateMin <= gstate_event_read(pActor->nGateEventId)) &&
+                 (gstate_event_read(pActor->nGateEventId) <= (unsigned int)pActor->nGateMax))) {
                 pEntry->rect.x = pActor->rect.x - g_pTownMenuPage->rect.x;
                 pEntry->rect.y = pActor->rect.y - g_pTownMenuPage->rect.y;
                 pEntry->rect.width = pActor->rect.width;
@@ -142,12 +142,12 @@ static int far townscene_load(int chapter, int sub, int preserve) {
             ((Actor far *)g_pCurrentTownScene->pActor)->needsFlush = TRUE;
             {
                 int q;
-                q = (int)((long)((ulong)pSub->event_state.bRest_gold_unit *
-                                 ((ulong)g_gameState.nChapter + 9)) /
+                q = (int)((long)((unsigned long)pSub->event_state.bRest_gold_unit *
+                                 ((unsigned long)g_gameState.nChapter + 9)) /
                           10);
-                pSub->event_state.bPopup_retry_counter = (q > 0xfa) ? 0xfa : (byte)q;
+                pSub->event_state.bPopup_retry_counter = (q > 0xfa) ? 0xfa : (unsigned char)q;
             }
-            pSub->event_state.bRest_last_chapter_done = (byte)g_gameState.nChapter;
+            pSub->event_state.bRest_last_chapter_done = (unsigned char)g_gameState.nChapter;
         }
     }
 
@@ -185,11 +185,11 @@ static void far townscene_shop_menu_close(void) {
 }
 
 static void far townscene_dlg_play_rec_bubble(DDXRecord far *record) {
-    uchar far *p;
-    uchar far *start_text;
+    unsigned char far *p;
+    unsigned char far *start_text;
 
     if (record != (DDXRecord far *)0) {
-        p = (uchar far *)record + (unsigned int)record->bCnt1 * 10 +
+        p = (unsigned char far *)record + (unsigned int)record->bCnt1 * 10 +
             (unsigned int)record->bCnt2 * 10 + 9;
         townscene_anim_channel_play_sync(g_dialog_anim_channel);
         if (*p == '#') {
@@ -235,8 +235,8 @@ static void far townscene_cursor_wait_for_drag(void) {
 
 static int far townscene_resolv_enc_outcome(Actor far *actor) {
     ActorSubrecord far *pSub;
-    uint statValue;
-    uint gold;
+    unsigned int statValue;
+    unsigned int gold;
     int musicTrack;
     int outcome;
     int dlgRecord;
@@ -296,7 +296,7 @@ static int far townscene_resolv_enc_outcome(Actor far *actor) {
     return outcome;
 }
 
-void far townscene_main_loop(uint scene_kind, int scene_index) {
+void far townscene_main_loop(unsigned int scene_kind, int scene_index) {
     int idx;
     int action;
     int fadeFlag;
@@ -305,8 +305,8 @@ void far townscene_main_loop(uint scene_kind, int scene_index) {
     int sceneIdx;
     int savedMusic;
     int musicTrack;
-    ushort savedBlendMode;
-    uchar far *pPalSaved;
+    unsigned short savedBlendMode;
+    unsigned char far *pPalSaved;
     int needRefresh;
     TownSceneActor *pA;
     int di;
@@ -318,7 +318,7 @@ void far townscene_main_loop(uint scene_kind, int scene_index) {
     savedMusic = audio_music_play(-999);
     musicTrack = -1;
     savedBlendMode = g_nPalBlendMode;
-    pPalSaved = palette_set((uchar far *)0);
+    pPalSaved = palette_set((unsigned char far *)0);
 
     if ((scene_kind & 0xff00) != 0) {
         sceneIdx = (int)scene_kind >> 8;
@@ -402,7 +402,7 @@ void far townscene_main_loop(uint scene_kind, int scene_index) {
 
         /* Menu-run loop: block on the menu until the user picks an action. */
         while (action == 0) {
-            action = menupage_run(g_pTownMenuPage, (ushort *)&idx);
+            action = menupage_run(g_pTownMenuPage, (unsigned short *)&idx);
             if (screen_input_poll_confirm_cancel() == 2) {
                 screen_cursor_set_shape(3);
             }
@@ -423,7 +423,7 @@ void far townscene_main_loop(uint scene_kind, int scene_index) {
                                                       SUBREC_EVENT_STATE);
                         if (pSub != 0) {
                             g_gameState.lEvtArgAuxValue =
-                                (long)(int)(uint)pSub->event_state.bInvreq_arg_x;
+                                (long)(int)(unsigned int)pSub->event_state.bInvreq_arg_x;
                         }
                     }
                     if (pA->pDdxRecord == 0) {
@@ -461,7 +461,7 @@ void far townscene_main_loop(uint scene_kind, int scene_index) {
                             g_gameState.dwPopup_retry_state =
                                 pSub->event_state.bPopup_retry_counter;
                             g_gameState.lEvtArgAuxValue =
-                                (long)(int)(uint)pSub->event_state.bInvreq_arg_x;
+                                (long)(int)(unsigned int)pSub->event_state.bInvreq_arg_x;
                         }
                     }
                     switch (dialog_play_record(pA->dwAltDialogKey, 0)) {
@@ -492,7 +492,7 @@ void far townscene_main_loop(uint scene_kind, int scene_index) {
                             pSub->event_state.bPopup_retry_counter =
                                 (g_gameState.dwPopup_retry_state > 0xfa)
                                     ? 0xfa
-                                    : (uchar)g_gameState.dwPopup_retry_state;
+                                    : (unsigned char)g_gameState.dwPopup_retry_state;
                         }
                     }
                     g_gameState.dwPopup_retry_state = 0;
@@ -551,8 +551,8 @@ void far townscene_main_loop(uint scene_kind, int scene_index) {
                     if (di == 0x10) {
                         pSub = actorrec_get_subrecord((Actor far *)g_pCurrentTownScene->pActor,
                                                       SUBREC_EVENT_STATE);
-                        modalscreen_inventory_request((uint)pSub->event_state.bInvreq_arg_x,
-                                                      (int)(uint)pSub->event_state.bInvreq_arg_y);
+                        modalscreen_inventory_request((unsigned int)pSub->event_state.bInvreq_arg_x,
+                                                      (int)(unsigned int)pSub->event_state.bInvreq_arg_y);
                         needRefresh = 1;
                     }
                     if (di == 0xf) {
@@ -566,11 +566,11 @@ void far townscene_main_loop(uint scene_kind, int scene_index) {
                             (int)pSub->event_state.bArg0,
                             (long)pSub->event_state.wShop_disposition_flags,
                             (int)pSub->event_state.bTeleport_cost_msb);
-                        if (*(ushort *)&g_gameState.abTeleportRecord[7] != 0) {
-                            scene_kind = *(ushort *)&g_gameState.abTeleportRecord[7];
-                            sceneIdx = *(ushort *)&g_gameState.abTeleportRecord[9];
-                            *(ushort *)&g_gameState.abTeleportRecord[7] =
-                                *(ushort *)&g_gameState.abTeleportRecord[9] = 0;
+                        if (*(unsigned short *)&g_gameState.abTeleportRecord[7] != 0) {
+                            scene_kind = *(unsigned short *)&g_gameState.abTeleportRecord[7];
+                            sceneIdx = *(unsigned short *)&g_gameState.abTeleportRecord[9];
+                            *(unsigned short *)&g_gameState.abTeleportRecord[7] =
+                                *(unsigned short *)&g_gameState.abTeleportRecord[9] = 0;
                         } else {
                             needRefresh = 1;
                         }
@@ -671,10 +671,10 @@ void far townscene_main_loop(uint scene_kind, int scene_index) {
 }
 
 void far townscene_cheat_menu_screen(void) {
-    uint sel;
-    ushort redraw;
+    unsigned int sel;
+    unsigned short redraw;
     Actor far *actor;
-    ushort saved_chapter;
+    unsigned short saved_chapter;
     int i;
     MenuPage *page;
 
@@ -685,9 +685,9 @@ void far townscene_cheat_menu_screen(void) {
     screen_render_main_frame("DIALOG.SCX");
     do {
         if (redraw != 0) {
-            invui_draw_text_aligned_shadow((uchar far *)"-> CHEAT CENTRAL <-", 0xa0, 0x14, 1, 10,
+            invui_draw_text_aligned_shadow((unsigned char far *)"-> CHEAT CENTRAL <-", 0xa0, 0x14, 1, 10,
                                            1);
-            invui_draw_text_aligned_shadow((uchar far *)"Enjoy with caution...", 0xa0, 0x23, 1, 10,
+            invui_draw_text_aligned_shadow((unsigned char far *)"Enjoy with caution...", 0xa0, 0x23, 1, 10,
                                            1);
             menupage_draw(page);
             screen_frame_present();
@@ -739,11 +739,11 @@ void far townscene_cheat_menu_screen(void) {
 }
 
 void far townscene_chest_open_with_cipher(void) {
-    ushort redraw;
+    unsigned short redraw;
     Actor far *actor;
     ActorSubrec01_Cipher far *pSub;
     MenuPage *page;
-    uint sel;
+    unsigned int sel;
 
     redraw = 1;
     actor = actorspawn_objfixed(0, 0x3cL, (long)g_gameState.nChapter);
@@ -752,7 +752,7 @@ void far townscene_chest_open_with_cipher(void) {
         pSub->bCipher_puzzle_id != 0) {
         dialog_input_wait_release(0, 0);
         dialog_play_record(0x249f1cL, 0);
-        if (cipher_dial_puzzle_run((uint)pSub->bCipher_puzzle_id) != 0) {
+        if (cipher_dial_puzzle_run((unsigned int)pSub->bCipher_puzzle_id) != 0) {
             /* Cipher solved: run the chest menu. The failure path is the
              * else arm below. */
             dialog_play_record(0x249f1dL, 0);
@@ -762,9 +762,9 @@ void far townscene_chest_open_with_cipher(void) {
             screen_render_main_frame("DIALOG.SCX");
             do {
                 if (redraw != 0) {
-                    invui_draw_text_aligned_shadow((uchar far *)"-> CHEAT CENTRAL <-", 0xa0, 0x14,
+                    invui_draw_text_aligned_shadow((unsigned char far *)"-> CHEAT CENTRAL <-", 0xa0, 0x14,
                                                    1, 10, 1);
-                    invui_draw_text_aligned_shadow((uchar far *)"Enjoy with caution...", 0xa0, 0x23,
+                    invui_draw_text_aligned_shadow((unsigned char far *)"Enjoy with caution...", 0xa0, 0x23,
                                                    1, 10, 1);
                     menupage_draw(page);
                     screen_frame_present();

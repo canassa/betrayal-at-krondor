@@ -33,7 +33,7 @@ unsigned short g_wTextWrapLinesRemaining = 0x0000;
 void bookview_init(void) {
     BakFile *file;
     int stream;
-    uchar far *p;
+    unsigned char far *p;
     int row;
     int stride;
 
@@ -107,7 +107,7 @@ void bookview_shutdown(void) {
 
 static PageDirectory far *bookview_load_page_directory(char *filename) {
     PageDirectory far *dir;
-    ulong size;
+    unsigned long size;
     BakFile *stream;
     int i;
 
@@ -117,16 +117,16 @@ static PageDirectory far *bookview_load_page_directory(char *filename) {
     }
     bak_fread(&size, 1, 4, stream);
     dir = (PageDirectory far *)alloc_far(size, 0L);
-    bak_fread_chunked((uchar huge *)dir, 1L, (long)size, stream);
+    bak_fread_chunked((unsigned char huge *)dir, 1L, (long)size, stream);
     bak_fclose(stream);
     for (i = 0; i < dir->nCount; i++) {
-        dir->pPages[i] = (BookPage far *)((char huge *)dir + (ulong)dir->pPages[i]);
+        dir->pPages[i] = (BookPage far *)((char huge *)dir + (unsigned long)dir->pPages[i]);
     }
     return dir;
 }
 
-static void bookview_freemem_if_not_null(uchar far *ptr) {
-    if ((ulong)ptr != 0) {
+static void bookview_freemem_if_not_null(unsigned char far *ptr) {
+    if ((unsigned long)ptr != 0) {
         _freemem(ptr);
     }
     return;
@@ -224,7 +224,7 @@ int bookview_show(char *filename, int page_number) {
         for (i = 0x3e; i >= 0; i -= 2) {
             palette_set_scaled(0, 0x10, 0, i);
         }
-        bookview_freemem_if_not_null((uchar far *)dir);
+        bookview_freemem_if_not_null((unsigned char far *)dir);
         return rc;
     }
     return 0;

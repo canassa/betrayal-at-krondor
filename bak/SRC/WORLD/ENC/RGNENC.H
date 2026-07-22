@@ -16,14 +16,14 @@ extern int rgnenc_persist_actor_placed(long record_id, int slot_index,
                                        EncounterObjectState *src_partial);
 extern int rgnenc_persist_actor_removed(long record_id, int slot_index);
 extern void rgnenc_reset_and_save(void);
-extern void rgnenc_mark_defended(ulong filter_encounter_id);
-extern void rgnenc_complete_consume(ulong encounter_id);
+extern void rgnenc_mark_defended(unsigned long filter_encounter_id);
+extern void rgnenc_complete_consume(unsigned long encounter_id);
 extern void rgnenc_render_object(WorldObject far *entry, int bAnimTick);
 extern void rgnenc_corpse_tbl_iterate_22byte(void);
 extern int rgnenc_slot_actor_kind_eq_placed(WorldObject far *pSlot);
 extern void rgnenc_world_objects_reset_spawn(void);
-extern int rgnenc_visible_pool_append_spawn(uchar far *pEntry);
-extern void rgnenc_vis_pool_remove_matching(uchar far *pKey);
+extern int rgnenc_visible_pool_append_spawn(unsigned char far *pEntry);
+extern void rgnenc_vis_pool_remove_matching(unsigned char far *pKey);
 extern int rgnenc_chap_shp_init(void);
 extern int rgnenc_release_sfx_slot_table(void);
 extern int rgnenc_global_flag_tbl_contains(unsigned short id);

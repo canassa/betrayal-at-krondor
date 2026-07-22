@@ -9,9 +9,9 @@ extern void askabout_keyword_table_free(void);
 extern void askabout_keyword_table_load(void);
 extern char *askabout_name_or_keyword_lookup(int id);
 extern void askabout_free_paged_image_table(void);
-extern void askabout_actor_spr_blit_pal_swap(ushort actor_id, int pal_shift, int frame_idx,
-                                             uchar far *pal_buf);
-extern int askabout_actor_spr_cache_get(ushort actor_id, int pal_shift);
-extern ushort askabout_dispatch_topic(ushort topic_id);
+extern void askabout_actor_spr_blit_pal_swap(unsigned short actor_id, int pal_shift, int frame_idx,
+                                             unsigned char far *pal_buf);
+extern int askabout_actor_spr_cache_get(unsigned short actor_id, int pal_shift);
+extern unsigned short askabout_dispatch_topic(unsigned short topic_id);
 
 #endif

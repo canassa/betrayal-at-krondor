@@ -36,13 +36,13 @@ unsigned short *g_pFmapTownLabels = {0};
 void far fmap_screen_run(void) {
     int curTown;
     int pasteCounter;
-    ushort savedBlendMode;
-    uchar far *savedPal;
-    uchar far *palBuf;
+    unsigned short savedBlendMode;
+    unsigned char far *savedPal;
+    unsigned char far *palBuf;
     MenuPage *page;
     int running;
     int needFullRedraw;
-    ushort menuConsumed;
+    unsigned short menuConsumed;
     int redrawMenuCounter;
     int needSaveRect;
     int drawLabelCounter;
@@ -57,8 +57,8 @@ void far fmap_screen_run(void) {
     int markerY;
     int iconBase;
     int animFrame;
-    ulong lastTick;
-    uint action;
+    unsigned long lastTick;
+    unsigned int action;
     int heading;
 
     running = 1;
@@ -84,7 +84,7 @@ void far fmap_screen_run(void) {
     if (fmap_xy_lookup_for_chapter(&markerX, &markerY) != 0) {
         heading = g_world_camera->base.orientation.yaw;
         fmap_farptr_normalize(&heading);
-        iconBase = ((ushort)heading >> 13) << 2;
+        iconBase = ((unsigned short)heading >> 13) << 2;
         haveMarker = 1;
     }
     while (running != 0) {
@@ -96,7 +96,7 @@ void far fmap_screen_run(void) {
             palette_screen_clear_black();
             savedBlendMode = g_nPalBlendMode;
             g_nPalBlendMode = 0;
-            savedPal = palette_set((uchar far *)0x0);
+            savedPal = palette_set((unsigned char far *)0x0);
             palBuf = chunk_load_into_slot("fullmap.pal");
             g_pPalQueuedForFlip = palBuf;
             screen_frame_flip();
@@ -106,7 +106,7 @@ void far fmap_screen_run(void) {
                 g_graphics_context.wVgaPage2Base;
             resblit_load_pal_or_stream("fullmap.scr");
             if (haveMarker != 0) {
-                blit_sprite_indirect((ushort)g_pFmapIconTable[iconBase], markerX - 3, markerY - 3,
+                blit_sprite_indirect((unsigned short)g_pFmapIconTable[iconBase], markerX - 3, markerY - 3,
                                      0);
             }
             menupage_draw(page);
@@ -141,7 +141,7 @@ void far fmap_screen_run(void) {
                     animFrame++;
                     animFrame = (short)animFrame % 4;
                 }
-                blit_sprite_indirect((ushort)g_pFmapIconTable[iconBase + animFrame], markerX - 3,
+                blit_sprite_indirect((unsigned short)g_pFmapIconTable[iconBase + animFrame], markerX - 3,
                                      markerY - 3, 0);
             }
             if ((pasteCounter == 0) && (needSaveRect != 0)) {
@@ -221,11 +221,11 @@ void far fmap_screen_run(void) {
 
 void fmap_twn_load(void) {
     BakFile *stream;
-    ushort *labelPtr;
+    unsigned short *labelPtr;
     int i;
-    ushort *xPtr;
-    ushort *yPtr;
-    ushort len;
+    unsigned short *xPtr;
+    unsigned short *yPtr;
+    unsigned short len;
 
     g_wFmapLabelRectW = 0xffff;
     stream = bak_fopen("fmap_twn.dat", "rb");
@@ -241,7 +241,7 @@ void fmap_twn_load(void) {
         i = 0;
         while (i < (int)g_wFmapTownCount) {
             bak_fread(&len, 2, 1, stream);
-            *labelPtr = (ushort)galloc_safe_zcalloc(len);
+            *labelPtr = (unsigned short)galloc_safe_zcalloc(len);
             bak_fread((void *)*labelPtr, 1, len, stream);
             bak_fread(xPtr, 2, 1, stream);
             bak_fread(yPtr, 2, 1, stream);
@@ -258,7 +258,7 @@ void fmap_twn_load(void) {
     bak_fclose(stream);
     g_wFmapLabelRectH = g_graphics_context.pFont_height[0] + 1;
     g_pFmapLabelRectBuf =
-        alloc_far((ulong)(ushort)rect_byte_size(g_wFmapLabelRectW, g_wFmapLabelRectH), 0L);
+        alloc_far((unsigned long)(unsigned short)rect_byte_size(g_wFmapLabelRectW, g_wFmapLabelRectH), 0L);
     g_pFmapIconTable = resblit_load_asset_table("fmap_icn.bmp", 0);
     return;
 }
@@ -302,7 +302,7 @@ int far fmap_hit_test_cursor(void) {
 }
 
 int far fmap_xy_lookup_for_chapter(int *out_x, int *out_y) {
-    uint i;
+    unsigned int i;
     int entry_chapter;
     unsigned char refIndex;
     register BakFile *stream;
@@ -315,9 +315,9 @@ int far fmap_xy_lookup_for_chapter(int *out_x, int *out_y) {
         for (i = 1; (int)i <= 0xc; i++) {
             bak_fread(&entry_chapter, 2, 1, stream);
             if (g_gameState.nZoneId == i) {
-                if ((int)(uint)refIndex < entry_chapter) {
+                if ((int)(unsigned int)refIndex < entry_chapter) {
                     if (refIndex != 0) {
-                        bak_fseek(stream, (ulong)(uint)(refIndex << 2), 1);
+                        bak_fseek(stream, (unsigned long)(unsigned int)(refIndex << 2), 1);
                     }
                     bak_fread(out_x, 2, 1, stream);
                     bak_fread(out_y, 2, 1, stream);
@@ -326,7 +326,7 @@ int far fmap_xy_lookup_for_chapter(int *out_x, int *out_y) {
                 break;
             }
             if (entry_chapter != 0) {
-                bak_fseek(stream, (ulong)(uint)(entry_chapter << 2), 1);
+                bak_fseek(stream, (unsigned long)(unsigned int)(entry_chapter << 2), 1);
             }
         }
         bak_fclose(stream);
@@ -337,20 +337,20 @@ int far fmap_xy_lookup_for_chapter(int *out_x, int *out_y) {
     return found;
 }
 
-int far fmap_farptr_normalize(uint *pHeading) {
-    ulong heading;
+int far fmap_farptr_normalize(unsigned int *pHeading) {
+    unsigned long heading;
     int i;
     int bound;
-    ulong boundary;
+    unsigned long boundary;
 
-    heading = (ulong)*pHeading;
+    heading = (unsigned long)*pHeading;
     boundary = 0;
     bound = 9;
     i = 0;
     while (i < bound) {
         if (boundary != heading) {
             if ((long)heading < (long)boundary) {
-                *pHeading = (uint)boundary;
+                *pHeading = (unsigned int)boundary;
                 if ((long)heading < (long)(boundary + 0xfffff000)) {
 
                     *pHeading -= R3D_DEG(45);

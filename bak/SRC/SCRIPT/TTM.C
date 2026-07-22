@@ -59,7 +59,7 @@ unsigned short g_aTtmResourceSlots[20];
 char g_szTtmScratch[100];
 unsigned char far *g_pPendingPalette;
 
-static void ttmscript_sfx_channel_register(ushort handle) {
+static void ttmscript_sfx_channel_register(unsigned short handle) {
     int i;
 
     if (handle != 0) {
@@ -72,7 +72,7 @@ static void ttmscript_sfx_channel_register(ushort handle) {
     return;
 }
 
-static void ttmscript_resource_slot_release(ushort handle) {
+static void ttmscript_resource_slot_release(unsigned short handle) {
     int i;
 
     if (handle != 0) {
@@ -98,8 +98,8 @@ void ttmscript_sfx_channels_stop_all(void) {
     } while (i < 0x14);
 }
 
-static int far ttmscript_opcode_disp_secondary(ushort p0, ushort p1, ushort p2, ushort p3,
-                                               ushort p4) {
+static int far ttmscript_opcode_disp_secondary(unsigned short p0, unsigned short p1, unsigned short p2, unsigned short p3,
+                                               unsigned short p4) {
     switch (g_nScriptCurOpcode) {
     case 0xc01f:
     case 0xc02f:
@@ -162,10 +162,10 @@ static int far ttmscript_opcode_disp_secondary(ushort p0, ushort p1, ushort p2, 
     return 0;
 }
 
-static int far ttmscript_opcode_dispatch_main(ushort param_1, ushort param_2, int param_3,
-                                              int param_4, ushort param_5, ushort param_6,
-                                              int param_7, ushort param_8) {
-    uchar far *far *pfreemem;
+static int far ttmscript_opcode_dispatch_main(unsigned short param_1, unsigned short param_2, int param_3,
+                                              int param_4, unsigned short param_5, unsigned short param_6,
+                                              int param_7, unsigned short param_8) {
+    unsigned char far *far *pfreemem;
 
     switch (g_nScriptCurOpcode) {
     case 0xa0a4:
@@ -194,7 +194,7 @@ static int far ttmscript_opcode_dispatch_main(ushort param_1, ushort param_2, in
         g_graphics_context.bGfx_fill_enabled = 1;
     L_draw_circle_body:
 
-        param_5 = (ushort)(param_4 >> 1);
+        param_5 = (unsigned short)(param_4 >> 1);
         param_6 = param_1 + param_5;
         param_7 = param_2 + param_5;
 
@@ -231,24 +231,24 @@ static int far ttmscript_opcode_dispatch_main(ushort param_1, ushort param_2, in
     case 0xa536:
     case 0xa5a7: {
 
-        ushort saved_page_id;
-        uchar far *ems_ptr;
+        unsigned short saved_page_id;
+        unsigned char far *ems_ptr;
 
         g_wTtmBlitTint = (g_nScriptCurOpcode & 0xf0) >> 4;
 
         if (g_pCurScriptObject->pAhPagedImage[param_4] &&
-            (param_3 = ((ushort *)g_pCurScriptObject->pAhPagedImage[param_4])[(ushort)param_3])) {
+            (param_3 = ((unsigned short *)g_pCurScriptObject->pAhPagedImage[param_4])[(unsigned short)param_3])) {
 
             saved_page_id = ((ImageRecord *)param_3)->wImageData;
 
             if (saved_page_id < 300) {
                 ems_ptr = ems_map_resource_pages(saved_page_id);
 
-                ((ImageRecord *)param_3)->wImageData = ((ushort *)&ems_ptr)[1];
+                ((ImageRecord *)param_3)->wImageData = ((unsigned short *)&ems_ptr)[1];
             }
 
             if ((g_nScriptCurOpcode & 0x0f) == 7) {
-                jmp_via_2f48((uchar *)param_3, param_1, param_2, param_7, param_5, param_6,
+                jmp_via_2f48((unsigned char *)param_3, param_1, param_2, param_7, param_5, param_6,
                              ((ImageRecord *)param_3)->nWidth >> 1,
                              ((ImageRecord *)param_3)->nHeight >> 1);
             } else if ((g_nScriptCurOpcode & 0x0f) == 6) {
@@ -324,12 +324,12 @@ static int far ttmscript_opcode_dispatch_main(ushort param_1, ushort param_2, in
 int ttmscript_interpret_loop(int block_index) {
     int p0, p1, p2, p3, p4, p5, p6;
     int frame_hold_was_clear;
-    ushort far *w;
+    unsigned short far *w;
     char *scratchStr;
     int low;
     unsigned long sz;
     ScriptObject far *fp;
-    uchar far *far *pp;
+    unsigned char far *far *pp;
     int x0, y0;
     int si;
     int t;
@@ -337,7 +337,7 @@ int ttmscript_interpret_loop(int block_index) {
     if (g_pCurScriptObject == 0)
         return 0;
 
-    w = (ushort far *)g_pCurScriptObject->pBlocks[block_index];
+    w = (unsigned short far *)g_pCurScriptObject->pBlocks[block_index];
     g_wScriptOpCursorCache = g_pCurScriptAnimNode->wOpCursor;
     g_nScriptPendingJumpTarget = -1;
 
@@ -371,7 +371,7 @@ int ttmscript_interpret_loop(int block_index) {
                 FP_OFF(w) += p0 * 4 + 2;
             } else {
                 scratchStr = ttmscript_strcpy_to_scratch(0, (char far *)w);
-                w = (ushort far *)adscript_skip_aligned_cstring((char far *)w);
+                w = (unsigned short far *)adscript_skip_aligned_cstring((char far *)w);
             }
         } else {
             scratchStr = (char *)0;
@@ -398,21 +398,21 @@ int ttmscript_interpret_loop(int block_index) {
         if ((g_nScriptCurOpcode & 0xf000) == 0xc000) {
             if (g_wScriptOpCursorCache == 0) {
 
-                if (ttmscript_opcode_disp_secondary(p0, p1, p2, p3, (ushort)scratchStr)) {
+                if (ttmscript_opcode_disp_secondary(p0, p1, p2, p3, (unsigned short)scratchStr)) {
                 }
             }
         } else if ((g_nScriptCurOpcode & 0xf000) == 0xa000) {
-            if (ttmscript_opcode_dispatch_main(p0, p1, p2, p3, p4, p5, p6, (ushort)scratchStr)) {
+            if (ttmscript_opcode_dispatch_main(p0, p1, p2, p3, p4, p5, p6, (unsigned short)scratchStr)) {
             }
         } else {
             switch (g_nScriptCurOpcode) {
 
             case 0x2002:
-                g_pCurScriptAnimNode->bSavedFgColor = (uchar)p0;
-                g_graphics_context.bGfx_outline_color = (uchar)p0;
-                g_graphics_context.bText_fg_color = (uchar)p0;
-                g_pCurScriptAnimNode->bSavedFillColor = (uchar)p1;
-                g_graphics_context.bGfx_fill_color = (uchar)p1;
+                g_pCurScriptAnimNode->bSavedFgColor = (unsigned char)p0;
+                g_graphics_context.bGfx_outline_color = (unsigned char)p0;
+                g_graphics_context.bText_fg_color = (unsigned char)p0;
+                g_pCurScriptAnimNode->bSavedFillColor = (unsigned char)p1;
+                g_graphics_context.bGfx_fill_color = (unsigned char)p1;
                 break;
 
             case 0xf01f:
@@ -432,19 +432,19 @@ int ttmscript_interpret_loop(int block_index) {
 
             case 0xf02f:
                 if (g_wScriptOpCursorCache == 0) {
-                    ushort h;
+                    unsigned short h;
                     si = g_pCurScriptAnimNode->wFld_14;
                     h = g_pCurScriptObject->pAhPagedImage[si];
                     if (h != 0)
                         emsimg_free_paged((void *)h);
                     g_pCurScriptObject->pAhPagedImage[si] =
-                        (ushort)resblit_load_asset_table(scratchStr, 2);
+                        (unsigned short)resblit_load_asset_table(scratchStr, 2);
                 }
                 break;
 
             case 0x80:
                 if (g_wScriptOpCursorCache == 0) {
-                    ushort h;
+                    unsigned short h;
                     si = g_pCurScriptAnimNode->wFld_14;
                     h = g_pCurScriptObject->pAhPagedImage[si];
                     if (h != 0)
@@ -470,7 +470,7 @@ int ttmscript_interpret_loop(int block_index) {
                         *pp = 0;
                     }
                     if ((sz = (unsigned)rect_byte_size(p2, p3)) != 0) {
-                        if ((*pp = (uchar far *)alloc_far(sz, 0)) != 0)
+                        if ((*pp = (unsigned char far *)alloc_far(sz, 0)) != 0)
                             cga_save_rect_to_buffer(*pp, p0, p1, p2, p3);
                     }
                 }
@@ -739,8 +739,8 @@ int ttmscript_interpret_loop(int block_index) {
         if (g_nScriptCurOpcode >= 0xa000 && g_nScriptCurOpcode <= 0xafff) {
             switch (g_nScriptCurOpcode) {
             case 0xa5a7:
-                read_4words_from_2tables((ushort *)&p0, (ushort *)&p1, (ushort *)&p4,
-                                         (ushort *)&p5);
+                read_4words_from_2tables((unsigned short *)&p0, (unsigned short *)&p1, (unsigned short *)&p4,
+                                         (unsigned short *)&p5);
                 p4 -= p0;
                 p5 -= p1;
                 adscript_op_noop(p0, p1, p4, p5);
@@ -766,7 +766,7 @@ int ttmscript_interpret_loop(int block_index) {
             case 0xa536: {
 
                 if (g_pCurScriptObject->pAhPagedImage[p3] == 0 ||
-                    (si = ((ushort *)g_pCurScriptObject->pAhPagedImage[p3])[p2]) == 0)
+                    (si = ((unsigned short *)g_pCurScriptObject->pAhPagedImage[p3])[p2]) == 0)
                     continue;
                 if ((g_nScriptCurOpcode & 0xf) == 6) {
 
@@ -885,7 +885,7 @@ void ttmscript_pal_cycle_band_add(int param_1, int param_2) {
     return;
 }
 
-ushort ttmscript_lookup_coord_global(ushort idx) {
+unsigned short ttmscript_lookup_coord_global(unsigned short idx) {
     switch (idx) {
     case 0:
         return g_graphics_context.wVgaFrontPageBase;
@@ -900,19 +900,19 @@ ushort ttmscript_lookup_coord_global(ushort idx) {
     }
 }
 
-void ttmscript_screen_trans_disp(ushort param_1, ushort param_2, int param_3, int param_4,
-                                 ushort param_5, ushort param_6) {
+void ttmscript_screen_trans_disp(unsigned short param_1, unsigned short param_2, int param_3, int param_4,
+                                 unsigned short param_5, unsigned short param_6) {
     long tempA;
     long tempB;
-    uint xsave;
+    unsigned int xsave;
     int right;
-    uint xcenter;
-    uint ysave;
+    unsigned int xcenter;
+    unsigned int ysave;
     int bottom;
-    uint ycenter;
+    unsigned int ycenter;
     int dy;
     int bound;
-    ushort savedDstPage;
+    unsigned short savedDstPage;
     int i;
     int halfW;
 

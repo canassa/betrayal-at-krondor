@@ -71,7 +71,7 @@ void far hotspotevt_monst_load_tbl_cur_id(void) {
 }
 
 void hotspotevt_flags_clear(void) {
-    ushort *pFlag;
+    unsigned short *pFlag;
     int i;
 
     pFlag = g_awHotspotPendingFlags;
@@ -87,7 +87,7 @@ void hotspotevt_flags_clear(void) {
 
 int hotspotevt_activate_at_player(void) {
     ZoneHotspot *evt;
-    uint *pOut_accepted;
+    unsigned int *pOut_accepted;
     int allNoInteraction;
     int noInteraction;
     int ambushArmed;
@@ -98,7 +98,7 @@ int hotspotevt_activate_at_player(void) {
     ambushArmed = 0;
     hotspotevt_flags_clear();
     while (evt != (ZoneHotspot *)0) {
-        pOut_accepted = (uint *)&g_awHotspotPendingFlags[g_wHotspotMatchIdx];
+        pOut_accepted = (unsigned int *)&g_awHotspotPendingFlags[g_wHotspotMatchIdx];
         switch (evt->wKind) {
         case 0:
             hotspotevt_dialog_popup_run(evt, &noInteraction, (int *)pOut_accepted);
@@ -142,12 +142,12 @@ int hotspotevt_activate_at_player(void) {
     return allNoInteraction;
 }
 
-ushort far hotspotevt_disp_pending_events(void) {
+unsigned short far hotspotevt_disp_pending_events(void) {
     int running;
-    ushort wEventMask;
-    ushort *pPendingFlag;
-    ushort wHaltFlag;
-    uint eventBit;
+    unsigned short wEventMask;
+    unsigned short *pPendingFlag;
+    unsigned short wHaltFlag;
+    unsigned int eventBit;
     ZoneHotspot *evt;
 
     running = 1;
@@ -213,12 +213,12 @@ ushort far hotspotevt_disp_pending_events(void) {
     return wEventMask;
 }
 
-int hotspotevt_dispatch_at_point(int target_type, uchar x, uchar y, int *out_flag) {
+int hotspotevt_dispatch_at_point(int target_type, unsigned char x, unsigned char y, int *out_flag) {
     ZoneHotspot *hotspot;
     int result;
     int more;
-    ushort statusFlag;
-    uint shouldFire;
+    unsigned short statusFlag;
+    unsigned int shouldFire;
 
     hotspot = hotspotevt_find_at_point(1, x, y);
     result = 0;
@@ -365,8 +365,8 @@ void far hotspotevt_dialog_popup_run(ZoneHotspot *pHotspot, int *out_skipped,
     if (hotspotevt_available(pHotspot) != 0) {
         hotspotevt_bak_load_indexed_rec(0, buf, pHotspot->dwDef_record_offset);
         *out_skipped = 0;
-        if (*(ulong *)(buf + 6) != 0) {
-            *out_user_confirmed = (dialog_play_record(*(ulong *)(buf + 6), 0) == 0);
+        if (*(unsigned long *)(buf + 6) != 0) {
+            *out_user_confirmed = (dialog_play_record(*(unsigned long *)(buf + 6), 0) == 0);
         } else {
             *out_user_confirmed = 0;
         }
@@ -383,7 +383,7 @@ void far hotspotevt_load_record0_town(ZoneHotspot *pHotspot) {
     if (buf[0x12] != '\0') {
         explore_animate_camera_to_tile((TileMoveRecord *)(buf + 0xE));
     }
-    townscene_main_loop(*(uint *)(buf + 2), 1);
+    townscene_main_loop(*(unsigned int *)(buf + 2), 1);
     if (pHotspot->wEvent_key_post != 0) {
         gstate_event_write(pHotspot->wEvent_key_post, 1);
     }
@@ -409,12 +409,12 @@ void far hotspotevt_skill_check_trigger(int isAuto, ZoneHotspot *pHotspot, int *
         return;
     }
     hotspotevt_bak_load_indexed_rec(1, buf, pHotspot->dwDef_record_offset);
-    if (hotspotevt_enc_fought_read(*(ulong *)(buf + 2)) != 0) {
+    if (hotspotevt_enc_fought_read(*(unsigned long *)(buf + 2)) != 0) {
         *pOutC = 0;
         *pOutB = 1;
         return;
     }
-    if (*(uint *)(buf + 0x18d) & 1) {
+    if (*(unsigned int *)(buf + 0x18d) & 1) {
         if (isAuto != 0) {
             *pOutC = 0;
             *pOutB = 1;
@@ -425,8 +425,8 @@ void far hotspotevt_skill_check_trigger(int isAuto, ZoneHotspot *pHotspot, int *
             hotspotevt_scout_tried_set();
             if (RND(100) <= stat_party_find_extreme(0xe, 0, (short *)0x0)) {
                 stat_party_broadcast_status_op(0xe, 1, 3);
-                if (*(ulong *)(buf + 0xa) != 0)
-                    dialog_play_record(*(ulong *)(buf + 0xa), 1);
+                if (*(unsigned long *)(buf + 0xa) != 0)
+                    dialog_play_record(*(unsigned long *)(buf + 0xa), 1);
                 else
                     dialog_play_record(0x2fL, 1);
                 hotspotevt_scouted_set();
@@ -446,26 +446,26 @@ void far hotspotevt_type1_encounter_run(ZoneHotspot *pHotspot, int *out_moved) {
     short landingHeading;
     long landingY;
     long landingX;
-    byte tileX;
-    byte tileY;
+    unsigned char tileX;
+    unsigned char tileY;
     long visitedTime;
     short origHeading;
     int facing;
     char buf[0x190];
     char worldCtr[12];
 
-    uint chance;
+    unsigned int chance;
     int n;
 
     hasFired = 0;
     *out_moved = 0;
     hotspotevt_bak_load_indexed_rec(1, buf, pHotspot->dwDef_record_offset);
-    if ((n = hotspotevt_monst_dispatch_by_tag(*(ulong *)(buf + 2))) == 0) {
-        if ((*(uint *)(buf + 0x18d) & 1) != 0) {
+    if ((n = hotspotevt_monst_dispatch_by_tag(*(unsigned long *)(buf + 2))) == 0) {
+        if ((*(unsigned int *)(buf + 0x18d) & 1) != 0) {
             if (hotspotevt_scouted_read() != 0)
                 goto do_chance_check;
         }
-        if ((*(uint *)(buf + 0x18d) & 1) != 0)
+        if ((*(unsigned int *)(buf + 0x18d) & 1) != 0)
             goto skip_event_check;
         if (spellfx_event_mask_test_bit(0) == 0)
             goto skip_event_check;
@@ -481,7 +481,7 @@ void far hotspotevt_type1_encounter_run(ZoneHotspot *pHotspot, int *out_moved) {
                 chance = 0x5a;
             }
         }
-        if ((*(uint *)(buf + 0x18d) & 1) != 0 && spellfx_event_mask_test_bit(0) != 0) {
+        if ((*(unsigned int *)(buf + 0x18d) & 1) != 0 && spellfx_event_mask_test_bit(0) != 0) {
             chance = chance + (int)(100 - chance) / 2;
         }
         if (RND(100) <= chance) {
@@ -509,7 +509,7 @@ void far hotspotevt_type1_encounter_run(ZoneHotspot *pHotspot, int *out_moved) {
             return;
         }
     }
-    gstate_temp_file_read_at((byte far *)&visitedTime, GAM_ENC_VISITED_TIME(*(ulong *)(buf + 2)),
+    gstate_temp_file_read_at((unsigned char far *)&visitedTime, GAM_ENC_VISITED_TIME(*(unsigned long *)(buf + 2)),
                              4);
     if ((g_gameState.game_time - visitedTime) / 0x1e <= 0x1e) {
         if (RND(100) <= stat_party_find_extreme(0xf, 0, (short *)0x0)) {
@@ -523,13 +523,13 @@ void far hotspotevt_type1_encounter_run(ZoneHotspot *pHotspot, int *out_moved) {
         g_gameState.nEvtArgCount = 2;
     }
     g_gameState.nEvtArgAux1 = *(short *)(buf + 0x3b);
-    if (*(ulong *)(buf + 6) != 0) {
-        dialog_play_record(*(ulong *)(buf + 6), 1);
+    if (*(unsigned long *)(buf + 6) != 0) {
+        dialog_play_record(*(unsigned long *)(buf + 6), 1);
     }
-    combat_arena_actor_turn_loop((ushort) * (ulong *)(buf + 2), &combatStatus, hasFired);
+    combat_arena_actor_turn_loop((unsigned short) * (unsigned long *)(buf + 2), &combatStatus, hasFired);
     g_wLastTempWriteRecordKind = 1;
-    gstate_temp_file_write_at((uchar far *)&g_gameState.game_time,
-                              GAM_ENC_FOUGHT_TIME(*(ulong *)(buf + 2)), 4);
+    gstate_temp_file_write_at((unsigned char far *)&g_gameState.game_time,
+                              GAM_ENC_FOUGHT_TIME(*(unsigned long *)(buf + 2)), 4);
     if (combatStatus == 2) {
         *out_moved = 1;
         switch (worldmove_aabb_outcode_rotated(&pHotspot->bbox.minX)) {
@@ -550,8 +550,8 @@ void far hotspotevt_type1_encounter_run(ZoneHotspot *pHotspot, int *out_moved) {
             break;
         }
         czone_get_party_tile_xy(&tileX, &tileY);
-        g_world_camera->base.pos.xy.nWorld_x = (ulong)tileX * 64000 + landingX;
-        g_world_camera->base.pos.xy.nWorld_y = (ulong)tileY * 64000 + landingY;
+        g_world_camera->base.pos.xy.nWorld_x = (unsigned long)tileX * 64000 + landingX;
+        g_world_camera->base.pos.xy.nWorld_y = (unsigned long)tileY * 64000 + landingY;
         g_world_camera->base.orientation.yaw = landingHeading;
         proxscan_full(g_world_widget);
         vislist_sort(g_wVisibleEntrySegment, g_pwVisibleEntryOffsets, g_pVisibleEntryDistances,
@@ -565,8 +565,8 @@ void far hotspotevt_type1_encounter_run(ZoneHotspot *pHotspot, int *out_moved) {
             gstate_event_write(pHotspot->wEvent_key_post, 1);
         }
         hotspotevt_done_set();
-        hotspotevt_enc_fought_set(*(ulong *)(buf + 2));
-        evtcond_dispatch_key_to_handler((ushort) * (ulong *)(buf + 2));
+        hotspotevt_enc_fought_set(*(unsigned long *)(buf + 2));
+        evtcond_dispatch_key_to_handler((unsigned short) * (unsigned long *)(buf + 2));
     }
 LAB_759a_0a9c:
     if (combatStatus != 0 && combatStatus != 3) {
@@ -581,8 +581,8 @@ int far hotspotevt_monst_load_speak(ZoneHotspot *pHotspot) {
 
     if (hotspotevt_available(pHotspot)) {
         hotspotevt_bak_load_indexed_rec(3, buf, pHotspot->dwDef_record_offset);
-        if (*(ulong *)(buf + 2) != 0) {
-            dialog_play_record(*(ulong *)(buf + 2), 1);
+        if (*(unsigned long *)(buf + 2) != 0) {
+            dialog_play_record(*(unsigned long *)(buf + 2), 1);
         }
         if (pHotspot->wEvent_key_post != 0) {
             gstate_event_write(pHotspot->wEvent_key_post, 1);
@@ -622,8 +622,8 @@ void far hotspotevt_show_record_message(ZoneHotspot *pHotspot, int *out_skipped,
     if (hotspotevt_available(pHotspot) != 0) {
         hotspotevt_bak_load_indexed_rec(6, buf, pHotspot->dwDef_record_offset);
         *out_skipped = 0;
-        if (*(ulong *)(buf + 6) != 0) {
-            *out_confirmed = (dialog_play_record(*(ulong *)(buf + 6), 0) == 0);
+        if (*(unsigned long *)(buf + 6) != 0) {
+            *out_confirmed = (dialog_play_record(*(unsigned long *)(buf + 6), 0) == 0);
         } else {
             *out_confirmed = 0;
         }
@@ -640,7 +640,7 @@ void far hotspotevt_action_enter_town(ZoneHotspot *evt) {
     if (buf[0x12] != '\0') {
         explore_animate_camera_to_tile((TileMoveRecord *)(buf + 0xE));
     }
-    townscene_main_loop(*(uint *)(buf + 2), 1);
+    townscene_main_loop(*(unsigned int *)(buf + 2), 1);
     if (evt->wEvent_key_post != 0) {
         gstate_event_write(evt->wEvent_key_post, 1);
     }
@@ -703,16 +703,16 @@ typedef struct {
     long pos_z;
 } CamPos;
 
-void far hotspotevt_trap_main_fire(ZoneHotspot *pHotspot, ushort *pOut_status) {
+void far hotspotevt_trap_main_fire(ZoneHotspot *pHotspot, unsigned short *pOut_status) {
     short wOrig_heading;
     int combat_status;
     int wHas_fired;
     GamePositionAndHeading landing_chosen;
-    byte tileX;
-    byte tileY;
+    unsigned char tileX;
+    unsigned char tileY;
     long visitedTime;
     DefTrapRecord trapRec;
-    byte originalCamera[12];
+    unsigned char originalCamera[12];
 
     *(CamPos far *)originalCamera = *(CamPos far *)&g_world_camera->base.pos.xy.nWorld_x;
     wOrig_heading = g_world_camera->base.orientation.yaw;
@@ -725,7 +725,7 @@ void far hotspotevt_trap_main_fire(ZoneHotspot *pHotspot, ushort *pOut_status) {
         if (((trapRec.wIs_ambush & 1) != 0 && hotspotevt_scouted_read() != 0) ||
             ((trapRec.wIs_ambush & 1) == 0 && spellfx_event_mask_test_bit(0) != 0)) {
             if (g_wHotspotEventEnabled != 0) {
-                uint uStat;
+                unsigned int uStat;
                 if (worldmove_step_tick_get() == 0) {
                     return;
                 }
@@ -749,9 +749,9 @@ void far hotspotevt_trap_main_fire(ZoneHotspot *pHotspot, ushort *pOut_status) {
 
     czone_get_party_tile_xy(&tileX, &tileY);
     g_world_camera->base.pos.xy.nWorld_x =
-        (long)(int)(uint)tileX * 64000 + trapRec.landing_primary.nX;
+        (long)(int)(unsigned int)tileX * 64000 + trapRec.landing_primary.nX;
     g_world_camera->base.pos.xy.nWorld_y =
-        (long)(int)(uint)tileY * 64000 + trapRec.landing_primary.nY;
+        (long)(int)(unsigned int)tileY * 64000 + trapRec.landing_primary.nY;
     g_world_camera->base.orientation.yaw = trapRec.landing_primary.wHeading_raw;
 
     if (combatgrid_tiles_over_thresh() == 0) {
@@ -760,7 +760,7 @@ void far hotspotevt_trap_main_fire(ZoneHotspot *pHotspot, ushort *pOut_status) {
         return;
     }
 
-    gstate_temp_file_read_at((byte far *)&visitedTime, GAM_ENC_VISITED_TIME(trapRec.dwCombat_index),
+    gstate_temp_file_read_at((unsigned char far *)&visitedTime, GAM_ENC_VISITED_TIME(trapRec.dwCombat_index),
                              4);
 
     if ((g_gameState.game_time - visitedTime) / 0x1e <= 0x1e) {
@@ -780,14 +780,14 @@ void far hotspotevt_trap_main_fire(ZoneHotspot *pHotspot, ushort *pOut_status) {
     if (trapRec.dwEntry_dialog != 0)
         dialog_play_record(trapRec.dwEntry_dialog, 1);
 
-    combat_arena_actor_turn_loop((ushort)trapRec.dwCombat_index, &combat_status, wHas_fired);
+    combat_arena_actor_turn_loop((unsigned short)trapRec.dwCombat_index, &combat_status, wHas_fired);
 
     if (combat_status == 2) {
         *(CamPos far *)&g_world_camera->base.pos.xy.nWorld_x = *(CamPos far *)originalCamera;
         g_world_camera->base.orientation.yaw = wOrig_heading;
     }
     g_wLastTempWriteRecordKind = 1;
-    gstate_temp_file_write_at((uchar far *)&g_gameState.game_time,
+    gstate_temp_file_write_at((unsigned char far *)&g_gameState.game_time,
                               GAM_ENC_FOUGHT_TIME(trapRec.dwCombat_index), 4);
 
     if (combat_status == 2) {
@@ -815,15 +815,15 @@ void far hotspotevt_trap_main_fire(ZoneHotspot *pHotspot, ushort *pOut_status) {
             break;
         }
         czone_get_party_tile_xy(&tileX, &tileY);
-        g_world_camera->base.pos.xy.nWorld_x = (ulong)tileX * 64000 + landing_chosen.nX;
-        g_world_camera->base.pos.xy.nWorld_y = (ulong)tileY * 64000 + landing_chosen.nY;
+        g_world_camera->base.pos.xy.nWorld_x = (unsigned long)tileX * 64000 + landing_chosen.nX;
+        g_world_camera->base.pos.xy.nWorld_y = (unsigned long)tileY * 64000 + landing_chosen.nY;
         g_world_camera->base.orientation.yaw = landing_chosen.wHeading_raw;
     } else if (combat_status == 1) {
         if (pHotspot->wEvent_key_post != 0)
             gstate_event_write(pHotspot->wEvent_key_post, 1);
         hotspotevt_done_set();
         hotspotevt_enc_fought_set(trapRec.dwCombat_index);
-        evtcond_dispatch_key_to_handler((ushort)trapRec.dwCombat_index);
+        evtcond_dispatch_key_to_handler((unsigned short)trapRec.dwCombat_index);
     }
 
     if ((combat_status != 0) && (combat_status != 3)) {
@@ -838,7 +838,7 @@ void far hotspotevt_trap_main_fire(ZoneHotspot *pHotspot, ushort *pOut_status) {
 }
 
 void far hotspotevt_action_try_enter_zone(ZoneHotspot *evt, int *pOut_handled,
-                                          uint *pOut_accepted) {
+                                          unsigned int *pOut_accepted) {
     char buf[20];
 
     if (hotspotevt_available(evt) != 0) {
@@ -846,7 +846,7 @@ void far hotspotevt_action_try_enter_zone(ZoneHotspot *evt, int *pOut_handled,
         *pOut_handled = 0;
         if (((ZoneEntryRecord *)buf)->dwPromptDlgKey != 0) {
             *pOut_accepted =
-                (uint)(dialog_play_record(((ZoneEntryRecord *)buf)->dwPromptDlgKey, 0) == 0);
+                (unsigned int)(dialog_play_record(((ZoneEntryRecord *)buf)->dwPromptDlgKey, 0) == 0);
             goto done;
         }
         *pOut_accepted = 0;
@@ -933,8 +933,8 @@ void far hotspotevt_dlg_run_msg_event(ZoneHotspot *evt, int *out_status) {
     if (hotspotevt_available(evt) != 0) {
         hotspotevt_bak_load_indexed_rec(0xb, buf, evt->dwDef_record_offset);
         *out_status = 0;
-        if (*(ulong *)(buf + 2) != 0) {
-            dialog_play_record(*(ulong *)(buf + 2), 1);
+        if (*(unsigned long *)(buf + 2) != 0) {
+            dialog_play_record(*(unsigned long *)(buf + 2), 1);
         }
         if (evt->wEvent_key_post != 0) {
             gstate_event_write(evt->wEvent_key_post, 1);
@@ -949,14 +949,14 @@ void far hotspotevt_dlg_run_msg_event(ZoneHotspot *evt, int *out_status) {
 }
 
 ZoneHotspot *far hotspotevt_find_at_player_tile(int mode) {
-    uchar gridX;
-    uchar gridY;
+    unsigned char gridX;
+    unsigned char gridY;
 
     czone_world_pos_to_grid_xy((char *)&gridX, (char *)&gridY);
     return hotspotevt_find_at_point(mode, gridX, gridY);
 }
 
-ZoneHotspot *hotspotevt_find_at_point(int mode, uchar x, uchar y) {
+ZoneHotspot *hotspotevt_find_at_point(int mode, unsigned char x, unsigned char y) {
     ZoneHotspot *match;
     ZoneHotspot *cur;
 
@@ -1004,26 +1004,26 @@ void hotspotevt_done_reset_all(void) {
 }
 
 void far hotspotevt_done_set(void) {
-    ushort slot;
+    unsigned short slot;
     slot = (g_gameState.nZoneId - 1) * 400;
-    slot += (uint)g_apCombat_zone_actor_lists[0]->bRef_pair_index * 10;
+    slot += (unsigned int)g_apCombat_zone_actor_lists[0]->bRef_pair_index * 10;
     slot += g_wHotspotMatchIdx;
 
     gstate_event_write(slot + 400, 1);
 }
 
 void far hotspotevt_done_clear(void) {
-    ushort slot;
+    unsigned short slot;
     slot = (g_gameState.nZoneId - 1) * 400;
-    slot += (uint)g_apCombat_zone_actor_lists[0]->bRef_pair_index * 10;
+    slot += (unsigned int)g_apCombat_zone_actor_lists[0]->bRef_pair_index * 10;
     slot += g_wHotspotMatchIdx;
     gstate_event_write(slot + 400, 0);
 }
 
 int far hotspotevt_done_read(void) {
-    ushort slot;
+    unsigned short slot;
     slot = (g_gameState.nZoneId - 1) * 400;
-    slot += (uint)g_apCombat_zone_actor_lists[0]->bRef_pair_index * 10;
+    slot += (unsigned int)g_apCombat_zone_actor_lists[0]->bRef_pair_index * 10;
     slot += g_wHotspotMatchIdx;
     return gstate_event_read(slot + 400);
 }
@@ -1050,7 +1050,7 @@ void hotspotevt_scout_tried_clear(void) {
     return;
 }
 
-ushort far hotspotevt_scout_tried_read(void) {
+unsigned short far hotspotevt_scout_tried_read(void) {
     int key = g_wHotspotMatchIdx;
     return gstate_event_read(HOTSPOT_SCOUT_TRIED(key));
 }
@@ -1077,12 +1077,12 @@ void far hotspotevt_scouted_clear(void) {
     return;
 }
 
-ushort far hotspotevt_scouted_read(void) {
+unsigned short far hotspotevt_scouted_read(void) {
     int key = g_wHotspotMatchIdx;
     return gstate_event_read(HOTSPOT_SCOUTED(key));
 }
 
-void hotspotevt_enc_fought_set(ulong key) {
+void hotspotevt_enc_fought_set(unsigned long key) {
     int lo = (int)key;
 
     if ((long)key < 1000) {
@@ -1091,7 +1091,7 @@ void hotspotevt_enc_fought_set(ulong key) {
     return;
 }
 
-void hotspotevt_enc_fought_clear(ulong key) {
+void hotspotevt_enc_fought_clear(unsigned long key) {
     int lo = (int)key;
     if ((long)key < 1000) {
         gstate_event_write(ENCOUNTER_FOUGHT(lo), 0);
@@ -1099,7 +1099,7 @@ void hotspotevt_enc_fought_clear(ulong key) {
     return;
 }
 
-ushort far hotspotevt_enc_fought_read(ulong key) {
+unsigned short far hotspotevt_enc_fought_read(unsigned long key) {
     int lo = (int)key;
     if ((long)key < 1000) {
         return gstate_event_read(ENCOUNTER_FOUGHT(lo));
@@ -1107,16 +1107,16 @@ ushort far hotspotevt_enc_fought_read(ulong key) {
     return 1;
 }
 
-void far hotspotevt_tile_rect_world_ctr(uchar *tile_rect, long *out_world_xy) {
-    uchar chunk_x;
-    uchar chunk_y;
+void far hotspotevt_tile_rect_world_ctr(unsigned char *tile_rect, long *out_world_xy) {
+    unsigned char chunk_x;
+    unsigned char chunk_y;
 
     czone_get_party_tile_xy(&chunk_x, &chunk_y);
-    *out_world_xy = (long)(int)(uint)chunk_x * 64000 +
-                    ((long)((ulong)*tile_rect * 0x640 + ((ulong)tile_rect[2] + 1) * 0x640) >> 1);
+    *out_world_xy = (long)(int)(unsigned int)chunk_x * 64000 +
+                    ((long)((unsigned long)*tile_rect * 0x640 + ((unsigned long)tile_rect[2] + 1) * 0x640) >> 1);
     out_world_xy[1] =
-        (long)(int)(uint)chunk_y * 64000 +
-        ((long)((ulong)tile_rect[3] * 0x640 + ((ulong)tile_rect[1] + 1) * 0x640) >> 1);
+        (long)(int)(unsigned int)chunk_y * 64000 +
+        ((long)((unsigned long)tile_rect[3] * 0x640 + ((unsigned long)tile_rect[1] + 1) * 0x640) >> 1);
 }
 
 int far hotspotevt_monst_dispatch_by_tag(long tag) {
@@ -1159,7 +1159,7 @@ char far hotspotevt_bak_load_indexed_rec(int record_id, void *dest, long offset)
     hotspotevt_bak_indexed_rec_info(record_id, &filename, &record_size);
     stream = bak_fopen(filename, "rb");
     bak_fread(header, 4, 1, stream);
-    bak_fseek(stream, (ulong)(uint)(record_size + 1) * offset, 1);
+    bak_fseek(stream, (unsigned long)(unsigned int)(record_size + 1) * offset, 1);
     bak_fread(&present, 1, 1, stream);
     if (present != '\0') {
         bak_fread(dest, record_size, 1, stream);

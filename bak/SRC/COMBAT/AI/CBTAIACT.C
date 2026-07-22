@@ -29,7 +29,7 @@ void far combataiact_pick_melee_or_missl(CombatActor *actor) {
     if (distance <= 1) {
         combat_arena_melee_attack(actor, target, RNDR(0x19, 0x31));
     } else {
-        if (RND(10) >= (uint)distance) {
+        if (RND(10) >= (unsigned int)distance) {
             combat_ai_actor_cast_spell(actor, target, 4);
         } else {
             combataiturn_ranged_attack(actor, target, 8);
@@ -39,7 +39,7 @@ void far combataiact_pick_melee_or_missl(CombatActor *actor) {
 
 void far combataiact_random_move_attack(CombatActor *actor) {
     CombatActor *target;
-    uint roll;
+    unsigned int roll;
     int distance;
     int halfStat;
 
@@ -50,8 +50,8 @@ void far combataiact_random_move_attack(CombatActor *actor) {
         g_cursor_tile_x = RND2(8);
         g_cursor_tile_y = RND(0xd);
     }
-    actor->inner->pad_6[0] = (uchar)g_cursor_tile_x;
-    actor->inner->pad_6[1] = (uchar)g_cursor_tile_y;
+    actor->inner->pad_6[0] = (unsigned char)g_cursor_tile_x;
+    actor->inner->pad_6[1] = (unsigned char)g_cursor_tile_y;
     combataipath_actor_walk_path(actor, 0);
     roll = RND(100);
     halfStat = (int)stat_actor_get(actor, 0, 0) >> 1;
@@ -81,7 +81,7 @@ void far combataiact_ranged_attack_turn(CombatActor *actor) {
     CombatActor *target;
     int distance;
     int hit;
-    ushort actionId;
+    unsigned short actionId;
     int knockback;
     int cspell_slot;
 
@@ -116,7 +116,7 @@ void far combataiact_ranged_attack_turn(CombatActor *actor) {
             target = world_rndr_ranged_attack_anim(actor, target, &hit, actionId, 0xfa, -1);
             combat_actor_anim0_if_not_dead(actor, -1);
             target->inner->flags |= CAF_KNOCKBACK;
-            target->inner->knockback_value = (uchar)knockback;
+            target->inner->knockback_value = (unsigned char)knockback;
             target->inner->knockback_timer = 'd';
             cspell_slot = cspell_status_effect_add(target, 4, 0, 0, '\0');
             g_nVfxParticleColor = 0xa0;
@@ -150,7 +150,7 @@ void far combataiact_actor_melee_attack(CombatActor *actor) {
         i = 0;
         do {
             target->inner->flags |= CAF_KNOCKBACK;
-            target->inner->knockback_value = (uchar)i + 1;
+            target->inner->knockback_value = (unsigned char)i + 1;
             target->inner->knockback_timer = 0x64;
             world_render_with_overlay((void far *)0xffff);
             screen_frame_present();

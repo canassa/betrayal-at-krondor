@@ -5,7 +5,7 @@
 
 extern void widget_load_button_sprite_pair(char *filename);
 extern void widget_free_button_sprite_pair(void);
-extern void widget_blit_button_sprite(uint sprite_idx, int x, int y, int palette, int center,
+extern void widget_blit_button_sprite(unsigned int sprite_idx, int x, int y, int palette, int center,
                                       int rect_w, int rect_h);
 extern int widget_hit_test(MenuEntry *widget, int x, int y, int *out_region);
 extern void widget_dispatch_by_type(MenuEntry *widget, int x, int y, int hover_flag);

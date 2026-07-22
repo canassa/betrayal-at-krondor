@@ -104,15 +104,15 @@ static void far modalscreen_teleport_dest_sel(MenuPage *page, ImageRecord **asse
     g_graphics_context.wGfxBlitSrcPage = g_graphics_context.wVgaPage1Base;
     gfx_present_dispatch(0, 0, 0x140, 200);
     menupage_draw(page);
-    invui_draw_text_aligned_shadow((uchar far *)page->pEntries[hover_city - 1].pPrimary_label, 0x3c,
+    invui_draw_text_aligned_shadow((unsigned char far *)page->pEntries[hover_city - 1].pPrimary_label, 0x3c,
                                    0x2c, 1, 10, 1);
     resblit_sprite(asset_tbl[hover_city - 1], 0x3c - asset_tbl[hover_city - 1]->nWidth / 2, 0x37);
     if (sel_city != 0) {
-        invui_draw_text_aligned_shadow((uchar far *)page->pEntries[sel_city - 1].pPrimary_label,
+        invui_draw_text_aligned_shadow((unsigned char far *)page->pEntries[sel_city - 1].pPrimary_label,
                                        0x3c, 0x74, 1, 10, 1);
         resblit_sprite(asset_tbl[sel_city - 1], 0x3c - asset_tbl[sel_city - 1]->nWidth / 2, 0x7f);
         sprintf(buf, "%d sovereigns", cost / 10);
-        invui_draw_text_aligned_shadow((uchar far *)buf, 0x26, 0xb4, 0, 10, 1);
+        invui_draw_text_aligned_shadow((unsigned char far *)buf, 0x26, 0xb4, 0, 10, 1);
     }
     i = 0;
     entry = page->pEntries;
@@ -383,7 +383,7 @@ void modalscreen_req_inv_run(int kind_or_id, int tax, int qty_mult, int char_slo
     redraw = 1;
     partySlot = 1;
     savedBlend = g_nPalBlendMode;
-    savedPal = palette_set((uchar far *)0);
+    savedPal = palette_set((unsigned char far *)0);
     g_inventory_screen_mode = 2;
     screen_cursor_show_busy();
     invui_inspect_images_load_once(0);
@@ -515,7 +515,7 @@ void modalscreen_inventory_request(unsigned int category_mask, int discount_pct)
     allowEventDialog = 1;
     party_slot = 1;
     savedBlend = g_nPalBlendMode;
-    savedPal = palette_set((uchar far *)0);
+    savedPal = palette_set((unsigned char far *)0);
     g_inventory_screen_mode = 2;
     screen_cursor_show_busy();
     invui_inspect_images_load_once(0);
@@ -710,7 +710,7 @@ void modalscreen_rest_until_time(Actor far *pActor) {
     firstLoop = 1;
     saved_time = g_gameState.game_time;
     saved_blend = g_nPalBlendMode;
-    saved_pal = palette_set((uchar far *)0);
+    saved_pal = palette_set((unsigned char far *)0);
     if (g_pPalQueuedForFlip != 0) {
         saved_pal = g_pPalQueuedForFlip;
         g_pPalQueuedForFlip = 0;

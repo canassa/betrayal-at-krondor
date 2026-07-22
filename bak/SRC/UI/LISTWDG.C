@@ -121,7 +121,7 @@ int listwidget_count(ListWidget *list) {
     return list ? list->wCount : -1;
 }
 
-int listwidget_insert_item(ListWidget *list, int pos, char *text, ushort payload) {
+int listwidget_insert_item(ListWidget *list, int pos, char *text, unsigned short payload) {
     char *dest;
 
     if (!list)
@@ -136,7 +136,7 @@ int listwidget_insert_item(ListWidget *list, int pos, char *text, ushort payload
         goto fail;
     dest = galloc_safe_zcalloc(strlen(text) + 1);
     if (dest != 0) {
-        ushort j;
+        unsigned short j;
         strcpy(dest, text);
         j = list->wCount;
         while ((int)j > pos) {
@@ -171,15 +171,15 @@ int far listwidget_remove_item(ListWidget *list, int idx) {
     return 0;
 }
 
-int far listwidget_get_current_entry(ListWidget *list, char **out_label, ushort *out_value) {
-    ushort idx;
+int far listwidget_get_current_entry(ListWidget *list, char **out_label, unsigned short *out_value) {
+    unsigned short idx;
 
     if (list != (ListWidget *)0x0 && list->wCount != 0) {
         idx = list->pParent->wSub_state;
         if (out_label != (char **)0x0) {
             *out_label = list->pLabels[idx];
         }
-        if (out_value != (ushort *)0x0) {
+        if (out_value != (unsigned short *)0x0) {
             *out_value = list->pValues[idx];
         }
         return 1;
@@ -187,12 +187,12 @@ int far listwidget_get_current_entry(ListWidget *list, char **out_label, ushort 
     return 0;
 }
 
-int listwidget_get_entry_at(ListWidget *list, int index, char **out_label, ushort *out_value) {
+int listwidget_get_entry_at(ListWidget *list, int index, char **out_label, unsigned short *out_value) {
     if (((list != (ListWidget *)0x0) && (0 <= index)) && (index < (int)list->wCount)) {
         if (out_label != (char **)0x0) {
             *out_label = list->pLabels[index];
         }
-        if (out_value != (ushort *)0x0) {
+        if (out_value != (unsigned short *)0x0) {
             *out_value = list->pValues[index];
         }
         return 1;
@@ -246,7 +246,7 @@ int listwidget_get_selection(ListWidget *list) {
     return list ? list->pParent->wSub_state : -1;
 }
 
-int far listwidget_handle_click(ListWidget *list, ushort *out_confirm) {
+int far listwidget_handle_click(ListWidget *list, unsigned short *out_confirm) {
     int half_vis;
     int old_scroll;
     int hit;
@@ -258,13 +258,13 @@ int far listwidget_handle_click(ListWidget *list, ushort *out_confirm) {
         if (hit != -1) {
             switch (screen_input_poll_confirm_cancel()) {
             case 1:
-                if (list->pParent->wSub_state != (ushort)hit) {
+                if (list->pParent->wSub_state != (unsigned short)hit) {
                     count = list->wCount;
                     vis = list->nVisible_rows;
                     half_vis = vis >> 1;
                     old_scroll = list->wScroll_offset;
                     if (hit >= 0 && hit < count) {
-                        list->pParent->wSub_state = (ushort)hit;
+                        list->pParent->wSub_state = (unsigned short)hit;
                         if (hit < old_scroll || old_scroll + vis <= hit) {
                             if (count <= vis || hit <= half_vis) {
                                 list->wScroll_offset = 0;
@@ -275,11 +275,11 @@ int far listwidget_handle_click(ListWidget *list, ushort *out_confirm) {
                             }
                         }
                     }
-                    if (out_confirm != (ushort *)0)
+                    if (out_confirm != (unsigned short *)0)
                         *out_confirm = 0;
                     return 1;
                 } else {
-                    if (out_confirm == (ushort *)0)
+                    if (out_confirm == (unsigned short *)0)
                         return 0;
                     *out_confirm = 1;
                     return 1;

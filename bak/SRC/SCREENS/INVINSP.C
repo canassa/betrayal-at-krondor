@@ -47,7 +47,7 @@ static void far invinspect_dialog_panel_render(MenuPage *panel, int present_now)
     draw_line(panel->rect.x + panel->rect.width - 1, panel->rect.y,
               panel->rect.x + panel->rect.width - 1, panel->rect.y + panel->rect.height - 1);
 
-    invui_draw_text_aligned_shadow((uchar far *)panel->pTitle, panel->rect.x + panel->nTitle_x,
+    invui_draw_text_aligned_shadow((unsigned char far *)panel->pTitle, panel->rect.x + panel->nTitle_x,
                                    panel->rect.y + panel->nTitle_y, 1, -1, -1);
 
     if (present_now != 0) {
@@ -60,9 +60,9 @@ int far invinspect_quantity_picker_dlg(ItemSlot far *item, int param_2, int para
     register int value;
     register MenuPage *page;
     int maxValue;
-    ushort dirty;
+    unsigned short dirty;
     char *label;
-    uint action;
+    unsigned int action;
 
     value = item->condition;
     maxValue = value;
@@ -176,7 +176,7 @@ int far invinspect_quantity_picker_dlg(ItemSlot far *item, int param_2, int para
 }
 
 static void far invinspect_animate_item_move(ImageRecord *sprite, int x, int y, int dst_x,
-                                             int dst_y, uint flags) {
+                                             int dst_y, unsigned int flags) {
     int dx;
     int dy;
 
@@ -234,7 +234,7 @@ static void far invinspect_render_details(ItemSlot far *item, int affecting) {
 
     dialog_apply_style_state(dlg, (void far *)frameRect);
     dialog_frame_draw(dlg, (int far *)frameRect);
-    dialog_freemem_if_not_null((uchar far *)dlg);
+    dialog_freemem_if_not_null((unsigned char far *)dlg);
 
     if ((irec->wCategory == 1) || (irec->wCategory == 3)) {
         x = 0x73;
@@ -332,13 +332,13 @@ LAB_5a82_079b:
 
 void far invinspect_item_flow(ItemSlot far *item, int affecting, MenuPage *page) {
     ImageRecord *sprite;
-    uint action;
+    unsigned int action;
     int dstX;
     int dstY;
     ItemRecord far *irec;
     MenuEntry *savedEntries;
-    ushort savedCount;
-    ushort dirty;
+    unsigned short savedCount;
+    unsigned short dirty;
     char buf[80];
 
     irec = itemtbl_record_ptr(item);
@@ -359,16 +359,16 @@ void far invinspect_item_flow(ItemSlot far *item, int affecting, MenuPage *page)
     }
 
     if (((irec->wFlags & 0x8000) != 0) || (irec->wCategory == 7)) {
-        sprintf(buf, "Amount: %d", (uint)item->condition);
+        sprintf(buf, "Amount: %d", (unsigned int)item->condition);
         invui_draw_text_aligned_shadow((char far *)buf, 0x3a, 0x23, 1, -1, -1);
     } else if (((irec->wFlags & 0x2000) != 0) && (irec->wCategory != 0x11)) {
-        sprintf(buf, "Uses left: %d", (uint)item->condition);
+        sprintf(buf, "Uses left: %d", (unsigned int)item->condition);
         invui_draw_text_aligned_shadow((char far *)buf, 0x3a, 0x23, 1, -1, -1);
     } else if (((irec->wFlags & 0x1000) != 0) && ((irec->wSub_flags & 4) != 0)) {
-        sprintf(buf, "Value Rating: %d%", (uint)item->condition);
+        sprintf(buf, "Value Rating: %d%", (unsigned int)item->condition);
         invui_draw_text_aligned_shadow((char far *)buf, 0x3a, 0x23, 1, -1, -1);
     } else if ((irec->wFlags & 0x1000) != 0) {
-        sprintf(buf, "Condition: %d%%", (uint)item->condition);
+        sprintf(buf, "Condition: %d%%", (unsigned int)item->condition);
         invui_draw_text_aligned_shadow((char far *)buf, 0x3a, 0x23, 1, -1, -1);
     }
 

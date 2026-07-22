@@ -29,7 +29,7 @@ extern int mainmenu_save_parse_filename(char *filename, char *out_name, int *out
 extern int mainmenu_save_enum_files_slot(ListWidget *list, char *slot_name, int slot_id);
 extern int mainmenu_save_parse_read_title(char *title_buf, char *sig_block, int *out_save_id,
                                           char *slot_name, int slot_id, int *ds_state);
-extern int mainmenu_savelist_insert_sorted(ListWidget *list, char *label, ushort key);
+extern int mainmenu_savelist_insert_sorted(ListWidget *list, char *label, unsigned short key);
 extern int mainmenu_savelist_nextfree_key(ListWidget *list);
 extern int mainmenu_savelist_nextfree_nobm(ListWidget *list);
 extern int mainmenu_savelist_find_by_text(ListWidget *list, char *text);

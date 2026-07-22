@@ -51,22 +51,22 @@ int far combataiturn_pick_tile_or_attack(CombatActor *actor, int min_score_thres
     best_y = (int)actor->inner->grid_y;
     for (try_x = 7; try_x > -1; try_x--) {
         for (try_y = 0xc; try_y > -1; try_y--) {
-            actor->inner->pad_6[0] = (uchar)try_x;
-            actor->inner->pad_6[1] = (uchar)try_y;
-            if (combatgrid_tile_is_blocked((uchar)try_x, (uchar)try_y) == 0) {
+            actor->inner->pad_6[0] = (unsigned char)try_x;
+            actor->inner->pad_6[1] = (unsigned char)try_y;
+            if (combatgrid_tile_is_blocked((unsigned char)try_x, (unsigned char)try_y) == 0) {
                 if (combataipath_actor_walk_path(actor, 1) != 0) {
                     saved_x = (int)actor->inner->grid_x;
                     saved_y = (int)actor->inner->grid_y;
-                    actor->inner->grid_x = (uchar)try_x;
-                    actor->inner->grid_y = (uchar)try_y;
+                    actor->inner->grid_x = (unsigned char)try_x;
+                    actor->inner->grid_y = (unsigned char)try_y;
                     combatenc_find_nearest_actor(actor, &cur_score);
                     if (cur_score > best_score || (cur_score == best_score && RND(100) < 0x33)) {
                         best_score = cur_score;
                         best_x = try_x;
                         best_y = try_y;
                     }
-                    actor->inner->grid_x = (uchar)saved_x;
-                    actor->inner->grid_y = (uchar)saved_y;
+                    actor->inner->grid_x = (unsigned char)saved_x;
+                    actor->inner->grid_y = (unsigned char)saved_y;
                 }
             } else
                 continue;
@@ -78,8 +78,8 @@ int far combataiturn_pick_tile_or_attack(CombatActor *actor, int min_score_thres
         may_attack) {
         combataipath_select_action(actor);
     } else {
-        actor->inner->pad_6[0] = (uchar)best_x;
-        actor->inner->pad_6[1] = (uchar)best_y;
+        actor->inner->pad_6[0] = (unsigned char)best_x;
+        actor->inner->pad_6[1] = (unsigned char)best_y;
         combataipath_actor_walk_path(actor, 0);
     }
 done:
@@ -106,8 +106,8 @@ void far combataiturn_ranged_attack(CombatActor *attacker, CombatActor *target, 
     int local_damage;
     int knockback;
     int slot;
-    uint damageFlags;
-    ushort actionId;
+    unsigned int damageFlags;
+    unsigned short actionId;
     int armor_stat;
     CombatActor *actor;
 
@@ -166,7 +166,7 @@ void far combataiturn_ranged_attack(CombatActor *attacker, CombatActor *target, 
             slot = cspell_status_effect_add(actor, 4, 0, 0, '\0');
             g_nVfxParticleColor = 200;
             actor->inner->flags |= CAF_KNOCKBACK;
-            actor->inner->knockback_value = (uchar)knockback;
+            actor->inner->knockback_value = (unsigned char)knockback;
             actor->inner->knockback_timer = 'd';
             audio_play(0x1d);
             worldfx_combat_damage_ptcl_burst(actor, 10);
@@ -233,9 +233,9 @@ int combataiturn_sel_consum_qrl(CombatActor *actor, int kind, int consume_flag) 
     return kind_picked;
 }
 
-int combataiturn_action_disp_base(CombatActor *actor, int param_2, uint param_3) {
+int combataiturn_action_disp_base(CombatActor *actor, int param_2, unsigned int param_3) {
     int minClearance;
-    uint quarrelKind;
+    unsigned int quarrelKind;
     int fired;
 
     minClearance = 4 - (int)(stat_actor_get(actor, 5, 0) + 0x18) / 0x19;
@@ -336,9 +336,9 @@ after_loop:
 void far combataiturn_take_actor_turn(CombatActor *actor) {
     int action_index;
     int rand_pct;
-    uint stat_pct;
-    uint result;
-    uint(far * fn)(CombatActor * actor);
+    unsigned int stat_pct;
+    unsigned int result;
+    unsigned int(far * fn)(CombatActor * actor);
 
     action_index = 1;
     result = 0;
@@ -352,7 +352,7 @@ void far combataiturn_take_actor_turn(CombatActor *actor) {
     while (result == 0 && action_index < 8 && actor->inner->pad_e[2] != 0) {
         rand_pct = RND(100);
         if (rand_pct < 0x5b) {
-            fn = *(uint(far **)(CombatActor *)) &
+            fn = *(unsigned int(far **)(CombatActor *)) &
                  g_encounter_ai_action_table[*(short *)((char *)g_encounter_ai_action_table +
                                                         ((int)(signed char)actor->inner->pad_e[2]
                                                          << 4) +
@@ -365,7 +365,7 @@ void far combataiturn_take_actor_turn(CombatActor *actor) {
 
     if (result == 0) {
         rand_pct = RND(100);
-        stat_pct = (uint)combat_actor_stat_percent(actor, 1);
+        stat_pct = (unsigned int)combat_actor_stat_percent(actor, 1);
         if (rand_pct < 0x4b || stat_pct == 0x64) {
             combataipath_select_target(actor, 100, 0);
         } else {

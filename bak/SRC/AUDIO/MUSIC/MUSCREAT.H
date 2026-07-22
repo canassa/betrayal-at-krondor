@@ -3,6 +3,6 @@
 
 #include "structs.h"
 
-extern AudioTrackHandle far *music_handle_create(uchar far *track_data);
+extern AudioTrackHandle far *music_handle_create(unsigned char far *track_data);
 
 #endif

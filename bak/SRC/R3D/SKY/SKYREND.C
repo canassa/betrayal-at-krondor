@@ -23,8 +23,8 @@ short g_nClipLineX1;
 short g_nClipLineY1;
 short g_nHorizonRowY;
 
-static uchar skyrender_clip_outcode(int x, int y) {
-    byte outcode;
+static unsigned char skyrender_clip_outcode(int x, int y) {
+    unsigned char outcode;
 
     outcode = 0;
     if (x < g_graphics_context.clip.xmin) {
@@ -40,10 +40,10 @@ static uchar skyrender_clip_outcode(int x, int y) {
     return outcode;
 }
 
-static uchar skyrender_clip_line_cohen_suth(void) {
+static unsigned char skyrender_clip_line_cohen_suth(void) {
     short swapTmp;
-    byte outcode1;
-    byte outcode0;
+    unsigned char outcode1;
+    unsigned char outcode0;
 
     while (1) {
         outcode0 = skyrender_clip_outcode(g_nClipLineX0, g_nClipLineY0);
@@ -116,8 +116,8 @@ static void skyrender_sky_ground_bands(void) {
     short sSaveY0;
     short sSaveY1;
     int iTmp;
-    uint uScroll;
-    uint uQuad;
+    unsigned int uScroll;
+    unsigned int uQuad;
 
     if ((g_game_mode == 2) && (g_wInCombatMode == 0) && (g_engine_prefs->detail_level < 2)) {
         g_bTexturedPolyEnabled = 0;
@@ -174,7 +174,7 @@ static void skyrender_sky_ground_bands(void) {
     if (g_nClipLineY1 < g_graphics_context.clip.ymax) {
         if ((g_wZoneFlags & 2) != 0) {
             vgaplanar_fill_band(g_nClipLineY1, (g_graphics_context.clip.ymax - g_nClipLineY1) + 1,
-                                (uint)g_bZoneGroundColor);
+                                (unsigned int)g_bZoneGroundColor);
         } else {
             sky_draw_ground_band();
         }
@@ -183,17 +183,17 @@ static void skyrender_sky_ground_bands(void) {
     g_graphics_context.bClip_enabled = 1;
 
     if ((g_wZoneFlags & 1) != 0) {
-        vgaplanar_fill_band(g_nClipLineY0, g_nClipLineY1 - g_nClipLineY0, (uint)g_bZoneSkyColor);
+        vgaplanar_fill_band(g_nClipLineY0, g_nClipLineY1 - g_nClipLineY0, (unsigned int)g_bZoneSkyColor);
     } else if (g_engine_prefs->detail_level != 0) {
 
         uScroll = g_world_camera->base.orientation.yaw >> 6 & 0xff;
         uQuad = -g_world_camera->base.orientation.yaw - 1 >> 0xe & 3;
-        emsimg_putsprite_ems_swap((uint *)g_pSkyPanoAssetTable[uQuad], uScroll, g_nClipLineY0);
+        emsimg_putsprite_ems_swap((unsigned int *)g_pSkyPanoAssetTable[uQuad], uScroll, g_nClipLineY0);
         screen_cur_refr_during_long_op();
-        emsimg_putsprite_ems_swap((uint *)g_pSkyPanoAssetTable[uQuad + 1 & 3], uScroll + 0x100,
+        emsimg_putsprite_ems_swap((unsigned int *)g_pSkyPanoAssetTable[uQuad + 1 & 3], uScroll + 0x100,
                                   g_nClipLineY0);
         screen_cur_refr_during_long_op();
-        emsimg_putsprite_ems_swap((uint *)g_pSkyPanoAssetTable[uQuad - 1 & 3], uScroll + 0xff00,
+        emsimg_putsprite_ems_swap((unsigned int *)g_pSkyPanoAssetTable[uQuad - 1 & 3], uScroll + 0xff00,
                                   g_nClipLineY0);
         screen_cur_refr_during_long_op();
     } else {
@@ -251,9 +251,9 @@ static void skyrender_compute_horizon_line(void) {
     return;
 }
 
-void far skyrender_sky_and_ground(ushort sky_r, ushort sky_g, ushort sky_b, ushort cam_yaw,
-                                  ushort cam_pitch) {
-    uchar rejectMask;
+void far skyrender_sky_and_ground(unsigned short sky_r, unsigned short sky_g, unsigned short sky_b, unsigned short cam_yaw,
+                                  unsigned short cam_pitch) {
+    unsigned char rejectMask;
 
     g_bCurSkyColorR = sky_r;
     g_bCurSkyColorG = sky_g;

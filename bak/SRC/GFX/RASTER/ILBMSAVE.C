@@ -32,7 +32,7 @@ static void far ilbmsave_iff_fwrite_be(void *data, int count, int elem_size, FIL
 
 static void ilbmsave_write_cmap_chunk(FILE *stream) {
     int i;
-    uchar palette[768];
+    unsigned char palette[768];
     long sizeBe;
 
     fwrite("CMAP", 1, 4, stream);
@@ -49,10 +49,10 @@ static void ilbmsave_write_cmap_chunk(FILE *stream) {
 }
 
 static void far ilbmsave_write_body_chunk(FILE *stream) {
-    register uint *src;
+    register unsigned int *src;
     register int x;
     int y;
-    uchar *p;
+    unsigned char *p;
     long size_be;
 
     fwrite("BODY", 4, 1, stream);
@@ -62,13 +62,13 @@ static void far ilbmsave_write_body_chunk(FILE *stream) {
     src = malloc(0x280);
     y = 0;
     do {
-        p = (uchar *)src;
+        p = (unsigned char *)src;
         x = 0;
         do {
-            *p++ = (uchar)getpixel(x, y);
+            *p++ = (unsigned char)getpixel(x, y);
             x++;
         } while (x < 0x140);
-        ilbm_pack_row_to_planes(src, (uchar *)(src + 0xa0));
+        ilbm_pack_row_to_planes(src, (unsigned char *)(src + 0xa0));
         fwrite(src + 0xa0, 0x140, 1, stream);
         y++;
     } while (y < 200);

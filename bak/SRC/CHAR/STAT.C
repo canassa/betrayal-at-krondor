@@ -6,7 +6,7 @@
 #include "SRC/GAME/GSTATE.H"
 #include "SRC/SCREENS/ITEMTBL.H"
 
-void stat_apply_modifier(ushort *mod, int *stat) {
+void stat_apply_modifier(unsigned short *mod, int *stat) {
     if (((*mod & 0x100) == 0) || (g_wInCombatMode != 0)) {
         if (((*mod & 0x200) != 0) && (*(unsigned long *)(mod + 5) < g_gameState.game_time)) {
             *mod = 0;
@@ -55,16 +55,16 @@ ConditionInfo far g_aConditionInfo[7] = {
     {"Healing", -3, 1, {0, 0, 0, 0}},  {"Starving", 0, -2, {0, 0, 0, 0}},
     {"Near-death", 0, 0, {0, 0, 0, 0}}};
 
-uint stat_actor_get(CombatActor *actor, int stat_idx, int mode) {
-    uint value;
+unsigned int stat_actor_get(CombatActor *actor, int stat_idx, int mode) {
+    unsigned int value;
     int rowIdx;
-    uint n;
-    uint statMask;
-    ushort *modPtr;
+    unsigned int n;
+    unsigned int statMask;
+    unsigned short *modPtr;
     ConditionInfo far *cond;
     int rank;
-    uint ratio;
-    uint wMax;
+    unsigned int ratio;
+    unsigned int wMax;
     /* The local `a = actor` copy is the mechanism that forces `actor` into the
      * persistent DI register; `st` takes SI. Declaration order (st then a) fixes
      * SI/DI. */
@@ -77,10 +77,10 @@ uint stat_actor_get(CombatActor *actor, int stat_idx, int mode) {
         return stat_actor_get(a, 0, mode) + stat_actor_get(a, 1, mode);
     }
     if (mode == 3) {
-        return (uint)st->base;
+        return (unsigned int)st->base;
     }
     if (mode == 1) {
-        return (uint)st->max;
+        return (unsigned int)st->max;
     }
 
     value = (st->cached = st->base);
@@ -89,12 +89,12 @@ uint stat_actor_get(CombatActor *actor, int stat_idx, int mode) {
         if ((int)value < 0) {
             value = 0;
         }
-        st->cached = (uchar)value;
+        st->cached = (unsigned char)value;
     }
     if (a->cParty_slot != 0) {
-        statMask = 1 << (byte)stat_idx;
+        statMask = 1 << (unsigned char)stat_idx;
         n = 0;
-        modPtr = (ushort *)&g_gameState.aActorStatModifiers[rowIdx][0];
+        modPtr = (unsigned short *)&g_gameState.aActorStatModifiers[rowIdx][0];
         while ((int)n < 8) {
             if ((*modPtr != 0) && ((modPtr[1] & statMask) != 0)) {
                 stat_apply_modifier(modPtr, (int *)&value);
@@ -108,12 +108,12 @@ uint stat_actor_get(CombatActor *actor, int stat_idx, int mode) {
             if (0 < (rank = (char)g_gameState.abActorStatusRanks[rowIdx][n])) {
                 if ((cond->pExtra[0] & statMask) != 0) {
                     value =
-                        (uint)(((long)(int)value * ((long)(cond->pExtra[1] * rank) / 100 + 100)) /
+                        (unsigned int)(((long)(int)value * ((long)(cond->pExtra[1] * rank) / 100 + 100)) /
                                100);
                 }
                 if ((cond->pExtra[2] & statMask) != 0) {
                     value =
-                        (uint)(((long)(int)value * ((long)(cond->pExtra[3] * rank) / 100 + 100)) /
+                        (unsigned int)(((long)(int)value * ((long)(cond->pExtra[3] * rank) / 100 + 100)) /
                                100);
                 }
             }
@@ -122,10 +122,10 @@ uint stat_actor_get(CombatActor *actor, int stat_idx, int mode) {
         }
     }
     if (mode != 4) {
-        ratio = (uint)g_abStatRatio[stat_idx];
+        ratio = (unsigned int)g_abStatRatio[stat_idx];
         if (ratio != 0) {
-            n = (uint)a->stats[0].base;
-            wMax = (uint)a->stats->max;
+            n = (unsigned int)a->stats[0].base;
+            wMax = (unsigned int)a->stats->max;
             if (1 < (int)ratio) {
                 n = (int)(n + wMax * (ratio - 1)) / (int)ratio;
             }
@@ -139,32 +139,32 @@ uint stat_actor_get(CombatActor *actor, int stat_idx, int mode) {
     if (st->max == 0) {
         value = 0;
     }
-    if ((int)value < (int)(uint)g_abStatMin[stat_idx]) {
-        value = (uint)g_abStatMin[stat_idx];
+    if ((int)value < (int)(unsigned int)g_abStatMin[stat_idx]) {
+        value = (unsigned int)g_abStatMin[stat_idx];
     }
     if ((int)g_awStatMax[stat_idx] < (int)value) {
         value = g_awStatMax[stat_idx];
     }
-    st->cached = (uchar)((int)value > 0xfa ? 0xfa : value);
+    st->cached = (unsigned char)((int)value > 0xfa ? 0xfa : value);
     return value;
 }
 
-uint far stat_combatant_modify(CombatActor *actor, int stat_idx, long delta, int mode) {
+unsigned int far stat_combatant_modify(CombatActor *actor, int stat_idx, long delta, int mode) {
     StatSlot *slot;
     int origBase;
     int rowIdx;
-    uint sum;
-    uint uMaxSum;
+    unsigned int sum;
+    unsigned int uMaxSum;
 
     slot = actor->stats + stat_idx;
-    origBase = (uint)slot->base;
+    origBase = (unsigned int)slot->base;
     rowIdx = actor->cParty_slot + -1;
     if (stat_idx == 0x10) {
-        uint target;
+        unsigned int target;
         int rank;
-        sum = (uint)actor->stats[1].base + (uint)actor->stats[0].base;
-        uMaxSum = (uint)(actor->stats + 1)->max + (uint)actor->stats->max;
-        target = (uint)((long)(int)(mode * uMaxSum) / 100L);
+        sum = (unsigned int)actor->stats[1].base + (unsigned int)actor->stats[0].base;
+        uMaxSum = (unsigned int)(actor->stats + 1)->max + (unsigned int)actor->stats->max;
+        target = (unsigned int)((long)(int)(mode * uMaxSum) / 100L);
         if (actor->cParty_slot != 0) {
             rank = (char)g_gameState.abActorStatusRanks[rowIdx][6];
             if (rank != 0) {
@@ -187,12 +187,12 @@ uint far stat_combatant_modify(CombatActor *actor, int stat_idx, long delta, int
                 }
             }
         }
-        if ((int)(uint)actor->stats->max < (int)sum) {
-            actor->stats[1].base = (uchar)sum - actor->stats->max;
+        if ((int)(unsigned int)actor->stats->max < (int)sum) {
+            actor->stats[1].base = (unsigned char)sum - actor->stats->max;
             actor->stats[0].base = actor->stats->max;
         } else {
             actor->stats[1].base = 0;
-            actor->stats[0].base = (uchar)sum;
+            actor->stats[0].base = (unsigned char)sum;
         }
         return sum;
     }
@@ -201,9 +201,9 @@ uint far stat_combatant_modify(CombatActor *actor, int stat_idx, long delta, int
     }
     if (mode == 3) {
         int ratioVal;
-        ratioVal = (uint)g_abStatRatioBase[stat_idx] +
-                   (int)(((uint)g_abStatRatioMax[stat_idx] - (uint)g_abStatRatioBase[stat_idx]) *
-                         (uint)slot->base) /
+        ratioVal = (unsigned int)g_abStatRatioBase[stat_idx] +
+                   (int)(((unsigned int)g_abStatRatioMax[stat_idx] - (unsigned int)g_abStatRatioBase[stat_idx]) *
+                         (unsigned int)slot->base) /
                        100;
         if (ratioVal > 0) {
             delta = (delta == 0) ? (long)ratioVal : delta * ratioVal;
@@ -211,24 +211,24 @@ uint far stat_combatant_modify(CombatActor *actor, int stat_idx, long delta, int
             delta = 0;
         }
     } else if (mode == 2) {
-        delta = (int)(100 - (uint)slot->base) * delta;
+        delta = (int)(100 - (unsigned int)slot->base) * delta;
     } else if (mode == 1) {
-        delta = ((int)(uint)slot->base * delta) / 100;
+        delta = ((int)(unsigned int)slot->base * delta) / 100;
     }
 
     if ((actor->cParty_slot != 0) &&
         (gstate_event_read(SKILL_SELECTED(rowIdx * 0x11 + stat_idx)) != 0)) {
         delta += (delta * (short)g_gameState.aConditionTickAdvance[rowIdx]) / 0x34;
     }
-    delta += (int)(uint)slot->frac;
-    slot->frac = (uchar)(delta % 0x100);
+    delta += (int)(unsigned int)slot->frac;
+    slot->frac = (unsigned char)(delta % 0x100);
     /* Magnitude compare against the underflow amount. The inner nested ternary is
      * the abs()-macro expansion (x<0 ? (x==INT_MIN ? INT_MAX : -x) : x). When the
      * decrement would drop base below zero, base is pinned to 0 and control joins
      * the shared clamp/finalize tail below, skipping the normal base += (delta/0x100)
      * add. */
     if (delta / 0x100 < 0) {
-        if ((long)(ulong)slot->base <
+        if ((long)(unsigned long)slot->base <
             (delta / 0x100 < 0 ? (delta / 0x100 == -0x8000L ? 0x7fffL : -(delta / 0x100))
                                : delta / 0x100)) {
             slot->base = 0;
@@ -246,7 +246,7 @@ clamp_finalize:
     if (slot->max < slot->base) {
         slot->max = slot->base;
     }
-    if (((actor->cParty_slot != 0) && ((uint)slot->base != (uint)origBase)) && (stat_idx != 0x10)) {
+    if (((actor->cParty_slot != 0) && ((unsigned int)slot->base != (unsigned int)origBase)) && (stat_idx != 0x10)) {
         if ((1 < stat_idx) || (origBase < slot->base)) {
 
             gstate_event_write(SKILL_IMPROVED(rowIdx * 0x11 + stat_idx), 1);
@@ -255,13 +255,13 @@ clamp_finalize:
             g_gameState.bPartyDirtyFlags |= 1;
         }
     }
-    return (uint)slot->base;
+    return (unsigned int)slot->base;
 }
 
-uint far stat_party_find_extreme(int stat_id, int mode, short *result_out) {
+unsigned int far stat_party_find_extreme(int stat_id, int mode, short *result_out) {
     int member_idx;
-    uint cur_val;
-    uint extreme;
+    unsigned int cur_val;
+    unsigned int extreme;
     int i;
 
     if (stat_id == 0xf) {
@@ -301,7 +301,7 @@ void far stat_party_broadcast_status_op(int stat_idx, long delta, int mode) {
     }
 }
 
-uint stat_combatant_apply_delta(CombatActor *actor, int stat_idx, int amount) {
+unsigned int stat_combatant_apply_delta(CombatActor *actor, int stat_idx, int amount) {
     int slot_idx;
     int new_val;
     int old_val;
@@ -379,7 +379,7 @@ void far stat_modifier_table_insert(CombatActor *actor, ActorStatModifier *pNewM
     *pBest = *pNewMod;
 }
 
-void far stat_actor_clear_mods_mask(CombatActor *actor, ushort mask) {
+void far stat_actor_clear_mods_mask(CombatActor *actor, unsigned short mask) {
     int party_slot_idx;
     int i;
 
@@ -397,8 +397,8 @@ void far stat_actor_clear_mods_mask(CombatActor *actor, ushort mask) {
 
 int far stat_party_all_above_pct(int percent) {
     int memberIdx;
-    uint current;
-    uint max_val;
+    unsigned int current;
+    unsigned int max_val;
     int threshold;
     int i;
 

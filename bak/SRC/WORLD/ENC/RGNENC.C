@@ -118,23 +118,23 @@ void far rgnenc_savefile_init_35slot_tbl(void) {
     }
     for (i = 0; i < 0x28; i++) {
         g_wLastTempWriteRecordKind = 1;
-        gstate_temp_file_write_at((uchar far *)tbl,
-                                  (ulong)(unsigned)GAM_ENC_OBJ_STATE((unsigned)(i * 0x23)), 0x1a4);
+        gstate_temp_file_write_at((unsigned char far *)tbl,
+                                  (unsigned long)(unsigned)GAM_ENC_OBJ_STATE((unsigned)(i * 0x23)), 0x1a4);
     }
 }
 
 struct Type1BakRec {
-    byte hdr[2];
+    unsigned char hdr[2];
     long recId;
-    byte body[52];
+    unsigned char body[52];
     EncounterRecordTemplate tmpl;
     unsigned int flags;
 };
 
 struct Type7BakRec {
-    byte hdr[2];
+    unsigned char hdr[2];
     long recId;
-    byte body[62];
+    unsigned char body[62];
     EncounterRecordTemplate tmpl;
     unsigned int flags;
 };
@@ -154,8 +154,8 @@ void far rgnenc_load_encounter_actors(void) {
     int bPlace;
     unsigned short nShapeCount;
     unsigned short aShapeIds[1];
-    byte bZoneY;
-    byte bZoneX;
+    unsigned char bZoneY;
+    unsigned char bZoneX;
     struct Type1BakRec type1_rec;
     struct Type7BakRec type7_rec;
     short aActorSlots[7];
@@ -171,14 +171,14 @@ void far rgnenc_load_encounter_actors(void) {
 
     pEvt = hotspotevt_next_entry_19byte(1);
     pObjState = g_pEncounterObjectState;
-    nEncIdx = (uint)g_apCombat_zone_actor_lists[0]->bRef_pair_index * 0x23;
+    nEncIdx = (unsigned int)g_apCombat_zone_actor_lists[0]->bRef_pair_index * 0x23;
     nShapeCount = 0;
     g_nEncounter_record_count = g_nFixed_object_count = 0;
     czone_get_party_tile_xy(&bZoneY, &bZoneX);
-    nOriginX = (long)(int)(uint)bZoneY * 64000;
-    nOriginY = (long)(int)(uint)bZoneX * 64000;
-    gstate_temp_file_read_at((byte far *)g_pEncounterObjectState,
-                             (ulong)(unsigned)GAM_ENC_OBJ_STATE(nEncIdx), 0x1a4);
+    nOriginX = (long)(int)(unsigned int)bZoneY * 64000;
+    nOriginY = (long)(int)(unsigned int)bZoneX * 64000;
+    gstate_temp_file_read_at((unsigned char far *)g_pEncounterObjectState,
+                             (unsigned long)(unsigned)GAM_ENC_OBJ_STATE(nEncIdx), 0x1a4);
     if ((g_pEncounterObjectState->wKind_state & 0xff08) >> 8 == 0) {
         g_pEncounterObjectState->wKind_state = 0x100;
         while (pEvt != (ZoneHotspot *)0) {
@@ -190,12 +190,12 @@ void far rgnenc_load_encounter_actors(void) {
                     hotspotevt_bak_load_indexed_rec(7, &type7_rec, pEvt->dwDef_record_offset);
                     nRecordId = type7_rec.recId;
                 }
-                gstate_temp_file_read_at((byte far *)aActorSlots, GAM_ENC_ROSTER(nRecordId), 0xe);
+                gstate_temp_file_read_at((unsigned char far *)aActorSlots, GAM_ENC_ROSTER(nRecordId), 0xe);
                 j = 0;
                 while (j < 7) {
                     if (aActorSlots[j] != -1) {
                         gstate_temp_file_read_at(
-                            (byte far *)&inner, GAM_COMBAT_ACTOR_INNER((long)aActorSlots[j]), 0x16);
+                            (unsigned char far *)&inner, GAM_COMBAT_ACTOR_INNER((long)aActorSlots[j]), 0x16);
                         /* The flags byte is read through (int)(signed char)
                            so the compiler sign-extends it (MOV AL;CWDE) and TESTs
                            the word, rather than folding to a byte-ptr TEST. The
@@ -237,7 +237,7 @@ void far rgnenc_load_encounter_actors(void) {
                 pSlot = g_pFixed_object_entries + g_nFixed_object_count;
                 pObjState = g_pEncounterObjectState + nEncIdx * 7;
                 for (j = 0;
-                     g_nFixed_object_count < 0x23 && j < (int)(uint)pTmpl->pActors[0].kind && j < 7;
+                     g_nFixed_object_count < 0x23 && j < (int)(unsigned int)pTmpl->pActors[0].kind && j < 7;
                      pActorDelta += 0x18, pObjState++) {
                     unsigned int uKind = (pObjState->wKind_state & 0xff08) >> 8;
                     if (uKind == 4 || nFlags == 0) {
@@ -269,9 +269,9 @@ void far rgnenc_load_encounter_actors(void) {
                             pAux = pSlot->state.encounterAux;
                             k1 = 0;
                             while (k1 < 10) {
-                                *(byte *)pAux = 0xff;
+                                *(unsigned char *)pAux = 0xff;
                                 k1++;
-                                pAux = (EncounterActorAux *)((byte *)pAux + 1);
+                                pAux = (EncounterActorAux *)((unsigned char *)pAux + 1);
                             }
                             pSlot->state.encounterAux->nRecord_idx = g_nEncounter_record_count;
                             pSlot->state.encounterAux->nSlot_idx = j;
@@ -345,7 +345,7 @@ void far rgnenc_zone_rectr_save_objects(void) {
     EncounterObjectState table[35];
     EncounterObjectState *p;
     int i;
-    uint kind;
+    unsigned int kind;
 
     zone_rec = g_apCombat_zone_actor_lists[0]->bRef_pair_index * 0x23;
     pState_w = g_pEncounterObjectState;
@@ -377,7 +377,7 @@ void far rgnenc_zone_rectr_save_objects(void) {
             *p = empty1;
     }
     g_wLastTempWriteRecordKind = 1;
-    gstate_temp_file_write_at((uchar far *)table, (ulong)(unsigned)GAM_ENC_OBJ_STATE(zone_rec),
+    gstate_temp_file_write_at((unsigned char far *)table, (unsigned long)(unsigned)GAM_ENC_OBJ_STATE(zone_rec),
                               0x1a4);
 }
 
@@ -388,7 +388,7 @@ void far rgnenc_persist_zone_snapshot(void) {
     long party_y_off;
     int nFixedIdx;
     EncounterObjectState *pState;
-    uint kind;
+    unsigned int kind;
 
     record_base = g_apCombat_zone_actor_lists[0]->bRef_pair_index * 0x23;
     pCurEntry = g_pFixed_object_entries;
@@ -404,8 +404,8 @@ void far rgnenc_persist_zone_snapshot(void) {
         }
     }
     g_wLastTempWriteRecordKind = 1;
-    gstate_temp_file_write_at((uchar far *)g_pEncounterObjectState,
-                              (ulong)(unsigned)GAM_ENC_OBJ_STATE(record_base), 0x1a4);
+    gstate_temp_file_write_at((unsigned char far *)g_pEncounterObjectState,
+                              (unsigned long)(unsigned)GAM_ENC_OBJ_STATE(record_base), 0x1a4);
     g_nCombatTempZoneEncounterCount = g_nEncounter_record_count;
     g_bCombatTempZoneRefPair = g_apCombat_zone_actor_lists[0]->bRef_pair_index;
 }
@@ -418,16 +418,16 @@ int far rgnenc_persist_actor_placed(long record_id, int slot_index,
 
     for (nRecordIdx = 0; nRecordIdx < g_nCombatTempZoneEncounterCount; nRecordIdx++) {
         if (g_anEncounterRecordIds[nRecordIdx] == record_id) {
-            nFileIdx = (uint)g_bCombatTempZoneRefPair * 0x23 + nRecordIdx * 7 + slot_index;
+            nFileIdx = (unsigned int)g_bCombatTempZoneRefPair * 0x23 + nRecordIdx * 7 + slot_index;
             if (g_game_mode == 2)
-                gstate_temp_file_read_at((byte far *)&record,
-                                         (ulong)(unsigned)GAM_ENC_OBJ_STATE(nFileIdx), 0xc);
+                gstate_temp_file_read_at((unsigned char far *)&record,
+                                         (unsigned long)(unsigned)GAM_ENC_OBJ_STATE(nFileIdx), 0xc);
             else
                 record.pose = src_partial->pose;
             record.wKind_state = 0x400;
             g_wLastTempWriteRecordKind = 1;
-            gstate_temp_file_write_at((uchar far *)&record,
-                                      (ulong)(unsigned)GAM_ENC_OBJ_STATE(nFileIdx), 0xc);
+            gstate_temp_file_write_at((unsigned char far *)&record,
+                                      (unsigned long)(unsigned)GAM_ENC_OBJ_STATE(nFileIdx), 0xc);
             return 1;
         }
     }
@@ -441,13 +441,13 @@ int far rgnenc_persist_actor_removed(long record_id, int slot_index) {
 
     for (nRecordIdx = 0; nRecordIdx < g_nCombatTempZoneEncounterCount; nRecordIdx++) {
         if (g_anEncounterRecordIds[nRecordIdx] == record_id) {
-            nFileIdx = (uint)g_bCombatTempZoneRefPair * 0x23 + nRecordIdx * 7 + slot_index;
+            nFileIdx = (unsigned int)g_bCombatTempZoneRefPair * 0x23 + nRecordIdx * 7 + slot_index;
             removalRecord.pose.nWorld_x_offset = removalRecord.pose.nWorld_y_offset = 0;
             removalRecord.pose.nFacing = 0;
             removalRecord.wKind_state = 0x100;
             g_wLastTempWriteRecordKind = 1;
-            gstate_temp_file_write_at((uchar far *)&removalRecord,
-                                      (ulong)(unsigned)GAM_ENC_OBJ_STATE(nFileIdx), 0xc);
+            gstate_temp_file_write_at((unsigned char far *)&removalRecord,
+                                      (unsigned long)(unsigned)GAM_ENC_OBJ_STATE(nFileIdx), 0xc);
             return 1;
         }
     }
@@ -471,15 +471,15 @@ void far rgnenc_reset_and_save(void) {
         }
     }
     g_wLastTempWriteRecordKind = 1;
-    gstate_temp_file_write_at((uchar far *)g_pEncounterObjectState,
-                              (ulong)(unsigned)GAM_ENC_OBJ_STATE(record_base), 0x1a4);
+    gstate_temp_file_write_at((unsigned char far *)g_pEncounterObjectState,
+                              (unsigned long)(unsigned)GAM_ENC_OBJ_STATE(record_base), 0x1a4);
     rgnenc_load_encounter_actors();
 }
 
-void far rgnenc_mark_defended(ulong filter_encounter_id) {
+void far rgnenc_mark_defended(unsigned long filter_encounter_id) {
     int i, j, base;
-    ulong enc_id;
-    uint kind_hi;
+    unsigned long enc_id;
+    unsigned int kind_hi;
     int v;
     short actor_ids[7];
     CombatActorInner inner;
@@ -498,12 +498,12 @@ void far rgnenc_mark_defended(ulong filter_encounter_id) {
                 g_pEncounterObjectState[base + j].wKind_state = 0x400;
         }
 
-        gstate_temp_file_read_at((byte far *)actor_ids, GAM_ENC_ROSTER(enc_id), 0xe);
+        gstate_temp_file_read_at((unsigned char far *)actor_ids, GAM_ENC_ROSTER(enc_id), 0xe);
 
         for (j = 0; j < 7; j++) {
             if (actor_ids[j] == -1)
                 continue;
-            gstate_temp_file_read_at((byte far *)&inner, GAM_COMBAT_ACTOR_INNER((long)actor_ids[j]),
+            gstate_temp_file_read_at((unsigned char far *)&inner, GAM_COMBAT_ACTOR_INNER((long)actor_ids[j]),
                                      0x16);
             /* The flags byte is read through (int)(signed char)
                so the compiler sign-extends it (MOV AL;CWDE) and TESTs
@@ -514,16 +514,16 @@ void far rgnenc_mark_defended(ulong filter_encounter_id) {
                 continue;
             inner.flags |= CAF_DEAD;
             g_wLastTempWriteRecordKind = 3;
-            gstate_temp_file_write_at((uchar far *)&inner,
+            gstate_temp_file_write_at((unsigned char far *)&inner,
                                       GAM_COMBAT_ACTOR_INNER((long)actor_ids[j]), 0x16);
         }
     }
 }
 
-void far rgnenc_complete_consume(ulong encounter_id) {
+void far rgnenc_complete_consume(unsigned long encounter_id) {
     int hit_count;
     int bSearching;
-    ushort saved_match_idx;
+    unsigned short saved_match_idx;
     ZoneHotspot *sub_entry;
     int key_index;
 
@@ -776,7 +776,7 @@ void far rgnenc_world_objects_reset_spawn(void) {
     actorspawn_for_location_by_time((unsigned)g_gameState.nZoneId);
 }
 
-int far rgnenc_visible_pool_append_spawn(uchar far *pEntry) {
+int far rgnenc_visible_pool_append_spawn(unsigned char far *pEntry) {
     WorldObject far *cursor;
 
     if (g_nVisible_entry_count < 0x5d) {
@@ -798,7 +798,7 @@ int far rgnenc_visible_pool_append_spawn(uchar far *pEntry) {
     return 0;
 }
 
-void far rgnenc_vis_pool_remove_matching(uchar far *pKey) {
+void far rgnenc_vis_pool_remove_matching(unsigned char far *pKey) {
     int i;
     WorldObject far *cursor;
     WorldObject far *last;
@@ -832,7 +832,7 @@ int far rgnenc_chap_shp_init(void) {
     }
     g_pChapterShapeIds = galloc_safe_zcalloc(6);
     stream = bak_fopen("chap_shp.dat", "rb");
-    bak_fseek(stream, (ulong)((g_gameState.nChapter - 1) * 6), 1);
+    bak_fseek(stream, (unsigned long)((g_gameState.nChapter - 1) * 6), 1);
     bak_fread(g_pChapterShapeIds, 2, 3, stream);
     bak_fclose(stream);
     i = 0;

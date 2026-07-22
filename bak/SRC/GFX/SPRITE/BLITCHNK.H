@@ -3,7 +3,7 @@
 
 #include "structs.h"
 
-extern void blit_chunky(uchar far *src, int dst_x, int dst_y, int width_bytes, int height);
+extern void blit_chunky(unsigned char far *src, int dst_x, int dst_y, int width_bytes, int height);
 extern void blit_chunky_planar_4bit();
 
 #endif

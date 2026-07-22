@@ -6,7 +6,7 @@
 extern void adscript_set_dbb_if_202d_eq_0c(void);
 extern int adscript_resource_load(BakFileRef *file);
 extern int adscript_select_object(int id);
-extern short adscript_channel_dispatch_loop(ushort script_obj_id);
+extern short adscript_channel_dispatch_loop(unsigned short script_obj_id);
 extern void adscript_object_unload(int param_1);
 extern void adscript_renderer_reset(void);
 extern int adscript_run_then_apply_palette(int block_index);

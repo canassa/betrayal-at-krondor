@@ -139,12 +139,12 @@ int cbstat_char_bitmap_3w_test_170c(int char_idx, int bit_idx) {
     return result;
 }
 
-uint cbstat_actor_class_table_1802(CombatActor *actor) {
+unsigned int cbstat_actor_class_table_1802(CombatActor *actor) {
     return g_aClassCombatGroup[actor->inner->class_id];
 }
 
-int far cbstat_apply_proficiency_bonus(CombatActor *actor, int value, uint proficiency_mask) {
-    uint entry;
+int far cbstat_apply_proficiency_bonus(CombatActor *actor, int value, unsigned int proficiency_mask) {
+    unsigned int entry;
     entry = g_aClassProficiencyMask[actor->inner->class_id];
     if ((entry & proficiency_mask) != 0) {
         value = value + (value >> 1);
@@ -152,8 +152,8 @@ int far cbstat_apply_proficiency_bonus(CombatActor *actor, int value, uint profi
     return value;
 }
 
-int cbstat_apply_weakness_penalty(CombatActor *actor, int value, uint weakness_mask) {
-    uint entry;
+int cbstat_apply_weakness_penalty(CombatActor *actor, int value, unsigned int weakness_mask) {
+    unsigned int entry;
     entry = g_aClassWeaknessMask[actor->inner->class_id];
     if ((entry & weakness_mask) != 0) {
         value = value >> 1;
@@ -170,12 +170,12 @@ void far cbstat_apply_drain_tick(CombatActor *actor) {
     }
 }
 
-uint cbstat_armor_coverage_mask(CombatActor *combat_actor) {
+unsigned int cbstat_armor_coverage_mask(CombatActor *combat_actor) {
     Actor far *actor_record;
     ItemSlot far *slot;
     ItemRecord far *item_rec;
     int i;
-    uint mask;
+    unsigned int mask;
 
     mask = 0x580;
     actor_record = combat_actor->actor_record;
@@ -438,7 +438,7 @@ void cbstat_damage_equipped_items(CombatActor *actor, int category, int severity
     ItemRecord far *item_rec;
     int altcategory;
     int break_amount;
-    uint new_condition;
+    unsigned int new_condition;
     int i;
 
     actor_record = actor->actor_record;
@@ -455,7 +455,7 @@ void cbstat_damage_equipped_items(CombatActor *actor, int category, int severity
                 break_amount = (item_rec->nWeapon_break_amount > 1)
                                    ? RND(item_rec->nWeapon_break_amount - 1) + 1
                                    : 1;
-                new_condition = (uint)((ItemSlot far *)(&actor_record[1]))[i].condition -
+                new_condition = (unsigned int)((ItemSlot far *)(&actor_record[1]))[i].condition -
                                 (int)((long)(break_amount * severity) / 0x100L);
                 if ((item_rec->wCategory == 2) && (new_condition <= RND(0x32))) {
                     audio_play(0x43);
@@ -468,7 +468,7 @@ void cbstat_damage_equipped_items(CombatActor *actor, int category, int severity
                 if ((int)new_condition <= 0) {
                     ((ItemSlot far *)(&actor_record[1]))[i].flags |= 0x10;
                 }
-                ((ItemSlot far *)(&actor_record[1]))[i].condition = (uchar)new_condition;
+                ((ItemSlot far *)(&actor_record[1]))[i].condition = (unsigned char)new_condition;
             }
         }
         i++;
@@ -542,7 +542,7 @@ int far cbstat_magic_defense_bonus(CombatActor *actor) {
 
 int cbstat_to_hit_roll(CombatActor *attacker, CombatActor *target, int roll,
                        ItemRecord far *weapon_item) {
-    uint class_idx;
+    unsigned int class_idx;
     int table_acc;
     unsigned threshold;
     int defense;

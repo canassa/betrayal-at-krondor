@@ -17,15 +17,15 @@
 #include "SRC/WORLD/ZONE/CZONE.H"
 
 void far worldcross_dungeon_descent_anim(void) {
-    ushort probe_kind;
+    unsigned short probe_kind;
     int sfx_handle;
     int descent_steps;
     int waiting_for_key;
-    ulong probe_coord;
+    unsigned long probe_coord;
     long saved_z;
     WorldObject far *pFound;
     int i;
-    uint scancode;
+    unsigned int scancode;
 
     waiting_for_key = 0;
     if (g_game_mode == 2) {
@@ -167,7 +167,7 @@ void far worldcross_hotspot_use_rope(WorldHotspot *pHotspot) {
             saved_z = g_world_camera->base.pos.nWorld_z;
 
             if (g_world_camera->base.orientation.yaw != targetHeading) {
-                if ((uint)(targetHeading - g_world_camera->base.orientation.yaw) < 0x8000) {
+                if ((unsigned int)(targetHeading - g_world_camera->base.orientation.yaw) < 0x8000) {
                     worldmove_animate_hdg_tgt(2, targetHeading);
                 } else {
                     worldmove_animate_hdg_tgt(3, targetHeading);

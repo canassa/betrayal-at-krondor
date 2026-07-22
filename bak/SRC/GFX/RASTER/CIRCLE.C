@@ -31,15 +31,15 @@ void far draw_circle(int radius, int cx, int cy) {
 
 typedef void(near *NearPlotterFn)(int x, int y);
 
-ulong near draw_circle_bresenham(int radius, int cx, int cy) {
+unsigned long near draw_circle_bresenham(int radius, int cx, int cy) {
     register int x;
     register int r;
     int d;
-    ushort rows;
-    ushort far *p;
+    unsigned short rows;
+    unsigned short far *p;
 
     p = g_pSpanBufCursor =
-        (ushort far *)((long)(int)g_graphics_context_render.wSpanTableBufSeg << 16);
+        (unsigned short far *)((long)(int)g_graphics_context_render.wSpanTableBufSeg << 16);
     x = 0;
     r = radius;
     d = 3 - radius * 2;
@@ -73,13 +73,13 @@ ulong near draw_circle_bresenham(int radius, int cx, int cy) {
             r--;
         }
     }
-    return (ulong)p;
+    return (unsigned long)p;
 }
 
 void near record_circle_span(int dx, int dy) {
     int left;
     int right;
-    ushort far *p;
+    unsigned short far *p;
 
     left = (g_nCircleCenterX - dx) - (dx >> 1 >> 1 >> 1);
     right = g_nCircleCenterX + dx + (dx >> 1 >> 1 >> 1);

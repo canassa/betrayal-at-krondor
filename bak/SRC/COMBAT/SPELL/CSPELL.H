@@ -12,7 +12,7 @@ extern void cspell_apply_step_tile_spell(CombatActor *mover, int spell_id, int i
                                          int caster_class);
 extern void cspell_status_effect_clear_actor(CombatActor *actor);
 extern int cspell_status_effect_add(CombatActor *actor, int type, int source, int duration,
-                                    uchar flag);
+                                    unsigned char flag);
 extern void cspell_status_effect_remove(CombatActor *actor, int slot);
 extern int cspell_stat_effect_find_type(CombatActor *actor, int type);
 extern void cspell_tile_trap_trigger(CombatActor *actor);

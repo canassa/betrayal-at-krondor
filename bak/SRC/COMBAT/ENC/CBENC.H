@@ -28,7 +28,7 @@ extern int combatenc_compute_hit_chance(CombatActor *attacker, CombatActor *targ
                                         int quarrel_kind);
 extern int combatenc_skill_check_random(CombatActor *attacker, CombatActor *target, int base_skill,
                                         int quarrel_kind);
-extern void combatenc_ai_pick_target_by_role(CombatActor *actor, int max_distance, uint role_filter,
+extern void combatenc_ai_pick_target_by_role(CombatActor *actor, int max_distance, unsigned int role_filter,
                                              int min_party_clearance);
 extern int combatenc_actor_stat_above_table(int threshold_idx, CombatActor *actor);
 extern void combatenc_ai_run_turn(void);

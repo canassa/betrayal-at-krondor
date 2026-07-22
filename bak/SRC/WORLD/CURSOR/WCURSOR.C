@@ -190,7 +190,7 @@ void far wcursor_zone_loot_body(WorldHotspot *pHotspot) {
                                pHotspot->rect.y + pHotspot->rect.height / 2);
     if (menupage_state_0e7c() == 1) {
         actor_record =
-            actorspawn_objfixed((uint)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
+            actorspawn_objfixed((unsigned int)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
                                 pHotspot->pEntity->pos.xy.nWorld_y);
         if (actor_record == 0 || actor_record->bResidence != RES_ENCOUNTER) {
             dialog_play_record(0x9a, 1);
@@ -226,7 +226,7 @@ void far wcursor_zone_open_container(WorldHotspot *pHotspot) {
                                    pHotspot->rect.y + pHotspot->rect.height / 2);
         if (menupage_state_0e7c() == 1) {
             actor_record =
-                actorspawn_objfixed((uint)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
+                actorspawn_objfixed((unsigned int)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
                                     pHotspot->pEntity->pos.xy.nWorld_y);
             if (actor_record == 0 || (actor_record->bResidence != RES_BODY &&
                                       actor_record->bResidence != RES_SELF_SPAWN)) {
@@ -258,18 +258,18 @@ void far wcursor_click_fixedobj_full(WorldHotspot *pHotspot) {
     ActorSubrecord far *pSub2;
     ActorSubrecord far *pSub1;
     ActorSubrecord far *pSub8;
-    uchar bHotspot_x;
-    uchar bHotspot_y;
-    uchar bWarp_kind;
-    uchar bWarp_dest;
+    unsigned char bHotspot_x;
+    unsigned char bHotspot_y;
+    unsigned char bWarp_kind;
+    unsigned char bWarp_dest;
     int bGo;
     int bFlag1Clear;
-    ushort uEventFlag;
+    unsigned short uEventFlag;
 
     pos_x = pHotspot->pEntity->pos.xy.nWorld_x;
     pos_y = pHotspot->pEntity->pos.xy.nWorld_y;
     bGo = 1;
-    actor = actorspawn_objfixed((uint)g_gameState.nZoneId, pos_x, pos_y);
+    actor = actorspawn_objfixed((unsigned int)g_gameState.nZoneId, pos_x, pos_y);
     if (actor == 0 || actor->bResidence != RES_FIXED_OBJECT ||
         (pSub2 = actorrec_get_subrecord(actor, SUBREC_INTERACT_MSG)) == 0) {
         dialog_play_record(0x9aUL, 1);
@@ -277,8 +277,8 @@ void far wcursor_click_fixedobj_full(WorldHotspot *pHotspot) {
     }
     pSub8 = actorrec_get_subrecord(actor, SUBREC_HOTSPOT);
     if (pSub8 != 0 && pSub8->hotspot_action.bHas_hotspot != 0 &&
-        (pos_x / 64000L != (ulong)g_apCombat_zone_actor_lists[0]->bParty_x ||
-         pos_y / 64000L != (ulong)g_apCombat_zone_actor_lists[0]->bParty_y))
+        (pos_x / 64000L != (unsigned long)g_apCombat_zone_actor_lists[0]->bParty_x ||
+         pos_y / 64000L != (unsigned long)g_apCombat_zone_actor_lists[0]->bParty_y))
         goto cleanup;
 
     audio_play(0x30);
@@ -305,7 +305,7 @@ void far wcursor_click_fixedobj_full(WorldHotspot *pHotspot) {
             dialog_play_record(0x9aUL, 1);
             bGo = 0;
         }
-        actor = actorspawn_objfixed((uint)g_gameState.nZoneId, pos_x, pos_y);
+        actor = actorspawn_objfixed((unsigned int)g_gameState.nZoneId, pos_x, pos_y);
         pSub2 = actorrec_get_subrecord(actor, SUBREC_INTERACT_MSG);
         pSub8 = actorrec_get_subrecord(actor, SUBREC_HOTSPOT);
     }
@@ -381,7 +381,7 @@ void far wcursor_interact_container_event(WorldHotspot *pHotspot) {
     int bKind;
     Actor far *actor;
     ActorSubrec02_InteractMsg far *pMsg;
-    ulong dwRecord;
+    unsigned long dwRecord;
 
     dwRecord = 0;
     bKind = ts_get_shape(pHotspot->pEntity->shapeId)->kind;
@@ -447,8 +447,8 @@ void far wcursor_script_summon_actor(WorldHotspot *pHotspot) {
     Actor far *actor_record;
     ActorSubrecord far *pSub2;
     ActorSubrecord far *pSub8;
-    uint uAnim_state;
-    uint uFrame;
+    unsigned int uAnim_state;
+    unsigned int uFrame;
 
     uAnim_state = pHotspot->pEntity->state.animationState;
     audio_play(0x30);
@@ -458,7 +458,7 @@ void far wcursor_script_summon_actor(WorldHotspot *pHotspot) {
         goto cancel;
 
     actor_record =
-        actorspawn_objfixed((uint)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
+        actorspawn_objfixed((unsigned int)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
                             pHotspot->pEntity->pos.xy.nWorld_y);
     if (actor_record == 0 || actor_record->bResidence != RES_FIXED_OBJECT ||
         (pSub2 = actorrec_get_subrecord(actor_record, SUBREC_INTERACT_MSG)) == 0 ||
@@ -523,11 +523,11 @@ void far wcursor_click_inn_or_lock_npc(WorldHotspot *pHotspot) {
     int sfx_handle;
     short member_idx;
     int stat_val;
-    ulong deferred_msg;
+    unsigned long deferred_msg;
     ActorSubrecord far *pHotspotRec;
 
     int frame;
-    uint interact_kind;
+    unsigned int interact_kind;
 
     bRunProx = 1;
     bHandled = 0;
@@ -539,7 +539,7 @@ void far wcursor_click_inn_or_lock_npc(WorldHotspot *pHotspot) {
     dialog_viewport_clip_point(pHotspot->rect.x + pHotspot->rect.width / 2,
                                pHotspot->rect.y + pHotspot->rect.height / 2);
 
-    pActor = actorspawn_objfixed((uint)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
+    pActor = actorspawn_objfixed((unsigned int)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
                                  pHotspot->pEntity->pos.xy.nWorld_y);
 
     if (pActor == 0 ||
@@ -571,7 +571,7 @@ void far wcursor_click_inn_or_lock_npc(WorldHotspot *pHotspot) {
                 if (dialog_play_record(0xbe, 1) == 0) {
                     stat_val = stat_party_find_extreme(0xd, 0, &member_idx);
                     g_gameState.nEvtArgActor0 = member_idx;
-                    if ((int)(uint)pInteract->interact_msg.bFlags < (int)(uint)stat_val) {
+                    if ((int)(unsigned int)pInteract->interact_msg.bFlags < (int)(unsigned int)stat_val) {
                         dialog_play_record(0xbf, 1);
                         *((unsigned char far *)&pInteract->interact_msg.dwMessage_id + 1) = 0;
                         pActor->needsFlush = TRUE;
@@ -594,10 +594,10 @@ void far wcursor_click_inn_or_lock_npc(WorldHotspot *pHotspot) {
 
         case 1:
             bHandled =
-                cipher_dial_puzzle_run((uint)(unsigned char)pInteract->interact_msg.dwMessage_id);
+                cipher_dial_puzzle_run((unsigned int)(unsigned char)pInteract->interact_msg.dwMessage_id);
             break;
         case 2:
-            picklock_screen_run((uint)pInteract->interact_msg.bFlags, 0, pActor);
+            picklock_screen_run((unsigned int)pInteract->interact_msg.bFlags, 0, pActor);
             break;
         case 3:
             dialog_play_record(0xc2, 1);
@@ -664,7 +664,7 @@ void far wcursor_click_inn_or_lock_npc(WorldHotspot *pHotspot) {
                 dialog_play_record(0xc0, 1);
                 stat_party_broadcast_status_op(
                     0x10,
-                    -(long)((ulong) *
+                    -(long)((unsigned long) *
                                 ((unsigned char far *)&pInteract->interact_msg.dwMessage_id + 1)
                             << 8),
                     100);
@@ -712,7 +712,7 @@ void far wcursor_click_fixedobj_examine(WorldHotspot *hotspot) {
     if (menupage_state_0e7c() != 1)
         goto cancel;
 
-    actor_record = actorspawn_objfixed((uint)g_gameState.nZoneId, hotspot->pEntity->pos.xy.nWorld_x,
+    actor_record = actorspawn_objfixed((unsigned int)g_gameState.nZoneId, hotspot->pEntity->pos.xy.nWorld_x,
                                        hotspot->pEntity->pos.xy.nWorld_y);
     if (actor_record == 0 || actor_record->bResidence != RES_FIXED_OBJECT ||
         (pSubrec = actorrec_get_subrecord(actor_record, SUBREC_INTERACT_MSG)) == 0 ||
@@ -752,7 +752,7 @@ void far wcursor_click_fixedobj(WorldHotspot *pHotspot) {
         goto cancel;
 
     actor_record =
-        actorspawn_objfixed((uint)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
+        actorspawn_objfixed((unsigned int)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
                             pHotspot->pEntity->pos.xy.nWorld_y);
     if (actor_record == 0 || actor_record->bResidence != RES_FIXED_OBJECT) {
         dialog_play_record(0x9aUL, 1);
@@ -775,8 +775,8 @@ cancel:
 }
 
 int far wcursor_object_toggle_open_close(WorldHotspot *pHotspot) {
-    uint state_word;
-    uint id;
+    unsigned int state_word;
+    unsigned int id;
     int yaw_lock;
     int i;
 
@@ -788,7 +788,7 @@ int far wcursor_object_toggle_open_close(WorldHotspot *pHotspot) {
     if (state_word == 0)
         return;
 
-    if (gstate_event_read((ushort)DOOR_OPEN(id)) != 0) {
+    if (gstate_event_read((unsigned short)DOOR_OPEN(id)) != 0) {
 
         if (i != 0) {
             dialog_viewport_clip_point(pHotspot->rect.x + pHotspot->rect.width / 2,
@@ -806,7 +806,7 @@ int far wcursor_object_toggle_open_close(WorldHotspot *pHotspot) {
         }
         screen_cursor_show_busy();
         audio_sfx_register_pair_38_39();
-        gstate_event_write((ushort)DOOR_OPEN(id), 0);
+        gstate_event_write((unsigned short)DOOR_OPEN(id), 0);
         state_word &= 0xf7ff;
         audio_play(0x26);
         for (i = 7; i >= 0; i--) {
@@ -830,7 +830,7 @@ int far wcursor_object_toggle_open_close(WorldHotspot *pHotspot) {
             return;
         screen_cursor_show_busy();
         audio_sfx_register_pair_38_39();
-        gstate_event_write((ushort)DOOR_OPEN(id), 1);
+        gstate_event_write((unsigned short)DOOR_OPEN(id), 1);
         state_word |= 0x800;
         audio_play(0x26);
         i = 0;
@@ -856,9 +856,9 @@ void far wcursor_click_npc_or_trap(WorldHotspot *pHotspot) {
     int extra;
 
     if (pHotspot->pEntity->pos.xy.nWorld_x / 64000L !=
-            (ulong)g_apCombat_zone_actor_lists[0]->bParty_x ||
+            (unsigned long)g_apCombat_zone_actor_lists[0]->bParty_x ||
         pHotspot->pEntity->pos.xy.nWorld_y / 64000L !=
-            (ulong)g_apCombat_zone_actor_lists[0]->bParty_y)
+            (unsigned long)g_apCombat_zone_actor_lists[0]->bParty_y)
         return;
 
     audio_play(0x30);
@@ -868,7 +868,7 @@ void far wcursor_click_npc_or_trap(WorldHotspot *pHotspot) {
         goto cancel;
 
     actor_record =
-        actorspawn_objfixed((uint)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
+        actorspawn_objfixed((unsigned int)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
                             pHotspot->pEntity->pos.xy.nWorld_y);
     if (actor_record != 0 && actor_record->bResidence == RES_FIXED_OBJECT) {
         if ((pSub08 = actorrec_get_subrecord(actor_record, SUBREC_HOTSPOT)) == 0 ||
@@ -920,7 +920,7 @@ void far wcursor_click_door_or_secret(WorldHotspot *pHotspot) {
     pos_x = pHotspot->pEntity->pos.xy.nWorld_x;
     pos_y = pHotspot->pEntity->pos.xy.nWorld_y;
     bShouldConsume = 1;
-    actor_record = actorspawn_objfixed((uint)g_gameState.nZoneId, pos_x, pos_y);
+    actor_record = actorspawn_objfixed((unsigned int)g_gameState.nZoneId, pos_x, pos_y);
     if (actor_record == 0 || actor_record->bResidence != RES_FIXED_OBJECT ||
         (pSub02 = actorrec_get_subrecord(actor_record, SUBREC_INTERACT_MSG)) == 0 ||
         pSub02->interact_msg.dwMessage_id == 0) {
@@ -929,8 +929,8 @@ void far wcursor_click_door_or_secret(WorldHotspot *pHotspot) {
                (pSub02->interact_msg.bFlags & 8) != 0) {
         pSub08 = actorrec_get_subrecord(actor_record, SUBREC_HOTSPOT);
         if (pSub08 == 0 || pSub08->hotspot_action.bHas_hotspot == 0 ||
-            (pos_x / 64000L == (ulong)g_apCombat_zone_actor_lists[0]->bParty_x &&
-             pos_y / 64000L == (ulong)g_apCombat_zone_actor_lists[0]->bParty_y)) {
+            (pos_x / 64000L == (unsigned long)g_apCombat_zone_actor_lists[0]->bParty_x &&
+             pos_y / 64000L == (unsigned long)g_apCombat_zone_actor_lists[0]->bParty_y)) {
             audio_play(0x30);
             dialog_viewport_clip_point(pHotspot->rect.x + pHotspot->rect.width / 2,
                                        pHotspot->rect.y + pHotspot->rect.height / 2);
@@ -950,7 +950,7 @@ void far wcursor_click_door_or_secret(WorldHotspot *pHotspot) {
                                 bShouldConsume = 0;
                             }
                             actor_record =
-                                actorspawn_objfixed((uint)g_gameState.nZoneId, pos_x, pos_y);
+                                actorspawn_objfixed((unsigned int)g_gameState.nZoneId, pos_x, pos_y);
                             pSub02 = actorrec_get_subrecord(actor_record, SUBREC_INTERACT_MSG);
                         }
                         if (bShouldConsume) {
@@ -996,7 +996,7 @@ void far wcursor_click_fixedobj_picklock(WorldHotspot *hotspot) {
                                hotspot->rect.y + hotspot->rect.height / 2);
     if (menupage_state_0e7c() == 1) {
         actor_record =
-            actorspawn_objfixed((uint)g_gameState.nZoneId, hotspot->pEntity->pos.xy.nWorld_x,
+            actorspawn_objfixed((unsigned int)g_gameState.nZoneId, hotspot->pEntity->pos.xy.nWorld_x,
                                 hotspot->pEntity->pos.xy.nWorld_y);
         if (actor_record != 0 && actor_record->bResidence == RES_FIXED_OBJECT &&
             (pSubrec1 = actorrec_get_subrecord(actor_record, SUBREC_PARAMS)) != 0) {
@@ -1100,7 +1100,7 @@ void far wcursor_click_dig_or_use_shovel(WorldHotspot *pHotspot) {
         goto cancel;
 
     actor_record =
-        actorspawn_objfixed((uint)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
+        actorspawn_objfixed((unsigned int)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
                             pHotspot->pEntity->pos.xy.nWorld_y);
     if (actor_record == 0 ||
         (actor_record->bResidence != RES_FIXED_OBJECT &&
@@ -1151,7 +1151,7 @@ void far wcursor_click_body(WorldHotspot *pHotspot) {
                                pHotspot->rect.y + pHotspot->rect.height / 2);
     if (menupage_state_0e7c() != 1)
         goto play_b6;
-    pActor = actorspawn_objfixed((uint)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
+    pActor = actorspawn_objfixed((unsigned int)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
                                  pHotspot->pEntity->pos.xy.nWorld_y);
     if (pActor == (Actor far *)0 || pActor->bResidence != RES_FIXED_OBJECT ||
         (pSubrec = actorrec_get_subrecord(pActor, SUBREC_INTERACT_MSG)) ==
@@ -1207,7 +1207,7 @@ void far wcursor_fixedobj_examine_var_a(WorldHotspot *pHotspot) {
     if (menupage_state_0e7c() != 1)
         goto not_zone;
 
-    actor = actorspawn_objfixed((uint)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
+    actor = actorspawn_objfixed((unsigned int)g_gameState.nZoneId, pHotspot->pEntity->pos.xy.nWorld_x,
                                 pHotspot->pEntity->pos.xy.nWorld_y);
     if (actor == 0 || actor->bResidence != RES_FIXED_OBJECT ||
         (pSubrec = actorrec_get_subrecord(actor, SUBREC_INTERACT_MSG)) == 0 ||
@@ -1336,10 +1336,10 @@ void far wcursor_encounter_hint(WorldHotspot *pHotspot, int nSlot) {
             goto lbl_dispatch;
         if (!hotspotevt_trap_gates_pass(nSlot / 7))
             return;
-        gstate_temp_file_read_at((byte far *)&last_time, GAM_ENC_VISITED_TIME(record_id), 4);
+        gstate_temp_file_read_at((unsigned char far *)&last_time, GAM_ENC_VISITED_TIME(record_id), 4);
         if ((last_time == 0) || ((g_gameState.game_time - last_time) / 0xa8c0 >= 1)) {
             g_wLastTempWriteRecordKind = 1;
-            gstate_temp_file_write_at((uchar far *)&g_gameState.game_time,
+            gstate_temp_file_write_at((unsigned char far *)&g_gameState.game_time,
                                       GAM_ENC_VISITED_TIME(record_id), 4);
             dialog_play_record(0xfbUL, 1);
             return;

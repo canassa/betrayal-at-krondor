@@ -1,7 +1,7 @@
 #include "globals.h"
 #include "SRC/AUDIO/SFX/SFXFIND.H"
 
-AudioTrackHandle far *sfx_find_active(uchar far *track_data) {
+AudioTrackHandle far *sfx_find_active(unsigned char far *track_data) {
     int i;
 
     for (i = 0; i < 7; i++) {

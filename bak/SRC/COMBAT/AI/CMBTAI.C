@@ -39,7 +39,7 @@ static void far combataipath_rng_atk_tmp_tile(CombatActor *actor, int x, int y) 
     AnimBuf10 animBuf;
     CombatActor savedActor;
     CombatActorInner savedInner;
-    ushort action_id;
+    unsigned short action_id;
     int direction;
 
     hit = 1;
@@ -62,7 +62,7 @@ static void far combataipath_rng_atk_tmp_tile(CombatActor *actor, int x, int y) 
     world_rndr_ranged_attack_anim(actor, &savedActor, &hit, action_id, 100, animBuf.b[0]);
     actor->inner->grid_x = savedInner.grid_x;
     actor->inner->grid_y = savedInner.grid_y;
-    combatgrid_tile_set_word(savedInner.grid_x, savedInner.grid_y, (uint)actor);
+    combatgrid_tile_set_word(savedInner.grid_x, savedInner.grid_y, (unsigned int)actor);
     return;
 }
 
@@ -70,7 +70,7 @@ static void combataipath_resolv_blockd_diag(int x, int y, int *dx, int *dy) {
     if ((*dx != 0) && (*dy != 0)) {
         if (combatgrid_tile_walkable_kind(x + *dx, y, -1) != 0) {
             if (combatgrid_tile_walkable_kind(x, y + *dy, -1) != 0) {
-                if (combatgrid_find_cmbt_at_tile((uchar)((char)x + (char)*dx), (uchar)y) != 0) {
+                if (combatgrid_find_cmbt_at_tile((unsigned char)((char)x + (char)*dx), (unsigned char)y) != 0) {
                     *dx = 0;
                 } else {
                     *dy = 0;
@@ -189,7 +189,7 @@ int far combataipath_actor_walk_path(CombatActor *actor, int ranged) {
     int result;
     int savedX;
     int savedY;
-    uint uTerrain;
+    unsigned int uTerrain;
 
     result = 1;
     if (ranged != 0) {
@@ -359,11 +359,11 @@ void combataipath_select_target(CombatActor *actor, int max_dist, int target_mod
                         actor->inner->target = &g_pCombatActiveActors[di];
                         if (combatgrid_tile_is_blocked(approachX, tile_y) == 0 ||
                             (actor->inner->grid_x == approachX && actor->inner->grid_y == tile_y)) {
-                            actor->inner->pad_6[0] = (uchar)approachX;
-                            actor->inner->pad_6[1] = (uchar)tile_y;
+                            actor->inner->pad_6[0] = (unsigned char)approachX;
+                            actor->inner->pad_6[1] = (unsigned char)tile_y;
                         } else {
-                            actor->inner->pad_6[0] = (uchar)tile_x;
-                            actor->inner->pad_6[1] = (uchar)approachY;
+                            actor->inner->pad_6[0] = (unsigned char)tile_x;
+                            actor->inner->pad_6[1] = (unsigned char)approachY;
                         }
                     }
                 }

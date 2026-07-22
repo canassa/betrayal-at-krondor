@@ -209,7 +209,7 @@ void far combat_arena_actor_poison_tick(CombatActor *actor) {
 
 void far combat_arena_actor_die(CombatActor *actor, int play_anim) {
     int slot;
-    uint type;
+    unsigned int type;
     int timer;
     int i;
     int removed;
@@ -255,7 +255,7 @@ void far combat_arena_actor_die(CombatActor *actor, int play_anim) {
         case 23:
 
             actor->inner->dmg_value = '\0';
-            actor->inner->dmg_frames_left = (uchar)RND(7) + 4;
+            actor->inner->dmg_frames_left = (unsigned char)RND(7) + 4;
         }
     LAB_600f_0468:
         combatgrid_set_tile_effect(actor->inner->grid_x, actor->inner->grid_y, type, timer);
@@ -314,7 +314,7 @@ int far combat_arena_all_targets_immune(void) {
 #pragma option -Ol
 
 void far combat_arena_apply_damage(CombatActor *actor, int damage, int apply_magic_defense,
-                                   int knockback, uint flags, int source_type) {
+                                   int knockback, unsigned int flags, int source_type) {
     int iBonus;
     int savedDamage;
     int effectSlot;
@@ -354,11 +354,11 @@ void far combat_arena_apply_damage(CombatActor *actor, int damage, int apply_mag
         if ((damage != 0) && ((flags & 1) != 0)) {
             cbstat_apply_drain_tick(actor);
         }
-        if ((int)(uint)actor->stats[1].base < damage) {
+        if ((int)(unsigned int)actor->stats[1].base < damage) {
             savedDamage = damage;
             damage -= actor->stats[1].base;
             actor->stats[1].base = '\0';
-            if ((int)(uint)actor->stats[0].base < damage) {
+            if ((int)(unsigned int)actor->stats[0].base < damage) {
                 actor->stats[0].base = '\0';
             } else {
                 actor->stats[0].base = actor->stats[0].base - (char)damage;
@@ -369,7 +369,7 @@ void far combat_arena_apply_damage(CombatActor *actor, int damage, int apply_mag
         }
         if (damage != 0 && knockback != 0) {
             actor->inner->flags |= CAF_KNOCKBACK;
-            actor->inner->knockback_value = (uchar)knockback;
+            actor->inner->knockback_value = (unsigned char)knockback;
             actor->inner->knockback_timer = '\x02';
 
             if (damage < 1000) {
@@ -397,7 +397,7 @@ void far combat_arena_apply_damage(CombatActor *actor, int damage, int apply_mag
         if ((flags & 0x20) != 0) {
             cspell_flash_actor_status_effect(actor, 0xd);
         }
-        if ((uchar)actor->stats[0].base <= 0) {
+        if ((unsigned char)actor->stats[0].base <= 0) {
             combat_arena_actor_die(actor, 1);
             actor->inner->flags &= ~CAF_FLEE;
         }
@@ -455,7 +455,7 @@ void far combat_arena_splash_dmg_near(CombatActor *source_actor, int damage) {
 
 void far combat_arena_melee_attack(CombatActor *attacker, CombatActor *defender, int damage) {
     int hit;
-    uint armorMask;
+    unsigned int armorMask;
     ItemRecord far *weapon_item;
 
     if ((defender->inner->flags & CAF_DEAD) == 0) {
@@ -565,7 +565,7 @@ void far combat_arena_resolve_melee_swing(CombatActor *attacker, CombatActor *de
                                           int damage) {
     int hit;
     int sound_id;
-    uint flags;
+    unsigned int flags;
     ItemRecord far *weapon_item;
 
     if ((defender->inner->flags & CAF_DEAD) == 0) {
@@ -653,14 +653,14 @@ void far combat_arena_resolve_melee_swing(CombatActor *attacker, CombatActor *de
     return;
 }
 
-ushort combat_arena_anim_tbl_lookup_2d(int row, int col) {
+unsigned short combat_arena_anim_tbl_lookup_2d(int row, int col) {
     return g_pTerrainBackupGrid[row][col];
 }
 
 static void far combat_arena_burn_terr_cutsc(void) {
     int bDone;
     int y, x;
-    ushort duration;
+    unsigned short duration;
     int i;
     GridCombatant *pGcmbt;
 
@@ -759,7 +759,7 @@ static void far combat_arena_burn_terr_cutsc(void) {
 static void far combat_arena_burn_type31_cutsc(void) {
     int bDone;
     int y, x, i;
-    uint tile;
+    unsigned int tile;
     CombatActor *saved_actor;
 
     bDone = 0;
@@ -882,7 +882,7 @@ static void far combat_arena_shootmenu_init(void) {
     return;
 }
 
-static int far combat_arena_menu_find_item_page(ushort item_id) {
+static int far combat_arena_menu_find_item_page(unsigned short item_id) {
     int i;
 
     for (i = 0; i < (int)g_shoot_menu->wEntry_count; i++) {
@@ -1284,11 +1284,11 @@ static void far combat_arena_menu_refr_avail(CombatActor *actor) {
         switch (entry->wAction_id) {
         case 0x1f:
             entry->bActive_flag = combatenc_show_missile_stat_row(actor);
-            entry->wEnable_gate = (uint)(!entry->bActive_flag);
+            entry->wEnable_gate = (unsigned int)(!entry->bActive_flag);
             break;
         case 0x2e:
             entry->bActive_flag = combatenc_actor_can_cast_spells(actor, 1);
-            entry->wEnable_gate = (uint)(!entry->bActive_flag);
+            entry->wEnable_gate = (unsigned int)(!entry->bActive_flag);
             break;
         case 0xe:
             entry->bActive_flag = (combatenc_show_missile_stat_row(actor) == 0) &&
@@ -1439,7 +1439,7 @@ static void far combat_arena_wait_confirm_canc_2(CombatActor *target, int quarre
     } while (combat_arena_wait_confirm_cancel() != 0);
 }
 
-void combat_arena_actor_set_anim_pose(CombatActor *actor, uchar frame) {
+void combat_arena_actor_set_anim_pose(CombatActor *actor, unsigned char frame) {
     actor->inner->flags |= CAF_KNOCKBACK;
     actor->inner->knockback_timer = 2;
     actor->inner->knockback_value = frame;
@@ -1530,10 +1530,10 @@ static void combat_arena_menu_entry_flags(void) {
 
 static void far combat_arena_turn_loop(void) {
     int b_done;
-    ushort menu_sel;
+    unsigned short menu_sel;
     int b_bail;
     int alive_count;
-    uint menu_result;
+    unsigned int menu_result;
 
     b_done = 0;
     alive_count = 1;
@@ -1655,9 +1655,9 @@ static void far combat_arena_view_rstr_disp(int param) {
     }
 }
 
-static uint far combat_arena_pick_target_actor(int requires_action_pred) {
-    ushort menuRedraw;
-    uint menuResult;
+static unsigned int far combat_arena_pick_target_actor(int requires_action_pred) {
+    unsigned short menuRedraw;
+    unsigned int menuResult;
     int done;
     int adjacent;
     CombatActor *target;
@@ -1699,7 +1699,7 @@ static uint far combat_arena_pick_target_actor(int requires_action_pred) {
             done = 1;
         }
     }
-    return (uint)target;
+    return (unsigned int)target;
 }
 
 void far combat_arena_resume_dispatch(int command_id, int *p_spell_result, int *out_spell_result) {
@@ -1878,10 +1878,10 @@ void far combat_arena_show_message_by_id(int message_id, unsigned short *p_menu,
                                          int *p_param4, int *p_param5, int *p_spell_result,
                                          int *p_spell_out, int *p_param8, MenuPage **p_menu_slot,
                                          int *p_param10, int *p_param11) {
-    uint is_preview;
+    unsigned int is_preview;
 
     if (message_id != 0) {
-        is_preview = (uint)(menupage_state_0e7c() == 2);
+        is_preview = (unsigned int)(menupage_state_0e7c() == 2);
     }
     switch (message_id) {
     case 2:
@@ -1889,56 +1889,56 @@ void far combat_arena_show_message_by_id(int message_id, unsigned short *p_menu,
             dialog_play_record(0xfe, 1);
             return;
         }
-        (g_current_actor)->inner->pad_e[4] = (uchar)(*p_menu = 0);
+        (g_current_actor)->inner->pad_e[4] = (unsigned char)(*p_menu = 0);
         return;
     case 3:
         if (is_preview != 0) {
             dialog_play_record(0xff, 1);
             return;
         }
-        (g_current_actor)->inner->pad_e[4] = (uchar)(*p_menu = 1);
+        (g_current_actor)->inner->pad_e[4] = (unsigned char)(*p_menu = 1);
         return;
     case 4:
         if (is_preview != 0) {
             dialog_play_record(0x100, 1);
             return;
         }
-        (g_current_actor)->inner->pad_e[4] = (uchar)(*p_menu = 2);
+        (g_current_actor)->inner->pad_e[4] = (unsigned char)(*p_menu = 2);
         return;
     case 5:
         if (is_preview != 0) {
             dialog_play_record(0x101, 1);
             return;
         }
-        (g_current_actor)->inner->pad_e[4] = (uchar)(*p_menu = 3);
+        (g_current_actor)->inner->pad_e[4] = (unsigned char)(*p_menu = 3);
         return;
     case 6:
         if (is_preview != 0) {
             dialog_play_record(0x102, 1);
             return;
         }
-        (g_current_actor)->inner->pad_e[4] = (uchar)(*p_menu = 4);
+        (g_current_actor)->inner->pad_e[4] = (unsigned char)(*p_menu = 4);
         return;
     case 8:
         if (is_preview != 0) {
             dialog_play_record(0x103, 1);
             return;
         }
-        (g_current_actor)->inner->pad_e[4] = (uchar)(*p_menu = 5);
+        (g_current_actor)->inner->pad_e[4] = (unsigned char)(*p_menu = 5);
         return;
     case 9:
         if (is_preview != 0) {
             dialog_play_record(0x104, 1);
             return;
         }
-        (g_current_actor)->inner->pad_e[4] = (uchar)(*p_menu = 6);
+        (g_current_actor)->inner->pad_e[4] = (unsigned char)(*p_menu = 6);
         return;
     case 7:
         if (is_preview != 0) {
             dialog_play_record(0x105, 1);
             return;
         }
-        (g_current_actor)->inner->pad_e[4] = (uchar)(*p_menu = 7);
+        (g_current_actor)->inner->pad_e[4] = (unsigned char)(*p_menu = 7);
         return;
     case 50:
         if (is_preview != 0) {
@@ -2146,15 +2146,15 @@ CombatActor *combat_arena_disp_spell_action(int *param_1, int *param_2, int *par
                         break;
                     goto validate_common;
                 case 8:
-                    combatant = combatgrid_find_cmbt_at_tile((uchar)g_cursor_tile_x,
-                                                             (uchar)g_cursor_tile_y);
+                    combatant = combatgrid_find_cmbt_at_tile((unsigned char)g_cursor_tile_x,
+                                                             (unsigned char)g_cursor_tile_y);
                     if (combatant == (GridCombatant *)0x0 ||
                         (combatant->paged_id != 7 && combatant->paged_id != 8))
                         break;
                     goto validate_common;
                 case 5:
                 case 6:
-                    if (combatgrid_tile_is_blocked((uchar)g_cursor_tile_x, (uchar)g_cursor_tile_y))
+                    if (combatgrid_tile_is_blocked((unsigned char)g_cursor_tile_x, (unsigned char)g_cursor_tile_y))
                         break;
                     goto validate_common;
                 }
@@ -2196,7 +2196,7 @@ validate_common:
     return actor;
 }
 
-void far combat_arena_turn_actor_inact(uint *p_far_offset, int *p_turn_done, int *p_hud_state,
+void far combat_arena_turn_actor_inact(unsigned int *p_far_offset, int *p_turn_done, int *p_hud_state,
                                        int *p_ai_flag) {
     *p_far_offset = 0xffff;
     combat_arena_advance_turn();
@@ -2384,13 +2384,13 @@ void far combat_arena_actor_turn_loop(int encounter_id, int *p_status, int b_has
     CombatActor *cursorTarget;
     MenuPage *menu;
     int hudState;
-    ushort menuConsumed;
-    uint menuResult;
+    unsigned short menuConsumed;
+    unsigned int menuResult;
     int done;
     int allowed;
     int moveDist;
-    uint stateA;
-    uint stateB;
+    unsigned int stateA;
+    unsigned int stateB;
     int turnInact;
     int spellRecId;
     int castArg;

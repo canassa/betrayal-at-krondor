@@ -38,7 +38,7 @@
  *            allocation failure. In query mode, the largest-free-block size in
  *            bytes reinterpreted as the far-pointer return value.
  */
-extern void far *alloc_far(ulong size, long flags);
+extern void far *alloc_far(unsigned long size, long flags);
 
 /**
  * @brief Release a block obtained from @ref alloc_far back to DOS (INT 21h AH=49h).

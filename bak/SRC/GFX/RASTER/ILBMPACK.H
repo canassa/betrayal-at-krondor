@@ -3,6 +3,6 @@
 
 #include "structs.h"
 
-extern void ilbm_pack_row_to_planes(uint *src, uchar *dst);
+extern void ilbm_pack_row_to_planes(unsigned int *src, unsigned char *dst);
 
 #endif

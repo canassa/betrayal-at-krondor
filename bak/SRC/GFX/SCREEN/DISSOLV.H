@@ -3,6 +3,6 @@
 
 #include "structs.h"
 
-extern ushort dissolve_transition_lfsr(int origin_x, int origin_y, uint width, uint height);
+extern unsigned short dissolve_transition_lfsr(int origin_x, int origin_y, unsigned int width, unsigned int height);
 
 #endif

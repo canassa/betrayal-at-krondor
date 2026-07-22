@@ -128,7 +128,7 @@ char *g_pChapDatFilename = "CHAPx.DAT";
 
 void far savegame_chapter_start_dispatch(int chapter) {
     PlayerSpawnRecord spawn_rec;
-    ulong round_time;
+    unsigned long round_time;
     long saved_gold;
     Actor far *actor_ptr;
     Actor far *src_actor;
@@ -145,8 +145,8 @@ void far savegame_chapter_start_dispatch(int chapter) {
 
     if (chapter > 1) {
         g_wLastTempWriteRecordKind = 1;
-        gstate_temp_file_write_at((uchar *)&g_gameState.nParty_gold,
-                                  (ulong)(uint)((chapter - 1) * 4 + 0x12f7), 4);
+        gstate_temp_file_write_at((unsigned char *)&g_gameState.nParty_gold,
+                                  (unsigned long)(unsigned int)((chapter - 1) * 4 + 0x12f7), 4);
     }
 
     g_pChapDatFilename[4] = (char)chapter + '0';
@@ -183,7 +183,7 @@ void far savegame_chapter_start_dispatch(int chapter) {
         itemuse_actor_spawn_clone_inv(g_gameState.party_members[CHR_GORATH].actor_record, 0xc,
                                       0xaa820L, 0xaa1e0L);
         for (i = 1; i <= 2; i++) {
-            actor_ptr = (Actor far *)((uchar far *)g_gameState.party_members[i].actor_record +
+            actor_ptr = (Actor far *)((unsigned char far *)g_gameState.party_members[i].actor_record +
                                       sizeof(Actor));
             ((ItemSlot far *)actor_ptr)->item_id = 0x54;
             ((ItemSlot far *)actor_ptr)->condition = 0x06;
@@ -198,7 +198,7 @@ void far savegame_chapter_start_dispatch(int chapter) {
     case 5:
         actor_ptr = actorspawn_objfixed(0, 10L, 0L);
         g_gameState.party_members[CHR_LOCKLEAR].actor_record->itemCount = actor_ptr->itemCount;
-        for (i = 0; i < (int)(uint)actor_ptr->itemCount; i++) {
+        for (i = 0; i < (int)(unsigned int)actor_ptr->itemCount; i++) {
             ACTOR_ITEM(g_gameState.party_members[CHR_LOCKLEAR].actor_record, i) =
                 ACTOR_ITEM(actor_ptr, i);
         }
@@ -217,8 +217,8 @@ void far savegame_chapter_start_dispatch(int chapter) {
 
     case 7:
     case 8:
-        gstate_temp_file_read_at((byte *)&g_gameState.nParty_gold,
-                                 (ulong)(uint)((chapter - 2) * 4 + 0x12f7), 4);
+        gstate_temp_file_read_at((unsigned char *)&g_gameState.nParty_gold,
+                                 (unsigned long)(unsigned int)((chapter - 2) * 4 + 0x12f7), 4);
         break;
     }
 

@@ -45,7 +45,7 @@ extern void combat_actor_draw_stats_panel(CombatActor *actor);
 extern int combat_actor_calc_weapon_damage(CombatActor *actor, int kind);
 extern int combat_actor_melee_approach(CombatActor *attacker, CombatActor *defender);
 extern void combat_actor_refresh_all_stats(void);
-extern uint combat_actor_terr_under_cur(void);
+extern unsigned int combat_actor_terr_under_cur(void);
 extern int combat_actor_cur_tile_block(void);
 extern int combat_actor_cursor_distance(CombatActor *actor);
 extern int combat_actor_stat_percent(CombatActor *actor, int with_modifier);
@@ -61,7 +61,7 @@ extern int combat_actor_is_visible(CombatActor *actor);
 extern ImageRecord **combat_actor_bnames_load_cached(int class_id, int col);
 extern int combat_actor_find_by_id(int class_id);
 extern void combat_actor_apply_render_table(CombatActor *actor);
-extern void combat_actor_anim_step(uchar *anim_state_buf, CombatActor *actor);
+extern void combat_actor_anim_step(unsigned char *anim_state_buf, CombatActor *actor);
 extern void combat_actor_draw_float_damage(CombatActor *actor);
 extern void combat_actor_tile_entry_effect(int tile_x, int tile_y, int *p_status, int do_apply,
                                            int extra_flag);

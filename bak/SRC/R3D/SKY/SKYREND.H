@@ -3,7 +3,7 @@
 
 #include "structs.h"
 
-extern void skyrender_sky_and_ground(ushort sky_r, ushort sky_g, ushort sky_b, ushort cam_yaw,
-                                     ushort cam_pitch);
+extern void skyrender_sky_and_ground(unsigned short sky_r, unsigned short sky_g, unsigned short sky_b, unsigned short cam_yaw,
+                                     unsigned short cam_pitch);
 
 #endif

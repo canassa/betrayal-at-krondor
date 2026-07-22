@@ -83,11 +83,11 @@ void invui_inspect_images_load_once(int load_lock_images) {
                 i++;
             } while (i < count);
         }
-        g_pCursorSaveBufActive = g_pCursorSaveBufA = (uchar far *)alloc_far((long)maxSize, 0L);
-        g_pCursorSaveBufB = (uchar far *)alloc_far((long)maxSize, 0L);
+        g_pCursorSaveBufActive = g_pCursorSaveBufA = (unsigned char far *)alloc_far((long)maxSize, 0L);
+        g_pCursorSaveBufB = (unsigned char far *)alloc_far((long)maxSize, 0L);
         i = 0;
         do {
-            g_abCursorPaletteLut[i] = (uchar)i;
+            g_abCursorPaletteLut[i] = (unsigned char)i;
             i++;
 
         } while (i < 0x100);
@@ -96,12 +96,12 @@ void invui_inspect_images_load_once(int load_lock_images) {
 
 ImageRecord *invui_item_sprite_select(ItemSlot far *slot) {
     ItemRecord far *pItem;
-    uint uIdx;
+    unsigned int uIdx;
     ImageRecord *pSprite;
     int i;
 
-    pItem = itemtbl_record_ptr_by_id((uint)slot->item_id);
-    uIdx = pItem->wUnk_30 != 0 ? pItem->wUnk_30 : (uint)slot->item_id;
+    pItem = itemtbl_record_ptr_by_id((unsigned int)slot->item_id);
+    uIdx = pItem->wUnk_30 != 0 ? pItem->wUnk_30 : (unsigned int)slot->item_id;
     pSprite = (int)uIdx < 0x78 ? g_pInvSpriteLoAssetTable[uIdx]
                                : g_pInvSpriteHiAssetTable[(int)uIdx - 0x78];
     for (i = 0x88; i <= 0x8f; i++) {
@@ -163,10 +163,10 @@ void invui_draw_text_aligned_shadow(char far *text, int x, int y, int align, int
         x -= font_text_pixel_width(text) / 2;
     }
     if (shadow_color >= -1) {
-        g_graphics_context.bText_fg_color = shadow_color >= 0 ? (uchar)shadow_color : 0;
+        g_graphics_context.bText_fg_color = shadow_color >= 0 ? (unsigned char)shadow_color : 0;
         font_draw_text_far(text, x + 1, y + 1);
     }
-    g_graphics_context.bText_fg_color = fg_color >= 0 ? (uchar)fg_color : (uchar)0x9f;
+    g_graphics_context.bText_fg_color = fg_color >= 0 ? (unsigned char)fg_color : (unsigned char)0x9f;
     font_draw_text_far(text, x, y);
     return;
 }
@@ -247,7 +247,7 @@ void far invui_cur_spr_paint_ctrd(ImageRecord *sprite, int mode) {
     if (sprite != (ImageRecord *)0) {
         g_graphics_context.wGfxBlitDstPage = g_graphics_context.wVgaPage2Base;
         g_pCursorSaveBufActive =
-            ((uchar huge *)g_pCursorSaveBufActive == (uchar huge *)g_pCursorSaveBufA)
+            ((unsigned char huge *)g_pCursorSaveBufActive == (unsigned char huge *)g_pCursorSaveBufA)
                 ? g_pCursorSaveBufB
                 : g_pCursorSaveBufA;
         if (g_nCursorSaveRectX >= 0) {
@@ -589,7 +589,7 @@ static void far invui_animate_item_fly(ImageRecord *image, int src_x, int src_y,
                                        image->nWidth, image->nHeight);
         }
         g_pCursorSaveBufActive =
-            ((uchar huge *)g_pCursorSaveBufActive == (uchar huge *)g_pCursorSaveBufA)
+            ((unsigned char huge *)g_pCursorSaveBufActive == (unsigned char huge *)g_pCursorSaveBufA)
                 ? g_pCursorSaveBufB
                 : g_pCursorSaveBufA;
         if (prev_x != -999) {
@@ -605,7 +605,7 @@ static void far invui_animate_item_fly(ImageRecord *image, int src_x, int src_y,
 
 int far invui_handle_item_drag(MenuPage *page, Actor far *actor, int selected_slot,
                                int *p_selected_slot) {
-    ushort consumed;
+    unsigned short consumed;
     int target_slot;
     int equip_portrait;
     int item_cat;
@@ -616,7 +616,7 @@ int far invui_handle_item_drag(MenuPage *page, Actor far *actor, int selected_sl
     int init_cx;
     int init_cy;
     int dragging;
-    uint is_shop;
+    unsigned int is_shop;
     int old_sel;
     ItemSlot far *item_ptr;
     MenuEntry *focused;
@@ -797,7 +797,7 @@ int far invui_handle_item_drag(MenuPage *page, Actor far *actor, int selected_sl
     } else {
         ItemSlot far *src_item;
         ItemSlot far *dst_item;
-        uint cat;
+        unsigned int cat;
         if (selected_slot == 0 || !dragging || hovered == 0 || hovered->wAction_id < 0x80)
             return 0;
         src_item = ACTOR_ITEMS(actor) + (focused->wAction_id - 0x80);

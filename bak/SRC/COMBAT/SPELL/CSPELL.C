@@ -69,7 +69,7 @@ short *g_pSpellSymbolY;
 void cspell_subsystem_load(void) {
     BakFile *f;
     int i;
-    uint blobLen;
+    unsigned int blobLen;
     int docCount;
 
     if (g_wInCombatMode == 0) {
@@ -151,7 +151,7 @@ int cspell_status_effect_alloc_slot(void) {
     return -1;
 }
 
-int cspell_status_effect_add(CombatActor *actor, int type, int source, int duration, uchar flag) {
+int cspell_status_effect_add(CombatActor *actor, int type, int source, int duration, unsigned char flag) {
     short slot;
 
     slot = actor->inner->status_head;
@@ -396,8 +396,8 @@ static void cspell_actor_walk_steps(CombatActor *caster, CombatActor *target, in
 
 void cspell_apply_hit_at(CombatActor *caster, CombatActor **target_ptr, int src_id, int *dst_ptr,
                          int magnitude, int spell_kind, int knockback) {
-    ushort animKind;
-    ushort knockbackVal;
+    unsigned short animKind;
+    unsigned short knockbackVal;
     int burstSpread;
 
     g_nVfxParticleColor = src_id;
@@ -662,7 +662,7 @@ void far cspell_perform_ranged_hit(CombatActor *param_1, CombatActor *param_2, i
 void far cspell_select_target_tile(void) {
     int tile_chosen;
     int tile_in_range;
-    ushort consumed;
+    unsigned short consumed;
 
     tile_chosen = 0;
     while (!tile_chosen) {
@@ -700,8 +700,8 @@ void far cspell_summon_monster(int monster_type, int prompt_for_tile) {
             cspell_select_target_tile();
         }
         audio_play(0x3a);
-        in->grid_x = (uchar)g_cursor_tile_x;
-        in->grid_y = (uchar)g_cursor_tile_y;
+        in->grid_x = (unsigned char)g_cursor_tile_x;
+        in->grid_y = (unsigned char)g_cursor_tile_y;
         in->status_head = -1;
         in->flags = CAF_AI_SUMMON;
         in->class_id = monster_type;
@@ -712,7 +712,7 @@ void far cspell_summon_monster(int monster_type, int prompt_for_tile) {
         actor->pSpellsKnown[1] = 0;
         actor->pSpellsKnown[2] = 0;
         monstat_roll_stats_from_file(actor);
-        combatgrid_tile_set_word(in->grid_x, in->grid_y, (uint)actor);
+        combatgrid_tile_set_word(in->grid_x, in->grid_y, (unsigned int)actor);
         combat_actor_anim0_if_not_dead(actor, 0);
     }
 }
@@ -728,8 +728,8 @@ static void far cspell_summon_actor(CombatActor *param_1, int param_2) {
     tmpActor.inner = &tmpInner;
     cspell_select_target_tile();
     slot = cspell_status_effect_alloc_slot();
-    tmpInner.grid_x = (uchar)g_cursor_tile_x;
-    tmpInner.grid_y = (uchar)g_cursor_tile_y;
+    tmpInner.grid_x = (unsigned char)g_cursor_tile_x;
+    tmpInner.grid_y = (unsigned char)g_cursor_tile_y;
     tmpInner.status_head = slot;
     g_pStatusEffectPool[slot].nType = 1;
     g_pStatusEffectPool[slot].nDuration_or_hp = param_2;
@@ -747,7 +747,7 @@ static void far cspell_summon_actor(CombatActor *param_1, int param_2) {
     actor->stats[0].base = '\x01';
     actor->stats[1].base = '\x01';
     combat_actor_anim0_if_not_dead(actor, 0);
-    combatgrid_tile_set_word(tmpInner.grid_x, tmpInner.grid_y, (uint)actor);
+    combatgrid_tile_set_word(tmpInner.grid_x, tmpInner.grid_y, (unsigned int)actor);
 }
 
 void cspell_actor_walk_with_sound(CombatActor *actor, CombatActor *target) {
@@ -992,7 +992,7 @@ static void far cspell_aoe_storm_damage_all(CombatActor *caster, CombatActor *ta
 }
 
 void far cspell_tile_trap_trigger(CombatActor *actor) {
-    uint damage;
+    unsigned int damage;
     int slot;
 
     audio_play(0x1d);
@@ -1029,7 +1029,7 @@ void cspell_try_add_status_effect(CombatActor *actor, int stat_idx, int value) {
     int i;
     int isNew;
     ActorStatModifier newMod;
-    ushort *mod;
+    unsigned short *mod;
 
     slotIdx = actor->cParty_slot - 1;
 
@@ -1040,7 +1040,7 @@ void cspell_try_add_status_effect(CombatActor *actor, int stat_idx, int value) {
     newMod.payload.dwTExpiry = g_gameState.game_time << 1;
     i = 0;
     isNew = 1;
-    mod = (ushort *)&g_gameState.aActorStatModifiers[slotIdx];
+    mod = (unsigned short *)&g_gameState.aActorStatModifiers[slotIdx];
     for (; i < 8;) {
         stat_apply_modifier(mod, &applyOut);
         if (*mod != 0 && mod[1] == newMod.payload.wStatMask && *mod != 0x100) {
@@ -1058,7 +1058,7 @@ static void cspell_steal_item_from_target(CombatActor *attacker, CombatActor *ta
     int i;
     ItemSlot far *stolen;
     int hit;
-    uint prevCount;
+    unsigned int prevCount;
     int scratch;
 
     stolen = (ItemSlot far *)0;
@@ -1072,7 +1072,7 @@ static void cspell_steal_item_from_target(CombatActor *attacker, CombatActor *ta
         }
     }
     cmbinv_actor_inv_remove_item(attacker->actor_record, stolen);
-    prevCount = (uint)target->actor_record->itemCount;
+    prevCount = (unsigned int)target->actor_record->itemCount;
     combat_arena_suspend_char_screen(target, &scratch, &scratch);
     if (target->actor_record->itemCount != prevCount) {
         world_rndr_ranged_attack_anim(target, attacker, &hit, 5, 0x78, -1);
@@ -1114,8 +1114,8 @@ void far cspell_apply_step_tile_spell(CombatActor *mover, int spell_id, int inte
         castStub.actor_record = (Actor far *)0x0L;
         castInner.class_id = caster_class;
         castInner.flags = CAF_DEAD;
-        castInner.grid_x = (uchar)g_nCombatTileX;
-        castInner.grid_y = (uchar)g_nCombatTileY;
+        castInner.grid_x = (unsigned char)g_nCombatTileX;
+        castInner.grid_y = (unsigned char)g_nCombatTileY;
         cspell_resolve_cast(&castStub, mover, spell_id, -intensity);
     }
     return;
@@ -1170,7 +1170,7 @@ void cspell_apply_damage_with_recoil(CombatActor *attacker, CombatActor *target,
                                      int damage) {
     if (cbstat_char_bitmap_3w_test(target->inner->class_id, spell_id) == 0) {
         audio_play(0x3f);
-        if ((target->inner->class_id == 0x36) && ((int)(uint)target->stats[3].base <= damage)) {
+        if ((target->inner->class_id == 0x36) && ((int)(unsigned int)target->stats[3].base <= damage)) {
             combat_arena_actor_die(target, 1);
         } else {
             if ((int)stat_actor_get(target, 3, 0) < damage) {
@@ -1271,7 +1271,7 @@ void cspell_resolve_cast(CombatActor *caster, CombatActor *target, int spell_id,
 
     magnitude = cspell_compute_effect_magnitude(target, intensity, spell_id);
 
-    switch ((uint)(pSpell->nEffect_subkind - 1)) {
+    switch ((unsigned int)(pSpell->nEffect_subkind - 1)) {
     case 0:
         if (spell_id == 5 && combatenc_actor_has_spell_1or4(target) == 0) {
             pSpell = 0;
@@ -1294,7 +1294,7 @@ void cspell_resolve_cast(CombatActor *caster, CombatActor *target, int spell_id,
                 duration++;
             }
             cspell_status_effect_add(target, spell_id, intensity, duration,
-                                     (uchar)pSpell->nEffect_sprite_id);
+                                     (unsigned char)pSpell->nEffect_sprite_id);
         }
         break;
     case 3:
@@ -1409,7 +1409,7 @@ void cspell_resolve_cast(CombatActor *caster, CombatActor *target, int spell_id,
             case 0x24:
                 audio_play(0x4d);
                 cspell_status_effect_add(target, 0xd, 0, intensity * pSpell->nEffect_param,
-                                         (uchar)pSpell->nEffect_sprite_id);
+                                         (unsigned char)pSpell->nEffect_sprite_id);
                 break;
             case 4:
                 if (fromTileStep == 0) {
@@ -1702,10 +1702,10 @@ static void cspell_symbol_resources_free(void) {
 static void far cspell_draw_spr_path_5th_off(int sprite_idx, int start, int end, int mark_5th) {
     for (; start < end; start++) {
         if (mark_5th && (start + 1) % 5 == 0) {
-            emsimg_map_then_call_180c((uint *)g_pCastfaceSpriteTable[sprite_idx + 2],
+            emsimg_map_then_call_180c((unsigned int *)g_pCastfaceSpriteTable[sprite_idx + 2],
                                       g_pSpellSymbolX[start] - 1, g_pSpellSymbolY[start] - 1, 0);
         } else {
-            emsimg_map_then_call_180c((uint *)g_pCastfaceSpriteTable[sprite_idx],
+            emsimg_map_then_call_180c((unsigned int *)g_pCastfaceSpriteTable[sprite_idx],
                                       g_pSpellSymbolX[start] - 1, g_pSpellSymbolY[start] - 1, 0);
         }
     }
@@ -1940,16 +1940,16 @@ static void far cspell_select_power(int *out_result, int spell_index, int hotspo
     int baseCost;
     int done;
     int idx;
-    uint power;
+    unsigned int power;
 
     done = 0;
     maxPower = g_pSpellDefs[spell_index].nCost_max;
     baseCost = g_pSpellDefs[spell_index].nCost;
     power = stat_actor_get(actor, 0x10, 0);
     if (itemtbl_inv_count_by_kind(actor->actor_record, 1) != 0 && g_gameState.nChapter == 8) {
-        for (idx = 0; idx < (int)(uint)actor->actor_record->itemCount; idx = idx + 1) {
+        for (idx = 0; idx < (int)(unsigned int)actor->actor_record->itemCount; idx = idx + 1) {
             if (ACTOR_ITEM(actor->actor_record, idx).item_id == 1) {
-                uint cond = (uint)ACTOR_ITEM(actor->actor_record, idx).condition;
+                unsigned int cond = (unsigned int)ACTOR_ITEM(actor->actor_record, idx).condition;
                 if ((int)power > (int)cond) {
                     power = cond;
                 }
@@ -2353,8 +2353,8 @@ close:
 #pragma option -O-l
 void cspell_tick_damage_terrain(void) {
     int x, y;
-    register uint field;
-    register uint actor;
+    register unsigned int field;
+    register unsigned int actor;
 
     for (x = 0; x < 8; x++) {
         for (y = 0; y < 13; y++) {

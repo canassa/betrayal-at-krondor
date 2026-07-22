@@ -100,7 +100,7 @@ ImageRecord *worldrender_paged_array_get(int index) {
     return 0;
 }
 
-int *worldrender_mesh_vertex_to_world(uchar idx, int *out_vec3) {
+int *worldrender_mesh_vertex_to_world(unsigned char idx, int *out_vec3) {
     struct {
         Vec3Short far *vp;
         short vx;
@@ -248,17 +248,17 @@ void worldrender_sprite_billboard(unsigned char far *entry) {
 }
 
 void worldrender_textured_quad_lod(int texture_index, int *xs, int *ys) {
-    uint *pHandle;
+    unsigned int *pHandle;
     unsigned long lDist;
     int spriteBank;
 
     spriteBank = g_shapeTables[g_abR3dState.nCurModelIdx].spriteBank;
 
     if (spriteBank == -1) {
-        pHandle = (uint *)worldrender_paged_array_get(texture_index);
+        pHandle = (unsigned int *)worldrender_paged_array_get(texture_index);
     } else {
         if (texture_index >= 0 && g_spriteBanks[spriteBank].nCount > texture_index) {
-            pHandle = (uint *)g_spriteBanks[spriteBank].imageRecord[texture_index];
+            pHandle = (unsigned int *)g_spriteBanks[spriteBank].imageRecord[texture_index];
         } else {
             pHandle = 0;
         }

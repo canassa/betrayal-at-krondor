@@ -426,7 +426,7 @@ void proxscan_paged_list_dispatch(VisibleEntryList *list, long *party_pos) {
     if (i < count) {
         do {
             prec = ts_get_shape(entry_ptr->shapeId);
-            switch ((uint)prec->kind) {
+            switch ((unsigned int)prec->kind) {
             case 0x06:
             case 0x0a:
             case 0x11:
@@ -462,7 +462,7 @@ void proxscan_paged_dispatch_by_type(long *p_coords) {
     if (i < g_nVisible_entry_count) {
         do {
             prec = ts_get_shape(entry_ptr->shapeId);
-            switch ((uint)prec->kind) {
+            switch ((unsigned int)prec->kind) {
             case 6:
             case 10:
             case 17:

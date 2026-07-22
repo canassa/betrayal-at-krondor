@@ -3,7 +3,7 @@
 
 #include "structs.h"
 
-extern void decomp_lzss(uchar far *dst, int remaining, void *inbuf, int buf_size, BakFile *fp);
-extern void decomp_rle(uchar far *dst, int refill_count, int buf_ptr, int buf_size, BakFile *fp);
+extern void decomp_lzss(unsigned char far *dst, int remaining, void *inbuf, int buf_size, BakFile *fp);
+extern void decomp_rle(unsigned char far *dst, int refill_count, int buf_ptr, int buf_size, BakFile *fp);
 
 #endif

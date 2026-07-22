@@ -22,12 +22,12 @@ extern void anim_script_pause_all_chans(int script_object_id);
 extern void anim_script_delete_all_channels(int script_object_id);
 extern int anim_script_has_channel(int channel_id);
 extern void anim_script_reset_all_objects(void);
-extern ScriptAnimNode *anim_script_find_object(ushort wTag, ushort wIdB);
+extern ScriptAnimNode *anim_script_find_object(unsigned short wTag, unsigned short wIdB);
 extern int far *anim_script_combat_resolve_loop(int far *script_pc);
 extern int anim_script_find_channel(int channel_id);
-extern ushort far *anim_script_channel_step(ushort far *script_pc);
-extern ushort far *anim_script_dispatch_opcode(ushort far *script_pc);
-extern int anim_script_iter_next_object(uint *out_id);
-extern void anim_script_iter_first_object(uint *out_id);
+extern unsigned short far *anim_script_channel_step(unsigned short far *script_pc);
+extern unsigned short far *anim_script_dispatch_opcode(unsigned short far *script_pc);
+extern int anim_script_iter_next_object(unsigned int *out_id);
+extern void anim_script_iter_first_object(unsigned int *out_id);
 
 #endif

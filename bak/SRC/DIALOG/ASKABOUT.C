@@ -92,7 +92,7 @@ void askabout_free_paged_image_table(void) {
     return;
 }
 
-int far askabout_actor_spr_cache_get(ushort actor_id, int pal_shift) {
+int far askabout_actor_spr_cache_get(unsigned short actor_id, int pal_shift) {
     int slot;
     int free_slot;
     char fname[16];
@@ -113,13 +113,13 @@ int far askabout_actor_spr_cache_get(ushort actor_id, int pal_shift) {
     if ((int)actor_id < 0x31) {
         sprintf(fname, "ACT%03d%s", (int)actor_id, (pal_shift < 0) ? "A.BMP" : ".BMP");
         g_pActSpriteCache->pActorId[free_slot] = actor_id;
-        g_pActSpriteCache->pAssetTable[free_slot] = (ushort)resblit_load_asset_table(fname, 2);
+        g_pActSpriteCache->pAssetTable[free_slot] = (unsigned short)resblit_load_asset_table(fname, 2);
         sprintf(fname, "ACT%03d.PAL", (int)actor_id);
         g_pActSpriteCache->pChunk[free_slot] = chunk_load_into_slot(fname);
         *g_pActSpriteCache->pChunk[free_slot] = 0x3f;
     } else {
         g_pActSpriteCache->pAssetTable[free_slot] = 0;
-        g_pActSpriteCache->pChunk[free_slot] = (uchar far *)0;
+        g_pActSpriteCache->pChunk[free_slot] = (unsigned char far *)0;
     }
     return free_slot;
 }
@@ -130,12 +130,12 @@ typedef struct {
     unsigned char b;
 } PalEntry;
 
-void far askabout_actor_spr_blit_pal_swap(ushort actor_id, int pal_shift, int frame_idx,
-                                          uchar far *pal_buf) {
+void far askabout_actor_spr_blit_pal_swap(unsigned short actor_id, int pal_shift, int frame_idx,
+                                          unsigned char far *pal_buf) {
     int x;
     int y;
-    uchar far *local_pal;
-    uchar far *chunk_pal;
+    unsigned char far *local_pal;
+    unsigned char far *chunk_pal;
     ImageRecord **table;
     int i;
     int idx;
@@ -146,16 +146,16 @@ void far askabout_actor_spr_blit_pal_swap(ushort actor_id, int pal_shift, int fr
     g_pPalQueuedForFlip = g_pActSpriteCache->pChunk[idx];
     g_nPalBlendMode = g_dialog_in_scene ? 0 : 2;
     chunk_pal = g_pPalQueuedForFlip;
-    if (chunk_pal != (uchar far *)0) {
+    if (chunk_pal != (unsigned char far *)0) {
         if (*chunk_pal == 0x3f) {
-            if (local_pal == (uchar far *)0) {
-                local_pal = palette_set((uchar far *)0);
+            if (local_pal == (unsigned char far *)0) {
+                local_pal = palette_set((unsigned char far *)0);
             }
             i = 0;
             do {
                 if (i < 0x10 || i >= 0x70) {
                     ((PalEntry far *)chunk_pal)[i] = ((PalEntry far *)local_pal)[i];
-                } else if (pal_buf != (uchar far *)0) {
+                } else if (pal_buf != (unsigned char far *)0) {
                     ((PalEntry far *)local_pal)[i] = ((PalEntry far *)chunk_pal)[i];
                 }
                 i++;
@@ -182,8 +182,8 @@ void far askabout_actor_spr_blit_pal_swap(ushort actor_id, int pal_shift, int fr
     return;
 }
 
-ushort far askabout_dispatch_topic(ushort topic_id) {
-    ushort avail;
+unsigned short far askabout_dispatch_topic(unsigned short topic_id) {
+    unsigned short avail;
 
     avail = gstate_event_read(topic_id);
     switch (topic_id) {
@@ -313,9 +313,9 @@ static int far askabout_menu_page_build(unsigned char far *keyword_table) {
 
 int far askabout_dialog_run(unsigned char far *keyword_table, char *npc_name) {
     char speechText[80];
-    ushort needsRedraw;
+    unsigned short needsRedraw;
     MenuPage *page;
-    uint result;
+    unsigned int result;
     int choiceIdx;
 
     choiceIdx = -1;
@@ -327,7 +327,7 @@ int far askabout_dialog_run(unsigned char far *keyword_table, char *npc_name) {
         page = g_pKeywordMenuScratch;
         menupage_begin(page);
         menupage_draw(page);
-        dialog_draw_speech_bubble((uchar far *)speechText, 0);
+        dialog_draw_speech_bubble((unsigned char far *)speechText, 0);
         screen_frame_present();
         screen_frame_sync_buffers_rect(0, 200);
         do {
@@ -452,10 +452,10 @@ static void far askabout_build_party_select_menu(DDXRecord far *record) {
 }
 
 int far askabout_menu_page_run_selection(DDXRecord far *record) {
-    ushort needsRedraw;
+    unsigned short needsRedraw;
     MenuPage *page;
-    uint result;
-    uint j;
+    unsigned int result;
+    unsigned int j;
     int selected;
 
     selected = -1;
@@ -491,7 +491,7 @@ int far askabout_menu_page_run_selection(DDXRecord far *record) {
         if (result >= 0x80) {
             selected = result - 0x80;
         } else {
-            result = toupper((uint)g_key_ascii);
+            result = toupper((unsigned int)g_key_ascii);
         }
         if (isalpha(result)) {
             int matchCount;
@@ -508,8 +508,8 @@ int far askabout_menu_page_run_selection(DDXRecord far *record) {
         }
     } while (selected < 0);
     if ((record->wFlags & 0x1000) == 0) {
-        uint far *p;
-        p = (uint far *)((uchar far *)record + selected * 10 + 9);
+        unsigned int far *p;
+        p = (unsigned int far *)((unsigned char far *)record + selected * 10 + 9);
         gstate_event_write(*p, 1);
     } else if (page->wEntry_count - 1 == selected) {
         selected = 1;

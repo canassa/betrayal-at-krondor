@@ -32,20 +32,20 @@ unsigned short g_apszPalChunkTagByAdapter[16] = {
     (unsigned short)g_szPalVgaChunkTag,   (unsigned short)g_szPalVgaChunkTag};
 unsigned char far *g_pCurPalette = {0};
 
-uchar far *chunk_load_into_slot(BakFileRef *file) {
+unsigned char far *chunk_load_into_slot(BakFileRef *file) {
     int openedHere;
-    uchar far *pDst;
-    uchar far *pPalette;
-    uchar paletteBuf[768];
-    uchar amgBuf[64];
+    unsigned char far *pDst;
+    unsigned char far *pPalette;
+    unsigned char paletteBuf[768];
+    unsigned char amgBuf[64];
     int i;
     register int j;
 
-    pPalette = (uchar far *)0L;
+    pPalette = (unsigned char far *)0L;
     g_nCurChunkSize = g_awPaletteSizeByAdapter[(signed char)g_graphics_context.bVideoAdapter];
 
     for (i = 1;
-         (((uchar far *far *)&g_graphics_context.pPaletteScratchBuf)[i] != (uchar far *)0L) &&
+         (((unsigned char far *far *)&g_graphics_context.pPaletteScratchBuf)[i] != (unsigned char far *)0L) &&
          (i < 10);
          i++) {
     }
@@ -63,10 +63,10 @@ uchar far *chunk_load_into_slot(BakFileRef *file) {
             file, (char *)g_apszPalChunkTagByAdapter[(signed char)g_graphics_context.bVideoAdapter],
             0) != -1L) {
 
-        if ((pPalette = (uchar far *)alloc_far((long)g_nCurChunkSize, 0L)) == (uchar far *)0L)
+        if ((pPalette = (unsigned char far *)alloc_far((long)g_nCurChunkSize, 0L)) == (unsigned char far *)0L)
             goto close_file;
         bak_fread(paletteBuf, 1, g_nCurChunkSize, file);
-        fmemmove(pPalette, (uchar far *)paletteBuf, (long)g_nCurChunkSize);
+        fmemmove(pPalette, (unsigned char far *)paletteBuf, (long)g_nCurChunkSize);
         goto close_file;
     }
 
@@ -79,16 +79,16 @@ uchar far *chunk_load_into_slot(BakFileRef *file) {
     if (bak_fread(amgBuf, 1, 0x40, file) == 0)
         goto close_file;
 
-    if ((pPalette = (uchar far *)alloc_far((long)g_nCurChunkSize, 0L)) == (uchar far *)0L)
+    if ((pPalette = (unsigned char far *)alloc_far((long)g_nCurChunkSize, 0L)) == (unsigned char far *)0L)
         goto close_file;
 
     pDst = pPalette;
     for (j = 0; j < 0x20; j++) {
-        *pDst = (uchar)(((int)((unsigned short *)amgBuf)[j] >> 8) & 0x0f) << 2;
+        *pDst = (unsigned char)(((int)((unsigned short *)amgBuf)[j] >> 8) & 0x0f) << 2;
         pDst++;
-        *pDst = (uchar)(((int)((unsigned short *)amgBuf)[j] >> 4) & 0x0f) << 2;
+        *pDst = (unsigned char)(((int)((unsigned short *)amgBuf)[j] >> 4) & 0x0f) << 2;
         pDst++;
-        *pDst = (uchar)(amgBuf[j * 2] & 0x0f) << 2;
+        *pDst = (unsigned char)(amgBuf[j * 2] & 0x0f) << 2;
         pDst++;
     }
 
@@ -102,11 +102,11 @@ close_file:
         cached_file_close(file);
 
 store_slot:
-    ((uchar far *far *)&g_graphics_context.pPaletteScratchBuf)[i] = pPalette;
+    ((unsigned char far *far *)&g_graphics_context.pPaletteScratchBuf)[i] = pPalette;
     return pPalette;
 }
 
-uchar far *palette_set_active(uchar far *palette) {
+unsigned char far *palette_set_active(unsigned char far *palette) {
     g_nCurChunkSize = g_awPaletteSizeByAdapter[(signed char)g_graphics_context.bVideoAdapter];
     if (g_graphics_context.pPaletteScratchBuf == 0 && g_nCurChunkSize != 0)
         g_graphics_context.pPaletteScratchBuf = alloc_far(g_nCurChunkSize * 2, 0L);
@@ -117,24 +117,24 @@ uchar far *palette_set_active(uchar far *palette) {
     return palette;
 }
 
-void cache_release(uchar far *buf_farptr) {
+void cache_release(unsigned char far *buf_farptr) {
     register int i;
 
     if (!buf_farptr)
         return;
 
     for (i = 1; i < 10; i++) {
-        if (((uchar far *far *)&g_graphics_context.pPaletteScratchBuf)[i] == buf_farptr) {
-            _freemem(((uchar far *far *)&g_graphics_context.pPaletteScratchBuf)[i]);
-            ((uchar far *far *)&g_graphics_context.pPaletteScratchBuf)[i] = 0;
+        if (((unsigned char far *far *)&g_graphics_context.pPaletteScratchBuf)[i] == buf_farptr) {
+            _freemem(((unsigned char far *far *)&g_graphics_context.pPaletteScratchBuf)[i]);
+            ((unsigned char far *far *)&g_graphics_context.pPaletteScratchBuf)[i] = 0;
         }
     }
 }
 
-void palette_set_scaled(uint first_color, uint last_color, int target_color, int intensity) {
+void palette_set_scaled(unsigned int first_color, unsigned int last_color, int target_color, int intensity) {
     g_nPaletteScaledIntensity = intensity;
     g_nPaletteScaledLevel = target_color;
-    (*(void(far *)(uint, uint, int, int))g_renderer_vtable.pfn_palette_lerp_dac)(
+    (*(void(far *)(unsigned int, unsigned int, int, int))g_renderer_vtable.pfn_palette_lerp_dac)(
         first_color, last_color, target_color, intensity);
     return;
 }
@@ -175,7 +175,7 @@ void far palette_cycle_tick(void) {
                                                         g_nPaletteScaledIntensity);
 }
 
-void near memcpy_inline(uchar far *src, uchar far *dst, int count) {
+void near memcpy_inline(unsigned char far *src, unsigned char far *dst, int count) {
     while (count--)
         *dst++ = *src++;
 }

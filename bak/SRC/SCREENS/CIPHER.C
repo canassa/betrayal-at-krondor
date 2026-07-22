@@ -41,7 +41,7 @@ int far cipher_dial_puzzle_run(int nPuzzleId) {
     int bLoopActive;
     int bNeedRedraw;
     int bWantRun;
-    uint nAction;
+    unsigned int nAction;
     unsigned char far *pPalSaved;
     unsigned char far *pPuzzlePalChunk;
     int nBlendSaved;
@@ -227,7 +227,7 @@ int far cipher_dial_puzzle_run(int nPuzzleId) {
     return nResult;
 }
 
-void far cipher_puzzle_parse_table(uchar far *pTableData) {
+void far cipher_puzzle_parse_table(unsigned char far *pTableData) {
     g_pCipherTextBase = (char far *)pTableData;
     g_nCipherRowCount = g_nCipherRowWidth = 0;
     while (*pTableData != '\n') {
@@ -296,9 +296,9 @@ int far cipher_puzzle_is_solved(void) {
 void far cipher_anim_bevel_text_dropin(MenuEntry *pEntry, int nCol) {
     char szOut[2];
     char szIn[2];
-    uint xOut;
-    uint xIn;
-    uint y;
+    unsigned int xOut;
+    unsigned int xIn;
+    unsigned int y;
     int x0, y0, x1, y1;
     int i;
 
@@ -372,8 +372,8 @@ void far cipher_menu_draw_hotkey_labels(MenuPage *page) {
     MenuEntry *pEntry;
     int i;
     char szGlyph[2];
-    uint x;
-    uint y;
+    unsigned int x;
+    unsigned int y;
 
     i = 0;
     pEntry = page->pEntries;

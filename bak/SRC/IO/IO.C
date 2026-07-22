@@ -276,8 +276,8 @@ void bak_init_resources(void) {
     BakIndexEntry far *entry;
     short archive_idx;
     short read_count;
-    ulong hashVal;
-    ulong offsetVal;
+    unsigned long hashVal;
+    unsigned long offsetVal;
     char *filename_ptr;
     register FILE *fp;
     register BakArchive *arc;
@@ -308,7 +308,7 @@ void bak_init_resources(void) {
         fread(arc, 13, 1, fp);
         fread(&read_count, 2, 1, fp);
 
-        entry = alloc_far((ulong)((ushort)(read_count + 1) * 8), ALLOC_FAR_ZERO_FILL);
+        entry = alloc_far((unsigned long)((unsigned short)(read_count + 1) * 8), ALLOC_FAR_ZERO_FILL);
         arc->index = entry;
         arc->ordinal = archive_idx;
 
@@ -348,7 +348,7 @@ void bak_invalidate_archives(void) {
     g_bak_archives_dirty = 1;
 }
 
-ulong bak_filename_hash(char *filename) {
+unsigned long bak_filename_hash(char *filename) {
     unsigned long val;
 
     val = g_bak_hash_seed;
@@ -364,7 +364,7 @@ ulong bak_filename_hash(char *filename) {
 
 int bak_resource_lookup(BakHandle *slot) {
     BakIndexEntry far *entry;
-    ulong hash;
+    unsigned long hash;
     int above;
     int below;
     int i;
@@ -439,7 +439,7 @@ void bak_select_archive(int archive_index) {
     }
 }
 
-void bak_archive_seek(ulong absolute_offset) {
+void bak_archive_seek(unsigned long absolute_offset) {
     BakArchive *ar;
 
     ar = &g_bak_archives[g_bak_current_archive];

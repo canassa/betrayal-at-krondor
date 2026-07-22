@@ -26,19 +26,19 @@ Dialog *dlgwidget_dialog_load(char *filename) {
     DialogWidget *widget;
     void *string_table;
     short label_offset;
-    ushort widget_count;
-    uint capacity;
+    unsigned short widget_count;
+    unsigned int capacity;
     short rect_x;
     short rect_y;
     short rect_w;
-    ushort label_x;
-    ushort label_y;
+    unsigned short label_x;
+    unsigned short label_y;
     int has_fill_image;
-    byte bg_color;
-    byte fg_color;
-    byte cursor_color;
-    byte label_fg;
-    byte selection_color;
+    unsigned char bg_color;
+    unsigned char fg_color;
+    unsigned char cursor_color;
+    unsigned char label_fg;
+    unsigned char selection_color;
     int i;
 
     string_table = (void *)0x0;
@@ -315,9 +315,9 @@ void dlgwidget_dialog_render(Dialog *dialog, int show_selection) {
     }
 }
 
-DialogWidget *dlgwidget_create(uint capacity, short rect_x, short rect_y, short rect_w,
-                               byte bg_color, byte fg_color, byte cursor_color, byte label_fg,
-                               byte selection_color, int has_fill_image) {
+DialogWidget *dlgwidget_create(unsigned int capacity, short rect_x, short rect_y, short rect_w,
+                               unsigned char bg_color, unsigned char fg_color, unsigned char cursor_color, unsigned char label_fg,
+                               unsigned char selection_color, int has_fill_image) {
     DialogWidget *w;
 
     w = (DialogWidget *)galloc_safe_zcalloc(0x21);
@@ -337,9 +337,9 @@ DialogWidget *dlgwidget_create(uint capacity, short rect_x, short rect_y, short 
     w->bSelection_color = selection_color;
     if (has_fill_image != 0) {
         w->pFill_image =
-            (byte far *)alloc_far((ulong)(ushort)rect_byte_size(w->rect.width, w->rect.height), 0L);
+            (unsigned char far *)alloc_far((unsigned long)(unsigned short)rect_byte_size(w->rect.width, w->rect.height), 0L);
     } else {
-        w->pFill_image = (byte far *)0x0;
+        w->pFill_image = (unsigned char far *)0x0;
     }
     w->pLabel = (char *)0x0;
     return w;
@@ -416,7 +416,7 @@ int far dlgwidget_text_char_at_point(DialogWidget *widget, int x, int y) {
 
         if (i < nlen) {
             do {
-                font_glyph_metrics((int)text[i], (uint *)&w, (uint *)&half_w);
+                font_glyph_metrics((int)text[i], (unsigned int *)&w, (unsigned int *)&half_w);
                 half_w = w >> 1;
                 running += half_w;
                 if (running > limit) {
@@ -519,7 +519,7 @@ void dlgwidget_text_cursor_end(DialogWidget *widget) {
     return;
 }
 
-void dlgwidget_text_insert_char(DialogWidget *widget, uchar ch) {
+void dlgwidget_text_insert_char(DialogWidget *widget, unsigned char ch) {
     char *text;
     int pixelWidth;
     int src;
@@ -610,7 +610,7 @@ void dlgwidget_draw_text_input_widget(DialogWidget *widget, int in_input_mode) {
     font_draw_text_ds(widget->pText_buf, widget->rect.x + 3, widget->rect.y + 2);
 }
 
-uchar dlgwidget_text_input_disp_key(void) {
+unsigned char dlgwidget_text_input_disp_key(void) {
     if (g_key_scancode != 0 && g_key_scancode != 0x38) {
         if (g_key_ascii >= 0x20 && g_key_ascii <= 0x7e)
             return g_key_ascii;

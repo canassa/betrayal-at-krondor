@@ -6,7 +6,7 @@
 #include "SRC/AUDIO/DRIVER/MIDI.H"
 #include "SRC/AUDIO/SND/SNDINST.H"
 
-int audio_driver_init(int driver_id, int music_driver, uint p3, char *fileName) {
+int audio_driver_init(int driver_id, int music_driver, unsigned int p3, char *fileName) {
     int install;
 
     install = 1;

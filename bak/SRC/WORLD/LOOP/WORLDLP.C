@@ -55,14 +55,14 @@ short far worldloop_main(void) {
 
     short exit_mode;
     int keep_running;
-    ushort redraw_menu;
+    unsigned short redraw_menu;
     int redraw_caption;
-    ushort pending_events;
-    ushort key_repeat_armed;
-    ushort refusal_mode;
+    unsigned short pending_events;
+    unsigned short key_repeat_armed;
+    unsigned short refusal_mode;
     MenuEntry *focused_entry;
     MenuEntry *prev_focused_entry;
-    uint action_id;
+    unsigned int action_id;
     unsigned char far *saved_pal;
     /* This pair must stay `register`: render_dirty is allocated to SI,
        hotspot_active to DI. */
@@ -350,7 +350,7 @@ short far worldloop_main(void) {
             case 2:
             case 3:
             case 4: {
-                uint chap_sub = action_id - 2;
+                unsigned int chap_sub = action_id - 2;
                 if (g_gameState.party_count > (short)chap_sub) {
                     if (menupage_state_0e7c() == 2 || key_is_down(0x2a) != 0 ||
                         key_is_down(0x36) != 0) {

@@ -12,7 +12,7 @@ unsigned char _dgroup_lead_14a[2] = {0x00, 0x00};
 
 char far g_skyHorizonStripsMemHdr[4] = {0x4d, 0x45, 0x4d};
 
-void *galloc_safe_zcalloc(uint size) {
+void *galloc_safe_zcalloc(unsigned int size) {
     void *block;
 
     heapcheck() != -1 || panic_fatal_error_exit(g_skyHorizonStripsMemHdr, 34, "Heap Corrupt!");
@@ -30,8 +30,8 @@ void galloc_zfree(void *ptr) {
     my_free(ptr);
 }
 
-uchar far *galloc_calloc_far(ulong size, int flags) {
-    uchar huge *ptr;
+unsigned char far *galloc_calloc_far(unsigned long size, int flags) {
+    unsigned char huge *ptr;
 
     ptr = alloc_far(size, flags);
 

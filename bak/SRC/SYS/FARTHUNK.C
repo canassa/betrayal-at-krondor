@@ -18,7 +18,7 @@ int my_close(int fd) {
     return close(fd);
 }
 
-int my_read(int fd, void *buf, uint count) {
+int my_read(int fd, void *buf, unsigned int count) {
     return read(fd, buf, count);
 }
 
@@ -54,7 +54,7 @@ int fclose_far(FILE *stream) {
     return fclose(stream);
 }
 
-void *my_malloc(uint size) {
+void *my_malloc(unsigned int size) {
     return malloc(size);
 }
 
@@ -74,7 +74,7 @@ char *my_strchr(char *s, int c) {
     return strchr(s, c);
 }
 
-void *my_calloc(uint nitems, uint size) {
+void *my_calloc(unsigned int nitems, unsigned int size) {
     return calloc(nitems, size);
 }
 

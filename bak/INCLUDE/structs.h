@@ -1186,8 +1186,8 @@ struct ProximityScanHit {
 };
 
 struct ProximityVertex {
-    sbyte cCx;
-    sbyte cCy;
+    unsigned char cCx;
+    unsigned char cCy;
     short nX;
     short nY;
 };

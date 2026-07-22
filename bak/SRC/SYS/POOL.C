@@ -16,18 +16,18 @@ unsigned long g_pool_base = 0;
 unsigned long g_pool_top;
 unsigned long g_nPoolSize;
 
-ulong pool_get_size(void) {
+unsigned long pool_get_size(void) {
     return g_pool_top - g_pool_base;
 }
 
 void pool_compute_size_from_music(void) {
-    ulong maxUsage;
-    ulong usage;
+    unsigned long maxUsage;
+    unsigned long usage;
     int chunkId;
 
     maxUsage = 0;
     g_nPoolSize = 0x6000;
-    g_pool_base = (ulong)alloc_far(g_nPoolSize, 0L);
+    g_pool_base = (unsigned long)alloc_far(g_nPoolSize, 0L);
     g_alloc_to_pool = 1;
 
     for (chunkId = 0x3e9; chunkId <= 0x426; chunkId++) {
@@ -40,13 +40,13 @@ void pool_compute_size_from_music(void) {
     }
     g_alloc_to_pool = 0;
     pool_reset();
-    _freemem((uchar far *)g_pool_base);
+    _freemem((unsigned char far *)g_pool_base);
     g_nPoolSize = maxUsage + 0x5ff;
 }
 
 void pool_init(void) {
     pool_compute_size_from_music();
-    g_pool_base = (ulong)alloc_far(g_nPoolSize, 0L);
+    g_pool_base = (unsigned long)alloc_far(g_nPoolSize, 0L);
 }
 
 void pool_reset(void) {
@@ -55,23 +55,23 @@ void pool_reset(void) {
     g_pool_top = g_pool_base;
 }
 
-void far *pool_alloc(ulong size) {
+void far *pool_alloc(unsigned long size) {
     g_pool_top += size;
     return (void far *)(g_pool_top - size);
 }
 
-int pool_is_managed_ptr(ulong ptr) {
+int pool_is_managed_ptr(unsigned long ptr) {
     return ptr >= g_pool_base && ptr < g_pool_top;
 }
 
-void far *pool_acquire_buffer(ulong size, int kind) {
+void far *pool_acquire_buffer(unsigned long size, int kind) {
     void far *result;
     void *nearp;
 
     if (g_alloc_to_pool != 0)
         result = pool_alloc(size);
     else if (kind == 6 || kind == 8) {
-        nearp = my_malloc((uint)size);
+        nearp = my_malloc((unsigned int)size);
         result = nearp;
     } else
         result = alloc_far(size, 0L);

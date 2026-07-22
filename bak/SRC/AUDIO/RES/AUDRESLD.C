@@ -35,9 +35,9 @@ BakFile *audio_resource_load_chunk(BakFileRef *file, int chunk_id) {
         if (g_pMusicChunkBuf != 0)
             release_buffer(g_pMusicChunkBuf, 10);
         if ((g_pMusicChunkBuf =
-                 (MusicChunkHeader far *)pool_acquire_buffer((ulong)(buf_size + 4), 10)) == 0)
+                 (MusicChunkHeader far *)pool_acquire_buffer((unsigned long)(buf_size + 4), 10)) == 0)
             goto cleanup;
-        if (bak_fread_chunked((uchar huge *)&g_pMusicChunkBuf->nMagic, buf_size, 1,
+        if (bak_fread_chunked((unsigned char huge *)&g_pMusicChunkBuf->nMagic, buf_size, 1,
                               g_music_archive) != 1)
             goto cleanup;
         if (g_pMusicChunkBuf->nMagic != 2)

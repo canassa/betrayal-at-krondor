@@ -8,7 +8,7 @@
 #include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/AUDIO/DRIVER/SNDDRV.H"
 
-int sndinst_drivers(int sfx_driver, int music_driver, uint p3, char *fileName) {
+int sndinst_drivers(int sfx_driver, int music_driver, unsigned int p3, char *fileName) {
     int failed;
 
     failed = 0;

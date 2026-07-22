@@ -57,7 +57,7 @@ void palette_state_reset(void) {
     return;
 }
 
-void far palette_fade_in(uint palette_off, uint palette_seg, int step, int wait_each_step) {
+void far palette_fade_in(unsigned int palette_off, unsigned int palette_seg, int step, int wait_each_step) {
     int intensity;
 
     if (step == -1) {
@@ -75,7 +75,7 @@ void far palette_fade_in(uint palette_off, uint palette_seg, int step, int wait_
     return;
 }
 
-void far palette_fade_out(uint palette_off, uint palette_seg, int step, int wait_each_step) {
+void far palette_fade_out(unsigned int palette_off, unsigned int palette_seg, int step, int wait_each_step) {
     int intensity;
 
     if (step == -1) {
@@ -181,7 +181,7 @@ void palette_apply_cycled(void) {
     g_pPalLastInstalled = g_pPalLoadedBuf;
 }
 
-void far palette_interpolate_range(uchar far *src, uchar far *dst, char *pTarget, int range_start,
+void far palette_interpolate_range(unsigned char far *src, unsigned char far *dst, char *pTarget, int range_start,
                                    int range_end, int blend) {
     char far *pSrc;
     char far *pDst;
@@ -263,13 +263,13 @@ int palette_compute_daylight(void) {
 
 int palette_daylight_modulate(int base_brightness) {
     int level;
-    uint hour;
+    unsigned int hour;
     int remainder;
     int ramp;
 
     level = base_brightness;
-    hour = (uint)((ulong)(g_gameState.game_time % 0xa8c0) / 0x708);
-    remainder = (int)((ulong)g_gameState.game_time % 0xa8c0);
+    hour = (unsigned int)((unsigned long)(g_gameState.game_time % 0xa8c0) / 0x708);
+    remainder = (int)((unsigned long)g_gameState.game_time % 0xa8c0);
     if (hour >= 8 && hour < 0x11) {
         return 0x40;
     }
@@ -278,15 +278,15 @@ int palette_daylight_modulate(int base_brightness) {
     }
     if (hour < 0x11) {
         remainder += 0xe3e0;
-        ramp = (int)((long)((ulong)(unsigned)remainder * (long)(0x40 - level)) / 0x1c20);
+        ramp = (int)((long)((unsigned long)(unsigned)remainder * (long)(0x40 - level)) / 0x1c20);
         return level + ramp;
     }
     remainder += 0x8878;
-    ramp = (int)((long)((ulong)(unsigned)remainder * (long)(0x40 - level)) / 0x1518);
+    ramp = (int)((long)((unsigned long)(unsigned)remainder * (long)(0x40 - level)) / 0x1518);
     return 0x40 - ramp;
 }
 
-TimerEventEntry *far palette_fade_schedule(ushort sub_id, ulong duration) {
+TimerEventEntry *far palette_fade_schedule(unsigned short sub_id, unsigned long duration) {
     g_gameState.nPalFadeDirty = 1;
     return timerpool_upsert(1, sub_id, 0x80, duration);
 }
@@ -341,11 +341,11 @@ void far palette_fade_run_scheduled(TimerEventEntry *entry) {
     g_gameState.nPalFadeDirty = 1;
 }
 
-byte far *palette_set(uchar far *pal) {
+unsigned char far *palette_set(unsigned char far *pal) {
     if (g_graphics_context.pPaletteScratchBuf == 0) {
-        g_graphics_context.pPaletteScratchBuf = (uchar far *)alloc_far(0x600L, 0L);
+        g_graphics_context.pPaletteScratchBuf = (unsigned char far *)alloc_far(0x600L, 0L);
     }
-    if (pal == (uchar far *)0) {
+    if (pal == (unsigned char far *)0) {
         return g_pPalLastInstalled;
     }
     g_pPalLastInstalled = pal;

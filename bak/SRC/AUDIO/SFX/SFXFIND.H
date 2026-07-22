@@ -3,6 +3,6 @@
 
 #include "structs.h"
 
-extern AudioTrackHandle far *sfx_find_active(uchar far *track_data);
+extern AudioTrackHandle far *sfx_find_active(unsigned char far *track_data);
 
 #endif

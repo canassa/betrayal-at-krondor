@@ -44,7 +44,7 @@ void cmbinv_combat_encounter_begin(MenuPage *page, Actor far *actor, int pageBas
     ActorSubrecord far *subrec;
     char grid[28];
     MenuEntry *entry;
-    ushort category;
+    unsigned short category;
     int found;
 
     maxX = 0;
@@ -182,18 +182,18 @@ void cmbinv_combat_encounter_begin(MenuPage *page, Actor far *actor, int pageBas
 
 int cmbinv_inventory_screen_run(Actor far *actor, int idx, int flag) {
 
-    ushort needRedraw;
+    unsigned short needRedraw;
     int fadeIn;
     int selSlot;
     int page;
     int result;
-    ushort savedEntryCount;
-    ushort savedBlendMode;
-    byte far *savedInstalledPal;
-    byte far *palBuf;
+    unsigned short savedEntryCount;
+    unsigned short savedBlendMode;
+    unsigned char far *savedInstalledPal;
+    unsigned char far *palBuf;
 
     int memberIdx;
-    uint action;
+    unsigned int action;
     int drag;
 
     memberIdx = idx;
@@ -204,10 +204,10 @@ int cmbinv_inventory_screen_run(Actor far *actor, int idx, int flag) {
     result = -1;
     savedBlendMode = g_nPalBlendMode;
     g_inventory_screen_mode = 1;
-    g_pPalQueuedForFlip = (byte far *)0;
+    g_pPalQueuedForFlip = (unsigned char far *)0;
     g_nPalBlendMode = 0;
     screen_cursor_show_busy();
-    invui_inspect_images_load_once((uint)g_bInventoryShopMode);
+    invui_inspect_images_load_once((unsigned int)g_bInventoryShopMode);
     if (g_wInCombatMode == 0) {
         itemtbl_load();
     }
@@ -225,7 +225,7 @@ int cmbinv_inventory_screen_run(Actor far *actor, int idx, int flag) {
     palette_fade_out(0, 0x100, 8, 1);
     palette_screen_clear_black();
     g_graphics_context.wGfxBlitDstPage = g_graphics_context.wVgaPage2Base;
-    savedInstalledPal = palette_set((uchar far *)0);
+    savedInstalledPal = palette_set((unsigned char far *)0);
     g_pPalQueuedForFlip = palBuf = chunk_load_into_slot("INVENTOR.PAL");
     g_nPalBlendMode = 0;
     screen_cursor_hide();
@@ -428,7 +428,7 @@ int cmbinv_inventory_screen_run(Actor far *actor, int idx, int flag) {
                 } else {
                     page++;
                 }
-                if (((int)(uint)actor->itemCount <= page * 6) ||
+                if (((int)(unsigned int)actor->itemCount <= page * 6) ||
                     (g_gameState.nChapter <
                      itemtbl_record_ptr(ACTOR_ITEMS(actor) + page * 6)->wDamage_class_threshold)) {
                     page = 0;
@@ -1055,11 +1055,11 @@ int cmbinv_actor_drop_item_at_pos(Actor far *src_actor, ItemSlot far *item) {
         goto dialog_774e;
     }
     if ((g_other_inventory_actor =
-             actorspawn_objfixed((uint)g_gameState.nZoneId, g_world_camera->base.pos.xy.nWorld_x,
+             actorspawn_objfixed((unsigned int)g_gameState.nZoneId, g_world_camera->base.pos.xy.nWorld_x,
                                  g_world_camera->base.pos.xy.nWorld_y)) == (Actor far *)0L) {
         dialog_play_record(0x1b7749L, 0);
         g_other_inventory_actor =
-            actorspawn_enc_location((uint)g_gameState.nZoneId, g_world_camera->base.pos.xy.nWorld_x,
+            actorspawn_enc_location((unsigned int)g_gameState.nZoneId, g_world_camera->base.pos.xy.nWorld_x,
                                     g_world_camera->base.pos.xy.nWorld_y);
     }
     g_pDroppedItemActor = g_other_inventory_actor;

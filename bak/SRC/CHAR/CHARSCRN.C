@@ -31,7 +31,7 @@ struct SpellRecord {
     int idx;
 };
 
-static void charscreen_draw_spell_book_actor(CombatActor *actor, byte far *pal_scratch) {
+static void charscreen_draw_spell_book_actor(CombatActor *actor, unsigned char far *pal_scratch) {
     int row;
     int spell_icon;
     int spell_count;
@@ -97,8 +97,8 @@ static void far charscreen_draw_sheet_stat_row(int stat_idx, int value, int part
     int x_base;
     int y_pos;
     int skillIdx;
-    ushort selected;
-    ushort improved;
+    unsigned short selected;
+    unsigned short improved;
     char buf[10];
 
     x_base = stat_idx > 9 ? 0x93 : 0x1e;
@@ -116,10 +116,10 @@ static void far charscreen_draw_sheet_stat_row(int stat_idx, int value, int part
     if (improved != 0) {
         invui_draw_text_aligned_shadow(g_abStatNames[stat_idx], x_base + 0x14, y_pos - 1, 0, 0x89,
                                        0x8f);
-        invui_draw_text_aligned_shadow((uchar far *)buf, x_base + 0x71, y_pos - 1, 2, 0x89, 0x8f);
+        invui_draw_text_aligned_shadow((unsigned char far *)buf, x_base + 0x71, y_pos - 1, 2, 0x89, 0x8f);
     } else {
         invui_draw_text_aligned_shadow(g_abStatNames[stat_idx], x_base + 0x14, y_pos - 1, 0, 10, 1);
-        invui_draw_text_aligned_shadow((uchar far *)buf, x_base + 0x71, y_pos - 1, 2, 10, 1);
+        invui_draw_text_aligned_shadow((unsigned char far *)buf, x_base + 0x71, y_pos - 1, 2, 10, 1);
     }
     if (value < 0) {
         value = 0;
@@ -165,7 +165,7 @@ static void far charscreen_draw_stat_row(int stat_idx, int cur_val, int max_val,
     int fgColor;
     int shadowColor;
     char buf[10];
-    ushort improved;
+    unsigned short improved;
 
     y = stat_idx * 0xb + 0x1c;
     skillIdx = party_slot * 0x11 + stat_idx;
@@ -175,16 +175,16 @@ static void far charscreen_draw_stat_row(int stat_idx, int cur_val, int max_val,
     gstate_event_write(SKILL_IMPROVED(skillIdx), 0);
     invui_draw_text_aligned_shadow(g_abStatNames[stat_idx], 0x69, y, 0, fgColor, shadowColor);
     sprintf(buf, "%d", cur_val);
-    invui_draw_text_aligned_shadow((uchar far *)buf, 0xa4, y, 2, fgColor, shadowColor);
+    invui_draw_text_aligned_shadow((unsigned char far *)buf, 0xa4, y, 2, fgColor, shadowColor);
     if (stat_idx <= 1) {
-        invui_draw_text_aligned_shadow((uchar far *)"of", 0xaa, y, 0, fgColor, shadowColor);
+        invui_draw_text_aligned_shadow((unsigned char far *)"of", 0xaa, y, 0, fgColor, shadowColor);
         sprintf(buf, "%d", max_val);
-        invui_draw_text_aligned_shadow((uchar far *)buf, 0xc2, y, 2, fgColor, shadowColor);
+        invui_draw_text_aligned_shadow((unsigned char far *)buf, 0xc2, y, 2, fgColor, shadowColor);
     }
 }
 
 static void far charscreen_info_draw(CombatActor *actor, MenuPage *page, int party_slot,
-                                     int full_sheet, uchar far *pal_buf) {
+                                     int full_sheet, unsigned char far *pal_buf) {
     int condCount;
     char buf[80];
     MenuEntry stack_me;
@@ -209,23 +209,23 @@ static void far charscreen_info_draw(CombatActor *actor, MenuPage *page, int par
     resblit_sprite_frame(g_pInvSpriteHiAssetTable[0x19], 0x130, 9, 2);
     resblit_sprite_frame(g_pInvSpriteHiAssetTable[0x1a], 0x56, 9, 0);
     resblit_sprite_frame(g_pInvSpriteHiAssetTable[0x1a], 0x56, 0x4e, 1);
-    invui_draw_text_aligned_shadow((uchar far *)"Ratings:", 0x5f, 0xe, 0, -1, -1);
+    invui_draw_text_aligned_shadow((unsigned char far *)"Ratings:", 0x5f, 0xe, 0, -1, -1);
     stack_me = page->pEntries[2];
     stack_me.bActive_flag = 1;
     stack_me.pPrimary_label = actor->name;
     widget_dispatch_by_type(&stack_me, -0xe4, 0, 0);
-    invui_draw_text_aligned_shadow((uchar far *)"Condition:", 0xd2, 0xe, 0, -1, -1);
+    invui_draw_text_aligned_shadow((unsigned char far *)"Condition:", 0xd2, 0xe, 0, -1, -1);
     i = condCount = 0;
     for (; i < 7; i++) {
         if ((char)g_gameState.abActorStatusRanks[party_slot][i] > 0) {
             sprintf(buf, "%Fs (%d%)", g_aConditionInfo[i].pName,
                     (int)(char)g_gameState.abActorStatusRanks[party_slot][i]);
-            invui_draw_text_aligned_shadow((uchar far *)buf, 0xdc, ++condCount * 9 + 0x10, 0, 0x89,
+            invui_draw_text_aligned_shadow((unsigned char far *)buf, 0xdc, ++condCount * 9 + 0x10, 0, 0x89,
                                            0x8f);
         }
     }
     if (condCount == 0) {
-        invui_draw_text_aligned_shadow((uchar far *)"Normal", 0xdc, 0x1c, 0, -1, -1);
+        invui_draw_text_aligned_shadow((unsigned char far *)"Normal", 0xdc, 0x1c, 0, -1, -1);
     }
     if (full_sheet != 0) {
         resblit_sprite_frame(g_pInvSpriteHiAssetTable[0x18], 2, 0x6b, 0);
@@ -246,21 +246,21 @@ static void far charscreen_info_draw(CombatActor *actor, MenuPage *page, int par
 }
 
 void charscreen_info_loop(CombatActor *actor) {
-    ushort memberIdx;
+    unsigned short memberIdx;
     int firstDraw;
-    ushort redrawFlag;
-    ushort savedBlendMode;
+    unsigned short redrawFlag;
+    unsigned short savedBlendMode;
     MenuPage *page;
-    byte far *savedPal;
-    byte far *pal_buf;
+    unsigned char far *savedPal;
+    unsigned char far *pal_buf;
     int tmp;
     int slot;
-    uint key;
+    unsigned int key;
 
     firstDraw = 1;
     redrawFlag = 0xffff;
     savedBlendMode = g_nPalBlendMode;
-    savedPal = palette_set((uchar far *)0x0);
+    savedPal = palette_set((unsigned char far *)0x0);
     slot = gstate_find_party_slot(actor);
     if (slot >= 0) {
         page = menupage_load("req_info.dat");
@@ -279,17 +279,17 @@ void charscreen_info_loop(CombatActor *actor) {
         do {
             do {
                 if (redrawFlag != 0) {
-                    memberIdx = (ushort)g_gameState.party_roster[slot];
+                    memberIdx = (unsigned short)g_gameState.party_roster[slot];
                     actor = &g_gameState.party_members[memberIdx];
-                    page->pEntries[2].bActive_flag = (byte)gstate_actor_is_caster(actor);
+                    page->pEntries[2].bActive_flag = (unsigned char)gstate_actor_is_caster(actor);
                     if (redrawFlag != 1) {
-                        memberIdx = (ushort)g_gameState.party_roster[slot];
+                        memberIdx = (unsigned short)g_gameState.party_roster[slot];
                         actor = &g_gameState.party_members[memberIdx];
                         charscreen_info_draw(actor, page, memberIdx, 1, pal_buf);
-                        if ((g_pPalQueuedForFlip != (byte far *)0x0) && (firstDraw != 0)) {
+                        if ((g_pPalQueuedForFlip != (unsigned char far *)0x0) && (firstDraw != 0)) {
                             palette_set(g_pPalQueuedForFlip);
                             palette_set_scaled(0, 0x100, 0, 0);
-                            g_pPalQueuedForFlip = (byte far *)0x0;
+                            g_pPalQueuedForFlip = (unsigned char far *)0x0;
                         }
                     }
                     g_nPalBlendMode = 0;
@@ -315,7 +315,7 @@ void charscreen_info_loop(CombatActor *actor) {
                     if (stat_actor_get(actor, key + 0xff84, 1) != 0) {
                         tmp = memberIdx * 0x11 + key + 0xff84;
                         gstate_event_write(SKILL_SELECTED(tmp),
-                                           (uint)!gstate_event_read(SKILL_SELECTED(tmp)));
+                                           (unsigned int)!gstate_event_read(SKILL_SELECTED(tmp)));
                     }
                 }
             } else {
@@ -413,22 +413,22 @@ static long charscreen_temple_heal_price(CombatActor *actor, int multiplier_pct)
 }
 
 void charscreen_temple_heal_menu(int actor_filter, int mode) {
-    ushort member_idx;
-    ushort redraw_flag;
-    ushort saved_blend_mode;
+    unsigned short member_idx;
+    unsigned short redraw_flag;
+    unsigned short saved_blend_mode;
     MenuPage *page;
-    byte far *saved_pal;
-    uchar far *pal_buf;
+    unsigned char far *saved_pal;
+    unsigned char far *pal_buf;
     long price;
     DDXRecord far *dlg_rec;
     int slot;
-    uint key;
+    unsigned int key;
     int stat_idx;
     int dst_slot;
 
     redraw_flag = 0xffff;
     saved_blend_mode = g_nPalBlendMode;
-    saved_pal = palette_set((uchar far *)0);
+    saved_pal = palette_set((unsigned char far *)0);
     for (slot = 0; slot < g_gameState.party_count; slot++) {
         if (charscreen_temple_heal_price(gstate_party_member_record(slot), actor_filter) != 0)
             break;
@@ -539,7 +539,7 @@ LAB_main:
         }
     } while (key != 1);
     askabout_free_paged_image_table();
-    dialog_freemem_if_not_null((uchar far *)dlg_rec);
+    dialog_freemem_if_not_null((unsigned char far *)dlg_rec);
     cache_release(pal_buf);
     g_nPalBlendMode = saved_blend_mode;
     g_pPalQueuedForFlip = saved_pal;

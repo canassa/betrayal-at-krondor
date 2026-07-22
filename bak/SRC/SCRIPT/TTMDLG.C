@@ -19,16 +19,16 @@ unsigned short g_wScriptEnhancedAuxFlag = 0x0000;
 unsigned short g_nScriptEnhancedOpcodeDispatchEnabled = 0x0000;
 unsigned short g_aTtmFadeStepTable[7] = {0x0000, 0x0050, 0x0014, 0x000a, 0x0005, 0x0002, 0x0001};
 
-int far ttmscript_show_dialog_action(int arg, uint mode) {
-    register uint img;
+int far ttmscript_show_dialog_action(int arg, unsigned int mode) {
+    register unsigned int img;
 
     img = g_pCurScriptObject->pAhPagedImage[0];
 
     if (arg == -1) {
         if (img = g_pCurScriptObject->pAhPagedImage[1])
-            blit_sprite_aa_edges((ImageRecord *)(*(uint *)img),
-                                 0xa0 - ((ImageRecord *)*(uint *)img)->nWidth / 2,
-                                 0x70 - ((ImageRecord *)*(uint *)img)->nHeight,
+            blit_sprite_aa_edges((ImageRecord *)(*(unsigned int *)img),
+                                 0xa0 - ((ImageRecord *)*(unsigned int *)img)->nWidth / 2,
+                                 0x70 - ((ImageRecord *)*(unsigned int *)img)->nHeight,
                                  g_pCurScriptObject->pCachedResource[0]);
         return;
     }
@@ -37,7 +37,7 @@ int far ttmscript_show_dialog_action(int arg, uint mode) {
         int ys[4];
 
         if (mode == 0xff) {
-            uchar buf[320];
+            unsigned char buf[320];
             int row;
             resblit_load_pal_or_stream("DIALOG.SCR");
             g_graphics_context.bClip_enabled = 0;
@@ -45,13 +45,13 @@ int far ttmscript_show_dialog_action(int arg, uint mode) {
             g_graphics_context.wGfxBlitSrcPage = g_graphics_context.wVgaPage1Base;
             draw_rect_filled(0xe, 10, 0x123, 0x67);
             for (row = 0xb; row < 0x70; row++) {
-                cga_save_rect_to_buffer((uchar far *)buf, 0xf, row, 0x121, 1);
-                cga_rect_paste_from_buffer((uchar far *)buf, 0xf, row, 0x121, 1);
+                cga_save_rect_to_buffer((unsigned char far *)buf, 0xf, row, 0x121, 1);
+                cga_rect_paste_from_buffer((unsigned char far *)buf, 0xf, row, 0x121, 1);
             }
             adscript_blit_full_other_page();
             return;
         }
-        arg = (int)((ulong)mode * 0x333);
+        arg = (int)((unsigned long)mode * 0x333);
         if ((int)mode > 0x14)
             return;
         if (!img)
@@ -69,7 +69,7 @@ int far ttmscript_show_dialog_action(int arg, uint mode) {
             xs[0] = xs[3] = xs[1];
             xs[1] = xs[2] = tmp;
         }
-        emsimg_gouraud_blit_paged((uint *)*(uint *)img, xs, ys);
+        emsimg_gouraud_blit_paged((unsigned int *)*(unsigned int *)img, xs, ys);
         return;
     }
 
@@ -84,7 +84,7 @@ int far ttmscript_show_dialog_action(int arg, uint mode) {
         g_graphics_context.clip.ymax = 199;
 
         g_graphics_context.clip.xmax = 0x13f;
-        if (rec = dialog_load_record_by_key((ulong)key, 0)) {
+        if (rec = dialog_load_record_by_key((unsigned long)key, 0)) {
             font_activate(g_wGameFontSlot);
             g_graphics_context.wGfxBlitSrcPage = g_wVgaScratchPageBase;
             g_graphics_context.wGfxBlitDstPage = g_graphics_context.wVgaPage2Base;
@@ -97,7 +97,7 @@ int far ttmscript_show_dialog_action(int arg, uint mode) {
             adscript_rndr_blit_other_page(0, 0x73, 0x140, 0x55);
             if (mode != 3)
                 dialog_wait_for_acknowledge(100, 0, 1, 0);
-            return dialog_freemem_if_not_null((uchar far *)rec);
+            return dialog_freemem_if_not_null((unsigned char far *)rec);
         }
         break;
     }

@@ -45,7 +45,7 @@ void menulbl_scroll_step_and_draw(int a, int b, int c) {
                 h = table[i]->nWidth;
                 adv = table[i]->nHeight;
                 if (-g_nCreditsMaxLabelHeight < dst_y) {
-                    blit_sprite_indirect((ushort)table[i], c, dst_y, 0);
+                    blit_sprite_indirect((unsigned short)table[i], c, dst_y, 0);
                     adscript_op_noop(c, dst_y, h, adv);
                     flag = 0;
                 }

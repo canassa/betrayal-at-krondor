@@ -34,7 +34,7 @@ unsigned char far *g_pSavedCursorBuf2 = {0};
 
 int screen_cursor_get_position(short *out_x, short *out_y) {
     if (g_mouse_installed) {
-        return mouse_get_position((uint *)out_x, (uint *)out_y);
+        return mouse_get_position((unsigned int *)out_x, (unsigned int *)out_y);
     }
     *out_x = g_nCursorX;
     *out_y = g_nCursorY;
@@ -209,7 +209,7 @@ void screen_cursor_draw(CursorState *cursor_rec, unsigned char far *buf) {
     return;
 }
 
-void screen_cursor_restore_background(CursorState *cur, uchar far *pBgBuffer) {
+void screen_cursor_restore_background(CursorState *cur, unsigned char far *pBgBuffer) {
     int x;
     int row;
 
@@ -229,7 +229,7 @@ void screen_cursor_restore_background(CursorState *cur, uchar far *pBgBuffer) {
 }
 
 void screen_cur_refr_during_long_op(void) {
-    uchar far *pBgBuffer;
+    unsigned char far *pBgBuffer;
     short savedClipXmin;
     short savedClipYmin;
     short savedClipXmax;
@@ -255,7 +255,7 @@ void screen_cur_refr_during_long_op(void) {
 
     asm cld;
 
-    if ((uchar huge *)g_pActiveCursorBuf == (uchar huge *)g_pCursorScratchBuf1)
+    if ((unsigned char huge *)g_pActiveCursorBuf == (unsigned char huge *)g_pCursorScratchBuf1)
         pBgBuffer = g_pCursorScratchBuf2;
     else
         pBgBuffer = g_pCursorScratchBuf1;
@@ -279,7 +279,7 @@ void screen_cur_refr_during_long_op(void) {
 
     g_graphics_context.wGfxBlitDstPage = g_graphics_context.wVgaPage2Base;
 
-    g_graphics_context.bClip_enabled = (uchar)savedClipEnabled;
+    g_graphics_context.bClip_enabled = (unsigned char)savedClipEnabled;
     g_graphics_context.clip.xmin = savedClipXmin;
     g_graphics_context.clip.ymin = savedClipYmin;
     g_graphics_context.clip.xmax = savedClipXmax;
@@ -302,7 +302,7 @@ void far screen_frame_present(void) {
                              g_cursor_prev_x[1].nY - g_cursor_prev_x[1].nHotY, 0);
     }
     screen_frame_flip();
-    if ((uchar huge *)g_pActiveCursorBuf == (uchar huge *)g_pCursorScratchBuf1)
+    if ((unsigned char huge *)g_pActiveCursorBuf == (unsigned char huge *)g_pCursorScratchBuf1)
         g_pActiveCursorBuf = g_pCursorScratchBuf2;
     else
         g_pActiveCursorBuf = g_pCursorScratchBuf1;
@@ -339,7 +339,7 @@ void far screen_frame_sync_buffers_rect(int row_start, int row_count) {
     asm out dx, ax;
 
     if (g_cursor_prev_x[1].nX != -999) {
-        if ((uchar huge *)g_pActiveCursorBuf == (uchar huge *)g_pCursorScratchBuf1)
+        if ((unsigned char huge *)g_pActiveCursorBuf == (unsigned char huge *)g_pCursorScratchBuf1)
             screen_cursor_restore_background(&g_cursor_prev_x[1], g_pCursorScratchBuf2);
         else
             screen_cursor_restore_background(&g_cursor_prev_x[1], g_pCursorScratchBuf1);
@@ -416,7 +416,7 @@ void far screen_scene_reset_clip_cur(void) {
     g_graphics_context.wGfxBlitDstPage = g_graphics_context.wGfxBlitSrcPage =
         g_graphics_context.wVgaPage2Base;
     vsync_hook(1);
-    if ((uchar huge *)g_pActiveCursorBuf == (uchar huge *)g_pCursorScratchBuf1) {
+    if ((unsigned char huge *)g_pActiveCursorBuf == (unsigned char huge *)g_pCursorScratchBuf1) {
         g_pActiveCursorBuf = g_pCursorScratchBuf2;
     } else {
         g_pActiveCursorBuf = g_pCursorScratchBuf1;
@@ -473,7 +473,7 @@ void far screen_wipe_horizontal(int x, int y, int w, int h) {
 
     screen_cursor_restore_background(&g_cursor_prev_x[0], g_pActiveCursorBuf);
 
-    if ((uchar huge *)g_pActiveCursorBuf == (uchar huge *)g_pCursorScratchBuf1) {
+    if ((unsigned char huge *)g_pActiveCursorBuf == (unsigned char huge *)g_pCursorScratchBuf1) {
         g_pActiveCursorBuf = g_pCursorScratchBuf2;
     } else {
         g_pActiveCursorBuf = g_pCursorScratchBuf1;

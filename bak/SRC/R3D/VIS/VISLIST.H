@@ -5,6 +5,6 @@
 
 extern void vislist_alloc(void);
 extern void vislist_free(void);
-extern void vislist_sort(ushort seg, ushort *ids, long *vals, int count);
+extern void vislist_sort(unsigned short seg, unsigned short *ids, long *vals, int count);
 
 #endif

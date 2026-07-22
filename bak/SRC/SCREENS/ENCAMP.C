@@ -37,7 +37,7 @@ unsigned char *g_pEncampPaletteRemapLut = {0};
 
 void far encamp_run(void) {
     int running;
-    ushort menuSelChanged;
+    unsigned short menuSelChanged;
     int menuRedrawFrames;
     int bgRedrawFrames;
     int hoverHotspot;
@@ -45,17 +45,17 @@ void far encamp_run(void) {
     int advancing;
     int showCancelBtn;
     int showCampBtn;
-    uint restUntilHealed;
+    unsigned int restUntilHealed;
     int trailFrames;
-    uint menuAction;
+    unsigned int menuAction;
     int i;
     int sickCurePending;
-    uint restStartTime;
-    uint targetTime;
-    uint prevTime;
-    ulong startGameTime;
+    unsigned int restStartTime;
+    unsigned int targetTime;
+    unsigned int prevTime;
+    unsigned long startGameTime;
     MenuPage *page;
-    uint time_in_period;
+    unsigned int time_in_period;
 
     running = 1;
     menuSelChanged = 0;
@@ -69,7 +69,7 @@ void far encamp_run(void) {
     restUntilHealed = 0;
     trailFrames = 2;
     sickCurePending = 1;
-    restStartTime = (uint)((g_gameState.game_time % 0xa8c0) / 0x708 * 0x708);
+    restStartTime = (unsigned int)((g_gameState.game_time % 0xa8c0) / 0x708 * 0x708);
     time_in_period = restStartTime;
     targetTime = restStartTime;
     startGameTime = g_gameState.game_time;
@@ -259,11 +259,11 @@ void far encamp_run(void) {
 
 void far encamp_load(void) {
     register BakFile *stream;
-    ushort *ptx;
-    ushort *pty;
+    unsigned short *ptx;
+    unsigned short *pty;
     register int i;
 
-    g_pEncampBmpAssetTable = (ushort *)resblit_load_asset_table("encamp.bmp", 2);
+    g_pEncampBmpAssetTable = (unsigned short *)resblit_load_asset_table("encamp.bmp", 2);
     g_graphics_context.wGfxBlitDstPage = g_graphics_context.wVgaPage1Base;
     resblit_load_pal_or_stream("encamp.scx");
     stream = bak_fopen("encamp.dat", "rb");
@@ -316,15 +316,15 @@ void encamp_restore_screen_background(void) {
     return;
 }
 
-void encamp_proj_trail_emit_facing(int a, int b, int c, uint d, uint e, uint f) {
-    uint startHour;
-    uint curHour;
-    uint targetHour;
+void encamp_proj_trail_emit_facing(int a, int b, int c, unsigned int d, unsigned int e, unsigned int f) {
+    unsigned int startHour;
+    unsigned int curHour;
+    unsigned int targetHour;
     int ascending;
     int bmpIdx;
-    uint i;
-    ushort *px;
-    ushort *py;
+    unsigned int i;
+    unsigned short *px;
+    unsigned short *py;
 
     startHour = (long)d / 0x708;
     curHour = (long)e / 0x708;
@@ -361,7 +361,7 @@ void encamp_proj_trail_emit_facing(int a, int b, int c, uint d, uint e, uint f) 
                 bmpIdx = 1;
             }
         }
-        emsimg_map_then_call_180c((uint *)g_pEncampBmpAssetTable[bmpIdx], *px, *py, 0);
+        emsimg_map_then_call_180c((unsigned int *)g_pEncampBmpAssetTable[bmpIdx], *px, *py, 0);
         i++;
         px++;
         py++;
@@ -369,8 +369,8 @@ void encamp_proj_trail_emit_facing(int a, int b, int c, uint d, uint e, uint f) 
 }
 
 int encamp_hotspot_at_cursor(void) {
-    ushort *px;
-    ushort *py;
+    unsigned short *px;
+    unsigned short *py;
     int halfW;
     int halfH;
     int curX;
@@ -397,8 +397,8 @@ int encamp_hotspot_at_cursor(void) {
 }
 
 void far encamp_build_palette_remap_lut(void) {
-    uchar *pLut;
-    uchar far *pPal;
+    unsigned char *pLut;
+    unsigned char far *pPal;
     int i;
 
     pPal = g_graphics_context.pPaletteScratchBuf;
@@ -407,9 +407,9 @@ void far encamp_build_palette_remap_lut(void) {
     i = 0;
     do {
         if (i < 0x70) {
-            *pLut = (uchar)encamp_palette_nearest_color(pPal, -10);
+            *pLut = (unsigned char)encamp_palette_nearest_color(pPal, -10);
         } else {
-            *pLut = (uchar)i;
+            *pLut = (unsigned char)i;
         }
         i++;
         pPal += 3;
@@ -421,16 +421,16 @@ void encamp_free_buffer(void) {
     galloc_zfree(g_pEncampPaletteRemapLut);
 }
 
-uint far encamp_palette_nearest_color(uchar far *palette_ptr, int bias) {
-    uint best_idx;
-    uint best_dist;
-    uchar far *p;
-    uint i;
+unsigned int far encamp_palette_nearest_color(unsigned char far *palette_ptr, int bias) {
+    unsigned int best_idx;
+    unsigned int best_dist;
+    unsigned char far *p;
+    unsigned int i;
 
     best_dist = 0x301;
     p = g_graphics_context.pPaletteScratchBuf;
     for (i = 0; i < 0x70; i++, p += 3) {
-        uint dist = (uint)(abs((int)(char)palette_ptr[0] + bias - (int)(char)p[0]) +
+        unsigned int dist = (unsigned int)(abs((int)(char)palette_ptr[0] + bias - (int)(char)p[0]) +
                            abs((int)(char)palette_ptr[1] + bias - (int)(char)p[1]) +
                            abs((int)(char)palette_ptr[2] + bias - (int)(char)p[2]));
         if (dist < best_dist) {
@@ -441,11 +441,11 @@ uint far encamp_palette_nearest_color(uchar far *palette_ptr, int bias) {
     return best_idx;
 }
 
-void far encamp_draw_clock_hand(uint time_in_period) {
-    uint vertIdx;
+void far encamp_draw_clock_hand(unsigned int time_in_period) {
+    unsigned int vertIdx;
 
     if ((time_in_period >= 0x2a30) && (time_in_period <= 0x7e90)) {
-        vertIdx = (uint)((long)(time_in_period << 1) / 0x708) + 0xfff4u;
+        vertIdx = (unsigned int)((long)(time_in_period << 1) / 0x708) + 0xfff4u;
         if (vertIdx != 0xc) {
             g_graphics_context.bClip_enabled = '\0';
             g_graphics_context.bGfx_fill_enabled = '\x01';
@@ -469,9 +469,9 @@ void far encamp_draw_party_stats(void) {
     register int p;
     char text[30];
     char numBuf[10];
-    uint healthStamina;
-    uint maxHealthStamina;
-    uint rations;
+    unsigned int healthStamina;
+    unsigned int maxHealthStamina;
+    unsigned int rations;
     int x;
     int y;
 

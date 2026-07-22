@@ -17,6 +17,6 @@ extern void invui_draw_text_aligned_shadow(char far *text, int x, int y, int ali
 extern ImageRecord *invui_item_sprite_select(ItemSlot far *slot);
 extern void invui_blit_spr_ckey_dflt_size(ImageRecord *sprite, int x, int y, int w, int h);
 extern int invui_actor_inventory_kind(Actor far *actor, int flag);
-extern void invui_status_icons_render(uint status_bits, int x, int y);
+extern void invui_status_icons_render(unsigned int status_bits, int x, int y);
 
 #endif

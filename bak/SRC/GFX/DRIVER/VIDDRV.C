@@ -34,7 +34,7 @@ char g_szDrvSuffix_HVG[5] = "HVG:";
 char g_szDrvSuffix_HEG[5] = "HEG:";
 char g_szDrvSuffix_NEW[5] = "NEW:";
 
-ulong far *video_driver_load(int mode, BakFileRef *file) {
+unsigned long far *video_driver_load(int mode, BakFileRef *file) {
     long size;
     int stream_id;
     int did_open;
@@ -92,13 +92,13 @@ ulong far *video_driver_load(int mode, BakFileRef *file) {
         goto fail;
     }
 
-    stream_read(stream_id, (void far *)g_pVideoDriverTemplate, (uint)size);
+    stream_read(stream_id, (void far *)g_pVideoDriverTemplate, (unsigned int)size);
     stream_close(stream_id);
 
     if (did_open != 0) {
         cached_file_close(handle);
     }
-    return (ulong far *)g_pVideoDriverTemplate;
+    return (unsigned long far *)g_pVideoDriverTemplate;
 
 fail:
     return 0;

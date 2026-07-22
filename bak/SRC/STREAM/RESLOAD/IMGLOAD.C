@@ -10,16 +10,16 @@
 #include "SRC/STREAM/CODEC/STREAM.H"
 #undef unpack_2bpp_to_byte_per_pixel
 
-void unpack_2bpp_to_byte_per_pixel(uchar huge *src, uchar huge *dst, unsigned count);
+void unpack_2bpp_to_byte_per_pixel(unsigned char huge *src, unsigned char huge *dst, unsigned count);
 
-int iff_chunk_loader_2f1c(BakFile *file, ushort *count, ushort *out_handle) {
+int iff_chunk_loader_2f1c(BakFile *file, unsigned short *count, unsigned short *out_handle) {
 
-    ushort *width;
-    ushort *height;
+    unsigned short *width;
+    unsigned short *height;
     int i;
-    ushort n;
+    unsigned short n;
     int *slot;
-    ushort *buf;
+    unsigned short *buf;
     int rec;
 
     buf = 0;
@@ -28,15 +28,15 @@ int iff_chunk_loader_2f1c(BakFile *file, ushort *count, ushort *out_handle) {
         goto L_fail;
     if (bak_fread(count, 2, 1, file) != 1)
         goto L_fail;
-    if (!(*out_handle = (ushort)my_calloc((*count + 1) * 2, 1)))
+    if (!(*out_handle = (unsigned short)my_calloc((*count + 1) * 2, 1)))
         goto L_cleanup;
-    if (!(*(ushort *)*out_handle = (ushort)my_calloc(10, *count)))
+    if (!(*(unsigned short *)*out_handle = (unsigned short)my_calloc(10, *count)))
         goto L_cleanup;
     if ((long)(cached_file_chunk_size(file) + (-2L)) < (long)(int)(*count << 2))
         n = 1;
     else
         n = *count;
-    if (!(buf = (ushort *)my_malloc(n << 2)))
+    if (!(buf = (unsigned short *)my_malloc(n << 2)))
         goto L_cleanup;
     if (bak_fread(buf, n << 2, 1, file) != 1)
         goto L_cleanup;
@@ -46,8 +46,8 @@ int iff_chunk_loader_2f1c(BakFile *file, ushort *count, ushort *out_handle) {
     slot = (int *)*out_handle;
     for (i = 0; i < (int)*count; i++) {
         *slot = rec;
-        *(ushort *)(rec + 6) = *width;
-        *(ushort *)(rec + 8) = *height;
+        *(unsigned short *)(rec + 6) = *width;
+        *(unsigned short *)(rec + 8) = *height;
         if (*count == n) {
             width++;
             height++;
@@ -63,14 +63,14 @@ L_cleanup:
         my_free(buf);
     if (*out_handle != 0) {
         if (*(int *)*out_handle != 0)
-            my_free((void *)*(ushort *)*out_handle);
+            my_free((void *)*(unsigned short *)*out_handle);
         my_free((void *)*out_handle);
     }
 L_fail:
     return 0;
 }
 
-ushort bak_load_image_record_chunked(BakFileRef *fname) {
+unsigned short bak_load_image_record_chunked(BakFileRef *fname) {
     unsigned short *image;
     int stream;
     unsigned char huge *buf;
@@ -96,7 +96,7 @@ ushort bak_load_image_record_chunked(BakFileRef *fname) {
         if ((unsigned)(fname = cached_file_open(fname)) < 0)
             goto cleanup;
     }
-    if (iff_chunk_loader_2f1c(fname, &record_count, (ushort *)&image)) {
+    if (iff_chunk_loader_2f1c(fname, &record_count, (unsigned short *)&image)) {
         size =
             (*(unsigned long(far *)(unsigned short *, int *))g_renderer_vtable.pfn_image_install)(
                 image, &aux_size);
@@ -178,7 +178,7 @@ cleanup:
     }
     if (opened)
         cached_file_close(fname);
-    return (ushort)image;
+    return (unsigned short)image;
 }
 
 void free_container_pair(int *container) {
@@ -192,7 +192,7 @@ void far free_image_record(register ImageRecord **record) {
     int *inner;
     if (record) {
         inner = (int *)*record;
-        _freemem((uchar far *)(((unsigned long)inner[0] << 16) + (unsigned int)inner[1]));
+        _freemem((unsigned char far *)(((unsigned long)inner[0] << 16) + (unsigned int)inner[1]));
         free_container_pair((int *)record);
     }
 }
@@ -208,8 +208,8 @@ int null_terminated_count(ImageRecord **table) {
     return i;
 }
 
-void unpack_2bpp_to_byte_per_pixel(uchar huge *src, uchar huge *dst, unsigned count) {
-    uchar b;
+void unpack_2bpp_to_byte_per_pixel(unsigned char huge *src, unsigned char huge *dst, unsigned count) {
+    unsigned char b;
     unsigned si;
 
     src += count - 1;

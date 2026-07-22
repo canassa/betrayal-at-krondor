@@ -21,7 +21,7 @@ BakFile *g_pTempGamFp = {0};
 char g_abSleepStatDelta[6] = {0xfe, 0xff, 0xfe, 0xfe, 0xfe, 0xfd};
 char g_abRegenPerChar[6] = {0x01, 0x01, 0x01, 0x01, 0x01, 0x01};
 
-ushort far gstate_event_read(ushort id) {
+unsigned short far gstate_event_read(unsigned short id) {
 
     if (id < 0x2134) {
         return (g_gameState.event_bitmap_lo[id >> 3] & (1 << (id & 7))) ? 1 : 0;
@@ -30,17 +30,17 @@ ushort far gstate_event_read(ushort id) {
         return itemtbl_party_count_by_kind(id + 0x3cb0);
     }
     if (id >= 0xcb20 && id < 0xcb27) {
-        uint w = id + 0x34df;
+        unsigned int w = id + 0x34df;
         return spellfx_event_mask_test_bit(w);
     }
     if (id >= 0xcf08 && id <= 0xcf6c) {
-        uint w = id + 0x30f8;
+        unsigned int w = id + 0x30f8;
         return RND(w);
     }
     if (id >= 0xdac0) {
-        uint cx = id + 0x2540;
-        uint row = cx / 10;
-        uint w = cx % 10 - 1;
+        unsigned int cx = id + 0x2540;
+        unsigned int row = cx / 10;
+        unsigned int w = cx % 10 - 1;
         return (g_gameState.event_bitmap_hi[row] & (1 << w)) ? 1 : 0;
     }
 
@@ -49,10 +49,10 @@ ushort far gstate_event_read(ushort id) {
         return g_gameState.nEvtArgCount;
     case 1: {
         long g = g_gameState.nParty_gold / 10;
-        return (g > 0xffffL) ? 0xffff : (ushort)g;
+        return (g > 0xffffL) ? 0xffff : (unsigned short)g;
     }
     case 2:
-        return (g_gameState.nParty_gold > 0xffff) ? 0xffff : (ushort)g_gameState.nParty_gold;
+        return (g_gameState.nParty_gold > 0xffff) ? 0xffff : (unsigned short)g_gameState.nParty_gold;
     case 7:
         return g_gameState.nChapter;
     case 19:
@@ -72,13 +72,13 @@ ushort far gstate_event_read(ushort id) {
         return (h < 4 || h >= 0x14) ? 1 : 0;
     }
     case 12:
-        return (ushort)(g_gameState.game_time % 0xa8c0 / 0x708);
+        return (unsigned short)(g_gameState.game_time % 0xa8c0 / 0x708);
     case 14:
-        return (ushort)g_gameState.lEvtArgGoldCost;
+        return (unsigned short)g_gameState.lEvtArgGoldCost;
     case 15:
-        return (ushort)g_gameState.lEvtArgValue;
+        return (unsigned short)g_gameState.lEvtArgValue;
     case 18:
-        return (ushort)g_gameState.lEvtArgAuxValue;
+        return (unsigned short)g_gameState.lEvtArgAuxValue;
     case 20:
     case 21:
     case 22:
@@ -96,10 +96,10 @@ ushort far gstate_event_read(ushort id) {
     }
 }
 
-int far gstate_event_write(uint event_id, uint value) {
-    uint idx;
-    uint q;
-    uint bit;
+int far gstate_event_write(unsigned int event_id, unsigned int value) {
+    unsigned int idx;
+    unsigned int q;
+    unsigned int bit;
 
     if (event_id < 0x2134) {
         if (value != 0) {
@@ -170,19 +170,19 @@ void gstate_temp_file_close(void) {
     return;
 }
 
-int gstate_temp_file_read_at(uchar far *dst_far, ulong offset, uint bytes) {
+int gstate_temp_file_read_at(unsigned char far *dst_far, unsigned long offset, unsigned int bytes) {
     if (bak_fseek(g_pTempGamFp, offset, 0) != 0) {
         bak_fseek(g_pTempGamFp, 0, 0);
         if (bak_fseek(g_pTempGamFp, offset, 0) != 0) {
         }
     }
-    if ((ulong)bak_ftell(g_pTempGamFp) == offset) {
+    if ((unsigned long)bak_ftell(g_pTempGamFp) == offset) {
     }
     bak_fread_chunked(dst_far, 1, (long)bytes, g_pTempGamFp);
     return 1;
 }
 
-int gstate_temp_file_write_at(uchar far *src_far, ulong offset, uint bytes) {
+int gstate_temp_file_write_at(unsigned char far *src_far, unsigned long offset, unsigned int bytes) {
     if (bak_fseek(g_pTempGamFp, offset, 0) != 0) {
         bak_fseek(g_pTempGamFp, 0, 0);
         if (bak_fseek(g_pTempGamFp, offset, 0) != 0)
@@ -190,7 +190,7 @@ int gstate_temp_file_write_at(uchar far *src_far, ulong offset, uint bytes) {
     }
     if (bak_ftell(g_pTempGamFp) == (long)offset)
         ;
-    bak_fwrite_chunked(src_far, 1, (ulong)bytes, g_pTempGamFp);
+    bak_fwrite_chunked(src_far, 1, (unsigned long)bytes, g_pTempGamFp);
     return 1;
 }
 
@@ -238,7 +238,7 @@ static int gstate_30min_tick(int arg0, int arg1, int arg2) {
     int regen;
     int eventFired;
     int allConscious;
-    ulong elapsed;
+    unsigned long elapsed;
     int val;
     /* The two party-regen loop temps (slot = roster index, actor = resolved
        member id) are pinned to SI/DI as a pair — the hot-loop-counter idiom. */

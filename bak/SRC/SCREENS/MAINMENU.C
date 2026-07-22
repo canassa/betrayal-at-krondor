@@ -81,16 +81,16 @@ int mainmenu_save_main_menu(int reentering) {
     int bFirstFade = 1;
     int bFullRender = 1;
     int bRecheckSaves = 1;
-    ushort wRedraw = 0;
-    uint overlay;
+    unsigned short wRedraw = 0;
+    unsigned int overlay;
     int track_id;
-    uint key;
+    unsigned int key;
     int result;
-    uchar far *pPalSaved;
-    uchar far *pal;
+    unsigned char far *pPalSaved;
+    unsigned char far *pal;
     MenuPage *page;
 
-    pal = (uchar far *)0;
+    pal = (unsigned char far *)0;
     g_nMenuReentering = reentering;
 
     track_id = audio_music_play(0x3f7);
@@ -100,7 +100,7 @@ int mainmenu_save_main_menu(int reentering) {
         audio_music_play(0x3f7);
         font_activate(g_wGameFontSlot);
         pal = chunk_load_into_slot("options.pal");
-        g_pPalQueuedForFlip = (uchar far *)0;
+        g_pPalQueuedForFlip = (unsigned char far *)0;
         palette_set(pal);
         g_graphics_context.wGfxBlitDstPage = g_wVgaScratchPageBase;
         resblit_load_pal_or_stream("z01l.scr");
@@ -111,7 +111,7 @@ int mainmenu_save_main_menu(int reentering) {
     while (bRunning != 0) {
         if (bFullRender != 0) {
             pPalSaved = g_pPalQueuedForFlip;
-            g_pPalQueuedForFlip = (uchar far *)0;
+            g_pPalQueuedForFlip = (unsigned char far *)0;
             if (g_wMenuCursorPreset == 0) {
                 screen_cursor_show_busy();
             }
@@ -284,7 +284,7 @@ int mainmenu_save_main_menu(int reentering) {
 
     menupage_end(page);
     menupage_free(page);
-    if (pal != (uchar far *)0) {
+    if (pal != (unsigned char far *)0) {
         cache_release(pal);
     }
     if (reentering != 0 && result != 1 && result != 2 && result != 3 && result != 4) {
@@ -313,9 +313,9 @@ int mainmenu_save_load_game_dialog(void) {
     int file_dirty;
     int labels_dirty;
     int page_active;
-    ushort slot_key;
-    ushort file_key;
-    ushort file_click;
+    unsigned short slot_key;
+    unsigned short file_key;
+    unsigned short file_click;
     int nav_a;
     int nav_b;
     int nav_c;
@@ -437,7 +437,7 @@ int mainmenu_save_load_game_dialog(void) {
         }
 
         page_active = 0;
-        action_key = menupage_run(page, (ushort *)&file_dirty);
+        action_key = menupage_run(page, (unsigned short *)&file_dirty);
         if (action_key) {
             page_active = (menupage_state_0e7c() == 2) ? 1 : 0;
         } else {
@@ -1046,14 +1046,14 @@ int mainmenu_save_prefs_menu_run(void) {
     int dirty_text;
     int dirty_audio;
     int dirty_combat;
-    ushort menupage_redraw;
+    unsigned short menupage_redraw;
     int labels_redraw;
     int overlay_mode;
     int file_error;
-    uint event_code;
+    unsigned int event_code;
     MenuPage *page;
     MenuEntry *pe;
-    uint i;
+    unsigned int i;
     BakFile *fp;
 
     prefs = *g_engine_prefs;
@@ -1086,7 +1086,7 @@ int mainmenu_save_prefs_menu_run(void) {
             pe = page->pEntries + 3;
             i = 0;
             do {
-                pe->wSub_state = (uint)(prefs.step_speed == i);
+                pe->wSub_state = (unsigned int)(prefs.step_speed == i);
                 i++;
                 pe++;
             } while ((int)i < 3);
@@ -1096,7 +1096,7 @@ int mainmenu_save_prefs_menu_run(void) {
             pe = page->pEntries + 6;
             i = 0;
             do {
-                pe->wSub_state = (uint)(prefs.combat_step_speed == i);
+                pe->wSub_state = (unsigned int)(prefs.combat_step_speed == i);
                 i++;
                 pe++;
             } while ((int)i < 3);
@@ -1106,7 +1106,7 @@ int mainmenu_save_prefs_menu_run(void) {
             pe = page->pEntries + 9;
             i = 0;
             do {
-                pe->wSub_state = (uint)(prefs.detail_level == i);
+                pe->wSub_state = (unsigned int)(prefs.detail_level == i);
                 i++;
                 pe++;
             } while ((int)i < 4);
@@ -1116,7 +1116,7 @@ int mainmenu_save_prefs_menu_run(void) {
             pe = page->pEntries + 0xd;
             i = 0;
             do {
-                pe->wSub_state = (uint)(prefs.text_speed == i);
+                pe->wSub_state = (unsigned int)(prefs.text_speed == i);
                 i++;
                 pe++;
             } while ((int)i < 3);
@@ -1168,25 +1168,25 @@ int mainmenu_save_prefs_menu_run(void) {
             overlay_mode = (menupage_state_0e7c() == 2);
 
         if (event_code >= 0xc0 && event_code < 0xc3) {
-            prefs.step_speed = (uchar)(event_code - 0xc0);
+            prefs.step_speed = (unsigned char)(event_code - 0xc0);
             dirty_screen = 1;
             menupage_redraw = 1;
             continue;
         }
         if (event_code >= 0xc3 && event_code < 0xc6) {
-            prefs.combat_step_speed = (uchar)(event_code - 0xc3);
+            prefs.combat_step_speed = (unsigned char)(event_code - 0xc3);
             dirty_text = 1;
             menupage_redraw = 1;
             continue;
         }
         if (event_code >= 0xc6 && event_code < 0xca) {
-            prefs.detail_level = (uchar)(event_code - 0xc6);
+            prefs.detail_level = (unsigned char)(event_code - 0xc6);
             dirty_audio = 1;
             menupage_redraw = 1;
             continue;
         }
         if (event_code >= 0xca && event_code < 0xcd) {
-            prefs.text_speed = (uchar)(event_code - 0xca);
+            prefs.text_speed = (unsigned char)(event_code - 0xca);
             dirty_combat = 1;
             menupage_redraw = 1;
             continue;
@@ -1329,7 +1329,7 @@ void far mainmenu_save_show_ctrd_modal(void) {
     uiwidget_draw_text_shadowed_dflt(g_pszCombatModalTitle, 0xaa, 0xae, 0xa0 - (textWidth >> 1),
                                      0x38);
     if (record != (ImageRecord **)0x0) {
-        blit_sprite_indirect((ushort)*record, 0xa0 - ((*record)->nWidth >> 1), 100, 0);
+        blit_sprite_indirect((unsigned short)*record, 0xa0 - ((*record)->nWidth >> 1), 100, 0);
     }
     screen_frame_present();
     while (combat_arena_wait_confirm_cancel() == 0)
@@ -1361,7 +1361,7 @@ int mainmenu_save_games_dir_create(void) {
 int mainmenu_save_any_exists(void) {
     int outer_r;
     int inner_r;
-    uint slotKey;
+    unsigned int slotKey;
     int saveId;
     int state;
     char slotName[14];
@@ -1393,9 +1393,9 @@ int mainmenu_save_any_exists(void) {
 }
 
 void far mainmenu_save_bookmark(void) {
-    uint key;
+    unsigned int key;
     char path[50];
-    uint heading;
+    unsigned int heading;
 
     if (g_wSaveSlotDirValid != 0) {
         if (g_bookmark_verify != 0) {
@@ -1450,7 +1450,7 @@ void mainmenu_save_party_to_tmp(void) {
     zone_savegame_snap_world_state();
     g_wLastTempWriteRecordKind = 0;
 
-    gstate_temp_file_write_at((uchar far *)&g_gameState, 0L, 0xad7);
+    gstate_temp_file_write_at((unsigned char far *)&g_gameState, 0L, 0xad7);
     g_gameState.shared_inventory->needsFlush = TRUE;
     actorspawn_persist_to_temp(g_gameState.shared_inventory);
     g_gameState.ground_pile->needsFlush = TRUE;
@@ -1548,7 +1548,7 @@ void mainmenu_save_slot_exists(void) {
 void mainmenu_save_request_load_game(void) {
     MenuPage *page;
     ListWidget *list;
-    ushort slotKey;
+    unsigned short slotKey;
     char *slotText;
 
     if (mainmenu_save_games_dir_exists() == 0)
@@ -1569,7 +1569,7 @@ done:;
 }
 
 int mainmenu_save_enum_directories(ListWidget *list) {
-    ushort slotKey;
+    unsigned short slotKey;
     struct ffblk dta;
     char local_path[50];
     int rc;
@@ -1611,7 +1611,7 @@ int mainmenu_save_parse_filename(char *filename, char *out_name, int *out_slot) 
 }
 
 int mainmenu_save_enum_files_slot(ListWidget *list, char *slot_name, int slot_id) {
-    ushort key;
+    unsigned short key;
     int state;
     char title[14];
     char dta[30];
@@ -1655,9 +1655,9 @@ int mainmenu_save_parse_read_title(char *title_buf, char *sig_block, int *out_sa
     return 0;
 }
 
-int mainmenu_savelist_insert_sorted(ListWidget *list, char *label, ushort key) {
+int mainmenu_savelist_insert_sorted(ListWidget *list, char *label, unsigned short key) {
     int count;
-    ushort entryKey;
+    unsigned short entryKey;
     int index;
 
     count = listwidget_count(list);
@@ -1679,7 +1679,7 @@ int mainmenu_savelist_nextfree_key(ListWidget *list) {
     int count;
     int prev_key;
     int i;
-    ushort key;
+    unsigned short key;
 
     count = listwidget_count(list);
     prev_key = 0;
@@ -1711,7 +1711,7 @@ int mainmenu_savelist_nextfree_nobm(ListWidget *list) {
     int count;
     int prev_key;
     int i;
-    ushort key;
+    unsigned short key;
 
     count = listwidget_count(list);
     prev_key = 0;
@@ -1748,7 +1748,7 @@ int mainmenu_savelist_find_by_text(ListWidget *list, char *text) {
     index = 0;
     if (index < count) {
         do {
-            if (listwidget_get_entry_at(list, index, &label, (ushort *)0) != 0 &&
+            if (listwidget_get_entry_at(list, index, &label, (unsigned short *)0) != 0 &&
                 stricmp(label, text) == 0) {
                 return index;
             }

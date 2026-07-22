@@ -20,7 +20,7 @@ static Actor far *actorspawn_clone_from_template(Actor far *tmpl_far, int actor_
     dst = alloc_far(actorrec_payload_size(tmpl_far) + sizeof(Actor), ALLOC_FAR_ZERO_FILL);
     *dst = *tmpl_far;
     dst->needsFlush = FALSE;
-    dst->canFlush = (uchar)actor_kind;
+    dst->canFlush = (unsigned char)actor_kind;
     return dst;
 }
 
@@ -33,7 +33,7 @@ long far actorspawn_location_lookup(int location_id) {
     }
     for (i = 0; i < 20; i++) {
 
-        gstate_temp_file_read_at((byte far *)&rec, (unsigned)GAM_OBJFIXED_LOCATION(i), 0x16);
+        gstate_temp_file_read_at((unsigned char far *)&rec, (unsigned)GAM_OBJFIXED_LOCATION(i), 0x16);
         if (location_id == rec.location_id) {
             g_gameState.objfixed_location_cache = rec;
             return rec.temp_gam_offset;
@@ -64,7 +64,7 @@ int actorspawn_for_location_by_time(int location_id) {
             hi_nibble = hdr.chap_band >> 4 & 0xf;
             lo_nibble = hdr.chap_band & 0xf;
             if (((hdr.flags & 0x80) != 0 || hdr.bResidence == RES_SELF_SPAWN) &&
-                (g_gameState.nChapter >= (uint)hi_nibble) &&
+                (g_gameState.nChapter >= (unsigned int)hi_nibble) &&
                 (g_gameState.nChapter <= lo_nibble && hdr.bResidence != RES_FREE)) {
                 rgnenc_visible_pool_append_spawn(&hdr.kind);
                 spawned++;
@@ -79,8 +79,8 @@ Actor far *actorspawn_objfixed(int kind, long world_x, long world_y) {
     register BakFile *stream;
     register int ipass;
     int rec_idx;
-    uint chap_min;
-    uint chap_max;
+    unsigned int chap_min;
+    unsigned int chap_max;
     int record_count;
     long offset;
     Actor far *spawned;
@@ -108,14 +108,14 @@ Actor far *actorspawn_objfixed(int kind, long world_x, long world_y) {
         for (rec_idx = 0; spawned == NULL && rec_idx < record_count; rec_idx++) {
             offset = bak_ftell(stream);
             bak_fread(&tmpl.header, 0x10, 1, stream);
-            chap_min = (int)(uint)tmpl.header.chap_band >> 4 & 0xf;
+            chap_min = (int)(unsigned int)tmpl.header.chap_band >> 4 & 0xf;
             chap_max = tmpl.header.chap_band & 0xf;
             if (tmpl.header.kind == kind && tmpl.header.nWorld_x == world_x &&
                 tmpl.header.nWorld_y == world_y && g_gameState.nChapter >= chap_min &&
                 g_gameState.nChapter <= chap_max) {
                 spawned = actorspawn_clone_from_template((Actor far *)&tmpl, ipass == 0);
                 *(long far *)spawned->temp_file_off = offset;
-                bak_fread_chunked((uchar huge *)((char far *)spawned + sizeof(Actor)), 1,
+                bak_fread_chunked((unsigned char huge *)((char far *)spawned + sizeof(Actor)), 1,
                                   actorrec_payload_size((Actor far *)&tmpl), stream);
             } else {
                 bak_fseek(stream, actorrec_payload_size((Actor far *)&tmpl), 1);
@@ -137,7 +137,7 @@ void far actorspawn_persist_to_temp(Actor far *actor) {
             sub->dwLast_touch_time = g_gameState.game_time;
         }
         g_wLastTempWriteRecordKind = 4;
-        gstate_temp_file_write_at(&actor->kind, *(ulong far *)actor->temp_file_off,
+        gstate_temp_file_write_at(&actor->kind, *(unsigned long far *)actor->temp_file_off,
                                   actorrec_payload_size(actor) + sizeof(Actor) - 6);
     }
     actor->needsFlush = FALSE;
@@ -159,9 +159,9 @@ Actor far *actorspawn_enc_location(int kind, long world_x, long world_y) {
     register int found;
     long spawn_loc;
     long cur_off;
-    ulong cur_time;
+    unsigned long cur_time;
     long best_off;
-    ulong best_time;
+    unsigned long best_time;
     int count;
     Actor far *result;
     ActorSubrec10_LastTouch far *p_touch;
@@ -197,7 +197,7 @@ Actor far *actorspawn_enc_location(int kind, long world_x, long world_y) {
             bak_fread(&actor_hdr.kind, 0x10, 1, g_pTempGamFp);
             if (actor_hdr.flags & 0x80) {
                 tmp_clone = actorspawn_clone_from_template(&actor_hdr, 0);
-                bak_fread_chunked((uchar far *)((char far *)tmp_clone + sizeof(Actor)), 1L,
+                bak_fread_chunked((unsigned char far *)((char far *)tmp_clone + sizeof(Actor)), 1L,
                                   actorrec_payload_size(&actor_hdr), g_pTempGamFp);
                 p_touch = (ActorSubrec10_LastTouch far *)actorrec_get_subrecord(tmp_clone,
                                                                                 SUBREC_LAST_TOUCH);
@@ -218,7 +218,7 @@ Actor far *actorspawn_enc_location(int kind, long world_x, long world_y) {
         cur_off = best_off;
         rgnenc_vis_pool_remove_matching(&best_hdr.kind);
     }
-    actor_hdr.kind = (uchar)kind;
+    actor_hdr.kind = (unsigned char)kind;
     actor_hdr.chap_band = '\n';
     actor_hdr.loc.world.nWorld_x = world_x;
     actor_hdr.loc.world.nWorld_y = world_y;

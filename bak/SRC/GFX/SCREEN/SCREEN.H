@@ -17,7 +17,7 @@ extern void screen_cursor_unload_pack(void);
 extern void screen_cursor_state_push_pop(int restore);
 extern void screen_cursor_hide(void);
 extern void screen_cursor_draw(CursorState *cursor_rec, unsigned char far *buf);
-extern void screen_cursor_restore_background(CursorState *cur, uchar far *pBgBuffer);
+extern void screen_cursor_restore_background(CursorState *cur, unsigned char far *pBgBuffer);
 extern void screen_cur_refr_during_long_op(void);
 extern void screen_frame_present(void);
 extern void screen_frame_sync_buffers_rect(int row_start, int row_count);

@@ -65,7 +65,7 @@ long ts_isqrt_long(long n) {
 void ts_emit_ribbon_joint(Vec3Short *anchorXy) {
     int dxOff;
     int t;
-    uint a1, a2, base;
+    unsigned int a1, a2, base;
     int delta;
     Vec3Short vtx;
     int i;
@@ -153,7 +153,7 @@ void ts_pack_vertex(Vec3Short far *dstShort3, Vec3Long far *srcLong3) {
     dstShort3->nZ = srcLong3->nZ >> g_builder.builtShape->shift;
 }
 
-void ts_project_shape(Vec3Long *vtxData, uint vtxSeg, int vtxCount, int radiusIn) {
+void ts_project_shape(Vec3Long *vtxData, unsigned int vtxSeg, int vtxCount, int radiusIn) {
     Vec3Long far *vtxCur;
     int tmp;
     long maxMag;
@@ -264,7 +264,7 @@ void ts_alloc_shape_block(int recordCount) {
     }
 }
 
-Shape far *ts_build_shape(int slot, Vec3Long *vtxData, uint vtxSeg, int vtxCount, int ribbonWidth,
+Shape far *ts_build_shape(int slot, Vec3Long *vtxData, unsigned int vtxSeg, int vtxCount, int ribbonWidth,
                           int color1, int color2) {
     int idxBase;
     struct LodDescriptor far *pLod;
@@ -272,7 +272,7 @@ Shape far *ts_build_shape(int slot, Vec3Long *vtxData, uint vtxSeg, int vtxCount
     struct PolyListBlock far *pPolyBlock;
     struct MeshPolyHeader far *pPolyHeader;
     struct MeshPolygon far *pFace;
-    uchar far *pIndices;
+    unsigned char far *pIndices;
     int i;
 
     if (vtxCount >= 3) {
