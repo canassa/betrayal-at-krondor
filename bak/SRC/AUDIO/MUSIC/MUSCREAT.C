@@ -1,7 +1,7 @@
 #include "globals.h"
 #include "structs.h"
 #include "SRC/AUDIO/MUSIC/MUSCREAT.H"
-#include "SRC/SYS/POOL.H"
+#include "SRC/AUDIO/RES/POOL.H"
 #include "SRC/AUDIO/RES/PASCREC.H"
 
 AudioTrackHandle far *music_handle_create(unsigned char far *track_data) {

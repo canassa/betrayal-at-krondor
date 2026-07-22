@@ -8,7 +8,7 @@
 #include "SRC/IO/IO.H"
 #include "SRC/SYS/SYSLOWIO.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
-#include "SRC/SYS/POOL.H"
+#include "SRC/AUDIO/RES/POOL.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "SRC/GFX/SPRITE/RESBLIT.H"
 #include "SRC/GFX/DRIVER/PALDRV.H"

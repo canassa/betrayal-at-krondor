@@ -2,7 +2,7 @@
 #include "structs.h"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/SYS/RAND.H"
-#include "SRC/SYS/POOL.H"
+#include "SRC/AUDIO/RES/POOL.H"
 #include "SRC/AUDIO/ENGINE/AUDITER.H"
 #include "SRC/AUDIO/RES/AUDRESLD.H"
 #include "SRC/AUDIO/ENGINE/AUDSTOP.H"

@@ -1,16 +1,16 @@
 #include "SRC/STREAM/RESLOAD/RELBUF.H"
 #include "SRC/SYS/FARTHUNK.H"
-#include "SRC/SYS/POOL.H"
+#include "SRC/AUDIO/RES/POOL.H"
 #include "SRC/SYS/DOSMEM.H"
 
-void release_buffer(void far *ptr, int kind) {
+void release_buffer(void far *ptr, int allocTag) {
     if (pool_is_managed_ptr((unsigned long)ptr) != 0)
         return;
-    if (kind == 6 || kind == 8) {
+    if (allocTag == 6 || allocTag == 8) {
         my_free((void *)ptr);
         return;
     }
-    if (kind != 4) {
+    if (allocTag != 4) {
         _freemem(ptr);
     }
     return;

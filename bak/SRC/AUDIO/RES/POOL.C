@@ -1,5 +1,5 @@
 #include "globals.h"
-#include "SRC/SYS/POOL.H"
+#include "SRC/AUDIO/RES/POOL.H"
 #include "SRC/SYS/FARTHUNK.H"
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/SYS/FARPTR.H"
@@ -64,20 +64,20 @@ int pool_is_managed_ptr(unsigned long ptr) {
     return ptr >= g_pool_base && ptr < g_pool_top;
 }
 
-void far *pool_acquire_buffer(unsigned long size, int kind) {
+void far *pool_acquire_buffer(unsigned long size, int allocTag) {
     void far *result;
     void *nearp;
 
     if (g_alloc_to_pool != 0)
         result = pool_alloc(size);
-    else if (kind == 6 || kind == 8) {
+    else if (allocTag == 6 || allocTag == 8) {
         nearp = my_malloc((unsigned int)size);
         result = nearp;
     } else
         result = alloc_far(size, 0L);
 
     if (result != 0)
-        if (kind == 2 || kind == 3 || kind == 4 || kind == 7)
+        if (allocTag == 2 || allocTag == 3 || allocTag == 4 || allocTag == 7)
             memset_far(result, 0, size);
 
     if (result == 0)

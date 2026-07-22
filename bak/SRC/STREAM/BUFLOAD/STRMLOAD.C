@@ -1,10 +1,10 @@
 #include "SRC/STREAM/BUFLOAD/STRMLOAD.H"
-#include "SRC/SYS/POOL.H"
+#include "SRC/AUDIO/RES/POOL.H"
 #include "SRC/STREAM/RESLOAD/RELBUF.H"
 #include "SRC/STREAM/CODEC/STREAM.H"
 
 void far *stream_load_to_buffer(BakFile *file, unsigned long size, unsigned long *out_desc,
-                                unsigned short codec_kind) {
+                                unsigned short allocTag) {
     register int stream_id;
     unsigned long stream_size_full;
     void far *block_far;
@@ -14,11 +14,11 @@ void far *stream_load_to_buffer(BakFile *file, unsigned long size, unsigned long
 
         stream_size_full = stream_size(stream_id);
 
-        if ((block_far = pool_acquire_buffer(stream_size_full, codec_kind)) != (void far *)0) {
+        if ((block_far = pool_acquire_buffer(stream_size_full, allocTag)) != (void far *)0) {
 
             if ((unsigned long)stream_read(stream_id, block_far, (unsigned short)stream_size_full) !=
                 stream_size_full) {
-                release_buffer(block_far, codec_kind);
+                release_buffer(block_far, allocTag);
                 block_far = (void far *)0;
             }
         }

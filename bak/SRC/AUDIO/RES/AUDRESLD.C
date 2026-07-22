@@ -2,7 +2,7 @@
 #include "SRC/AUDIO/RES/AUDRESLD.H"
 #include "SRC/IO/IO.H"
 #include "SRC/IO/IOCHUNK.H"
-#include "SRC/SYS/POOL.H"
+#include "SRC/AUDIO/RES/POOL.H"
 #include "SRC/STREAM/RESLOAD/RELBUF.H"
 #include "SRC/STREAM/RESLOAD/IFFREAD.H"
 #include "SRC/AUDIO/RES/AUDLOAD.H"

@@ -1,14 +1,14 @@
 #include <dos.h>
 #include "globals.h"
 #include "SRC/AUDIO/RES/AUDRES.H"
-#include "SRC/SYS/POOL.H"
+#include "SRC/AUDIO/RES/POOL.H"
 #include "SRC/STREAM/RESLOAD/RELBUF.H"
 #include "SRC/STREAM/CODEC/STREAM.H"
 
 unsigned char far *audres_load_chunk_by_mode(BakFile *file, unsigned int size_lo, unsigned int size_hi, unsigned int *out_size,
-                                     unsigned short codec_kind) {
+                                     unsigned short allocTag) {
     AudFragNode far *cursor;
-    unsigned char tag;
+    unsigned char ssmRecordTag;
     unsigned long sum;
     unsigned int far *chain;
     unsigned char far *buf;
@@ -20,24 +20,24 @@ unsigned char far *audres_load_chunk_by_mode(BakFile *file, unsigned int size_lo
 
     switch (g_nSfxDriverMode) {
     case 0:
-        tag = 0x12;
+        ssmRecordTag = 0x12;
         break;
     case 1:
     case 5:
-        tag = 0x13;
+        ssmRecordTag = 0x13;
         break;
     case 2:
     case 6:
-        tag = 0x00;
+        ssmRecordTag = 0x00;
         break;
     case 3:
-        tag = 0x0c;
+        ssmRecordTag = 0x0c;
         break;
     case 0x7e:
-        tag = g_bAudioLooseTag;
+        ssmRecordTag = g_bAudioLooseTag;
         break;
     case 7:
-        tag = 0x07;
+        ssmRecordTag = 0x07;
         break;
     default:
         return 0;
@@ -45,7 +45,7 @@ unsigned char far *audres_load_chunk_by_mode(BakFile *file, unsigned int size_lo
 
     if ((stream = stream_open(0, file, "r", ((unsigned long)size_hi << 16) | size_lo)) >= 0) {
 
-        if (audres_stream_find_tagged_record(stream, tag) &&
+        if (audres_stream_find_tagged_record(stream, ssmRecordTag) &&
             (chain = (unsigned int far *)audres_load_sorted_chain(stream)) != 0) {
 
             cursor = (AudFragNode far *)chain;
@@ -65,7 +65,7 @@ unsigned char far *audres_load_chunk_by_mode(BakFile *file, unsigned int size_lo
 
             if ((buf = (unsigned char far *)pool_acquire_buffer(sum + 1, 4)) != 0 &&
                 audres_resource_read_fragmented(stream, (AudFragNode far *)chain, buf, header_size,
-                                                tag)) {
+                                                ssmRecordTag)) {
                 audres_release_buffer_chain((AudFragNode far *)chain);
                 if (out_size) {
                     *(unsigned long *)out_size = sum;
