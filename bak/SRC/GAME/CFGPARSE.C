@@ -18,6 +18,13 @@ unsigned short g_awSoundDriverCodes[5] = {0x0002, 0x0003, 0x0004, 0x0000, 0x0007
  */
 bool16 g_cfgKnockKnock = FALSE;
 unsigned short g_cfgCycle = 0x0000;
+/**
+ * @brief Drive letter for the @c TEMP.GAM swap file (0 = current drive).
+ *
+ * Set from the @c tempdrive line in @c resource.cfg (its first character,
+ * upper-cased). When non-zero the swap path is drive-relative @c D:TEMP.GAM;
+ * when 0 (the default) the file is the bare @c TEMP.GAM on the current drive.
+ */
 int g_cfgTempDrive = 0x0000;
 /**
  * @brief Bookmark-overwrite confirmation flag.
