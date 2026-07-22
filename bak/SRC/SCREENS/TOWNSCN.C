@@ -667,7 +667,7 @@ void far townscene_main_loop(unsigned int scene_kind, int scene_index) {
     palette_cycle_eb_toggle(1);
     g_dialog_in_scene = 0;
     g_nSceneReloadPending = 1;
-    g_nExploreReloadPending = 1;
+    g_nMapReloadPending = 1;
 }
 
 void far townscene_cheat_menu_screen(void) {
@@ -735,7 +735,7 @@ void far townscene_cheat_menu_screen(void) {
     menupage_end(page);
     menupage_free(page);
     g_nSceneReloadPending = 1;
-    g_nExploreReloadPending = 1;
+    g_nMapReloadPending = 1;
 }
 
 void far townscene_chest_open_with_cipher(void) {
@@ -806,7 +806,7 @@ void far townscene_chest_open_with_cipher(void) {
         }
         actorspawn_destroy_and_persist(actor);
         g_nSceneReloadPending = 1;
-        g_nExploreReloadPending = 1;
+        g_nMapReloadPending = 1;
     }
     return;
 }

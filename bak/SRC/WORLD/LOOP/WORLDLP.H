@@ -5,7 +5,7 @@
 
 extern void worldloop_req_main_screen_load(void);
 extern void worldloop_req_main_screen_unload(void);
-extern short worldloop_main(void);
+extern short world3d_main_loop(void);
 extern void worldloop_camera_snap_reset(long *pSavedZ, short *pSavedYaw);
 extern void worldloop_camera_set_pos_z_yaw(long pos_z, short yaw);
 extern void worldloop_party_move_done_clr(void);

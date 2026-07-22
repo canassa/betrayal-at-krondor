@@ -20,7 +20,7 @@
 #include "SRC/UI/UIWIDGET.H"
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/WORLD/LOOP/WORLDLP.H"
-#include "SRC/WORLD/LOOP/EXPLORE.H"
+#include "SRC/WORLD/LOOP/MAP.H"
 #include "SRC/WORLD/MOVE/WORLDMOV.H"
 #include "SRC/WORLD/ZONE/CZONE.H"
 #include "SRC/WORLD/ENC/RGNENC.H"
@@ -153,7 +153,7 @@ void far zone_load(void) {
     zone_alloc_400byte_buffer();
     zone_map_data_load(g_gameState.nZoneId);
     sprintf(g_szZoneMapFilename, "Z%02u.DAT", (unsigned int)g_gameState.nZoneId);
-    explore_color_remap_load(g_szZoneMapFilename);
+    map_color_remap_load(g_szZoneMapFilename);
     proxscan_scratch_alloc();
     vislist_alloc();
     wcursor_load_detect_dat();
@@ -192,7 +192,7 @@ void far zone_world_scene_teardown(void) {
     wcursor_free_detect_dat();
     vislist_free();
     proxscan_scratch_free();
-    explore_color_remap_free();
+    map_color_remap_free();
     zone_free_400byte_buffer();
     if (g_game_mode == 2) {
         ts_free_shape_tbl(2);

@@ -18,7 +18,7 @@
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/WORLD/LOOP/WORLDLP.H"
 #include "SRC/COMBAT/SPELL/SPELLFX.H"
-#include "SRC/WORLD/LOOP/EXPLORE.H"
+#include "SRC/WORLD/LOOP/MAP.H"
 #include "SRC/WORLD/MOVE/WORLDMOV.H"
 #include "SRC/WORLD/ZONE/CZONE.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
@@ -381,7 +381,7 @@ void far hotspotevt_load_record0_town(ZoneHotspot *pHotspot) {
 
     hotspotevt_bak_load_indexed_rec(0, buf, pHotspot->dwDef_record_offset);
     if (buf[0x12] != '\0') {
-        explore_animate_camera_to_tile((TileMoveRecord *)(buf + 0xE));
+        map_animate_camera_to_tile((TileMoveRecord *)(buf + 0xE));
     }
     townscene_main_loop(*(unsigned int *)(buf + 2), 1);
     if (pHotspot->wEvent_key_post != 0) {
@@ -389,7 +389,7 @@ void far hotspotevt_load_record0_town(ZoneHotspot *pHotspot) {
     }
     if (!(int)g_gameState.abTeleportRecord[0]) {
         g_nSceneReloadPending = 1;
-        g_nExploreReloadPending = 1;
+        g_nMapReloadPending = 1;
     }
     return;
 }
@@ -571,7 +571,7 @@ void far hotspotevt_type1_encounter_run(ZoneHotspot *pHotspot, int *out_moved) {
 LAB_759a_0a9c:
     if (combatStatus != 0 && combatStatus != 3) {
         g_nSceneReloadPending = 1;
-        g_nExploreReloadPending = 1;
+        g_nMapReloadPending = 1;
     }
     return;
 }
@@ -638,7 +638,7 @@ void far hotspotevt_action_enter_town(ZoneHotspot *evt) {
 
     hotspotevt_bak_load_indexed_rec(6, buf, evt->dwDef_record_offset);
     if (buf[0x12] != '\0') {
-        explore_animate_camera_to_tile((TileMoveRecord *)(buf + 0xE));
+        map_animate_camera_to_tile((TileMoveRecord *)(buf + 0xE));
     }
     townscene_main_loop(*(unsigned int *)(buf + 2), 1);
     if (evt->wEvent_key_post != 0) {
@@ -646,7 +646,7 @@ void far hotspotevt_action_enter_town(ZoneHotspot *evt) {
     }
     if (!(int)g_gameState.abTeleportRecord[0]) {
         g_nSceneReloadPending = 1;
-        g_nExploreReloadPending = 1;
+        g_nMapReloadPending = 1;
     }
     return;
 }
@@ -833,7 +833,7 @@ void far hotspotevt_trap_main_fire(ZoneHotspot *pHotspot, unsigned short *pOut_s
         worldmove_camera_crossing_apply();
         worldloop_party_move_done_clr();
         g_nSceneReloadPending = 1;
-        g_nExploreReloadPending = 1;
+        g_nMapReloadPending = 1;
     }
 }
 

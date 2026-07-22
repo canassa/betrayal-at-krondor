@@ -21,7 +21,7 @@
 #include "SRC/SCREENS/ITEMTBL.H"
 #include "SRC/WORLD/ACTOR/ACTSPAWN.H"
 #include "SRC/COMBAT/ACTOR/CACTOR.H"
-#include "SRC/WORLD/LOOP/EXPLORE.H"
+#include "SRC/WORLD/LOOP/MAP.H"
 
 #include "defines.h"
 
@@ -45,7 +45,7 @@ void far itemuse_view_look_south_modal(void) {
     g_world_widget->viewport.y = 0xb;
     g_world_widget->viewport.width = 0x126;
     g_world_widget->viewport.height = 0x79;
-    explore_camera_snap_face_south(&savedZ, &savedYaw);
+    map_camera_snap_face_south(&savedZ, &savedYaw);
     g_world_camera->base.pos.nWorld_z = (g_lWorldZMax * 0x62L) / 100L;
     g_full_redraw_needed = 1;
     g_graphics_context.wGfxBlitDstPage = g_graphics_context.wGfxBlitSrcPage =
@@ -67,7 +67,7 @@ void far itemuse_view_look_south_modal(void) {
         screen_frame_present();
     }
     g_full_redraw_needed = savedRedraw;
-    explore_camera_restore_z_yaw(savedZ, savedYaw);
+    map_camera_restore_z_yaw(savedZ, savedYaw);
     g_world_widget->viewport.x = savedViewX;
     g_world_widget->viewport.y = savedViewY;
     g_world_widget->viewport.width = savedViewW;

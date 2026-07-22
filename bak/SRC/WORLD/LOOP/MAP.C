@@ -2,7 +2,7 @@
 #include "globals.h"
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
-#include "SRC/WORLD/LOOP/EXPLORE.H"
+#include "SRC/WORLD/LOOP/MAP.H"
 #include "SRC/IO/IO.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/GFX/PALETTE/PALCYC.H"
@@ -36,17 +36,17 @@
 #include "globals.h"
 #include "structs.h"
 
-void far explore_req_map_screen_load(void) {
+void far map_req_map_screen_load(void) {
     g_pReqMapPage = menupage_load("req_map.dat");
     return;
 }
 
-void far explore_req_map_screen_free(void) {
+void far map_req_map_screen_free(void) {
     menupage_free(g_pReqMapPage);
     return;
 }
 
-void explore_color_remap_load(char *filename) {
+void map_color_remap_load(char *filename) {
     int i;
     unsigned char idx;
     unsigned char val;
@@ -75,7 +75,7 @@ void explore_color_remap_load(char *filename) {
     return;
 }
 
-void explore_color_remap_free(void) {
+void map_color_remap_free(void) {
     if (g_pColorRemap != (unsigned char *)0x0) {
         galloc_zfree(g_pColorRemap);
         g_pColorRemap = (unsigned char *)0x0;
@@ -86,7 +86,7 @@ void explore_color_remap_free(void) {
 #include "globals.h"
 #include "structs.h"
 
-void far explore_main_loop(void) {
+void far map_main_loop(void) {
     int keep_running;
     int moved;
     unsigned short redraw_menu;
@@ -109,13 +109,13 @@ void far explore_main_loop(void) {
     key_repeat_armed = 0;
     focused_entry = (MenuEntry *)0;
     g_nHotspotActivateRequest = 0;
-    explore_camera_snap_face_south(&g_lExploreCameraZSaved, (short *)&g_wExploreCameraYawSaved);
+    map_camera_snap_face_south(&g_lExploreCameraZSaved, (short *)&g_wExploreCameraYawSaved);
     g_full_redraw_needed = 1;
     menupage_begin(g_pReqMapPage);
-    g_nExploreReloadPending = 1;
+    g_nMapReloadPending = 1;
 
     while (keep_running != 0) {
-        if ((g_gameState.bPartyDirtyFlags != 0) && (g_nExploreReloadPending == 0)) {
+        if ((g_gameState.bPartyDirtyFlags != 0) && (g_nMapReloadPending == 0)) {
             evtcond_pty_dirty_flags_process();
             render_dirty = 1;
         }
@@ -129,7 +129,7 @@ void far explore_main_loop(void) {
         } else {
             g_pReqMapPage->pEntries[6].wEnable_gate = 1;
         }
-        if (g_nExploreReloadPending != 0) {
+        if (g_nMapReloadPending != 0) {
             saved_pal = g_pPalQueuedForFlip;
             g_pPalQueuedForFlip = (unsigned char far *)0;
             screen_cursor_show_busy();
@@ -160,7 +160,7 @@ void far explore_main_loop(void) {
             screen_cursor_show_busy();
             palette_fade_in(0, 0x100, -1, 0);
             screen_cursor_restore_shape();
-            g_nExploreReloadPending = 0;
+            g_nMapReloadPending = 0;
             redraw_menu = 0;
             redraw_caption = 0;
             render_dirty = 0;
@@ -217,7 +217,7 @@ void far explore_main_loop(void) {
                         render_dirty = redraw_menu = 1;
                     }
                 }
-                if (g_nExploreReloadPending == 0) {
+                if (g_nMapReloadPending == 0) {
                     palette_apply_pending_load();
                 }
                 redraw_caption = 1;
@@ -374,7 +374,7 @@ void far explore_main_loop(void) {
                     dialog_play_record(0xeb, 1);
                 } else {
                     fmap_screen_run();
-                    g_nExploreReloadPending = 1;
+                    g_nMapReloadPending = 1;
                 }
                 break;
             case 0x12:
@@ -404,7 +404,7 @@ void far explore_main_loop(void) {
 
                         cmbinv_inventory_screen_run((Actor far *)0, member_idx + 1, 0);
                     }
-                    g_nExploreReloadPending = 1;
+                    g_nMapReloadPending = 1;
                 }
             } break;
             case 1:
@@ -438,7 +438,7 @@ void far explore_main_loop(void) {
             keep_running = 0;
         }
         if (g_gameState.abTeleportRecord[0] != 0) {
-            g_nExploreReloadPending = modalscreen_pending_scene_trans();
+            g_nMapReloadPending = modalscreen_pending_scene_trans();
         }
     }
 
@@ -447,7 +447,7 @@ void far explore_main_loop(void) {
     }
     menupage_end(g_pReqMapPage);
     g_full_redraw_needed = 0;
-    explore_camera_restore_z_yaw(g_lExploreCameraZSaved, g_wExploreCameraYawSaved);
+    map_camera_restore_z_yaw(g_lExploreCameraZSaved, g_wExploreCameraYawSaved);
     worldmove_camera_crossing_apply();
     return;
 }
@@ -455,7 +455,7 @@ void far explore_main_loop(void) {
 #include "structs.h"
 #include "globals.h"
 
-void far explore_camera_snap_face_south(long *pSavedZ, short *pSavedYaw) {
+void far map_camera_snap_face_south(long *pSavedZ, short *pSavedYaw) {
     if (g_full_redraw_needed == 0) {
         if (g_pColorRemap != (unsigned char *)0x0) {
             g_world_widget->colorRemap = g_pColorRemap;
@@ -468,7 +468,7 @@ void far explore_camera_snap_face_south(long *pSavedZ, short *pSavedYaw) {
     return;
 }
 
-void explore_camera_restore_z_yaw(long new_pos_z, short new_yaw) {
+void map_camera_restore_z_yaw(long new_pos_z, short new_yaw) {
     if (g_full_redraw_needed == 0) {
         g_gameState.lInsetCameraPosZ = g_world_camera->base.pos.nWorld_z;
         g_world_camera->base.pos.nWorld_z = new_pos_z;
@@ -482,7 +482,7 @@ void explore_camera_restore_z_yaw(long new_pos_z, short new_yaw) {
 #include "structs.h"
 
 unsigned short g_full_redraw_needed = 0x0000;
-short g_nExploreReloadPending = 1;
+short g_nMapReloadPending = 1;
 unsigned char *g_pColorRemap = {0};
 
 unsigned short g_wExploreCameraYawSaved;
@@ -492,7 +492,7 @@ long g_lWorldZStep;
 long g_lExploreCameraZSaved;
 MenuPage *g_pReqMapPage;
 
-void far explore_animate_camera_to_tile(TileMoveRecord *ptr) {
+void far map_animate_camera_to_tile(TileMoveRecord *ptr) {
     long savedCameraZ;
     long saved_z;
     short savedCameraYaw;
@@ -507,7 +507,7 @@ void far explore_animate_camera_to_tile(TileMoveRecord *ptr) {
     saved_z = g_world_camera->base.pos.nWorld_z;
     saved_redraw = g_full_redraw_needed;
     step_speed = g_nWorldStepSpeed;
-    explore_camera_snap_face_south(&savedCameraZ, &savedCameraYaw);
+    map_camera_snap_face_south(&savedCameraZ, &savedCameraYaw);
     g_full_redraw_needed = 1;
     if (saved_redraw == 0) {
         g_world_camera->base.pos.nWorld_z = saved_z = 0x1b968L;
@@ -548,6 +548,6 @@ void far explore_animate_camera_to_tile(TileMoveRecord *ptr) {
     g_world_camera->base.pos = saved_pos;
     g_world_camera->base.orientation.yaw = ptr->nHeading + R3D_DEG(180);
     g_full_redraw_needed = saved_redraw;
-    explore_camera_restore_z_yaw(savedCameraZ, savedCameraYaw);
+    map_camera_restore_z_yaw(savedCameraZ, savedCameraYaw);
     return;
 }

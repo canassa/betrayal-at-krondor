@@ -1467,7 +1467,7 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                ((i = g_dialog_in_char_screen) != 0)) ||
               (g_inventory_screen_mode != 0))) {
             g_nSceneReloadPending = 1;
-            g_nExploreReloadPending = 1;
+            g_nMapReloadPending = 1;
         } else {
             if (screenDirty != 0) {
                 screen_clear_both_pages();

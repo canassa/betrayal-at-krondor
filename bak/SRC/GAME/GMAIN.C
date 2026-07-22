@@ -200,7 +200,7 @@ int far gmain_start_dispatch(int mode) {
     zone_load();
     palette_set_scaled(0, 0x100, 0, 0x3f);
     font_activate(g_wGameFontSlot);
-    iMode = worldloop_main();
+    iMode = world3d_main_loop();
     g_pPalQueuedForFlip = (unsigned char far *)0;
     zone_world_scene_teardown();
     combatgrid_combatants_table_free();

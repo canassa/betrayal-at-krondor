@@ -459,7 +459,7 @@ int cmbinv_inventory_screen_run(Actor far *actor, int idx, int flag) {
                 g_nSceneReloadPending = 0;
             } else {
                 g_nSceneReloadPending = 1;
-                g_nExploreReloadPending = 1;
+                g_nMapReloadPending = 1;
             }
             g_inventory_screen_mode = 0;
             return result;

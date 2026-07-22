@@ -23,7 +23,7 @@
 #include "SRC/CHAR/CHARSCRN.H"
 #include "SRC/SCREENS/ITEMUSE.H"
 #include "SRC/COMBAT/SPELL/SPELLFX.H"
-#include "SRC/WORLD/LOOP/EXPLORE.H"
+#include "SRC/WORLD/LOOP/MAP.H"
 #include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/SCREENS/ENCAMP.H"
 #include "SRC/SCREENS/FMAP.H"
@@ -38,20 +38,20 @@ short g_nHotspotActivateRequest = 0;
 
 void far worldloop_req_main_screen_load(void) {
     g_pReqMainPage = menupage_load("req_main.dat");
-    explore_req_map_screen_load();
+    map_req_map_screen_load();
     spellfx_cast_bmp_load();
     return;
 }
 
 void far worldloop_req_main_screen_unload(void) {
     spellfx_cast_bmp_free();
-    explore_req_map_screen_free();
+    map_req_map_screen_free();
     menupage_free(g_pReqMainPage);
     g_pReqMainPage = (MenuPage *)0x0;
     return;
 }
 
-short far worldloop_main(void) {
+short far world3d_main_loop(void) {
 
     short exit_mode;
     int keep_running;
@@ -313,7 +313,7 @@ short far worldloop_main(void) {
                     dialog_play_record(0xe8, 1);
                     goto post_dispatch;
                 }
-                explore_main_loop();
+                map_main_loop();
                 g_nSceneReloadPending = 1;
                 goto post_dispatch;
             case 0x21:

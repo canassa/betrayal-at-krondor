@@ -203,7 +203,7 @@ extern unsigned short g_aPalEventBitMask[9];
 extern unsigned char g_event_caption_glyph_table[9];
 extern ImageRecord **g_pCastBmp;
 extern unsigned short g_full_redraw_needed;
-extern short g_nExploreReloadPending;
+extern short g_nMapReloadPending;
 extern unsigned char *g_pColorRemap;
 extern EnginePrefs *g_engine_prefs;
 extern int g_nMenuReentering;

@@ -17,7 +17,7 @@
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/WORLD/ACTOR/ACTSPAWN.H"
 #include "SRC/COMBAT/SPELL/CSPELL.H"
-#include "SRC/WORLD/LOOP/EXPLORE.H"
+#include "SRC/WORLD/LOOP/MAP.H"
 
 unsigned short g_aPalEventBitMask[9] = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010,
                                         0x0020, 0x0040, 0x0080, 0x0100};
@@ -296,7 +296,7 @@ void far spellfx_run_request_cmap_dialog(int request_type) {
     g_world_widget->viewport.y = 0x10;
     g_world_widget->viewport.width = 0xa7;
     g_world_widget->viewport.height = 0x59;
-    explore_camera_snap_face_south(&saved_z, &saved_yaw);
+    map_camera_snap_face_south(&saved_z, &saved_yaw);
     g_world_camera->base.pos.nWorld_z = g_lWorldZMax;
     g_full_redraw_needed = 1;
     page = menupage_load("req_cmap.dat");
@@ -355,7 +355,7 @@ void far spellfx_run_request_cmap_dialog(int request_type) {
     menupage_end(page);
     menupage_free(page);
     g_full_redraw_needed = 0;
-    explore_camera_restore_z_yaw(saved_z, saved_yaw);
+    map_camera_restore_z_yaw(saved_z, saved_yaw);
     g_world_widget->viewport.x = saved_viewport_x;
     g_world_widget->viewport.y = saved_viewport_y;
     g_world_widget->viewport.width = saved_viewport_w;
