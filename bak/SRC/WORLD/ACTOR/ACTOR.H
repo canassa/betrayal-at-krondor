@@ -10,18 +10,15 @@
 
 #include "structs.h"
 
-enum ActorResidence {
-    RES_FREE = 0,
-    RES_PARTY_SLOT = 1,
-    RES_ENCOUNTER = 2,
-    RES_CONTAINER = 4,
-    RES_BODY = 5,
-    RES_FIXED_OBJECT = 6,
-    RES_COMBAT = 7,
-    RES_PICKLOCK_BUFFER = 8,
-    RES_SELF_SPAWN = 9,
-};
-typedef enum ActorResidence ActorResidence;
+#define RES_FREE 0
+#define RES_PARTY_SLOT 1
+#define RES_ENCOUNTER 2
+#define RES_CONTAINER 4
+#define RES_BODY 5
+#define RES_FIXED_OBJECT 6
+#define RES_COMBAT 7
+#define RES_PICKLOCK_BUFFER 8
+#define RES_SELF_SPAWN 9
 
 typedef struct PartySlotCoords {
     unsigned short wSlot_id;
@@ -57,7 +54,7 @@ typedef struct Actor {
     unsigned char chap_band;
     unsigned short world_item_id;
     ContainerLocation loc;
-    ActorResidence bResidence;
+    unsigned char bResidence;
     /** Item slots currently filled; mutable fill count, bounds every inventory loop, and equals @ref Actor::itemCapacity when full. */
     unsigned char itemCount;
     /** Total @ref ItemSlot slots in the inventory; immutable, sizes the record and fixes where the subrecords begin. */
