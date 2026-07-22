@@ -1,6 +1,7 @@
 #include <dos.h>
 #include "globals.h"
 #include "SRC/AUDIO/RES/AUDRES.H"
+#include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/AUDIO/RES/POOL.H"
 #include "SRC/STREAM/RESLOAD/RELBUF.H"
 #include "SRC/STREAM/CODEC/STREAM.H"
