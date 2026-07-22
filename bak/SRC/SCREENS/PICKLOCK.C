@@ -1,10 +1,7 @@
 #include "globals.h"
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
-extern int picklock_screen_run(int score, int mode, Actor far *record);
-extern void picklock_lock_slide_animation(int dir);
-extern int picklock_screen_handle_drop(int item_kind, int slot);
-extern void picklock_inv_info_query_disp(void);
+#include "SRC/SCREENS/PICKLOCK.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/GFX/SPRITE/RESBLIT.H"

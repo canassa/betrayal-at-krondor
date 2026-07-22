@@ -14,9 +14,6 @@
 #include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/WORLD/ENC/HOTSPOT.H"
 
-extern long far dos_read(unsigned char far *buf, long count, int fd);
-extern long far dos_write(unsigned char far *buf, long count, int fd);
-
 int far savegame_write(char *filename) {
     int dest_fd;
     int ok;

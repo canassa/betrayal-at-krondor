@@ -1,16 +1,7 @@
 #include <dos.h>
 #include "structs.h"
 #include "globals.h"
-extern int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot far *target,
-                                      int memberIdx);
-extern void itemuse_apply_stat_effects(CombatActor *actor, ItemSlot far *item,
-                                       ItemRecord far *record);
-extern void itemuse_actor_spawn_clone_inv(Actor far *src_actor, uint kind, long world_x,
-                                          long world_y);
-extern void itemuse_ground_pile_open_inv(void);
-extern void itemuse_party_tick_temporary(void);
-extern void itemuse_view_look_south_modal(void);
-extern void itemuse_cam_vert_raise_anim(long amplitude_z, int apex_hold_frames);
+#include "SRC/SCREENS/ITEMUSE.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/GFX/SPRITE/RESBLIT.H"

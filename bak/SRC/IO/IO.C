@@ -272,8 +272,6 @@ void bak_setbuf(BakFile *stream, char *buffer) {
     }
 }
 
-extern void interrupt far bak_int24_critical_handler();
-
 void bak_init_resources(void) {
     BakIndexEntry far *entry;
     short archive_idx;

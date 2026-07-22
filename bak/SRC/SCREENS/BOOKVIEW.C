@@ -1,10 +1,6 @@
 #include "structs.h"
 #include "globals.h"
-extern void bookview_init(void);
-extern void bookview_shutdown(void);
-extern int bookview_show(char *filename, int page_number);
-extern BookPage far *bookview_find_page_by_number(PageDirectory far *page_directory,
-                                                  int page_number);
+#include "SRC/SCREENS/BOOKVIEW.H"
 
 BookViewerState *g_pBookViewer;
 
@@ -12,8 +8,7 @@ unsigned short g_wTextWrapXAccum = 0x0000;
 unsigned short g_wTextWrapLinesDrawn = 0x0000;
 unsigned short g_wTextWrapLinesRemaining = 0x0000;
 
-extern void *calloc(unsigned nitems, unsigned size);
-extern void free(void *block);
+#include <stdlib.h>
 
 #include "SRC/STREAM/RESLOAD/FONTLOAD.H"
 #include "SRC/SYS/EMS.H"

@@ -24,4 +24,9 @@ extern void bak_select_archive(int archive_index);
 extern void bak_archive_seek(ulong absolute_offset);
 extern BakHandle *bak_find_handle(BakFile *stream);
 
+extern void interrupt far bak_int24_critical_handler();
+
+extern long far dos_read(unsigned char far *buf, long count, int fd);
+extern long far dos_write(unsigned char far *buf, long count, int fd);
+
 #endif
