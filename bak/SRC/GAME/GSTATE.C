@@ -152,8 +152,8 @@ int far gstate_event_write(unsigned int event_id, unsigned int value) {
 int gstate_temp_file_open(void) {
     char buf[50];
 
-    if (g_temp_drive != 0) {
-        sprintf(buf, "%c:%s", g_temp_drive, "TEMP.GAM");
+    if (g_cfgTempDrive != 0) {
+        sprintf(buf, "%c:%s", g_cfgTempDrive, "TEMP.GAM");
         if ((g_pTempGamFp = bak_fopen(buf, "r+b")) != (BakFile *)0)
             return 1;
         return 0;

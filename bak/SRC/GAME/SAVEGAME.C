@@ -27,8 +27,8 @@ int far savegame_write(char *filename) {
     remaining = 0x51aa9;
     version = 0x16;
     gstate_temp_file_close();
-    if (g_temp_drive != 0) {
-        sprintf(temp_path, "%c:%s", g_temp_drive, "TEMP.GAM");
+    if (g_cfgTempDrive != 0) {
+        sprintf(temp_path, "%c:%s", g_cfgTempDrive, "TEMP.GAM");
     } else {
         sprintf(temp_path, "%s", "TEMP.GAM");
     }
@@ -81,8 +81,8 @@ int far savegame_read(char *filename) {
     ok = 1;
     remaining = 0x51aa9;
 
-    if (g_temp_drive != 0) {
-        sprintf(temp_path, "%c:%s", g_temp_drive, "TEMP.GAM");
+    if (g_cfgTempDrive != 0) {
+        sprintf(temp_path, "%c:%s", g_cfgTempDrive, "TEMP.GAM");
     } else {
         sprintf(temp_path, "%s", "TEMP.GAM");
     }
