@@ -17,6 +17,13 @@ unsigned short g_awSoundDriverCodes[5] = {0x0002, 0x0003, 0x0004, 0x0000, 0x0007
  * the RShift+Alt+tilde chord opens the hidden cheat menu.
  */
 bool16 g_cfgKnockKnock = FALSE;
+/**
+ * @brief Value of the undocumented `cycle` config key — dead, never read.
+ *
+ * Parsed from a `cycle` line in `resource.cfg` (via `atoi`) into this global,
+ * which has no reader anywhere in the game; no shipped `resource.cfg` even sets
+ * the key. The original purpose is unrecoverable — do not invent one.
+ */
 unsigned short g_cfgCycle = 0x0000;
 /**
  * @brief Drive letter for the `TEMP.GAM` swap file (0 = current drive).
