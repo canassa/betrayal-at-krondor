@@ -12,6 +12,7 @@ Any change under `bak/SRC/` must keep `KRONDOR.EXE`, `VMCODE.OVL` and `SX.OVL` b
 uv run bak build          # build all three artifacts and verify them by size + sha256
 uv run bak diff <FILE.C>  # disassembly diff of one OBJ vs the last green build — debug a byte-match break
 uv run bak lint           # naming-convention check (clang-tidy, check-only)
+uv run bak rmf <RMF>      # explore/debug the shipped data files: list/extract resources, dump a .TBL model, decode DDX dialog text
 ```
 
 ## Naming conventions
