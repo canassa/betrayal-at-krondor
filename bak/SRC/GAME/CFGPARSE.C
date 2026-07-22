@@ -6,9 +6,10 @@
 #include "structs.h"
 #include "SRC/GAME/CFGPARSE.H"
 
-char *g_apSoundDriverNames[5] = {(char *)g_szDrvAdl, (char *)g_szDrvMt32, (char *)g_szDrvSndblast,
-                                 (char *)g_szDrvStd, (char *)g_szDrvGenmidi};
-unsigned short g_awSoundDriverCodes[5] = {0x0002, 0x0003, 0x0004, 0x0000, 0x0007};
+char *g_soundDrvTokens[5] = {(char *)g_soundDrvTokenAdl, (char *)g_soundDrvTokenMt32,
+                             (char *)g_soundDrvTokenSndblast, (char *)g_soundDrvTokenStd,
+                             (char *)g_soundDrvTokenGenmidi};
+unsigned short g_soundDrvIds[5] = {0x0002, 0x0003, 0x0004, 0x0000, 0x0007};
 /**
  * @brief Cheat-menu unlock flag, read by the 3-D world view.
  *
@@ -40,11 +41,11 @@ int g_cfgTempDrive = 0x0000;
  * overwrites the existing one; while FALSE the save is silent.
  */
 bool16 g_cfgBookmarkVerify = TRUE;
-char g_szDrvAdl[] = "adl.drv";
-char g_szDrvMt32[] = "mt32.drv";
-char g_szDrvSndblast[] = "sndblast.drv";
-char g_szDrvStd[] = "std.drv";
-char g_szDrvGenmidi[] = "genmidi.drv";
+char g_soundDrvTokenAdl[] = "adl.drv";
+char g_soundDrvTokenMt32[] = "mt32.drv";
+char g_soundDrvTokenSndblast[] = "sndblast.drv";
+char g_soundDrvTokenStd[] = "std.drv";
+char g_soundDrvTokenGenmidi[] = "genmidi.drv";
 
 void parse_krondor_cfg(void) {
     char token[40];
@@ -63,8 +64,8 @@ void parse_krondor_cfg(void) {
             fscanf(fp, " %40s", token);
             fscanf(fp, " %40s", token);
             for (i = 0; i < 5; i++) {
-                if (stricmp(g_apSoundDriverNames[i], token) == 0) {
-                    g_sound_driver = g_awSoundDriverCodes[i];
+                if (stricmp(g_soundDrvTokens[i], token) == 0) {
+                    g_sound_driver = g_soundDrvIds[i];
                     break;
                 }
             }
