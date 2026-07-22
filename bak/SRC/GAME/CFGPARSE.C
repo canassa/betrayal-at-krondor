@@ -9,7 +9,14 @@
 char *g_apSoundDriverNames[5] = {(char *)g_szDrvAdl, (char *)g_szDrvMt32, (char *)g_szDrvSndblast,
                                  (char *)g_szDrvStd, (char *)g_szDrvGenmidi};
 unsigned short g_awSoundDriverCodes[5] = {0x0002, 0x0003, 0x0004, 0x0000, 0x0007};
-bool16 g_cheat_enabled = FALSE;
+/**
+ * @brief Cheat-menu unlock flag, read by the 3-D world view.
+ *
+ * FALSE on a stock install; set TRUE only when @c resource.cfg carries a
+ * @c knockknock line whose argument is exactly 29 characters. While TRUE,
+ * the RShift+Alt+tilde chord opens the hidden cheat menu.
+ */
+bool16 g_knockKnock = FALSE;
 unsigned short g_cycle = 0x0000;
 int g_temp_drive = 0x0000;
 bool16 g_bookmark_verify = TRUE;
@@ -45,7 +52,7 @@ void parse_krondor_cfg(void) {
             fscanf(fp, " %40s", token);
             fscanf(fp, " %40s", token);
             if (strlen(token) == 29)
-                g_cheat_enabled = TRUE;
+                g_knockKnock = TRUE;
         } else if (stricmp("cycle", token) == 0) {
             fscanf(fp, " %40s", token);
             fscanf(fp, " %40s", token);

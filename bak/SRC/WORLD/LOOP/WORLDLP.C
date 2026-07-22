@@ -372,7 +372,7 @@ short far world3d_main_loop(void) {
                 }
                 goto post_dispatch;
             case 0x29:
-                if (g_cheat_enabled && key_is_down(0x2a) == 0 && key_is_down(0x36) != 0 &&
+                if (g_knockKnock && key_is_down(0x2a) == 0 && key_is_down(0x36) != 0 &&
                     key_is_down(0x1d) == 0 && key_is_down(0x38) != 0) {
                     townscene_cheat_menu_screen();
                 }

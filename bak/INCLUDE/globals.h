@@ -86,7 +86,7 @@ extern unsigned char g_abStatRatioBase[17];
 extern unsigned char g_abStatRatioMax[17];
 extern char *g_apSoundDriverNames[5];
 extern unsigned short g_awSoundDriverCodes[5];
-extern bool16 g_cheat_enabled;
+extern bool16 g_knockKnock;
 extern unsigned short g_cycle;
 extern int g_temp_drive;
 extern bool16 g_bookmark_verify;
