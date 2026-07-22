@@ -272,7 +272,7 @@ L_2ce5:	; off 0x0152
 _video_detect_adapter	endp
 
 ; ----------------------------------------------------------------------------
-; bool near crtc_probe_data_register(unsigned port /* DX */)  -> CF
+; uchar near crtc_probe_data_register(unsigned port /* DX */)  -> CF
 ; Probes a VGA/CRTC data register pair for read/write capability. DX on
 ; entry = CRTC index port. Writes index 0Fh, reads it back into AH, writes
 ; 66h to the data port (DX+1), spins a 256-iteration LOOP delay, reads the

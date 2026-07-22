@@ -9,6 +9,7 @@
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/GAME/GSTATE.H"
 #include "SRC/SCREENS/CMBINV.H"
+#include "defines.h"
 
 
 ItemRecord far *g_pItemDefTable = {0};
@@ -148,7 +149,7 @@ int itemtbl_inv_consume_one_by_kind(Actor far *inv, uint kind) {
     int old_count;
     int i;
 
-    inv->needsFlush = 1;
+    inv->needsFlush = TRUE;
     for (i = 0; i < (int)inv->itemCount; i++) {
         if (ACTOR_ITEM(inv, i).item_id != kind || kind == 0x54) {
             continue;

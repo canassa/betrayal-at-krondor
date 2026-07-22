@@ -24,6 +24,7 @@
 #include "SRC/SCREENS/SHOP.H"
 #include "SRC/WORLD/ACTOR/ACTORREC.H"
 #include "SRC/SCREENS/PICKLOCK.H"
+#include "defines.h"
 
 
 unsigned short g_inventory_screen_mode = 0x0000;
@@ -571,7 +572,7 @@ void cmbinv_consolidate_stacks(Actor far *actor) {
     do {
         done = 1;
         cmbinv_combat_sort_initiative(actor);
-        actor->needsFlush = 1;
+        actor->needsFlush = TRUE;
         for (i = 1; (int)(unsigned int)actor->itemCount > i; i++) {
             slotA = ACTOR_ITEMS(actor) + (i - 1);
             slotB = slotA + 1;
@@ -726,7 +727,7 @@ void cmbinv_actor_inv_remove_item(Actor far *actor, ItemSlot far *item_slot) {
 
     for (i = 0; i < actor->itemCount; i++) {
         if (_fmemcmp(ACTOR_ITEMS(actor) + i, item_slot, 4) == 0) {
-            actor->needsFlush = 1;
+            actor->needsFlush = TRUE;
             ACTOR_ITEM(actor, i) = ACTOR_ITEM(actor, --actor->itemCount);
             return;
         }
@@ -804,7 +805,7 @@ static void cmbinv_recompute_has_weapon_flag(Actor far *actor) {
     int i;
 
     actor->flags &= 0xbf;
-    actor->needsFlush = 1;
+    actor->needsFlush = TRUE;
     i = 0;
     slot = ACTOR_ITEMS(actor);
     for (; i < actor->itemCount; i++, slot++) {
@@ -887,7 +888,7 @@ int cmbinv_actor_pickup_item(Actor far *dst_actor, Actor far *src_actor, ItemSlo
                 ACTOR_ITEM(dst_actor, dst_actor->itemCount++) = *item;
             }
             cmbinv_combat_sort_initiative(dst_actor);
-            dst_actor->needsFlush = 1;
+            dst_actor->needsFlush = TRUE;
             if (src_actor != 0)
                 cmbinv_actor_inv_remove_item(src_actor, item);
             return 1;
@@ -918,7 +919,7 @@ int cmbinv_actor_pickup_item(Actor far *dst_actor, Actor far *src_actor, ItemSlo
                     ACTOR_ITEM(dst_actor, dst_actor->itemCount++) = *item;
                     cmbinv_consolidate_stacks(dst_actor);
                     cmbinv_combat_sort_initiative(dst_actor);
-                    dst_actor->needsFlush = 1;
+                    dst_actor->needsFlush = TRUE;
                     if (src_actor != 0)
                         cmbinv_actor_inv_remove_item(src_actor, item);
                 } else {
@@ -931,7 +932,7 @@ int cmbinv_actor_pickup_item(Actor far *dst_actor, Actor far *src_actor, ItemSlo
                         cmbinv_consolidate_stacks(src_actor);
                     cmbinv_consolidate_stacks(dst_actor);
                     cmbinv_combat_sort_initiative(dst_actor);
-                    dst_actor->needsFlush = 1;
+                    dst_actor->needsFlush = TRUE;
                 }
                 return 1;
             }
@@ -944,7 +945,7 @@ int cmbinv_actor_pickup_item(Actor far *dst_actor, Actor far *src_actor, ItemSlo
 
         ACTOR_ITEM(dst_actor, dst_actor->itemCount++) = *item;
         cmbinv_combat_sort_initiative(dst_actor);
-        dst_actor->needsFlush = 1;
+        dst_actor->needsFlush = TRUE;
         if (src_actor != 0)
             cmbinv_actor_inv_remove_item(src_actor, item);
         if (dst_actor->bResidence == RES_PARTY_SLOT)
@@ -981,7 +982,7 @@ int cmbinv_actor_pickup_item(Actor far *dst_actor, Actor far *src_actor, ItemSlo
                         item->condition = 1;
                     if (src_actor != 0)
                         cmbinv_consolidate_stacks(src_actor);
-                    dst_actor->needsFlush = 1;
+                    dst_actor->needsFlush = TRUE;
                     return 1;
                 }
                 return -1;
@@ -1003,7 +1004,7 @@ int far cmbinv_actor_acquire_item(Actor far *actor, ItemSlot far *item) {
     }
     if (cmbinv_has_space_for_item(actor, item)) {
         ACTOR_ITEM(actor, actor->itemCount++) = *item;
-        actor->needsFlush = 1;
+        actor->needsFlush = TRUE;
         cmbinv_combat_sort_initiative(actor);
         if (rec->wCategory != 0x17)
             return 1;
@@ -1017,7 +1018,7 @@ int far cmbinv_actor_acquire_item(Actor far *actor, ItemSlot far *item) {
         if (cmbinv_has_space_for_item(actor, item)) {
             ACTOR_ITEM(actor, actor->itemCount++) = *item;
             cmbinv_combat_sort_initiative(actor);
-            actor->needsFlush = 1;
+            actor->needsFlush = TRUE;
             if (rec->wCategory == 0x17) {
                 partySlot = actor->loc.party_slot.wSlot_id - 1;
                 if (g_gameState.abActorStatusRanks[partySlot][5] != 0)
@@ -1030,7 +1031,7 @@ int far cmbinv_actor_acquire_item(Actor far *actor, ItemSlot far *item) {
     if (cmbinv_has_space_for_item(actor, item)) {
         ACTOR_ITEM(actor, actor->itemCount++) = *item;
         cmbinv_combat_sort_initiative(actor);
-        actor->needsFlush = 1;
+        actor->needsFlush = TRUE;
         return 1;
     }
     return 0;

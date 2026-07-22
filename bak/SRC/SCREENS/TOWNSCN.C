@@ -29,6 +29,7 @@
 #include "SRC/WORLD/ACTOR/ACTORREC.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/SCREENS/CIPHER.H"
+#include "defines.h"
 
 
 unsigned short g_dialog_anim_channel;
@@ -138,7 +139,7 @@ static int far townscene_load(int chapter, int sub, int preserve) {
         pSub = actorrec_get_subrecord(g_pCurrentTownScene->pActor, SUBREC_EVENT_STATE);
         if ((pSub != (ActorSubrecord far *)0) &&
             (pSub->event_state.bRest_last_chapter_done < g_gameState.nChapter)) {
-            ((Actor far *)g_pCurrentTownScene->pActor)->needsFlush = 1;
+            ((Actor far *)g_pCurrentTownScene->pActor)->needsFlush = TRUE;
             {
                 int q;
                 q = (int)((long)((ulong)pSub->event_state.bRest_gold_unit *
@@ -279,7 +280,7 @@ static int far townscene_resolv_enc_outcome(Actor far *actor) {
         }
         if (gold != 0) {
             pSub->event_state.bPopup_retry_counter = 0;
-            actor->needsFlush = 1;
+            actor->needsFlush = TRUE;
             g_gameState.nParty_gold += (long)(int)gold;
             g_gameState.lEvtArgGoldCost = (long)(int)gold;
         }

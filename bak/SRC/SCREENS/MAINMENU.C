@@ -37,6 +37,7 @@
 #include "SRC/WORLD/MOVE/WORLDMOV.H"
 #include "SRC/WORLD/ZONE/CZONE.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
+#include "defines.h"
 
 EnginePrefs *g_engine_prefs = {0};
 int g_nMenuReentering = 0;
@@ -1450,12 +1451,12 @@ void mainmenu_save_party_to_tmp(void) {
     g_wLastTempWriteRecordKind = 0;
 
     gstate_temp_file_write_at((uchar far *)&g_gameState, 0L, 0xad7);
-    g_gameState.shared_inventory->needsFlush = 1;
+    g_gameState.shared_inventory->needsFlush = TRUE;
     actorspawn_persist_to_temp(g_gameState.shared_inventory);
-    g_gameState.ground_pile->needsFlush = 1;
+    g_gameState.ground_pile->needsFlush = TRUE;
     actorspawn_persist_to_temp(g_gameState.ground_pile);
     for (i = 0; i < 6; i++) {
-        g_gameState.party_members[i].actor_record->needsFlush = 1;
+        g_gameState.party_members[i].actor_record->needsFlush = TRUE;
         actorspawn_persist_to_temp(g_gameState.party_members[i].actor_record);
     }
 }

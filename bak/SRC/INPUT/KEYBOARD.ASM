@@ -259,7 +259,7 @@ L_install_ret:
 _keyboard_install	endp
 
 ; ----------------------------------------------------------------------------
-; bool keyboard_restore_handler(void)   -> AX (1 if was installed, else 0)
+; unsigned char keyboard_restore_handler(void)   -> AX (1 if was installed, else 0)
 ; ----------------------------------------------------------------------------
 _keyboard_restore_handler	proc far
 	sub	ax,ax
@@ -702,7 +702,7 @@ _key_state_get_via_2cf8_table	proc far
 _key_state_get_via_2cf8_table	endp
 
 ; ----------------------------------------------------------------------------
-; bool key_is_down(int scancode)  -- non-standard frame, CLI/STI-guarded
+; int key_is_down(int scancode)  -- non-standard frame, CLI/STI-guarded
 ;
 ; Disassembly (180c:2299):
 ;   CLI

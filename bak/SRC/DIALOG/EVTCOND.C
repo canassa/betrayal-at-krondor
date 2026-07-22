@@ -14,6 +14,7 @@
 #include "SRC/SCREENS/ITEMUSE.H"
 #include "SRC/WORLD/ACTOR/ACTSPAWN.H"
 #include "SRC/WORLD/ENC/RGNENC.H"
+#include "defines.h"
 
 
 void evtcond_pty_inv_repair_cnt(int *count_out, int *repair_out, int do_repair) {
@@ -293,7 +294,7 @@ void evtcond_dialog_action_dispatch(DdxOp far *action_record) {
             return;
         }
         actor->itemCount = 0;
-        actor->needsFlush = 1;
+        actor->needsFlush = TRUE;
         actorspawn_destroy_and_persist(actor);
         break;
     }

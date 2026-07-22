@@ -76,8 +76,8 @@ void actormotion_integrate(WorldEntity *actor) {
 
 int actormotion_atan2_long(long y, long x) {
     int angle;
-    bool yNeg;
-    bool xNeg;
+    unsigned char yNeg;
+    unsigned char xNeg;
 
     if (yNeg = y < 0) {
         y = -y;

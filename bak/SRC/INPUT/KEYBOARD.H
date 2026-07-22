@@ -4,7 +4,7 @@
 #include "structs.h"
 
 extern int keyboard_install(int install_timer_int);
-extern bool keyboard_restore_handler(void);
+extern unsigned char keyboard_restore_handler(void);
 extern void isr_keyboard(void);
 extern void near input_axis_accumulate_isr(void);
 extern uint kbhit_read(void);

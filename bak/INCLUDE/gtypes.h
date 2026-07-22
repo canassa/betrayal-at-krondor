@@ -9,7 +9,6 @@ typedef unsigned long dword;
 typedef unsigned short ushort;
 typedef unsigned int uint;
 typedef unsigned long ulong;
-typedef unsigned char bool;
 typedef char char16;
 typedef unsigned short u_int16_t;
 

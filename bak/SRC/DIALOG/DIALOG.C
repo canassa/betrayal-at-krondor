@@ -48,6 +48,7 @@ unsigned char far g_abStatNames[16][15] = {
 #include "SRC/COMBAT/ACTOR/CACTOR.H"
 #include "SRC/COMBAT/ENC/CBENC.H"
 #include "SRC/WORLD/LOOP/WORLDLP.H"
+#include "defines.h"
 
 
 char g_speaker_kinds[6];
@@ -1130,7 +1131,7 @@ int far dialog_play_record(ulong record_key, int modal_flag) {
                                         (ACTOR_ITEM(pActor, slotIdx).item_id != 'x' ||
                                          (uint)ACTOR_ITEM(pActor, slotIdx).condition ==
                                              (uint)op->nA2)) {
-                                        pActor->needsFlush = 1;
+                                        pActor->needsFlush = TRUE;
                                         ACTOR_ITEM(pActor, slotIdx) = ACTOR_ITEM(
                                             pActor, pActor->itemCount = pActor->itemCount - 1);
 

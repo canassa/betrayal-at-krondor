@@ -190,8 +190,8 @@ void far combatenc_release_actors(void) {
     combatenc_vis_actors_call_rev();
     combatenc_clear_pty_grid_occ();
     for (i = g_combat_count_B - 1; i >= 0; i--) {
-        g_combat_actors_B[i].actor_record->needsFlush = 1;
-        g_combat_actors_B[i].actor_record->canFlush = 1;
+        g_combat_actors_B[i].actor_record->needsFlush = TRUE;
+        g_combat_actors_B[i].actor_record->canFlush = TRUE;
         actorspawn_destroy_and_persist(g_combat_actors_B[i].actor_record);
         galloc_zfree(g_combat_actors_B[i].name);
     }

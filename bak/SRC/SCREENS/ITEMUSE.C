@@ -126,7 +126,7 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
     }
 
     g_gameState.nEvtArgCount = (short)item->item_id;
-    actor->needsFlush = '\x01';
+    actor->needsFlush = TRUE;
 
     if (category != 0 && (int)category <= 4) {
 
@@ -553,7 +553,7 @@ void far itemuse_actor_spawn_clone_inv(Actor far *src_actor, uint kind, long wor
     int i;
 
     new_actor = actorspawn_objfixed(kind, world_x, world_y);
-    new_actor->needsFlush = 1;
+    new_actor->needsFlush = TRUE;
     new_actor->itemCount = src_actor->itemCount;
     for (i = 0; i < (int)(unsigned)src_actor->itemCount; i++) {
         ACTOR_ITEM(new_actor, i) = ACTOR_ITEM(src_actor, i);
@@ -573,8 +573,8 @@ void far itemuse_ground_pile_open_inv(void) {
             actorspawn_enc_location((uint)g_gameState.nZoneId, g_world_camera->base.pos.xy.nWorld_x,
                                     g_world_camera->base.pos.xy.nWorld_y);
     }
-    actor->needsFlush = 1;
-    g_gameState.ground_pile->needsFlush = 1;
+    actor->needsFlush = TRUE;
+    g_gameState.ground_pile->needsFlush = TRUE;
     for (i = 0; i < (int)(unsigned)g_gameState.ground_pile->itemCount; i++) {
         ACTOR_ITEM(actor, i) = ACTOR_ITEM(g_gameState.ground_pile, i);
     }
