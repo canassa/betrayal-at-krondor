@@ -47,6 +47,14 @@ Prefer `@` command prefixes (Javadoc style) over `\` — both work; be consisten
    Sequencing (so the gate doesn't cry wolf): `@ref` only resolves to a *documented* target,
    and file-scope symbols need `@file` — so land `@file`/doc coverage **before** turning on
    `WARN_AS_ERROR`. See [Cross-referencing](#cross-referencing-never-hardcode-a-symbol).
+8. **Wrap comment text at 80 columns.** Every line of a doc block — `@file`, a
+   preceding `/** */`, or a trailing `/**< */` — must fit within 80 columns; break the
+   prose onto a continuation line before it would cross column 80. The formatter will
+   **not** do this for you: the pinned clang-format style sets `ReflowComments: false`
+   (it must — auto-reflow mangles `@ref`/`@param` tags and byte-offset tables), so
+   wrapping is a hand discipline. When a trailing `/**< */` would overflow, convert the
+   field to a preceding `/** */` block (Rule 4) and wrap inside it. Never split an
+   `@ref <name>` or `@p name` across a line break — keep each reference token whole.
 
 ## Comment block styles Doxygen recognizes
 
@@ -333,6 +341,9 @@ Notes:
       otherwise globals, typedefs, and macros are silently undocumented.
 - [ ] **`/**< */` has the `<`** and comes *after* the member on the same line (or the next
       line). A plain `/** */` after a member documents the *next* item, not the previous one.
+- [ ] **Lines wrap at 80 columns** — no doc-comment line exceeds 80; overflow a trailing
+      `/**< */` by switching to a preceding `/** */` block. Never split an `@ref`/`@p`
+      token across lines (`ReflowComments` is off, so this is a manual check).
 - [ ] **Brief/detail**: rely on `JAVADOC_AUTOBRIEF` (first sentence) *or* explicit
       `@brief`/`@details`, not a confusing mix. A blank line separates brief from detail.
 - [ ] **C, not C++**: set `OPTIMIZE_OUTPUT_FOR_C = YES`; use `typedef struct` idioms and
