@@ -1398,7 +1398,7 @@ void far mainmenu_save_bookmark(void) {
     unsigned int heading;
 
     if (g_wSaveSlotDirValid != 0) {
-        if (g_bookmark_verify != 0) {
+        if (g_bookmark_verify) {
             dialog_input_wait_release(0, 1);
             dialog_play_record(0x14c, 0);
             do {

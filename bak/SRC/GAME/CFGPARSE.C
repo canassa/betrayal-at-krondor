@@ -9,10 +9,10 @@
 char *g_apSoundDriverNames[5] = {(char *)g_szDrvAdl, (char *)g_szDrvMt32, (char *)g_szDrvSndblast,
                                  (char *)g_szDrvStd, (char *)g_szDrvGenmidi};
 unsigned short g_awSoundDriverCodes[5] = {0x0002, 0x0003, 0x0004, 0x0000, 0x0007};
-unsigned short g_cheat_enabled = 0x0000;
+bool16 g_cheat_enabled = FALSE;
 unsigned short g_cycle = 0x0000;
-unsigned short g_temp_drive = 0x0000;
-unsigned short g_bookmark_verify = 0x0001;
+int g_temp_drive = 0x0000;
+bool16 g_bookmark_verify = TRUE;
 char g_szDrvAdl[8] = "adl.drv";
 char g_szDrvMt32[9] = "mt32.drv";
 char g_szDrvSndblast[13] = "sndblast.drv";
@@ -45,7 +45,7 @@ void parse_krondor_cfg(void) {
             fscanf(fp, " %40s", token);
             fscanf(fp, " %40s", token);
             if (strlen(token) == 29)
-                g_cheat_enabled = 1;
+                g_cheat_enabled = TRUE;
         } else if (stricmp("cycle", token) == 0) {
             fscanf(fp, " %40s", token);
             fscanf(fp, " %40s", token);
