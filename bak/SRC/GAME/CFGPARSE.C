@@ -6,9 +6,7 @@
 #include "structs.h"
 #include "SRC/GAME/CFGPARSE.H"
 
-char *g_soundDrvTokens[5] = {(char *)g_soundDrvTokenAdl, (char *)g_soundDrvTokenMt32,
-                             (char *)g_soundDrvTokenSndblast, (char *)g_soundDrvTokenStd,
-                             (char *)g_soundDrvTokenGenmidi};
+char *g_soundDrvTokens[5] = {"adl.drv", "mt32.drv", "sndblast.drv", "std.drv", "genmidi.drv"};
 unsigned short g_soundDrvIds[5] = {0x0002, 0x0003, 0x0004, 0x0000, 0x0007};
 /**
  * @brief Cheat-menu unlock flag, read by the 3-D world view.
@@ -41,11 +39,6 @@ int g_cfgTempDrive = 0x0000;
  * overwrites the existing one; while FALSE the save is silent.
  */
 bool16 g_cfgBookmarkVerify = TRUE;
-char g_soundDrvTokenAdl[] = "adl.drv";
-char g_soundDrvTokenMt32[] = "mt32.drv";
-char g_soundDrvTokenSndblast[] = "sndblast.drv";
-char g_soundDrvTokenStd[] = "std.drv";
-char g_soundDrvTokenGenmidi[] = "genmidi.drv";
 
 void parse_krondor_cfg(void) {
     char token[40];
