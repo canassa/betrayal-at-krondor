@@ -19,6 +19,13 @@ unsigned short g_awSoundDriverCodes[5] = {0x0002, 0x0003, 0x0004, 0x0000, 0x0007
 bool16 g_cfgKnockKnock = FALSE;
 unsigned short g_cfgCycle = 0x0000;
 int g_cfgTempDrive = 0x0000;
+/**
+ * @brief Bookmark-overwrite confirmation flag.
+ *
+ * TRUE by default; set from the @c bookmarkverify line in @c resource.cfg.
+ * While TRUE, saving a bookmark first prompts to confirm before it
+ * overwrites the existing one; while FALSE the save is silent.
+ */
 bool16 g_cfgBookmarkVerify = TRUE;
 char g_szDrvAdl[8] = "adl.drv";
 char g_szDrvMt32[9] = "mt32.drv";
