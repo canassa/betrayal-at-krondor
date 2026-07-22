@@ -43,7 +43,7 @@ int sndinst_drivers(int sfx_driver, int music_driver, unsigned int p3, char *fil
         } else {
             failed = 1;
         }
-        sfx_driver = (sfx_driver == 8) ? 3 : sfx_driver;
+        sfx_driver = (sfx_driver == SNDDRV_NONE) ? SNDDRV_M32 : sfx_driver;
     }
 
     g_nSfxDriverMode = sfx_driver;

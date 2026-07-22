@@ -5,6 +5,7 @@
 #include "SRC/AUDIO/SND/SNDBUFAL.H"
 #include "SRC/AUDIO/DRIVER/MIDI.H"
 #include "SRC/AUDIO/SND/SNDINST.H"
+#include "SRC/AUDIO/RES/AUDRESIN.H"
 
 int audio_driver_init(int driver_id, int music_driver, unsigned int p3, char *fileName) {
     int install;
@@ -15,7 +16,7 @@ int audio_driver_init(int driver_id, int music_driver, unsigned int p3, char *fi
         return 1;
 
     if (driver_id == -1) {
-        driver_id = 2;
+        driver_id = SNDDRV_ADL;
         install = 0;
     }
 

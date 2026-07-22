@@ -5,6 +5,7 @@
 #include "SRC/AUDIO/RES/POOL.H"
 #include "SRC/AUDIO/ENGINE/AUDITER.H"
 #include "SRC/AUDIO/RES/AUDRESLD.H"
+#include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/AUDIO/ENGINE/AUDSTOP.H"
 #include "SRC/AUDIO/CHAN/AUDSETIN.H"
 #include "SRC/AUDIO/MUSIC/MUSFADE.H"
@@ -61,7 +62,7 @@ int audio_music_play(int track_id) {
     short prev;
     int music_enabled;
 
-    if ((g_sound_driver == 8) || (track_id == g_current_music_track) || (track_id == -999)) {
+    if ((g_sound_driver == SNDDRV_NONE) || (track_id == g_current_music_track) || (track_id == -999)) {
         return g_current_music_track;
     }
 
@@ -127,7 +128,7 @@ int far audio_music_set_volume(int volume) {
 }
 
 void audio_sfx_stop_combat_bank(void) {
-    if (g_sound_driver != 8) {
+    if (g_sound_driver != SNDDRV_NONE) {
         audio_sfx_stop(0x41);
         audio_sfx_stop(10);
         audio_sfx_stop(0x4f);
@@ -161,7 +162,7 @@ void audio_sfx_stop_combat_bank(void) {
 }
 
 void audio_sfx_register_combat_bank(void) {
-    if (g_sound_driver != 8) {
+    if (g_sound_driver != SNDDRV_NONE) {
         audio_sfx_register(g_pSfxArchiveStream, 0x42);
         audio_sfx_register(g_pSfxArchiveStream, 0x13);
         audio_sfx_register(g_pSfxArchiveStream, 7);
@@ -194,7 +195,7 @@ void audio_sfx_register_combat_bank(void) {
 }
 
 void audio_preload_ui_sfx(void) {
-    if (g_sound_driver != 8) {
+    if (g_sound_driver != SNDDRV_NONE) {
         audio_sfx_register(g_pSfxArchiveStream, 0x53);
         audio_sfx_register(g_pSfxArchiveStream, 0x30);
         audio_sfx_register(g_pSfxArchiveStream, 0x3d);
@@ -203,7 +204,7 @@ void audio_preload_ui_sfx(void) {
 }
 
 void audio_sfx_stop_environment_set(void) {
-    if (g_sound_driver != 8) {
+    if (g_sound_driver != SNDDRV_NONE) {
         audio_sfx_stop(0x3c);
         audio_sfx_stop(0x3d);
         audio_sfx_stop(0x30);
@@ -213,7 +214,7 @@ void audio_sfx_stop_environment_set(void) {
 }
 
 void audio_sfx_register_world_bank(void) {
-    if (g_sound_driver != 8) {
+    if (g_sound_driver != SNDDRV_NONE) {
         audio_sfx_register(g_pSfxArchiveStream, 0x31);
         audio_sfx_register(g_pSfxArchiveStream, 5);
         audio_sfx_register(g_pSfxArchiveStream, 0x2b);
@@ -241,7 +242,7 @@ void audio_sfx_register_world_bank(void) {
 }
 
 void audio_sfx_stop_scene_sounds(void) {
-    if (g_sound_driver != 8) {
+    if (g_sound_driver != SNDDRV_NONE) {
         if (g_game_mode == 2) {
             audio_sfx_stop(3);
         } else {
@@ -269,7 +270,7 @@ void audio_sfx_stop_scene_sounds(void) {
 }
 
 void audio_sfx_register_pair_4_18(void) {
-    if (g_sound_driver != 8) {
+    if (g_sound_driver != SNDDRV_NONE) {
         audio_sfx_register(g_pSfxArchiveStream, 4);
         audio_sfx_register(g_pSfxArchiveStream, 0x12);
     }
@@ -277,7 +278,7 @@ void audio_sfx_register_pair_4_18(void) {
 }
 
 void audio_sfx_stop_pair_4_18(void) {
-    if (g_sound_driver != 8) {
+    if (g_sound_driver != SNDDRV_NONE) {
         audio_sfx_stop(0x12);
         audio_sfx_stop(4);
     }
@@ -285,7 +286,7 @@ void audio_sfx_stop_pair_4_18(void) {
 }
 
 void audio_sfx_register_pair_38_39(void) {
-    if (g_sound_driver != 8) {
+    if (g_sound_driver != SNDDRV_NONE) {
         audio_sfx_register(g_pSfxArchiveStream, 0x26);
         audio_sfx_register(g_pSfxArchiveStream, 0x27);
     }
@@ -293,7 +294,7 @@ void audio_sfx_register_pair_38_39(void) {
 }
 
 void audio_sfx_stop_pair_38_39(void) {
-    if (g_sound_driver != 8) {
+    if (g_sound_driver != SNDDRV_NONE) {
         audio_sfx_stop(0x27);
         audio_sfx_stop(0x26);
     }
@@ -301,35 +302,35 @@ void audio_sfx_stop_pair_38_39(void) {
 }
 
 void audio_sfx_register_50(void) {
-    if (g_sound_driver != 8) {
+    if (g_sound_driver != SNDDRV_NONE) {
         audio_sfx_register(g_pSfxArchiveStream, 0x32);
     }
     return;
 }
 
 void audio_sfx_stop_50(void) {
-    if (g_sound_driver != 8) {
+    if (g_sound_driver != SNDDRV_NONE) {
         audio_sfx_stop(0x32);
     }
     return;
 }
 
 void audio_sfx_register_45(void) {
-    if (g_sound_driver != 8) {
+    if (g_sound_driver != SNDDRV_NONE) {
         audio_sfx_register(g_pSfxArchiveStream, 0x2d);
     }
     return;
 }
 
 void audio_sfx_stop_45(void) {
-    if (g_sound_driver != 8) {
+    if (g_sound_driver != SNDDRV_NONE) {
         audio_sfx_stop(0x2d);
     }
     return;
 }
 
 void audio_play(int sound_id) {
-    if (g_sound_driver == 8) {
+    if (g_sound_driver == SNDDRV_NONE) {
         return;
     }
 
@@ -344,12 +345,12 @@ void audio_play(int sound_id) {
 }
 
 int audio_sfx_register(BakFile *file, int sfx_id) {
-    return ((g_sound_driver != 8) && (sfx_id < 1001)) ? (int)audio_resource_load_chunk(file, sfx_id)
+    return ((g_sound_driver != SNDDRV_NONE) && (sfx_id < 1001)) ? (int)audio_resource_load_chunk(file, sfx_id)
                                                       : 0;
 }
 
 int audio_sfx_stop(int sfx_id) {
-    if (g_sound_driver != 8 && sfx_id < 1001)
+    if (g_sound_driver != SNDDRV_NONE && sfx_id < 1001)
         return audio_stop(sfx_id);
     return 0;
 }
@@ -357,7 +358,7 @@ int audio_sfx_stop(int sfx_id) {
 int far audio_sfx_play_n_times(int sfx_id, int extra_repeats, int blocking) {
     BakFile *pChunk;
 
-    if (g_sound_driver == 8) {
+    if (g_sound_driver == SNDDRV_NONE) {
         return 0;
     }
 

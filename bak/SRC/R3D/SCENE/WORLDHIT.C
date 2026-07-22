@@ -6,6 +6,7 @@
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
+#include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/GFX/SPRITE/RESBLIT.H"
 #include "SRC/R3D/CORE/DISTDIR.H"
 #include "SRC/GFX/RASTER/CIRCLE.H"
@@ -38,7 +39,7 @@ unsigned short g_nWorldRenderJitter = 0x0000;
 char *g_pszCombatModalTitle = (char *)g_szVersionString;
 
 unsigned char _dgroup_gap_3e8[4] = {0, 0, 0, 0};
-unsigned short g_sound_driver = 0x0008;
+unsigned short g_sound_driver = SNDDRV_NONE;
 BakFile *g_pSfxArchiveStream = {0};
 unsigned int _ovrbuffer = 0x0d48;
 unsigned char far *g_pMainScratchBuf = {0};

@@ -29,6 +29,7 @@
 #include "SRC/GFX/PALETTE/PALETTE.H"
 #include "SRC/R3D/TBLSTORE/SHAPETBL.H"
 #include "SRC/AUDIO/SND/SNDINIT.H"
+#include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/AUDIO/SND/SFXTERM.H"
 #include "SRC/SYS/EMS.H"
 #include "SRC/SYS/MDACON.H"
@@ -81,8 +82,8 @@ void boot_active_window_free(void) {
 }
 
 void far boot_audio_init(void) {
-    if (g_sound_driver == 4) {
-        audio_driver_init(2, 0, 0, "sx.ovl");
+    if (g_sound_driver == SNDDRV_SBP) {
+        audio_driver_init(SNDDRV_ADL, 0, 0, "sx.ovl");
     } else {
         audio_driver_init(g_sound_driver, -2, 0, "sx.ovl");
     }
