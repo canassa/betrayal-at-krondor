@@ -84,8 +84,6 @@ extern unsigned char g_abStatClampMax[17];
 extern unsigned char g_abStatRatio[17];
 extern unsigned char g_abStatRatioBase[17];
 extern unsigned char g_abStatRatioMax[17];
-extern char *g_soundDrvTokens[5];
-extern unsigned short g_soundDrvIds[5];
 extern bool16 g_cfgKnockKnock;
 extern unsigned short g_cfgCycle;
 extern int g_cfgTempDrive;
