@@ -1,5 +1,6 @@
 #include <conio.h>
 #include "globals.h"
+#include "SRC/COMBAT/GRID/CMBTGRID.H"
 #include "SRC/WORLD/LOOP/WORLDLP.H"
 #include "SRC/SYS/SYSLOWIO.H"
 #include "SRC/INPUT/TIMER.H"

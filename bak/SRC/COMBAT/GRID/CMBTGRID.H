@@ -3,6 +3,21 @@
 
 #include "structs.h"
 
+extern unsigned char far *g_pPalLoadedBuf;
+extern unsigned char far *g_pPalAltA;
+extern unsigned char far *g_pPalAltB;
+extern unsigned char far *g_pPalBlendScratch;
+extern unsigned short g_nPalBlendMode;
+extern unsigned char far *g_pPalLastInstalled;
+extern char g_rgbDayNightCycle_4f4[15];
+extern int g_nPaletteBlendFactorCached;
+extern unsigned char g_bssgap_4c34[2];
+extern GridCombatant *g_combatant_table;
+extern short g_combatant_count;
+extern CombatTile g_combat_tile_grid[8][13];
+extern int g_nCombatTerrainWallColor;
+extern unsigned char g_combat_move_map[8][13];
+
 extern void combatgrid_cmbts_tbl_alloc(void);
 extern void combatgrid_combatants_table_free(void);
 extern int combatgrid_coord_valid(int x, int y);

@@ -1,6 +1,27 @@
 #ifndef BAK_AUDRESIN_H
 #define BAK_AUDRESIN_H
 
+#include "structs.h"
+
+extern unsigned char g_abIntensityCurve[64];
+extern unsigned short g_nSfxResourceId;
+extern unsigned char far *g_pSsmChunkBuf;
+extern AudioListNode far *g_pActiveAudioListHead;
+extern unsigned short g_bAudioTimerInstalled;
+extern unsigned short g_nSfxSampleSlot;
+extern unsigned short g_nSfxWorkSlot;
+extern SfxLoopPri *g_pSfxLoopPriorityTable;
+extern void far *g_pSfxDriver;
+extern void far *g_pMusicDriver;
+extern unsigned short g_nAudioBufLastError;
+extern unsigned char g_bAudioLooseTag;
+extern short g_nAudioFilterMode;
+extern MusicChunkHeader far *g_pMusicChunkBuf;
+extern BakFile *g_music_archive;
+extern int g_music_archive_owned;
+extern unsigned short g_bMusicDriverInstalled;
+extern unsigned short g_nAudioStreamCodec;
+
 /**
  * @brief Sound-driver ids: indices into the SFX driver-tag table
  *        (@c g_apSfxDriverTags  (TBD-ref: not yet documented)).

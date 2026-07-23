@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/AUDIO/ENGINE/AUDSTART.H"
 #include "SRC/AUDIO/MUSIC/MUSCREAT.H"
 #include "SRC/AUDIO/SFX/SFXFIND.H"

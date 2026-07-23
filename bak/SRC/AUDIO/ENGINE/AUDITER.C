@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/AUDIO/ENGINE/AUDITER.H"
 
 short g_nAudioIterFilter;
