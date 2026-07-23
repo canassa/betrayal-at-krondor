@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/WORLD/ZONE/PROXIM.H"
 #include "SRC/R3D/ACTOR/ACTMOTN.H"

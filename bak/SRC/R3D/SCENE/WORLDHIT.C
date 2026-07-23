@@ -5,6 +5,7 @@
 #define g_szVersionString g_szVersionString_decl13
 #endif
 #include "globals.h"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/GAME/BOOT.H"
 #include "SRC/WORLD/ZONE/ZONE.H"

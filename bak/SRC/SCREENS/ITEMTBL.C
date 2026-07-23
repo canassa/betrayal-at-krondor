@@ -1,5 +1,6 @@
 #include <mem.h>
 #include "globals.h"
+#include "SRC/GAME/GMAIN.H"
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 #include "SRC/SCREENS/ITEMTBL.H"

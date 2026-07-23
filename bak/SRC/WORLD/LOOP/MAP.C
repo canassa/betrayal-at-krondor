@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "globals.h"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/INPUT/TIMER.H"

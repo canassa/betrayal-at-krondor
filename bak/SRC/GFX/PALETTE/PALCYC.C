@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/GAME/GMAIN.H"
 #include "structs.h"
 #include "SRC/GFX/PALETTE/PALCYC.H"
 #include "SRC/GFX/DRIVER/PALDRV.H"

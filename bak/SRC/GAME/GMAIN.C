@@ -1,21 +1,21 @@
 #include <stdio.h>
 #include <string.h>
+#include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
+#include "SRC/COMBAT/SPELL/CSPELL.H"
+#include "SRC/SYS/SYSLOWIO.H"
+#include "structs.h"
 #ifdef V102CD
 #define g_render_camera_scratch g_render_camera_scratch_decl100
 #define g_active_window g_active_window_decl100
 #define g_nChapterAtLoopExit g_nChapterAtLoopExit_decl100
 #endif
-#include "globals.h"
-#include "SRC/GEN/GFXCTX.H"
-#include "SRC/COMBAT/SPELL/CSPELL.H"
-#include "SRC/SYS/SYSLOWIO.H"
+#include "SRC/GAME/GMAIN.H"
 #ifdef V102CD
 #undef g_render_camera_scratch
 #undef g_active_window
 #undef g_nChapterAtLoopExit
 #endif
-#include "structs.h"
-#include "SRC/GAME/GMAIN.H"
 #include "SRC/IO/IO.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/AUDIO/RES/AUDRESIN.H"
