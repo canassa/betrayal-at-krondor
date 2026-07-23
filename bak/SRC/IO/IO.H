@@ -8,24 +8,37 @@
 
 #include "structs.h"
 
-typedef struct BakIndexEntry {
+typedef struct RmfEntry {
     unsigned long dwHash;
     unsigned long dwBase_offset;
-} BakIndexEntry;
+} RmfEntry;
 
-typedef struct BakArchive {
-    char name[13];
-    char _pad;
-    short ordinal;
-    FILE *fp;
-    unsigned long pos;
-    unsigned short flags;
-    BakIndexEntry far *index;
-} BakArchive;
+/**
+ * @brief Runtime descriptor for one open resource archive (`KRONDOR.001`).
+ *
+ * Built by @c bak_init_resources  (TBD-ref: not yet documented) from the
+ * `KRONDOR.RMF` index and held in @ref g_bak_archives (up to 11, indexed
+ * 1-based; slot 0 is the "loose file / no archive" sentinel). It pairs the
+ * archive identity taken from the RMF (@ref Archive::fileName and the
+ * @ref Archive::directory of @ref RmfEntry records) with live stdio state
+ * (@ref Archive::fp — a genuine CRT `FILE *`, not a @ref BakFile token — and
+ * @ref Archive::filePos). Not an on-disk record: only @ref Archive::fileName
+ * arrives in bulk, so the two never-touched fields are just free space.
+ * Byte-packed; `sizeof` is 28.
+ */
+typedef struct Archive {
+    char fileName[13];        /**< 0x00: NUL-padded payload name. */
+    char padUnused;           /**< 0x0d: alignment filler; unused. */
+    short slotIndex;          /**< 0x0e: own pool slot; write-once, unread. */
+    FILE *fp;                 /**< 0x10: open CRT stream on the payload. */
+    unsigned long filePos;    /**< 0x12: cached fp seek offset. */
+    unsigned short unused;    /**< 0x16: never read or written. */
+    RmfEntry far *directory;  /**< 0x18: loaded hash->offset table. */
+} Archive;
 
-typedef struct BakArchiveTable {
-    BakArchive entries[10];
-} BakArchiveTable;
+typedef struct ArchiveTable {
+    Archive entries[10];
+} ArchiveTable;
 
 typedef struct BakHandle {
     short archive_idx;
@@ -56,7 +69,7 @@ extern unsigned char g_bak_initialized;
 extern short g_bak_io_error;
 extern void far *g_int24_old_vector;
 extern BakHandle g_bak_handles[10];
-extern BakArchive g_bak_archives[11];
+extern Archive g_bak_archives[11];
 extern BakFile *g_pBakFgetcLastStream;
 extern FILE *g_pBakActiveFgetcStream;
 extern unsigned char g_bak_in_fopen;
