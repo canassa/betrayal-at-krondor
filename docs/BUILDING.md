@@ -99,3 +99,5 @@ uv run bak compdb
 ```
 
 This writes a `compile_commands.json` that any clangd-based editor (VS Code, Neovim, CLion, ...) picks up automatically. It records absolute, machine-local paths, so it's gitignored; re-run it whenever you add files or move the project.
+
+clangd parses each file under a single macro set, so the database presents one release view at a time: by default the 1.02 one (`#ifdef V102CD` blocks live, 1.00-only blocks greyed). Pass `--version 100` to flip.

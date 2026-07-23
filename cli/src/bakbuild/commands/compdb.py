@@ -82,7 +82,7 @@ def _sources() -> list[Path]:
     return sorted(p for p in src_root.rglob("*") if p.suffix.lower() == ".c")
 
 
-def _clang_args(cc: str, src: Path) -> list[str]:
+def _clang_args(cc: str, src: Path, version: str) -> list[str]:
     """The compiler command for one TU. ``-std=gnu89`` matches Borland-era C
     (with lenient GNU extensions); ``-ffreestanding`` drops hosted-libc
     assumptions; the two ``-I`` give the game's own headers and the IDE
@@ -105,6 +105,10 @@ def _clang_args(cc: str, src: Path) -> list[str]:
         "-Wno-implicit-function-declaration",
         "-Wno-int-conversion",
         "-D__BAK_CLION__=1",
+        # clangd parses each TU under ONE macro set, so the database presents a
+        # single version view: 102 arms the #ifdef V102CD blocks (the 1.00-only
+        # #ifndef blocks grey out), 100 the reverse.
+        *(["-DV102CD=1"] if version == "102" else []),
         f"-I{paths.BAK / 'INCLUDE'}",
         # per-module headers are included root-relatively (#include "SRC/.../MOD.H");
         # bcc resolves them against its CWD (bak/), clang needs the explicit -I
@@ -116,12 +120,12 @@ def _clang_args(cc: str, src: Path) -> list[str]:
     ]
 
 
-def _generate(output: Path, cc: str) -> tuple[Path, int]:
+def _generate(output: Path, cc: str, version: str) -> tuple[Path, int]:
     """Write the compilation database. Returns the output path and the number of
     translation units recorded."""
     directory = str(paths.PROJECT_ROOT)
     entries = [
-        {"directory": directory, "file": str(src), "arguments": _clang_args(cc, src)}
+        {"directory": directory, "file": str(src), "arguments": _clang_args(cc, src, version)}
         for src in _sources()
     ]
     output.write_text(json.dumps(entries, indent=2) + "\n")
@@ -145,6 +149,15 @@ def compdb(
             "clang/gcc/cc on PATH, written as an absolute path so CLion can probe it.",
         ),
     ] = None,
+    version: Annotated[
+        str,
+        typer.Option(
+            "--version",
+            help="Which release view to index: 102 arms the #ifdef V102CD blocks "
+            "(default), 100 the 1.00-only ones. One view per database — clangd "
+            "cannot parse a file under two macro sets.",
+        ),
+    ] = "102",
 ) -> None:
     """Generate compile_commands.json so CLion / clangd can index the bak/ C tree.
 
@@ -152,10 +165,13 @@ def compdb(
     refresh the file list. Open the repo in CLion (it auto-detects the database)
     or point clangd at it.
     """
+    if version not in ("100", "102"):
+        raise typer.BadParameter("--version must be 100 or 102")
     out = output or paths.PROJECT_ROOT / "compile_commands.json"
     driver = _detect_cc(cc)
-    out, count = _generate(out, driver)
-    typer.echo(f"wrote {out} ({count} translation units, compiler: {driver})")
+    out, count = _generate(out, driver, version)
+    typer.echo(f"wrote {out} ({count} translation units, version view: {version}, "
+               f"compiler: {driver})")
 
 
 def register(app: typer.Typer) -> None:
