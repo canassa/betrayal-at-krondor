@@ -1,6 +1,7 @@
 #include <dos.h>
 #include <mem.h>
 #include "globals.h"
+#include "SRC/GFX/FONT/FONT.H"
 #include "structs.h"
 #include "SRC/GFX/PALETTE/PALETTE.H"
 #include "SRC/SYS/RAND.H"

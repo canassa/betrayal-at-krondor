@@ -6,6 +6,7 @@
 #include <io.h>
 
 #include "globals.h"
+#include "SRC/SYS/SYSLOWIO.H"
 #include "structs.h"
 #include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/IO/IO.H"

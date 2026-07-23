@@ -1,5 +1,6 @@
 #include <dos.h>
 #include "globals.h"
+#include "SRC/GFX/FONT/FONT.H"
 #include "structs.h"
 #include "SRC/SYS/EMSIMG.H"
 #include "SRC/GFX/RASTER/POLYRAST.H"

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "globals.h"
+#include "SRC/WORLD/ZONE/CZONE.H"
 #include "SRC/WORLD/ENC/RGNENC.H"
 #include "structs.h"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"

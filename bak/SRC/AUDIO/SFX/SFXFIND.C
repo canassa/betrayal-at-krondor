@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/AUDIO/SFX/SFXPLAY.H"
 #include "SRC/AUDIO/SFX/SFXFIND.H"
 
 AudioTrackHandle far *sfx_find_active(unsigned char far *track_data) {

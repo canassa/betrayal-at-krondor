@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/SYS/SYSLOWIO.H"
 #include "SRC/UI/DLGWIDG.H"
 #include "structs.h"
 #include "SRC/UI/MENUPAGE.H"

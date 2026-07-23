@@ -3,6 +3,26 @@
 
 #include "structs.h"
 
+extern unsigned char huge *g_pCodecScratchFp;
+extern CodecVtable g_codec_vtable[4];
+extern unsigned char g_abLowBitMaskByWidth[9];
+extern StreamDesc *g_pCurStreamDesc;
+extern unsigned char *g_pCurStreamRingBuf;
+extern unsigned char g_bCurStreamCodecId;
+extern BakFile *g_pCurStreamFp;
+extern unsigned char huge *g_pStreamReadDst;
+extern unsigned char huge *g_pCurCodecScratch;
+extern StreamDesc *g_apStreamSlots[100];
+extern int g_nStreamBytesWritten;
+extern unsigned short g_wCodecBytesRemaining;
+extern unsigned char g_bCurStreamOpMode;
+extern unsigned char g_bCurStreamDescFlags;
+extern char huge *g_pCurStreamSrcCursor;
+extern unsigned char g_codecRawTransitBuf[50];
+extern unsigned char g_bssgap_5de5;
+extern IffResReader g_chunkSeekSaveIffReader;
+extern IffResReader g_iff_reader_pool[4];
+
 extern int near codec_passthrough_bytes(void);
 extern int near codec_rle_read(void);
 extern int near codec_flush_ring(void);

@@ -1,4 +1,6 @@
 #include "globals.h"
+#include "SRC/SYS/SYSLOWIO.H"
+#include "SRC/WORLD/ZONE/CZONE.H"
 #include "structs.h"
 #include "SRC/SCREENS/FMAP.H"
 #include "SRC/IO/IO.H"

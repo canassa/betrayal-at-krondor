@@ -1,5 +1,7 @@
 #include <conio.h>
 #include "globals.h"
+#include "SRC/WORLD/LOOP/WORLDLP.H"
+#include "SRC/SYS/SYSLOWIO.H"
 #include "SRC/INPUT/TIMER.H"
 #include "structs.h"
 #include "SRC/GFX/SCREEN/SCREEN.H"

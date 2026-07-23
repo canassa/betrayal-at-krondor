@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "globals.h"
+#include "SRC/WORLD/LOOP/WORLDLP.H"
 #include "SRC/SCRIPT/TTM.H"
 #include "structs.h"
 #include "SRC/SCREENS/TOWNSCN.H"

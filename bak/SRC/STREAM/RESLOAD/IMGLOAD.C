@@ -1,5 +1,7 @@
 #define unpack_2bpp_to_byte_per_pixel _proto_suppressed_unpack_2bpp
 #include "globals.h"
+#include "SRC/GFX/FONT/FONT.H"
+#include "SRC/STREAM/CODEC/CODEC.H"
 #include "structs.h"
 #include "SRC/STREAM/RESLOAD/IMGLOAD.H"
 #include "SRC/IO/IO.H"

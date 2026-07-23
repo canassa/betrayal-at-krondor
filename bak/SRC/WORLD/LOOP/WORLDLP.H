@@ -3,6 +3,10 @@
 
 #include "structs.h"
 
+extern MenuPage *g_pReqMainPage;
+extern short g_nSceneReloadPending;
+extern short g_nHotspotActivateRequest;
+
 extern void worldloop_req_main_screen_load(void);
 extern void worldloop_req_main_screen_unload(void);
 extern short world3d_main_loop(void);

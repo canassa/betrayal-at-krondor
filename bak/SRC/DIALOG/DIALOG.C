@@ -5,6 +5,8 @@
 #include <string.h>
 #include "gtypes.h"
 #include "globals.h"
+#include "SRC/SYS/SYSLOWIO.H"
+#include "SRC/WORLD/ZONE/CZONE.H"
 #include "SRC/WORLD/MOVE/WORLDMOV.H"
 #include "SRC/SCREENS/BOOKVIEW.H"
 #include "SRC/SCRIPT/ADSCRIPT.H"
