@@ -1,5 +1,6 @@
 #include <dos.h>
 #include "globals.h"
+#include "SRC/SYS/EMS.H"
 #include "SRC/SYS/EMSDET.H"
 
 int ems_detect_driver(void) {
