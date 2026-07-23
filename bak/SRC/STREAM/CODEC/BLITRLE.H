@@ -3,6 +3,8 @@
 
 #include "structs.h"
 
+extern unsigned char *g_pRleScanlineDst;
+
 extern int near blit_rle_sprite(void);
 
 #endif
