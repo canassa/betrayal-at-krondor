@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/UI/UIWIDGET.H"
 #include "structs.h"
 #include "SRC/R3D/SKY/SKYREND.H"

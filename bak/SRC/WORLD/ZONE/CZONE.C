@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/SCREENS/MAINMENU.H"
 #include "structs.h"
 #include "SRC/WORLD/ZONE/CZONE.H"
 #include "SRC/IO/IO.H"

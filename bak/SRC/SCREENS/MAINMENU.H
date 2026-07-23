@@ -3,6 +3,19 @@
 
 #include "structs.h"
 
+extern EnginePrefs *g_engine_prefs;
+extern int g_nMenuReentering;
+extern unsigned short g_wSaveSlotDirValid;
+extern unsigned short g_wSaveFileValid;
+extern unsigned short g_wMenuCursorPreset;
+extern unsigned short g_wCurrentSaveSlotKey;
+extern unsigned short g_wCurrentSaveFileKey;
+extern int g_wBookmarkFmapX;
+extern int g_wBookmarkFmapY;
+extern unsigned short g_wBookmarkCompassIcon;
+extern char g_szSaveSlotDirName_51cc[13];
+extern unsigned char g_abSaveFileHeader[90];
+
 extern int mainmenu_save_cfg_load_settings(void);
 extern void mainmenu_save_cfg_free_settings(void);
 extern int mainmenu_save_main_menu(int reentering);
