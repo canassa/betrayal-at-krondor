@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/AUDIO/SND/SFXTERM.H"
 #include "SRC/STREAM/RESLOAD/RELBUF.H"
 #include "SRC/INPUT/TIMER.H"

@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/AUDIO/RES/AUDRESLD.H"
 #include "SRC/IO/IO.H"
 #include "SRC/IO/IOCHUNK.H"

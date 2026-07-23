@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/COMBAT/GRID/CMBTGRID.H"
 #include "SRC/SYS/SYSLOWIO.H"
 #include "SRC/WORLD/ZONE/CZONE.H"
 #include "structs.h"

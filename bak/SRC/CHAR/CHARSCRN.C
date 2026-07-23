@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "globals.h"
+#include "SRC/COMBAT/GRID/CMBTGRID.H"
 #include "structs.h"
 #include "SRC/CHAR/CHARSCRN.H"
 #include "SRC/IO/IO.H"
