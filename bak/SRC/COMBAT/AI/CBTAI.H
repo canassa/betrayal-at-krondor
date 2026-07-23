@@ -3,6 +3,9 @@
 
 #include "structs.h"
 
+extern EncounterAiTurnFn far *g_encounter_ai_turn_table[8];
+extern unsigned char __dat_153c[128];
+
 extern int combat_ai_try_cast_heal(CombatActor *caster);
 extern int combat_ai_turn_kind6(CombatActor *actor);
 extern int combat_ai_turn_packet_10006(CombatActor *actor);

@@ -3,6 +3,14 @@
 
 #include "structs.h"
 
+extern short g_nJoyXVel;
+extern short g_nJoyYVel;
+extern MenuEntry *g_pMenuHoverEntry;
+extern MenuEntry *g_pMenuPressAnchor;
+extern MenuEntry *g_pMenuClickedEntry;
+extern unsigned short g_wMenuDragSubMode;
+extern unsigned short g_wMenuDragState;
+
 extern MenuPage *menupage_load(char *filename);
 extern void menupage_free(MenuPage *page);
 extern void menupage_begin(MenuPage *page);
