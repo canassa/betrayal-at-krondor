@@ -8,7 +8,7 @@
 #include "SRC/AUDIO/RES/AUDRESIN.H"
 
 char *g_soundDrvTokens[5] = {"adl.drv", "mt32.drv", "sndblast.drv", "std.drv", "genmidi.drv"};
-int g_soundDrvIds[5] = {SNDDRV_ADL, SNDDRV_M32, SNDDRV_SBP, SNDDRV_STD, SNDDRV_GMD};
+SoundDriverId g_soundDrvIds[5] = {SNDDRV_ADL, SNDDRV_M32, SNDDRV_SBP, SNDDRV_STD, SNDDRV_GMD};
 /**
  * @brief Cheat-menu unlock flag, read by the 3-D world view.
  *

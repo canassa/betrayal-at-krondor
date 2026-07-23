@@ -25,7 +25,6 @@ extern unsigned char g_bCutsceneEscPressed;
 extern short g_nPolygonTextureMode;
 extern unsigned short g_nWorldRenderJitter;
 extern char *g_pszCombatModalTitle;
-extern unsigned short g_sound_driver;
 extern BakFile *g_pSfxArchiveStream;
 extern unsigned int _ovrbuffer;
 extern unsigned char far *g_pMainScratchBuf;
