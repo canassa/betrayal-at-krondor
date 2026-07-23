@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/WORLD/CURSOR/WCURSOR.H"
 #include "SRC/WORLD/ZONE/CZONE.H"
 #include "SRC/WORLD/ZONE/PROXIM.H"

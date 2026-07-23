@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/AUDIO/RES/POOL.H"

@@ -3,6 +3,24 @@
 
 #include "structs.h"
 
+extern short g_nPolygonTextureMode;
+extern unsigned short g_nWorldRenderJitter;
+extern char *g_pszCombatModalTitle;
+extern BakFile *g_pSfxArchiveStream;
+extern unsigned int _ovrbuffer;
+extern unsigned char far *g_pMainScratchBuf;
+#ifdef V102CD
+extern char g_szVersionString[16];
+#else
+extern char g_szVersionString[13];
+#endif
+extern unsigned short g_wSkyColorR;
+extern unsigned short g_wSkyColorG;
+extern unsigned short g_wSkyColorB;
+extern ImageRecord **g_pMapIconsTable;
+extern unsigned char g_abActorAnimTemplateDefault[10];
+extern unsigned char g_abActorAnimTemplateRanged[10];
+
 extern void world_render_scene_dispatch(int animate);
 extern void world_render_frame(int animate);
 extern void world_render_sky_texture_load(void);

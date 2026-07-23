@@ -1,6 +1,7 @@
 #include <dos.h>
 
 #include "globals.h"
+#include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "structs.h"
 #include "SRC/GFX/SPRITE/BLITAA.H"
 #include "SRC/GFX/SPRITE/RESBLIT.H"
