@@ -36,10 +36,6 @@ typedef struct Archive {
     RmfEntry far *directory;  /**< 0x18: loaded hash->offset table. */
 } Archive;
 
-typedef struct ArchiveTable {
-    Archive entries[10];
-} ArchiveTable;
-
 typedef struct BakHandle {
     short archive_idx;
     unsigned long base_offset;
