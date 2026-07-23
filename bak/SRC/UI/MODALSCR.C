@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 #include "structs.h"
-#include "globals.h"
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"

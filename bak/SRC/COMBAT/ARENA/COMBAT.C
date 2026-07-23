@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 #include "gtypes.h"
-#include "globals.h"
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/SCREENS/MAINMENU.H"

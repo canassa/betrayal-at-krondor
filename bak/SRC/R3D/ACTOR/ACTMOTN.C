@@ -1,6 +1,5 @@
 #include <mem.h>
 #include <stdlib.h>
-#include "globals.h"
 #include "structs.h"
 #include "SRC/R3D/ACTOR/ACTMOTN.H"
 #include "SRC/R3D/CORE/R3D.H"

@@ -1,5 +1,4 @@
 #include <dos.h>
-#include "globals.h"
 #include "structs.h"
 #include "SRC/COMBAT/AI/CMBTAI.H"
 #include "SRC/SYS/RAND.H"

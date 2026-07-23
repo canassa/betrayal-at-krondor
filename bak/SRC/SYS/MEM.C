@@ -1,6 +1,5 @@
 #include <alloc.h>
 #include <mem.h>
-#include "globals.h"
 #include "structs.h"
 #include "SRC/SYS/MEM.H"
 #include "SRC/SYS/FARTHUNK.H"

@@ -2,6 +2,7 @@
 #define BAK_PICKLOCK_H
 
 #include "structs.h"
+#include "SRC/WORLD/ACTOR/ACTOR.H"
 
 extern unsigned char g_bInventoryShopMode;
 extern unsigned char g_abInvQuizAnswerTable[13];

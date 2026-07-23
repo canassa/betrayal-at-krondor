@@ -1,5 +1,5 @@
 #include <dos.h>
-#include "globals.h"
+#include "structs.h"
 #include "SRC/SYS/EMS.H"
 #include "SRC/SYS/EMSDET.H"
 

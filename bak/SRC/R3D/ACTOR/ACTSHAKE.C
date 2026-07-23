@@ -1,4 +1,3 @@
-#include "globals.h"
 #include "SRC/R3D/ACTOR/ACTOROVL.H"
 #include "structs.h"
 #include "SRC/R3D/ACTOR/ACTSHAKE.H"

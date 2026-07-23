@@ -1,4 +1,4 @@
-#include "globals.h"
+#include "structs.h"
 #include "SRC/AUDIO/CHAN/AUDCCHG.H"
 #include "SRC/AUDIO/CHAN/SFXCHAN.H"
 #include "SRC/AUDIO/DRIVER/MIDI.H"

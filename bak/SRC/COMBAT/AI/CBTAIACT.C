@@ -1,7 +1,6 @@
 #include <dos.h>
 #include <stdlib.h>
 
-#include "globals.h"
 #include "structs.h"
 #include "SRC/COMBAT/AI/CBTAIACT.H"
 #include "SRC/SYS/RAND.H"

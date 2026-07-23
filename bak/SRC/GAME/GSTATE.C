@@ -1,7 +1,6 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include "globals.h"
 #include "SRC/GAME/GMAIN.H"
 #include "structs.h"
 #include "SRC/GAME/GSTATE.H"

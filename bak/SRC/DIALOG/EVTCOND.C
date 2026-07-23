@@ -1,6 +1,5 @@
 #include <dos.h>
 #include <stdlib.h>
-#include "globals.h"
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/WORLD/LOOP/WORLDLP.H"
 #include "structs.h"

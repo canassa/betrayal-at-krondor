@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include "globals.h"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/COMBAT/SPELL/CSPELL.H"
 #include "SRC/SYS/SYSLOWIO.H"

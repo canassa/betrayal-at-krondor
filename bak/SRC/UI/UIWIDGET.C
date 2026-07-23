@@ -1,5 +1,4 @@
 #include <dos.h>
-#include "globals.h"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
 #include "structs.h"

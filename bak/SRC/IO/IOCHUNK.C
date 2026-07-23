@@ -1,6 +1,5 @@
 #include <mem.h>
 
-#include "globals.h"
 #include "structs.h"
 #include "SRC/IO/IOCHUNK.H"
 #include "SRC/IO/IO.H"

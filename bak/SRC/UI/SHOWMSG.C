@@ -1,4 +1,3 @@
-#include "globals.h"
 #include "structs.h"
 #include "SRC/UI/SHOWMSG.H"
 #include "SRC/DIALOG/DIALOG.H"

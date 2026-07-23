@@ -1,4 +1,3 @@
-#include "globals.h"
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"

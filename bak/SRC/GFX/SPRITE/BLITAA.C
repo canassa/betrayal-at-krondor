@@ -1,6 +1,5 @@
 #include <dos.h>
 
-#include "globals.h"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "structs.h"

@@ -1,5 +1,4 @@
 #include <dos.h>
-#include "globals.h"
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/COMBAT/SPELL/CSPELL.H"

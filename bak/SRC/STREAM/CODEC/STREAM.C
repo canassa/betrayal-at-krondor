@@ -1,5 +1,4 @@
 #include <dos.h>
-#include "globals.h"
 #include "structs.h"
 #include "SRC/STREAM/CODEC/STREAM.H"
 

@@ -1,6 +1,5 @@
 #include <dos.h>
 #include <stdlib.h>
-#include "globals.h"
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 #include "SRC/COMBAT/STATS/CBSTAT.H"

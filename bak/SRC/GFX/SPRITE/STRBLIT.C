@@ -1,4 +1,3 @@
-#include "globals.h"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/GEN/RNDVTBL.H"
 #include "SRC/INPUT/KEYBOARD.H"

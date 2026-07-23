@@ -1,4 +1,3 @@
-#include "globals.h"
 #include "SRC/AUDIO/SFX/SFXPLAY.H"
 #include "structs.h"
 #include "SRC/AUDIO/SFX/SFXSTOP.H"

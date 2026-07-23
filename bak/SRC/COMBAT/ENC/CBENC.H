@@ -2,6 +2,7 @@
 #define BAK_CBENC_H
 
 #include "structs.h"
+#include "SRC/WORLD/ACTOR/ACTOR.H"
 
 extern short g_anStatCheckThreshold[9];
 extern unsigned short g_ai_flee_threshold_table[10];

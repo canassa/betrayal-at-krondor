@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "structs.h"
-#include "globals.h"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/GFX/RASTER/ILBMSAVE.H"
 #include "SRC/GFX/RASTER/ILBMPACK.H"
