@@ -391,18 +391,6 @@ extern short g_nAudioIterFilter;
 extern AudioListNode far *g_pAudioIterCursor;
 extern int g_shapeTableCount;
 extern int g_shapeOverrideLen;
-extern unsigned short g_wLzwCodeBits;
-extern unsigned short g_wLzwMaxCode;
-extern unsigned short g_wLzwNextCode;
-extern unsigned short g_wLzwResetWidthPending;
-extern unsigned short g_wLzwLastByte;
-extern unsigned short g_wLzwPrevCode;
-extern unsigned short g_wLzwNewCode;
-extern unsigned char far *g_pLzwScratchTail;
-extern unsigned short g_wLzwInBitPos;
-extern unsigned short g_wLzwInBufBitsTotal;
-extern unsigned char g_bLzwNeedSeedCode;
-extern unsigned char g_bLzwOutputSuspended;
 extern StreamDesc *g_pCurStreamDesc;
 extern unsigned char *g_pCurStreamRingBuf;
 extern unsigned char g_bCurStreamCodecId;
@@ -708,7 +696,6 @@ extern unsigned long g_pool_top;
 extern unsigned long g_nPoolSize;
 extern unsigned long g_timer_ticks;
 extern unsigned long g_dwSysTickCount;
-
 
 extern unsigned short g_wGfxBlitDstPage;
 
