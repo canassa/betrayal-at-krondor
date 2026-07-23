@@ -113,25 +113,6 @@ typedef struct AnimSlot AnimSlot;
 typedef struct AudFragNode AudFragNode;
 typedef struct AudioListNode AudioListNode;
 typedef struct AudioTrackHandle AudioTrackHandle;
-typedef struct BakArchive BakArchive;
-typedef struct BakArchiveTable BakArchiveTable;
-/**
- * @brief Opaque file token from bak_fopen()/cached_file_open().
- *
- * Really a CRT `FILE *` or a ::BakHandle pool slot; bak_find_handle() tells
- * them apart on every bak_* call. Store it, compare it, pass it back — never
- * dereference it or hand it to CRT stdio. Intentionally has no definition.
- */
-typedef struct BakFile BakFile;
-/**
- * @brief A file reference: either a filename (`char *`) or an open ::BakFile token.
- *
- * is_file_cached() tells the two apart at runtime by pointer identity. Plain void
- * underneath, so both kinds pass without casts.
- */
-typedef void BakFileRef;
-typedef struct BakHandle BakHandle;
-typedef struct BakIndexEntry BakIndexEntry;
 typedef struct BmxHeader BmxHeader;
 typedef struct BookImage BookImage;
 typedef struct BookPage BookPage;
@@ -225,7 +206,6 @@ typedef struct TownSceneActor TownSceneActor;
 typedef struct Vec3Long Vec3Long;
 typedef struct Vec3Short Vec3Short;
 typedef struct VfxRec VfxRec;
-typedef struct VideoDriverImports VideoDriverImports;
 typedef struct VisibleEntryList VisibleEntryList;
 typedef struct WorldObject WorldObject;
 typedef struct WorldEntity WorldEntity;
@@ -235,42 +215,24 @@ typedef struct ZoneEntryRecord ZoneEntryRecord;
 typedef struct ZoneHotspot ZoneHotspot;
 typedef union StreamDescSrcUnion StreamDescSrcUnion;
 
-typedef unsigned long(far *AllocFarFn)(unsigned long size, unsigned short unused,
-                                       unsigned short flags);
 typedef unsigned short(far *AudioDriverDispatchFn)(unsigned short cmd, unsigned short data);
-typedef int(far *BakFcloseFn)(BakFile *stream);
-typedef int(far *BakFgetcFn)(BakFile *stream);
-typedef BakFile *(far *BakFopenFn)(char *filename, char *mode);
-typedef int(far *BakFreadFn)(void *ptr, int size, int count, BakFile *stream);
-typedef int(far *BakFseekFn)(BakFile *stream, int offset_lo, int offset_hi, int whence);
-typedef int(far *BakFtellFn)(BakFile *stream);
-typedef int(far *BakFwriteFn)(void *ptr, int size, int count, BakFile *stream);
-typedef int(far *BakPutcFn)(int c, BakFile *stream);
-typedef void(far *BakRewindFn)(BakFile *stream);
 typedef void(far *BlitChunkyFn)(unsigned char *src_off, unsigned short src_seg, int dst_x,
                                 int dst_y, int width_bytes);
 typedef void(far *BlitSpriteFn)(int sprite_desc_offset, int dst_x, int dst_y);
 typedef void(far *BlitSpriteSimpleFn)(ImageRecord *sprite, int x, int y);
-typedef void *(far *CallocFarThunkFn)(unsigned int nitems, unsigned int size);
 typedef void(far *CirclePlotterFn)(int x, int y);
-typedef int(far *CloseFarThunkFn)(int fd);
 typedef void(far *CombatAiActionFn)(CombatActor far *actor);
 typedef void(far *CrtExitFn)(void);
 typedef void(far *DefaultStubFn)(void);
 typedef void(far *EncounterAiActionFn)(CombatActor *actor);
 typedef void(far *EncounterAiTurnFn)(CombatActor *actor);
 typedef void(far *FARFN)(void);
-typedef void(far *FreeThunkFn)(void *ptr);
-typedef int(far *FreememFn)(unsigned long ptr);
 typedef unsigned int(far *GetpixelFn)(int x, int y);
-typedef void(far *GfxDefaultFn)(int arg0, int arg1, int arg2);
 typedef unsigned long(far *ImageInstallFn)(unsigned short *image_descs_table,
                                            unsigned short *out_status);
-typedef void *(far *MallocFarFn)(unsigned int size);
 typedef void(far *PasteRectFn)(void far *src, int x, int y, int width, int height);
 typedef void(far *PresentFn)(int x, int y, int w, int h);
 typedef void(far *PutpixelFn)(int x, int y, int color);
-typedef int(far *ReadFarThunkFn)(int fd, void *buf, unsigned int count);
 typedef long(far *RectByteSizeFn)(int width, int height);
 typedef void(far *SetBorderColorFn)(int color);
 typedef void(far *Slot01Fn)(void);
@@ -311,9 +273,6 @@ typedef void(far *Slot38Fn)(void);
 typedef void(far *Slot39Fn)(void);
 typedef void(far *Slot40Fn)(void);
 typedef int(far *SpriteRegionSizeFn)(unsigned long sprite_descriptor);
-typedef char *(far *StrcatFarFn)(char *dest, char *src);
-typedef char *(far *StrchrFarFn)(char *s, int c);
-typedef char *(far *StrcpyFarFn)(char *dest, char *src);
 typedef void(far *UnimplementedSlotFn)(void);
 typedef void(far *UnpackNibblesToPlanesFn)(unsigned char far *src, unsigned char far *dst,
                                            unsigned short count);
@@ -449,34 +408,6 @@ struct AudioTrackHandle {
     unsigned char abRsvd16e[4];
     AudioTrackHandle far *pNext;
     unsigned char abRsvd176[4];
-};
-
-struct BakArchive {
-    char name[13];
-    char _pad;
-    short ordinal;
-    FILE *fp;
-    unsigned long pos;
-    unsigned short flags;
-    BakIndexEntry far *index;
-};
-
-struct BakArchiveTable {
-    BakArchive entries[10];
-};
-
-struct BakHandle {
-    short archive_idx;
-    unsigned long base_offset;
-    unsigned long length;
-    unsigned long cur_offset;
-    unsigned short valid;
-    FILE *real_fp;
-};
-
-struct BakIndexEntry {
-    unsigned long dwHash;
-    unsigned long dwBase_offset;
 };
 
 struct BmxHeader {
@@ -952,7 +883,7 @@ struct IffResLevel {
 };
 
 struct IffResReader {
-    BakFile *pStream;
+    struct BakFile *pStream;
     char pChunk_id_stack[25];
     IffResLevel pLevel_cache[7];
     short nDepth;
@@ -1444,7 +1375,7 @@ struct StatusEffectSlot {
 
 union StreamDescSrcUnion {
     unsigned char huge *pBufBase;
-    BakFile *pFile;
+    struct BakFile *pFile;
 };
 
 struct StreamDesc {
@@ -1525,28 +1456,6 @@ struct VfxRec {
     short nW0;
     short nW1;
     short nW2;
-};
-
-struct VideoDriverImports {
-    AllocFarFn far *alloc_far;
-    FreememFn far *_freemem;
-    ReadFarThunkFn far *_read_far_thunk;
-    BakFseekFn far *bak_fseek;
-    BakFtellFn far *bak_ftell;
-    BakFwriteFn far *bak_fwrite;
-    BakPutcFn far *bak_putc;
-    BakRewindFn far *bak_rewind;
-    CloseFarThunkFn far *_close_far_thunk;
-    BakFopenFn far *bak_fopen;
-    BakFreadFn far *bak_fread;
-    BakFcloseFn far *bak_fclose;
-    MallocFarFn far *malloc_far;
-    CallocFarThunkFn far *calloc_far_thunk;
-    BakFgetcFn far *bak_fgetc;
-    FreeThunkFn far *free_thunk;
-    StrcatFarFn far *strcat_far;
-    StrcpyFarFn far *strcpy_far;
-    StrchrFarFn far *strchr_far;
 };
 
 struct WorldObject {

@@ -2,6 +2,7 @@
 #define BAK_FONTLOAD_H
 
 #include "structs.h"
+#include "SRC/IO/IO.H"
 
 extern unsigned short g_font_chunk_tag_ptr;
 

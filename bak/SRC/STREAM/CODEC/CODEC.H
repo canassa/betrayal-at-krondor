@@ -2,6 +2,7 @@
 #define BAK_CODEC_H
 
 #include "structs.h"
+#include "SRC/IO/IO.H"
 
 extern unsigned char huge *g_pCodecScratchFp;
 extern CodecVtable g_codec_vtable[4];

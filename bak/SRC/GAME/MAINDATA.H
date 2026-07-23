@@ -2,6 +2,7 @@
 #define BAK_MAINDATA_H
 
 #include "structs.h"
+#include "SRC/IO/IO.H"
 
 extern short g_nPolygonTextureMode;
 extern unsigned short g_nWorldRenderJitter;

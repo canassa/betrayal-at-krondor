@@ -2,6 +2,7 @@
 #define BAK_VIDDRV_H
 
 #include "structs.h"
+#include "SRC/IO/IO.H"
 
 extern void huge *g_pVideoDriverTemplate;
 extern char g_szDrvSuffix_BAD[3];

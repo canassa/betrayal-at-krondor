@@ -1,11 +1,26 @@
+/**
+ * @file    GSTATE.H
+ * @brief   Persistent game state: event flags, timekeeping, party helpers,
+ *          and the `TEMP.GAM` swap-file accessors.
+ */
 #ifndef BAK_GSTATE_H
 #define BAK_GSTATE_H
 
 #include "structs.h"
+#include "SRC/IO/IO.H"
 
 extern unsigned short g_wLastTempWriteRecordKind;
 extern char g_abChapterEventSlot[9];
-extern BakFile *g_pTempGamFp;
+
+/**
+ * @brief Open @ref BakFile token for `TEMP.GAM`, the on-disk game-state
+ *        swap image.
+ *
+ * NULL whenever the file is closed (outside the world loop).
+ */
+extern BakFile *g_tempGamFP;
+
+
 extern char g_abSleepStatDelta[6];
 extern char g_abRegenPerChar[6];
 

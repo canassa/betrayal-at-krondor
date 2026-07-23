@@ -1,7 +1,56 @@
+/**
+ * @file    IO.H
+ * @brief   Resource-archive I/O layer: stdio-shaped `bak_*` wrappers over
+ *          loose files and the `KRONDOR.RMF`-mapped archive resources.
+ */
 #ifndef BAK_IO_H
 #define BAK_IO_H
 
 #include "structs.h"
+
+typedef struct BakIndexEntry {
+    unsigned long dwHash;
+    unsigned long dwBase_offset;
+} BakIndexEntry;
+
+typedef struct BakArchive {
+    char name[13];
+    char _pad;
+    short ordinal;
+    FILE *fp;
+    unsigned long pos;
+    unsigned short flags;
+    BakIndexEntry far *index;
+} BakArchive;
+
+typedef struct BakArchiveTable {
+    BakArchive entries[10];
+} BakArchiveTable;
+
+typedef struct BakHandle {
+    short archive_idx;
+    unsigned long base_offset;
+    unsigned long length;
+    unsigned long cur_offset;
+    unsigned short valid;
+    FILE *real_fp;
+} BakHandle;
+
+/**
+ * @brief Opaque file token from bak_fopen()/cached_file_open().
+ *
+ * Really a CRT `FILE *` or a ::BakHandle pool slot; bak_find_handle() tells
+ * them apart on every bak_* call. Store it, compare it, pass it back — never
+ * dereference it or hand it to CRT stdio. Intentionally has no definition.
+ */
+typedef struct BakFile BakFile;
+/**
+ * @brief A file reference: either a filename (`char *`) or an open ::BakFile token.
+ *
+ * is_file_cached() tells the two apart at runtime by pointer identity. Plain void
+ * underneath, so both kinds pass without casts.
+ */
+typedef void BakFileRef;
 
 extern unsigned char g_bak_initialized;
 extern short g_bak_io_error;
@@ -16,7 +65,16 @@ extern unsigned char g_bak_archives_dirty;
 extern unsigned char g_bak_open_handles;
 extern unsigned long g_bak_lookup_hash;
 extern short g_bak_current_archive;
-extern short g_bak_archive_count;
+
+/**
+ * @brief Number of archives registered from `KRONDOR.RMF` (slots `1..count`
+ *        of @c g_bak_archives  (TBD-ref: not yet documented)).
+ *
+ * 0 until the resource map is read — or for good if it cannot be opened —
+ * and while 0 every `bak_*` wrapper passes straight through to CRT stdio.
+ */
+extern int g_ioArchiveCount;
+
 extern short g_bak_hash_seed;
 extern unsigned short g_bak_hash_rotate;
 extern BakHandle *g_pBakFindHandleCacheVal;

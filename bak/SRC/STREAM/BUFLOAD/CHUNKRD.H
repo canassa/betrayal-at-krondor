@@ -2,6 +2,7 @@
 #define BAK_CHUNKRD_H
 
 #include "structs.h"
+#include "SRC/IO/IO.H"
 
 extern int g_nChunk_session_owns_close;
 

@@ -2,6 +2,7 @@
 #define BAK_AUDRES_H
 
 #include "structs.h"
+#include "SRC/IO/IO.H"
 
 extern unsigned char far *audres_load_chunk_by_mode(BakFile *file, unsigned int size_lo, unsigned int size_hi,
                                             unsigned int *out_size, unsigned short allocTag);

@@ -2,6 +2,7 @@
 #define BAK_ADSCRIPT_H
 
 #include "structs.h"
+#include "SRC/IO/IO.H"
 
 extern unsigned short g_aTtmTextStringOffsets[9];
 extern ScriptObject far *g_pScriptObjectListHead;

@@ -23,7 +23,7 @@ unsigned char g_bak_archives_dirty;
 unsigned char g_bak_open_handles;
 unsigned long g_bak_lookup_hash;
 short g_bak_current_archive;
-short g_bak_archive_count;
+int g_ioArchiveCount;
 short g_bak_hash_seed;
 unsigned short g_bak_hash_rotate;
 BakHandle *g_pBakFindHandleCacheVal;
@@ -42,7 +42,7 @@ BakFile *bak_fopen(char *filename, char *mode) {
     }
     bak_init_resources();
     g_bak_io_error = 0;
-    if (g_bak_archive_count == 0) {
+    if (g_ioArchiveCount == 0) {
         return (BakFile *)fopen(filename, mode);
     }
     g_pBakActiveFgetcStream = 0;
@@ -96,7 +96,7 @@ int bak_fclose(BakFile *stream) {
     result = 0;
     if (stream == 0)
         return -1;
-    if ((g_bak_archive_count == 0) || (handle = bak_find_handle(stream)) == 0) {
+    if ((g_ioArchiveCount == 0) || (handle = bak_find_handle(stream)) == 0) {
         result = fclose((FILE *)stream);
     } else {
         bak_find_handle(0);
@@ -116,7 +116,7 @@ int bak_fread(void *ptr, int size, int count, BakFile *stream) {
     BakHandle *handle;
 
     single_obj = 0;
-    if (g_bak_archive_count == 0 || (handle = bak_find_handle(stream)) == 0) {
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0) {
         return fread(ptr, size, count, (FILE *)stream);
     }
     if (handle->real_fp != 0) {
@@ -148,7 +148,7 @@ int bak_fread(void *ptr, int size, int count, BakFile *stream) {
 int bak_fseek(BakFile *stream, long offset, int whence) {
     BakHandle *handle;
 
-    if (g_bak_archive_count == 0 || (handle = bak_find_handle(stream)) == 0)
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0)
         return fseek((FILE *)stream, offset, whence);
     if (handle->real_fp != 0)
         return fseek(handle->real_fp, offset, whence);
@@ -169,7 +169,7 @@ int bak_fseek(BakFile *stream, long offset, int whence) {
 long bak_ftell(BakFile *stream) {
     BakHandle *handle;
 
-    if (g_bak_archive_count == 0 || (handle = bak_find_handle(stream)) == 0)
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0)
         return ftell((FILE *)stream);
     if (handle->real_fp != 0)
         return ftell(handle->real_fp);
@@ -182,7 +182,7 @@ long bak_filelength(BakFile *stream) {
     long result;
     BakHandle *handle;
 
-    if (g_bak_archive_count == 0 || (handle = bak_find_handle(stream)) == 0 ||
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0 ||
         (stream = (BakFile *)handle->real_fp) != 0) {
         saved_pos = ftell((FILE *)stream);
         fseek((FILE *)stream, 0L, 2);
@@ -203,7 +203,7 @@ int bak_fgetc(BakFile *stream) {
     BakHandle *handle;
 
     g_pBakFgetcLastStream = stream;
-    if (g_bak_archive_count == 0 || (handle = bak_find_handle(stream)) == 0)
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0)
         return fgetc(g_pBakActiveFgetcStream = (FILE *)stream);
     if (handle->real_fp != 0)
         return fgetc(g_pBakActiveFgetcStream = handle->real_fp);
@@ -221,7 +221,7 @@ int bak_fgetc(BakFile *stream) {
 int bak_feof(BakFile *stream) {
     BakHandle *handle;
 
-    if (g_bak_archive_count == 0 || (handle = bak_find_handle(stream)) == 0)
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0)
         return ((FILE *)stream)->flags & 0x20;
     if (handle->real_fp != 0)
         return handle->real_fp->flags & 0x20;
@@ -235,7 +235,7 @@ int bak_fwrite(void *ptr, int size, int count, BakFile *stream) {
     int written;
 
     buf = ptr;
-    if (g_bak_archive_count == 0 || (handle = bak_find_handle(stream)) == 0) {
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0) {
         written = fwrite(buf, size, count, (FILE *)stream);
     } else if (handle->real_fp != 0) {
         written = fwrite(buf, size, count, handle->real_fp);
@@ -250,7 +250,7 @@ int bak_putc(int c, BakFile *stream) {
     BakHandle *handle;
     int result;
 
-    if (g_bak_archive_count == 0 || (handle = bak_find_handle(stream)) == 0) {
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0) {
         result = fputc(c, (FILE *)stream);
     } else {
         if (handle->real_fp != 0) {
@@ -266,7 +266,7 @@ int bak_putc(int c, BakFile *stream) {
 void bak_setbuf(BakFile *stream, char *buffer) {
     BakHandle *handle;
 
-    if (g_bak_archive_count == 0 || (handle = bak_find_handle(stream)) == 0) {
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0) {
         setbuf((FILE *)stream, buffer);
     } else {
         if (handle->real_fp != 0)
@@ -312,10 +312,10 @@ void bak_init_resources(void) {
     fread(&g_bak_hash_seed, 2, 1, fp);
     fread(&g_bak_hash_rotate, 2, 1, fp);
 
-    g_bak_archive_count += read_count;
-    archive_idx = g_bak_archive_count - read_count + 1;
+    g_ioArchiveCount += read_count;
+    archive_idx = g_ioArchiveCount - read_count + 1;
 
-    while (archive_idx <= g_bak_archive_count) {
+    while (archive_idx <= g_ioArchiveCount) {
         arc = &g_bak_archives[archive_idx];
 
         fread(arc, 13, 1, fp);
@@ -394,8 +394,8 @@ int bak_resource_lookup(BakHandle *slot) {
     above = g_bak_current_archive + 1;
     below = g_bak_current_archive - 1;
 
-    while (entry->dwHash != hash && (below > 0 || above <= g_bak_archive_count)) {
-        if (above <= g_bak_archive_count) {
+    while (entry->dwHash != hash && (below > 0 || above <= g_ioArchiveCount)) {
+        if (above <= g_ioArchiveCount) {
             i = above;
             above++;
             entry = g_bak_archives[i].index;
@@ -491,7 +491,7 @@ BakHandle *bak_find_handle(BakFile *stream) {
         g_pBakFindHandleCacheVal = 0;
         return 0;
     }
-    if (g_bak_archive_count == 0)
+    if (g_ioArchiveCount == 0)
         return 0;
     if (stream == g_pBakFindHandleCacheKey)
         return g_pBakFindHandleCacheVal;
