@@ -3,6 +3,7 @@
 
 #include "structs.h"
 #include "globals.h"
+#include "SRC/WORLD/LOOP/WORLDLP.H"
 #include "SRC/SCREENS/CMBINV.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"

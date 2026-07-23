@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/STREAM/CODEC/CODEC.H"
 #include "structs.h"
 #include "SRC/STREAM/CODEC/LZHINIT.H"
 #include "SRC/SYS/FARPTR.H"

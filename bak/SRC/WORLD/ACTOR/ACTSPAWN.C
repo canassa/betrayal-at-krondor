@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "globals.h"
+#include "SRC/WORLD/ZONE/CZONE.H"
 #include "structs.h"
 #include "SRC/SYS/RAND.H"
 

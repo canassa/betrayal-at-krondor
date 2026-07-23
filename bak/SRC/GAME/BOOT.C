@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "globals.h"
+#include "SRC/STREAM/CODEC/CODEC.H"
 #include "structs.h"
 
 #include "SRC/GAME/BOOT.H"

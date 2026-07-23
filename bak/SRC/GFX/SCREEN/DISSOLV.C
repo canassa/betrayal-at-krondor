@@ -1,5 +1,6 @@
 #include "structs.h"
 #include "globals.h"
+#include "SRC/GFX/FONT/FONT.H"
 #include "SRC/GFX/SCREEN/DISSOLV.H"
 
 static unsigned int tap_table[62] = {

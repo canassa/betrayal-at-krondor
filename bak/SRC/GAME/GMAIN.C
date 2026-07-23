@@ -6,6 +6,7 @@
 #define g_nChapterAtLoopExit g_nChapterAtLoopExit_decl100
 #endif
 #include "globals.h"
+#include "SRC/SYS/SYSLOWIO.H"
 #ifdef V102CD
 #undef g_render_camera_scratch
 #undef g_active_window

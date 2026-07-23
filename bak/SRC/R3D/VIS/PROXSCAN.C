@@ -1,5 +1,6 @@
 #include <dos.h>
 #include "globals.h"
+#include "SRC/WORLD/ZONE/CZONE.H"
 #include "SRC/WORLD/ZONE/PROXIM.H"
 #include "structs.h"
 #include "SRC/R3D/VIS/PROXSCAN.H"

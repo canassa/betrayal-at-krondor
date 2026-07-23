@@ -2,6 +2,7 @@
 #include <mem.h>
 #include <stdlib.h>
 #include "globals.h"
+#include "SRC/SYS/SYSLOWIO.H"
 #include "SRC/SCRIPT/TTM.H"
 #include "SRC/SCRIPT/TTMDLG.H"
 #include "structs.h"

@@ -1,6 +1,7 @@
 #include <dos.h>
 
 #include "globals.h"
+#include "SRC/GFX/FONT/FONT.H"
 #include "SRC/R3D/SKY/SKYREND.H"
 #include "structs.h"
 #include "SRC/R3D/SKY/SKY.H"
