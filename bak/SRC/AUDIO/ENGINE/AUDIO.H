@@ -3,6 +3,10 @@
 
 #include "structs.h"
 
+extern short g_alloc_to_pool;
+extern short g_current_music_track;
+extern unsigned short g_nMusicVolume;
+
 extern void audio_ambient_tick(void);
 extern int audio_music_play(int track_id);
 extern void audio_music_fade_in_current(void);

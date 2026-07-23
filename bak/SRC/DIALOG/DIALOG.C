@@ -5,6 +5,7 @@
 #include <string.h>
 #include "gtypes.h"
 #include "globals.h"
+#include "SRC/CHAR/CHARSCRN.H"
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 #include "vgablit.h"
