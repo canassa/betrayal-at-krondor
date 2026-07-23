@@ -89,7 +89,7 @@ void boot_active_window_free(void) {
 
 void far boot_audio_init(void) {
 #ifdef V102CD
-    g_cd_present = v102_cddrive_detect(g_cd_drive_letter);
+    g_cd_present = v102_cddrive_detect(g_cfgCdDriveLetter);
 #endif
     if (g_sound_driver == SNDDRV_SBP) {
         audio_driver_init(SNDDRV_ADL, 0, 0, "sx.ovl");
@@ -98,7 +98,7 @@ void far boot_audio_init(void) {
     }
 #ifdef V102CD
     if ((g_sound_driver == SNDDRV_STD || g_sound_driver == SNDDRV_NONE) && g_cd_present != 0) {
-        g_sound_driver = (SoundDriverId)9;
+        g_sound_driver = SNDDRV_CD;
     }
 #endif
     g_pSfxArchiveStream = cached_file_open("frp.sx");

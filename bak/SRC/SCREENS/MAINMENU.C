@@ -37,6 +37,7 @@
 #include "SRC/WORLD/MOVE/WORLDMOV.H"
 #include "SRC/WORLD/ZONE/CZONE.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/GAME/CFGPARSE.H"
 #include "defines.h"
 
 EnginePrefs *g_engine_prefs = {0};

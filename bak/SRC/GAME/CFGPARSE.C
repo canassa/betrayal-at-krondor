@@ -1,52 +1,48 @@
+/**
+ * @file  CFGPARSE.C
+ * @brief `resource.cfg` parser and the `g_cfg` settings globals it fills;
+ *        the 1.02 CD build also reads the installer-written `drive.cfg` here.
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "globals.h"
-#include "structs.h"
 #include "SRC/GAME/CFGPARSE.H"
 #include "SRC/AUDIO/RES/AUDRESIN.H"
 
+
+/**
+ * @brief Tokens accepted as the `sounddrv` argument in `resource.cfg`.
+ *
+ * Matched case-insensitively against the key's argument. Despite the `.drv`
+ * spelling these are plain config tokens, not filenames — nothing is opened
+ * by these names. A match selects the entry at the same index of
+ * @ref g_soundDrvIds.
+ */
 char *g_soundDrvTokens[5] = {"adl.drv", "mt32.drv", "sndblast.drv", "std.drv", "genmidi.drv"};
+
+
+/**
+ * @brief Driver ids parallel to @ref g_soundDrvTokens.
+ *
+ * The entry at the matched token's index becomes the active sound driver:
+ * an id indexing the SX.OVL driver-tag table, not a file or an OS driver.
+ */
 SoundDriverId g_soundDrvIds[5] = {SNDDRV_ADL, SNDDRV_M32, SNDDRV_SBP, SNDDRV_STD, SNDDRV_GMD};
+
+
 #ifdef V102CD
-char *g_base_dir = "x:";
-char g_cd_drive_letter = 'x';
+char *g_cfgResourceDrivePrefix = "x:";
+char g_cfgCdDriveLetter = 'x';
 #endif
-/**
- * @brief Cheat-menu unlock flag, read by the 3-D world view.
- *
- * FALSE on a stock install; set TRUE only when `resource.cfg` carries a
- * `knockknock` line whose argument is exactly 29 characters. While TRUE,
- * the RShift+Alt+tilde chord opens the hidden cheat menu.
- */
 bool16 g_cfgKnockKnock = FALSE;
-/**
- * @brief Value of the undocumented `cycle` config key — dead, never read.
- *
- * Parsed from a `cycle` line in `resource.cfg` into this global, which has no
- * reader anywhere in the game.
- */
-unsigned short g_cfgCycle = 0x0000;
-/**
- * @brief Drive letter for the `TEMP.GAM` swap file (0 = current drive).
- *
- * Set from the `tempdrive` line in `resource.cfg` (its first character,
- * upper-cased). When non-zero the swap path is drive-relative `D:TEMP.GAM`;
- * when 0 (the default) the file is the bare `TEMP.GAM` on the current drive.
- */
-int g_cfgTempDrive = 0x0000;
-/**
- * @brief Bookmark-overwrite confirmation flag.
- *
- * TRUE by default; set from the `bookmarkverify` line in `resource.cfg`.
- * While TRUE, saving a bookmark first prompts to confirm before it
- * overwrites the existing one; while FALSE the save is silent.
- */
+int g_cfgCycle = 0;
+int g_cfgTempDrive = 0;
 bool16 g_cfgBookmarkVerify = TRUE;
 #ifdef V102CD
-int g_bNonRotatingMap = 0;
+bool16 g_cfgNonRotatingMap = FALSE;
 #endif
+
 
 void parse_krondor_cfg(void) {
     char token[40];
@@ -92,7 +88,7 @@ void parse_krondor_cfg(void) {
         } else if (stricmp("NonRotatingMap", token) == 0) {
             fscanf(fp, " %40s", token);
             fscanf(fp, " %40s", token);
-            g_bNonRotatingMap = atoi(token);
+            g_cfgNonRotatingMap = atoi(token);
 #endif
         }
     }
@@ -100,9 +96,9 @@ void parse_krondor_cfg(void) {
     fclose(fp);
     fp = fopen("drive.cfg", "rb");
     fscanf(fp, "%40s", token);
-    *g_base_dir = token[0];
+    *g_cfgResourceDrivePrefix = token[0];
     fscanf(fp, "%40s", token);
-    g_cd_drive_letter = token[0];
+    g_cfgCdDriveLetter = token[0];
     fclose(fp);
 #endif
 }

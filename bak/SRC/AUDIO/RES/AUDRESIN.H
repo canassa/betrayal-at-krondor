@@ -1,18 +1,36 @@
 #ifndef BAK_AUDRESIN_H
 #define BAK_AUDRESIN_H
 
-#include "structs.h"
-
+/**
+ * @brief Sound-driver ids: indices into the SFX driver-tag table
+ *        (@c g_apSfxDriverTags  (TBD-ref: not yet documented)).
+ *
+ * The id selects the `XXX:` resource tag naming the driver chunk to load
+ * from `SX.OVL`. Five ids are selectable via the `sounddrv` config token
+ * (@ref g_soundDrvIds); @ref SNDDRV_NONE selects the null driver and is the
+ * engine-wide audio-disabled gate. The 1.02 CD build adds @ref SNDDRV_CD.
+ */
 enum SoundDriverId {
-    SNDDRV_STD = 0,
-    SNDDRV_TAN = 1,
-    SNDDRV_ADL = 2,
-    SNDDRV_M32 = 3,
-    SNDDRV_SBP = 4,
-    SNDDRV_PS1 = 5,
-    SNDDRV_PRO = 6,
-    SNDDRV_GMD = 7,
-    SNDDRV_NONE = 8
+    SNDDRV_STD = 0,  /**< `STD:`; the `std.drv` config token. */
+    SNDDRV_TAN = 1,  /**< `TAN:`; no config token. */
+    SNDDRV_ADL = 2,  /**< `ADL:` — AdLib FM; the `adl.drv` token. */
+    SNDDRV_M32 = 3,  /**< `M32:` — Roland MT-32; the `mt32.drv` token. */
+    SNDDRV_SBP = 4,  /**< `SBP:` — Sound Blaster; the `sndblast.drv` token. */
+    SNDDRV_PS1 = 5,  /**< `PS1:`; no config token. */
+    SNDDRV_PRO = 6,  /**< `PRO:` — Pro Audio; no config token. */
+    SNDDRV_GMD = 7,  /**< `GMD:` — General MIDI; the `genmidi.drv` token. */
+    SNDDRV_NONE = 8  /**< `NLD:` — the null driver; audio disabled. */
+#ifdef V102CD
+    ,
+    /**
+     * @brief 1.02 CD: Red Book CD-audio music mode.
+     *
+     * Set at boot when a CD is detected and the driver would otherwise be
+     * `STD`/`NONE`. Past the end of the 9-entry SFX tag table — CD music
+     * routes to the CDAUDIO driver, not to an `SX.OVL` chunk.
+     */
+    SNDDRV_CD = 9
+#endif
 };
 typedef enum SoundDriverId SoundDriverId;
 

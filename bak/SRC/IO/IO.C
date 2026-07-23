@@ -298,7 +298,7 @@ void bak_init_resources(void) {
     g_bak_initialized = 1;
 
 #ifdef V102CD
-    strcpy(path, g_base_dir);
+    strcpy(path, g_cfgResourceDrivePrefix);
     strcat(path, "krondor.rmf");
     filename_ptr = path;
     if ((fp = fopen(filename_ptr, "rb")) == 0)
@@ -434,7 +434,7 @@ void bak_select_archive(int archive_index) {
 
     probe_failed = 0;
 #ifdef V102CD
-    strcpy(path, g_base_dir);
+    strcpy(path, g_cfgResourceDrivePrefix);
     strcat(path, g_bak_archives[archive_index].name);
     if (!(char)g_bak_open_handles && archive_index) {
         if (fclose(fopen(path, "rb")))
@@ -456,7 +456,7 @@ void bak_select_archive(int archive_index) {
         arc = &g_bak_archives[g_bak_current_archive];
         if (archive_index) {
 #ifdef V102CD
-            strcpy(path, g_base_dir);
+            strcpy(path, g_cfgResourceDrivePrefix);
             strcat(path, arc->name);
             g_bak_in_fopen = 1;
             while ((arc->fp = fopen(path, "rb")) == 0)

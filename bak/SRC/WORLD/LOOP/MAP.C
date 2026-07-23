@@ -374,7 +374,7 @@ void far map_main_loop(void) {
                 break;
 #ifdef V102CD
             case 0x31:
-                g_bNonRotatingMap = !g_bNonRotatingMap;
+                g_cfgNonRotatingMap = !g_cfgNonRotatingMap;
                 render_dirty = 1;
                 break;
 #endif

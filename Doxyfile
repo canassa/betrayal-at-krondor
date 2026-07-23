@@ -50,7 +50,8 @@ MACRO_EXPANSION        = YES
 EXPAND_ONLY_PREDEF     = YES
 SEARCH_INCLUDES        = YES
 INCLUDE_PATH           = bak bak/INCLUDE
-PREDEFINED             = far= \
+PREDEFINED             = V102CD=1 \
+                         far= \
                          near= \
                          huge= \
                          _far= \

@@ -413,7 +413,7 @@ void proxscan_paged_dispatch_all(void) {
     party_pos = &g_world_camera->base.pos.xy.nWorld_x;
 #ifdef V102CD
     saved_heading = g_world_camera->base.orientation.yaw;
-    if (g_bNonRotatingMap) {
+    if (g_cfgNonRotatingMap) {
         g_world_camera->base.orientation.yaw = 0;
     }
 #endif
@@ -511,7 +511,7 @@ void far proxscan_draw_cmap_inset_markers(void) {
     position = &g_world_camera->base.pos.xy.nWorld_x;
 #ifdef V102CD
     saved_heading = g_world_camera->base.orientation.yaw;
-    if (g_bNonRotatingMap) {
+    if (g_cfgNonRotatingMap) {
         g_world_camera->base.orientation.yaw = 0;
     }
 #endif
@@ -642,7 +642,7 @@ void far proxscan_broadcast_scene_events(void) {
     position = &g_world_camera->base.pos.xy.nWorld_x;
 #ifdef V102CD
     saved_heading = g_world_camera->base.orientation.yaw;
-    if (g_bNonRotatingMap) {
+    if (g_cfgNonRotatingMap) {
         g_world_camera->base.orientation.yaw = 0;
     }
 #endif

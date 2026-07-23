@@ -14,6 +14,7 @@
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SCREENS/ITEMTBL.H"
 #include "SRC/COMBAT/SPELL/SPELLFX.H"
+#include "SRC/GAME/CFGPARSE.H"
 
 unsigned short g_wLastTempWriteRecordKind = 0xffff;
 char g_abChapterEventSlot[9] = {0x00, 0x04, 0x04, 0x01, 0x04, 0x02, 0x04, 0x02, 0x03};

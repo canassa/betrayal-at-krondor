@@ -78,7 +78,7 @@ void world_render_scene_dispatch(int animate) {
     }
     if (g_full_redraw_needed != 0) {
         saved_heading = g_world_camera->base.orientation.yaw;
-        if (g_bNonRotatingMap) {
+        if (g_cfgNonRotatingMap) {
             g_world_camera->base.orientation.yaw = 0;
         }
         switch (g_game_mode) {
@@ -93,7 +93,7 @@ void world_render_scene_dispatch(int animate) {
             break;
         }
         g_world_camera->base.orientation.yaw = saved_heading;
-        if (g_bNonRotatingMap) {
+        if (g_cfgNonRotatingMap) {
             if (g_pMapIconsTable != 0) {
                 ((BlitSpriteFn)blit_sprite)(
                     (int)g_pMapIconsTable[((unsigned)(saved_heading + 0x800)) >> 12],

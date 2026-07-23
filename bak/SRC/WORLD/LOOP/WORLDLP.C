@@ -31,6 +31,7 @@
 #include "SRC/WORLD/ENC/HOTSPOT.H"
 #include "SRC/WORLD/CURSOR/WCURSOR.H"
 #include "SRC/WORLD/MOVE/WORLDCRS.H"
+#include "SRC/GAME/CFGPARSE.H"
 
 MenuPage *g_pReqMainPage = {0};
 short g_nSceneReloadPending = 0;
