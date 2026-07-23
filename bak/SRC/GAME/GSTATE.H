@@ -3,6 +3,12 @@
 
 #include "structs.h"
 
+extern unsigned short g_wLastTempWriteRecordKind;
+extern char g_abChapterEventSlot[9];
+extern BakFile *g_pTempGamFp;
+extern char g_abSleepStatDelta[6];
+extern char g_abRegenPerChar[6];
+
 extern unsigned short gstate_event_read(unsigned short event_idx);
 extern int gstate_event_write(unsigned int event_id, unsigned int value);
 
