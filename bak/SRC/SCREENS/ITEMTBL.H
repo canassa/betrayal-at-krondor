@@ -3,6 +3,9 @@
 
 #include "structs.h"
 
+extern ItemRecord far *g_pItemDefTable;
+extern unsigned long *g_pItemPriceTable;
+
 extern int itemtbl_slot_value_modifier(ItemSlot far *slot);
 extern void itemtbl_free(void);
 extern int itemtbl_load(void);
