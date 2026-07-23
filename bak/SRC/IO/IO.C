@@ -14,7 +14,7 @@
 short g_bak_io_error;
 void far *g_int24_old_vector;
 BakHandle g_bak_handles[10];
-BakArchive g_bak_archives[11];
+Archive g_bak_archives[11];
 BakFile *g_pBakFgetcLastStream;
 FILE *g_pBakActiveFgetcStream;
 unsigned char g_bak_in_fopen;
@@ -77,7 +77,7 @@ BakFile *bak_fopen(char *filename, char *mode) {
         fp = g_bak_archives[g_bak_current_archive].fp;
         fread(name, 0xd, 1, fp);
         fread(&slot->length, 4, 1, fp);
-        g_bak_archives[g_bak_current_archive].pos = slot->base_offset = ftell(fp);
+        g_bak_archives[g_bak_current_archive].filePos = slot->base_offset = ftell(fp);
         if (stricmp(name, filename) != 0) {
             return 0;
         }
@@ -138,7 +138,7 @@ int bak_fread(void *ptr, int size, int count, BakFile *stream) {
     n_read = fread(ptr, size, count, (FILE *)stream);
     nbytes = n_read * size;
     handle->cur_offset += nbytes;
-    g_bak_archives[handle->archive_idx].pos += nbytes;
+    g_bak_archives[handle->archive_idx].filePos += nbytes;
     if (single_obj != 0 && n_read == count) {
         n_read = 1;
     }
@@ -214,7 +214,7 @@ int bak_fgetc(BakFile *stream) {
     stream = (BakFile *)g_bak_archives[handle->archive_idx].fp;
     result = fgetc(g_pBakActiveFgetcStream = (FILE *)stream);
     handle->cur_offset++;
-    g_bak_archives[handle->archive_idx].pos++;
+    g_bak_archives[handle->archive_idx].filePos++;
     return result;
 }
 
@@ -275,14 +275,14 @@ void bak_setbuf(BakFile *stream, char *buffer) {
 }
 
 void bak_init_resources(void) {
-    BakIndexEntry far *entry;
+    RmfEntry far *entry;
     short archive_idx;
     short read_count;
     unsigned long hashVal;
     unsigned long offsetVal;
     char *filename_ptr;
     register FILE *fp;
-    register BakArchive *arc;
+    register Archive *arc;
 #ifdef V102CD
     char path[80];
 #endif
@@ -322,8 +322,8 @@ void bak_init_resources(void) {
         fread(&read_count, 2, 1, fp);
 
         entry = alloc_far((unsigned long)((unsigned short)(read_count + 1) * 8), ALLOC_FAR_ZERO_FILL);
-        arc->index = entry;
-        arc->ordinal = archive_idx;
+        arc->directory = entry;
+        arc->slotIndex = archive_idx;
 
         while (read_count--) {
             fread(&hashVal, 4, 1, fp);
@@ -344,9 +344,9 @@ void bak_shutdown_resources(void) {
 
     i = 0;
     while (i <= 10) {
-        if (g_bak_archives[i].index != 0) {
-            _freemem(g_bak_archives[i].index);
-            g_bak_archives[i].index = 0;
+        if (g_bak_archives[i].directory != 0) {
+            _freemem(g_bak_archives[i].directory);
+            g_bak_archives[i].directory = 0;
         }
         i++;
     }
@@ -376,7 +376,7 @@ unsigned long bak_filename_hash(char *filename) {
 }
 
 int bak_resource_lookup(BakHandle *slot) {
-    BakIndexEntry far *entry;
+    RmfEntry far *entry;
     unsigned long hash;
     int above;
     int below;
@@ -387,7 +387,7 @@ int bak_resource_lookup(BakHandle *slot) {
     if ((i = g_bak_current_archive) == 0)
         i = 1;
 
-    entry = g_bak_archives[i].index;
+    entry = g_bak_archives[i].directory;
     while (entry->dwHash != 0 && entry->dwHash != hash)
         entry++;
 
@@ -398,7 +398,7 @@ int bak_resource_lookup(BakHandle *slot) {
         if (above <= g_ioArchiveCount) {
             i = above;
             above++;
-            entry = g_bak_archives[i].index;
+            entry = g_bak_archives[i].directory;
             while (entry->dwHash != 0 && entry->dwHash != hash)
                 entry++;
         }
@@ -407,7 +407,7 @@ int bak_resource_lookup(BakHandle *slot) {
             if (below > 0) {
                 i = below;
                 below--;
-                entry = g_bak_archives[i].index;
+                entry = g_bak_archives[i].directory;
                 while (entry->dwHash != 0 && entry->dwHash != hash)
                     entry++;
             }
@@ -426,7 +426,7 @@ int bak_resource_lookup(BakHandle *slot) {
 
 void bak_select_archive(int archive_index) {
     int probe_failed;
-    BakArchive *arc;
+    Archive *arc;
 #ifdef V102CD
     char path[80];
 #endif
@@ -434,14 +434,14 @@ void bak_select_archive(int archive_index) {
     probe_failed = 0;
 #ifdef V102CD
     strcpy(path, g_cfgResourceDrivePrefix);
-    strcat(path, g_bak_archives[archive_index].name);
+    strcat(path, g_bak_archives[archive_index].fileName);
     if (!(char)g_bak_open_handles && archive_index) {
         if (fclose(fopen(path, "rb")))
             probe_failed = 1;
     }
 #else
     if (!(char)g_bak_open_handles && archive_index) {
-        if (fclose(fopen(g_bak_archives[archive_index].name, "rb")))
+        if (fclose(fopen(g_bak_archives[archive_index].fileName, "rb")))
             probe_failed = 1;
     }
 #endif
@@ -456,29 +456,29 @@ void bak_select_archive(int archive_index) {
         if (archive_index) {
 #ifdef V102CD
             strcpy(path, g_cfgResourceDrivePrefix);
-            strcat(path, arc->name);
+            strcat(path, arc->fileName);
             g_bak_in_fopen = 1;
             while ((arc->fp = fopen(path, "rb")) == 0)
                 g_bak_in_fopen = 0;
 #else
             g_bak_in_fopen = 1;
-            while ((arc->fp = fopen(arc->name, "rb")) == 0)
+            while ((arc->fp = fopen(arc->fileName, "rb")) == 0)
                 g_bak_in_fopen = 0;
 #endif
         }
-        arc->pos = 0;
+        arc->filePos = 0;
         bak_find_handle(0);
         g_bak_archives_dirty = 0;
     }
 }
 
 void bak_archive_seek(unsigned long absolute_offset) {
-    BakArchive *ar;
+    Archive *ar;
 
     ar = &g_bak_archives[g_bak_current_archive];
-    if (ar->pos != absolute_offset) {
+    if (ar->filePos != absolute_offset) {
         fseek(ar->fp, absolute_offset, 0);
-        ar->pos = absolute_offset;
+        ar->filePos = absolute_offset;
     }
 }
 
