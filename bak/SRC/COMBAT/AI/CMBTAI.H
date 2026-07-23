@@ -3,6 +3,10 @@
 
 #include "structs.h"
 
+extern CombatAiActionFn far *g_combat_ai_action_table[8];
+extern unsigned short g_bActorAdjacentToTarget;
+extern unsigned char __dat_1492[138];
+
 extern int combataipath_actor_walk_path(CombatActor *actor, int ranged);
 extern int combataipath_low_health_action(CombatActor *actor);
 extern int combataipath_action_6(CombatActor *actor);
