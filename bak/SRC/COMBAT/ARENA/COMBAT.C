@@ -4,6 +4,7 @@
 
 #include "gtypes.h"
 #include "globals.h"
+#include "SRC/R3D/SKY/SKYREND.H"
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 #include "SRC/COMBAT/ARENA/COMBAT.H"

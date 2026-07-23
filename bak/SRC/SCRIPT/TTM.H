@@ -3,6 +3,20 @@
 
 #include "structs.h"
 
+extern short g_nPaletteCycleSavedDuration;
+extern short g_nScriptTickOverride;
+extern short g_nScriptSubOriginX;
+extern short g_nScriptSubOriginY;
+extern unsigned short g_wTtmBlitTint;
+extern unsigned short g_nScriptCurOpcode;
+extern unsigned short g_wScriptOpCursorCache;
+extern short g_aPaletteCycleBandEnd[3];
+extern short g_aPaletteCycleBandStart[3];
+extern unsigned short g_wScript537fbOpVestigial;
+extern unsigned short g_aTtmResourceSlots[20];
+extern char g_szTtmScratch[100];
+extern unsigned char far *g_pPendingPalette;
+
 extern int ttmscript_interpret_loop(int block_index);
 extern int ttmscript_find_block_by_tag(int tag_arg);
 extern char *ttmscript_strcpy_to_scratch(int param_1, char far *param_2);

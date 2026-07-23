@@ -3,6 +3,20 @@
 
 #include "structs.h"
 
+extern short g_nCurrentChannelSlot;
+extern short g_current_animation_slot;
+extern short g_aScriptResourceOpcodes[2];
+extern short g_nScriptPendingJumpTarget;
+extern unsigned short g_wScriptFrameHoldFlag;
+extern short g_nCombatResolveStaticThreshold;
+extern short g_nChapterSnapshotDeadStore;
+extern Slot far *g_anim_slots[2];
+extern unsigned short g_wScriptYieldPending;
+extern unsigned short g_wAnimResSfxId;
+extern ScriptAnimNode *g_pScriptAnimWalker;
+extern ScriptAnimNode *g_pScriptAnimTarget;
+extern short g_nAnimIterCursor;
+
 extern int anim_script_subsystem_init(void);
 extern void anim_script_close_all(void);
 extern int anim_script_open(char *filename, int mode);

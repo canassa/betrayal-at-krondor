@@ -5,6 +5,7 @@
 #include "gtypes.h"
 #include "structs.h"
 #include "globals.h"
+#include "SRC/SCRIPT/ANIMSCR.H"
 
 #include "SRC/SCRIPT/TTM.H"
 #include "SRC/SYS/RAND.H"

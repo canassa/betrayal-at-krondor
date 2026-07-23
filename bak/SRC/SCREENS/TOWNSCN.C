@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "globals.h"
+#include "SRC/SCRIPT/TTM.H"
 #include "structs.h"
 #include "SRC/SCREENS/TOWNSCN.H"
 #include "SRC/IO/IO.H"
