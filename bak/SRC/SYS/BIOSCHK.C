@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include "SRC/SYS/BIOSCHK.H"
 
 int bios_compat_check(void) {

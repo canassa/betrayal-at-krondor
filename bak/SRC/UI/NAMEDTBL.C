@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include "structs.h"
 #include "SRC/UI/NAMEDTBL.H"
 #include "SRC/IO/IO.H"

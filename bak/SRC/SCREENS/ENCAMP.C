@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include "SRC/INPUT/TIMER.H"
 #include "structs.h"
 #include "SRC/SCREENS/ENCAMP.H"

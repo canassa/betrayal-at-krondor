@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 #include "SRC/COMBAT/ACTOR/CACTOR.H"

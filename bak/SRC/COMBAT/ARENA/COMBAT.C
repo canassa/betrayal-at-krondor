@@ -4,6 +4,7 @@
 
 #include "gtypes.h"
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/R3D/SKY/SKYREND.H"
 #include "structs.h"

@@ -6,6 +6,7 @@
 #define g_nChapterAtLoopExit g_nChapterAtLoopExit_decl100
 #endif
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include "SRC/COMBAT/SPELL/CSPELL.H"
 #include "SRC/SYS/SYSLOWIO.H"
 #ifdef V102CD

@@ -17,13 +17,6 @@ extern unsigned char __dat_1466[10];
 extern char g_szHealthStamina[15];
 extern char g_szRations[8];
 extern char g_szEncampOfSep[6];
-extern GraphicsContext g_graphics_context;
-extern unsigned short g_wScreen_width;
-extern unsigned short g_wScreen_height;
-extern unsigned short g_pRow_offset_lut[200];
-extern GraphicsContextRender g_graphics_context_render;
-extern GfxDefaultFn far *g_gfx_default_fptr;
-extern VideoDriverImports g_video_driver_imports;
 extern char s_chunk_tag_FNT[5];
 extern char s_open_mode_r[2];
 extern void *_realcvt;
@@ -40,9 +33,5 @@ extern unsigned short *g_pSkyPanoAssetTable;
 extern WorldEntity *g_render_camera_scratch;
 extern ViewContext *g_active_window;
 extern unsigned short g_nChapterAtLoopExit;
-
-extern unsigned short g_wGfxBlitDstPage;
-
-extern void(far *g_pfn_blit_stretched)(void);
 
 #endif

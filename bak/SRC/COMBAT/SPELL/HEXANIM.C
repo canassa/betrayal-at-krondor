@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include "SRC/COMBAT/SPELL/CSPELL.H"
 #include "SRC/COMBAT/STATS/CBSTAT.H"
 #include "structs.h"

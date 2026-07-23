@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "structs.h"
 #include "SRC/GFX/RASTER/POLYFILL.H"

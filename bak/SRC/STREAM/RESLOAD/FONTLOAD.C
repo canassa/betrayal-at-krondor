@@ -1,5 +1,6 @@
 #define FP_OFF(fp) (*(unsigned *)&(fp))
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include "structs.h"
 #include "SRC/STREAM/RESLOAD/FONTLOAD.H"
 #include "SRC/IO/IO.H"
