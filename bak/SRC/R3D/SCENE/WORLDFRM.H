@@ -3,6 +3,8 @@
 
 #include "structs.h"
 
+extern EncounterTable *g_pEncounterTable;
+
 extern void worldframe_encounter_table_load(void);
 extern void worldframe_encounter_table_apply(void);
 extern void worldframe_enc_tbl_reapply_chap(void);

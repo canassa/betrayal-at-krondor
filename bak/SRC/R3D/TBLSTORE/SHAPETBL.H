@@ -3,6 +3,10 @@
 
 #include "structs.h"
 
+extern unsigned char g_lightDirNotInit;
+extern int g_shapeTableCount;
+extern int g_shapeOverrideLen;
+
 /**
  * @file  SHAPETBL.H
  * @brief Table Store: loads and serves @ref Shape records from .TBL `DAT:` chunks.
