@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/INPUT/TIMER.H"
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 #include "SRC/SCREENS/PICKLOCK.H"

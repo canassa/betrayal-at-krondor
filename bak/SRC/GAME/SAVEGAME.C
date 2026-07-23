@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <io.h>
 #include "globals.h"
+#include "SRC/INPUT/TIMER.H"
 #include "structs.h"
 #include "SRC/GAME/SAVEGAME.H"
 #include "SRC/IO/IO.H"

@@ -5,6 +5,7 @@
 #define g_szVersionString g_szVersionString_decl13
 #endif
 #include "globals.h"
+#include "SRC/INPUT/TIMER.H"
 #ifdef V102CD
 #undef g_szVersionString
 extern char g_szVersionString[16];

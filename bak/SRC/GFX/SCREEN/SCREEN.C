@@ -1,5 +1,6 @@
 #include <conio.h>
 #include "globals.h"
+#include "SRC/INPUT/TIMER.H"
 #include "structs.h"
 #include "SRC/GFX/SCREEN/SCREEN.H"
 #include "SRC/GFX/SPRITE/RESBLIT.H"

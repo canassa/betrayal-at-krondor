@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "globals.h"
+#include "SRC/INPUT/TIMER.H"
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 #include "SRC/WORLD/LOOP/MAP.H"
