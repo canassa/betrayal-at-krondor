@@ -3,6 +3,18 @@
 
 #include "structs.h"
 
+extern unsigned short g_wCombatSpinnerYaw;
+extern int g_combat_count_A;
+extern CombatActor *g_combat_actors_A;
+extern AnimSlot *g_anim_pool_A;
+extern unsigned char g_bssgap_5028[2];
+extern CombatActor **g_active_combatants;
+extern ImageRecord **g_aCombatInnerPool[7][11];
+extern CombatResCacheCol g_aCombatResCacheKindFlag;
+extern CombatResCacheCol g_aCombatResCacheRefcount;
+extern unsigned short g_aCombatResCacheKey[8];
+extern ImageRecord **g_aCombatResCacheValue[8][3];
+
 extern void combat_actor_deploy_encounter(void);
 extern int combat_actor_step_to_tgt_adj(CombatActor *attacker, CombatActor *defender);
 extern CombatActor *combat_actor_encounter_at_tile(int tile_x, int tile_y);
