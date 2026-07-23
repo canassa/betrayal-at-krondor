@@ -18,7 +18,7 @@
 
 unsigned short g_wLastTempWriteRecordKind = 0xffff;
 char g_abChapterEventSlot[9] = {0x00, 0x04, 0x04, 0x01, 0x04, 0x02, 0x04, 0x02, 0x03};
-BakFile *g_pTempGamFp = {0};
+BakFile *g_tempGamFP = NULL;
 char g_abSleepStatDelta[6] = {0xfe, 0xff, 0xfe, 0xfe, 0xfe, 0xfd};
 char g_abRegenPerChar[6] = {0x01, 0x01, 0x01, 0x01, 0x01, 0x01};
 
@@ -155,31 +155,31 @@ int gstate_temp_file_open(void) {
 
     if (g_cfgTempDrive != 0) {
         sprintf(buf, "%c:%s", g_cfgTempDrive, "TEMP.GAM");
-        if ((g_pTempGamFp = bak_fopen(buf, "r+b")) != (BakFile *)0)
+        if ((g_tempGamFP = bak_fopen(buf, "r+b")) != (BakFile *)0)
             return 1;
         return 0;
     }
 
-    if ((g_pTempGamFp = bak_fopen("TEMP.GAM", "r+b")) != (BakFile *)0)
+    if ((g_tempGamFP = bak_fopen("TEMP.GAM", "r+b")) != (BakFile *)0)
         return 1;
     return 0;
 }
 
 void gstate_temp_file_close(void) {
-    bak_fclose(g_pTempGamFp);
-    g_pTempGamFp = (BakFile *)0;
+    bak_fclose(g_tempGamFP);
+    g_tempGamFP = (BakFile *)0;
     return;
 }
 
 int gstate_temp_file_read_at(unsigned char far *dst_far, unsigned long offset, unsigned int bytes) {
-    if (bak_fseek(g_pTempGamFp, offset, 0) != 0) {
-        bak_fseek(g_pTempGamFp, 0, 0);
-        if (bak_fseek(g_pTempGamFp, offset, 0) != 0) {
+    if (bak_fseek(g_tempGamFP, offset, 0) != 0) {
+        bak_fseek(g_tempGamFP, 0, 0);
+        if (bak_fseek(g_tempGamFP, offset, 0) != 0) {
         }
     }
-    if ((unsigned long)bak_ftell(g_pTempGamFp) == offset) {
+    if ((unsigned long)bak_ftell(g_tempGamFP) == offset) {
     }
-    bak_fread_chunked(dst_far, 1, (long)bytes, g_pTempGamFp);
+    bak_fread_chunked(dst_far, 1, (long)bytes, g_tempGamFP);
     return 1;
 }
 
@@ -187,7 +187,7 @@ int gstate_temp_file_write_at(unsigned char far *src_far, unsigned long offset, 
 #ifdef V102CD
     unsigned long lo;
     unsigned long hi;
-    if (g_pTempGamFp == (BakFile *)0 || offset > 0x51aa9)
+    if (g_tempGamFP == (BakFile *)0 || offset > 0x51aa9)
         return 0;
     switch (g_wLastTempWriteRecordKind) {
     case 1:
@@ -223,14 +223,14 @@ int gstate_temp_file_write_at(unsigned char far *src_far, unsigned long offset, 
     }
     g_wLastTempWriteRecordKind = 0xffff;
 #endif
-    if (bak_fseek(g_pTempGamFp, offset, 0) != 0) {
-        bak_fseek(g_pTempGamFp, 0, 0);
-        if (bak_fseek(g_pTempGamFp, offset, 0) != 0)
+    if (bak_fseek(g_tempGamFP, offset, 0) != 0) {
+        bak_fseek(g_tempGamFP, 0, 0);
+        if (bak_fseek(g_tempGamFP, offset, 0) != 0)
             ;
     }
-    if (bak_ftell(g_pTempGamFp) == (long)offset)
+    if (bak_ftell(g_tempGamFP) == (long)offset)
         ;
-    bak_fwrite_chunked(src_far, 1, (unsigned long)bytes, g_pTempGamFp);
+    bak_fwrite_chunked(src_far, 1, (unsigned long)bytes, g_tempGamFP);
     return 1;
 }
 
@@ -280,8 +280,6 @@ static int gstate_30min_tick(int arg0, int arg1, int arg2) {
     int allConscious;
     unsigned long elapsed;
     int val;
-    /* The two party-regen loop temps (slot = roster index, actor = resolved
-       member id) are pinned to SI/DI as a pair — the hot-loop-counter idiom. */
     register int actor;
     register int slot;
 

@@ -2,6 +2,7 @@
 #define BAK_PALDRV_H
 
 #include "structs.h"
+#include "SRC/IO/IO.H"
 
 extern short g_palette_cycle_count;
 extern short g_nPaletteScaledIntensity;

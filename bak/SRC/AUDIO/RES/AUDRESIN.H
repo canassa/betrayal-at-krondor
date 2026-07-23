@@ -2,6 +2,7 @@
 #define BAK_AUDRESIN_H
 
 #include "structs.h"
+#include "SRC/IO/IO.H"
 
 extern unsigned char g_abIntensityCurve[64];
 extern unsigned short g_nSfxResourceId;

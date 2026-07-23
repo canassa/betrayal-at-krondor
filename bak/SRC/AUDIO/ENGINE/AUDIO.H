@@ -2,6 +2,7 @@
 #define BAK_AUDIO_H
 
 #include "structs.h"
+#include "SRC/IO/IO.H"
 
 extern short g_alloc_to_pool;
 extern short g_current_music_track;

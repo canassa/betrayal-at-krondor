@@ -71,13 +71,13 @@ int actorspawn_for_location_by_time(int location_id) {
     if ((offset = actorspawn_location_lookup(location_id)) == 0) {
         return 0;
     }
-    bak_fseek(g_pTempGamFp, offset, 0);
-    bak_fread(&count, 2, 1, g_pTempGamFp);
+    bak_fseek(g_tempGamFP, offset, 0);
+    bak_fread(&count, 2, 1, g_tempGamFP);
     i = spawned = 0;
     if (i < count) {
         do {
-            bak_fread(&hdr.kind, 0x10, 1, g_pTempGamFp);
-            bak_fseek(g_pTempGamFp, actorrec_payload_size(&hdr), 1);
+            bak_fread(&hdr.kind, 0x10, 1, g_tempGamFP);
+            bak_fseek(g_tempGamFP, actorrec_payload_size(&hdr), 1);
             hi_nibble = hdr.chap_band >> 4 & 0xf;
             lo_nibble = hdr.chap_band & 0xf;
             if (((hdr.flags & 0x80) != 0 || hdr.bResidence == RES_SELF_SPAWN) &&
@@ -118,7 +118,7 @@ Actor far *actorspawn_objfixed(int kind, long world_x, long world_y) {
             if (g_gameState.objfixed_location_cache.temp_gam_offset == 0) {
                 return NULL;
             }
-            stream = g_pTempGamFp;
+            stream = g_tempGamFP;
             bak_fseek(stream, g_gameState.objfixed_location_cache.temp_gam_offset, 0);
         }
         bak_fread(&record_count, 2, 1, stream);
@@ -192,30 +192,30 @@ Actor far *actorspawn_enc_location(int kind, long world_x, long world_y) {
     if ((spawn_loc = actorspawn_location_lookup(kind)) == 0) {
         return NULL;
     }
-    bak_fseek(g_pTempGamFp, spawn_loc, 0);
-    bak_fread(&count, 2, 1, g_pTempGamFp);
+    bak_fseek(g_tempGamFP, spawn_loc, 0);
+    bak_fread(&count, 2, 1, g_tempGamFP);
     found = 0;
     i = found;
     while (!found && i < count) {
-        cur_off = bak_ftell(g_pTempGamFp);
-        bak_fread(&actor_hdr.kind, 0x10, 1, g_pTempGamFp);
+        cur_off = bak_ftell(g_tempGamFP);
+        bak_fread(&actor_hdr.kind, 0x10, 1, g_tempGamFP);
         if (actor_hdr.bResidence == RES_FREE) {
             found = 1;
         } else {
-            bak_fseek(g_pTempGamFp, actorrec_payload_size(&actor_hdr), 1);
+            bak_fseek(g_tempGamFP, actorrec_payload_size(&actor_hdr), 1);
         }
         i++;
     }
     if (!found) {
-        bak_fseek(g_pTempGamFp, spawn_loc + 2, 0);
+        bak_fseek(g_tempGamFP, spawn_loc + 2, 0);
         i = 0;
         while (!found && i < count) {
-            cur_off = bak_ftell(g_pTempGamFp);
-            bak_fread(&actor_hdr.kind, 0x10, 1, g_pTempGamFp);
+            cur_off = bak_ftell(g_tempGamFP);
+            bak_fread(&actor_hdr.kind, 0x10, 1, g_tempGamFP);
             if (actor_hdr.flags & 0x80) {
                 tmp_clone = actor_alloc_from_template(&actor_hdr, FALSE);
                 bak_fread_chunked((unsigned char far *)((char far *)tmp_clone + sizeof(Actor)), 1L,
-                                  actorrec_payload_size(&actor_hdr), g_pTempGamFp);
+                                  actorrec_payload_size(&actor_hdr), g_tempGamFP);
                 p_touch = (ActorSubrec10_LastTouch far *)actorrec_get_subrecord(tmp_clone,
                                                                                 SUBREC_LAST_TOUCH);
                 cur_time = (actor_hdr.flags & 0x40) ? (p_touch->dwLast_touch_time | 0x80000000ul)
@@ -227,7 +227,7 @@ Actor far *actorspawn_enc_location(int kind, long world_x, long world_y) {
                 }
                 _freemem(tmp_clone);
             } else {
-                bak_fseek(g_pTempGamFp, actorrec_payload_size(&actor_hdr), 1);
+                bak_fseek(g_tempGamFP, actorrec_payload_size(&actor_hdr), 1);
             }
             i++;
         }

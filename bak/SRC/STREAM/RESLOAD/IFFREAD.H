@@ -2,6 +2,7 @@
 #define BAK_IFFREAD_H
 
 #include "structs.h"
+#include "SRC/IO/IO.H"
 
 extern IffResReader *near iff_reader_find(BakFileRef *key);
 extern void near bakfile_reset_preserve_cursor(IffResReader *reader);
