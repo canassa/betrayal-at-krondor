@@ -3,6 +3,10 @@
 
 #include "structs.h"
 
+extern unsigned short *g_pKeywordTable;
+extern MenuPage *g_pKeywordMenuScratch;
+extern ActSpriteCache *g_pActSpriteCache;
+
 extern int askabout_dialog_run(unsigned char far *keyword_table, char *npc_name);
 extern int askabout_menu_page_run_selection(DDXRecord far *param_1);
 extern void askabout_keyword_table_free(void);

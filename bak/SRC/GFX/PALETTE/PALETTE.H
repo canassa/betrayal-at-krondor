@@ -3,6 +3,8 @@
 
 #include "structs.h"
 
+extern char g_abPaletteBlendLut[127];
+
 extern void palette_buffers_alloc(char *fname);
 extern void palette_buffers_free(void);
 extern void palette_apply_pending_load(void);

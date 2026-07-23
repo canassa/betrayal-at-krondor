@@ -3,6 +3,10 @@
 
 #include "structs.h"
 
+extern unsigned short g_aPalEventBitMask[9];
+extern unsigned char g_event_caption_glyph_table[9];
+extern ImageRecord **g_pCastBmp;
+
 extern void spellfx_cast_and_dispatch(void);
 extern void spellfx_palette_fade_slot0(short caster_slot, short damage, int effect_param);
 extern void spellfx_combat_play_hit_effect(short caster_slot, short damage, int effect_param);

@@ -3,6 +3,25 @@
 
 #include "structs.h"
 
+extern unsigned char g_bak_initialized;
+extern short g_bak_io_error;
+extern void far *g_int24_old_vector;
+extern BakHandle g_bak_handles[10];
+extern BakArchive g_bak_archives[11];
+extern BakFile *g_pBakFgetcLastStream;
+extern FILE *g_pBakActiveFgetcStream;
+extern unsigned char g_bak_in_fopen;
+extern unsigned char g_bak_fopen_retry;
+extern unsigned char g_bak_archives_dirty;
+extern unsigned char g_bak_open_handles;
+extern unsigned long g_bak_lookup_hash;
+extern short g_bak_current_archive;
+extern short g_bak_archive_count;
+extern short g_bak_hash_seed;
+extern unsigned short g_bak_hash_rotate;
+extern BakHandle *g_pBakFindHandleCacheVal;
+extern BakFile *g_pBakFindHandleCacheKey;
+
 extern BakFile *bak_fopen(char *filename, char *mode);
 extern int bak_fclose(BakFile *stream);
 extern int bak_fread(void *ptr, int size, int count, BakFile *stream);
