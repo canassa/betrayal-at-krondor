@@ -6,6 +6,7 @@
 #include "SRC/GAME/MAINDATA.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/SCREENS/MAINMENU.H"
+#include "SRC/GEN/RNDVTBL.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "SRC/R3D/SKY/SKYREND.H"
 #include "structs.h"

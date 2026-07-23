@@ -1,9 +1,9 @@
 #include <dos.h>
 
-#define g_renderer_vtable g_renderer_vtable_struct_shadow
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/DIALOG/DIALOG.H"
 #include "structs.h"
+#include "SRC/GEN/RNDVTBL.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "SRC/GFX/RASTER/DRAWLINE.H"
 #include "SRC/GFX/RASTER/PIXEL.H"
@@ -13,9 +13,6 @@ int far *g_font_glyph_offset_table[20];
 unsigned char far *g_font_width_table[20];
 unsigned char far *g_font_bitmap_data[20];
 unsigned char g_font_format[20];
-#undef g_renderer_vtable
-extern unsigned g_renderer_vtable[];
-#define RENDERER_VTABLE (*(RendererVtable *)g_renderer_vtable)
 
 unsigned char g_abFontColorRemap[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
 unsigned char g_saved_text_fg_color = 0xff;
@@ -138,7 +135,7 @@ unsigned int font_draw_char(unsigned char ch, int x, int y) {
         (unsigned int)g_graphics_context.clip.ymax < y + height) {
         putpixel_fp = putpixel;
     } else {
-        putpixel_fp = (PutpixelFn)RENDERER_VTABLE.pfn_putpixel;
+        putpixel_fp = (PutpixelFn)g_renderer_vtable.pfn_putpixel;
     }
 
     if (g_font_format[0] <= 1)
@@ -284,7 +281,7 @@ int font_render_glyph_or_ctrl(char ch, int x, int y) {
             mov cx, height
             mov dx, x
             mov bp, y
-            call dword ptr [g_renderer_vtable]+4
+            call dword ptr [g_pfn_blit_glyph_row]
             pop di
             pop si
             pop bp

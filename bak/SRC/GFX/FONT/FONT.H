@@ -5,7 +5,6 @@
 
 extern unsigned char g_abFontColorRemap[5];
 extern unsigned char g_saved_text_fg_color;
-extern RendererVtable g_renderer_vtable;
 extern unsigned char g_font_underline_offset[20];
 extern int far *g_font_glyph_offset_table[20];
 extern unsigned char far *g_font_width_table[20];

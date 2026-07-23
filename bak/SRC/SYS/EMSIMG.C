@@ -1,4 +1,5 @@
 #include <dos.h>
+#include "SRC/GEN/RNDVTBL.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "structs.h"
 #include "SRC/SYS/EMSIMG.H"
