@@ -3,6 +3,22 @@
 
 #include "structs.h"
 
+extern ImageRecord **g_pInvSpriteLoAssetTable;
+extern ImageRecord **g_pInvSpriteHiAssetTable;
+extern ImageRecord **g_pInvLockAssetTable;
+extern ImageRecord **g_pInvMiscAssetTable;
+extern unsigned char far *g_pCursorSaveBufActive;
+extern unsigned char far *g_pCursorSaveBufA;
+extern unsigned char far *g_pCursorSaveBufB;
+extern unsigned long g_dwDblClickDeadline;
+extern short g_nInvSelItemAnchorX;
+extern short g_nInvSelItemAnchorY;
+extern short g_nInvSelItemIconDx;
+extern short g_nInvSelItemIconDy;
+extern short g_nCursorSaveRectX;
+extern short g_nCursorSaveRectY;
+extern unsigned short g_inventory_actor_kind;
+
 extern void invui_inspect_image_cleanup(void);
 extern void invui_inspect_images_load_once(int load_lock_images);
 extern void invui_portrait_refresh_animated(int portrait_idx, int prev_portrait, int anim_step);

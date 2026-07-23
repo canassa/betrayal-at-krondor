@@ -3,6 +3,28 @@
 
 #include "structs.h"
 
+extern unsigned short g_nSpellSymbolAnimFrame;
+extern unsigned char g_bssgap_5154[6];
+extern short g_nSpellCount;
+extern unsigned char g_bssgap_5150[2];
+extern SpellDef *g_pSpellDefs;
+extern char *g_szSpellNameBlob;
+extern SpellDocRow *g_pSpellDocRows;
+extern unsigned char far *g_pSpellDocBlob;
+extern StatusEffectSlot *g_pStatusEffectPool;
+extern unsigned char far *g_pSpellScreenBuffer;
+extern ImageRecord **g_pCastfaceSpriteTable;
+extern unsigned short *g_pSpellCastableScratch;
+extern short g_nSnowParticleSeedX;
+extern short g_nSpellFontSlot;
+extern short g_nCombatTileEffectPending;
+extern short g_nCombatTileX;
+extern short g_nCombatTileY;
+extern short g_nSpellSymbolCount;
+extern SpellSymbolRecord *g_pSpellSymbolRecords;
+extern short *g_pSpellSymbolX;
+extern short *g_pSpellSymbolY;
+
 extern void cspell_gfx_wipe_horizontal_split(int x, int y, int w, int h);
 extern int cspell_compute_effect_magnitude(CombatActor *actor, int level, int spell_id);
 extern void cspell_flash_actor_status_effect(CombatActor *actor, int effect_type);
