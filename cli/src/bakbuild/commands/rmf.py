@@ -12,6 +12,7 @@ so names and sizes are read from the archive at the offsets the RMF gives.
     bak rmf list PATH                 table of every resource (name/size/offset/hash)
     bak rmf extract PATH [NAMES]...   pull one or more resources out
     bak rmf extract PATH --all        pull everything
+    bak rmf extract PATH NAME --raw   keep the 17-byte entry header (name + size)
     bak rmf dump PATH NAME            decode a .TBL model table (chunks + per-model geometry)
     bak rmf dialog PATH KEY...         decode dialog record text from the DIAL_Z0N.DDX files
 
@@ -39,7 +40,13 @@ app = typer.Typer(
 )
 
 _NAME_LEN = 13  # fixed-width DOS 8.3 name + NUL, used in both the index and the archive
-_HDR = struct.Struct("<IH")  # version (always 1), tag (always 4)
+# The RMF header, read verbatim by bak_init_resources: three little-endian u16s —
+# the archive count, then the two parameters of the resource-name hash (the initial
+# accumulator seed and the per-character left-rotate). NOT a version/tag magic: the
+# shipped file's 01 00 00 00 04 00 is (count=1, seed=0, rotate=4), which a u32+u16
+# read only *coincidentally* renders as "1, 4". This tool assumes the single archive
+# the shipped KRONDOR.RMF carries.
+_HDR = struct.Struct("<HHH")  # archive_count, hash_seed, hash_rotate
 
 
 @dataclass(frozen=True)
@@ -65,16 +72,19 @@ def _find_archive(rmf_path: Path, archive_name: str) -> Path:
     )
 
 
-def _load(rmf_path: Path) -> tuple[Path, bytes, list[Entry]]:
+def _load(rmf_path: Path) -> tuple[Path, bytes, list[Entry], tuple[int, int]]:
     """Parse the index, resolve the archive, and materialize every entry
-    (names/sizes come from the archive's per-entry headers)."""
+    (names/sizes come from the archive's per-entry headers). Returns the
+    archive path, its bytes, the entries, and the ``(hash_seed, hash_rotate)``
+    header parameters."""
     rmf = rmf_path.read_bytes()
     if len(rmf) < _HDR.size + _NAME_LEN + 2:
         raise typer.BadParameter(f"{rmf_path}: too short to be an RMF index")
-    version, tag = _HDR.unpack_from(rmf, 0)
-    if version != 1 or tag != 4:
+    archive_count, hash_seed, hash_rotate = _HDR.unpack_from(rmf, 0)
+    if archive_count != 1:
         raise typer.BadParameter(
-            f"{rmf_path}: bad magic (version={version}, tag={tag}; expected 1, 4)"
+            f"{rmf_path}: header declares {archive_count} archives; this tool handles "
+            "single-archive RMFs (the shipped KRONDOR.RMF has 1)"
         )
     archive_name = rmf[_HDR.size : _HDR.size + _NAME_LEN].split(b"\0", 1)[0].decode("ascii")
     (count,) = struct.unpack_from("<H", rmf, _HDR.size + _NAME_LEN)
@@ -102,7 +112,7 @@ def _load(rmf_path: Path) -> tuple[Path, bytes, list[Entry]]:
                 f"{name}: payload ({size} bytes at {offset:#x}) past the end of {archive_path.name}"
             )
         entries.append(Entry(name, hashkey, offset, size))
-    return archive_path, archive, entries
+    return archive_path, archive, entries, (hash_seed, hash_rotate)
 
 
 _PathArg = Annotated[Path, typer.Argument(exists=True, dir_okay=False, help="path to KRONDOR.RMF")]
@@ -111,8 +121,12 @@ _PathArg = Annotated[Path, typer.Argument(exists=True, dir_okay=False, help="pat
 @app.command(name="list")
 def list_(rmf_path: _PathArg) -> None:
     """Print every resource in the container: name, size, archive offset, hashkey."""
-    archive_path, _, entries = _load(rmf_path)
-    typer.secho(f"{archive_path}  ({len(entries)} resources)", fg="cyan")
+    archive_path, _, entries, (hash_seed, hash_rotate) = _load(rmf_path)
+    typer.secho(
+        f"{archive_path}  ({len(entries)} resources, "
+        f"hash seed={hash_seed:#x} rotate={hash_rotate})",
+        fg="cyan",
+    )
     typer.secho(f"{'NAME':<14}{'SIZE':>10}  {'OFFSET':>10}  HASHKEY", fg="bright_black")
     for e in entries:
         typer.echo(f"{e.name:<14}{e.size:>10}  {e.offset:>10}  {e.hashkey:#010x}")
@@ -126,6 +140,14 @@ def extract(
         typer.Argument(help="resource name(s) to extract (case-insensitive)"),
     ] = None,
     all_: Annotated[bool, typer.Option("--all", help="extract every resource")] = False,
+    raw: Annotated[
+        bool,
+        typer.Option(
+            "--raw",
+            help="prepend the 17-byte entry header (13-byte NUL-padded name + u32 size) "
+            "as stored in the archive, instead of the payload alone",
+        ),
+    ] = False,
     out: Annotated[
         Path | None,
         typer.Option(
@@ -139,7 +161,7 @@ def extract(
     if bool(names) == all_:
         raise typer.BadParameter("give one or more NAMES, or --all (not both, not neither)")
 
-    _, archive, entries = _load(rmf_path)
+    _, archive, entries, _ = _load(rmf_path)
     if names:
         by_name = {e.name.lower(): e for e in entries}
         missing = [n for n in names if n.lower() not in by_name]
@@ -158,8 +180,9 @@ def extract(
 
     for e in picked:
         dest = single_out or out_dir / e.name
-        dest.write_bytes(archive[e.data_offset : e.data_offset + e.size])
-        typer.echo(f"{e.name} → {dest}  ({e.size} bytes)")
+        start = e.offset if raw else e.data_offset
+        dest.write_bytes(archive[start : e.data_offset + e.size])
+        typer.echo(f"{e.name} → {dest}  ({e.data_offset + e.size - start} bytes)")
 
 
 def _chunks(tbl: bytes) -> list[tuple[str, int, bytes]]:
@@ -261,7 +284,7 @@ def dump(
     name: Annotated[str, typer.Argument(help="resource name to dump (case-insensitive)")],
 ) -> None:
     """Decode a .TBL model table: metadata, chunks, and per-model geometry."""
-    _, archive, entries = _load(rmf_path)
+    _, archive, entries, _ = _load(rmf_path)
     by_name = {e.name.lower(): e for e in entries}
     entry = by_name.get(name.lower())
     if entry is None:
@@ -386,7 +409,7 @@ def dialog(
 
     The chapter file is chosen from each key (key // 100000), matching the game's
     dialog_load_record_by_key. Non-printable control bytes are shown as [xx]."""
-    _, archive, entries = _load(rmf_path)
+    _, archive, entries, _ = _load(rmf_path)
     by_name = {e.name.lower(): e for e in entries}
     for raw in keys:
         try:
