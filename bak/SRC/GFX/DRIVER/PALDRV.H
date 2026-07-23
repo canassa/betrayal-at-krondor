@@ -3,6 +3,21 @@
 
 #include "structs.h"
 
+extern short g_palette_cycle_count;
+extern short g_nPaletteScaledIntensity;
+extern short g_nPaletteScaledLevel;
+extern int g_nCurChunkSize;
+extern unsigned short g_awPaletteSizeByAdapter[16];
+extern char g_szPalVgaChunkTag[9];
+extern char g_szPalEgaChunkTag[9];
+extern char g_szPalCgaChunkTag[9];
+extern char g_szPalEmptyChunkTag[1];
+extern unsigned short g_apszPalChunkTagByAdapter[16];
+extern unsigned char far *g_pCurPalette;
+extern short g_palette_cycle_end[10];
+extern short g_palette_cycle_start[10];
+extern short g_palette_cycle_target[10];
+
 extern unsigned char far *chunk_load_into_slot(BakFileRef *file);
 extern unsigned char far *palette_set_active(unsigned char far *palette);
 extern void cache_release(unsigned char far *buf_farptr);
