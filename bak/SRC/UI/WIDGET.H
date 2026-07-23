@@ -3,6 +3,15 @@
 
 #include "structs.h"
 
+extern ImageRecord **g_pButtonSpriteUp;
+extern ImageRecord **g_pBtnSpriteDownSheet;
+extern short g_nScrollTrackOffset;
+extern unsigned char g_saved_clip_enabled;
+extern unsigned short g_saved_clip_ymax;
+extern unsigned short g_saved_clip_xmin;
+extern unsigned short g_saved_clip_xmax;
+extern unsigned short g_saved_clip_ymin;
+
 extern void widget_load_button_sprite_pair(char *filename);
 extern void widget_free_button_sprite_pair(void);
 extern void widget_blit_button_sprite(unsigned int sprite_idx, int x, int y, int palette, int center,

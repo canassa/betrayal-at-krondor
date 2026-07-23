@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/INPUT/KEYBOARD.H"
 #include "SRC/GFX/SPRITE/ROTBLIT.H"
 #include "structs.h"
 #include "SRC/GFX/SPRITE/STRBLIT.H"
