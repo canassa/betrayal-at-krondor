@@ -3,6 +3,12 @@
 
 #include "structs.h"
 
+extern short g_nVisibleEntryCount;
+extern unsigned short g_wVisibleEntrySegment;
+extern unsigned short *g_pwVisibleEntryOffsets;
+extern long g_aFilterTable[43];
+extern long *g_pVisibleEntryDistances;
+
 extern void proxscan_filter_table_load(void);
 extern void proxscan_scratch_alloc(void);
 extern void proxscan_scratch_free(void);
