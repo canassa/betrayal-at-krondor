@@ -3,6 +3,11 @@
 
 #include "structs.h"
 
+extern unsigned short g_nHitTestEntryCount;
+extern unsigned short g_nHitTestWriteSlot;
+extern WorldHotspot *g_pWorldHitTestTable;
+extern long g_anEntityKindRenderDist[43];
+
 extern void wcursor_load_detect_dat(void);
 extern void wcursor_free_detect_dat(void);
 extern int wcursor_dispatch_action(void);

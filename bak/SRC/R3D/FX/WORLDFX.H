@@ -3,6 +3,15 @@
 
 #include "structs.h"
 
+extern VfxRec *g_pVfxSparkleScratch;
+extern VfxRec *g_pVfxParticlePool;
+extern short g_nVfxTickCountdown;
+extern unsigned short g_nVfxParticleColor;
+extern VfxRec *g_pVfxVelocityPool;
+extern unsigned short g_wVfxActiveParticleCount;
+extern unsigned short g_nVfxParticleBurstOriginY;
+extern SavedClipRect g_savedClip;
+
 extern void worldfx_sparkle_burst(CombatActor *actor, int color);
 extern void worldfx_flux_vortex_step_particle(int slot, int base_ang_step);
 extern void worldfx_render_particle_blast(CombatActor *actor, int color);

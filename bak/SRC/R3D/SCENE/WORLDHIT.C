@@ -5,6 +5,7 @@
 #define g_szVersionString g_szVersionString_decl13
 #endif
 #include "globals.h"
+#include "SRC/WORLD/CURSOR/WCURSOR.H"
 #include "SRC/WORLD/ZONE/CZONE.H"
 #include "SRC/WORLD/ZONE/PROXIM.H"
 #include "SRC/UI/UIWIDGET.H"
