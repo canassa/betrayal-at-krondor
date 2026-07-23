@@ -3,6 +3,18 @@
 
 #include "structs.h"
 
+extern int g_nDialogChapterId;
+extern unsigned long g_dwDialogInputCooldown;
+extern unsigned char g_abTextSpeedScale[3];
+extern int g_nTabWidth;
+extern DialogStyleDescriptor g_dialog_style_table[7];
+extern unsigned short g_bDialogWorldAnchorValid;
+extern unsigned char g_dialog_running;
+extern char g_speaker_kinds[6];
+extern char g_speaker_names[6][32];
+extern short g_nDialogAnchorX;
+extern short g_nDialogAnchorY;
+
 extern int dialog_play_record(unsigned long record_key, int modal_flag);
 extern int dialog_show_by_key(unsigned long key, int interactive);
 extern PDdxRecord dialog_load_record_by_key(unsigned long record_key, int use_offset);

@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SYS/SYSLOWIO.H"
 #include "SRC/UI/DLGWIDG.H"
 #include "structs.h"
