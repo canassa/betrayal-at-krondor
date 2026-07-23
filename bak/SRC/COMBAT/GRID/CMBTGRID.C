@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "globals.h"
+#include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/R3D/VIS/PROXSCAN.H"
 #include "SRC/WORLD/ZONE/CZONE.H"
 #include "SRC/WORLD/ENC/RGNENC.H"

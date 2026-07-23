@@ -5,6 +5,7 @@
 #include <string.h>
 #include "gtypes.h"
 #include "globals.h"
+#include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/WORLD/LOOP/MAP.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "globals.h"
+#include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/INPUT/TIMER.H"
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"

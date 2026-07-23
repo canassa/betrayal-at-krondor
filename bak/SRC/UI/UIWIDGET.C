@@ -1,5 +1,6 @@
 #include <dos.h>
 #include "globals.h"
+#include "SRC/WORLD/ZONE/ZONE.H"
 #include "structs.h"
 #include "SRC/UI/UIWIDGET.H"
 #include "SRC/GFX/FONT/FONT.H"
