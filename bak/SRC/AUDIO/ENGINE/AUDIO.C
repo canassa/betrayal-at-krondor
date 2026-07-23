@@ -15,7 +15,7 @@
 #include "SRC/GAME/GSTATE.H"
 #ifdef V102CD
 #include "SRC/IO/IO.H"
-#include "v102.h"
+#include "SRC/AUDIO/CDAUDIO.H"
 #endif
 
 /* Music-engine state.  g_alloc_to_pool routes alloc_far into the resource

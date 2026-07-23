@@ -51,7 +51,9 @@ unsigned short g_wEmmPagesFree = 0x0000;
 char g_szVmcodeOvl[11] = "vmcode.ovl";
 
 #ifdef V102CD
-#include "v102.h"
+#include "SRC/AUDIO/CDAUDIO.H"
+#include "SRC/GAME/CFGPARSE.H"
+#include "SRC/GAME/GMAIN.H"
 #endif
 
 void boot_start_dat_load(void) {

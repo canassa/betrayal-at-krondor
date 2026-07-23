@@ -6,9 +6,6 @@
 #include "structs.h"
 #include "SRC/GAME/CFGPARSE.H"
 #include "SRC/AUDIO/RES/AUDRESIN.H"
-#ifdef V102CD
-#include "v102.h"
-#endif
 
 char *g_soundDrvTokens[5] = {"adl.drv", "mt32.drv", "sndblast.drv", "std.drv", "genmidi.drv"};
 SoundDriverId g_soundDrvIds[5] = {SNDDRV_ADL, SNDDRV_M32, SNDDRV_SBP, SNDDRV_STD, SNDDRV_GMD};

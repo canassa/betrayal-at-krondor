@@ -13,7 +13,7 @@
 #include "SRC/COMBAT/SPELL/SPELLFX.H"
 #include "SRC/WORLD/ENC/RGNENC.H"
 #ifdef V102CD
-#include "v102.h"
+#include "SRC/GAME/CFGPARSE.H"
 #endif
 
 short g_nVisibleEntryCount;

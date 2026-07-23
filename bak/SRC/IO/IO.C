@@ -9,7 +9,7 @@
 #include "SRC/IO/IO.H"
 #include "SRC/SYS/DOSMEM.H"
 #ifdef V102CD
-#include "v102.h"
+#include "SRC/GAME/CFGPARSE.H"
 #endif
 
 short g_bak_io_error;

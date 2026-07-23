@@ -33,7 +33,7 @@
 #include "SRC/WORLD/ENC/HOTSPOT.H"
 #include "SRC/WORLD/MOVE/WORLDCRS.H"
 #ifdef V102CD
-#include "v102.h"
+#include "SRC/GAME/CFGPARSE.H"
 #endif
 
 #include "globals.h"

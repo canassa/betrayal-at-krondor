@@ -12,4 +12,8 @@ extern void gmain_cutsc_play_fullmap_scene(int scene_index);
 extern void gmain_restart_from_save_flow(void);
 extern void gmain_parse_cmdline_sound_flag(int argc, char **argv);
 
+#ifdef V102CD
+extern int g_cd_present;
+#endif
+
 #endif

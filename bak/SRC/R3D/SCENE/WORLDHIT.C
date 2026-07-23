@@ -42,7 +42,7 @@ extern char g_szVersionString[16];
 #include "defines.h"
 #ifdef V102CD
 #include "SRC/GFX/SPRITE/SPRTHNKS.H"
-#include "v102.h"
+#include "SRC/GAME/CFGPARSE.H"
 #endif
 
 short g_nPolygonTextureMode = 1;

@@ -7,9 +7,6 @@
 
 #include "globals.h"
 #include "structs.h"
-#ifdef V102CD
-#include "v102.h"
-#endif
 #include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/IO/IO.H"
 #include "SRC/SYS/MEM.H"
