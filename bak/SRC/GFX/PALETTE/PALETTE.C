@@ -4,6 +4,7 @@
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
+#include "SRC/GEN/RNDVTBL.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "structs.h"
 #include "SRC/GFX/PALETTE/PALETTE.H"

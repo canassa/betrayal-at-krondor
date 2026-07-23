@@ -33,6 +33,7 @@ unsigned char far g_abStatNames[16][15] = {
 #include "SRC/IO/IOCHUNK.H"
 #include "SRC/GFX/RASTER/VGABLIT.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
+#include "SRC/GEN/RNDVTBL.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "SRC/GFX/SPRITE/RESBLIT.H"
 #include "SRC/GFX/RASTER/CIRCLE.H"

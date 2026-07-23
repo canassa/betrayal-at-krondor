@@ -1,6 +1,7 @@
 #include <dos.h>
 
 #include "SRC/GEN/GFXCTX.H"
+#include "SRC/GEN/RNDVTBL.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "structs.h"
 #include "SRC/GFX/RASTER/CIRCLE.H"

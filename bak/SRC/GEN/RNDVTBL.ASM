@@ -24,6 +24,8 @@ DGROUP	group	_DATA
 	public	_g_renderer_vtable
 _g_renderer_vtable	label dword
 	dd	_gfx_retf_stub	; slot  0 (+0x00)
+	public	_g_pfn_blit_glyph_row
+_g_pfn_blit_glyph_row	label dword	; slot  1 (+0x04)
 	dd	_gfx_retf_stub	; slot  1 (+0x04)
 	dd	_gfx_retf_stub	; slot  2 (+0x08)
 	dd	_gfx_retf_stub	; slot  3 (+0x0c)
