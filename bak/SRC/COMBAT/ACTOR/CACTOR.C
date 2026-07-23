@@ -13,6 +13,7 @@
 #include "SRC/INPUT/KEYBOARD.H"
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/GFX/SPRITE/SPRTHNKS.H"
+#include "SRC/GAME/MAINDATA.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/R3D/CORE/R3D.H"
 #include "SRC/R3D/SPRITE/WORLDRND.H"

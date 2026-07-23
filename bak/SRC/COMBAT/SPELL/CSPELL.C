@@ -22,6 +22,7 @@
 #include "SRC/GFX/DRIVER/VTHUNKS.H"
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/GFX/DRIVER/VIDINIT.H"
+#include "SRC/GAME/MAINDATA.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/GFX/SCREEN/SCREEN.H"
 #include "SRC/UI/MENUPAGE.H"

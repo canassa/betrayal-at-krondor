@@ -3,6 +3,7 @@
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/GAME/MAINDATA.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/GFX/FONT/FONT.H"

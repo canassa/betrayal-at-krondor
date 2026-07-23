@@ -1,9 +1,6 @@
 #include <dos.h>
 
 #include "structs.h"
-#ifdef V102CD
-#define g_szVersionString g_szVersionString_decl13
-#endif
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/GAME/BOOT.H"
@@ -16,11 +13,8 @@
 #include "SRC/WORLD/ZONE/PROXIM.H"
 #include "SRC/UI/UIWIDGET.H"
 #include "SRC/INPUT/TIMER.H"
-#ifdef V102CD
-#undef g_szVersionString
-extern char g_szVersionString[16];
-#endif
 #include "r3d.h"
+#include "SRC/GAME/MAINDATA.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
@@ -56,22 +50,6 @@ extern char g_szVersionString[16];
 #include "SRC/GAME/CFGPARSE.H"
 #endif
 
-short g_nPolygonTextureMode = 1;
-unsigned short g_nWorldRenderJitter = 0x0000;
-char *g_pszCombatModalTitle = (char *)g_szVersionString;
-
-unsigned char _dgroup_gap_3e8[4] = {0, 0, 0, 0};
-SoundDriverId g_sound_driver = SNDDRV_NONE;
-BakFile *g_pSfxArchiveStream = {0};
-unsigned int _ovrbuffer = 0x0d48;
-unsigned char far *g_pMainScratchBuf = {0};
-#ifdef V102CD
-char g_szVersionString[16] = "Version 1.02 CD";
-#else
-char g_szVersionString[13] = "Version 1.00";
-
-unsigned char _dgroup_pad_403 = 0;
-#endif
 unsigned short g_wSkyColorR = 0x00d7;
 unsigned short g_wSkyColorG = 0x00e4;
 unsigned short g_wSkyColorB = 0x00a8;

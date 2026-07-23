@@ -1,6 +1,7 @@
 #include <dos.h>
 
 #include "SRC/GEN/GFXCTX.H"
+#include "SRC/GAME/MAINDATA.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "structs.h"
 #include "SRC/GFX/SPRITE/BLITAA.H"
