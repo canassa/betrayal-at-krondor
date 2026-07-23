@@ -3,6 +3,17 @@
 
 #include "structs.h"
 
+extern unsigned char g_abAdapterRowStrideShift[16];
+extern unsigned char g_keyboard_installed;
+extern unsigned char g_bCapsLockEnabled;
+extern unsigned short g_wIsrLastKeyEventDead;
+extern unsigned char g_input_mode_lut[2];
+extern unsigned char g_bUnused2cfa[250];
+extern unsigned char g_key_state[121];
+extern unsigned char g_ext_scancode_from[11];
+extern unsigned char g_ext_scancode_to[11];
+extern unsigned char g_bEnhancedKeyboard;
+
 extern int keyboard_install(int install_timer_int);
 extern unsigned char keyboard_restore_handler(void);
 extern void isr_keyboard(void);
