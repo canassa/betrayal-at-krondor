@@ -3,6 +3,8 @@
 
 #include "structs.h"
 
+extern unsigned short g_font_chunk_tag_ptr;
+
 extern int font_load(BakFileRef *filename);
 extern void font_unload(int slot);
 

@@ -3,6 +3,8 @@
 
 #include "structs.h"
 
+extern int g_nChunk_session_owns_close;
+
 extern unsigned long chunkread_fread_far_large(char far *dst, unsigned long len, BakFile *file);
 extern int chunkread_session_close(BakFile *file);
 extern BakFile *chunkread_session_open(BakFileRef *file, char *chunk_id);
