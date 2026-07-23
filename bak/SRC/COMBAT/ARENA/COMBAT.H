@@ -3,6 +3,40 @@
 
 #include "structs.h"
 
+extern unsigned short g_bCombatGridTerrainFeaturesEnabled;
+extern unsigned short g_bCombatGridLinesEnabled;
+extern unsigned short g_bShowActorRosterIndex;
+extern unsigned short g_bStormAmplify;
+extern unsigned short **g_pTerrainBackupGrid;
+extern unsigned short g_awQuarrelKindItemIdTable[8];
+extern unsigned short g_quarrel_kind_field19_table[8];
+extern CombatActor *g_current_actor;
+extern CombatActor *g_picked_actor;
+extern unsigned short g_acting_actor_speed;
+extern int g_grid_tile_size;
+extern short g_cursor_tile_x;
+extern short g_cursor_tile_y;
+extern unsigned short g_wInCombatMode;
+extern MenuPage *g_combat_menu;
+extern MenuPage *g_shoot_menu;
+extern unsigned short g_combat_menu_selected_item;
+extern unsigned short g_combat_menu_current_page;
+extern short g_nCurrentQuarrelKindIdx;
+extern unsigned short g_combat_cancelled;
+extern unsigned short g_combat_music_handle;
+extern CombatActor *g_acting_actor;
+extern unsigned short g_traps_loaded_flag;
+extern unsigned short g_encounter_id;
+extern CombatActor *g_pCombatActiveActors;
+extern AnimSlot *g_pCombatActiveAnimPool;
+extern int g_nCombatActiveCount;
+extern CombatActor *g_pCombatOtherActors;
+extern AnimSlot *g_pCombatOtherAnimPool;
+extern int g_nCombatOtherCount;
+extern ImageRecord **g_combat_sprites;
+extern ImageRecord **g_parch_bmx;
+extern ImageRecord **g_combat_render_table_prev;
+
 extern void combat_arena_mode_enter(void);
 extern void combat_arena_mode_exit(void);
 extern void combat_arena_tick_status_timers(void);

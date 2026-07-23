@@ -1,6 +1,7 @@
 #include <dos.h>
 #include "structs.h"
 #include "globals.h"
+#include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/SCREENS/TOWNSCN.H"
 #include "SRC/WORLD/LOOP/WORLDLP.H"

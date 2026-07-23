@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/UI/UIWIDGET.H"
