@@ -2,6 +2,8 @@
 #include <mem.h>
 #include <stdlib.h>
 #include "globals.h"
+#include "SRC/SCRIPT/TTM.H"
+#include "SRC/SCRIPT/TTMDLG.H"
 #include "structs.h"
 
 #include "SRC/SCRIPT/ANIMSCR.H"

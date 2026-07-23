@@ -3,6 +3,14 @@
 
 #include "structs.h"
 
+extern short g_text_input_drag_anchor;
+extern int g_nCursorBlinkOn;
+extern unsigned long g_dwCursorBlinkPhaseStart;
+extern unsigned char g_key_scancode;
+extern unsigned char g_key_ascii;
+extern unsigned char g_key_held;
+extern unsigned char g_key_shift_held;
+
 extern Dialog *dlgwidget_dialog_load(char *filename);
 extern void dlgwidget_dialog_destroy_bgs(Dialog *dialog);
 extern Dialog *dlgwidget_dialog_create(int capacity);

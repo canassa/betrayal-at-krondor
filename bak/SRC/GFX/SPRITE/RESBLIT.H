@@ -3,6 +3,11 @@
 
 #include "structs.h"
 
+extern int g_nDialogScxEmsHandle;
+extern int g_nInventorScxEmsHandle;
+extern int g_nFrameScxEmsHandle;
+extern ImageRecord **g_pHeadsBmxAssetTable;
+
 extern void resblit_alloc_ems_64k(char *path, int *out_handle);
 extern void resblit_load_resource_set_1ec(int flags);
 extern ImageRecord **resblit_load_asset_table(char *path, int storage_mode);

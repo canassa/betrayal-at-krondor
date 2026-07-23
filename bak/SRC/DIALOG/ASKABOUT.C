@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "SRC/UI/DLGWIDG.H"
 #include "structs.h"
 
 #include "SRC/DIALOG/ASKABOUT.H"
