@@ -3,6 +3,18 @@
 
 #include "structs.h"
 
+extern unsigned short g_nHotspotCount;
+extern unsigned short g_wHotspotIterIdx;
+extern unsigned short g_wHotspotMatchIdx;
+extern unsigned short g_wHotspotEventEnabled;
+extern unsigned short g_bZoneEntryInProgress;
+extern unsigned short g_wHotspotIterCursor;
+extern char g_monst_filename_buf[12];
+extern char g_aDefFileNames[12][13];
+extern short g_aDefRecordSizes[12];
+extern ZoneHotspot g_aZoneHotspots[10];
+extern unsigned short g_awHotspotPendingFlags[10];
+
 extern void hotspotevt_monst_load_tbl_cur_id(void);
 extern void hotspotevt_flags_clear(void);
 extern int hotspotevt_activate_at_player(void);

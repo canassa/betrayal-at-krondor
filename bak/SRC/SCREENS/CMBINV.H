@@ -3,6 +3,13 @@
 
 #include "structs.h"
 
+extern unsigned short g_inventory_screen_mode;
+extern unsigned char g_bIsRestEncounter;
+extern Actor far *g_other_inventory_actor;
+extern Actor far *g_pDroppedItemActor;
+extern MenuPage *g_pInventoryMenuPage;
+extern ItemSlot far *g_pStackHeadroomSlot;
+
 extern int cmbinv_actor_transfer_item(Actor far *src, Actor far *dst, ItemSlot far *item);
 extern int cmbinv_actor_pickup_item(Actor far *dst_actor, Actor far *src_actor, ItemSlot far *item);
 extern int cmbinv_actor_drop_item_at_pos(Actor far *src_actor, ItemSlot far *item);

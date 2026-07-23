@@ -1,6 +1,7 @@
 #include <dos.h>
 #include "structs.h"
 #include "globals.h"
+#include "SRC/SCREENS/TOWNSCN.H"
 #include "SRC/WORLD/LOOP/WORLDLP.H"
 #include "SRC/SCREENS/ITEMUSE.H"
 #include "SRC/SYS/RAND.H"

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "SRC/SCREENS/TOWNSCN.H"
 #include "SRC/UI/DLGWIDG.H"
 #include "structs.h"
 
