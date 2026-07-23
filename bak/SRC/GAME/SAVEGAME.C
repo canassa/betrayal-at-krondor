@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <io.h>
 #include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/MAINDATA.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/INPUT/TIMER.H"

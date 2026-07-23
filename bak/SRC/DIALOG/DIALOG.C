@@ -43,6 +43,7 @@ unsigned char far g_abStatNames[16][15] = {
 #include "SRC/INPUT/JOYSTICK.H"
 #include "SRC/GFX/RASTER/DRAWLINE.H"
 #include "SRC/INPUT/MOUSE.H"
+#include "SRC/GAME/MAINDATA.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/GFX/SCREEN/SCREEN.H"
 #include "SRC/GFX/PALETTE/PALETTE.H"

@@ -7,6 +7,7 @@
 
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
+#include "SRC/GAME/MAINDATA.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/SYS/SYSLOWIO.H"
 #include "structs.h"
@@ -1379,8 +1380,8 @@ void far mainmenu_save_show_ctrd_modal(void) {
     g_graphics_context.wGfxBlitDstPage = g_graphics_context.wVgaPage2Base;
     g_graphics_context.bClip_enabled = '\0';
     uiwidget_panel_draw_inset(0x6e, 0x36, 100, 0xc, 0xa9);
-    textWidth = font_text_width_ds(g_pszCombatModalTitle);
-    uiwidget_draw_text_shadowed_dflt(g_pszCombatModalTitle, 0xaa, 0xae, 0xa0 - (textWidth >> 1),
+    textWidth = font_text_width_ds(g_versionBanner);
+    uiwidget_draw_text_shadowed_dflt(g_versionBanner, 0xaa, 0xae, 0xa0 - (textWidth >> 1),
                                      0x38);
     if (record != (ImageRecord **)0x0) {
         blit_sprite_indirect((unsigned short)*record, 0xa0 - ((*record)->nWidth >> 1), 100, 0);

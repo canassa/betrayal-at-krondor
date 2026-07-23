@@ -9,6 +9,7 @@
 #include "SRC/SYS/RAND.H"
 #include "SRC/IO/IO.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
+#include "SRC/GAME/MAINDATA.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/R3D/CORE/R3D.H"
 #include "SRC/WORLD/ZONE/PROXIM.H"
