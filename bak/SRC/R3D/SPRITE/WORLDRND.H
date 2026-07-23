@@ -3,6 +3,21 @@
 
 #include "structs.h"
 
+extern unsigned short g_spriteBankCount;
+extern PagedArrayEntry *g_spriteBanks;
+extern ImageRecord *g_pBillboardSpriteImg;
+extern short g_nBillboardScrX;
+extern short g_nBillboardScrY;
+extern short g_nBillboardW;
+extern short g_nBillboardH;
+extern unsigned short g_nFogRemapTableCount;
+extern unsigned short g_wSpriteFogBucketWidth;
+extern unsigned long g_lSpriteFogOnsetDist;
+extern long g_lSpriteFogFarDist;
+extern unsigned short g_nLodBucketWidth;
+extern unsigned long g_dwLodNearThreshold;
+extern unsigned long g_lFarCullDist;
+
 extern ImageRecord **worldrender_table_swap(int slot, ImageRecord **new_table_ptr);
 extern void worldrender_swap_record_table(int slot_a, int slot_b);
 extern ImageRecord **worldrender_table_load(int slot, char *fname);

@@ -10,6 +10,7 @@
 #include <dos.h>
 
 #include "globals.h"
+#include "SRC/R3D/SPRITE/WORLDRND.H"
 #include "structs.h"
 #include "SRC/R3D/TBLSTORE/SHAPETBL.H"
 #include "SRC/SYS/FARTHUNK.H"

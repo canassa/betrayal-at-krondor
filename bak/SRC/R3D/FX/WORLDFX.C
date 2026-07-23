@@ -1,5 +1,6 @@
 #include <dos.h>
 #include "globals.h"
+#include "SRC/R3D/SPRITE/WORLDRND.H"
 #include "SRC/R3D/ACTOR/ACTMOTN.H"
 #include "structs.h"
 #include "SRC/R3D/FX/WORLDFX.H"
