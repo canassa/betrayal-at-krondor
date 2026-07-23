@@ -1,18 +1,19 @@
 # CLAUDE.md
 
-Betrayal at Krondor, reconstructed from the 1993 DOS binaries and rebuilt **byte-for-byte** identical with the period Borland toolchain.
+Betrayal at Krondor, reconstructed from the 1993 DOS binaries and rebuilt **byte-for-byte** identical with the period Borland toolchain. Two releases build from this one tree: 1.00 (floppy) and 1.02 (CD-ROM, carried as `#ifdef V102CD` source guards).
 
 ## The prime rule: stay byte-identical
 
-Any change under `bak/SRC/` must keep `KRONDOR.EXE`, `VMCODE.OVL` and `SX.OVL` byte-identical to the shipped 1993 originals. A change isn't done until it verifies. Comments and names cost nothing (they don't reach codegen); code, declaration order, and data layout are load-bearing.
+Any change under `bak/SRC/` must keep `KRONDOR.EXE`, `VMCODE.OVL` and `SX.OVL` byte-identical to the shipped originals — for **both** releases: the default 1.00 build and the `--version 102` CD build. A change isn't done until both verify. Comments and names cost nothing (they don't reach codegen); code, declaration order, and data layout are load-bearing.
 
 ## CLI commands
 
 ```
-uv run bak build          # build all three artifacts and verify them by size + sha256
-uv run bak diff <FILE.C>  # disassembly diff of one OBJ vs the last green build — debug a byte-match break
-uv run bak lint           # naming-convention check (clang-tidy, check-only)
-uv run bak rmf <RMF>      # explore/debug the shipped data files: list/extract resources, dump a .TBL model, decode DDX dialog text
+uv run bak build                # build all three 1.00 artifacts and verify them by size + sha256
+uv run bak build --version 102  # build + verify the 1.02 CD KRONDOR.EXE (OVLs are version-identical)
+uv run bak diff <FILE.C>        # disassembly diff of one OBJ vs the last green build — debug a byte-match break
+uv run bak lint                 # naming-convention check (clang-tidy, check-only)
+uv run bak rmf <RMF>            # explore/debug the shipped data files: list/extract resources, dump a .TBL model, decode DDX dialog text
 ```
 
 ## Naming conventions

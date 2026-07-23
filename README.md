@@ -12,6 +12,13 @@ No shortcuts were taken: any assembly in this project exists because the origina
 
 The goals are educational: digital archaeology and preservation. It won't add support for modern systems or mod the game. I plan to do that in a separate fork.
 
+## Supported releases
+
+The following releases build byte-identically from this one tree:
+
+- **1.00** (floppy, June 16, 1993) — `c943fd895a57`
+- **1.02** (CD-ROM, March 21, 1994) — `e254770143e0`
+
 ## Asset viewer
 
 Reverse-engineering the code is half the work (okay, maybe more). *Betrayal at Krondor* is a big game, with lots of assets and a branching, data-driven dialogue system. To explore all that, this project includes a browser-based asset viewer:

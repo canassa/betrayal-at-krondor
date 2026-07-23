@@ -1,6 +1,6 @@
 # Building Betrayal at Krondor
 
-This document describes how to compile `KRONDOR.EXE`, `SX.OVL` and `VMCODE.OVL`.
+This document describes how to compile `KRONDOR.EXE`, `SX.OVL` and `VMCODE.OVL` — for the 1.00 (floppy) and 1.02 (CD-ROM) releases.
 
 ## Background
 
@@ -77,6 +77,18 @@ toolchain/
 
 Then `uv run bak build`.
 
+## The two releases
+
+The tree builds two versions:
+
+```
+uv run bak build                # 1.00 (floppy): KRONDOR.EXE + VMCODE.OVL + SX.OVL
+uv run bak build --version 102  # 1.02 (CD-ROM): KRONDOR.EXE only
+```
+
+The 1.02 CD patch lives in the same sources as `#ifdef V102CD` guards. `--version 102` first runs the normal 1.00 build (its objects are shared link inputs), then recompiles the ~30 diverged objects with `-DV102CD` into `OUT102/` plus the CD-audio driver `CDAUDIO.ASM`, links them via `KRN102.RSP`, and verifies against the shipped CD executable. The two OVLs are byte-identical across releases, so only the EXE has a 1.02 variant.
+
+TLINK stamps the executable's overlay-info date from the DOS clock, so the build pins it per release: June 16, 1993 for 1.00 and March 21, 1994 for 1.02.
 
 ## Editor support
 
