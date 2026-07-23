@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "globals.h"
+#include "SRC/COMBAT/AI/CBTAITRN.H"
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 #include "SRC/COMBAT/SPELL/CSPELL.H"

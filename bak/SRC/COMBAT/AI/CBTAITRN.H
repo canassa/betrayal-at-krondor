@@ -3,6 +3,9 @@
 
 #include "structs.h"
 
+extern EncounterAiActionFn far *g_encounter_ai_action_table[8];
+extern unsigned char __dat_15dc[128];
+
 extern int combataiturn_sel_consum_qrl(CombatActor *actor, int kind, int consume_flag);
 extern void combataiturn_ranged_attack(CombatActor *attacker, CombatActor *target,
                                        int quarrel_type);
