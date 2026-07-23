@@ -7,6 +7,9 @@
 
 #include "globals.h"
 #include "structs.h"
+#ifdef V102CD
+#include "v102.h"
+#endif
 #include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/IO/IO.H"
 #include "SRC/SYS/MEM.H"
@@ -60,7 +63,15 @@ int mainmenu_save_cfg_load_settings(void) {
     if (g_engine_prefs != (EnginePrefs *)0x0) {
         stream = bak_fopen("KRONDOR.CFG", "rb");
         if (stream == (BakFile *)0x0) {
+#ifdef V102CD
+            if (g_cd_present != 0) {
+                stream = bak_fopen("CDEFAULT.DAT", "rb");
+            } else {
+                stream = bak_fopen("DEFAULT.DAT", "rb");
+            }
+#else
             stream = bak_fopen("DEFAULT.DAT", "rb");
+#endif
         }
         bak_fread(g_engine_prefs, 5, 1, stream);
         bak_fclose(stream);
@@ -1079,7 +1090,14 @@ int mainmenu_save_prefs_menu_run(void) {
             page->pEntries[0x10].wSub_state = prefs.flags & 1;
             page->pEntries[0x11].wSub_state = prefs.flags & 2;
             page->pEntries[0x12].wSub_state = prefs.flags & 4;
+#ifdef V102CD
+            if (g_cd_present == 0)
+                prefs.flags &= 0xef;
+            page->pEntries[0x13].wSub_state = prefs.flags & 0x10;
+            page->pEntries[0x14].wSub_state = prefs.flags & 8;
+#else
             page->pEntries[0x13].wSub_state = prefs.flags & 8;
+#endif
             dirty_checkbox = 0;
         }
         if (dirty_screen != 0) {
@@ -1205,14 +1223,36 @@ int mainmenu_save_prefs_menu_run(void) {
                 prefs.flags |= 2;
             if (page->pEntries[0x12].wSub_state != 0)
                 prefs.flags |= 4;
+#ifdef V102CD
+            if (page->pEntries[0x13].wSub_state != 0 && g_cd_present != 0)
+                prefs.flags |= 0x10;
+            if (page->pEntries[0x14].wSub_state != 0)
+                prefs.flags |= 8;
+#else
             if (page->pEntries[0x13].wSub_state != 0)
                 prefs.flags |= 8;
+#endif
             if ((g_engine_prefs->flags & 2) != 0) {
                 if (!(prefs.flags & 2))
                     audio_music_fade_out_and_stop();
             } else if ((prefs.flags & 2) != 0) {
                 audio_music_fade_in_current();
             }
+#ifdef V102CD
+            if ((g_engine_prefs->flags & 0x10) != 0) {
+                if (!(prefs.flags & 0x10)) {
+                    audio_music_fade_out_and_stop();
+                    g_engine_prefs->flags &= 0xef;
+                    if ((prefs.flags & 2) != 0)
+                        audio_music_fade_in_current();
+                }
+            } else if ((prefs.flags & 0x10) != 0) {
+                audio_music_fade_out_and_stop();
+                g_engine_prefs->flags |= 0x10;
+                if ((prefs.flags & 2) != 0)
+                    audio_music_fade_in_current();
+            }
+#endif
             *g_engine_prefs = prefs;
             if ((fp = bak_fopen("KRONDOR.CFG", "wb")) == (BakFile *)0) {
                 file_error = 1;
@@ -1253,7 +1293,14 @@ int mainmenu_save_prefs_menu_run(void) {
                 break;
             }
             if (dialog_play_record(0x72, 1) == 0) {
+#ifdef V102CD
+                if (g_cd_present != 0)
+                    fp = bak_fopen("CDEFAULT.DAT", "rb");
+                else
+                    fp = bak_fopen("DEFAULT.DAT", "rb");
+#else
                 fp = bak_fopen("DEFAULT.DAT", "rb");
+#endif
                 bak_fread(&prefs, 5, 1, fp);
                 bak_fclose(fp);
                 dirty_checkbox = 1;
@@ -1263,6 +1310,12 @@ int mainmenu_save_prefs_menu_run(void) {
                 dirty_combat = 1;
             }
             continue;
+#ifdef V102CD
+        case 0xd1:
+            if (g_cd_present != 0)
+                prefs.flags ^= 0x10;
+            continue;
+#endif
         }
     }
 

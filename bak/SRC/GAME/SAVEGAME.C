@@ -213,6 +213,10 @@ void far savegame_chapter_start_dispatch(int chapter) {
             itemuse_actor_spawn_clone_inv(src_actor, 0xf, 0x40L, 3L);
             actorspawn_destroy_and_persist(actor_ptr);
             actorspawn_destroy_and_persist(src_actor);
+#ifdef V102CD
+            gstate_event_write(0x1959, 0);
+            gstate_event_write(0x195a, 0);
+#endif
         }
 
     case 7:

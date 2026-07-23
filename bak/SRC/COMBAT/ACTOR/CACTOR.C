@@ -200,6 +200,40 @@ CombatActor *combat_actor_party_add(int class_id) {
     return (CombatActor *)0;
 }
 
+#ifdef V102CD
+CombatActor *far combat_actor_remove(CombatActor *actor) {
+    int i;
+    int removed_slot;
+    CombatActor tmp;
+
+    i = 0;
+    while (i < g_combat_count_A) {
+        if (&g_combat_actors_A[i] == actor)
+            break;
+        i = i + 1;
+    }
+    g_combat_count_A--;
+    g_nCombatActiveCount--;
+    if (i != g_combat_count_A) {
+        tmp = g_combat_actors_A[i];
+        g_combat_actors_A[i] = g_combat_actors_A[g_combat_count_A];
+        g_combat_actors_A[g_combat_count_A] = tmp;
+        combatgrid_tile_set_word(g_combat_actors_A[i].inner->grid_x,
+                                 g_combat_actors_A[i].inner->grid_y,
+                                 (unsigned int)(&g_combat_actors_A[i]));
+    }
+    removed_slot = g_combat_count_A;
+    i = 0;
+    while (i < g_combat_count_B) {
+        if ((g_combat_actors_B[i].inner)->target == actor) {
+            (g_combat_actors_B[i].inner)->target = (CombatActor *)0x0;
+        }
+        i = i + 1;
+    }
+    combat_actor_release_anim_images(actor->inner->class_id);
+    return &g_combat_actors_A[removed_slot];
+}
+#else
 void far combat_actor_remove(CombatActor *actor) {
     int i;
 
@@ -225,6 +259,7 @@ void far combat_actor_remove(CombatActor *actor) {
     }
     combat_actor_release_anim_images(actor->inner->class_id);
 }
+#endif
 
 void combat_actor_register(CombatActor *actor) {
     int i;
@@ -244,7 +279,12 @@ void combat_actor_register(CombatActor *actor) {
 void far combat_actor_grid_remove(CombatActor *actor) {
     int i;
 
+#ifdef V102CD
+    if (combatgrid_tile_terrain(actor->inner->grid_x, actor->inner->grid_y) == 0)
+        combatgrid_tile_set_word(actor->inner->grid_x, actor->inner->grid_y, (unsigned int)actor);
+#else
     combatgrid_tile_set_word(actor->inner->grid_x, actor->inner->grid_y, (unsigned int)actor);
+#endif
     i = 0;
     do {
         if (g_active_combatants[i] == actor) {
@@ -984,7 +1024,9 @@ static void combat_actor_render_status_vfx(CombatActor *actor) {
 
     if (g_bShowActorRosterIndex != 0)
         combatenc_draw_actor_roster_idx(actor);
+#ifndef V102CD
     combat_actor_draw_float_damage(actor);
+#endif
 
     for (slot = actor->inner->status_head; slot != -1; slot = g_pStatusEffectPool[slot].nNext) {
         spell = &g_pSpellDefs[g_pStatusEffectPool[slot].nType];
@@ -1025,6 +1067,9 @@ static void combat_actor_render_status_vfx(CombatActor *actor) {
 
     g_nActorShakeX = 0;
     g_nActorShakeY = 0;
+#ifdef V102CD
+    combat_actor_draw_float_damage(actor);
+#endif
 }
 
 void far combat_actor_play_short_cine(CombatActor *actor, int overlay_id) {
@@ -1411,8 +1456,14 @@ void combat_actor_pick_next(void) {
 
     n_active_alive = 0;
     for (i = 0; i < g_nCombatActiveCount; i++) {
+#ifdef V102CD
+        if (((flags = (int)(signed char)g_pCombatActiveActors[i].inner->flags) & CAF_DEAD) == 0 &&
+            g_pCombatActiveActors[i].cParty_slot != 0)
+            n_active_alive++;
+#else
         if (((flags = (int)(signed char)g_pCombatActiveActors[i].inner->flags) & CAF_DEAD) == 0)
             n_active_alive++;
+#endif
     }
 
     n_other_alive = 0;

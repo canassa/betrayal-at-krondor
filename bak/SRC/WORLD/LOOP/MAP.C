@@ -32,6 +32,9 @@
 #include "SRC/WORLD/ZONE/CZONE.H"
 #include "SRC/WORLD/ENC/HOTSPOT.H"
 #include "SRC/WORLD/MOVE/WORLDCRS.H"
+#ifdef V102CD
+#include "v102.h"
+#endif
 
 #include "globals.h"
 #include "structs.h"
@@ -369,6 +372,12 @@ void far map_main_loop(void) {
                     render_dirty = 1;
                 }
                 break;
+#ifdef V102CD
+            case 0x31:
+                g_bNonRotatingMap = !g_bNonRotatingMap;
+                render_dirty = 1;
+                break;
+#endif
             case 0x21:
                 if (refusal_mode != 0) {
                     dialog_play_record(0xeb, 1);

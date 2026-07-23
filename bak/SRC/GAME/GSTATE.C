@@ -183,6 +183,45 @@ int gstate_temp_file_read_at(unsigned char far *dst_far, unsigned long offset, u
 }
 
 int gstate_temp_file_write_at(unsigned char far *src_far, unsigned long offset, unsigned int bytes) {
+#ifdef V102CD
+    unsigned long lo;
+    unsigned long hi;
+    if (g_pTempGamFp == (BakFile *)0 || offset > 0x51aa9)
+        return 0;
+    switch (g_wLastTempWriteRecordKind) {
+    case 1:
+        lo = 0xad7;
+        hi = 0x90e7;
+        if (offset < lo || offset + bytes > hi)
+            return 0;
+        break;
+    case 2:
+        lo = 0x90e7;
+        hi = lo + 0x281fe;
+        if (offset < lo || offset + bytes > hi)
+            return 0;
+        break;
+    case 3:
+        lo = 0x312e5;
+        hi = lo + 0x94ac;
+        if (offset < lo || offset + bytes > hi)
+            return 0;
+        break;
+    case 4:
+        lo = 0x3a791;
+        hi = 0x51aa9;
+        if (offset < lo || offset + bytes > hi)
+            return 0;
+        break;
+    case 0:
+        lo = 0;
+        hi = 0xad7;
+        if (offset < lo || offset + bytes > hi)
+            return 0;
+        break;
+    }
+    g_wLastTempWriteRecordKind = 0xffff;
+#endif
     if (bak_fseek(g_pTempGamFp, offset, 0) != 0) {
         bak_fseek(g_pTempGamFp, 0, 0);
         if (bak_fseek(g_pTempGamFp, offset, 0) != 0)

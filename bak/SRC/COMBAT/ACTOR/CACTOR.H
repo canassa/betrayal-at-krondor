@@ -12,7 +12,11 @@ extern void combat_actor_register(CombatActor *actor);
 extern void combat_actor_kill_remaining(void);
 extern void combat_actor_kill_remaining_enc(void);
 extern void combat_actor_debug_restore_stats(void);
+#ifdef V102CD
+extern CombatActor *combat_actor_remove(CombatActor *actor);
+#else
 extern void combat_actor_remove(CombatActor *actor);
+#endif
 extern CombatActor *combat_actor_party_add(int class_id);
 extern void combat_actor_release_anim_images(int class_id);
 extern ImageRecord **far combat_actor_rsrc_cache_val(int class_id, int param_2);

@@ -13,12 +13,34 @@
 #include "SRC/AUDIO/ENGINE/AUDDRVST.H"
 #include "SRC/AUDIO/CHAN/AUDCHFID.H"
 #include "SRC/GAME/GSTATE.H"
+#ifdef V102CD
+#include "SRC/IO/IO.H"
+#include "v102.h"
+#endif
 
 /* Music-engine state.  g_alloc_to_pool routes alloc_far into the resource
  * pool while a music chunk loads (POOL.C flips it too, during pool sizing). */
 short g_alloc_to_pool = 0;
 short g_current_music_track = -1;
 unsigned short g_nMusicVolume = 0x7f;
+
+#ifdef V102CD
+static void v102_cdaudio_play_track(int track_id) {
+    register int track;
+    BakFile *fp;
+    long frame_offset;
+
+    track = track_id;
+    track -= 999;
+    fp = bak_fopen("cd.dat", "rb");
+    bak_fseek(fp, (long)(unsigned)((track - 1) << 2), 0);
+    bak_fread(&frame_offset, 4, 1, fp);
+    bak_fclose(fp);
+    v102_cdaudio_stop();
+    v102_cdaudio_set_track_msf(track, -75L, frame_offset);
+    v102_cdaudio_play();
+}
+#endif
 
 void far audio_ambient_tick(void) {
     int sfx_id;
@@ -75,11 +97,17 @@ int audio_music_play(int track_id) {
     if (g_current_music_track != -1) {
         if (music_enabled) {
             music_fade(g_current_music_track, 0, 0x32);
-
-            g_nFrameTickCountdown = 0x15e;
-            while (g_nFrameTickCountdown != 0) {
+#ifdef V102CD
+            if (g_engine_prefs->flags & 0x10) {
+                v102_cdaudio_stop();
+            } else
+#endif
+            {
+                g_nFrameTickCountdown = 0x15e;
+                while (g_nFrameTickCountdown != 0) {
+                }
+                audio_driver_stop(g_current_music_track);
             }
-            audio_driver_stop(g_current_music_track);
         }
         audio_stop(g_current_music_track);
     }
@@ -88,7 +116,12 @@ int audio_music_play(int track_id) {
         pool_reset();
         audio_resource_load_chunk(g_pSfxArchiveStream, track_id);
         if (music_enabled) {
-            audio_start_by_id(track_id);
+#ifdef V102CD
+            if (g_engine_prefs->flags & 0x10) {
+                v102_cdaudio_play_track(track_id);
+            } else
+#endif
+                audio_start_by_id(track_id);
         }
         g_nMusicVolume = 0x7f;
     }
@@ -99,9 +132,16 @@ int audio_music_play(int track_id) {
 
 void audio_music_fade_in_current(void) {
     if (g_current_music_track != -1) {
-        audio_start_by_id(g_current_music_track);
-        audio_set_intensity(g_current_music_track, 0);
-        music_fade(g_current_music_track, g_nMusicVolume, 0x32);
+#ifdef V102CD
+        if (g_engine_prefs->flags & 0x10) {
+            v102_cdaudio_play_track(g_current_music_track);
+        } else
+#endif
+        {
+            audio_start_by_id(g_current_music_track);
+            audio_set_intensity(g_current_music_track, 0);
+            music_fade(g_current_music_track, g_nMusicVolume, 0x32);
+        }
     }
 }
 
@@ -109,6 +149,12 @@ void audio_music_fade_out_and_stop(void) {
     if (g_current_music_track == -1) {
         return;
     }
+#ifdef V102CD
+    if (g_engine_prefs->flags & 0x10) {
+        v102_cdaudio_stop();
+        return;
+    }
+#endif
     music_fade(g_current_music_track, 0, 0x32);
     g_nFrameTickCountdown = 0x15e;
     while (g_nFrameTickCountdown != 0) {
@@ -361,6 +407,11 @@ int far audio_sfx_play_n_times(int sfx_id, int extra_repeats, int blocking) {
     if (g_sound_driver == SNDDRV_NONE) {
         return 0;
     }
+#ifdef V102CD
+    if (sfx_id < 1) {
+        return 0;
+    }
+#endif
 
     if (audio_iter(sfx_id) != 0) {
 

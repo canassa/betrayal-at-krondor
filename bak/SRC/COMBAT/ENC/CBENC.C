@@ -280,6 +280,10 @@ static void far combatenc_stat_roll_draw_line(char *label, int stat_val, int *px
     roll = (int)RND(100);
     if (roll > stat)
         return;
+#ifdef V102CD
+    if (*px >= 0x10e)
+        return;
+#endif
 
     *pcount = 1;
     g_graphics_context.wGfxBlitDstPage = g_graphics_context.wVgaFrontPageBase;

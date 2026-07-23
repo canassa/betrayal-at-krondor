@@ -889,6 +889,9 @@ dispatch:
         x = pSub08->hotspot_action.bHotspot_x;
         y = pSub08->hotspot_action.bHotspot_y;
         actorspawn_destroy_and_persist(actor_record);
+#ifdef V102CD
+        actor_record = 0;
+#endif
         if (hotspotevt_dispatch_at_point(8, x, y, &extra) == 0)
             goto play_9a;
         goto destroy;

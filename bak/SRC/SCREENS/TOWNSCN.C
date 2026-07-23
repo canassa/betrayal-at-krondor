@@ -142,9 +142,15 @@ static int far townscene_load(int chapter, int sub, int preserve) {
             ((Actor far *)g_pCurrentTownScene->pActor)->needsFlush = TRUE;
             {
                 int q;
+#ifdef V102CD
+                q = (int)((long)((unsigned long)pSub->event_state.bRest_gold_unit *
+                                 ((unsigned long)g_gameState.nChapter + 0x13)) /
+                          0x14);
+#else
                 q = (int)((long)((unsigned long)pSub->event_state.bRest_gold_unit *
                                  ((unsigned long)g_gameState.nChapter + 9)) /
                           10);
+#endif
                 pSub->event_state.bPopup_retry_counter = (q > 0xfa) ? 0xfa : (unsigned char)q;
             }
             pSub->event_state.bRest_last_chapter_done = (unsigned char)g_gameState.nChapter;

@@ -245,11 +245,13 @@ void far worldframe_render_chapter_full(void) {
     }
     worldrender_swap_record_table(0, 2);
     g_nPolygonTextureMode = 1;
+#ifndef V102CD
     if (g_pMapIconsTable != 0) {
         blit_image_scaled_centered(
             *g_pMapIconsTable, g_world_widget->viewport.x + (g_world_widget->viewport.width >> 1),
             g_world_widget->viewport.y + (g_world_widget->viewport.height >> 1), 0x4000000);
     }
+#endif
     return;
 }
 

@@ -762,6 +762,9 @@ void far dialog_animate_open(DDXRecord far *dialog, int steps) {
 
 void far dialog_combatant_name_table_init(void) {
     int i;
+#ifdef V102CD
+    int found;
+#endif
 
     i = 0;
     do {
@@ -773,6 +776,15 @@ void far dialog_combatant_name_table_init(void) {
     dialog_cmbt_name_assign_kind(5, 0xf, 0, 0);
     dialog_cmbt_name_assign_kind(3, 0xe, 0, 0);
     dialog_cmbt_name_assign_kind(0, 0x1f, 0, 0);
+#ifdef V102CD
+    found = 0;
+    for (i = found; i < g_gameState.party_count; i++) {
+        if (g_gameState.party_roster[i] == g_gameState.nEvtArgActor0)
+            found = 1;
+    }
+    if (!found)
+        g_gameState.nEvtArgActor0 = gstate_event_read(0x7535);
+#endif
 }
 
 int far dialog_play_record(unsigned long record_key, int modal_flag) {

@@ -1,7 +1,14 @@
 #include <dos.h>
 
 #include "structs.h"
+#ifdef V102CD
+#define g_szVersionString g_szVersionString_decl13
+#endif
 #include "globals.h"
+#ifdef V102CD
+#undef g_szVersionString
+extern char g_szVersionString[16];
+#endif
 #include "r3d.h"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/SYS/RAND.H"
@@ -33,6 +40,10 @@
 #include "SRC/R3D/ACTOR/ACTSHAKE.H"
 #include "SRC/R3D/ACTOR/ACTOROVL.H"
 #include "defines.h"
+#ifdef V102CD
+#include "SRC/GFX/SPRITE/SPRTHNKS.H"
+#include "v102.h"
+#endif
 
 short g_nPolygonTextureMode = 1;
 unsigned short g_nWorldRenderJitter = 0x0000;
@@ -43,9 +54,13 @@ SoundDriverId g_sound_driver = SNDDRV_NONE;
 BakFile *g_pSfxArchiveStream = {0};
 unsigned int _ovrbuffer = 0x0d48;
 unsigned char far *g_pMainScratchBuf = {0};
+#ifdef V102CD
+char g_szVersionString[16] = "Version 1.02 CD";
+#else
 char g_szVersionString[13] = "Version 1.00";
 
 unsigned char _dgroup_pad_403 = 0;
+#endif
 unsigned short g_wSkyColorR = 0x00d7;
 unsigned short g_wSkyColorG = 0x00e4;
 unsigned short g_wSkyColorB = 0x00a8;
@@ -56,6 +71,58 @@ unsigned char g_abActorAnimTemplateRanged[10] = {0x0c, 0xff, 0xff, 0xff, 0xff,
                                                  0xff, 0xff, 0xff, 0xff, 0xff};
 
 void world_render_scene_dispatch(int animate) {
+#ifdef V102CD
+    short saved_heading;
+    if (animate != 0) {
+        rgnenc_corpse_tbl_iterate_22byte();
+    }
+    if (g_full_redraw_needed != 0) {
+        saved_heading = g_world_camera->base.orientation.yaw;
+        if (g_bNonRotatingMap) {
+            g_world_camera->base.orientation.yaw = 0;
+        }
+        switch (g_game_mode) {
+        case 0:
+            world_render_frame_full();
+            break;
+        case 1:
+            world_render_frame_full();
+            break;
+        case 2:
+            worldframe_render_chapter_full();
+            break;
+        }
+        g_world_camera->base.orientation.yaw = saved_heading;
+        if (g_bNonRotatingMap) {
+            if (g_pMapIconsTable != 0) {
+                ((BlitSpriteFn)blit_sprite)(
+                    (int)g_pMapIconsTable[((unsigned)(saved_heading + 0x800)) >> 12],
+                    g_world_widget->viewport.x + (g_world_widget->viewport.width >> 1) - 4,
+                    g_world_widget->viewport.y + (g_world_widget->viewport.height >> 1) - 3);
+            }
+        } else {
+            if (g_pMapIconsTable != 0) {
+                blit_image_scaled_centered(
+                    *g_pMapIconsTable,
+                    g_world_widget->viewport.x + (g_world_widget->viewport.width >> 1),
+                    g_world_widget->viewport.y + (g_world_widget->viewport.height >> 1), 0x4000000);
+            }
+        }
+    } else {
+        switch (g_game_mode) {
+        case 0:
+            world_render_frame(animate);
+            break;
+        case 1:
+            world_render_frame(animate);
+            break;
+        case 2:
+            worldframe_render_chapter(animate);
+            break;
+        }
+    }
+    g_polyRasterState.nRemapTableOff = 0;
+#else
     if (animate != 0) {
         rgnenc_corpse_tbl_iterate_22byte();
     }
@@ -85,6 +152,7 @@ void world_render_scene_dispatch(int animate) {
         }
     }
     g_polyRasterState.nRemapTableOff = 0;
+#endif
 }
 
 void far world_render_frame(int animate) {
@@ -176,11 +244,13 @@ void world_render_frame_full(void) {
     }
 
     g_nPolygonTextureMode = 1;
+#ifndef V102CD
     if (g_pMapIconsTable != 0) {
         blit_image_scaled_centered(
             *g_pMapIconsTable, g_world_widget->viewport.x + (g_world_widget->viewport.width >> 1),
             g_world_widget->viewport.y + (g_world_widget->viewport.height >> 1), 0x4000000);
     }
+#endif
 }
 
 void world_render_tick_objects(void) {

@@ -97,19 +97,25 @@ _DIAG_RE = re.compile(
 )
 
 
-def _check_log(log: str, text: str) -> None:
+def _check_log(log: str, text: str, invalidate_manifest: bool = True) -> None:
     """Hard-fail on any compiler/assembler/linker error found in a build log.
 
     Also invalidates the incremental manifest: the abort leaves the image in an
     unknown state (new sources synced in, MAKE may have deleted objects), and the
     manifest must not claim otherwise — e.g. reverting the broken edit would
     otherwise read as "no source changes" and re-verify old artifacts while the
-    image still holds the broken source. Next ``bak build`` rebuilds clean."""
+    image still holds the broken source. Next ``bak build`` rebuilds clean.
+
+    ``invalidate_manifest=False`` for the v1.02 pass: a 102 compile/link error must
+    NOT poison the base 1.00 manifest — the 102 pass only writes OUT102\\ and never
+    touches the OUT\\ objects the base manifest tracks, so the base build state stays
+    valid regardless of the 102 outcome. It still hard-fails (exit 1)."""
     bad = [ln for ln in (raw.rstrip("\r") for raw in text.splitlines()) if _DIAG_RE.search(ln)]
     if not bad:
         return
-    from . import incremental  # late: avoid widening vm's import surface at module load
-    incremental.MANIFEST.unlink(missing_ok=True)
+    if invalidate_manifest:
+        from . import incremental  # late: avoid widening vm's import surface at module load
+        incremental.MANIFEST.unlink(missing_ok=True)
     typer.secho(f"❌ {log}: tool errors — objects may be stale, nothing downstream "
                 "can be trusted (build state invalidated; next build is clean):", fg="red", err=True)
     for ln in bad:
@@ -172,6 +178,48 @@ def run_kvm_link(compile_kvm: bool, full_link: bool = True) -> str:
         _check_log(log, text)
         out.append(text)
     return "\n".join(out)
+
+
+def run_kvm_link_102() -> str:
+    """One KVM boot for the v1.02 CD pass: ``make kvmobjs102`` (the 30 -DV102CD C
+    recompiles + the new CDAUDIO TASM module, at the real clock), then pin the DOS
+    clock to 1994-03-21 and ``make link102`` (``tlink @KRN102.RSP`` → OUT102\\KRONDOR.EXE).
+
+    The base 1.00 objects in OUT\\ (link inputs for every unchanged unit, plus the
+    whole TCG island) must already exist — the caller runs a green base build first.
+    Folds compile + link into a single boot exactly like ``run_kvm_link``; the 1994
+    OVRINFO date comes from a mid-session DATE/TIME (the output is named KRONDOR.EXE
+    so the OVRINFO self-name is authentic — only the directory differs from 1.00)."""
+    day, tod = paths.RTC_102.split("T")  # 1994-03-21 , 12:00:00
+    y, mo, dd = day.split("-")
+    bat = _DOS_HEAD
+    bat += "make kvmobjs102 > C:\\KVM102.LOG\r\n"
+    bat += f"DATE {mo}-{dd}-{y}\r\nTIME {tod}\r\n"
+    bat += "make link102 > C:\\LINK102.LOG\r\n"
+    bat += "c:\\EXIT.COM\r\n"
+    _run(bat, "kvm", 200, rtc=False)  # real clock at boot; DATE cmd pins 1994 for the link
+    out = []
+    for log in ("KVM102.LOG", "LINK102.LOG"):
+        dst = paths.WORK / log
+        dst.unlink(missing_ok=True)
+        freedos.mcopy_out(paths.IMG, f"/{log}", paths.WORK)
+        text = dst.read_text(errors="replace") if dst.exists() else "<no log>"
+        _check_log(log, text, invalidate_manifest=False)
+        out.append(text)
+    return "\n".join(out)
+
+
+def pull_exe_102() -> Path:
+    """Copy OUT102\\KRONDOR.EXE out of the image to the host as work/KRONDOR102.EXE
+    (a distinct name so it never clobbers the 1.00 work/KRONDOR.EXE). Staged through a
+    scratch subdir because the in-image basename is KRONDOR.EXE (mcopy preserves it)."""
+    stage = paths.WORK / "out102"
+    stage.mkdir(parents=True, exist_ok=True)
+    freedos.mcopy_out(paths.IMG, "/OUT102/KRONDOR.EXE", stage)
+    dst = paths.WORK / "KRONDOR102.EXE"
+    dst.unlink(missing_ok=True)
+    (stage / "KRONDOR.EXE").replace(dst)
+    return dst
 
 
 def count_objs() -> int:

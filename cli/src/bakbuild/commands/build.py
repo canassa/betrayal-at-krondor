@@ -75,6 +75,39 @@ def _verify() -> bool:
     return ok
 
 
+def _build_102() -> bool:
+    """The v1.02 CD pass, run AFTER a green 1.00 base build (its OUT\\ objects are the
+    link inputs for every unchanged/TCG unit). One KVM boot compiles the 30 -DV102CD
+    recompiles + the new CDAUDIO module (kvmobjs102) at the real clock, then pins the
+    1994-03-21 clock and links (link102 → OUT102\\KRONDOR.EXE). The result is pulled to
+    work/KRONDOR102.EXE and fingerprinted against ARTIFACTS_102.
+
+    MAKE dependency-checks keep the 102 pass cheap on a warm image (only stale OUT102\\
+    objects rebuild), so it simply always runs — no separate 102 manifest. A 102
+    failure never poisons the base 1.00 manifest (vm._check_log invalidate_manifest=
+    False for the 102 logs)."""
+    typer.echo("── KVM boot (v1.02): make kvmobjs102 → set 1994 clock → make link102 ──")
+    typer.echo(vm.run_kvm_link_102()[-3000:])
+    exe = vm.pull_exe_102()
+    name, size, sha = paths.ARTIFACTS_102[0]
+    # verify the pulled work/KRONDOR102.EXE against the shipped 1.02 fingerprint
+    if not exe.exists():
+        typer.secho(f"❌ {name} (1.02 CD): not produced", fg="red")
+        return False
+    data = exe.read_bytes()
+    got_size, got_sha = len(data), hashlib.sha256(data).hexdigest()
+    if got_size == size and got_sha == sha:
+        typer.secho(f"✅ {name} (1.02 CD): BYTE-IDENTICAL "
+                    f"({got_size} bytes, sha256 {got_sha}) → work/KRONDOR102.EXE", fg="green")
+        return True
+    if got_size != size:
+        typer.secho(f"❌ {name} (1.02 CD): size differs: {got_size} vs {size}", fg="red")
+    else:
+        typer.secho(f"❌ {name} (1.02 CD): sha256 differs: {got_sha}\n"
+                    f"   expected {' ' * len(name)}       {sha}", fg="red")
+    return False
+
+
 def _link() -> bool:
     typer.echo("── KVM link+pack: make all (tlink KRONDOR.EXE → PACKOVL → VMCODE.OVL/SX.OVL) ──")
     typer.echo(vm.run_make("all", "kvm", 200, "LINK.LOG")[-3000:])
@@ -183,10 +216,16 @@ def _incremental_build() -> bool:
 def build(
     stage: Stage = typer.Argument(Stage.all, help="which stage to run (default: all)"),
     clean: bool = typer.Option(False, "--clean", "-c", help="force a hermetic from-scratch build"),
+    version: str = typer.Option("100", "--version", help="build 100 (default) or 102 (CD)"),
 ) -> None:
     """Compile (KVM + TCG passes) → link, then cmp vs the shipped KRONDOR.EXE.
 
-    ``bak build`` is incremental by default; ``--clean`` forces a full rebuild."""
+    ``bak build`` is incremental by default; ``--clean`` forces a full rebuild.
+    ``--version 102`` additionally builds the v1.02 CD KRONDOR.EXE (a surgical patch
+    relinked from OUT102\\) after a green 1.00 base build."""
+    if version not in ("100", "102"):
+        typer.secho(f"❌ --version must be 100 or 102 (got {version!r})", fg="red", err=True)
+        raise typer.Exit(2)
     s = stage.value
     if s == "all":
         if clean:
@@ -199,6 +238,13 @@ def build(
             raise typer.Exit(1)
         # the image now provably holds 1993 codegen — refresh `bak diff`'s store
         typer.echo(f"reference store refreshed ({vm.pull_refs()} objs → work/ref/)")
+        if version == "102":
+            # the base build is green (OUT\ holds the 1.00 objs the 102 link reuses);
+            # now build + verify the v1.02 CD EXE. A 102 failure exits 1 but leaves the
+            # base manifest and reference store intact.
+            typer.echo("── v1.02 CD pass ──")
+            if not _build_102():
+                raise typer.Exit(1)
         return
 
     # Explicit single-stage runs stay as low-level debugging drivers.

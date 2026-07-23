@@ -43,6 +43,10 @@ extern void cspell_perform_ranged_hit(CombatActor *param_1, CombatActor *param_2
 extern void cspell_select_target_tile(void);
 extern void cspell_actor_walk_with_sound(CombatActor *actor, CombatActor *target);
 extern void cspell_try_add_status_effect(CombatActor *actor, int stat_idx, int value);
+#ifdef V102CD
+extern void far combat_ai_resolve_hit(CombatActor *attacker, CombatActor *target, int damage,
+                                      int dir);
+#endif
 extern void cspell_apply_damage_with_recoil(CombatActor *attacker, CombatActor *target,
                                             int spell_id, int damage);
 extern int cspell_count_terrain7_tiles(void);

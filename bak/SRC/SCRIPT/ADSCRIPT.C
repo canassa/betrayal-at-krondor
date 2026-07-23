@@ -19,8 +19,17 @@
 #include "SRC/SCRIPT/TTM.H"
 
 
-unsigned short g_aTtmTextStringOffsets[9] = {0x0dbd, 0x0de6, 0x0000, 0x0000, 0x0000,
-                                             0x0000, 0x0000, 0x0000, 0x0000};
+extern char g_aTtmTextBuf0[41];
+extern char g_aTtmTextBuf1[41];
+unsigned short g_aTtmTextStringOffsets[9] = {(unsigned short)g_aTtmTextBuf0,
+                                             (unsigned short)g_aTtmTextBuf1,
+                                             0x0000,
+                                             0x0000,
+                                             0x0000,
+                                             0x0000,
+                                             0x0000,
+                                             0x0000,
+                                             0x0000};
 ScriptObject far *g_pScriptObjectListHead = {0};
 ScriptObject far *g_pCurScriptObject = {0};
 ScriptAnimNode *g_pScriptObjectChainHead = {0};

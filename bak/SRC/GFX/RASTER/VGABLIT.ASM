@@ -392,7 +392,7 @@ _vgablit_span_emit_textured:
 	mov	word ptr cs:[_desc_cnt],1 ; 0144: 2ec70624000100
 	mov	cs:[_desc_seg],bx	; 014b: 2e891e2600
 	mov	cs:[_desc_dx],dx	; 0150: 2e89162800
-	mov	si,22h			; 0155: be2200
+	mov	si,offset _desc_off	; 0155: be2200
 	mov	bx,cs			; 0158: 8ccb
 	mov	es,bx			; 015a: 8ec3
 	push	cs			; 015c: 0e

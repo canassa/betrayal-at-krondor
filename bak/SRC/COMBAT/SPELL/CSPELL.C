@@ -649,7 +649,11 @@ void far cspell_perform_ranged_hit(CombatActor *param_1, CombatActor *param_2, i
     int hit;
 
     hit = 1;
+#ifdef V102CD
+    cspell_apply_damage_armor_wear(param_1, param_3);
+#else
     combat_arena_apply_damage(param_1, param_3, 0, 0, 0, 1);
+#endif
     param_1->inner->flags &= ~CAF_KNOCKBACK;
     audio_play(0x4f);
     param_2 = world_rndr_ranged_attack_anim(param_1, param_2, &hit, 4, 100, -1);
@@ -663,6 +667,9 @@ void far cspell_select_target_tile(void) {
     int tile_chosen;
     int tile_in_range;
     unsigned short consumed;
+#ifdef V102CD
+    int valid;
+#endif
 
     tile_chosen = 0;
     while (!tile_chosen) {
@@ -677,6 +684,16 @@ void far cspell_select_target_tile(void) {
         show_invalid_overlay:
             world_render_with_overlay(MK_FP(0, 0xffff));
         }
+#ifdef V102CD
+        screen_frame_present();
+        valid = (combatgrid_tile_is_blocked((char)g_cursor_tile_x, (char)g_cursor_tile_y) == 0 &&
+                 combatgrid_tile_terrain_field((char)g_cursor_tile_x, (char)g_cursor_tile_y) != 3);
+        if (combat_arena_wait_confirm_cancel() != 0) {
+            if (valid && tile_in_range) {
+                tile_chosen = 1;
+            }
+        }
+#else
         screen_frame_present();
         if (combat_arena_wait_confirm_cancel() != 0) {
             if (combatgrid_tile_is_blocked((char)g_cursor_tile_x, (char)g_cursor_tile_y) == 0 &&
@@ -684,6 +701,7 @@ void far cspell_select_target_tile(void) {
                 tile_chosen = 1;
             }
         }
+#endif
     }
 }
 
@@ -960,7 +978,11 @@ static void far cspell_aoe_storm_damage_all(CombatActor *caster, CombatActor *ta
                                                            1, 1);
                             }
 
+#ifdef V102CD
+                            cspell_apply_damage_armor_wear(caster, 3);
+#else
                             combat_arena_apply_damage(caster, 3, 0, 0, 0, 1);
+#endif
                             caster->inner->flags &= ~CAF_KNOCKBACK;
                         }
                     }
@@ -1165,6 +1187,41 @@ int cspell_compute_effect_magnitude(CombatActor *actor, int level, int spell_id)
     }
     return result;
 }
+
+#ifdef V102CD
+void far combat_ai_resolve_hit(CombatActor *attacker, CombatActor *target, int damage, int dir) {
+    int hpBefore;
+    int staminaBefore;
+    int b;
+
+    if ((attacker == (CombatActor *)0x0) || (cspell_stat_effect_find_type(attacker, 0x1f) == -1)) {
+        hpBefore = target->stats[0].base;
+        staminaBefore = target->stats[1].base;
+        combat_arena_actor_set_anim_pose(target, '\x04');
+        cspell_apply_damage_armor_wear(attacker, damage);
+        attacker->inner->flags &= ~CAF_KNOCKBACK;
+        if (((b = target->cParty_slot) == '\0') ||
+            ((((b = (char)g_gameState.abActorStatusRanks[target->cParty_slot - 1][0]) == '\0' &&
+               (b = (char)g_gameState.abActorStatusRanks[target->cParty_slot - 1][1]) == '\0' &&
+               (b = (char)g_gameState.abActorStatusRanks[target->cParty_slot - 1][2]) == '\0' &&
+               (b = (char)g_gameState.abActorStatusRanks[target->cParty_slot - 1][3]) == '\0' &&
+               (b = (char)g_gameState.abActorStatusRanks[target->cParty_slot - 1][5]) == '\0' &&
+               (b = (char)g_gameState.abActorStatusRanks[target->cParty_slot - 1][6]) == '\0')))) {
+            stat_combatant_modify(target, 0x10, (long)(dir << 8), 0x50);
+        }
+        target->inner->dmg_value =
+            -(((target->stats[0].base - hpBefore) + target->stats[1].base) - staminaBefore);
+        target->inner->dmg_frames_left = '\b';
+        stat_actor_get(target, 0, 0);
+        stat_actor_get(target, 1, 0);
+        if (attacker != (CombatActor *)0x0) {
+            combat_actor_anim0_if_not_dead(attacker,
+                                           combat_actor_heading_from_to(attacker, target));
+        }
+    }
+    return;
+}
+#endif
 
 void cspell_apply_damage_with_recoil(CombatActor *attacker, CombatActor *target, int spell_id,
                                      int damage) {
@@ -1401,11 +1458,22 @@ void cspell_resolve_cast(CombatActor *caster, CombatActor *target, int spell_id,
                 magnitude = 0;
                 break;
             case 0x20:
+#ifdef V102CD
+                combat_actor_grid_remove(target);
+                if ((CombatActor *)combatgrid_tile_terrain(target->inner->grid_x,
+                                                           target->inner->grid_y) == target) {
+                    combatgrid_tile_set_word(target->inner->grid_x, target->inner->grid_y, 0);
+                }
+                target->inner->grid_x = target->inner->grid_y = -1;
+                combat_arena_actor_die(target, 0);
+                break;
+#else
                 combat_actor_grid_remove(target);
                 combatgrid_tile_set_word(target->inner->grid_x, target->inner->grid_y, 0);
                 target->inner->grid_x = target->inner->grid_y = -1;
                 combat_arena_actor_die(target, 0);
                 break;
+#endif
             case 0x24:
                 audio_play(0x4d);
                 cspell_status_effect_add(target, 0xd, 0, intensity * pSpell->nEffect_param,
@@ -2396,7 +2464,11 @@ static void far cspell_actor_tick_status_effects(CombatActor *actor) {
             case 1:
                 cspell_invoke_effect(actor, &actor, 0x20, &chainFlag, 0);
                 combatgrid_tile_set_word(actor->inner->grid_x, actor->inner->grid_y, 0);
+#ifdef V102CD
+                actor = combat_actor_remove(actor);
+#else
                 combat_actor_remove(actor);
+#endif
             }
         }
         slot = next;

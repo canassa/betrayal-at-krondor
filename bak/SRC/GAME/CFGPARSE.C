@@ -6,9 +6,16 @@
 #include "structs.h"
 #include "SRC/GAME/CFGPARSE.H"
 #include "SRC/AUDIO/RES/AUDRESIN.H"
+#ifdef V102CD
+#include "v102.h"
+#endif
 
 char *g_soundDrvTokens[5] = {"adl.drv", "mt32.drv", "sndblast.drv", "std.drv", "genmidi.drv"};
 SoundDriverId g_soundDrvIds[5] = {SNDDRV_ADL, SNDDRV_M32, SNDDRV_SBP, SNDDRV_STD, SNDDRV_GMD};
+#ifdef V102CD
+char *g_base_dir = "x:";
+char g_cd_drive_letter = 'x';
+#endif
 /**
  * @brief Cheat-menu unlock flag, read by the 3-D world view.
  *
@@ -40,6 +47,9 @@ int g_cfgTempDrive = 0x0000;
  * overwrites the existing one; while FALSE the save is silent.
  */
 bool16 g_cfgBookmarkVerify = TRUE;
+#ifdef V102CD
+int g_bNonRotatingMap = 0;
+#endif
 
 void parse_krondor_cfg(void) {
     char token[40];
@@ -81,6 +91,21 @@ void parse_krondor_cfg(void) {
             fscanf(fp, " %40s", token);
             fscanf(fp, " %40s", token);
             g_cfgBookmarkVerify = atoi(token);
+#ifdef V102CD
+        } else if (stricmp("NonRotatingMap", token) == 0) {
+            fscanf(fp, " %40s", token);
+            fscanf(fp, " %40s", token);
+            g_bNonRotatingMap = atoi(token);
+#endif
         }
     }
+#ifdef V102CD
+    fclose(fp);
+    fp = fopen("drive.cfg", "rb");
+    fscanf(fp, "%40s", token);
+    *g_base_dir = token[0];
+    fscanf(fp, "%40s", token);
+    g_cd_drive_letter = token[0];
+    fclose(fp);
+#endif
 }

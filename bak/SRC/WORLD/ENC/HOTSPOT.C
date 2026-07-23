@@ -1000,7 +1000,7 @@ void hotspotevt_done_reset_all(void) {
     do {
         gstate_event_write((unsigned)(p + 200), 0);
         p = (unsigned short *)((int)p + 1);
-    } while (p < (unsigned short *)&g_bCombatGridTerrainFeaturesEnabled);
+    } while (p < (unsigned short *)0x12c0);
 }
 
 void far hotspotevt_done_set(void) {

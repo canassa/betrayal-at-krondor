@@ -34,3 +34,13 @@ ARTIFACTS = (
 )
 
 RTC = "1993-06-16T12:00:00"  # TLINK stamps the OVRINFO date from the VM clock
+
+# The v1.02 CD build. Only KRONDOR.EXE differs from 1.00 (VMCODE.OVL/SX.OVL are
+# byte-identical across versions — no 102 variants). The 1.02 EXE is a surgical
+# patch: 30 TUs recompiled -DV102CD + the all-new CDAUDIO resident module, relinked
+# via KRN102.RSP. Its OVRINFO date is stamped from a 1994-03-21 VM clock.
+ARTIFACTS_102 = (
+    ("KRONDOR.EXE", 456048, "e254770143e003dbac55b739e9efddfe84a70cbc5a8186f1bf79f38386056a59"),
+)
+
+RTC_102 = "1994-03-21T12:00:00"  # TLINK stamps the 1.02 OVRINFO date from the VM clock

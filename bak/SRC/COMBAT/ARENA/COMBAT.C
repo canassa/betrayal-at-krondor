@@ -240,7 +240,11 @@ void far combat_arena_actor_die(CombatActor *actor, int play_anim) {
             cspell_status_effect_remove(actor, slot);
             combatgrid_tile_set_word(actor->inner->grid_x, actor->inner->grid_y, 0);
             if ((actor->inner->flags & CAF_AI_SUMMON) != 0) {
+#ifdef V102CD
+                actor = combat_actor_remove(actor);
+#else
                 combat_actor_remove(actor);
+#endif
                 goto LAB_600f_0468;
             }
             removed = 1;
@@ -507,6 +511,14 @@ void far combat_arena_melee_attack(CombatActor *attacker, CombatActor *defender,
                     case 0x3a:
                         sound_id = 0x1a;
                         goto do_audio;
+#ifdef V102CD
+                    case 0x1d:
+                    case 0x1f:
+                    case 0x20:
+                    case 0x21:
+                        sound_id = 0x42;
+                        goto do_audio;
+#endif
                     }
                     if (!cbstat_find_intact_equip_cat(attacker, 3)) {
                         sound_id = 0x41;
@@ -539,6 +551,22 @@ void far combat_arena_melee_attack(CombatActor *attacker, CombatActor *defender,
                         audio_play(0x13);
                     } else {
 
+#ifdef V102CD
+                        if (cbstat_find_intact_equip_cat(defender, 3) != (ItemRecord far *)0 &&
+                            cbstat_find_intact_equip_cat(attacker, 3) != (ItemRecord far *)0)
+                            goto melee_parry_clang;
+                        if (defender->inner->class_id == 0x2c) {
+                        melee_parry_clang:
+                            audio_play(0x43);
+                        } else {
+                            if (cbstat_find_intact_equip_cat(defender, 3) == (ItemRecord far *)0 &&
+                                cbstat_find_intact_equip_cat(attacker, 3) == (ItemRecord far *)0) {
+                                audio_play(7);
+                            } else {
+                                audio_play(0x42);
+                            }
+                        }
+#else
                         if (cbstat_find_intact_equip_cat(defender, 3) != (ItemRecord far *)0 &&
                             cbstat_find_intact_equip_cat(attacker, 3) != (ItemRecord far *)0) {
                             audio_play(0x43);
@@ -550,6 +578,7 @@ void far combat_arena_melee_attack(CombatActor *attacker, CombatActor *defender,
                                 audio_play(0x42);
                             }
                         }
+#endif
                     }
                 }
             }
@@ -605,6 +634,14 @@ void far combat_arena_resolve_melee_swing(CombatActor *attacker, CombatActor *de
             case 0x3a:
                 sound_id = 0x1a;
                 break;
+#ifdef V102CD
+            case 0x1d:
+            case 0x1f:
+            case 0x20:
+            case 0x21:
+                sound_id = 0x42;
+                break;
+#endif
             default:
                 if (cbstat_find_intact_equip_cat(attacker, 3) == (ItemRecord far *)0x0) {
                     sound_id = 0x41;
@@ -632,6 +669,22 @@ void far combat_arena_resolve_melee_swing(CombatActor *attacker, CombatActor *de
                 }
                 audio_play(0x13);
             } else {
+#ifdef V102CD
+                if (cbstat_find_intact_equip_cat(defender, 3) != (ItemRecord far *)0x0 &&
+                    cbstat_find_intact_equip_cat(attacker, 3) != (ItemRecord far *)0x0)
+                    goto swing_parry_clang;
+                if (defender->inner->class_id == 0x2c) {
+                swing_parry_clang:
+                    audio_play(0x43);
+                } else {
+                    if (cbstat_find_intact_equip_cat(defender, 3) == (ItemRecord far *)0x0 &&
+                        cbstat_find_intact_equip_cat(attacker, 3) == (ItemRecord far *)0x0) {
+                        audio_play(7);
+                    } else {
+                        audio_play(0x42);
+                    }
+                }
+#else
                 if (cbstat_find_intact_equip_cat(defender, 3) != (ItemRecord far *)0x0 &&
                     cbstat_find_intact_equip_cat(attacker, 3) != (ItemRecord far *)0x0) {
                     audio_play(0x43);
@@ -643,6 +696,7 @@ void far combat_arena_resolve_melee_swing(CombatActor *attacker, CombatActor *de
                         audio_play(0x42);
                     }
                 }
+#endif
             }
         }
         if (combat_actor_enc_lookup_field2(defender) != 0 &&
@@ -1710,6 +1764,10 @@ void far combat_arena_resume_dispatch(int command_id, int *p_spell_result, int *
 
     switch (command_id) {
     case 0x0c:
+#ifdef V102CD
+        if (g_gameState.nChapter == 8)
+            return;
+#endif
         target = (CombatActor *)combat_arena_pick_target_actor(0);
         if (target != 0)
             combat_arena_actor_die(target, 1);
@@ -2156,6 +2214,10 @@ CombatActor *combat_arena_disp_spell_action(int *param_1, int *param_2, int *par
                 case 6:
                     if (combatgrid_tile_is_blocked((unsigned char)g_cursor_tile_x, (unsigned char)g_cursor_tile_y))
                         break;
+#ifdef V102CD
+                    if (combatgrid_tile_walkable_kind(g_cursor_tile_x, g_cursor_tile_y, -1) != 0)
+                        break;
+#endif
                     goto validate_common;
                 }
             }
@@ -2407,6 +2469,9 @@ void far combat_arena_actor_turn_loop(int encounter_id, int *p_status, int b_has
     stateB = 1;
     turnInact = 0;
     spellRecId = -1;
+#ifdef V102CD
+    g_acting_actor = 0;
+#endif
     *p_status = -1;
     g_encounter_id = encounter_id;
     screen_cursor_show_busy();
@@ -2521,7 +2586,15 @@ void far combat_arena_actor_turn_loop(int encounter_id, int *p_status, int b_has
         if (*p_status == 3)
             goto LAB_600f_3c8d;
         *p_status = 0;
+#ifdef V102CD
+        if (g_acting_actor != (CombatActor *)0) {
+            g_gameState.nEvtArgActor0 = g_acting_actor->cParty_slot + -1;
+        } else {
+            g_gameState.nEvtArgActor0 = 0;
+        }
+#else
         g_gameState.nEvtArgActor0 = g_acting_actor->cParty_slot + -1;
+#endif
         if (combatgrid_any_terrain_6() != 0) {
             dialog_play_record(0x6b, 0);
         } else {

@@ -12,6 +12,9 @@
 #include "SRC/R3D/SCENE/WORLDFRM.H"
 #include "SRC/COMBAT/SPELL/SPELLFX.H"
 #include "SRC/WORLD/ENC/RGNENC.H"
+#ifdef V102CD
+#include "v102.h"
+#endif
 
 short g_nVisibleEntryCount;
 unsigned short g_wVisibleEntrySegment;
@@ -403,12 +406,24 @@ void proxscan_world_objects(long *p_pos) {
 void proxscan_paged_dispatch_all(void) {
     int i;
     long *party_pos;
+#ifdef V102CD
+    short saved_heading;
+#endif
 
     party_pos = &g_world_camera->base.pos.xy.nWorld_x;
+#ifdef V102CD
+    saved_heading = g_world_camera->base.orientation.yaw;
+    if (g_bNonRotatingMap) {
+        g_world_camera->base.orientation.yaw = 0;
+    }
+#endif
     for (i = 0; i < g_nCombat_zone_count; i++) {
         proxscan_paged_list_dispatch(g_apCombat_zone_actor_lists[i], party_pos);
     }
     proxscan_paged_dispatch_by_type(party_pos);
+#ifdef V102CD
+    g_world_camera->base.orientation.yaw = saved_heading;
+#endif
 }
 
 void proxscan_paged_list_dispatch(VisibleEntryList *list, long *party_pos) {
@@ -489,13 +504,25 @@ void proxscan_paged_dispatch_by_type(long *p_coords) {
 void far proxscan_draw_cmap_inset_markers(void) {
     long *position;
     int i;
+#ifdef V102CD
+    short saved_heading;
+#endif
 
     position = &g_world_camera->base.pos.xy.nWorld_x;
+#ifdef V102CD
+    saved_heading = g_world_camera->base.orientation.yaw;
+    if (g_bNonRotatingMap) {
+        g_world_camera->base.orientation.yaw = 0;
+    }
+#endif
     for (i = 0; i < g_nCombat_zone_count; i++) {
         proxscan_draw_zone_vis_marks(g_apCombat_zone_actor_lists[i], position);
     }
     proxscan_draw_visible_markers(position);
     proxscan_draw_fixed_object_marks(position);
+#ifdef V102CD
+    g_world_camera->base.orientation.yaw = saved_heading;
+#endif
     return;
 }
 
@@ -608,13 +635,25 @@ void far proxscan_draw_fixed_object_marks(long *p_position) {
 void far proxscan_broadcast_scene_events(void) {
     long *position;
     int i;
+#ifdef V102CD
+    short saved_heading;
+#endif
 
     position = &g_world_camera->base.pos.xy.nWorld_x;
+#ifdef V102CD
+    saved_heading = g_world_camera->base.orientation.yaw;
+    if (g_bNonRotatingMap) {
+        g_world_camera->base.orientation.yaw = 0;
+    }
+#endif
     for (i = 0; i < g_nCombat_zone_count; i = i + 1) {
         proxscan_rndr_zone_recs_near(g_apCombat_zone_actor_lists[i], position);
     }
     proxscan_draw_vis_marks_near(position);
     proxscan_notify_actors_near(position);
+#ifdef V102CD
+    g_world_camera->base.orientation.yaw = saved_heading;
+#endif
     return;
 }
 

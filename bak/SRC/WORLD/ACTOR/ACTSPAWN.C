@@ -296,7 +296,11 @@ void far actorspawn_npc_prox_periodic(Actor far *actor) {
             score /= pProx->bIntensity / 2 + 1;
         }
         if (pProx->bHundred_flag != 0) {
+#ifdef V102CD
+            score = 0;
+#else
             score /= 100;
+#endif
         }
         if (pProx->bFlags & 4) {
             score /= 0x32;

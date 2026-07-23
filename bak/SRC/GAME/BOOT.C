@@ -50,6 +50,10 @@ int g_nEmsResourcesEnabled = 0;
 unsigned short g_wEmmPagesFree = 0x0000;
 char g_szVmcodeOvl[11] = "vmcode.ovl";
 
+#ifdef V102CD
+#include "v102.h"
+#endif
+
 void boot_start_dat_load(void) {
     BakFile *stream;
 
@@ -82,11 +86,19 @@ void boot_active_window_free(void) {
 }
 
 void far boot_audio_init(void) {
+#ifdef V102CD
+    g_cd_present = v102_cddrive_detect(g_cd_drive_letter);
+#endif
     if (g_sound_driver == SNDDRV_SBP) {
         audio_driver_init(SNDDRV_ADL, 0, 0, "sx.ovl");
     } else {
         audio_driver_init(g_sound_driver, -2, 0, "sx.ovl");
     }
+#ifdef V102CD
+    if ((g_sound_driver == SNDDRV_STD || g_sound_driver == SNDDRV_NONE) && g_cd_present != 0) {
+        g_sound_driver = (SoundDriverId)9;
+    }
+#endif
     g_pSfxArchiveStream = cached_file_open("frp.sx");
     audio_preload_ui_sfx();
     pool_init();
@@ -96,6 +108,9 @@ void boot_sfx_resources_release(void) {
     audio_sfx_stop_environment_set();
     cached_file_close(g_pSfxArchiveStream);
     g_pSfxArchiveStream = (BakFile *)0x0;
+#ifdef V102CD
+    v102_cdaudio_stop();
+#endif
     sfx_subsystem_teardown();
     return;
 }

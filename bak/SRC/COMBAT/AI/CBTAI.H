@@ -14,7 +14,9 @@ extern int combat_ai_try_aoe_cast_spell_7(CombatActor *actor);
 extern void combat_ai_actor_cast_spell(CombatActor *caster, CombatActor *target, int spell_id);
 extern void combat_ai_resolve_attack_attempt(CombatActor *attacker, CombatActor *target,
                                              int spell_id);
+#ifndef V102CD
 extern void combat_ai_resolve_hit(CombatActor *attacker, CombatActor *target, int damage, int dir);
+#endif
 extern int combat_ai_pick_action(CombatActor *actor);
 extern int combat_ai_execute_turn(CombatActor *actor, int param_2, unsigned int param_3);
 extern int combat_ai_pick_heal_spell(CombatActor *caster, CombatActor *target);

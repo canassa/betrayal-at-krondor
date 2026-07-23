@@ -53,27 +53,33 @@ void far combataiact_random_move_attack(CombatActor *actor) {
     actor->inner->pad_6[0] = (unsigned char)g_cursor_tile_x;
     actor->inner->pad_6[1] = (unsigned char)g_cursor_tile_y;
     combataipath_actor_walk_path(actor, 0);
-    roll = RND(100);
-    halfStat = (int)stat_actor_get(actor, 0, 0) >> 1;
-    target = combatenc_find_nearest_actor(actor, &distance);
-    if (distance <= 1) {
-        combat_arena_melee_attack(actor, target, RNDR(0x19, 0x31));
-    } else {
-        if (!((halfStat != 1) && (distance >= 2) && ((int)roll < 0x50) &&
-              (combat_actor_trace_proj_path(actor, target, 1) != 0))) {
-            combatenc_actor_enter_defense(actor);
-            if (0x32 < (int)roll) {
-                combatenc_set_flag8_clear_flag1(actor);
-            }
+#ifdef V102CD
+    if ((actor->inner->flags & 2) == 0) {
+#endif
+        roll = RND(100);
+        halfStat = (int)stat_actor_get(actor, 0, 0) >> 1;
+        target = combatenc_find_nearest_actor(actor, &distance);
+        if (distance <= 1) {
+            combat_arena_melee_attack(actor, target, RNDR(0x19, 0x31));
         } else {
-            if ((int)roll < 0x32) {
-                cspell_resolve_cast(actor, target, 5, halfStat);
+            if (!((halfStat != 1) && (distance >= 2) && ((int)roll < 0x50) &&
+                  (combat_actor_trace_proj_path(actor, target, 1) != 0))) {
+                combatenc_actor_enter_defense(actor);
+                if (0x32 < (int)roll) {
+                    combatenc_set_flag8_clear_flag1(actor);
+                }
             } else {
-                cspell_resolve_cast(actor, target, 4, halfStat);
+                if ((int)roll < 0x32) {
+                    cspell_resolve_cast(actor, target, 5, halfStat);
+                } else {
+                    cspell_resolve_cast(actor, target, 4, halfStat);
+                }
+                return;
             }
-            return;
         }
+#ifdef V102CD
     }
+#endif
     return;
 }
 
@@ -142,6 +148,10 @@ void far combataiact_actor_melee_attack(CombatActor *actor) {
 
     hit = 1;
     target = combatenc_find_nearest_actor(actor, &distance);
+#ifdef V102CD
+    if (target == (CombatActor *)0)
+        return;
+#endif
     if (combat_actor_trace_proj_path(actor, target, 1) != 0 && distance > 1) {
         combat_actor_play_anim_sprite4(actor, combat_actor_heading_from_to(actor, target));
         audio_play(0x51);

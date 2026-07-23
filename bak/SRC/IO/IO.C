@@ -8,6 +8,9 @@
 #include "structs.h"
 #include "SRC/IO/IO.H"
 #include "SRC/SYS/DOSMEM.H"
+#ifdef V102CD
+#include "v102.h"
+#endif
 
 short g_bak_io_error;
 void far *g_int24_old_vector;
@@ -281,6 +284,9 @@ void bak_init_resources(void) {
     char *filename_ptr;
     register FILE *fp;
     register BakArchive *arc;
+#ifdef V102CD
+    char path[80];
+#endif
 
     if (g_bak_initialized != 0)
         return;
@@ -291,9 +297,17 @@ void bak_init_resources(void) {
 
     g_bak_initialized = 1;
 
+#ifdef V102CD
+    strcpy(path, g_base_dir);
+    strcat(path, "krondor.rmf");
+    filename_ptr = path;
+    if ((fp = fopen(filename_ptr, "rb")) == 0)
+        return;
+#else
     filename_ptr = "krondor.rmf";
     if ((fp = fopen(filename_ptr, "rb")) == 0)
         return;
+#endif
 
     fread(&read_count, 2, 1, fp);
     fread(&g_bak_hash_seed, 2, 1, fp);
@@ -414,12 +428,24 @@ int bak_resource_lookup(BakHandle *slot) {
 void bak_select_archive(int archive_index) {
     int probe_failed;
     BakArchive *arc;
+#ifdef V102CD
+    char path[80];
+#endif
 
     probe_failed = 0;
+#ifdef V102CD
+    strcpy(path, g_base_dir);
+    strcat(path, g_bak_archives[archive_index].name);
+    if (!(char)g_bak_open_handles && archive_index) {
+        if (fclose(fopen(path, "rb")))
+            probe_failed = 1;
+    }
+#else
     if (!(char)g_bak_open_handles && archive_index) {
         if (fclose(fopen(g_bak_archives[archive_index].name, "rb")))
             probe_failed = 1;
     }
+#endif
     if (archive_index != g_bak_current_archive || probe_failed || g_bak_archives_dirty) {
         arc = &g_bak_archives[g_bak_current_archive];
         if (arc->fp) {
@@ -429,9 +455,17 @@ void bak_select_archive(int archive_index) {
         g_bak_current_archive = archive_index;
         arc = &g_bak_archives[g_bak_current_archive];
         if (archive_index) {
+#ifdef V102CD
+            strcpy(path, g_base_dir);
+            strcat(path, arc->name);
+            g_bak_in_fopen = 1;
+            while ((arc->fp = fopen(path, "rb")) == 0)
+                g_bak_in_fopen = 0;
+#else
             g_bak_in_fopen = 1;
             while ((arc->fp = fopen(arc->name, "rb")) == 0)
                 g_bak_in_fopen = 0;
+#endif
         }
         arc->pos = 0;
         bak_find_handle(0);

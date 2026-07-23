@@ -406,6 +406,10 @@ int far cbstat_compute_attack_damage(ItemRecord far *weapon, CombatActor *attack
             damage <<= 1;
     if (damage < 1)
         damage = 1;
+#ifdef V102CD
+    if (damage > 0xff)
+        damage = 0xff;
+#endif
     return damage;
 }
 
@@ -451,24 +455,39 @@ void cbstat_damage_equipped_items(CombatActor *actor, int category, int severity
         if (((ItemSlot far *)(&actor_record[1]))[i].flags & 0x40) {
             item_rec = itemtbl_record_ptr((ItemSlot far *)(&actor_record[1]) + i);
             if (((item_rec->wCategory == category) || (item_rec->wCategory == altcategory)) &&
-                (item_rec->wFlags & 0x1000) && (RND(100) < item_rec->wWeapon_break_chance_pct)) {
-                break_amount = (item_rec->nWeapon_break_amount > 1)
-                                   ? RND(item_rec->nWeapon_break_amount - 1) + 1
-                                   : 1;
-                new_condition = (unsigned int)((ItemSlot far *)(&actor_record[1]))[i].condition -
-                                (int)((long)(break_amount * severity) / 0x100L);
-                if ((item_rec->wCategory == 2) && (new_condition <= RND(0x32))) {
-                    audio_play(0x43);
-                    new_condition = 0;
+                (item_rec->wFlags & 0x1000)
+#ifndef V102CD
+                && (RND(100) < item_rec->wWeapon_break_chance_pct)
+#endif
+            ) {
+#ifdef V102CD
+                ((ItemSlot far *)(&actor_record[1]))[i].flags |= 0x4;
+                if (RND(100) < item_rec->wWeapon_break_chance_pct) {
+#endif
+                    break_amount = (item_rec->nWeapon_break_amount > 1)
+                                       ? RND(item_rec->nWeapon_break_amount - 1) + 1
+                                       : 1;
+                    new_condition = (unsigned int)((ItemSlot far *)(&actor_record[1]))[i].condition -
+                                    (int)((long)(break_amount * severity) / 0x100L);
+                    if ((item_rec->wCategory == 2) && (new_condition <= RND(0x32))) {
+                        audio_play(0x43);
+                        new_condition = 0;
+                    }
+#ifdef V102CD
+                    ((ItemSlot far *)(&actor_record[1]))[i].flags |= 0x20;
+#else
+                    ((ItemSlot far *)(&actor_record[1]))[i].flags |= 0x24;
+#endif
+                    if ((int)new_condition < (int)item_rec->wCondition_floor) {
+                        new_condition = item_rec->wCondition_floor;
+                    }
+                    if ((int)new_condition <= 0) {
+                        ((ItemSlot far *)(&actor_record[1]))[i].flags |= 0x10;
+                    }
+                    ((ItemSlot far *)(&actor_record[1]))[i].condition = (unsigned char)new_condition;
+#ifdef V102CD
                 }
-                ((ItemSlot far *)(&actor_record[1]))[i].flags |= 0x24;
-                if ((int)new_condition < (int)item_rec->wCondition_floor) {
-                    new_condition = item_rec->wCondition_floor;
-                }
-                if ((int)new_condition <= 0) {
-                    ((ItemSlot far *)(&actor_record[1]))[i].flags |= 0x10;
-                }
-                ((ItemSlot far *)(&actor_record[1]))[i].condition = (unsigned char)new_condition;
+#endif
             }
         }
         i++;

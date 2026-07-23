@@ -17,10 +17,17 @@ unsigned char g_abStatClampMax[17] = {0xfa, 0xfa, 0xfa, 0xfa, 0x64, 0x64, 0x64, 
                                       0x64, 0x64, 0x64, 0x64, 0x64, 0x64, 0x64, 0xf4};
 unsigned char g_abStatRatio[17] = {0x00, 0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
                                    0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x00};
+#ifdef V102CD
+unsigned char g_abStatRatioBase[17] = {0x33, 0x33, 0x08, 0x08, 0x08, 0x33, 0x08, 0x33, 0x00,
+                                       0x80, 0x80, 0x80, 0x20, 0x40, 0x80, 0x40, 0x00};
+unsigned char g_abStatRatioMax[17] = {0x03, 0x03, 0x01, 0x01, 0x02, 0x03, 0x01, 0x03, 0x10,
+                                      0x05, 0x05, 0x10, 0x04, 0x04, 0x10, 0x01, 0x00};
+#else
 unsigned char g_abStatRatioBase[17] = {0x33, 0x33, 0x08, 0x08, 0x08, 0x33, 0x08, 0x33, 0x00,
                                        0x00, 0x00, 0x80, 0x20, 0x33, 0x00, 0x40, 0x00};
 unsigned char g_abStatRatioMax[17] = {0x03, 0x03, 0x01, 0x01, 0x02, 0x03, 0x01, 0x03, 0x08,
                                       0x05, 0x05, 0x20, 0x02, 0x03, 0x08, 0x01, 0x00};
+#endif
 
 void stat_apply_modifier(unsigned short *mod, int *stat) {
     if (((*mod & 0x100) == 0) || (g_wInCombatMode != 0)) {
@@ -42,6 +49,9 @@ void stat_apply_modifier(unsigned short *mod, int *stat) {
 void stat_actor_recalc_equip_bonuses(CombatActor *actor) {
     int statIdx;
     int statVal;
+#ifdef V102CD
+    int found = 0;
+#endif
     Actor far *actorRec;
     ItemRecord far *itemRec;
     int i;
@@ -50,7 +60,13 @@ void stat_actor_recalc_equip_bonuses(CombatActor *actor) {
     for (statIdx = 0; statIdx < 0x10; statIdx++)
         actor->stats[statIdx].perm_mod = 0;
     for (i = 0; (int)(unsigned int)actorRec->itemCount > i; i++) {
-
+#ifdef V102CD
+        if (*(unsigned char far *)(ACTOR_ITEMS(actorRec) + (unsigned int)i) == 0x5a) {
+            if (found)
+                continue;
+            found = 1;
+        }
+#endif
         itemRec = itemtbl_record_ptr_by_id(
             (unsigned int)*(unsigned char far *)(ACTOR_ITEMS(actorRec) + (unsigned int)i));
         if (itemRec->wPlayer_stat_mask != 0) {
@@ -169,8 +185,10 @@ unsigned int far stat_combatant_modify(CombatActor *actor, int stat_idx, long de
     StatSlot *slot;
     int origBase;
     int rowIdx;
+#ifndef V102CD
     unsigned int sum;
     unsigned int uMaxSum;
+#endif
 
     slot = actor->stats + stat_idx;
     origBase = (unsigned int)slot->base;
@@ -178,6 +196,10 @@ unsigned int far stat_combatant_modify(CombatActor *actor, int stat_idx, long de
     if (stat_idx == 0x10) {
         unsigned int target;
         int rank;
+#ifdef V102CD
+        unsigned int sum;
+        unsigned int uMaxSum;
+#endif
         sum = (unsigned int)actor->stats[1].base + (unsigned int)actor->stats[0].base;
         uMaxSum = (unsigned int)(actor->stats + 1)->max + (unsigned int)actor->stats->max;
         target = (unsigned int)((long)(int)(mode * uMaxSum) / 100L);
@@ -216,6 +238,17 @@ unsigned int far stat_combatant_modify(CombatActor *actor, int stat_idx, long de
         return 0;
     }
     if (mode == 3) {
+#ifdef V102CD
+        long lBase, lMax, iVar8;
+        lBase = (long)g_abStatRatioBase[stat_idx];
+        lMax = (long)g_abStatRatioMax[stat_idx];
+        iVar8 = lBase + (lMax - lBase) * (long)(unsigned char)slot->base / 100;
+        if (iVar8 > 0) {
+            delta = (delta == 0) ? iVar8 : delta * iVar8;
+        } else {
+            delta = 0;
+        }
+#else
         int ratioVal;
         ratioVal = (unsigned int)g_abStatRatioBase[stat_idx] +
                    (int)(((unsigned int)g_abStatRatioMax[stat_idx] - (unsigned int)g_abStatRatioBase[stat_idx]) *
@@ -226,6 +259,7 @@ unsigned int far stat_combatant_modify(CombatActor *actor, int stat_idx, long de
         } else {
             delta = 0;
         }
+#endif
     } else if (mode == 2) {
         delta = (int)(100 - (unsigned int)slot->base) * delta;
     } else if (mode == 1) {
@@ -356,7 +390,9 @@ unsigned int stat_combatant_apply_delta(CombatActor *actor, int stat_idx, int am
             for (stat_idx = 0; stat_idx < 7; stat_idx++) {
                 if (stat_idx != 6) {
                     g_gameState.abActorStatusRanks[slot_idx][stat_idx] = 0;
+#ifndef V102CD
                     gstate_event_write(CONDITION(slot_idx * 7 + stat_idx), 0);
+#endif
                 }
             }
             actor->stats[1].base = actor->stats[0].base = 0;

@@ -41,6 +41,7 @@ void far combat_ai_resolve_attack_attempt(CombatActor *attacker, CombatActor *ta
     }
 }
 
+#ifndef V102CD
 void far combat_ai_resolve_hit(CombatActor *attacker, CombatActor *target, int damage, int dir) {
     int hpBefore;
     int staminaBefore;
@@ -73,6 +74,7 @@ void far combat_ai_resolve_hit(CombatActor *attacker, CombatActor *target, int d
     }
     return;
 }
+#endif
 
 int far combat_ai_pick_action(CombatActor *actor) {
     int action_id;
