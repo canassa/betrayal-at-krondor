@@ -12,6 +12,9 @@ extern unsigned short g_bPaletteCycleEbActive;
 extern unsigned short g_wVgaScratchPageBase;
 extern unsigned short g_wGameFontSlot;
 extern unsigned short *g_pSkyPanoAssetTable;
+#ifdef V102CD
+extern int g_cd_present;
+#endif
 extern WorldEntity *g_render_camera_scratch;
 extern ViewContext *g_active_window;
 extern unsigned short g_nChapterAtLoopExit;
