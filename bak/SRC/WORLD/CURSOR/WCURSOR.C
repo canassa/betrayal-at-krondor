@@ -1,6 +1,7 @@
 #include <dos.h>
 #include <stdlib.h>
 #include "globals.h"
+#include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/WORLD/LOOP/WORLDLP.H"
 #include "SRC/WORLD/ZONE/CZONE.H"
 #include "SRC/WORLD/ZONE/PROXIM.H"

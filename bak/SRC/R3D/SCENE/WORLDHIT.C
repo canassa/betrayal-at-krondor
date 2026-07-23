@@ -5,6 +5,7 @@
 #define g_szVersionString g_szVersionString_decl13
 #endif
 #include "globals.h"
+#include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/WORLD/LOOP/MAP.H"
 #include "SRC/COMBAT/ENC/CBENC.H"

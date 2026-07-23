@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/WORLD/LOOP/MAP.H"
 #include "SRC/R3D/VIS/PROXSCAN.H"

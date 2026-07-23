@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/WORLD/ZONE/ZONE.H"
 #include "structs.h"
 #include "SRC/COMBAT/SPELL/SPELLFX.H"
 #include "SRC/SYS/RAND.H"
