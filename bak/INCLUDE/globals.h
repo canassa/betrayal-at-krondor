@@ -12,10 +12,6 @@ extern PolyRasterState g_polyRasterState;
 extern unsigned char g_bCutsceneEscPressed;
 extern Vec3Short g_aActorBoxCornerOffsets[8];
 extern unsigned short g_awBoxBorderChars[9];
-extern int g_nEmsInit;
-extern int g_nEmsResourcesEnabled;
-extern unsigned short g_wEmmPagesFree;
-extern char g_szVmcodeOvl[11];
 extern unsigned char __dat_1466[10];
 
 extern char g_szHealthStamina[15];
@@ -35,12 +31,6 @@ extern void *__ScanTodVector;
 extern void *__scanrslt;
 extern void *__scanpop;
 
-extern unsigned short g_wTimerTickRegistrySlot;
-extern short g_nWorldViewYawNormal;
-extern short g_nWorldViewYawChapter;
-extern short g_nWorldViewFovNormal;
-extern unsigned char g_bssgap_4c53;
-extern unsigned char g_nWorldViewFovChapter;
 extern unsigned char g_bssgap_4863[3];
 extern GameState g_gameState;
 extern unsigned short g_bPaletteCycleEbActive;
