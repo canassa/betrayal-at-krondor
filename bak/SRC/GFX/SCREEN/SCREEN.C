@@ -1,5 +1,4 @@
 #include <conio.h>
-#include "globals.h"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/WORLD/LOOP/MAP.H"

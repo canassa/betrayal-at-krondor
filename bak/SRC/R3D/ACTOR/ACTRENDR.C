@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 #include "structs.h"
-#include "globals.h"
 #include "SRC/GEN/GFXCTX.H"
 #include "r3d.h"
 #include "SRC/R3D/ACTOR/ACTRENDR.H"

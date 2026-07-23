@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-#include "globals.h"
 #include "structs.h"
 #include "SRC/SYS/MDACON.H"
 

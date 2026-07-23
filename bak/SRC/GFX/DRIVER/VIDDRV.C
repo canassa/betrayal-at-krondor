@@ -1,4 +1,3 @@
-#include "globals.h"
 #include "SRC/GEN/GFXCTX.H"
 #include "structs.h"
 #include "SRC/GFX/DRIVER/VIDDRV.H"

@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "globals.h"
 #include "structs.h"
 #include "SRC/SYS/PANIC.H"
 #include "SRC/SYS/HWSHUT.H"

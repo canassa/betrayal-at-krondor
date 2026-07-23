@@ -1,5 +1,4 @@
 #include "structs.h"
-#include "globals.h"
 #include "SRC/AUDIO/SFX/SFXPLAY.H"
 #include "SRC/AUDIO/SFX/SFXSTPAL.H"
 #include "SRC/AUDIO/DRIVER/MIDI.H"

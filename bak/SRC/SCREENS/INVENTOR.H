@@ -2,6 +2,7 @@
 #define BAK_INVENTOR_H
 
 #include "structs.h"
+#include "SRC/WORLD/ACTOR/ACTOR.H"
 
 extern ImageRecord **g_pInvSpriteLoAssetTable;
 extern ImageRecord **g_pInvSpriteHiAssetTable;

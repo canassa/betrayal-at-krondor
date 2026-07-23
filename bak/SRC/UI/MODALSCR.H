@@ -2,6 +2,7 @@
 #define BAK_MODALSCR_H
 
 #include "structs.h"
+#include "SRC/WORLD/ACTOR/ACTOR.H"
 
 extern int modalscreen_pending_scene_trans(void);
 extern void modalscreen_teleport_dat_load(int n_index);

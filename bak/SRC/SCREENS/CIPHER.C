@@ -1,4 +1,3 @@
-#include "globals.h"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
 #include "SRC/WORLD/LOOP/WORLDLP.H"

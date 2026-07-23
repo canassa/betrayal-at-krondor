@@ -1,7 +1,6 @@
 #include <dos.h>
 #include <stdlib.h>
 #include <string.h>
-#include "globals.h"
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
@@ -51,7 +50,6 @@ unsigned short g_ai_flee_threshold_table[10] = {0x0055, 0x0037, 0x002d, 0x0023, 
 
 static short cbenc_dead_1410 = 0;
 
-#include "globals.h"
 #include "structs.h"
 
 void far combatenc_pty_load_chap_state(void) {
@@ -113,7 +111,6 @@ void far combatenc_pty_load_chap_state(void) {
     return;
 }
 
-#include "globals.h"
 #include "structs.h"
 
 void combatenc_persist_actors_to_temp(int srcEncounterId) {
@@ -183,7 +180,6 @@ void far combatenc_mnames_lookup_dest(int index, char **p_dest) {
 }
 
 #include "structs.h"
-#include "globals.h"
 
 void far combatenc_release_actors(void) {
     int i;
@@ -206,7 +202,6 @@ void far combatenc_release_actors(void) {
     return;
 }
 
-#include "globals.h"
 #include "structs.h"
 
 void far combatenc_save_state(void) {
@@ -270,7 +265,6 @@ void combatenc_draw_actor_roster_idx(CombatActor *actor) {
     }
 }
 
-#include "globals.h"
 #include "structs.h"
 #include <stdlib.h>
 
@@ -310,7 +304,6 @@ static void far combatenc_stat_roll_draw_line(char *label, int stat_val, int *px
     }
 }
 
-#include "globals.h"
 #include "structs.h"
 
 void far combatenc_anim_actor_stat_rolls(CombatActor *actor) {
@@ -360,7 +353,6 @@ void far combatenc_anim_actor_stat_rolls(CombatActor *actor) {
 }
 
 #include "structs.h"
-#include "globals.h"
 
 void far combatenc_place_b_free_tiles(void) {
     int i;
@@ -381,7 +373,6 @@ void combatenc_clear_pty_grid_occ(void) {
     return;
 }
 
-#include "globals.h"
 #include "structs.h"
 
 void far combatenc_apply_flee_tile_team(int team_id) {
@@ -400,14 +391,12 @@ void far combatenc_apply_flee_tile_team(int team_id) {
     return;
 }
 
-#include "globals.h"
 #include "structs.h"
 
 int far combatenc_actor_stat_above_table(int threshold_idx, CombatActor *actor) {
     return (unsigned int)((int)stat_actor_get(actor, 0, 0) > g_anStatCheckThreshold[threshold_idx]);
 }
 
-#include "globals.h"
 #include "structs.h"
 
 int far combatenc_actor_has_spell_1or4(CombatActor *actor) {
@@ -423,7 +412,6 @@ int combatenc_actor_id_eq_22(CombatActor *actor) {
     return flag;
 }
 
-#include "globals.h"
 #include "structs.h"
 
 CombatActor *far combatenc_find_nearest_actor(CombatActor *from, int *out_dist) {
@@ -516,7 +504,6 @@ int combatenc_skill_check_random(CombatActor *attacker, CombatActor *target, int
     return rand_val < hit_chance ? hit_chance : 0;
 }
 
-#include "globals.h"
 #include "structs.h"
 
 int far combatenc_show_missile_stat_row(CombatActor *actor) {
@@ -561,7 +548,6 @@ int far combatenc_actor_can_cast_spells(CombatActor *actor, int find_nearest) {
     return stat_actor_get(actor, 7, 0) != 0 && total_stats != 0 && nearest_dist >= 2;
 }
 
-#include "globals.h"
 #include "structs.h"
 
 void far combatenc_ai_pick_target_by_role(CombatActor *actor, int max_distance,
@@ -628,7 +614,6 @@ void far combatenc_ai_pick_target_by_role(CombatActor *actor, int max_distance,
     }
 }
 
-#include "globals.h"
 #include <stdlib.h>
 
 void far combatenc_actor_flee_tile_east(CombatActor *actor) {
@@ -689,7 +674,6 @@ void far combatenc_ai_morale_flee_check(CombatActor *actor) {
     combatenc_actor_flee_tile_east(actor);
 }
 
-#include "globals.h"
 #include "structs.h"
 
 int far combatenc_actor_can_act(CombatActor *actor, int strict) {
@@ -714,7 +698,6 @@ L_done:
     return result;
 }
 
-#include "globals.h"
 #include "structs.h"
 
 void far combatenc_pick_next_active_actor(void) {
@@ -779,7 +762,6 @@ void combatenc_refresh_actor_flags(void) {
     return;
 }
 
-#include "globals.h"
 #include "structs.h"
 
 #include <dos.h>
@@ -811,7 +793,6 @@ void combatenc_set_flag8_clear_flag1(CombatActor *actor) {
     actor->inner->flags &= ~CAF_READY;
 }
 
-#include "globals.h"
 #include "structs.h"
 
 void far combatenc_actor_enter_defense(CombatActor *actor) {
@@ -844,7 +825,6 @@ void far combatenc_actor_enter_defense(CombatActor *actor) {
     return;
 }
 
-#include "globals.h"
 #include "structs.h"
 
 void far combatenc_ai_attempt_melee(CombatActor *actor) {
@@ -868,7 +848,6 @@ void far combatenc_ai_attempt_melee(CombatActor *actor) {
     }
 }
 
-#include "globals.h"
 #include "structs.h"
 
 int far combatenc_count_active_enemies(void) {
@@ -893,7 +872,6 @@ int far combatenc_count_active_enemies(void) {
     return count;
 }
 
-#include "globals.h"
 #include "structs.h"
 
 int far combatenc_party_within_cheby(CombatActor *actor, int range) {
@@ -944,7 +922,6 @@ void combatenc_refr_actor_flags_far(void) {
     combatenc_refresh_actor_flags();
 }
 
-#include "globals.h"
 #include "structs.h"
 
 void far combatenc_ai_sel_execute_action(CombatActor *actor) {
@@ -993,7 +970,6 @@ void far combatenc_ai_sel_execute_action(CombatActor *actor) {
     }
 }
 
-#include "globals.h"
 #include "structs.h"
 
 void combatenc_ai_run_turn(void) {
@@ -1013,7 +989,6 @@ void combatenc_ai_run_turn(void) {
     }
 }
 
-#include "globals.h"
 #include "structs.h"
 
 void far combatenc_actor_face_target(CombatActor *actor) {
@@ -1141,7 +1116,6 @@ void combatenc_saves_migr_all_slots(void) {
     } while (encounterId < 700);
 }
 
-#include "globals.h"
 
 unsigned char g_bssgap_5128[2];
 CombatActor *g_combat_actors_B;

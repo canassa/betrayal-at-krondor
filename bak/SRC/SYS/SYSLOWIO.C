@@ -1,4 +1,4 @@
-#include "globals.h"
+#include "structs.h"
 #include "SRC/SYS/SYSLOWIO.H"
 
 /* DGROUP+0x15a..0x15d: a stray "\n"-shaped byte pair (0a 00) + a zero byte,

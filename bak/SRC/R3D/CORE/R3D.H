@@ -2,6 +2,7 @@
 #define BAK_R3D_H
 
 #include "structs.h"
+#include "SRC/WORLD/ACTOR/ACTOR.H"
 
 /**
  * @file  R3D.H

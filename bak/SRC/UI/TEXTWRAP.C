@@ -1,7 +1,6 @@
 #include <ctype.h>
 
 #include "structs.h"
-#include "globals.h"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/SCREENS/BOOKVIEW.H"
 #include "SRC/UI/TEXTWRAP.H"

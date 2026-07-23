@@ -1,4 +1,3 @@
-#include "globals.h"
 #include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "structs.h"
 #include "SRC/AUDIO/CHAN/AUDSETIN.H"

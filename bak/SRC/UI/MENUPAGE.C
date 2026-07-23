@@ -1,4 +1,3 @@
-#include "globals.h"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SYS/SYSLOWIO.H"

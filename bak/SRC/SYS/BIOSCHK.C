@@ -1,4 +1,4 @@
-#include "globals.h"
+#include "structs.h"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/SYS/BIOSCHK.H"
 

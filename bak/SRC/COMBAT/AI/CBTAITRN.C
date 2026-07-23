@@ -1,4 +1,3 @@
-#include "globals.h"
 #include "structs.h"
 #include "SRC/COMBAT/AI/CBTAITRN.H"
 #include "SRC/SYS/RAND.H"

@@ -1,5 +1,5 @@
 #include <dos.h>
-#include "globals.h"
+#include "structs.h"
 #include "SRC/AUDIO/RES/AUDRES.H"
 #include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/AUDIO/RES/POOL.H"

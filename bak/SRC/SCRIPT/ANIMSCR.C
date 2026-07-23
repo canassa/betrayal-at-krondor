@@ -1,7 +1,6 @@
 #include <dos.h>
 #include <mem.h>
 #include <stdlib.h>
-#include "globals.h"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/SYS/SYSLOWIO.H"
 #include "SRC/SCRIPT/TTM.H"

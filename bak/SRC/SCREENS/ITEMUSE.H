@@ -2,6 +2,7 @@
 #define BAK_ITEMUSE_H
 
 #include "structs.h"
+#include "SRC/WORLD/ACTOR/ACTOR.H"
 
 extern int itemuse_dispatch_on_target(Actor far *param_1, ItemSlot far *param_2,
                                       ItemSlot far *param_3, int param_4);

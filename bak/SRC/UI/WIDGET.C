@@ -1,6 +1,5 @@
 #include <string.h>
 
-#include "globals.h"
 #include "SRC/GEN/GFXCTX.H"
 #include "structs.h"
 #include "SRC/UI/WIDGET.H"

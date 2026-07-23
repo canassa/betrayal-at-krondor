@@ -1,4 +1,4 @@
-#include "globals.h"
+#include "structs.h"
 #include "SRC/AUDIO/SND/SNDINST.H"
 #include "SRC/SYS/FARTHUNK.H"
 #include "SRC/AUDIO/DRIVER/MUSDISP.H"

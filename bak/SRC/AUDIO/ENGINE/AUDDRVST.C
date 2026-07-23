@@ -1,4 +1,3 @@
-#include "globals.h"
 #include "structs.h"
 #include "SRC/AUDIO/ENGINE/AUDDRVST.H"
 #include "SRC/STREAM/RESLOAD/RELBUF.H"

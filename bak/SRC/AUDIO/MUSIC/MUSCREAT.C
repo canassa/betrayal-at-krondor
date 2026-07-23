@@ -1,4 +1,3 @@
-#include "globals.h"
 #include "structs.h"
 #include "SRC/AUDIO/MUSIC/MUSCREAT.H"
 #include "SRC/AUDIO/RES/POOL.H"

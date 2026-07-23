@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "globals.h"
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
@@ -40,7 +39,6 @@
 #include "SRC/GAME/CFGPARSE.H"
 #endif
 
-#include "globals.h"
 #include "structs.h"
 
 void far map_req_map_screen_load(void) {
@@ -90,7 +88,6 @@ void map_color_remap_free(void) {
     return;
 }
 
-#include "globals.h"
 #include "structs.h"
 
 void far map_main_loop(void) {
@@ -466,7 +463,6 @@ void far map_main_loop(void) {
 }
 
 #include "structs.h"
-#include "globals.h"
 
 void far map_camera_snap_face_south(long *pSavedZ, short *pSavedYaw) {
     if (g_full_redraw_needed == 0) {
@@ -491,7 +487,6 @@ void map_camera_restore_z_yaw(long new_pos_z, short new_yaw) {
     return;
 }
 
-#include "globals.h"
 #include "structs.h"
 
 unsigned short g_full_redraw_needed = 0x0000;

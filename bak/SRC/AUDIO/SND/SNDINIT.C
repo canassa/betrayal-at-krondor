@@ -1,4 +1,4 @@
-#include "globals.h"
+#include "structs.h"
 #include "SRC/AUDIO/SND/SNDINIT.H"
 #include "SRC/AUDIO/DRIVER/MUSDISP.H"
 #include "SRC/INPUT/TIMER.H"

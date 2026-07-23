@@ -1,4 +1,3 @@
-#include "globals.h"
 #include "structs.h"
 #include "SRC/STREAM/CODEC/CODEC.H"
 

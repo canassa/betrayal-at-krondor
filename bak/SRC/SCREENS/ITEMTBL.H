@@ -2,6 +2,7 @@
 #define BAK_ITEMTBL_H
 
 #include "structs.h"
+#include "SRC/WORLD/ACTOR/ACTOR.H"
 
 extern ItemRecord far *g_pItemDefTable;
 extern unsigned long *g_pItemPriceTable;

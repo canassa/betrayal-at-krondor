@@ -1,4 +1,4 @@
-#include "globals.h"
+#include "structs.h"
 #include "SRC/AUDIO/SFX/SFXPLAY.H"
 #include "SRC/AUDIO/SND/SNDBUFFR.H"
 #include "SRC/STREAM/RESLOAD/RELBUF.H"

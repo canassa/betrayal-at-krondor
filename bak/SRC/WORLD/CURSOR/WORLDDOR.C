@@ -1,4 +1,3 @@
-#include "globals.h"
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/R3D/ACTOR/ACTOROVL.H"
 #include "structs.h"

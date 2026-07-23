@@ -1,5 +1,4 @@
 #include "structs.h"
-#include "globals.h"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/INPUT/TIMER.H"
 #include "SRC/SCREENS/BOOKVIEW.H"

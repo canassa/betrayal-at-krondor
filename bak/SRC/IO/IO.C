@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "globals.h"
 #include "structs.h"
 #include "SRC/IO/IO.H"
 #include "SRC/SYS/DOSMEM.H"

@@ -1,4 +1,4 @@
-#include "globals.h"
+#include "structs.h"
 #include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/STREAM/RESLOAD/RELBUF.H"
 #include "SRC/STREAM/BUFLOAD/LOADCHNK.H"

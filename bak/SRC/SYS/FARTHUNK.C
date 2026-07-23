@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "globals.h"
 #include "structs.h"
 #include "SRC/SYS/FARTHUNK.H"
 

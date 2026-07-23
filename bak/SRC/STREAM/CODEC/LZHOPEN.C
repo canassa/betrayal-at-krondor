@@ -1,5 +1,4 @@
 #include "structs.h"
-#include "globals.h"
 #include "SRC/STREAM/CODEC/CODEC.H"
 #include "SRC/STREAM/CODEC/LZHUF.H"
 #include "SRC/STREAM/CODEC/LZHOPEN.H"

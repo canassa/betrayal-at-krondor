@@ -1,4 +1,3 @@
-#include "globals.h"
 #include "structs.h"
 #include "SRC/AUDIO/CHAN/AUDCHBYT.H"
 #include "SRC/AUDIO/CHAN/SFXCHAN.H"

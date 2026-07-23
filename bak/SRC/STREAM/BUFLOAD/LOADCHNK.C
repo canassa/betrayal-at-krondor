@@ -1,4 +1,3 @@
-#include "globals.h"
 #include "structs.h"
 #include "SRC/STREAM/BUFLOAD/LOADCHNK.H"
 #include "SRC/STREAM/RESLOAD/IFFREAD.H"
