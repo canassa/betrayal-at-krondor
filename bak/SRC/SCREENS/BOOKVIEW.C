@@ -1,5 +1,6 @@
 #include "structs.h"
 #include "globals.h"
+#include "SRC/INPUT/TIMER.H"
 #include "SRC/SCREENS/BOOKVIEW.H"
 
 BookViewerState *g_pBookViewer;

@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/INPUT/TIMER.H"
 #include "structs.h"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/SYS/RAND.H"

@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/INPUT/TIMER.H"
 #include "structs.h"
 #include "SRC/SCREENS/CIPHER.H"
 #include "SRC/SYS/MEM.H"

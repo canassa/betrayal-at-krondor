@@ -5,6 +5,7 @@
 
 #include "gfx169d.h"
 #include "globals.h"
+#include "SRC/INPUT/TIMER.H"
 #include "structs.h"
 #include "SRC/SCREENS/INVENTOR.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
