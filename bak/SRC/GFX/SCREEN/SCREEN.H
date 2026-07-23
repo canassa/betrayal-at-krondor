@@ -3,6 +3,20 @@
 
 #include "structs.h"
 
+extern short g_cursor_hidden;
+extern short g_cursor_prev_shape;
+extern ImageRecord **g_cursor_state;
+extern unsigned char far *g_pPalQueuedForFlip;
+extern short g_nCursorX;
+extern short g_nCursorY;
+extern unsigned short g_nCursorStateSaved;
+extern unsigned char far *g_pSavedCursorBuf1;
+extern unsigned char far *g_pSavedCursorBuf2;
+extern CursorState g_cursor_prev_x[2];
+extern unsigned char far *g_pActiveCursorBuf;
+extern unsigned char far *g_pCursorScratchBuf1;
+extern unsigned char far *g_pCursorScratchBuf2;
+
 extern int screen_cursor_get_position(short *out_x, short *out_y);
 extern int screen_cursor_set_position(int x, int y);
 extern void screen_cursor_set_hidden_flag(int hidden);

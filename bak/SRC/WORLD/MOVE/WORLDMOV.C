@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/WORLD/LOOP/MAP.H"
 #include "SRC/R3D/VIS/PROXSCAN.H"
 #include "structs.h"
 #include "SRC/WORLD/MOVE/WORLDMOV.H"
