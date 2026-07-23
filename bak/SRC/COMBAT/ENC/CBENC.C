@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "SRC/R3D/SPRITE/WORLDRND.H"
 #include "structs.h"
 #include "SRC/COMBAT/ENC/CBENC.H"
 #include "SRC/SYS/RAND.H"
