@@ -3,6 +3,12 @@
 
 #include "structs.h"
 
+extern unsigned short g_nSkyHorizonRowCached;
+extern unsigned short g_bTexturedPolyEnabled;
+extern short g_nGlyphColorShift;
+extern ImageRecord **g_tile_sprite;
+extern ImageRecord **g_pCompassSpriteSheet;
+
 extern void uiwidget_draw_text_shadowed_dflt(char *text, int shadow_color, int color, int x, int y);
 extern void uiwidget_draw_text_shadowed(char *text, int shadow_color, int main_color, int x, int y);
 extern int uiwidget_midpoint_int(int a, int b);

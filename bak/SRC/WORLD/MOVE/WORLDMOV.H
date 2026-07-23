@@ -3,6 +3,13 @@
 
 #include "structs.h"
 
+extern unsigned short g_bWorldCrossing;
+extern unsigned short g_nWorldCrossingKind;
+extern unsigned long g_dwWorldCrossingCoord;
+extern short g_nWorldStepSpeed;
+extern short g_nWorldGridStride;
+extern long g_lWorldTimePerStep;
+
 extern void worldmove_dat_load(void);
 extern void worldmove_combat_zone_snap_pos(void);
 extern void worldmove_rgn_chap_trans_apply(void);

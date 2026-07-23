@@ -1,6 +1,9 @@
 #include <dos.h>
 #include <stdlib.h>
 #include "globals.h"
+#include "SRC/WORLD/ZONE/PROXIM.H"
+#include "SRC/WORLD/ENC/RGNENC.H"
+#include "SRC/R3D/ACTOR/ACTOROVL.H"
 #include "structs.h"
 #include "SRC/WORLD/CURSOR/WCURSOR.H"
 #include "SRC/IO/IO.H"

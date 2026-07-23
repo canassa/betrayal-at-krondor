@@ -2,6 +2,7 @@
 
 #include "structs.h"
 #include "globals.h"
+#include "SRC/R3D/ACTOR/ACTMOTN.H"
 #include "r3d.h"
 #include "SRC/R3D/SPRITE/WORLDRND.H"
 #include "SRC/GFX/SPRITE/RESBLIT.H"

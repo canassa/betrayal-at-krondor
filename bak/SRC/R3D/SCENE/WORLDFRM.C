@@ -1,4 +1,6 @@
 #include "globals.h"
+#include "SRC/WORLD/ZONE/PROXIM.H"
+#include "SRC/UI/UIWIDGET.H"
 #include "structs.h"
 #include "SRC/R3D/SCENE/WORLDFRM.H"
 #include "SRC/SYS/MEM.H"

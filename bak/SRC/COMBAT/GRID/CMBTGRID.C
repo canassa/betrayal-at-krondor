@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "globals.h"
+#include "SRC/WORLD/ENC/RGNENC.H"
 #include "structs.h"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
 #include "SRC/IO/IO.H"

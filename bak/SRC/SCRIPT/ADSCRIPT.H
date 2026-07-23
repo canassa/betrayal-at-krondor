@@ -3,6 +3,14 @@
 
 #include "structs.h"
 
+extern unsigned short g_aTtmTextStringOffsets[9];
+extern ScriptObject far *g_pScriptObjectListHead;
+extern ScriptObject far *g_pCurScriptObject;
+extern ScriptAnimNode *g_pScriptObjectChainHead;
+extern ScriptAnimNode *g_pCurScriptAnimNode;
+extern unsigned char g_bTtmViewportClampFlag;
+extern unsigned short g_nVgaRenderMode;
+
 extern void adscript_set_dbb_if_202d_eq_0c(void);
 extern int adscript_resource_load(BakFileRef *file);
 extern int adscript_select_object(int id);

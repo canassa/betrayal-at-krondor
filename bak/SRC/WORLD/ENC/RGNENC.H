@@ -3,6 +3,19 @@
 
 #include "structs.h"
 
+extern short g_nEncounter_record_count;
+extern short g_nFixed_object_count;
+extern short g_nVisible_entry_count;
+extern unsigned short *g_pZoneShapeIndex;
+extern unsigned short *g_pChapterShapeIds;
+extern EncounterRecordTemplate *g_pEncounterRecordTemplates;
+extern long g_anEncounterRecordIds[5];
+extern WorldObject far *g_pFixed_object_entries;
+extern WorldObject far *g_pVisible_entry_pool;
+extern EncounterObjectState *g_pEncounterObjectState;
+extern int g_nCombatTempZoneEncounterCount;
+extern unsigned char g_bCombatTempZoneRefPair;
+
 extern void rgnenc_alloc_3bufs_init(void);
 extern void rgnenc_free_3bufs_clear(void);
 extern int rgnenc_load_zone_shape_index(char *filename);

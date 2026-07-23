@@ -2,6 +2,7 @@
 
 #include "structs.h"
 #include "globals.h"
+#include "SRC/SCREENS/BOOKVIEW.H"
 #include "SRC/UI/TEXTWRAP.H"
 #include "SRC/GFX/FONT/FONT.H"
 

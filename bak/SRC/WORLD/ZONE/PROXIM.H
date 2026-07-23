@@ -3,6 +3,10 @@
 
 #include "structs.h"
 
+extern ProximityZoneSettings far *g_pCurProximityZoneRec;
+extern unsigned short g_nProximityTableCount;
+extern ProximityZone far *far *g_pProximityTable;
+
 extern void proximity_table_load(char *file);
 extern void proximity_table_free(void);
 extern unsigned char proximity_scan_list(ProximityScanHit *out_hit, WorldPos2 *pos, unsigned short record_seg,
