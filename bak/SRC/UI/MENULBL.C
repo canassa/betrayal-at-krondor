@@ -1,5 +1,6 @@
 #include "structs.h"
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include "SRC/SCRIPT/ANIMSCR.H"
 #include "SRC/UI/MENULBL.H"
 #include "SRC/STREAM/RESLOAD/IMGLOAD.H"

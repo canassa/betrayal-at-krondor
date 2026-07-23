@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include "SRC/SCREENS/INVENTOR.H"
 #include "structs.h"
 #include "SRC/GFX/SPRITE/RESBLIT.H"

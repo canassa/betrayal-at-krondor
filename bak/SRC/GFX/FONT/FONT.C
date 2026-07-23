@@ -2,6 +2,7 @@
 
 #define g_renderer_vtable g_renderer_vtable_struct_shadow
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include "SRC/DIALOG/DIALOG.H"
 #include "structs.h"
 #include "SRC/GFX/FONT/FONT.H"

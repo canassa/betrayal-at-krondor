@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/STREAM/CODEC/CODEC.H"

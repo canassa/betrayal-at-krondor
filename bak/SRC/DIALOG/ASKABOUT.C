@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
 #include "SRC/SCREENS/TOWNSCN.H"

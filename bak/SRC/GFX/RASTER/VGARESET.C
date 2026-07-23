@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include <conio.h>
 #include "SRC/GFX/RASTER/VGARESET.H"
 

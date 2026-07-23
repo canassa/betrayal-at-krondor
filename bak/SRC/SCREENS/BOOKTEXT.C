@@ -1,5 +1,6 @@
 #include "structs.h"
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include "SRC/SCREENS/BOOKTEXT.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "SRC/GFX/DRIVER/VTHUNKS.H"

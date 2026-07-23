@@ -6,6 +6,7 @@
 #include <io.h>
 
 #include "globals.h"
+#include "SRC/GEN/GFXCTX.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/SYS/SYSLOWIO.H"
 #include "structs.h"
