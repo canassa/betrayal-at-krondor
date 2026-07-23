@@ -3,6 +3,29 @@
 
 #include "structs.h"
 
+extern int g_anHexVertexX0[6];
+extern int g_anHexVertexY0[6];
+extern int g_anHexVertexX2[6];
+extern int g_anHexVertexY2[6];
+extern int g_anHexVertexX3[6];
+extern int g_anHexVertexY3[6];
+extern int g_anHexVertexX4[6];
+extern int g_anHexVertexY4[6];
+extern int g_anHexVertexX5[6];
+extern int g_anHexVertexY5[6];
+extern int g_anHexVertexX1[6];
+extern int g_anHexVertexY1[6];
+extern int g_anHexVertexX6[6];
+extern int g_anHexVertexY6[6];
+extern int *g_apHexVertexX[7];
+extern int *g_apHexVertexY[7];
+extern short g_aClassGroupModifier[3][4];
+extern unsigned short g_aClassCombatGroup[59];
+extern unsigned short g_aClassProficiencyMask[64];
+extern unsigned short g_aClassWeaknessMask[64];
+extern unsigned char *g_pSpellWeaTable;
+extern unsigned char *g_pSpellResTable;
+
 extern void cbstat_apply_drain_tick(CombatActor *actor);
 extern int cbstat_to_hit_roll(CombatActor *attacker, CombatActor *target, int roll,
                               ItemRecord far *weapon_item);
