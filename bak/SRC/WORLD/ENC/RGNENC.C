@@ -1,4 +1,6 @@
 #include "globals.h"
+#include "SRC/WORLD/ZONE/PROXIM.H"
+#include "SRC/R3D/ACTOR/ACTMOTN.H"
 #include "structs.h"
 #include "SRC/WORLD/ENC/RGNENC.H"
 #include "SRC/SYS/RAND.H"

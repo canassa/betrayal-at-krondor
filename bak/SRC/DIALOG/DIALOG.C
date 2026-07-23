@@ -5,6 +5,9 @@
 #include <string.h>
 #include "gtypes.h"
 #include "globals.h"
+#include "SRC/WORLD/MOVE/WORLDMOV.H"
+#include "SRC/SCREENS/BOOKVIEW.H"
+#include "SRC/SCRIPT/ADSCRIPT.H"
 #include "SRC/CHAR/CHARSCRN.H"
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"

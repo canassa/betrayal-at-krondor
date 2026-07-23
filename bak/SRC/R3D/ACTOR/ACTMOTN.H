@@ -3,6 +3,12 @@
 
 #include "structs.h"
 
+extern short g_nActorKnockbackColorIdx;
+extern short g_nActorSpriteFlip;
+extern unsigned short g_nActorShakeX;
+extern unsigned short g_nActorShakeY;
+extern unsigned short g_bForceOverlay;
+
 extern void *actormotion_xzmalloc(unsigned int size);
 extern void actormotion_xzfree(void *ptr);
 extern WorldEntity *actormotion_vec_alloc(unsigned short type_tag);

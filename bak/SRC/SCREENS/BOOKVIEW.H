@@ -3,6 +3,11 @@
 
 #include "structs.h"
 
+extern unsigned short g_wTextWrapXAccum;
+extern unsigned short g_wTextWrapLinesDrawn;
+extern unsigned short g_wTextWrapLinesRemaining;
+extern BookViewerState *g_pBookViewer;
+
 extern void bookview_init(void);
 extern void bookview_shutdown(void);
 extern int bookview_show(char *filename, int page_number);

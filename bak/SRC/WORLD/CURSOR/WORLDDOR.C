@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/R3D/ACTOR/ACTOROVL.H"
 #include "structs.h"
 #include "SRC/WORLD/CURSOR/WORLDDOR.H"
 #include "SRC/R3D/ACTOR/ACTRENDR.H"
