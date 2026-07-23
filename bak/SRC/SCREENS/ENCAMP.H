@@ -3,6 +3,22 @@
 
 #include "structs.h"
 
+extern unsigned short *g_pEncampBmpAssetTable;
+extern unsigned short *g_pEncampHotspotX;
+extern unsigned short *g_pEncampHotspotY;
+extern unsigned short *g_pClockHandVertsX;
+extern unsigned short *g_pClockHandVertsY;
+extern unsigned char *g_pEncampPaletteRemapLut;
+extern char *g_apszEncampStatColHeaders[2];
+extern char *g_pszHpSeparator;
+extern unsigned short g_anEncampStatColX[2];
+extern unsigned short g_wEncampHotspotSubW;
+extern unsigned short g_wEncampHotspotSubH;
+extern unsigned short g_wEncampHotspotBoxW;
+extern unsigned short g_wEncampHotspotBoxH;
+extern unsigned short g_wEncampHotspotCount;
+extern unsigned short g_wEncampClockVertexCount;
+
 extern void encamp_run(void);
 extern void encamp_load(void);
 extern void encamp_teardown(void);
