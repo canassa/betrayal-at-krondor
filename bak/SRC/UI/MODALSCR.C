@@ -3,6 +3,7 @@
 
 #include "structs.h"
 #include "globals.h"
+#include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
 #include "SRC/UI/MODALSCR.H"
 #include "SRC/IO/IO.H"

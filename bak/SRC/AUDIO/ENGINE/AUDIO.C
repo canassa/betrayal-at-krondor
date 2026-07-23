@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/INPUT/TIMER.H"
 #include "structs.h"

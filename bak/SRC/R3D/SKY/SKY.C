@@ -1,6 +1,7 @@
 #include <dos.h>
 
 #include "globals.h"
+#include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "SRC/R3D/SKY/SKYREND.H"
