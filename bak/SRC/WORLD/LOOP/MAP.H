@@ -3,6 +3,16 @@
 
 #include "structs.h"
 
+extern unsigned short g_full_redraw_needed;
+extern short g_nMapReloadPending;
+extern unsigned char *g_pColorRemap;
+extern unsigned short g_wExploreCameraYawSaved;
+extern long g_lWorldZMin;
+extern long g_lWorldZMax;
+extern long g_lWorldZStep;
+extern long g_lExploreCameraZSaved;
+extern MenuPage *g_pReqMapPage;
+
 extern void map_req_map_screen_load(void);
 extern void map_req_map_screen_free(void);
 extern void map_color_remap_load(char *filename);

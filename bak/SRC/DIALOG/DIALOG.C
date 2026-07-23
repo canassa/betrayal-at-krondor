@@ -5,6 +5,7 @@
 #include <string.h>
 #include "gtypes.h"
 #include "globals.h"
+#include "SRC/WORLD/LOOP/MAP.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
 #include "SRC/SCREENS/INVENTOR.H"
 #include "SRC/SYS/SYSLOWIO.H"
