@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "structs.h"
 #include "SRC/R3D/PROJECT/PROJECT.H"
 #include "SRC/R3D/CORE/R3D.H"

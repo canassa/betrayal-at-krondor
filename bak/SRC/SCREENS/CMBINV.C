@@ -3,6 +3,7 @@
 
 #include "structs.h"
 #include "globals.h"
+#include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/WORLD/LOOP/MAP.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"

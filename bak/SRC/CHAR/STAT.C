@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 
