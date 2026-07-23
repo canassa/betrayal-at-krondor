@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "globals.h"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
@@ -57,7 +58,6 @@ char g_szVmcodeOvl[11] = "vmcode.ovl";
 #ifdef V102CD
 #include "SRC/AUDIO/CDAUDIO.H"
 #include "SRC/GAME/CFGPARSE.H"
-#include "SRC/GAME/GMAIN.H"
 #endif
 
 void boot_start_dat_load(void) {

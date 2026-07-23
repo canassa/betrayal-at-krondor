@@ -5,6 +5,7 @@
 
 #include "gfx169d.h"
 #include "globals.h"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/SYS/SYSLOWIO.H"
 #include "SRC/INPUT/TIMER.H"

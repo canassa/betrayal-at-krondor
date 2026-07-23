@@ -7,6 +7,7 @@ extern void far v102_cdaudio_set_track_msf(int track, long msf_bias, long frame_
 extern void far v102_cdaudio_play(void);
 extern void far v102_cdaudio_stop(void);
 extern int far v102_cddrive_detect(char drive_letter);
+extern int g_cd_present;
 #endif
 
 #endif

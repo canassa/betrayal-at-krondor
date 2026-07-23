@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "globals.h"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/WORLD/LOOP/MAP.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"

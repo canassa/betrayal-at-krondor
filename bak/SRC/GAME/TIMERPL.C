@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/GAME/GMAIN.H"
 #include "structs.h"
 #include "SRC/GAME/TIMERPL.H"
 #include "SRC/GFX/PALETTE/PALETTE.H"

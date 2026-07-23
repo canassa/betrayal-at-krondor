@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "SRC/GAME/GMAIN.H"
 #include "structs.h"
 #include "SRC/SCREENS/SHOP.H"
 #include "SRC/SYS/RAND.H"

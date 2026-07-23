@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "globals.h"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/WORLD/ZONE/CZONE.H"

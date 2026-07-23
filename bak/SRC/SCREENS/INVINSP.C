@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "globals.h"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "structs.h"
 #include "SRC/SCREENS/INVINSP.H"

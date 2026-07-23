@@ -6,6 +6,7 @@
 #include <io.h>
 
 #include "globals.h"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/SYS/SYSLOWIO.H"
@@ -22,7 +23,7 @@
 #include "SRC/STREAM/RESLOAD/IMGLOAD.H"
 #include "SRC/INPUT/MOUSE.H"
 #include "SRC/GFX/SPRITE/SPRTHNKS.H"
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/AUDIO/CDAUDIO.H"
 #include "SRC/GFX/SCREEN/SCREEN.H"
 #include "SRC/UI/MENUPAGE.H"
 #include "SRC/GFX/PALETTE/PALETTE.H"
