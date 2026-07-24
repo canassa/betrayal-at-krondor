@@ -1,5 +1,6 @@
 #include <dos.h>
 #include "structs.h"
+#include "defines.h"
 #include "SRC/SYS/EMS.H"
 #include "SRC/SYS/FARTHUNK.H"
 #include "SRC/SYS/EMSDET.H"
@@ -50,7 +51,7 @@ void ems_shutdown(void) {
             push di
             mov dx, g_ems_frame_segment
             mov ah, 45h
-            int 67h
+            int INT_EMS
         }
         g_ems_present = 0;
         asm {
@@ -139,7 +140,7 @@ unsigned char far *ems_map_at_offset(int page_chain_1based, long offset) {
         mov dx, g_ems_frame_segment
         mov cx, phys_slot
         mov ax, 5000h
-        int 67h
+        int INT_EMS
     }
     return (unsigned char far *)MK_FP(g_ems_free_pages, within);
 }
@@ -168,7 +169,7 @@ unsigned char far *ems_map_resource_pages(int page_id) {
         mov dx, g_ems_frame_segment
         mov cx, count
         mov ax, 5000h
-        int 67h
+        int INT_EMS
     }
     return (unsigned char far *)MK_FP(g_ems_free_pages, 0);
 }

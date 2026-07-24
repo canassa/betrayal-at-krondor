@@ -7,7 +7,7 @@
 int ems_detect_driver(void) {
     asm {
         mov     ax, 3567h
-        int     21h
+        int     INT_DOS
         mov     di, 0ah
         mov     si, offset s_ems_driver_signature
         mov     cx, 8

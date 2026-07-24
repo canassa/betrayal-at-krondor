@@ -11,6 +11,7 @@
  */
 
 #include "structs.h"
+#include "defines.h"
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/SYS/FARPTR.H" /* memset_far — referenced only in inline asm below */
 
@@ -33,7 +34,7 @@ void far *alloc_far(unsigned long size, long flags) {
     _BX++;
 do_alloc:
     asm mov ah, 48h;
-    asm int 21h;
+    asm int INT_DOS;
     asm jnc alloc_ok;
     _AX = 0;
     _DX = 0;
@@ -62,7 +63,7 @@ alloc_ok:
 
 query_free:
     asm mov ah, 48h;
-    asm int 21h;
+    asm int INT_DOS;
     _AX = _BX;
     _BX = 0;
     asm shl ax, 1;
@@ -82,7 +83,7 @@ int _freemem(void far *block) {
     asm mov ax, word ptr block + 2;
     asm mov es, ax;
     asm mov ah, 49h;
-    asm int 21h;
+    asm int INT_DOS;
     asm pop es;
     return _AX;
 }

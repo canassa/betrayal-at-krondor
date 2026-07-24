@@ -14,6 +14,8 @@
 #define CAF_KNOCKBACK 0x40
 #define CAF_AI_SUMMON 0x80
 
+/** @brief INT 21h — the DOS function-request dispatcher (AH selects the service). */
+#define INT_DOS 0x21
 /** @brief INT 24h — the DOS critical-error (Abort/Retry/Fail) handler vector. */
 #define INT_CRITICAL_ERROR 0x24
 /** @brief INT 67h — the EMS (expanded-memory) driver entry vector. */
