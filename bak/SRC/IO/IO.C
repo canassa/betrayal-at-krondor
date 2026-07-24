@@ -516,17 +516,18 @@ FileHandle *bak_find_handle(IoFile *file) {
  * @brief DOS INT 24h (critical-error) ISR: while a resource open is in flight
  *        (@ref g_ioInFopen), fail the DOS call so @ref bak_fopen retries in C.
  *
- * Returns DOS code 3 (fail) when @ref g_ioInFopen is set, else 1 (retry), and
- * raises @ref g_ioFopenRetry and @ref g_ioArchivesDirty. A Borland `interrupt`
- * function: the params are the pushed register frame; only @p ax is used.
+ * Returns @ref INT24_FAIL when @ref g_ioInFopen is set, else @ref INT24_RETRY,
+ * and raises @ref g_ioFopenRetry and @ref g_ioArchivesDirty. A Borland
+ * `interrupt` function: the params are the pushed register frame; only @p ax is
+ * used.
  *
  * @param bp,di,si,ds,es,dx,cx,bx  Saved registers; unused (positions @p ax).
- * @param ax  Saved AX; overwritten with the return code (3 = fail, 1 = retry).
+ * @param ax  Saved AX; overwritten with the INT 24h return code.
  */
 void interrupt far io_critical_error_handler(unsigned bp, unsigned di, unsigned si,
                                              unsigned ds, unsigned es, unsigned dx,
                                              unsigned cx, unsigned bx, unsigned ax) {
-    ax = g_ioInFopen ? 3 : 1;
+    ax = g_ioInFopen ? INT24_FAIL : INT24_RETRY;
     g_ioFopenRetry = TRUE;
     g_ioArchivesDirty = TRUE;
 }

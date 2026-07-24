@@ -1,6 +1,7 @@
 /**
  * @file  defines.h
- * @brief Combat-actor flag bits and DOS interrupt-vector numbers.
+ * @brief Combat-actor flag bits, DOS interrupt-vector numbers and INT 24h
+ *        return codes.
  */
 #ifndef BAK_DEFINES_H
 #define BAK_DEFINES_H
@@ -20,5 +21,14 @@
 #define INT_CRITICAL_ERROR 0x24
 /** @brief INT 67h — the EMS (expanded-memory) driver entry vector. */
 #define INT_EMS 0x67
+
+/** @brief INT 24h return code (in AL): ignore the error and continue. */
+#define INT24_IGNORE 0
+/** @brief INT 24h return code (in AL): retry the failed DOS operation. */
+#define INT24_RETRY 1
+/** @brief INT 24h return code (in AL): abort the program. */
+#define INT24_ABORT 2
+/** @brief INT 24h return code (in AL): fail the DOS call, returning an error. */
+#define INT24_FAIL 3
 
 #endif
