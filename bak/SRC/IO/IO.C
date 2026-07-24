@@ -13,7 +13,7 @@
 
 short g_bak_io_error;
 void far *g_int24_old_vector;
-FileHandle g_ioHandles[10];
+FileHandle g_ioHandles[IO_HANDLE_POOL_SIZE];
 Archive g_bak_archives[11];
 IoFile *g_pBakFgetcLastStream;
 FILE *g_pBakActiveFgetcStream;
@@ -48,7 +48,7 @@ IoFile *bak_fopen(char *filename, char *mode) {
     g_pBakActiveFgetcStream = 0;
     g_pBakFgetcLastStream = 0;
     slot = g_ioHandles;
-    count = 10;
+    count = IO_HANDLE_POOL_SIZE;
     while (count != 0 && slot->inUse != 0) {
         slot++;
         count--;
@@ -497,7 +497,7 @@ FileHandle *bak_find_handle(IoFile *stream) {
         return g_pBakFindHandleCacheVal;
     g_pBakFindHandleCacheKey = stream;
     slot = g_ioHandles;
-    count = 10;
+    count = IO_HANDLE_POOL_SIZE;
     while (count != 0 && slot != (FileHandle *)stream) {
         slot++;
         count--;

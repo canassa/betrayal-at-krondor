@@ -66,6 +66,10 @@ typedef struct FileHandle {
     FILE *stdioFile;          /**< 0x10: loose stream; 0 = archive window. */
 } FileHandle;
 
+/** @brief Number of slots in the @ref g_ioHandles pool — the cap on
+ *         simultaneously-open @ref bak_fopen handles. */
+#define IO_HANDLE_POOL_SIZE 10
+
 /**
  * @brief Opaque file token from bak_fopen()/cached_file_open().
  *
@@ -85,13 +89,28 @@ typedef void FileRef;
 extern unsigned char g_bak_initialized;
 extern short g_bak_io_error;
 extern void far *g_int24_old_vector;
-extern FileHandle g_ioHandles[10];
+/**
+ * @brief Fixed pool of open-file handle slots (see @ref FileHandle).
+ *
+ * @ref bak_fopen claims the first free slot (@ref FileHandle::inUse == 0) and
+ * returns its address as an @ref IoFile token; @ref bak_fclose frees it. All
+ * @ref IO_HANDLE_POOL_SIZE slots start free (`_BSS` zero-init); when none is
+ * free, @ref bak_fopen returns NULL.
+ */
+extern FileHandle g_ioHandles[IO_HANDLE_POOL_SIZE];
 extern Archive g_bak_archives[11];
 extern IoFile *g_pBakFgetcLastStream;
 extern FILE *g_pBakActiveFgetcStream;
 extern unsigned char g_bak_in_fopen;
 extern unsigned char g_bak_fopen_retry;
 extern unsigned char g_bak_archives_dirty;
+/**
+ * @brief Count of currently-claimed @ref g_ioHandles slots.
+ *
+ * Bumped on each successful @ref bak_fopen and cleared down on @ref bak_fclose,
+ * so it tracks the number of in-use slots. Read only to gate the archive
+ * drive-probe in @ref bak_select_archive (skip it while handles are open).
+ */
 extern unsigned char g_ioOpenHandleCount;
 extern unsigned long g_bak_lookup_hash;
 extern short g_bak_current_archive;
