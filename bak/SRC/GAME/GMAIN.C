@@ -290,7 +290,7 @@ void far gmain_play_intro_animation(void) {
 }
 
 int far gmain_play_chapter_intro(int chapter, int part) {
-    IoFile *stream;
+    IoFile *file;
     int result;
     int trackId;
     char bookName[20];
@@ -298,10 +298,10 @@ int far gmain_play_chapter_intro(int chapter, int part) {
     trackId = -999;
     result = 1;
     if ((part == 1) || (part == 2)) {
-        stream = bak_fopen("chapsong.dat", "rb");
-        bak_fseek(stream, (long)(unsigned int)((part + (chapter - 1) * 2 - 1) * 2), SEEK_SET);
-        bak_fread(&trackId, 2, 1, stream);
-        bak_fclose(stream);
+        file = bak_fopen("chapsong.dat", "rb");
+        bak_fseek(file, (long)(unsigned int)((part + (chapter - 1) * 2 - 1) * 2), SEEK_SET);
+        bak_fread(&trackId, 2, 1, file);
+        bak_fclose(file);
     }
     bookview_init();
     audio_music_play(trackId);

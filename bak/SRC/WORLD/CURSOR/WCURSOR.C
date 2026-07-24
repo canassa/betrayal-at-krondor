@@ -41,14 +41,14 @@ unsigned short g_nHitTestEntryCount = 0x0000;
 unsigned short g_nHitTestWriteSlot = 0x0000;
 
 void far wcursor_load_detect_dat(void) {
-    IoFile *stream;
+    IoFile *file;
 
-    stream = bak_fopen("detect.dat", "rb");
+    file = bak_fopen("detect.dat", "rb");
     if (g_game_mode == 2) {
-        bak_fseek(stream, 0xacL, SEEK_CUR);
+        bak_fseek(file, 0xacL, SEEK_CUR);
     }
-    bak_fread(g_anEntityKindRenderDist, 4, 0x2b, stream);
-    bak_fclose(stream);
+    bak_fread(g_anEntityKindRenderDist, 4, 0x2b, file);
+    bak_fclose(file);
     g_pWorldHitTestTable = galloc_safe_zcalloc(0xa0);
 }
 

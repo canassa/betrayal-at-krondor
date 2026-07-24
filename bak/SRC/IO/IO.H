@@ -174,17 +174,17 @@ extern FileHandle *g_pBakFindHandleCacheVal;
 extern IoFile *g_pBakFindHandleCacheKey;
 
 extern IoFile *bak_fopen(char *filename, char *mode);
-extern int bak_fclose(IoFile *stream);
-extern int bak_fread(void *ptr, int size, int count, IoFile *stream);
-extern int bak_fseek(IoFile *stream, long offset, int whence);
-extern long bak_ftell(IoFile *stream);
-extern long bak_filelength(IoFile *stream);
-extern void bak_rewind(IoFile *stream);
-extern int bak_fgetc(IoFile *stream);
-extern int bak_feof(IoFile *stream);
-extern int bak_fwrite(void *ptr, int size, int count, IoFile *stream);
-extern int bak_putc(int c, IoFile *stream);
-extern void bak_setbuf(IoFile *stream, char *buffer);
+extern int bak_fclose(IoFile *file);
+extern int bak_fread(void *ptr, int size, int count, IoFile *file);
+extern int bak_fseek(IoFile *file, long offset, int whence);
+extern long bak_ftell(IoFile *file);
+extern long bak_filelength(IoFile *file);
+extern void bak_rewind(IoFile *file);
+extern int bak_fgetc(IoFile *file);
+extern int bak_feof(IoFile *file);
+extern int bak_fwrite(void *ptr, int size, int count, IoFile *file);
+extern int bak_putc(int c, IoFile *file);
+extern void bak_setbuf(IoFile *file, char *buffer);
 extern void bak_init_resources(void);
 extern void bak_shutdown_resources(void);
 /**
@@ -212,6 +212,8 @@ extern unsigned long io_filename_hash(char *filename);
 
 extern int bak_resource_lookup(FileHandle *slot);
 extern void bak_select_archive(int archive_index);
+
+
 /**
  * @brief Seek the current archive's stream to an absolute byte offset in
  *        `KRONDOR.001`.
@@ -220,11 +222,13 @@ extern void bak_select_archive(int archive_index);
  * @ref Archive::fp there, but only when @ref Archive::filePos shows it isn't
  * already positioned — the cache skips a redundant `fseek`.
  *
- * @param absolute_offset Byte position within the archive (window base + read
+ * @param offset Byte position within the archive (window base + read
  *        cursor). `long` to match `fseek`; always a non-negative file position.
  */
-extern void io_archive_seek(long absolute_offset);
-extern FileHandle *bak_find_handle(IoFile *stream);
+extern void io_archive_seek(long offset);
+
+
+extern FileHandle *bak_find_handle(IoFile *file);
 
 extern void interrupt far bak_int24_critical_handler();
 

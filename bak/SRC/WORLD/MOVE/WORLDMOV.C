@@ -29,32 +29,32 @@ short g_nWorldGridStride;
 long g_lWorldTimePerStep;
 
 void worldmove_dat_load(void) {
-    IoFile *stream;
+    IoFile *file;
     long seek_off;
     int time_raw;
 
-    stream = bak_fopen("movement.dat", "rb");
+    file = bak_fopen("movement.dat", "rb");
     if (g_engine_prefs != (EnginePrefs *)0 && g_engine_prefs->step_speed != '\0') {
-        bak_fseek(stream, (unsigned long)(unsigned int)((int)g_engine_prefs->step_speed << 1), SEEK_CUR);
+        bak_fseek(file, (unsigned long)(unsigned int)((int)g_engine_prefs->step_speed << 1), SEEK_CUR);
     }
-    bak_fread(&g_nWorldStepSpeed, 2, 1, stream);
+    bak_fread(&g_nWorldStepSpeed, 2, 1, file);
     if (g_engine_prefs != (EnginePrefs *)0) {
         seek_off = (long)(int)(unsigned int)g_engine_prefs->combat_step_speed;
     } else {
         seek_off = 0;
     }
     seek_off = (seek_off + 3) * 2;
-    bak_fseek(stream, seek_off, SEEK_SET);
-    bak_fread(&g_nWorldGridStride, 2, 1, stream);
+    bak_fseek(file, seek_off, SEEK_SET);
+    bak_fread(&g_nWorldGridStride, 2, 1, file);
     if (g_engine_prefs != (EnginePrefs *)0) {
         seek_off = (long)(int)(unsigned int)g_engine_prefs->step_speed;
     } else {
         seek_off = 0;
     }
     seek_off = (seek_off + 6) * 2;
-    bak_fseek(stream, seek_off, SEEK_SET);
-    bak_fread(&time_raw, 2, 1, stream);
-    bak_fclose(stream);
+    bak_fseek(file, seek_off, SEEK_SET);
+    bak_fread(&time_raw, 2, 1, file);
+    bak_fclose(file);
     g_lWorldTimePerStep = (long)time_raw * 30;
 }
 

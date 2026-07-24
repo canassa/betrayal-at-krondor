@@ -161,17 +161,17 @@ void far combatenc_mnames_lookup_dest(int index, char **p_dest) {
     unsigned int blob_size;
     int count;
     char *blob;
-    IoFile *stream;
+    IoFile *file;
     int *offsets;
 
-    stream = bak_fopen("mnames.dat", "rb");
-    bak_fread(&count, 2, 1, stream);
+    file = bak_fopen("mnames.dat", "rb");
+    bak_fread(&count, 2, 1, file);
     offsets = galloc_safe_zcalloc(count << 1);
-    bak_fread(offsets, 2, count, stream);
-    bak_fread(&blob_size, 2, 1, stream);
+    bak_fread(offsets, 2, count, file);
+    bak_fread(&blob_size, 2, 1, file);
     blob = galloc_safe_zcalloc(blob_size);
-    bak_fread(blob, 1, blob_size, stream);
-    bak_fclose(stream);
+    bak_fread(blob, 1, blob_size, file);
+    bak_fclose(file);
     offsets[index] += (int)blob;
     strcpy(*p_dest, (char *)offsets[index]);
     galloc_zfree(blob);
@@ -206,21 +206,21 @@ void far combatenc_release_actors(void) {
 
 void far combatenc_save_state(void) {
     char *filename;
-    IoFile *stream;
+    IoFile *file;
     int i;
 
     filename = combatenc_build_save_filename(g_encounter_id);
-    stream = bak_fopen(filename, "wb");
-    bak_fwrite(&g_combat_count_B, 2, 1, stream);
+    file = bak_fopen(filename, "wb");
+    bak_fwrite(&g_combat_count_B, 2, 1, file);
     i = 0;
     if (i < g_combat_count_B) {
         do {
-            bak_fwrite(&g_combat_actors_B[i], 0x5f, 1, stream);
-            bak_fwrite(g_combat_actors_B[i].inner, 0x16, 1, stream);
+            bak_fwrite(&g_combat_actors_B[i], 0x5f, 1, file);
+            bak_fwrite(g_combat_actors_B[i].inner, 0x16, 1, file);
             i++;
         } while (i < g_combat_count_B);
     }
-    bak_fclose(stream);
+    bak_fclose(file);
     combatgrid_save_traps_terr(g_encounter_id);
     combatenc_persist_actors_to_temp(g_encounter_id);
     return;
@@ -1017,7 +1017,7 @@ Actor far *combatenc_corpse_tbl_spawn_actor(long record_id, int slot) {
 }
 
 void combatenc_spawns_load_zones_tmp(void) {
-    IoFile *stream;
+    IoFile *file;
     int i;
     int zone;
     int gidx;
@@ -1033,16 +1033,16 @@ void combatenc_spawns_load_zones_tmp(void) {
         for (i = 0; i < 7; i++)
             index[i] = -1;
         filename = combatenc_build_save_filename(zone);
-        stream = bak_fopen(filename, "rb");
-        if (stream != (IoFile *)0) {
-            bak_fread(&count, 2, 1, stream);
+        file = bak_fopen(filename, "rb");
+        if (file != (IoFile *)0) {
+            bak_fread(&count, 2, 1, file);
         } else {
             count = 0;
         }
         for (i = 0; i < count; i++) {
             index[i] = gidx;
-            bak_fread(&actor, 0x5f, 1, stream);
-            bak_fread(&inner, 0x16, 1, stream);
+            bak_fread(&actor, 0x5f, 1, file);
+            bak_fread(&inner, 0x16, 1, file);
             actor.stats[0].base = actor.stats[0].max;
             actor.stats[1].base = actor.stats[1].max;
             inner.flags = CAF_READY;
@@ -1054,7 +1054,7 @@ void combatenc_spawns_load_zones_tmp(void) {
                                       GAM_COMBAT_ACTOR_INNER((long)gidx), 0x16);
             gidx++;
         }
-        bak_fclose(stream);
+        bak_fclose(file);
         g_wLastTempWriteRecordKind = 1;
 
         gstate_temp_file_write_at((unsigned char far *)index,
@@ -1066,7 +1066,7 @@ void combatenc_spawns_load_zones_tmp(void) {
 
 void combatenc_saves_migr_all_slots(void) {
     char *filename;
-    IoFile *stream;
+    IoFile *file;
     IoFile *outStream;
     int encounterId;
     int j;
@@ -1084,12 +1084,12 @@ void combatenc_saves_migr_all_slots(void) {
             index[i] = -1;
 
         filename = combatenc_build_save_filename(encounterId);
-        stream = bak_fopen(filename, "rb");
-        if (stream == (IoFile *)0)
+        file = bak_fopen(filename, "rb");
+        if (file == (IoFile *)0)
             goto L_null;
         filename[3] = 'n';
         outStream = bak_fopen(filename, "wb");
-        bak_fread(&count, 2, 1, stream);
+        bak_fread(&count, 2, 1, file);
         bak_fwrite(&count, 2, 1, outStream);
         goto L_shared;
     L_null:
@@ -1100,8 +1100,8 @@ void combatenc_saves_migr_all_slots(void) {
         if (j < count) {
             do {
                 index[j] = gidx;
-                bak_fread(actorBuf, 0x5e, 1, stream);
-                bak_fread(innerBuf, 0x16, 1, stream);
+                bak_fread(actorBuf, 0x5e, 1, file);
+                bak_fread(innerBuf, 0x16, 1, file);
                 actorBuf[0x58] = 0;
                 bak_fwrite(actorBuf, 0x5f, 1, outStream);
                 bak_fwrite(innerBuf, 0x16, 1, outStream);
@@ -1109,7 +1109,7 @@ void combatenc_saves_migr_all_slots(void) {
                 j++;
             } while (j < count);
         }
-        bak_fclose(stream);
+        bak_fclose(file);
         if (outStream != (IoFile *)0)
             bak_fclose(outStream);
         encounterId++;

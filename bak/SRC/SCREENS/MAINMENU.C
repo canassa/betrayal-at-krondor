@@ -59,24 +59,24 @@ char g_szSaveSlotDirName_51cc[13];
 unsigned char g_abSaveFileHeader[90];
 
 int mainmenu_save_cfg_load_settings(void) {
-    IoFile *stream;
+    IoFile *file;
 
     g_engine_prefs = galloc_safe_zcalloc(5);
     if (g_engine_prefs != (EnginePrefs *)0x0) {
-        stream = bak_fopen("KRONDOR.CFG", "rb");
-        if (stream == (IoFile *)0x0) {
+        file = bak_fopen("KRONDOR.CFG", "rb");
+        if (file == (IoFile *)0x0) {
 #ifdef V102CD
             if (g_cd_present != 0) {
-                stream = bak_fopen("CDEFAULT.DAT", "rb");
+                file = bak_fopen("CDEFAULT.DAT", "rb");
             } else {
-                stream = bak_fopen("DEFAULT.DAT", "rb");
+                file = bak_fopen("DEFAULT.DAT", "rb");
             }
 #else
-            stream = bak_fopen("DEFAULT.DAT", "rb");
+            file = bak_fopen("DEFAULT.DAT", "rb");
 #endif
         }
-        bak_fread(g_engine_prefs, 5, 1, stream);
-        bak_fclose(stream);
+        bak_fread(g_engine_prefs, 5, 1, file);
+        bak_fclose(file);
         mainmenu_save_request_load_game();
         return 1;
     }
@@ -1518,21 +1518,21 @@ void mainmenu_save_party_to_tmp(void) {
 
 int mainmenu_save_file_read_header(char *path, void *sig_block, int *ds_state_1, int *ds_state_2,
                                    int *ds_state_3, int *ds_state_4) {
-    IoFile *stream;
+    IoFile *file;
     register int ok;
     int version;
 
     ok = 1;
-    stream = bak_fopen(path, "rb");
-    if (stream != (IoFile *)0x0) {
-        if (!(bak_fread(sig_block, 1, 0x5a, stream) == 0x5a &&
-              bak_fread(ds_state_1, 2, 1, stream) == 1 &&
-              bak_fread(ds_state_2, 2, 1, stream) == 1 &&
-              bak_fread(ds_state_3, 2, 1, stream) == 1 &&
-              bak_fread(ds_state_4, 2, 1, stream) == 1 && bak_fread(&version, 2, 1, stream) == 1 &&
+    file = bak_fopen(path, "rb");
+    if (file != (IoFile *)0x0) {
+        if (!(bak_fread(sig_block, 1, 0x5a, file) == 0x5a &&
+              bak_fread(ds_state_1, 2, 1, file) == 1 &&
+              bak_fread(ds_state_2, 2, 1, file) == 1 &&
+              bak_fread(ds_state_3, 2, 1, file) == 1 &&
+              bak_fread(ds_state_4, 2, 1, file) == 1 && bak_fread(&version, 2, 1, file) == 1 &&
               version == 0x16))
             ok = 0;
-        if (!bak_fclose(stream))
+        if (!bak_fclose(file))
             return ok;
     }
     ok = 0;
@@ -1588,14 +1588,14 @@ int mainmenu_save_slot_is_at_cap(char *entry) {
 
 void mainmenu_save_slot_exists(void) {
     char local[90];
-    IoFile *stream;
+    IoFile *file;
 
     if (g_wSaveSlotDirValid != 0) {
         sprintf(local, "%s\\%s.G%02d\\SAVE%02d.GAM", "GAMES", g_szSaveSlotDirName_51cc,
                 g_wCurrentSaveSlotKey, 0x15);
-        stream = bak_fopen(local, "wb");
-        if (stream != 0) {
-            bak_fclose(stream);
+        file = bak_fopen(local, "wb");
+        if (file != 0) {
+            bak_fclose(file);
         }
     }
 }

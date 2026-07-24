@@ -21,18 +21,18 @@ short g_credits_scroll_y;
 unsigned short g_nCreditsPassCount = 0x0000;
 
 void credits_load(void) {
-    IoFile *stream;
+    IoFile *file;
     int i;
     unsigned short blobSize;
 
-    stream = bak_fopen("cred.dat", "rb");
-    bak_fread(&g_credits_pair_count, 2, 1, stream);
+    file = bak_fopen("cred.dat", "rb");
+    bak_fread(&g_credits_pair_count, 2, 1, file);
     g_credits_strings = galloc_safe_zcalloc(g_credits_pair_count << 1);
-    bak_fread(g_credits_strings, 2, g_credits_pair_count, stream);
-    bak_fread(&blobSize, 2, 1, stream);
+    bak_fread(g_credits_strings, 2, g_credits_pair_count, file);
+    bak_fread(&blobSize, 2, 1, file);
     g_pCreditsBlob = galloc_safe_zcalloc(blobSize);
-    bak_fread(g_pCreditsBlob, 1, blobSize, stream);
-    bak_fclose(stream);
+    bak_fread(g_pCreditsBlob, 1, blobSize, file);
+    bak_fclose(file);
     for (i = 0; i < g_credits_pair_count; i++) {
         g_credits_strings[i] += (int)g_pCreditsBlob;
     }

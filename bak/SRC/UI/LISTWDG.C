@@ -61,7 +61,7 @@ ListWidget *far listwidget_attach(short x, short y, short width, short line_coun
 }
 
 ListWidget *far listwidget_load(char *filename, MenuPage *parent, short child_idx) {
-    IoFile *stream;
+    IoFile *file;
     short x;
     short y;
     short width;
@@ -73,24 +73,24 @@ ListWidget *far listwidget_load(char *filename, MenuPage *parent, short child_id
     int pos;
 
     widget = (ListWidget *)0;
-    stream = bak_fopen(filename, "rb");
-    if (stream != (IoFile *)0) {
-        bak_fread(&x, 2, 1, stream);
-        bak_fread(&y, 2, 1, stream);
-        bak_fread(&width, 2, 1, stream);
-        bak_fread(&line_count, 2, 1, stream);
-        bak_fread(&capacity, 2, 1, stream);
+    file = bak_fopen(filename, "rb");
+    if (file != (IoFile *)0) {
+        bak_fread(&x, 2, 1, file);
+        bak_fread(&y, 2, 1, file);
+        bak_fread(&width, 2, 1, file);
+        bak_fread(&line_count, 2, 1, file);
+        bak_fread(&capacity, 2, 1, file);
         widget = listwidget_attach(x, y, width, line_count, capacity, parent, child_idx);
         if (widget != (ListWidget *)0) {
             pos = 0;
             while (pos < capacity) {
-                bak_fread(&len, 2, 1, stream);
-                bak_fread(buf, 1, len, stream);
+                bak_fread(&len, 2, 1, file);
+                bak_fread(buf, 1, len, file);
                 listwidget_insert_item(widget, pos, buf, 0);
                 pos++;
             }
         }
-        bak_fclose(stream);
+        bak_fclose(file);
     }
     return widget;
 }

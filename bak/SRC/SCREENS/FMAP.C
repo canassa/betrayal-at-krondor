@@ -225,7 +225,7 @@ void far fmap_screen_run(void) {
 }
 
 void fmap_twn_load(void) {
-    IoFile *stream;
+    IoFile *file;
     unsigned short *labelPtr;
     int i;
     unsigned short *xPtr;
@@ -233,23 +233,23 @@ void fmap_twn_load(void) {
     unsigned short len;
 
     g_wFmapLabelRectW = 0xffff;
-    stream = bak_fopen("fmap_twn.dat", "rb");
-    bak_fread(&g_wFmapMapWidth, 2, 1, stream);
-    bak_fread(&g_wFmapMapHeight, 2, 1, stream);
-    bak_fread(&g_wFmapHotspotW, 2, 1, stream);
-    bak_fread(&g_wFmapHotspotH, 2, 1, stream);
-    bak_fread(&g_wFmapTownCount, 2, 1, stream);
+    file = bak_fopen("fmap_twn.dat", "rb");
+    bak_fread(&g_wFmapMapWidth, 2, 1, file);
+    bak_fread(&g_wFmapMapHeight, 2, 1, file);
+    bak_fread(&g_wFmapHotspotW, 2, 1, file);
+    bak_fread(&g_wFmapHotspotH, 2, 1, file);
+    bak_fread(&g_wFmapTownCount, 2, 1, file);
     if (g_wFmapTownCount != 0) {
         g_pFmapTownLabels = labelPtr = galloc_safe_zcalloc(g_wFmapTownCount << 1);
         g_pFmapTownXCoords = xPtr = galloc_safe_zcalloc(g_wFmapTownCount << 1);
         g_pFmapTownYCoords = yPtr = galloc_safe_zcalloc(g_wFmapTownCount << 1);
         i = 0;
         while (i < (int)g_wFmapTownCount) {
-            bak_fread(&len, 2, 1, stream);
+            bak_fread(&len, 2, 1, file);
             *labelPtr = (unsigned short)galloc_safe_zcalloc(len);
-            bak_fread((void *)*labelPtr, 1, len, stream);
-            bak_fread(xPtr, 2, 1, stream);
-            bak_fread(yPtr, 2, 1, stream);
+            bak_fread((void *)*labelPtr, 1, len, file);
+            bak_fread(xPtr, 2, 1, file);
+            bak_fread(yPtr, 2, 1, file);
             len = font_text_width_ds((char *)*labelPtr);
             if ((int)len > (int)g_wFmapLabelRectW) {
                 g_wFmapLabelRectW = len;
@@ -260,7 +260,7 @@ void fmap_twn_load(void) {
             yPtr++;
         }
     }
-    bak_fclose(stream);
+    bak_fclose(file);
     g_wFmapLabelRectH = g_graphics_context.pFont_height[0] + 1;
     g_pFmapLabelRectBuf =
         alloc_far((unsigned long)(unsigned short)rect_byte_size(g_wFmapLabelRectW, g_wFmapLabelRectH), 0L);
@@ -310,31 +310,31 @@ int far fmap_xy_lookup_for_chapter(int *out_x, int *out_y) {
     unsigned int i;
     int entry_chapter;
     unsigned char refIndex;
-    register IoFile *stream;
+    register IoFile *file;
     register int found;
 
     found = 0;
     refIndex = g_apCombat_zone_actor_lists[0]->bRef_pair_index;
-    stream = bak_fopen("fmap_xy.dat", "rb");
-    if (stream != (IoFile *)0x0) {
+    file = bak_fopen("fmap_xy.dat", "rb");
+    if (file != (IoFile *)0x0) {
         for (i = 1; (int)i <= 0xc; i++) {
-            bak_fread(&entry_chapter, 2, 1, stream);
+            bak_fread(&entry_chapter, 2, 1, file);
             if (g_gameState.nZoneId == i) {
                 if ((int)(unsigned int)refIndex < entry_chapter) {
                     if (refIndex != 0) {
-                        bak_fseek(stream, (unsigned long)(unsigned int)(refIndex << 2), SEEK_CUR);
+                        bak_fseek(file, (unsigned long)(unsigned int)(refIndex << 2), SEEK_CUR);
                     }
-                    bak_fread(out_x, 2, 1, stream);
-                    bak_fread(out_y, 2, 1, stream);
+                    bak_fread(out_x, 2, 1, file);
+                    bak_fread(out_y, 2, 1, file);
                     found = 1;
                 }
                 break;
             }
             if (entry_chapter != 0) {
-                bak_fseek(stream, (unsigned long)(unsigned int)(entry_chapter << 2), SEEK_CUR);
+                bak_fseek(file, (unsigned long)(unsigned int)(entry_chapter << 2), SEEK_CUR);
             }
         }
-        bak_fclose(stream);
+        bak_fclose(file);
     }
     if (((found != 0) && (*out_x == -1)) && (*out_y == -1)) {
         found = 0;

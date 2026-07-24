@@ -514,7 +514,7 @@ void far combatgrid_actor_set_grid_pos(int actor_idx, int new_x, int new_y) {
 
 void combatgrid_load_traps_dat(void) {
     int skip;
-    IoFile *stream;
+    IoFile *file;
     int actor_idx;
     unsigned char tileX;
     unsigned char tileY;
@@ -527,17 +527,17 @@ void combatgrid_load_traps_dat(void) {
 
     recordCount = 0;
     g_traps_loaded_flag = 1;
-    stream = bak_fopen("traps.dat", "rb");
+    file = bak_fopen("traps.dat", "rb");
     offset = (long)((int)g_encounter_id * 0x3e);
-    bak_fseek(stream, offset, SEEK_SET);
-    bak_fread(&recordCount, 2, 1, stream);
+    bak_fseek(file, offset, SEEK_SET);
+    bak_fread(&recordCount, 2, 1, file);
     start_idx = g_combatant_count;
     i = 0;
     while (i < recordCount) {
         skip = 0;
-        bak_fread(&recordId, 2, 1, stream);
-        bak_fread(&tileX, 1, 1, stream);
-        bak_fread(&tileY, 1, 1, stream);
+        bak_fread(&recordId, 2, 1, file);
+        bak_fread(&tileX, 1, 1, file);
+        bak_fread(&tileY, 1, 1, file);
         if (recordId >= 0) {
             g_combatant_table[g_combatant_count].paged_id = recordId;
             g_combatant_table[g_combatant_count].tile_x = tileX;
@@ -584,7 +584,7 @@ void combatgrid_load_traps_dat(void) {
         }
         i++;
     }
-    bak_fclose(stream);
+    bak_fclose(file);
     combatgrid_apply_engage_links(start_idx);
 }
 
@@ -714,14 +714,14 @@ void far combatgrid_tile_fx_init_pass(void) {
 }
 
 void combatgrid_load_and_init(void) {
-    IoFile *stream;
+    IoFile *file;
     int col;
     int row;
 
-    stream = bak_fopen("grid.dat", "rb");
-    bak_fseek(stream, (long)(unsigned)((g_gameState.nZoneId - 1) * 2), SEEK_SET);
-    bak_fread(&g_nCombatTerrainWallColor, 2, 1, stream);
-    bak_fclose(stream);
+    file = bak_fopen("grid.dat", "rb");
+    bak_fseek(file, (long)(unsigned)((g_gameState.nZoneId - 1) * 2), SEEK_SET);
+    bak_fread(&g_nCombatTerrainWallColor, 2, 1, file);
+    bak_fclose(file);
     combatgrid_set_tile_effect('\0', '\0', 2, -1);
     combatgrid_set_tile_effect('\a', '\0', 2, -1);
     if (g_game_mode == 2) {
@@ -1134,7 +1134,7 @@ void combatgrid_clear_tile_effects(void) {
 }
 
 void combatgrid_save_traps_terr(int encounter_idx) {
-    IoFile *stream;
+    IoFile *file;
     int i;
     char tileX;
     char tileY;
@@ -1145,9 +1145,9 @@ void combatgrid_save_traps_terr(int encounter_idx) {
 
     writeCount = 0;
     firstIdx = -1;
-    stream = bak_fopen("traps.dat", "r+b");
+    file = bak_fopen("traps.dat", "r+b");
     offset = (long)(encounter_idx * 0x3e);
-    bak_fseek(stream, offset, SEEK_SET);
+    bak_fseek(file, offset, SEEK_SET);
     for (i = 0; i < g_combatant_count; i++) {
         if (combatgrid_is_combatant_type(g_combatant_table[i].paged_id) != 0) {
             writeCount++;
@@ -1176,12 +1176,12 @@ void combatgrid_save_traps_terr(int encounter_idx) {
     if (g_traps_loaded_flag == 0) {
         writeCount++;
     }
-    bak_fwrite(&writeCount, 2, 1, stream);
+    bak_fwrite(&writeCount, 2, 1, file);
     for (i = firstIdx; i < g_combatant_count; i++) {
         if (g_combatant_table[i].paged_id != 0xb) {
-            bak_fwrite(&g_combatant_table[i].paged_id, 2, 1, stream);
-            bak_fwrite(&g_combatant_table[i].tile_x, 1, 1, stream);
-            bak_fwrite(&g_combatant_table[i].tile_y, 1, 1, stream);
+            bak_fwrite(&g_combatant_table[i].paged_id, 2, 1, file);
+            bak_fwrite(&g_combatant_table[i].tile_x, 1, 1, file);
+            bak_fwrite(&g_combatant_table[i].tile_y, 1, 1, file);
         }
     }
     tileX = '\0';
@@ -1193,9 +1193,9 @@ void combatgrid_save_traps_terr(int encounter_idx) {
                 (((terrain == 0xc || (terrain == 0xd)) ||
                   ((terrain == 0xf || ((terrain == 0x10 || (terrain == 0x11)))))))) {
                 terrain = -terrain;
-                bak_fwrite(&terrain, 2, 1, stream);
-                bak_fwrite(&tileX, 1, 1, stream);
-                bak_fwrite(&tileY, 1, 1, stream);
+                bak_fwrite(&terrain, 2, 1, file);
+                bak_fwrite(&tileX, 1, 1, file);
+                bak_fwrite(&tileY, 1, 1, file);
             }
             tileY++;
         } while (tileY < '\r');
@@ -1203,9 +1203,9 @@ void combatgrid_save_traps_terr(int encounter_idx) {
     } while (tileX < '\b');
     if (g_traps_loaded_flag == 0) {
         terrain = 0xffee;
-        bak_fwrite(&terrain, 2, 1, stream);
+        bak_fwrite(&terrain, 2, 1, file);
     }
-    bak_fclose(stream);
+    bak_fclose(file);
     return;
 }
 

@@ -93,7 +93,7 @@ int actorspawn_for_location_by_time(int location_id) {
 }
 
 Actor far *actorspawn_objfixed(int kind, long world_x, long world_y) {
-    register IoFile *stream;
+    register IoFile *file;
     register int ipass;
     int rec_idx;
     unsigned int chap_min;
@@ -112,19 +112,19 @@ Actor far *actorspawn_objfixed(int kind, long world_x, long world_y) {
             if (g_gameState.objfixed_location_cache.objfixed_offset == 0) {
                 return NULL;
             }
-            stream = bak_fopen("OBJFIXED.DAT", "rb");
-            bak_fseek(stream, g_gameState.objfixed_location_cache.objfixed_offset, SEEK_SET);
+            file = bak_fopen("OBJFIXED.DAT", "rb");
+            bak_fseek(file, g_gameState.objfixed_location_cache.objfixed_offset, SEEK_SET);
         } else {
             if (g_gameState.objfixed_location_cache.temp_gam_offset == 0) {
                 return NULL;
             }
-            stream = g_tempGamFP;
-            bak_fseek(stream, g_gameState.objfixed_location_cache.temp_gam_offset, SEEK_SET);
+            file = g_tempGamFP;
+            bak_fseek(file, g_gameState.objfixed_location_cache.temp_gam_offset, SEEK_SET);
         }
-        bak_fread(&record_count, 2, 1, stream);
+        bak_fread(&record_count, 2, 1, file);
         for (rec_idx = 0; spawned == NULL && rec_idx < record_count; rec_idx++) {
-            offset = bak_ftell(stream);
-            bak_fread(&tmpl.header, 0x10, 1, stream);
+            offset = bak_ftell(file);
+            bak_fread(&tmpl.header, 0x10, 1, file);
             chap_min = (int)(unsigned int)tmpl.header.chap_band >> 4 & 0xf;
             chap_max = tmpl.header.chap_band & 0xf;
             if (tmpl.header.kind == kind && tmpl.header.nWorld_x == world_x &&
@@ -133,13 +133,13 @@ Actor far *actorspawn_objfixed(int kind, long world_x, long world_y) {
                 spawned = actor_alloc_from_template((Actor far *)&tmpl, ipass == 0);
                 *(long far *)spawned->temp_file_off = offset;
                 bak_fread_chunked((unsigned char huge *)((char far *)spawned + sizeof(Actor)), 1,
-                                  actorrec_payload_size((Actor far *)&tmpl), stream);
+                                  actorrec_payload_size((Actor far *)&tmpl), file);
             } else {
-                bak_fseek(stream, actorrec_payload_size((Actor far *)&tmpl), SEEK_CUR);
+                bak_fseek(file, actorrec_payload_size((Actor far *)&tmpl), SEEK_CUR);
             }
         }
         if (ipass != 0) {
-            bak_fclose(stream);
+            bak_fclose(file);
         }
     }
     return spawned;

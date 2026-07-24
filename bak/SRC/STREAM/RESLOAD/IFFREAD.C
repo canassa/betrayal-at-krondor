@@ -16,21 +16,21 @@ IffResReader *near iff_reader_find(FileRef *key) {
 }
 
 void near bakfile_reset_preserve_cursor(IffResReader *reader) {
-    IoFile *stream;
+    IoFile *file;
     long end;
     register char *p;
     register int count;
 
     p = (char *)reader;
     count = sizeof(IffResReader);
-    stream = reader->pStream;
+    file = reader->pStream;
     end = *(long *)&reader->pLevel_cache[0];
     while (--count >= 0) {
         *p = 0;
         p++;
     }
     *(long *)&reader->pLevel_cache[0] = end;
-    bak_rewind(reader->pStream = stream);
+    bak_rewind(reader->pStream = file);
 }
 
 int near strncmp_eq(char *a, char *b, int n) {
@@ -200,12 +200,12 @@ unsigned long far cached_file_chunk_size(register IoFile *file) {
     return (unsigned long)reader->wChunk_size_hi_flags << 16 | reader->wChunk_size_lo;
 }
 
-int far cached_file_close(IoFile *stream) {
+int far cached_file_close(IoFile *file) {
     register IffResReader *reader;
-    if (!stream || !((reader = iff_reader_find(stream)) != 0))
+    if (!file || !((reader = iff_reader_find(file)) != 0))
         return 0;
     reader->pStream = 0;
-    bak_fclose(stream);
+    bak_fclose(file);
     return 1;
 }
 

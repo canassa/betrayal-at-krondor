@@ -41,20 +41,20 @@ static void charscreen_draw_spell_book_actor(CombatActor *actor, unsigned char f
     int spell_icon;
     int spell_count;
     int first;
-    IoFile *stream;
+    IoFile *file;
     struct SpellRecord spell_rec;
     register int panel_y;
     register int spell_idx;
 
     if (gstate_actor_is_caster(actor) != 0) {
-        stream = bak_fopen("InvSpell.dat", "rb");
+        file = bak_fopen("InvSpell.dat", "rb");
         g_graphics_context.wGfxBlitSrcPage = g_graphics_context.wVgaPage1Base;
         g_graphics_context.wGfxBlitDstPage = g_graphics_context.wVgaPage2Base;
         gfx_present_dispatch(0, 0, 0x140, 200);
         for (row = 1; row <= 6; row++) {
             *g_pMainScratchBuf = '\0';
-            bak_fread(&spell_icon, 1, 2, stream);
-            bak_fread(&spell_count, 1, 2, stream);
+            bak_fread(&spell_icon, 1, 2, file);
+            bak_fread(&spell_count, 1, 2, file);
             panel_y = row * 0x20 - 0x1b;
             g_graphics_context.bGfx_fill_enabled = '\x01';
             g_graphics_context.bGfx_fill_color = g_graphics_context.bGfx_outline_color = '\0';
@@ -67,7 +67,7 @@ static void charscreen_draw_spell_book_actor(CombatActor *actor, unsigned char f
             first = 1;
             if (spell_idx < spell_count) {
                 do {
-                    bak_fread(&spell_rec, 1, 0x1a, stream);
+                    bak_fread(&spell_rec, 1, 0x1a, file);
                     if (((1 << (spell_rec.idx % 0x10)) &
                          actor->pSpellsKnown[spell_rec.idx / 0x10]) != 0) {
                         if (first == 0) {
@@ -86,7 +86,7 @@ static void charscreen_draw_spell_book_actor(CombatActor *actor, unsigned char f
             g_graphics_context.bText_fg_color = '\n';
             textwrap_draw_aligned((long)g_pMainScratchBuf, 0x32, panel_y, 0x109, 0x1e, 0, 0x10, 0);
         }
-        bak_fclose(stream);
+        bak_fclose(file);
         g_pPalQueuedForFlip = pal_scratch = chunk_load_into_slot("INVENTOR.PAL");
         g_nPalBlendMode = 0;
         screen_frame_present();

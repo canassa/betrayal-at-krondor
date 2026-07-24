@@ -45,15 +45,15 @@ void askabout_keyword_table_free(void) {
 
 void far askabout_keyword_table_load(void) {
     unsigned int size;
-    IoFile *stream;
+    IoFile *file;
     int i;
 
     if (g_pKeywordTable == (unsigned short *)0) {
-        stream = bak_fopen("KEYWORD.DAT", "rb");
-        bak_fread(&size, 2, 1, stream);
+        file = bak_fopen("KEYWORD.DAT", "rb");
+        bak_fread(&size, 2, 1, file);
         g_pKeywordTable = galloc_safe_zcalloc(size);
-        bak_fread(g_pKeywordTable, 1, size, stream);
-        bak_fclose(stream);
+        bak_fread(g_pKeywordTable, 1, size, file);
+        bak_fclose(file);
         for (i = 0; i < (int)*g_pKeywordTable; i = i + 1) {
             *(unsigned short *)((char *)g_pKeywordTable + 2 + i * 2) +=
                 (int)((unsigned)g_pKeywordTable - 2);

@@ -20,7 +20,7 @@ long bak_fread_chunked(unsigned char huge *dest, long size, long count, IoFile *
     return count;
 }
 
-unsigned long bak_fwrite_chunked(unsigned char huge *src, unsigned long elem_size, unsigned long count, IoFile *stream) {
+unsigned long bak_fwrite_chunked(unsigned char huge *src, unsigned long elem_size, unsigned long count, IoFile *file) {
     unsigned long remaining;
     char buf[128];
     int n;
@@ -29,7 +29,7 @@ unsigned long bak_fwrite_chunked(unsigned char huge *src, unsigned long elem_siz
     while ((long)remaining > 0) {
         n = (long)remaining > 0x80 ? 0x80 : (int)remaining;
         _fmemcpy(buf, src, n);
-        bak_fwrite(buf, n, 1, stream);
+        bak_fwrite(buf, n, 1, file);
         src += n;
         remaining -= n;
     }

@@ -32,14 +32,14 @@ typedef struct {
 } OctPos;
 
 void far proxscan_filter_table_load(void) {
-    IoFile *stream;
+    IoFile *file;
 
-    stream = bak_fopen("filter.dat", "rb");
+    file = bak_fopen("filter.dat", "rb");
     if (g_engine_prefs != (EnginePrefs *)0 && g_engine_prefs->detail_level != 0) {
-        bak_fseek(stream, (unsigned long)((unsigned int)g_engine_prefs->detail_level * 0xac), SEEK_CUR);
+        bak_fseek(file, (unsigned long)((unsigned int)g_engine_prefs->detail_level * 0xac), SEEK_CUR);
     }
-    bak_fread((void *)g_aFilterTable, 4, 0x2b, stream);
-    bak_fclose(stream);
+    bak_fread((void *)g_aFilterTable, 4, 0x2b, file);
+    bak_fclose(file);
     return;
 }
 

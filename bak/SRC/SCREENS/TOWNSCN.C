@@ -79,7 +79,7 @@ static int far townscene_load(int chapter, int sub, int preserve) {
     int i;
     unsigned int size;
     MenuEntry *pEntry;
-    IoFile *stream;
+    IoFile *file;
     TownSceneActor *pActor;
     ActorSubrecord far *pSub;
 
@@ -96,11 +96,11 @@ static int far townscene_load(int chapter, int sub, int preserve) {
     g_szTownSceneFilenameSuffix[0] = (char)sub + '@';
     strcat(fname, g_szTownSceneFilenameSuffix);
 
-    stream = bak_fopen(fname, "rb");
-    bak_fread(&size, 2, 1, stream);
+    file = bak_fopen(fname, "rb");
+    bak_fread(&size, 2, 1, file);
     g_pCurrentTownScene = galloc_safe_zcalloc(size);
-    bak_fread(g_pCurrentTownScene, size, 1, stream);
-    bak_fclose(stream);
+    bak_fread(g_pCurrentTownScene, size, 1, file);
+    bak_fclose(file);
 
     g_nTownSceneAnimHandle = -1;
     if (g_pCurrentTownScene->pAnimPrefix[0] != '\0') {

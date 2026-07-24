@@ -7,23 +7,23 @@
 
 int *namedtbl_load(char *filename) {
     int *ptr;
-    IoFile *stream;
+    IoFile *file;
     void *strPool;
     unsigned int poolSize;
     int i;
 
     strPool = (void *)0;
     ptr = galloc_safe_zcalloc(4);
-    stream = bak_fopen(filename, "rb");
-    bak_fread(ptr, 2, 1, stream);
+    file = bak_fopen(filename, "rb");
+    bak_fread(ptr, 2, 1, file);
     ptr[1] = (int)galloc_safe_zcalloc(*ptr * 10);
-    bak_fread((void *)ptr[1], 10, *ptr, stream);
-    bak_fread(&poolSize, 2, 1, stream);
+    bak_fread((void *)ptr[1], 10, *ptr, file);
+    bak_fread(&poolSize, 2, 1, file);
     if (poolSize != 0) {
         strPool = galloc_safe_zcalloc(poolSize);
-        bak_fread(strPool, 1, poolSize, stream);
+        bak_fread(strPool, 1, poolSize, file);
     }
-    bak_fclose(stream);
+    bak_fclose(file);
     for (i = 0; i < *ptr; i++) {
         if (*(int *)(ptr[1] + i * 10) == -1) {
             *(int *)(ptr[1] + i * 10) = 0;

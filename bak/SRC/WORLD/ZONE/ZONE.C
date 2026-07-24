@@ -42,17 +42,17 @@ unsigned short g_wZoneFlags = 0x0000;
 char g_szZoneRefFilenameTmpl[11] = "ZzzREF.DAT";
 
 void far zone_subsystem_init(void) {
-    IoFile *stream;
+    IoFile *file;
 
     ts_init(3, 10);
     g_world_camera = actormotion_vec_alloc(0);
     g_world_widget = ts_create_fullscreen_view(g_world_camera);
-    stream = bak_fopen("zone.dat", "rb");
-    bak_fread(&g_world_widget->viewport.x, 2, 1, stream);
-    bak_fread(&g_world_widget->viewport.y, 2, 1, stream);
-    bak_fread(&g_world_widget->viewport.width, 2, 1, stream);
-    bak_fread(&g_world_widget->viewport.height, 2, 1, stream);
-    bak_fclose(stream);
+    file = bak_fopen("zone.dat", "rb");
+    bak_fread(&g_world_widget->viewport.x, 2, 1, file);
+    bak_fread(&g_world_widget->viewport.y, 2, 1, file);
+    bak_fread(&g_world_widget->viewport.width, 2, 1, file);
+    bak_fread(&g_world_widget->viewport.height, 2, 1, file);
+    bak_fclose(file);
     worldmove_dat_load();
     proxscan_filter_table_load();
     rgnenc_chap_shp_init();
@@ -66,32 +66,32 @@ void far zone_subsystem_shutdown(void) {
 }
 
 void far zone_load(void) {
-    IoFile *stream;
+    IoFile *file;
     short slot;
     long inset_z;
     ImageRecord **render_table;
 
     sprintf(g_szZoneMapFilename, "Z%02uDEF.DAT", (unsigned int)g_gameState.nZoneId);
-    stream = bak_fopen(g_szZoneMapFilename, "rb");
-    bak_fread(&g_game_mode, 2, 1, stream);
-    bak_fread(g_world_widget, 2, 1, stream);
-    bak_fread(&g_lZoneDefaultZ, 4, 1, stream);
-    bak_fread(&g_wZoneDefaultYaw, 2, 1, stream);
-    bak_fread(&g_wZoneFlags, 2, 1, stream);
-    bak_fread(&g_bZoneSkyColor, 1, 1, stream);
-    bak_fread(&g_bZoneGroundColor, 1, 1, stream);
-    bak_fread(&g_lWorldZMin, 4, 1, stream);
-    bak_fread(&inset_z, 4, 1, stream);
-    bak_fread(&g_lWorldZMax, 4, 1, stream);
-    bak_fread(&g_lWorldZStep, 4, 1, stream);
-    bak_fread(&g_nFogRemapTableCount, 2, 1, stream);
-    bak_fread(&g_wSpriteFogBucketWidth, 2, 1, stream);
-    bak_fread(&g_lSpriteFogOnsetDist, 4, 1, stream);
-    bak_fread(&g_lSpriteFogFarDist, 4, 1, stream);
-    bak_fread(&g_nLodBucketWidth, 2, 1, stream);
-    bak_fread(&g_dwLodNearThreshold, 4, 1, stream);
-    bak_fread(&g_lFarCullDist, 4, 1, stream);
-    bak_fclose(stream);
+    file = bak_fopen(g_szZoneMapFilename, "rb");
+    bak_fread(&g_game_mode, 2, 1, file);
+    bak_fread(g_world_widget, 2, 1, file);
+    bak_fread(&g_lZoneDefaultZ, 4, 1, file);
+    bak_fread(&g_wZoneDefaultYaw, 2, 1, file);
+    bak_fread(&g_wZoneFlags, 2, 1, file);
+    bak_fread(&g_bZoneSkyColor, 1, 1, file);
+    bak_fread(&g_bZoneGroundColor, 1, 1, file);
+    bak_fread(&g_lWorldZMin, 4, 1, file);
+    bak_fread(&inset_z, 4, 1, file);
+    bak_fread(&g_lWorldZMax, 4, 1, file);
+    bak_fread(&g_lWorldZStep, 4, 1, file);
+    bak_fread(&g_nFogRemapTableCount, 2, 1, file);
+    bak_fread(&g_wSpriteFogBucketWidth, 2, 1, file);
+    bak_fread(&g_lSpriteFogOnsetDist, 4, 1, file);
+    bak_fread(&g_lSpriteFogFarDist, 4, 1, file);
+    bak_fread(&g_nLodBucketWidth, 2, 1, file);
+    bak_fread(&g_dwLodNearThreshold, 4, 1, file);
+    bak_fread(&g_lFarCullDist, 4, 1, file);
+    bak_fclose(file);
     if (g_game_mode == 2) {
         audio_music_play(0x3ec);
     } else if (g_gameState.nZoneId == '\x06') {
@@ -119,9 +119,9 @@ void far zone_load(void) {
     g_world_camera->base.orientation.roll = 0;
     g_world_camera->base.orientation.yaw = g_gameState.wZoneDefaultCameraHeading;
     sprintf(g_szZoneMapFilename, "Z%02u.RMP", (unsigned int)g_gameState.nZoneId);
-    stream = bak_fopen(g_szZoneMapFilename, "rb");
-    bak_fread_chunked(g_abFogRemapTable, 0x100, (long)(int)g_nFogRemapTableCount, stream);
-    bak_fclose(stream);
+    file = bak_fopen(g_szZoneMapFilename, "rb");
+    bak_fread_chunked(g_abFogRemapTable, 0x100, (long)(int)g_nFogRemapTableCount, file);
+    bak_fclose(file);
     combat_arena_load_remap_pals();
     sprintf(g_szZoneMapFilename, "Z%02u.PAL", (unsigned int)g_gameState.nZoneId);
     palette_buffers_alloc(g_szZoneMapFilename);
@@ -286,12 +286,12 @@ void zone_free_400byte_buffer(void) {
 }
 
 void far zone_map_data_load(unsigned char zone_id) {
-    IoFile *stream;
+    IoFile *file;
 
     sprintf(g_szZoneMapFilename, "Z%02uMAP.DAT", (unsigned int)zone_id);
-    stream = bak_fopen(g_szZoneMapFilename, "rb");
-    bak_fread(g_pZoneGridData, 400, 1, stream);
-    bak_fclose(stream);
+    file = bak_fopen(g_szZoneMapFilename, "rb");
+    bak_fread(g_pZoneGridData, 400, 1, file);
+    bak_fclose(file);
 }
 
 int far zone_grid_bit_get(unsigned char x, unsigned char y) {
@@ -307,7 +307,7 @@ int far zone_grid_bit_get(unsigned char x, unsigned char y) {
 }
 
 unsigned char zone_ref_find_pair_index(unsigned char zone, unsigned char key1, unsigned char key2) {
-    IoFile *stream;
+    IoFile *file;
     unsigned char record_count;
     unsigned char index;
     unsigned char rec_key1;
@@ -315,19 +315,19 @@ unsigned char zone_ref_find_pair_index(unsigned char zone, unsigned char key1, u
 
     g_szZoneRefFilenameTmpl[1] = 0x30 | zone / 10;
     g_szZoneRefFilenameTmpl[2] = 0x30 | zone % 10;
-    stream = bak_fopen(g_szZoneRefFilenameTmpl, "rb");
-    bak_fread(&record_count, 1, 1, stream);
+    file = bak_fopen(g_szZoneRefFilenameTmpl, "rb");
+    bak_fread(&record_count, 1, 1, file);
     index = 0;
     if (index < record_count) {
         do {
-            bak_fread(&rec_key1, 1, 1, stream);
-            bak_fread(&rec_key2, 1, 1, stream);
+            bak_fread(&rec_key1, 1, 1, file);
+            bak_fread(&rec_key2, 1, 1, file);
             if ((key1 == rec_key1) && (key2 == rec_key2))
                 break;
             index++;
         } while (index < record_count);
     }
-    bak_fclose(stream);
+    bak_fclose(file);
     return index;
 }
 

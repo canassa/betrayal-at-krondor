@@ -50,7 +50,7 @@ char g_aDefFileNames[12][13] = {
 short g_aDefRecordSizes[12] = {21, 399, 10, 8, 13, 7, 21, 409, 19, 7, 7, 8};
 
 void far hotspotevt_monst_load_tbl_cur_id(void) {
-    IoFile *stream;
+    IoFile *file;
     VisibleEntryList *p;
 
     p = g_apCombat_zone_actor_lists[0];
@@ -60,12 +60,12 @@ void far hotspotevt_monst_load_tbl_cur_id(void) {
     g_monst_filename_buf[4] = 0x30 | p->bParty_x % 10;
     g_monst_filename_buf[5] = 0x30 | p->bParty_y / 10;
     g_monst_filename_buf[6] = 0x30 | p->bParty_y % 10;
-    stream = bak_fopen(g_monst_filename_buf, "rb");
-    if (stream != (IoFile *)0) {
-        bak_fseek(stream, (unsigned long)((g_gameState.nChapter - 1) * 0xc0), SEEK_CUR);
-        bak_fread(&g_nHotspotCount, 2, 1, stream);
-        bak_fread(g_aZoneHotspots, 0x13, g_nHotspotCount, stream);
-        bak_fclose(stream);
+    file = bak_fopen(g_monst_filename_buf, "rb");
+    if (file != (IoFile *)0) {
+        bak_fseek(file, (unsigned long)((g_gameState.nChapter - 1) * 0xc0), SEEK_CUR);
+        bak_fread(&g_nHotspotCount, 2, 1, file);
+        bak_fread(g_aZoneHotspots, 0x13, g_nHotspotCount, file);
+        bak_fclose(file);
     } else {
         g_nHotspotCount = 0;
     }
@@ -1155,16 +1155,16 @@ char far hotspotevt_bak_load_indexed_rec(int record_id, void *dest, long offset)
     int record_size;
     char header[4];
     char present;
-    IoFile *stream;
+    IoFile *file;
 
     hotspotevt_bak_indexed_rec_info(record_id, &filename, &record_size);
-    stream = bak_fopen(filename, "rb");
-    bak_fread(header, 4, 1, stream);
-    bak_fseek(stream, (unsigned long)(unsigned int)(record_size + 1) * offset, SEEK_CUR);
-    bak_fread(&present, 1, 1, stream);
+    file = bak_fopen(filename, "rb");
+    bak_fread(header, 4, 1, file);
+    bak_fseek(file, (unsigned long)(unsigned int)(record_size + 1) * offset, SEEK_CUR);
+    bak_fread(&present, 1, 1, file);
     if (present != '\0') {
-        bak_fread(dest, record_size, 1, stream);
+        bak_fread(dest, record_size, 1, file);
     }
-    bak_fclose(stream);
+    bak_fclose(file);
     return present;
 }

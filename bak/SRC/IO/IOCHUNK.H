@@ -5,6 +5,6 @@
 #include "SRC/IO/IO.H"
 
 extern long bak_fread_chunked(unsigned char huge *dest, long size, long count, IoFile *fp);
-extern unsigned long bak_fwrite_chunked(unsigned char huge *src_far, unsigned long elem_size, unsigned long count, IoFile *stream);
+extern unsigned long bak_fwrite_chunked(unsigned char huge *src_far, unsigned long elem_size, unsigned long count, IoFile *file);
 
 #endif

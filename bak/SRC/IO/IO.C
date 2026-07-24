@@ -90,15 +90,15 @@ IoFile *bak_fopen(char *filename, char *mode) {
     return (IoFile *)slot;
 }
 
-int bak_fclose(IoFile *stream) {
+int bak_fclose(IoFile *file) {
     int result;
     FileHandle *handle;
 
     result = 0;
-    if (stream == 0)
+    if (file == 0)
         return -1;
-    if ((g_ioArchiveCount == 0) || (handle = bak_find_handle(stream)) == 0) {
-        result = fclose((FILE *)stream);
+    if ((g_ioArchiveCount == 0) || (handle = bak_find_handle(file)) == 0) {
+        result = fclose((FILE *)file);
     } else {
         bak_find_handle(0);
         if (handle->stdioFile != 0)
@@ -110,15 +110,15 @@ int bak_fclose(IoFile *stream) {
     return result;
 }
 
-int bak_fread(void *ptr, int size, int count, IoFile *stream) {
+int bak_fread(void *ptr, int size, int count, IoFile *file) {
     int n_read;
     int single_obj;
     unsigned nbytes;
     FileHandle *handle;
 
     single_obj = 0;
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0) {
-        return fread(ptr, size, count, (FILE *)stream);
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0) {
+        return fread(ptr, size, count, (FILE *)file);
     }
     if (handle->stdioFile != 0) {
         return fread(ptr, size, count, handle->stdioFile);
@@ -135,8 +135,8 @@ int bak_fread(void *ptr, int size, int count, IoFile *stream) {
     }
     bak_select_archive(handle->archiveIndex);
     io_archive_seek(handle->baseOffset + handle->curOffset);
-    stream = (IoFile *)g_ioArchives[handle->archiveIndex].fp;
-    n_read = fread(ptr, size, count, (FILE *)stream);
+    file = (IoFile *)g_ioArchives[handle->archiveIndex].fp;
+    n_read = fread(ptr, size, count, (FILE *)file);
     nbytes = n_read * size;
     handle->curOffset += nbytes;
     g_ioArchives[handle->archiveIndex].filePos += nbytes;
@@ -146,11 +146,11 @@ int bak_fread(void *ptr, int size, int count, IoFile *stream) {
     return n_read;
 }
 
-int bak_fseek(IoFile *stream, long offset, int whence) {
+int bak_fseek(IoFile *file, long offset, int whence) {
     FileHandle *handle;
 
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0)
-        return fseek((FILE *)stream, offset, whence);
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0)
+        return fseek((FILE *)file, offset, whence);
     if (handle->stdioFile != 0)
         return fseek(handle->stdioFile, offset, whence);
     if (whence == SEEK_CUR) {
@@ -167,77 +167,77 @@ int bak_fseek(IoFile *stream, long offset, int whence) {
     return 0;
 }
 
-long bak_ftell(IoFile *stream) {
+long bak_ftell(IoFile *file) {
     FileHandle *handle;
 
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0)
-        return ftell((FILE *)stream);
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0)
+        return ftell((FILE *)file);
     if (handle->stdioFile != 0)
         return ftell(handle->stdioFile);
     else
         return handle->curOffset;
 }
 
-long bak_filelength(IoFile *stream) {
+long bak_filelength(IoFile *file) {
     long saved_pos;
     long result;
     FileHandle *handle;
 
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0 ||
-        (stream = (IoFile *)handle->stdioFile) != 0) {
-        saved_pos = ftell((FILE *)stream);
-        fseek((FILE *)stream, 0L, SEEK_END);
-        result = ftell((FILE *)stream);
-        fseek((FILE *)stream, saved_pos, SEEK_SET);
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0 ||
+        (file = (IoFile *)handle->stdioFile) != 0) {
+        saved_pos = ftell((FILE *)file);
+        fseek((FILE *)file, 0L, SEEK_END);
+        result = ftell((FILE *)file);
+        fseek((FILE *)file, saved_pos, SEEK_SET);
     } else {
         result = handle->length;
     }
     return result;
 }
 
-void bak_rewind(IoFile *stream) {
-    bak_fseek(stream, 0L, SEEK_SET);
+void bak_rewind(IoFile *file) {
+    bak_fseek(file, 0L, SEEK_SET);
 }
 
-int bak_fgetc(IoFile *stream) {
+int bak_fgetc(IoFile *file) {
     int result;
     FileHandle *handle;
 
-    g_pBakFgetcLastStream = stream;
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0)
-        return fgetc(g_pBakActiveFgetcStream = (FILE *)stream);
+    g_pBakFgetcLastStream = file;
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0)
+        return fgetc(g_pBakActiveFgetcStream = (FILE *)file);
     if (handle->stdioFile != 0)
         return fgetc(g_pBakActiveFgetcStream = handle->stdioFile);
     if (handle->curOffset >= handle->length)
         return -1;
     bak_select_archive(handle->archiveIndex);
     io_archive_seek(handle->baseOffset + handle->curOffset);
-    stream = (IoFile *)g_ioArchives[handle->archiveIndex].fp;
-    result = fgetc(g_pBakActiveFgetcStream = (FILE *)stream);
+    file = (IoFile *)g_ioArchives[handle->archiveIndex].fp;
+    result = fgetc(g_pBakActiveFgetcStream = (FILE *)file);
     handle->curOffset++;
     g_ioArchives[handle->archiveIndex].filePos++;
     return result;
 }
 
-int bak_feof(IoFile *stream) {
+int bak_feof(IoFile *file) {
     FileHandle *handle;
 
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0)
-        return ((FILE *)stream)->flags & 0x20;
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0)
+        return ((FILE *)file)->flags & 0x20;
     if (handle->stdioFile != 0)
         return handle->stdioFile->flags & 0x20;
     else
         return handle->curOffset >= handle->length ? 1 : 0;
 }
 
-int bak_fwrite(void *ptr, int size, int count, IoFile *stream) {
+int bak_fwrite(void *ptr, int size, int count, IoFile *file) {
     void *buf;
     FileHandle *handle;
     int written;
 
     buf = ptr;
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0) {
-        written = fwrite(buf, size, count, (FILE *)stream);
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0) {
+        written = fwrite(buf, size, count, (FILE *)file);
     } else if (handle->stdioFile != 0) {
         written = fwrite(buf, size, count, handle->stdioFile);
     } else {
@@ -247,12 +247,12 @@ int bak_fwrite(void *ptr, int size, int count, IoFile *stream) {
     return written;
 }
 
-int bak_putc(int c, IoFile *stream) {
+int bak_putc(int c, IoFile *file) {
     FileHandle *handle;
     int result;
 
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0) {
-        result = fputc(c, (FILE *)stream);
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0) {
+        result = fputc(c, (FILE *)file);
     } else {
         if (handle->stdioFile != 0) {
             result = fputc(c, handle->stdioFile);
@@ -264,11 +264,11 @@ int bak_putc(int c, IoFile *stream) {
     return result;
 }
 
-void bak_setbuf(IoFile *stream, char *buffer) {
+void bak_setbuf(IoFile *file, char *buffer) {
     FileHandle *handle;
 
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0) {
-        setbuf((FILE *)stream, buffer);
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0) {
+        setbuf((FILE *)file, buffer);
     } else {
         if (handle->stdioFile != 0)
             setbuf(handle->stdioFile, buffer);
@@ -475,33 +475,33 @@ void bak_select_archive(int archive_index) {
     }
 }
 
-void io_archive_seek(long absolute_offset) {
+void io_archive_seek(long offset) {
     Archive *ar;
 
     ar = &g_ioArchives[g_ioCurrentArchive];
-    if (ar->filePos != absolute_offset) {
-        fseek(ar->fp, absolute_offset, SEEK_SET);
-        ar->filePos = absolute_offset;
+    if (ar->filePos != offset) {
+        fseek(ar->fp, offset, SEEK_SET);
+        ar->filePos = offset;
     }
 }
 
-FileHandle *bak_find_handle(IoFile *stream) {
+FileHandle *bak_find_handle(IoFile *file) {
     FileHandle *slot;
     int count;
 
-    if (stream == 0) {
+    if (file == 0) {
         g_pBakFindHandleCacheKey = 0;
         g_pBakFindHandleCacheVal = 0;
         return 0;
     }
     if (g_ioArchiveCount == 0)
         return 0;
-    if (stream == g_pBakFindHandleCacheKey)
+    if (file == g_pBakFindHandleCacheKey)
         return g_pBakFindHandleCacheVal;
-    g_pBakFindHandleCacheKey = stream;
+    g_pBakFindHandleCacheKey = file;
     slot = g_ioHandles;
     count = IO_HANDLE_POOL_SIZE;
-    while (count != 0 && slot != (FileHandle *)stream) {
+    while (count != 0 && slot != (FileHandle *)file) {
         slot++;
         count--;
     }

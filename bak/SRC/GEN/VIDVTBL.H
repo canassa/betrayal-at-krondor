@@ -17,15 +17,15 @@ typedef char *(far *StrcpyFarFn)(char *dest, char *src);
 typedef char *(far *StrchrFarFn)(char *s, int c);
 typedef void(far *GfxDefaultFn)(int arg0, int arg1, int arg2);
 
-typedef int(far *BakFcloseFn)(IoFile *stream);
-typedef int(far *BakFgetcFn)(IoFile *stream);
+typedef int(far *BakFcloseFn)(IoFile *file);
+typedef int(far *BakFgetcFn)(IoFile *file);
 typedef IoFile *(far *BakFopenFn)(char *filename, char *mode);
-typedef int(far *BakFreadFn)(void *ptr, int size, int count, IoFile *stream);
-typedef int(far *BakFseekFn)(IoFile *stream, int offset_lo, int offset_hi, int whence);
-typedef int(far *BakFtellFn)(IoFile *stream);
-typedef int(far *BakFwriteFn)(void *ptr, int size, int count, IoFile *stream);
-typedef int(far *BakPutcFn)(int c, IoFile *stream);
-typedef void(far *BakRewindFn)(IoFile *stream);
+typedef int(far *BakFreadFn)(void *ptr, int size, int count, IoFile *file);
+typedef int(far *BakFseekFn)(IoFile *file, int offset_lo, int offset_hi, int whence);
+typedef int(far *BakFtellFn)(IoFile *file);
+typedef int(far *BakFwriteFn)(void *ptr, int size, int count, IoFile *file);
+typedef int(far *BakPutcFn)(int c, IoFile *file);
+typedef void(far *BakRewindFn)(IoFile *file);
 
 typedef struct VideoDriverImports {
     AllocFarFn far *alloc_far;

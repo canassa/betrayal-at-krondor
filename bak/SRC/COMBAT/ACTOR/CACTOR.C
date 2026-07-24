@@ -62,7 +62,7 @@ ImageRecord **g_aCombatResCacheValue[8][3];
 void far combat_actor_init_pool(void) {
     CombatActorInner *pInnerPool;
     long lSeekOffset;
-    IoFile *stream;
+    IoFile *file;
     int i;
 
     g_combat_actors_A = (CombatActor *)galloc_safe_zcalloc(sizeof(CombatActor) * MAX_COMBAT_ACTORS);
@@ -77,14 +77,14 @@ void far combat_actor_init_pool(void) {
     pInnerPool =
         (CombatActorInner *)galloc_safe_zcalloc(sizeof(CombatActorInner) * MAX_COMBAT_ACTORS);
     g_anim_pool_A = (AnimSlot *)galloc_safe_zcalloc(sizeof(AnimSlot) * MAX_COMBAT_ACTORS);
-    stream = bak_fopen("p1.dat", "rb");
+    file = bak_fopen("p1.dat", "rb");
     for (i = 0; i < g_combat_count_A; i++) {
         lSeekOffset =
             (long)(unsigned int)((g_combat_actors_A[i].cParty_slot - 1) * sizeof(CombatActorInner));
-        bak_fseek(stream, lSeekOffset, SEEK_SET);
-        bak_fread(&pInnerPool[i], sizeof(CombatActorInner), 1, stream);
+        bak_fseek(file, lSeekOffset, SEEK_SET);
+        bak_fread(&pInnerPool[i], sizeof(CombatActorInner), 1, file);
     }
-    bak_fclose(stream);
+    bak_fclose(file);
 
     i = 0;
     do {

@@ -13,7 +13,7 @@ extern IoFile *cached_file_open(char *filename);
 extern long near chunk_seek_rollback(IffResReader *reader);
 extern long chunk_seek(IoFile *handle, char *chunk_id, int mode);
 extern unsigned long cached_file_chunk_size(IoFile *file);
-extern int cached_file_close(IoFile *stream);
+extern int cached_file_close(IoFile *file);
 extern int is_file_cached(FileRef *key);
 
 #endif

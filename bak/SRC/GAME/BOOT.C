@@ -61,26 +61,26 @@ char g_szVmcodeOvl[11] = "vmcode.ovl";
 #endif
 
 void boot_start_dat_load(void) {
-    IoFile *stream;
+    IoFile *file;
 
-    stream = bak_fopen("start.dat", "rb");
+    file = bak_fopen("start.dat", "rb");
     g_render_camera_scratch = actormotion_vec_alloc(0);
     g_render_camera_scratch->base.pos.xy.nWorld_x = g_render_camera_scratch->base.pos.xy.nWorld_y =
         0;
-    bak_fread(&g_nWorldViewFovNormal, 2, 1, stream);
-    bak_fread(&g_nWorldViewFovChapter, 2, 1, stream);
+    bak_fread(&g_nWorldViewFovNormal, 2, 1, file);
+    bak_fread(&g_nWorldViewFovChapter, 2, 1, file);
     g_render_camera_scratch->base.orientation.roll = g_render_camera_scratch->base.orientation.yaw =
         0;
-    bak_fread(&g_nWorldViewYawNormal, 2, 1, stream);
-    bak_fread(&g_nWorldViewYawChapter, 2, 1, stream);
-    bak_fread(&g_grid_tile_size, 2, 1, stream);
+    bak_fread(&g_nWorldViewYawNormal, 2, 1, file);
+    bak_fread(&g_nWorldViewYawChapter, 2, 1, file);
+    bak_fread(&g_grid_tile_size, 2, 1, file);
     g_active_window = ts_create_fullscreen_view(g_render_camera_scratch);
-    bak_fread(&g_active_window->viewport.x, 2, 1, stream);
-    bak_fread(&g_active_window->viewport.y, 2, 1, stream);
-    bak_fread(&g_active_window->viewport.width, 2, 1, stream);
-    bak_fread(&g_active_window->viewport.height, 2, 1, stream);
-    bak_fread(g_active_window, 2, 1, stream);
-    bak_fclose(stream);
+    bak_fread(&g_active_window->viewport.x, 2, 1, file);
+    bak_fread(&g_active_window->viewport.y, 2, 1, file);
+    bak_fread(&g_active_window->viewport.width, 2, 1, file);
+    bak_fread(&g_active_window->viewport.height, 2, 1, file);
+    bak_fread(g_active_window, 2, 1, file);
+    bak_fclose(file);
     g_active_window->faceMaterials = NULL;
     return;
 }
@@ -158,17 +158,17 @@ void boot_video_init_for_mode(int mode) {
 }
 
 void boot_check_memory_or_die(void) {
-    IoFile *stream;
+    IoFile *file;
     int file_missing;
     unsigned short emmPagesFree;
     unsigned long requiredBytes;
     unsigned long freeBytes;
 
-    stream = bak_fopen("mem.dat", "rb");
-    if (stream != (IoFile *)0x0) {
+    file = bak_fopen("mem.dat", "rb");
+    if (file != (IoFile *)0x0) {
         file_missing = 0;
-        bak_fread(&requiredBytes, 4, 1, stream);
-        bak_fclose(stream);
+        bak_fread(&requiredBytes, 4, 1, file);
+        bak_fclose(file);
     } else {
         requiredBytes = 0x927c0;
         file_missing = 1;

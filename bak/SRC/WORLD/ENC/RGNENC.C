@@ -826,7 +826,7 @@ void far rgnenc_vis_pool_remove_matching(unsigned char far *pKey) {
 }
 
 int far rgnenc_chap_shp_init(void) {
-    IoFile *stream;
+    IoFile *file;
     int i;
     int j;
 
@@ -834,10 +834,10 @@ int far rgnenc_chap_shp_init(void) {
         return 0;
     }
     g_pChapterShapeIds = galloc_safe_zcalloc(6);
-    stream = bak_fopen("chap_shp.dat", "rb");
-    bak_fseek(stream, (unsigned long)((g_gameState.nChapter - 1) * 6), SEEK_CUR);
-    bak_fread(g_pChapterShapeIds, 2, 3, stream);
-    bak_fclose(stream);
+    file = bak_fopen("chap_shp.dat", "rb");
+    bak_fseek(file, (unsigned long)((g_gameState.nChapter - 1) * 6), SEEK_CUR);
+    bak_fread(g_pChapterShapeIds, 2, 3, file);
+    bak_fclose(file);
     i = 0;
     do {
         if (g_pChapterShapeIds[i] != -1) {

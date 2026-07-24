@@ -238,7 +238,7 @@ void resblit_load_pal_or_stream(char *filename) {
     int rows;
     int local;
     int sHandle;
-    IoFile *stream;
+    IoFile *file;
     unsigned char huge *buf = 0;
 
     pHandle = 0;
@@ -255,8 +255,8 @@ void resblit_load_pal_or_stream(char *filename) {
 
         cga_rect_paste_from_buffer(dest_far, 0, 0, 0x140, 200);
     } else {
-        if ((stream = bak_fopen(fn, "rb")) != 0) {
-            bak_fread(&local, 2, 1, stream);
+        if ((file = bak_fopen(fn, "rb")) != 0) {
+            bak_fread(&local, 2, 1, file);
 
             if (local == 0x27b6) {
                 int size;
@@ -266,7 +266,7 @@ void resblit_load_pal_or_stream(char *filename) {
                     size = rows * 0x140;
                     buf = alloc_far((long)size, 0);
                 } while (!buf && 1 < rows);
-                if ((sHandle = stream_open(-1, stream, "r", 64000UL)) != -1) {
+                if ((sHandle = stream_open(-1, file, "r", 64000UL)) != -1) {
                     local = 0;
                     do {
                         stream_read(sHandle, buf, size);
@@ -277,7 +277,7 @@ void resblit_load_pal_or_stream(char *filename) {
                 }
                 _freemem(buf);
             }
-            bak_fclose(stream);
+            bak_fclose(file);
         } else
             return;
     }

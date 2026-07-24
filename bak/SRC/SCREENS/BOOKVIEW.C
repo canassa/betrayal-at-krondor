@@ -109,17 +109,17 @@ void bookview_shutdown(void) {
 static PageDirectory far *bookview_load_page_directory(char *filename) {
     PageDirectory far *dir;
     unsigned long size;
-    IoFile *stream;
+    IoFile *file;
     int i;
 
-    stream = bak_fopen(filename, "rb");
-    if (!stream) {
+    file = bak_fopen(filename, "rb");
+    if (!file) {
         return (PageDirectory far *)0;
     }
-    bak_fread(&size, 1, 4, stream);
+    bak_fread(&size, 1, 4, file);
     dir = (PageDirectory far *)alloc_far(size, 0L);
-    bak_fread_chunked((unsigned char huge *)dir, 1L, (long)size, stream);
-    bak_fclose(stream);
+    bak_fread_chunked((unsigned char huge *)dir, 1L, (long)size, file);
+    bak_fclose(file);
     for (i = 0; i < dir->nCount; i++) {
         dir->pPages[i] = (BookPage far *)((char huge *)dir + (unsigned long)dir->pPages[i]);
     }
