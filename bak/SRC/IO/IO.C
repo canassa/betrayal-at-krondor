@@ -13,14 +13,14 @@
 
 short g_bak_io_error;
 void far *g_int24_old_vector;
-FileHandle g_bak_handles[10];
+FileHandle g_ioHandles[10];
 Archive g_bak_archives[11];
 IoFile *g_pBakFgetcLastStream;
 FILE *g_pBakActiveFgetcStream;
 unsigned char g_bak_in_fopen;
 unsigned char g_bak_fopen_retry;
 unsigned char g_bak_archives_dirty;
-unsigned char g_bak_open_handles;
+unsigned char g_ioOpenHandleCount;
 unsigned long g_bak_lookup_hash;
 short g_bak_current_archive;
 int g_ioArchiveCount;
@@ -47,7 +47,7 @@ IoFile *bak_fopen(char *filename, char *mode) {
     }
     g_pBakActiveFgetcStream = 0;
     g_pBakFgetcLastStream = 0;
-    slot = g_bak_handles;
+    slot = g_ioHandles;
     count = 10;
     while (count != 0 && slot->inUse != 0) {
         slot++;
@@ -85,7 +85,7 @@ IoFile *bak_fopen(char *filename, char *mode) {
         slot->stdioFile = 0;
         slot->inUse = TRUE;
     }
-    g_bak_open_handles++;
+    g_ioOpenHandleCount++;
     return (IoFile *)slot;
 }
 
@@ -103,7 +103,7 @@ int bak_fclose(IoFile *stream) {
         if (handle->stdioFile != 0)
             result = fclose(handle->stdioFile);
         handle->inUse = FALSE;
-        g_bak_open_handles--;
+        g_ioOpenHandleCount--;
     }
     g_bak_io_error |= (result == -1 ? 1 : 0);
     return result;
@@ -435,12 +435,12 @@ void bak_select_archive(int archive_index) {
 #ifdef V102CD
     strcpy(path, g_cfgResourceDrivePrefix);
     strcat(path, g_bak_archives[archive_index].fileName);
-    if (!(char)g_bak_open_handles && archive_index) {
+    if (!(char)g_ioOpenHandleCount && archive_index) {
         if (fclose(fopen(path, "rb")))
             probe_failed = 1;
     }
 #else
-    if (!(char)g_bak_open_handles && archive_index) {
+    if (!(char)g_ioOpenHandleCount && archive_index) {
         if (fclose(fopen(g_bak_archives[archive_index].fileName, "rb")))
             probe_failed = 1;
     }
@@ -496,7 +496,7 @@ FileHandle *bak_find_handle(IoFile *stream) {
     if (stream == g_pBakFindHandleCacheKey)
         return g_pBakFindHandleCacheVal;
     g_pBakFindHandleCacheKey = stream;
-    slot = g_bak_handles;
+    slot = g_ioHandles;
     count = 10;
     while (count != 0 && slot != (FileHandle *)stream) {
         slot++;
