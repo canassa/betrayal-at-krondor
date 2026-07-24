@@ -155,8 +155,25 @@ extern IoFile *g_ioLastFgetcFile;
  * so it too is a write-only trace, not consulted on later calls.
  */
 extern FILE *g_ioLastFgetcCrtFile;
-extern unsigned char g_bak_in_fopen;
-extern unsigned char g_bak_fopen_retry;
+
+/**
+ * @brief Reentrancy guard: `TRUE` while the resource layer is inside a `fopen`
+ *        it wants to survive a DOS critical error.
+ *
+ * Read by @ref bak_int24_critical_handler: while set, the handler fails the DOS
+ * call (returns 3) so @ref bak_fopen / @ref bak_select_archive can retry the
+ * open in C, rather than letting DOS blindly retry (return 1).
+ */
+extern bool8 g_ioInFopen;
+
+/**
+ * @brief ISR-to-open signal: `TRUE` when a DOS critical error occurred during
+ *        the current open, so it should be retried.
+ *
+ * Raised by @ref bak_int24_critical_handler and consumed by @ref bak_fopen's
+ * retry loop, which clears it at the top of each attempt.
+ */
+extern bool8 g_ioFopenRetry;
 /**
  * @brief The open archive stream is stale — close and reopen before next use.
  *

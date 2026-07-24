@@ -18,8 +18,8 @@ FileHandle g_ioHandles[IO_HANDLE_POOL_SIZE];
 Archive g_ioArchives[IO_ARCHIVE_MAX + 1];
 IoFile *g_ioLastFgetcFile;
 FILE *g_ioLastFgetcCrtFile;
-unsigned char g_bak_in_fopen;
-unsigned char g_bak_fopen_retry;
+bool8 g_ioInFopen;
+bool8 g_ioFopenRetry;
 bool8 g_ioArchivesDirty;
 unsigned char g_ioOpenHandleCount;
 unsigned long g_ioLookupHash;
@@ -58,12 +58,12 @@ IoFile *bak_fopen(char *filename, char *mode) {
         return 0;
     }
     io_filename_hash(filename);
-    g_bak_in_fopen = 1;
+    g_ioInFopen = TRUE;
     do {
-        g_bak_fopen_retry = 0;
+        g_ioFopenRetry = FALSE;
         fp = fopen(filename, mode);
-    } while (g_bak_fopen_retry != 0);
-    g_bak_in_fopen = 0;
+    } while (g_ioFopenRetry);
+    g_ioInFopen = FALSE;
     if (fp != 0) {
         slot->archiveIndex = 0;
         slot->baseOffset = slot->length = slot->curOffset = 0UL;
@@ -460,13 +460,13 @@ void bak_select_archive(int archive_index) {
 #ifdef V102CD
             strcpy(path, g_cfgResourceDrivePrefix);
             strcat(path, arc->fileName);
-            g_bak_in_fopen = 1;
+            g_ioInFopen = TRUE;
             while ((arc->fp = fopen(path, "rb")) == 0)
-                g_bak_in_fopen = 0;
+                g_ioInFopen = FALSE;
 #else
-            g_bak_in_fopen = 1;
+            g_ioInFopen = TRUE;
             while ((arc->fp = fopen(arc->fileName, "rb")) == 0)
-                g_bak_in_fopen = 0;
+                g_ioInFopen = FALSE;
 #endif
         }
         arc->filePos = 0;
@@ -515,7 +515,7 @@ FileHandle *bak_find_handle(IoFile *file) {
 void interrupt far bak_int24_critical_handler(unsigned reg_bp, unsigned reg_di, unsigned reg_si,
                                               unsigned reg_ds, unsigned reg_es, unsigned reg_dx,
                                               unsigned reg_cx, unsigned reg_bx, unsigned ax) {
-    ax = g_bak_in_fopen ? 3 : 1;
-    g_bak_fopen_retry = 1;
+    ax = g_ioInFopen ? 3 : 1;
+    g_ioFopenRetry = TRUE;
     g_ioArchivesDirty = TRUE;
 }
