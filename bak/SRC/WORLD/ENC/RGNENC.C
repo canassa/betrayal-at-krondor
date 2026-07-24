@@ -73,7 +73,7 @@ int far rgnenc_load_zone_shape_index(char *filename) {
 
     g_pZoneShapeIndex = (unsigned short *)galloc_safe_zcalloc(0xa);
     fp = bak_fopen(filename, "rb");
-    bak_fseek(fp, (long)(((unsigned)g_gameState.nChapter - 1) << 3), 1);
+    bak_fseek(fp, (long)(((unsigned)g_gameState.nChapter - 1) << 3), SEEK_CUR);
     bak_fread(g_pZoneShapeIndex, 2, 4, fp);
     bak_fclose(fp);
 
@@ -835,7 +835,7 @@ int far rgnenc_chap_shp_init(void) {
     }
     g_pChapterShapeIds = galloc_safe_zcalloc(6);
     stream = bak_fopen("chap_shp.dat", "rb");
-    bak_fseek(stream, (unsigned long)((g_gameState.nChapter - 1) * 6), 1);
+    bak_fseek(stream, (unsigned long)((g_gameState.nChapter - 1) * 6), SEEK_CUR);
     bak_fread(g_pChapterShapeIds, 2, 3, stream);
     bak_fclose(stream);
     i = 0;

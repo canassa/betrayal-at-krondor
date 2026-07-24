@@ -529,7 +529,7 @@ void combatgrid_load_traps_dat(void) {
     g_traps_loaded_flag = 1;
     stream = bak_fopen("traps.dat", "rb");
     offset = (long)((int)g_encounter_id * 0x3e);
-    bak_fseek(stream, offset, 0);
+    bak_fseek(stream, offset, SEEK_SET);
     bak_fread(&recordCount, 2, 1, stream);
     start_idx = g_combatant_count;
     i = 0;
@@ -719,7 +719,7 @@ void combatgrid_load_and_init(void) {
     int row;
 
     stream = bak_fopen("grid.dat", "rb");
-    bak_fseek(stream, (long)(unsigned)((g_gameState.nZoneId - 1) * 2), 0);
+    bak_fseek(stream, (long)(unsigned)((g_gameState.nZoneId - 1) * 2), SEEK_SET);
     bak_fread(&g_nCombatTerrainWallColor, 2, 1, stream);
     bak_fclose(stream);
     combatgrid_set_tile_effect('\0', '\0', 2, -1);
@@ -1147,7 +1147,7 @@ void combatgrid_save_traps_terr(int encounter_idx) {
     firstIdx = -1;
     stream = bak_fopen("traps.dat", "r+b");
     offset = (long)(encounter_idx * 0x3e);
-    bak_fseek(stream, offset, 0);
+    bak_fseek(stream, offset, SEEK_SET);
     for (i = 0; i < g_combatant_count; i++) {
         if (combatgrid_is_combatant_type(g_combatant_table[i].paged_id) != 0) {
             writeCount++;

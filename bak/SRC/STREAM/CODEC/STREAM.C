@@ -23,7 +23,7 @@ int stream_open(int codec_kind, IoFile *file, char *mode, unsigned long size) {
     if (mode_has_read(mode)) {
         if (codec_init(codec_kind = (unsigned char)(g_pCurStreamDesc->bFlags = bak_fgetc(file)),
                        mode) == -1) {
-            bak_fseek(file, -1L, 1);
+            bak_fseek(file, -1L, SEEK_CUR);
             goto release;
         }
         g_pCurStreamDesc->dwInSize = size;
@@ -82,9 +82,9 @@ int stream_close(int stream_id) {
     if (!(g_bCurStreamDescFlags & 0x40)) {
         (*(void(near *)(int))g_codec_vtable[(unsigned char)g_bCurStreamCodecId].pWrite_chunk)(1);
         if (g_bCurStreamDescFlags & 0x20) {
-            bak_fseek(g_pCurStreamFp, g_pCurStreamDesc->dwFileStartOff + 1, 0);
+            bak_fseek(g_pCurStreamFp, g_pCurStreamDesc->dwFileStartOff + 1, SEEK_SET);
             bak_fwrite(&g_pCurStreamDesc->dwUncompressedSize, 4, 1, g_pCurStreamFp);
-            bak_fseek(g_pCurStreamFp, 0L, 2);
+            bak_fseek(g_pCurStreamFp, 0L, SEEK_END);
         } else {
             fmemcpy_far((unsigned char far *)(g_pCurStreamDesc->src.pBufBase + 1),
                         (unsigned char far *)&g_pCurStreamDesc->dwUncompressedSize, 4);
@@ -178,7 +178,7 @@ int stream_rewind(int stream_id) {
         (*(void(near *)(void))g_codec_vtable[(unsigned char)g_bCurStreamCodecId].pOpen_read)();
     g_pCurStreamDesc->dwInPos = 5;
     if (g_pCurStreamDesc->bFlags & 0x20) {
-        bak_fseek(g_pCurStreamFp, g_pCurStreamDesc->dwFileStartOff + 5, 0);
+        bak_fseek(g_pCurStreamFp, g_pCurStreamDesc->dwFileStartOff + 5, SEEK_SET);
     } else {
         g_pCurStreamSrcCursor =
             (char huge *)normalize_far_ptr_thunk(g_pCurStreamDesc->src.pBufBase + 5);

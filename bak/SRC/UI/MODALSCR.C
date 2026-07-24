@@ -43,7 +43,7 @@ void modalscreen_teleport_dat_load(int n_index) {
     IoFile *stream;
 
     stream = bak_fopen("TELEPORT.DAT", "rb");
-    bak_fseek(stream, n_index * sizeof(g_gameState.abTeleportRecord), 0);
+    bak_fseek(stream, n_index * sizeof(g_gameState.abTeleportRecord), SEEK_SET);
     bak_fread(g_gameState.abTeleportRecord, sizeof(g_gameState.abTeleportRecord), 1, stream);
     bak_fclose(stream);
 }

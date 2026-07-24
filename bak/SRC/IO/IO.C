@@ -153,9 +153,9 @@ int bak_fseek(IoFile *stream, long offset, int whence) {
         return fseek((FILE *)stream, offset, whence);
     if (handle->stdioFile != 0)
         return fseek(handle->stdioFile, offset, whence);
-    if (whence == 1) {
+    if (whence == SEEK_CUR) {
         offset += handle->curOffset;
-    } else if (whence == 2) {
+    } else if (whence == SEEK_END) {
         if ((unsigned long)offset >= handle->length)
             offset = 0;
         else
@@ -186,9 +186,9 @@ long bak_filelength(IoFile *stream) {
     if (g_ioArchiveCount == 0 || (handle = bak_find_handle(stream)) == 0 ||
         (stream = (IoFile *)handle->stdioFile) != 0) {
         saved_pos = ftell((FILE *)stream);
-        fseek((FILE *)stream, 0L, 2);
+        fseek((FILE *)stream, 0L, SEEK_END);
         result = ftell((FILE *)stream);
-        fseek((FILE *)stream, saved_pos, 0);
+        fseek((FILE *)stream, saved_pos, SEEK_SET);
     } else {
         result = handle->length;
     }
@@ -196,7 +196,7 @@ long bak_filelength(IoFile *stream) {
 }
 
 void bak_rewind(IoFile *stream) {
-    bak_fseek(stream, 0L, 0);
+    bak_fseek(stream, 0L, SEEK_SET);
 }
 
 int bak_fgetc(IoFile *stream) {
@@ -480,7 +480,7 @@ void bak_archive_seek(unsigned long absolute_offset) {
 
     ar = &g_ioArchives[g_ioCurrentArchive];
     if (ar->filePos != absolute_offset) {
-        fseek(ar->fp, absolute_offset, 0);
+        fseek(ar->fp, absolute_offset, SEEK_SET);
         ar->filePos = absolute_offset;
     }
 }

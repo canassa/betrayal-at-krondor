@@ -121,7 +121,7 @@ int near codec_rle_literal_run(unsigned int count) {
         if (g_bCurStreamOpMode & 0x40)
             codec_raw_read(g_pStreamReadDst, count);
         else
-            bak_fseek(g_pCurStreamFp, (long)count, 1);
+            bak_fseek(g_pCurStreamFp, (long)count, SEEK_CUR);
         g_wCodecBytesRemaining -= count;
         g_pStreamReadDst += count;
         return 1;

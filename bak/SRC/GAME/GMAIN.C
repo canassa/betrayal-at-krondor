@@ -299,7 +299,7 @@ int far gmain_play_chapter_intro(int chapter, int part) {
     result = 1;
     if ((part == 1) || (part == 2)) {
         stream = bak_fopen("chapsong.dat", "rb");
-        bak_fseek(stream, (long)(unsigned int)((part + (chapter - 1) * 2 - 1) * 2), 0);
+        bak_fseek(stream, (long)(unsigned int)((part + (chapter - 1) * 2 - 1) * 2), SEEK_SET);
         bak_fread(&trackId, 2, 1, stream);
         bak_fclose(stream);
     }

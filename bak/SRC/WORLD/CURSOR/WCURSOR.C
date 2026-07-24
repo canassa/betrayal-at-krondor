@@ -45,7 +45,7 @@ void far wcursor_load_detect_dat(void) {
 
     stream = bak_fopen("detect.dat", "rb");
     if (g_game_mode == 2) {
-        bak_fseek(stream, 0xacL, 1);
+        bak_fseek(stream, 0xacL, SEEK_CUR);
     }
     bak_fread(g_anEntityKindRenderDist, 4, 0x2b, stream);
     bak_fclose(stream);

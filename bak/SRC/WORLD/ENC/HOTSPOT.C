@@ -62,7 +62,7 @@ void far hotspotevt_monst_load_tbl_cur_id(void) {
     g_monst_filename_buf[6] = 0x30 | p->bParty_y % 10;
     stream = bak_fopen(g_monst_filename_buf, "rb");
     if (stream != (IoFile *)0) {
-        bak_fseek(stream, (unsigned long)((g_gameState.nChapter - 1) * 0xc0), 1);
+        bak_fseek(stream, (unsigned long)((g_gameState.nChapter - 1) * 0xc0), SEEK_CUR);
         bak_fread(&g_nHotspotCount, 2, 1, stream);
         bak_fread(g_aZoneHotspots, 0x13, g_nHotspotCount, stream);
         bak_fclose(stream);
@@ -1160,7 +1160,7 @@ char far hotspotevt_bak_load_indexed_rec(int record_id, void *dest, long offset)
     hotspotevt_bak_indexed_rec_info(record_id, &filename, &record_size);
     stream = bak_fopen(filename, "rb");
     bak_fread(header, 4, 1, stream);
-    bak_fseek(stream, (unsigned long)(unsigned int)(record_size + 1) * offset, 1);
+    bak_fseek(stream, (unsigned long)(unsigned int)(record_size + 1) * offset, SEEK_CUR);
     bak_fread(&present, 1, 1, stream);
     if (present != '\0') {
         bak_fread(dest, record_size, 1, stream);

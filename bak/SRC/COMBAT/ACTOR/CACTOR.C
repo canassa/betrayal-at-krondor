@@ -81,7 +81,7 @@ void far combat_actor_init_pool(void) {
     for (i = 0; i < g_combat_count_A; i++) {
         lSeekOffset =
             (long)(unsigned int)((g_combat_actors_A[i].cParty_slot - 1) * sizeof(CombatActorInner));
-        bak_fseek(stream, lSeekOffset, 0);
+        bak_fseek(stream, lSeekOffset, SEEK_SET);
         bak_fread(&pInnerPool[i], sizeof(CombatActorInner), 1, stream);
     }
     bak_fclose(stream);

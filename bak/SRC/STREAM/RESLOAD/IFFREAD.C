@@ -56,7 +56,7 @@ int cache_slot_write(IffResReader *record) {
     if (record == 0 || record->pStream == 0 || (slot = iff_reader_find(record->pStream)) == 0)
         return 0;
     *slot = *record;
-    bak_fseek(slot->pStream, slot->nCursor, 0);
+    bak_fseek(slot->pStream, slot->nCursor, SEEK_SET);
     return 1;
 }
 
@@ -67,7 +67,7 @@ IoFile *far cached_file_open(char *filename) {
         return (IoFile *)0;
     if ((reader->pStream = bak_fopen(filename, "rb")) == 0)
         return (IoFile *)0;
-    bak_fseek(reader->pStream, 0L, 2);
+    bak_fseek(reader->pStream, 0L, SEEK_END);
     *(long *)&reader->pLevel_cache[0] = bak_ftell(reader->pStream) | 0x80000000L;
     bakfile_reset_preserve_cursor(reader);
     return reader->pStream;
@@ -75,7 +75,7 @@ IoFile *far cached_file_open(char *filename) {
 
 long near chunk_seek_rollback(IffResReader *reader) {
     *reader = g_chunkSeekSaveIffReader;
-    bak_fseek(reader->pStream, reader->nCursor, 0);
+    bak_fseek(reader->pStream, reader->nCursor, SEEK_SET);
     return -1L;
 }
 
@@ -105,7 +105,7 @@ long chunk_seek(IoFile *handle, char *chunk_id, int mode) {
             }
         }
         if (mode == -1) {
-            bak_fseek(reader->pStream, reader->nCursor, 0);
+            bak_fseek(reader->pStream, reader->nCursor, SEEK_SET);
             return reader->nCursor;
         }
         if (reader->nSkip_count != 0) {
@@ -116,7 +116,7 @@ long chunk_seek(IoFile *handle, char *chunk_id, int mode) {
                 } else if (reader->nSkip_count > mode) {
                     bakfile_reset_preserve_cursor(reader);
                 } else {
-                    bak_fseek(reader->pStream, reader->nCursor, 0);
+                    bak_fseek(reader->pStream, reader->nCursor, SEEK_SET);
                     return reader->nCursor;
                 }
             } else {
@@ -142,7 +142,7 @@ long chunk_seek(IoFile *handle, char *chunk_id, int mode) {
     if (!(*(long *)&reader->pLevel_cache[reader->nDepth >> 2] & 0x80000000L)) {
         reader->nCursor += *(long *)&reader->wChunk_size_lo;
     }
-    bak_fseek(reader->pStream, reader->nCursor, 0);
+    bak_fseek(reader->pStream, reader->nCursor, SEEK_SET);
 
     while (mode-- != 0) {
         for (;;) {
@@ -156,7 +156,7 @@ long chunk_seek(IoFile *handle, char *chunk_id, int mode) {
             }
             if (!(*(long *)&reader->pLevel_cache[reader->nDepth >> 2] & 0x80000000L)) {
                 reader->nCursor += *(long *)&reader->wChunk_size_lo;
-                bak_fseek(reader->pStream, reader->nCursor, 0);
+                bak_fseek(reader->pStream, reader->nCursor, SEEK_SET);
                 continue;
             }
 

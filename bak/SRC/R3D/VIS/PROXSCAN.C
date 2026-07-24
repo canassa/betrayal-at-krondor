@@ -36,7 +36,7 @@ void far proxscan_filter_table_load(void) {
 
     stream = bak_fopen("filter.dat", "rb");
     if (g_engine_prefs != (EnginePrefs *)0 && g_engine_prefs->detail_level != 0) {
-        bak_fseek(stream, (unsigned long)((unsigned int)g_engine_prefs->detail_level * 0xac), 1);
+        bak_fseek(stream, (unsigned long)((unsigned int)g_engine_prefs->detail_level * 0xac), SEEK_CUR);
     }
     bak_fread((void *)g_aFilterTable, 4, 0x2b, stream);
     bak_fclose(stream);

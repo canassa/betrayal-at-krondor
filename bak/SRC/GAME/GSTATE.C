@@ -172,9 +172,9 @@ void gstate_temp_file_close(void) {
 }
 
 int gstate_temp_file_read_at(unsigned char far *dst_far, unsigned long offset, unsigned int bytes) {
-    if (bak_fseek(g_tempGamFP, offset, 0) != 0) {
-        bak_fseek(g_tempGamFP, 0, 0);
-        if (bak_fseek(g_tempGamFP, offset, 0) != 0) {
+    if (bak_fseek(g_tempGamFP, offset, SEEK_SET) != 0) {
+        bak_fseek(g_tempGamFP, 0, SEEK_SET);
+        if (bak_fseek(g_tempGamFP, offset, SEEK_SET) != 0) {
         }
     }
     if ((unsigned long)bak_ftell(g_tempGamFP) == offset) {
@@ -223,9 +223,9 @@ int gstate_temp_file_write_at(unsigned char far *src_far, unsigned long offset, 
     }
     g_wLastTempWriteRecordKind = 0xffff;
 #endif
-    if (bak_fseek(g_tempGamFP, offset, 0) != 0) {
-        bak_fseek(g_tempGamFP, 0, 0);
-        if (bak_fseek(g_tempGamFP, offset, 0) != 0)
+    if (bak_fseek(g_tempGamFP, offset, SEEK_SET) != 0) {
+        bak_fseek(g_tempGamFP, 0, SEEK_SET);
+        if (bak_fseek(g_tempGamFP, offset, SEEK_SET) != 0)
             ;
     }
     if (bak_ftell(g_tempGamFP) == (long)offset)

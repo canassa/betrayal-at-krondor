@@ -30,7 +30,7 @@ IoFile *audio_resource_load_chunk(FileRef *file, int chunk_id) {
             g_music_archive_owned = 1;
         }
         audio_stop(0);
-        bak_fseek(g_music_archive, 0xcL, 0);
+        bak_fseek(g_music_archive, 0xcL, SEEK_SET);
         if (bak_fread(&buf_size, 4, 1, g_music_archive) != 1)
             goto cleanup;
         if (g_pMusicChunkBuf != 0)
@@ -56,13 +56,13 @@ IoFile *audio_resource_load_chunk(FileRef *file, int chunk_id) {
                 break;
             }
         }
-        if (bak_fseek(g_music_archive, found_offset + 4, 0) != 0 || found_offset == 0)
+        if (bak_fseek(g_music_archive, found_offset + 4, SEEK_SET) != 0 || found_offset == 0)
             goto cleanup;
         if (music_chunk_load_and_link(g_music_archive, g_pMusicChunkBuf->bFlag) == 0)
             return 0;
     } else {
         for (i = 0; i < g_pMusicChunkBuf->nEntries; i++, entry++) {
-            if (bak_fseek(g_music_archive, entry->nOffset + 4, 0) != 0 ||
+            if (bak_fseek(g_music_archive, entry->nOffset + 4, SEEK_SET) != 0 ||
                 music_chunk_load_and_link(g_music_archive, g_pMusicChunkBuf->bFlag) == 0)
                 goto cleanup;
         }

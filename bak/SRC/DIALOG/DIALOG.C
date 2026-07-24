@@ -138,7 +138,7 @@ PDdxRecord dialog_load_record_by_key(unsigned long record_key, int use_offset) {
         }
     }
     if (file_offset > 0) {
-        bak_fseek(stream, file_offset, 0);
+        bak_fseek(stream, file_offset, SEEK_SET);
         bak_fread(&header, 9, 1, stream);
         sub_size = header.bCnt1 * 10 + header.bCnt2 * 10;
         alloc_size = sub_size + header.wBody_len + 9;

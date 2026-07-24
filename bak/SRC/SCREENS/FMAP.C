@@ -322,7 +322,7 @@ int far fmap_xy_lookup_for_chapter(int *out_x, int *out_y) {
             if (g_gameState.nZoneId == i) {
                 if ((int)(unsigned int)refIndex < entry_chapter) {
                     if (refIndex != 0) {
-                        bak_fseek(stream, (unsigned long)(unsigned int)(refIndex << 2), 1);
+                        bak_fseek(stream, (unsigned long)(unsigned int)(refIndex << 2), SEEK_CUR);
                     }
                     bak_fread(out_x, 2, 1, stream);
                     bak_fread(out_y, 2, 1, stream);
@@ -331,7 +331,7 @@ int far fmap_xy_lookup_for_chapter(int *out_x, int *out_y) {
                 break;
             }
             if (entry_chapter != 0) {
-                bak_fseek(stream, (unsigned long)(unsigned int)(entry_chapter << 2), 1);
+                bak_fseek(stream, (unsigned long)(unsigned int)(entry_chapter << 2), SEEK_CUR);
             }
         }
         bak_fclose(stream);
