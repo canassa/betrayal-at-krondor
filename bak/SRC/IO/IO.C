@@ -13,7 +13,7 @@
 #endif
 
 bool16 g_ioError;
-void far *g_int24_old_vector;
+IsrVector g_ioPrevInt24Vector;
 FileHandle g_ioHandles[IO_HANDLE_POOL_SIZE];
 Archive g_ioArchives[IO_ARCHIVE_MAX + 1];
 IoFile *g_pBakFgetcLastStream;
@@ -291,7 +291,7 @@ void bak_init_resources(void) {
     if (g_ioInitialized != 0)
         return;
 
-    g_int24_old_vector = (void far *)getvect(INT_CRITICAL_ERROR);
+    g_ioPrevInt24Vector = getvect(INT_CRITICAL_ERROR);
 
     setvect(INT_CRITICAL_ERROR, bak_int24_critical_handler);
 
@@ -351,9 +351,9 @@ void bak_shutdown_resources(void) {
         }
         i++;
     }
-    if (g_int24_old_vector != 0) {
-        setvect(INT_CRITICAL_ERROR, (void interrupt(far *) ())g_int24_old_vector);
-        g_int24_old_vector = 0;
+    if (g_ioPrevInt24Vector != 0) {
+        setvect(INT_CRITICAL_ERROR, g_ioPrevInt24Vector);
+        g_ioPrevInt24Vector = 0;
     }
     g_ioInitialized = FALSE;
 }

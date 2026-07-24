@@ -106,7 +106,21 @@ extern bool8 g_ioInitialized;
  * this build, so it is a vestigial accumulator kept for layout fidelity.
  */
 extern bool16 g_ioError;
-extern void far *g_int24_old_vector;
+
+/**
+ * @brief Far pointer to a DOS interrupt-service routine — the `getvect` /
+ *        `setvect` vector shape, used to save and restore a handler.
+ */
+typedef void interrupt (far *IsrVector)();
+
+/**
+ * @brief Saved previous DOS INT 24h (critical-error) handler vector.
+ *
+ * Captured by @ref bak_init_resources via `getvect` before it installs
+ * @ref bak_int24_critical_handler, and restored by @ref bak_shutdown_resources,
+ * which then zeroes this slot so a second shutdown is a no-op.
+ */
+extern IsrVector g_ioPrevInt24Vector;
 
 
 /**
