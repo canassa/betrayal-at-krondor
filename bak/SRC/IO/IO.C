@@ -42,7 +42,7 @@ IoFile *bak_fopen(char *filename, char *mode) {
         bak_select_archive(0);
     }
     bak_init_resources();
-    g_ioError = 0;
+    g_ioError = FALSE;
     if (g_ioArchiveCount == 0) {
         return (IoFile *)fopen(filename, mode);
     }
@@ -106,7 +106,7 @@ int bak_fclose(IoFile *file) {
         handle->inUse = FALSE;
         g_ioOpenHandleCount--;
     }
-    g_ioError |= (result == -1 ? 1 : 0);
+    g_ioError |= (result == -1 ? TRUE : FALSE);
     return result;
 }
 
@@ -260,7 +260,7 @@ int bak_putc(int c, IoFile *file) {
             result = -1;
         }
     }
-    g_ioError |= (result == -1) ? 1 : 0;
+    g_ioError |= (result == -1) ? TRUE : FALSE;
     return result;
 }
 
