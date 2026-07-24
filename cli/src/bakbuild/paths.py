@@ -15,6 +15,9 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 BAK = PROJECT_ROOT / "bak"  # the DOS-mountable tree (SRC/, INCLUDE/, MAKEFILE, KRONDOR.RSP)
 WORK = PROJECT_ROOT / "work"  # build scratch (gitignored): disk images, pulled artifacts, logs
 IMG = WORK / "build.img"
+# Concurrent compile shards run on ephemeral reflink clones named build_<accel><i>.img
+# (see vm.run_islands_parallel). Their fresh objects are merged back into IMG before
+# the link; nothing persists between builds.
 
 # The period toolchain: bc31 (BIN incl. MAKE + real-mode MAKER, INCLUDE, LIB with
 # C0M.OBJ/CM.LIB/OVERLAY.LIB), bc30, bc20 (BCCX), FreeDOS image + EXIT.COM. Not

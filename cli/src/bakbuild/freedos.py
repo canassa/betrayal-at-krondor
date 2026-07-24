@@ -89,8 +89,12 @@ def mcopy_out(img: Path, dos_glob: str, dest_dir: Path) -> None:
 
 
 def write_in(img: Path, dos_path: str, text: str, scratch: Path) -> None:
-    """Write ``text`` to ``dos_path`` inside the image (via a host temp file)."""
-    tmp = scratch / Path(dos_path).name
+    """Write ``text`` to ``dos_path`` inside the image (via a host temp file).
+
+    The host temp file is namespaced by the image stem so two islands writing the
+    same DOS path (``/FDAUTO.BAT``) into *different* images concurrently don't race
+    on one shared scratch file (see ``vm.run_islands_parallel``)."""
+    tmp = scratch / f"{img.stem}.{Path(dos_path).name}"
     tmp.write_text(text)
     _mtool("mcopy", "-o", "-i", _img(img), str(tmp), f"::{dos_path}")
 

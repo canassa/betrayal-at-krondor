@@ -139,8 +139,12 @@ def _clean_build() -> bool:
     claimed the (now gone) image contained."""
     incremental.MANIFEST.unlink(missing_ok=True)
     vm.fresh_image()
-    _tcgobjs()
-    return _kvm_link(compile_kvm=True, full_link=True)
+    typer.echo("── parallel compile: maker tcgobjs ∥ make kvmobjs (sharded) ──")
+    typer.echo(vm.run_islands_parallel(
+        compile_kvm=True,
+        kvm_stems=sorted(incremental._all_kvm_stems()),
+        tcg_stems=sorted(incremental._tcg_basenames()))[-3000:])
+    return _kvm_link(compile_kvm=False, full_link=True)
 
 
 def _incremental_build() -> bool:
@@ -202,13 +206,24 @@ def _incremental_build() -> bool:
     full_link = incremental.needs_full_link(changed)
     vm.sync_files(changed)
     if tcg_needed:
-        _tcgobjs()  # separate TCG boot (only when the island changed)
+        # Both islands are in play: build them CONCURRENTLY (TCG on a reflink clone,
+        # KVM on IMG), merge the TCG objects back, then link IMG in one final KVM
+        # boot. Overlapping the two ~30s compile passes turns kvm+tcg+link into
+        # max(kvm,tcg)+link.
+        typer.echo("── parallel compile: maker tcgobjs ∥ make kvmobjs (sharded) ──")
+        kvm_stems = incremental.kvm_targets(changed) if kvm_needed else None
+        tcg_stems = incremental.tcg_targets(changed)
+        typer.echo(vm.run_islands_parallel(
+            compile_kvm=kvm_needed, kvm_stems=kvm_stems, tcg_stems=tcg_stems)[-3000:])
+        if not kvm_needed:
+            typer.echo("── KVM compile: skipped (no KVM-side source changed) ──")
+        ok = _kvm_link(compile_kvm=False, full_link=full_link)
     else:
         typer.echo("── TCG pass: skipped (island unchanged) ──")
-    if not kvm_needed:
-        typer.echo("── KVM compile: skipped (no KVM-side source changed) — relink only ──")
-    # single KVM boot: compile the changed KVM objects (if any) + link + verify
-    ok = _kvm_link(compile_kvm=kvm_needed, full_link=full_link)
+        if not kvm_needed:
+            typer.echo("── KVM compile: skipped (no KVM-side source changed) — relink only ──")
+        # single KVM boot: compile the changed KVM objects (if any) + link + verify
+        ok = _kvm_link(compile_kvm=kvm_needed, full_link=full_link)
     incremental.save_manifest(new, ok)
     return ok
 

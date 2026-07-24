@@ -15,13 +15,22 @@ under qemu-TCG, whereas real-mode MAKER never enters protected mode.
 
 from __future__ import annotations
 
+import os
 import re
 import subprocess
+import time
 from pathlib import Path
 
 import typer
 
 from . import freedos, paths
+
+_PROFILE = os.environ.get("BAK_PROFILE")
+
+
+def _prof(label: str, dt: float) -> None:
+    if _PROFILE:
+        typer.secho(f"⏱  {label}: {dt:.2f}s", fg="yellow", err=True)
 
 _DOS_PATH = "path c:\\BC\\BIN;c:\\BC30;c:\\BC20;\\FREEDOS\\BIN\r\n"
 _DOS_HEAD = "@echo off\r\nc:\r\ncd \\\r\n" + _DOS_PATH
@@ -78,9 +87,19 @@ def fresh_image() -> None:
 
 
 def _run(bat: str, accel: str, mem: int | None, *, rtc: bool = False) -> None:
-    freedos.write_in(paths.IMG, "/FDAUTO.BAT", bat, paths.WORK)
-    argv = freedos.command(paths.IMG, accel=accel, mem_mb=mem, rtc_base=(paths.RTC if rtc else None))
+    _run_img(paths.IMG, bat, accel, mem, rtc=rtc)
+
+
+def _run_img(img: Path, bat: str, accel: str, mem: int | None, *, rtc: bool = False) -> None:
+    """Boot ``img`` in qemu with ``bat`` as ``/FDAUTO.BAT`` and wait for it to exit.
+
+    Image-parameterized so the two accel islands can run against separate reflink
+    copies concurrently (see ``run_islands_parallel``)."""
+    freedos.write_in(img, "/FDAUTO.BAT", bat, paths.WORK)
+    argv = freedos.command(img, accel=accel, mem_mb=mem, rtc_base=(paths.RTC if rtc else None))
+    t0 = time.monotonic()
     subprocess.run(argv, check=False, capture_output=True, timeout=1800)
+    _prof(f"qemu run [{accel}] {img.name}", time.monotonic() - t0)
 
 
 # Tool-error markers in the captured DOS console. The DOS tools' exit codes never
@@ -177,6 +196,172 @@ def run_kvm_link(compile_kvm: bool, full_link: bool = True) -> str:
         text = dst.read_text(errors="replace") if dst.exists() else "<no log>"
         _check_log(log, text)
         out.append(text)
+    return "\n".join(out)
+
+
+def _read_log(img: Path, log: str, *, invalidate_manifest: bool = True) -> str:
+    dst = paths.WORK / log
+    dst.unlink(missing_ok=True)
+    freedos.mcopy_out(img, f"/{log}", paths.WORK)
+    text = dst.read_text(errors="replace") if dst.exists() else "<no log>"
+    _check_log(log, text, invalidate_manifest=invalidate_manifest)
+    return text
+
+
+def _tcgobj_names() -> list[str]:
+    """The TCG island's object basenames (``FOO.OBJ``), parsed from the MAKEFILE's
+    ``TCGOBJ`` macro — the exact set to merge back from a whole-island TCG clone."""
+    from . import incremental
+    return [f"{b}.OBJ" for b in sorted(incremental._tcg_basenames())]
+
+
+def _all_kvm_names() -> list[str]:
+    """The KVM island's object basenames — the merge-back set for a whole-island KVM
+    clone (only reached when the KVM set can't be enumerated for sharding)."""
+    from . import incremental
+    return [f"{b}.OBJ" for b in sorted(incremental._all_kvm_stems())]
+
+
+def _merge_objs(src_img: Path, names: list[str], tag: str) -> int:
+    """Copy the named ``OUT\\*.OBJ`` from ``src_img`` back into the canonical IMG.
+
+    mtools preserves each object's (VM-clock) mtime across the copy, so merged objects
+    keep the same freshness semantics as if built in IMG directly — a later dep-scan
+    still sees them newer than their sources. Only the named objects move; everything
+    else in IMG's OUT\\ is untouched."""
+    stage = paths.WORK / f"merge_{tag}"
+    stage.mkdir(parents=True, exist_ok=True)
+    for f in stage.glob("*.OBJ"):
+        f.unlink()
+    for name in names:
+        freedos.mcopy_out(src_img, f"/OUT/{name}", stage)
+    objs = sorted(stage.glob("*.OBJ"))
+    if objs:
+        freedos.mcopy_in(paths.IMG, "OUT", *objs, text=False)
+    return len(objs)
+
+
+# Compile sharding: a broad header edit recompiles dozens of objects in one
+# single-threaded Borland MAKE — the build's long pole. Splitting an island's stale
+# object set across several concurrent VMs (each a reflink clone driven by a generated
+# SHARD_<isl><i>.MAK target) cuts it to ~1/N. Below MIN objects the per-shard boot +
+# merge overhead isn't worth it, so the island builds whole in one VM. MAX caps the
+# concurrent VM count per island (host has KVM + cores to spare).
+_SHARD_MIN = {"kvm": 12, "tcg": 4}
+_SHARD_MAX = {"kvm": 4, "tcg": 3}
+
+
+def _shard_makefile(stems: list[str]) -> str:
+    """A generated MAKE fragment: include the real MAKEFILE, add a ``shard`` target
+    depending on just these objects. Written into the image (never a tracked file), so
+    it changes no build rule and can't perturb byte-identity — the compiler emits each
+    object identically regardless of which VM drives it."""
+    objs = " ".join(f"OUT\\{s}.OBJ" for s in stems)
+    return "!include MAKEFILE\r\nshard : " + objs + "\r\n"
+
+
+def _plan_shards(accel: str, stems: list[str] | None) -> list[list[str]]:
+    """Split an island's stale object stems into shards (round-robin, even load).
+    ``[[]]`` means "one VM builds the whole island target" — used when the set is
+    small, empty (rebuild-all), or unknowable (unresolved include graph)."""
+    lo, hi = _SHARD_MIN[accel], _SHARD_MAX[accel]
+    if stems is None or len(stems) < lo:
+        return [[]]
+    n = min(hi, (len(stems) + lo - 1) // lo)
+    shards: list[list[str]] = [[] for _ in range(n)]
+    for i, s in enumerate(stems):
+        shards[i % n].append(s)
+    return shards
+
+
+# One compile job: which accel, its image, its console log, the FDAUTO batch to run,
+# and the object stems to merge back (empty ⇒ whole-island: merge the island's whole
+# object set). Shard 0 of an island runs a whole-island make on the master IMG when
+# unsharded; sharded jobs run a generated `shard` target on reflink clones.
+class _Job:
+    def __init__(self, accel: str, img: Path, log: str, bat: str, merge: list[str]):
+        self.accel, self.img, self.log, self.bat, self.merge = accel, img, log, bat, merge
+
+
+def _island_jobs(accel: str, make_exe: str, whole_target: str,
+                 stems: list[str] | None, on_master: bool) -> list[_Job]:
+    """Plan an island's concurrent jobs. ``on_master`` lets its first shard build into
+    IMG directly (no copy-back); every other job gets a fresh reflink clone. ``.merge``
+    holds the objects to copy back: a stem list for a shard, ``None`` for a whole-island
+    clone (merge the whole island), ``[]`` when built into IMG (merge nothing)."""
+    tag = accel.upper()
+    jobs: list[_Job] = []
+    for i, sh in enumerate(_plan_shards(accel, stems)):
+        on_img = on_master and i == 0
+        img = paths.IMG if on_img else paths.WORK / f"build_{accel}{i}.img"
+        if not on_img:
+            freedos._reflink(paths.IMG, img)
+        log = f"{tag}{i}.LOG" if i else f"{tag}.LOG"
+        if sh:  # sharded: inject a generated shard target (8.3-safe name SH<K|T><i>.MAK)
+            dos_mak = f"SH{tag[0]}{i}.MAK"
+            (paths.WORK / dos_mak).write_text(_shard_makefile(sh))
+            freedos._mtool("mcopy", "-o", "-i", freedos._img(img),
+                           str(paths.WORK / dos_mak), f"::/{dos_mak}")
+            cmd = f"{make_exe} -f{dos_mak} shard"
+            merge: list[str] | None = [] if on_img else [f"{s}.OBJ" for s in sh]
+        else:  # one VM builds the whole island target
+            cmd = f"{make_exe} {whole_target}"
+            merge = [] if on_img else None
+        jobs.append(_Job(accel, img, log,
+                         _DOS_HEAD + f"{cmd} > C:\\{log}\r\n" + "c:\\EXIT.COM\r\n", merge))
+    return jobs
+
+
+def run_islands_parallel(compile_kvm: bool, kvm_stems: list[str] | None = None,
+                         tcg_stems: list[str] | None = None) -> str:
+    """Build both accel islands CONCURRENTLY (each possibly sharded across several VMs),
+    then merge every built object into IMG. The caller links IMG in a final KVM boot.
+
+    Every VM runs on its own reflink clone of IMG except one KVM shard, which builds
+    into IMG directly (its objects need no copy-back). Object sets are disjoint across
+    all VMs (KVMOBJ vs TCGOBJ, and disjoint shard subsets within an island), so no two
+    qemu processes ever write the same bytes. After they exit, each clone's objects are
+    copied back into IMG.
+
+    ``compile_kvm`` gates the KVM island. ``kvm_stems``/``tcg_stems`` are the exact
+    object sets to (re)build, enabling sharding; None → build the whole island target in
+    one VM (small edit or an unresolved include graph)."""
+    # TCG island always runs entirely on clones (a KVM shard owns IMG).
+    jobs = _island_jobs("tcg", "maker", "tcgobjs", tcg_stems, on_master=False)
+    if compile_kvm:
+        jobs += _island_jobs("kvm", "make", "kvmobjs", kvm_stems, on_master=True)
+
+    procs: list[tuple[_Job, subprocess.Popen]] = []
+    for j in jobs:
+        freedos.write_in(j.img, "/FDAUTO.BAT", j.bat, paths.WORK)
+        mem = 96 if j.accel == "tcg" else 200
+        argv = freedos.command(j.img, accel=j.accel, mem_mb=mem, rtc_base=None)
+        procs.append((j, subprocess.Popen(
+            argv, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)))
+
+    t0 = time.monotonic()
+    pending = {p: j for j, p in procs}
+    while pending:
+        for p in list(pending):
+            if p.poll() is not None:
+                j = pending.pop(p)
+                _prof(f"  job [{j.accel} {j.log}] finished", time.monotonic() - t0)
+        if pending:
+            time.sleep(0.2)
+    _prof(f"parallel islands ({len(procs)} qemu)", time.monotonic() - t0)
+
+    # Read/scan every log only after all VMs have flushed and exited.
+    out = [_read_log(j.img, j.log) for j, p in procs]
+
+    t1 = time.monotonic()
+    merged = 0
+    for j, p in procs:
+        if j.img == paths.IMG:
+            continue  # built into IMG directly
+        names = j.merge if j.merge is not None else (
+            _tcgobj_names() if j.accel == "tcg" else _all_kvm_names())
+        merged += _merge_objs(j.img, names, f"{j.accel}_{j.log}")
+    _prof(f"merge objs ({merged})", time.monotonic() - t1)
     return "\n".join(out)
 
 
