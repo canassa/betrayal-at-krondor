@@ -21,7 +21,7 @@ FILE *g_ioLastFgetcCrtFile;
 bool8 g_ioInFopen;
 bool8 g_ioFopenRetry;
 bool8 g_ioArchivesDirty;
-unsigned char g_ioOpenHandleCount;
+char g_ioOpenHandleCount;
 unsigned long g_ioLookupHash;
 int g_ioCurrentArchive;
 int g_ioArchiveCount;
@@ -438,12 +438,12 @@ void bak_select_archive(int archiveIndex) {
 #ifdef V102CD
     strcpy(path, g_cfgResourceDrivePrefix);
     strcat(path, g_ioArchives[archiveIndex].fileName);
-    if (!(char)g_ioOpenHandleCount && archiveIndex) {
+    if (!g_ioOpenHandleCount && archiveIndex) {
         if (fclose(fopen(path, "rb")))
             probeFailed = TRUE;
     }
 #else
-    if (!(char)g_ioOpenHandleCount && archiveIndex) {
+    if (!g_ioOpenHandleCount && archiveIndex) {
         if (fclose(fopen(g_ioArchives[archiveIndex].fileName, "rb")))
             probeFailed = TRUE;
     }

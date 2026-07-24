@@ -188,7 +188,7 @@ extern bool8 g_ioArchivesDirty;
  * @brief Number of currently-open @ref g_ioHandles slots; gates the archive
  *        drive-probe in @ref bak_select_archive.
  */
-extern unsigned char g_ioOpenHandleCount;
+extern char g_ioOpenHandleCount;
 
 
 /**
