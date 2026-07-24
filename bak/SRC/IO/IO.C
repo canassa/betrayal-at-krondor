@@ -74,7 +74,7 @@ IoFile *bak_fopen(char *filename, char *mode) {
             return 0;
         }
         bak_select_archive(slot->archiveIndex);
-        bak_archive_seek(slot->baseOffset + slot->curOffset);
+        io_archive_seek(slot->baseOffset + slot->curOffset);
         fp = g_ioArchives[g_ioCurrentArchive].fp;
         fread(name, 0xd, 1, fp);
         fread(&slot->length, 4, 1, fp);
@@ -134,7 +134,7 @@ int bak_fread(void *ptr, int size, int count, IoFile *stream) {
         nbytes -= size;
     }
     bak_select_archive(handle->archiveIndex);
-    bak_archive_seek(handle->baseOffset + handle->curOffset);
+    io_archive_seek(handle->baseOffset + handle->curOffset);
     stream = (IoFile *)g_ioArchives[handle->archiveIndex].fp;
     n_read = fread(ptr, size, count, (FILE *)stream);
     nbytes = n_read * size;
@@ -211,7 +211,7 @@ int bak_fgetc(IoFile *stream) {
     if (handle->curOffset >= handle->length)
         return -1;
     bak_select_archive(handle->archiveIndex);
-    bak_archive_seek(handle->baseOffset + handle->curOffset);
+    io_archive_seek(handle->baseOffset + handle->curOffset);
     stream = (IoFile *)g_ioArchives[handle->archiveIndex].fp;
     result = fgetc(g_pBakActiveFgetcStream = (FILE *)stream);
     handle->curOffset++;
@@ -475,7 +475,7 @@ void bak_select_archive(int archive_index) {
     }
 }
 
-void bak_archive_seek(unsigned long absolute_offset) {
+void io_archive_seek(long absolute_offset) {
     Archive *ar;
 
     ar = &g_ioArchives[g_ioCurrentArchive];

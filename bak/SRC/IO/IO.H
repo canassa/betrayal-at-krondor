@@ -212,7 +212,18 @@ extern unsigned long io_filename_hash(char *filename);
 
 extern int bak_resource_lookup(FileHandle *slot);
 extern void bak_select_archive(int archive_index);
-extern void bak_archive_seek(unsigned long absolute_offset);
+/**
+ * @brief Seek the current archive's stream to an absolute byte offset in
+ *        `KRONDOR.001`.
+ *
+ * Indexes @ref g_ioArchives via @ref g_ioCurrentArchive and moves its
+ * @ref Archive::fp there, but only when @ref Archive::filePos shows it isn't
+ * already positioned — the cache skips a redundant `fseek`.
+ *
+ * @param absolute_offset Byte position within the archive (window base + read
+ *        cursor). `long` to match `fseek`; always a non-negative file position.
+ */
+extern void io_archive_seek(long absolute_offset);
 extern FileHandle *bak_find_handle(IoFile *stream);
 
 extern void interrupt far bak_int24_critical_handler();
