@@ -50,7 +50,7 @@ IoFile *bak_fopen(char *filename, char *mode) {
     g_pBakFgetcLastStream = 0;
     slot = g_ioHandles;
     count = IO_HANDLE_POOL_SIZE;
-    while (count != 0 && slot->inUse != 0) {
+    while (count != 0 && slot->inUse) {
         slot++;
         count--;
     }
@@ -505,7 +505,7 @@ FileHandle *bak_find_handle(IoFile *file) {
         slot++;
         count--;
     }
-    if (count == 0 || slot->inUse == 0) {
+    if (count == 0 || !slot->inUse) {
         slot = 0;
         g_pBakFindHandleCacheKey = 0;
     }
