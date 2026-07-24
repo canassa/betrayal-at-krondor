@@ -38,6 +38,8 @@ int fseek(FILE *stream, long offset, int whence);
 long ftell(FILE *stream);
 void rewind(FILE *stream);
 int fflush(FILE *stream);
+void setbuf(FILE *stream, char *buf);
+int setvbuf(FILE *stream, char *buf, int type, size_t size);
 int feof(FILE *stream);
 int ferror(FILE *stream);
 int fgetc(FILE *stream);
