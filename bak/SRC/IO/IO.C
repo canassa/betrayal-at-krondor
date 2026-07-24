@@ -12,7 +12,7 @@
 #include "SRC/GAME/CFGPARSE.H"
 #endif
 
-short g_bak_io_error;
+bool16 g_ioError;
 void far *g_int24_old_vector;
 FileHandle g_ioHandles[IO_HANDLE_POOL_SIZE];
 Archive g_ioArchives[IO_ARCHIVE_MAX + 1];
@@ -30,7 +30,7 @@ unsigned short g_ioHashRotate;
 FileHandle *g_pBakFindHandleCacheVal;
 IoFile *g_pBakFindHandleCacheKey;
 
-unsigned char g_bak_initialized = 0x00;
+bool8 g_ioInitialized = FALSE;
 
 IoFile *bak_fopen(char *filename, char *mode) {
     char name[14];
@@ -42,7 +42,7 @@ IoFile *bak_fopen(char *filename, char *mode) {
         bak_select_archive(0);
     }
     bak_init_resources();
-    g_bak_io_error = 0;
+    g_ioError = 0;
     if (g_ioArchiveCount == 0) {
         return (IoFile *)fopen(filename, mode);
     }
@@ -106,7 +106,7 @@ int bak_fclose(IoFile *file) {
         handle->inUse = FALSE;
         g_ioOpenHandleCount--;
     }
-    g_bak_io_error |= (result == -1 ? 1 : 0);
+    g_ioError |= (result == -1 ? 1 : 0);
     return result;
 }
 
@@ -243,7 +243,7 @@ int bak_fwrite(void *ptr, int size, int count, IoFile *file) {
     } else {
         written = 0;
     }
-    g_bak_io_error |= (written != count);
+    g_ioError |= (written != count);
     return written;
 }
 
@@ -260,7 +260,7 @@ int bak_putc(int c, IoFile *file) {
             result = -1;
         }
     }
-    g_bak_io_error |= (result == -1) ? 1 : 0;
+    g_ioError |= (result == -1) ? 1 : 0;
     return result;
 }
 
@@ -288,14 +288,14 @@ void bak_init_resources(void) {
     char path[80];
 #endif
 
-    if (g_bak_initialized != 0)
+    if (g_ioInitialized != 0)
         return;
 
     g_int24_old_vector = (void far *)getvect(INT_CRITICAL_ERROR);
 
     setvect(INT_CRITICAL_ERROR, bak_int24_critical_handler);
 
-    g_bak_initialized = 1;
+    g_ioInitialized = TRUE;
 
 #ifdef V102CD
     strcpy(path, g_cfgResourceDrivePrefix);
@@ -355,7 +355,7 @@ void bak_shutdown_resources(void) {
         setvect(INT_CRITICAL_ERROR, (void interrupt(far *) ())g_int24_old_vector);
         g_int24_old_vector = 0;
     }
-    g_bak_initialized = 0;
+    g_ioInitialized = FALSE;
 }
 
 void io_invalidate_archives(void) {

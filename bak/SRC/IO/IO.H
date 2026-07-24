@@ -88,8 +88,24 @@ typedef struct IoFile IoFile;
  */
 typedef void FileRef;
 
-extern unsigned char g_bak_initialized;
-extern short g_bak_io_error;
+/**
+ * @brief Init-once guard for the resource layer: `TRUE` after
+ *        @ref bak_init_resources has run its one-time setup.
+ *
+ * `bak_init_resources` is called from every @ref bak_fopen; this flag makes it
+ * idempotent (open `KRONDOR.RMF` + install the INT 24h handler exactly once).
+ */
+extern bool8 g_ioInitialized;
+/**
+ * @brief Sticky I/O-error flag: set on a write/close failure, cleared at the
+ *        start of each @ref bak_fopen. Set-only — nothing reads it.
+ *
+ * OR-ed to `TRUE` by @ref bak_fclose, @ref bak_fwrite and @ref bak_putc when
+ * their underlying CRT call fails; the `|=` makes it sticky across ops until the
+ * next @ref bak_fopen resets it. No code tests, returns, or branches on it in
+ * this build, so it is a vestigial accumulator kept for layout fidelity.
+ */
+extern bool16 g_ioError;
 extern void far *g_int24_old_vector;
 
 
