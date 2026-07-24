@@ -50,7 +50,7 @@ typedef struct Archive {
  * @brief A pooled open-file handle: a loose stdio file or an archive window.
  *
  * @ref bak_fopen returns a @ref IoFile token that is really the address of one
- * of these @ref g_bak_handles slots. Two states, told apart by
+ * of these @ref g_ioHandles slots. Two states, told apart by
  * @ref FileHandle::stdioFile: non-zero is a loose file (every op delegates to
  * CRT stdio); zero is a byte window into `KRONDOR.001` described by
  * @ref FileHandle::archiveIndex, @ref FileHandle::baseOffset,
@@ -85,14 +85,14 @@ typedef void FileRef;
 extern unsigned char g_bak_initialized;
 extern short g_bak_io_error;
 extern void far *g_int24_old_vector;
-extern FileHandle g_bak_handles[10];
+extern FileHandle g_ioHandles[10];
 extern Archive g_bak_archives[11];
 extern IoFile *g_pBakFgetcLastStream;
 extern FILE *g_pBakActiveFgetcStream;
 extern unsigned char g_bak_in_fopen;
 extern unsigned char g_bak_fopen_retry;
 extern unsigned char g_bak_archives_dirty;
-extern unsigned char g_bak_open_handles;
+extern unsigned char g_ioOpenHandleCount;
 extern unsigned long g_bak_lookup_hash;
 extern short g_bak_current_archive;
 
