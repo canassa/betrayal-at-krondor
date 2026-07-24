@@ -8,9 +8,19 @@
 
 #include "structs.h"
 
+/**
+ * @brief One record of the `KRONDOR.RMF` resource-index directory.
+ *
+ * An 8-byte packed `(hash, offset)` pair; @ref bak_init_resources loads a
+ * per-archive array of them into @ref Archive::directory, terminated by an
+ * all-zero slot (@ref RmfEntry::hash of 0). @ref bak_resource_lookup hashes a
+ * resource name and linear-scans for the matching @ref RmfEntry::hash.
+ */
 typedef struct RmfEntry {
-    unsigned long dwHash;
-    unsigned long dwBase_offset;
+    /** 0x00: @ref bak_filename_hash of the uppercased resource name. */
+    unsigned long hash;
+    /** 0x04: offset in `KRONDOR.001` of the 17-byte entry header. */
+    unsigned long headerOffset;
 } RmfEntry;
 
 /**
