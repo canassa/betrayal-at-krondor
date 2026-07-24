@@ -16,8 +16,8 @@ bool16 g_ioError;
 IsrVector g_ioPrevInt24Vector;
 FileHandle g_ioHandles[IO_HANDLE_POOL_SIZE];
 Archive g_ioArchives[IO_ARCHIVE_MAX + 1];
-IoFile *g_pBakFgetcLastStream;
-FILE *g_pBakActiveFgetcStream;
+IoFile *g_ioLastFgetcFile;
+FILE *g_ioLastFgetcCrtFile;
 unsigned char g_bak_in_fopen;
 unsigned char g_bak_fopen_retry;
 bool8 g_ioArchivesDirty;
@@ -46,8 +46,8 @@ IoFile *bak_fopen(char *filename, char *mode) {
     if (g_ioArchiveCount == 0) {
         return (IoFile *)fopen(filename, mode);
     }
-    g_pBakActiveFgetcStream = 0;
-    g_pBakFgetcLastStream = 0;
+    g_ioLastFgetcCrtFile = NULL;
+    g_ioLastFgetcFile = NULL;
     slot = g_ioHandles;
     count = IO_HANDLE_POOL_SIZE;
     while (count != 0 && slot->inUse) {
@@ -203,17 +203,17 @@ int bak_fgetc(IoFile *file) {
     int result;
     FileHandle *handle;
 
-    g_pBakFgetcLastStream = file;
+    g_ioLastFgetcFile = file;
     if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0)
-        return fgetc(g_pBakActiveFgetcStream = (FILE *)file);
+        return fgetc(g_ioLastFgetcCrtFile = (FILE *)file);
     if (handle->stdioFile != 0)
-        return fgetc(g_pBakActiveFgetcStream = handle->stdioFile);
+        return fgetc(g_ioLastFgetcCrtFile = handle->stdioFile);
     if (handle->curOffset >= handle->length)
         return -1;
     bak_select_archive(handle->archiveIndex);
     io_archive_seek(handle->baseOffset + handle->curOffset);
     file = (IoFile *)g_ioArchives[handle->archiveIndex].fp;
-    result = fgetc(g_pBakActiveFgetcStream = (FILE *)file);
+    result = fgetc(g_ioLastFgetcCrtFile = (FILE *)file);
     handle->curOffset++;
     g_ioArchives[handle->archiveIndex].filePos++;
     return result;

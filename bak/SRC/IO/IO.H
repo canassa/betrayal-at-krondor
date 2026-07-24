@@ -137,8 +137,24 @@ extern FileHandle g_ioHandles[IO_HANDLE_POOL_SIZE];
 extern Archive g_ioArchives[IO_ARCHIVE_MAX + 1];
 
 
-extern IoFile *g_pBakFgetcLastStream;
-extern FILE *g_pBakActiveFgetcStream;
+/**
+ * @brief The @ref IoFile token most recently passed to @ref bak_fgetc.
+ *
+ * Written on every @ref bak_fgetc call and cleared by @ref bak_fopen, but never
+ * read back anywhere in this build — a write-only trace latch, not a lookup
+ * cache. Nothing consults it to short-circuit a later call.
+ */
+extern IoFile *g_ioLastFgetcFile;
+
+/**
+ * @brief The CRT `FILE *` that @ref bak_fgetc resolved @ref g_ioLastFgetcFile
+ *        to and read a byte through.
+ *
+ * Mirrors the stdio stream actually handed to `fgetc`; written on every call and
+ * cleared by @ref bak_fopen. Like @ref g_ioLastFgetcFile it is never read back,
+ * so it too is a write-only trace, not consulted on later calls.
+ */
+extern FILE *g_ioLastFgetcCrtFile;
 extern unsigned char g_bak_in_fopen;
 extern unsigned char g_bak_fopen_retry;
 /**
