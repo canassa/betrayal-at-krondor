@@ -9,12 +9,11 @@
 #include "structs.h"
 
 /**
- * @brief One record of the `KRONDOR.RMF` resource-index directory.
+ * @brief One record of the `KRONDOR.RMF` resource-index directory: a resource
+ *        name's hash and where its data lives.
  *
- * An 8-byte packed `(hash, offset)` pair; @ref bak_init_resources loads a
- * per-archive array of them into @ref Archive::directory, terminated by an
- * all-zero slot (@ref RmfEntry::hash of 0). @ref bak_resource_lookup hashes a
- * resource name and linear-scans for the matching @ref RmfEntry::hash.
+ * Stored as a per-archive array in @ref Archive::directory, ended by an
+ * all-zero terminator entry.
  */
 typedef struct RmfEntry {
     /** 0x00: @ref bak_filename_hash of the uppercased resource name. */
@@ -26,15 +25,11 @@ typedef struct RmfEntry {
 /**
  * @brief Runtime descriptor for one open resource archive (`KRONDOR.001`).
  *
- * Built by @c bak_init_resources  (TBD-ref: not yet documented) from the
- * `KRONDOR.RMF` index and held in @ref g_bak_archives (up to 11, indexed
- * 1-based; slot 0 is the "loose file / no archive" sentinel). It pairs the
- * archive identity taken from the RMF (@ref Archive::fileName and the
- * @ref Archive::directory of @ref RmfEntry records) with live stdio state
- * (@ref Archive::fp — a genuine CRT `FILE *`, not a @ref IoFile token — and
- * @ref Archive::filePos). Not an on-disk record: only @ref Archive::fileName
- * arrives in bulk, so the two never-touched fields are just free space.
- * Byte-packed; `sizeof` is 28.
+ * Held in @ref g_bak_archives (1-based; slot 0 is the "loose file / no archive"
+ * sentinel). Pairs the archive's identity from the RMF (@ref Archive::fileName,
+ * @ref Archive::directory) with its live stdio stream (@ref Archive::fp,
+ * @ref Archive::filePos). A runtime object, not an on-disk record — hence the
+ * two unused fields. Byte-packed; `sizeof` is 28.
  */
 typedef struct Archive {
     char fileName[13];        /**< 0x00: NUL-padded payload name. */
@@ -47,15 +42,13 @@ typedef struct Archive {
 } Archive;
 
 /**
- * @brief A pooled open-file handle: a loose stdio file or an archive window.
+ * @brief A pooled open-file handle: either a loose stdio file or a byte-window
+ *        into the archive.
  *
- * @ref bak_fopen returns a @ref IoFile token that is really the address of one
- * of these @ref g_ioHandles slots. Two states, told apart by
- * @ref FileHandle::stdioFile: non-zero is a loose file (every op delegates to
- * CRT stdio); zero is a byte window into `KRONDOR.001` described by
- * @ref FileHandle::archiveIndex, @ref FileHandle::baseOffset,
- * @ref FileHandle::length and @ref FileHandle::curOffset. An in-memory pool,
- * not a disk record; byte-packed, `sizeof` 18.
+ * @ref FileHandle::stdioFile is the discriminant — non-zero for a loose file,
+ * zero for an archive window (then @ref FileHandle::archiveIndex,
+ * @ref FileHandle::baseOffset, @ref FileHandle::length and
+ * @ref FileHandle::curOffset locate it). Byte-packed; `sizeof` 18.
  */
 typedef struct FileHandle {
     short archiveIndex;       /**< 0x00: 1-based archive index; 0 = loose. */
@@ -71,18 +64,18 @@ typedef struct FileHandle {
 #define IO_HANDLE_POOL_SIZE 10
 
 /**
- * @brief Opaque file token from bak_fopen()/cached_file_open().
+ * @brief Opaque file token returned by @ref bak_fopen.
  *
- * Really a CRT `FILE *` or a @ref FileHandle pool slot; bak_find_handle() tells
- * them apart on every bak_* call. Store it, compare it, pass it back — never
- * dereference it or hand it to CRT stdio. Intentionally has no definition.
+ * Also produced by @c cached_file_open  (TBD-ref: IFFREAD.H lacks @file).
+ * Under the hood a CRT `FILE *` or a @ref FileHandle slot; treat it as opaque —
+ * pass it only to the `bak_*` functions, never dereference it. No definition.
  */
 typedef struct IoFile IoFile;
 /**
- * @brief A file reference: either a filename (`char *`) or an open ::IoFile token.
+ * @brief A file reference: either a filename (`char *`) or an open @ref IoFile
+ *        token.
  *
- * is_file_cached() tells the two apart at runtime by pointer identity. Plain void
- * underneath, so both kinds pass without casts.
+ * Typed `void` so both kinds pass without a cast.
  */
 typedef void FileRef;
 
@@ -90,12 +83,8 @@ extern unsigned char g_bak_initialized;
 extern short g_bak_io_error;
 extern void far *g_int24_old_vector;
 /**
- * @brief Fixed pool of open-file handle slots (see @ref FileHandle).
- *
- * @ref bak_fopen claims the first free slot (@ref FileHandle::inUse == 0) and
- * returns its address as an @ref IoFile token; @ref bak_fclose frees it. All
- * @ref IO_HANDLE_POOL_SIZE slots start free (`_BSS` zero-init); when none is
- * free, @ref bak_fopen returns NULL.
+ * @brief Fixed pool of @ref IO_HANDLE_POOL_SIZE open-file handle slots
+ *        (@ref FileHandle) shared by all @ref bak_fopen streams.
  */
 extern FileHandle g_ioHandles[IO_HANDLE_POOL_SIZE];
 extern Archive g_bak_archives[11];
@@ -105,22 +94,19 @@ extern unsigned char g_bak_in_fopen;
 extern unsigned char g_bak_fopen_retry;
 extern unsigned char g_bak_archives_dirty;
 /**
- * @brief Count of currently-claimed @ref g_ioHandles slots.
- *
- * Bumped on each successful @ref bak_fopen and cleared down on @ref bak_fclose,
- * so it tracks the number of in-use slots. Read only to gate the archive
- * drive-probe in @ref bak_select_archive (skip it while handles are open).
+ * @brief Number of currently-open @ref g_ioHandles slots; gates the archive
+ *        drive-probe in @ref bak_select_archive.
  */
 extern unsigned char g_ioOpenHandleCount;
 extern unsigned long g_bak_lookup_hash;
 extern short g_bak_current_archive;
 
 /**
- * @brief Number of archives registered from `KRONDOR.RMF` (slots `1..count`
- *        of @c g_bak_archives  (TBD-ref: not yet documented)).
+ * @brief Number of archives registered from `KRONDOR.RMF` (indices `1..count`
+ *        of @ref g_bak_archives).
  *
- * 0 until the resource map is read — or for good if it cannot be opened —
- * and while 0 every `bak_*` wrapper passes straight through to CRT stdio.
+ * 0 before the map is read, or if it cannot be opened — which leaves the whole
+ * archive layer disabled.
  */
 extern int g_ioArchiveCount;
 
