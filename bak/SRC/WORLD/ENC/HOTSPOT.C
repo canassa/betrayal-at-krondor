@@ -50,7 +50,7 @@ char g_aDefFileNames[12][13] = {
 short g_aDefRecordSizes[12] = {21, 399, 10, 8, 13, 7, 21, 409, 19, 7, 7, 8};
 
 void far hotspotevt_monst_load_tbl_cur_id(void) {
-    BakFile *stream;
+    IoFile *stream;
     VisibleEntryList *p;
 
     p = g_apCombat_zone_actor_lists[0];
@@ -61,7 +61,7 @@ void far hotspotevt_monst_load_tbl_cur_id(void) {
     g_monst_filename_buf[5] = 0x30 | p->bParty_y / 10;
     g_monst_filename_buf[6] = 0x30 | p->bParty_y % 10;
     stream = bak_fopen(g_monst_filename_buf, "rb");
-    if (stream != (BakFile *)0) {
+    if (stream != (IoFile *)0) {
         bak_fseek(stream, (unsigned long)((g_gameState.nChapter - 1) * 0xc0), 1);
         bak_fread(&g_nHotspotCount, 2, 1, stream);
         bak_fread(g_aZoneHotspots, 0x13, g_nHotspotCount, stream);
@@ -1155,7 +1155,7 @@ char far hotspotevt_bak_load_indexed_rec(int record_id, void *dest, long offset)
     int record_size;
     char header[4];
     char present;
-    BakFile *stream;
+    IoFile *stream;
 
     hotspotevt_bak_indexed_rec_info(record_id, &filename, &record_size);
     stream = bak_fopen(filename, "rb");

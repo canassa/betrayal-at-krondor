@@ -41,7 +41,7 @@ unsigned short g_nHitTestEntryCount = 0x0000;
 unsigned short g_nHitTestWriteSlot = 0x0000;
 
 void far wcursor_load_detect_dat(void) {
-    BakFile *stream;
+    IoFile *stream;
 
     stream = bak_fopen("detect.dat", "rb");
     if (g_game_mode == 2) {

@@ -172,7 +172,7 @@ void far combat_arena_mode_exit(void) {
 }
 
 void far combat_arena_load_remap_pals(void) {
-    BakFile *fp;
+    IoFile *fp;
 
     fp = bak_fopen("red.rmp", "rb");
     bak_fread_chunked(g_abCursorPaletteLut + 0x100, (long)0x100, (long)1, fp);

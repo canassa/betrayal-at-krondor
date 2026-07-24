@@ -45,7 +45,7 @@ void askabout_keyword_table_free(void) {
 
 void far askabout_keyword_table_load(void) {
     unsigned int size;
-    BakFile *stream;
+    IoFile *stream;
     int i;
 
     if (g_pKeywordTable == (unsigned short *)0) {

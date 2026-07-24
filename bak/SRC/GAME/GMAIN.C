@@ -290,7 +290,7 @@ void far gmain_play_intro_animation(void) {
 }
 
 int far gmain_play_chapter_intro(int chapter, int part) {
-    BakFile *stream;
+    IoFile *stream;
     int result;
     int trackId;
     char bookName[20];

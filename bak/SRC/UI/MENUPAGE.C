@@ -25,7 +25,7 @@ short g_nJoyXVel = 0;
 short g_nJoyYVel = 0;
 
 MenuPage *menupage_load(char *filename) {
-    BakFile *stream;
+    IoFile *stream;
     MenuPage *page;
     int i;
     void *stringBlob;

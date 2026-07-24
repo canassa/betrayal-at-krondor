@@ -26,7 +26,7 @@ int g_nStreamBytesWritten;
 StreamDesc *g_apStreamSlots[100];
 unsigned char huge *g_pCurCodecScratch;
 unsigned char huge *g_pStreamReadDst;
-BakFile *g_pCurStreamFp;
+IoFile *g_pCurStreamFp;
 unsigned char g_bCurStreamCodecId;
 unsigned char *g_pCurStreamRingBuf;
 StreamDesc *g_pCurStreamDesc;

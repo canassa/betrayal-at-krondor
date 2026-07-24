@@ -8,7 +8,7 @@
 #include "SRC/AUDIO/RES/AUDRES.H"
 #include "SRC/STREAM/BUFLOAD/STRMLOAD.H"
 
-int music_chunk_load_and_link(BakFile *file, char mode) {
+int music_chunk_load_and_link(IoFile *file, char mode) {
     long size;
     unsigned short out_size[2];
     AudioListNode far *node;

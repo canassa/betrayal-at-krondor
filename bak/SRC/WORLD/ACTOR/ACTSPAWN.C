@@ -93,7 +93,7 @@ int actorspawn_for_location_by_time(int location_id) {
 }
 
 Actor far *actorspawn_objfixed(int kind, long world_x, long world_y) {
-    register BakFile *stream;
+    register IoFile *stream;
     register int ipass;
     int rec_idx;
     unsigned int chap_min;

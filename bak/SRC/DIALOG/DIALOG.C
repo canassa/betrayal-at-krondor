@@ -109,7 +109,7 @@ PDdxRecord dialog_load_record_by_key(unsigned long record_key, int use_offset) {
     unsigned char far *body_ptr;
     int alloc_size;
     char filename[16];
-    BakFile *stream;
+    IoFile *stream;
     int sub_size;
     int i;
 

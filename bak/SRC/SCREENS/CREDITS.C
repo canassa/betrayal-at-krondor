@@ -21,7 +21,7 @@ short g_credits_scroll_y;
 unsigned short g_nCreditsPassCount = 0x0000;
 
 void credits_load(void) {
-    BakFile *stream;
+    IoFile *stream;
     int i;
     unsigned short blobSize;
 

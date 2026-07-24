@@ -156,7 +156,7 @@ void far savegame_chapter_start_dispatch(int chapter) {
 
     g_pChapDatFilename[4] = (char)chapter + '0';
     {
-        BakFile *stream = bak_fopen(g_pChapDatFilename, "rb");
+        IoFile *stream = bak_fopen(g_pChapDatFilename, "rb");
         bak_fread(&g_gameState, 1, 0x10, stream);
         bak_fread(&spawn_rec, 7, 1, stream);
         bak_fclose(stream);

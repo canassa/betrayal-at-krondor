@@ -883,7 +883,7 @@ struct IffResLevel {
 };
 
 struct IffResReader {
-    struct BakFile *pStream;
+    struct IoFile *pStream;
     char pChunk_id_stack[25];
     IffResLevel pLevel_cache[7];
     short nDepth;
@@ -1375,7 +1375,7 @@ struct StatusEffectSlot {
 
 union StreamDescSrcUnion {
     unsigned char huge *pBufBase;
-    struct BakFile *pFile;
+    struct IoFile *pFile;
 };
 
 struct StreamDesc {

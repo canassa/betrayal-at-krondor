@@ -47,7 +47,7 @@ void itemtbl_free(void) {
 }
 
 int itemtbl_load(void) {
-    BakFile *fp;
+    IoFile *fp;
     int size;
 
     if (g_pItemDefTable == (ItemRecord far *)0) {

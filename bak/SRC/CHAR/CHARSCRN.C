@@ -41,7 +41,7 @@ static void charscreen_draw_spell_book_actor(CombatActor *actor, unsigned char f
     int spell_icon;
     int spell_count;
     int first;
-    BakFile *stream;
+    IoFile *stream;
     struct SpellRecord spell_rec;
     register int panel_y;
     register int spell_idx;

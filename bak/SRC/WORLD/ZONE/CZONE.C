@@ -104,7 +104,7 @@ struct ZoneActorRecord {
 
 void far czone_load_actors(unsigned char zone, unsigned char x, unsigned char y, VisibleEntryList *list) {
     unsigned short count;
-    BakFile *fp;
+    IoFile *fp;
     int i;
     int throttle_reset;
     int throttle;

@@ -22,7 +22,7 @@ int g_nCursorBlinkOn = 0;
 unsigned long g_dwCursorBlinkPhaseStart = 0x00000000UL;
 
 Dialog *dlgwidget_dialog_load(char *filename) {
-    BakFile *stream;
+    IoFile *stream;
     Dialog *dialog;
     DialogWidget *widget;
     void *string_table;

@@ -260,7 +260,7 @@ void far encamp_run(void) {
 }
 
 void far encamp_load(void) {
-    register BakFile *stream;
+    register IoFile *stream;
     unsigned short *ptx;
     unsigned short *pty;
     register int i;

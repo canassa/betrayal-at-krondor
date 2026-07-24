@@ -92,7 +92,7 @@ static int far cbstat_actor_find_equipped_item(CombatActor *actor, ItemRecord fa
 }
 
 void cbstat_spell_tables_load(void) {
-    BakFile *file;
+    IoFile *file;
     int count;
 
     file = bak_fopen("spellwea.dat", "rb");

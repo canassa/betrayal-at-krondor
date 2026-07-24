@@ -31,7 +31,7 @@ typedef struct RmfEntry {
  * 1-based; slot 0 is the "loose file / no archive" sentinel). It pairs the
  * archive identity taken from the RMF (@ref Archive::fileName and the
  * @ref Archive::directory of @ref RmfEntry records) with live stdio state
- * (@ref Archive::fp — a genuine CRT `FILE *`, not a @ref BakFile token — and
+ * (@ref Archive::fp — a genuine CRT `FILE *`, not a @ref IoFile token — and
  * @ref Archive::filePos). Not an on-disk record: only @ref Archive::fileName
  * arrives in bulk, so the two never-touched fields are just free space.
  * Byte-packed; `sizeof` is 28.
@@ -46,37 +46,48 @@ typedef struct Archive {
     RmfEntry far *directory;  /**< 0x18: loaded hash->offset table. */
 } Archive;
 
-typedef struct BakHandle {
-    short archive_idx;
-    unsigned long base_offset;
-    unsigned long length;
-    unsigned long cur_offset;
-    unsigned short valid;
-    FILE *real_fp;
-} BakHandle;
+/**
+ * @brief A pooled open-file handle: a loose stdio file or an archive window.
+ *
+ * @ref bak_fopen returns a @ref IoFile token that is really the address of one
+ * of these @ref g_bak_handles slots. Two states, told apart by
+ * @ref FileHandle::stdioFile: non-zero is a loose file (every op delegates to
+ * CRT stdio); zero is a byte window into `KRONDOR.001` described by
+ * @ref FileHandle::archiveIndex, @ref FileHandle::baseOffset,
+ * @ref FileHandle::length and @ref FileHandle::curOffset. An in-memory pool,
+ * not a disk record; byte-packed, `sizeof` 18.
+ */
+typedef struct FileHandle {
+    short archiveIndex;       /**< 0x00: 1-based archive index; 0 = loose. */
+    unsigned long baseOffset; /**< 0x02: payload start in KRONDOR.001. */
+    unsigned long length;     /**< 0x06: resource payload size. */
+    unsigned long curOffset;  /**< 0x0a: read cursor within the window. */
+    bool16 inUse;             /**< 0x0e: pool slot occupied. */
+    FILE *stdioFile;          /**< 0x10: loose stream; 0 = archive window. */
+} FileHandle;
 
 /**
  * @brief Opaque file token from bak_fopen()/cached_file_open().
  *
- * Really a CRT `FILE *` or a ::BakHandle pool slot; bak_find_handle() tells
+ * Really a CRT `FILE *` or a @ref FileHandle pool slot; bak_find_handle() tells
  * them apart on every bak_* call. Store it, compare it, pass it back — never
  * dereference it or hand it to CRT stdio. Intentionally has no definition.
  */
-typedef struct BakFile BakFile;
+typedef struct IoFile IoFile;
 /**
- * @brief A file reference: either a filename (`char *`) or an open ::BakFile token.
+ * @brief A file reference: either a filename (`char *`) or an open ::IoFile token.
  *
  * is_file_cached() tells the two apart at runtime by pointer identity. Plain void
  * underneath, so both kinds pass without casts.
  */
-typedef void BakFileRef;
+typedef void FileRef;
 
 extern unsigned char g_bak_initialized;
 extern short g_bak_io_error;
 extern void far *g_int24_old_vector;
-extern BakHandle g_bak_handles[10];
+extern FileHandle g_bak_handles[10];
 extern Archive g_bak_archives[11];
-extern BakFile *g_pBakFgetcLastStream;
+extern IoFile *g_pBakFgetcLastStream;
 extern FILE *g_pBakActiveFgetcStream;
 extern unsigned char g_bak_in_fopen;
 extern unsigned char g_bak_fopen_retry;
@@ -96,29 +107,29 @@ extern int g_ioArchiveCount;
 
 extern short g_bak_hash_seed;
 extern unsigned short g_bak_hash_rotate;
-extern BakHandle *g_pBakFindHandleCacheVal;
-extern BakFile *g_pBakFindHandleCacheKey;
+extern FileHandle *g_pBakFindHandleCacheVal;
+extern IoFile *g_pBakFindHandleCacheKey;
 
-extern BakFile *bak_fopen(char *filename, char *mode);
-extern int bak_fclose(BakFile *stream);
-extern int bak_fread(void *ptr, int size, int count, BakFile *stream);
-extern int bak_fseek(BakFile *stream, long offset, int whence);
-extern long bak_ftell(BakFile *stream);
-extern long bak_filelength(BakFile *stream);
-extern void bak_rewind(BakFile *stream);
-extern int bak_fgetc(BakFile *stream);
-extern int bak_feof(BakFile *stream);
-extern int bak_fwrite(void *ptr, int size, int count, BakFile *stream);
-extern int bak_putc(int c, BakFile *stream);
-extern void bak_setbuf(BakFile *stream, char *buffer);
+extern IoFile *bak_fopen(char *filename, char *mode);
+extern int bak_fclose(IoFile *stream);
+extern int bak_fread(void *ptr, int size, int count, IoFile *stream);
+extern int bak_fseek(IoFile *stream, long offset, int whence);
+extern long bak_ftell(IoFile *stream);
+extern long bak_filelength(IoFile *stream);
+extern void bak_rewind(IoFile *stream);
+extern int bak_fgetc(IoFile *stream);
+extern int bak_feof(IoFile *stream);
+extern int bak_fwrite(void *ptr, int size, int count, IoFile *stream);
+extern int bak_putc(int c, IoFile *stream);
+extern void bak_setbuf(IoFile *stream, char *buffer);
 extern void bak_init_resources(void);
 extern void bak_shutdown_resources(void);
 extern void bak_invalidate_archives(void);
 extern unsigned long bak_filename_hash(char *filename);
-extern int bak_resource_lookup(BakHandle *slot);
+extern int bak_resource_lookup(FileHandle *slot);
 extern void bak_select_archive(int archive_index);
 extern void bak_archive_seek(unsigned long absolute_offset);
-extern BakHandle *bak_find_handle(BakFile *stream);
+extern FileHandle *bak_find_handle(IoFile *stream);
 
 extern void interrupt far bak_int24_critical_handler();
 

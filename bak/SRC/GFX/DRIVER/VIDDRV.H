@@ -20,6 +20,6 @@ extern char g_szDrvSuffix_HVG[5];
 extern char g_szDrvSuffix_HEG[5];
 extern char g_szDrvSuffix_NEW[5];
 
-extern unsigned long far *video_driver_load(int mode, BakFileRef *file);
+extern unsigned long far *video_driver_load(int mode, FileRef *file);
 
 #endif

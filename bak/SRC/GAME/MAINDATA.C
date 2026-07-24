@@ -11,6 +11,6 @@ char *g_versionBanner = "Version 1.00";
 #endif
 unsigned char _dgroup_gap_3e8[4] = {0, 0, 0, 0};
 SoundDriverId g_sound_driver = SNDDRV_NONE;
-BakFile *g_pSfxArchiveStream = {0};
+IoFile *g_pSfxArchiveStream = {0};
 unsigned int _ovrbuffer = 0x0d48;
 unsigned char far *g_pMainScratchBuf = {0};

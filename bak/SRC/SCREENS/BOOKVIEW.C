@@ -32,7 +32,7 @@ unsigned short g_wTextWrapLinesRemaining = 0x0000;
 #include "SRC/INPUT/JOYSTICK.H"
 
 void bookview_init(void) {
-    BakFile *file;
+    IoFile *file;
     int stream;
     unsigned char far *p;
     int row;
@@ -109,7 +109,7 @@ void bookview_shutdown(void) {
 static PageDirectory far *bookview_load_page_directory(char *filename) {
     PageDirectory far *dir;
     unsigned long size;
-    BakFile *stream;
+    IoFile *stream;
     int i;
 
     stream = bak_fopen(filename, "rb");

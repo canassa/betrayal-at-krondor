@@ -32,7 +32,7 @@ unsigned short g_nMusicVolume = 0x7f;
 #ifdef V102CD
 static void v102_cdaudio_play_track(int track_id) {
     register int track;
-    BakFile *fp;
+    IoFile *fp;
     long frame_offset;
 
     track = track_id;
@@ -395,7 +395,7 @@ void audio_play(int sound_id) {
     audio_start_by_id(sound_id);
 }
 
-int audio_sfx_register(BakFile *file, int sfx_id) {
+int audio_sfx_register(IoFile *file, int sfx_id) {
     return ((g_sound_driver != SNDDRV_NONE) && (sfx_id < 1001)) ? (int)audio_resource_load_chunk(file, sfx_id)
                                                       : 0;
 }
@@ -407,7 +407,7 @@ int audio_sfx_stop(int sfx_id) {
 }
 
 int far audio_sfx_play_n_times(int sfx_id, int extra_repeats, int blocking) {
-    BakFile *pChunk;
+    IoFile *pChunk;
 
     if (g_sound_driver == SNDDRV_NONE) {
         return 0;

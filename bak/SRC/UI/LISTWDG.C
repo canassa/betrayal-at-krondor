@@ -61,7 +61,7 @@ ListWidget *far listwidget_attach(short x, short y, short width, short line_coun
 }
 
 ListWidget *far listwidget_load(char *filename, MenuPage *parent, short child_idx) {
-    BakFile *stream;
+    IoFile *stream;
     short x;
     short y;
     short width;
@@ -74,7 +74,7 @@ ListWidget *far listwidget_load(char *filename, MenuPage *parent, short child_id
 
     widget = (ListWidget *)0;
     stream = bak_fopen(filename, "rb");
-    if (stream != (BakFile *)0) {
+    if (stream != (IoFile *)0) {
         bak_fread(&x, 2, 1, stream);
         bak_fread(&y, 2, 1, stream);
         bak_fread(&width, 2, 1, stream);

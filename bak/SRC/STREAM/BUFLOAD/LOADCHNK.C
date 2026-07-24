@@ -3,10 +3,10 @@
 #include "SRC/STREAM/RESLOAD/IFFREAD.H"
 #include "SRC/STREAM/BUFLOAD/STRMLOAD.H"
 
-void far *bak_load_chunk(BakFileRef *file, char *chunk_id, int mode) {
+void far *bak_load_chunk(FileRef *file, char *chunk_id, int mode) {
     void far *out_buf;
     int opened;
-    BakFile *fp;
+    IoFile *fp;
 
     opened = 0;
     out_buf = 0;

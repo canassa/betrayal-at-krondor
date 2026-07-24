@@ -514,7 +514,7 @@ void far combatgrid_actor_set_grid_pos(int actor_idx, int new_x, int new_y) {
 
 void combatgrid_load_traps_dat(void) {
     int skip;
-    BakFile *stream;
+    IoFile *stream;
     int actor_idx;
     unsigned char tileX;
     unsigned char tileY;
@@ -714,7 +714,7 @@ void far combatgrid_tile_fx_init_pass(void) {
 }
 
 void combatgrid_load_and_init(void) {
-    BakFile *stream;
+    IoFile *stream;
     int col;
     int row;
 
@@ -1134,7 +1134,7 @@ void combatgrid_clear_tile_effects(void) {
 }
 
 void combatgrid_save_traps_terr(int encounter_idx) {
-    BakFile *stream;
+    IoFile *stream;
     int i;
     char tileX;
     char tileY;

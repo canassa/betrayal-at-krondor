@@ -55,7 +55,7 @@ void resblit_load_resource_set_1ec(int flags) {
 ImageRecord **resblit_load_asset_table(char *path, int storage_mode) {
     int i;
     ImageRecord **tbl = 0;
-    BakFile *fp;
+    IoFile *fp;
     unsigned char huge *pPayload;
     unsigned char huge *cursor;
     int published = 0;
@@ -238,7 +238,7 @@ void resblit_load_pal_or_stream(char *filename) {
     int rows;
     int local;
     int sHandle;
-    BakFile *stream;
+    IoFile *stream;
     unsigned char huge *buf = 0;
 
     pHandle = 0;

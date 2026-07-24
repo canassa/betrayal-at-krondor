@@ -61,7 +61,7 @@ static int anim_script_register_resource(char *name, unsigned short resource_id)
 
 int anim_script_open(char *filename, int mode) {
     int err;
-    BakFile *fp;
+    IoFile *fp;
     char *filenameArg;
     Slot far *slot;
     int streamId;
@@ -93,7 +93,7 @@ int anim_script_open(char *filename, int mode) {
     }
     g_anim_slots[newSlotIdx] = slot;
     streamId = -1;
-    if ((fp = cached_file_open(filenameArg)) == (BakFile *)0) {
+    if ((fp = cached_file_open(filenameArg)) == (IoFile *)0) {
         _freemem(g_anim_slots[newSlotIdx]);
         g_anim_slots[newSlotIdx] = (Slot far *)0;
         return 0;
@@ -145,7 +145,7 @@ cleanup:
     if (streamId >= 0) {
         stream_close(streamId);
     }
-    if (fp != (BakFile *)0) {
+    if (fp != (IoFile *)0) {
         cached_file_close(fp);
     }
     anim_script_activate(0);
