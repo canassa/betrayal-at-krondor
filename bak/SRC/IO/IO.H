@@ -111,7 +111,14 @@ extern IoFile *g_pBakFgetcLastStream;
 extern FILE *g_pBakActiveFgetcStream;
 extern unsigned char g_bak_in_fopen;
 extern unsigned char g_bak_fopen_retry;
-extern unsigned char g_bak_archives_dirty;
+/**
+ * @brief The open archive stream is stale — close and reopen before next use.
+ *
+ * Raised by @ref bak_int24_critical_handler on a DOS critical error (media
+ * change / drive-not-ready) during archive I/O; @ref bak_fopen then resets to
+ * the slot-0 sentinel to tear down the suspect stream, clearing the flag.
+ */
+extern bool8 g_ioArchivesDirty;
 
 
 /**
@@ -128,7 +135,13 @@ extern unsigned char g_ioOpenHandleCount;
 extern unsigned long g_ioLookupHash;
 
 
-extern short g_bak_current_archive;
+/**
+ * @brief Index into @ref g_ioArchives of the currently-open archive; 0 = none.
+ *
+ * Set by @ref bak_select_archive, which closes the previous archive's stream
+ * before opening the new one; 0 is the loose / no-archive state.
+ */
+extern int g_ioCurrentArchive;
 
 
 /**
@@ -174,7 +187,15 @@ extern int bak_putc(int c, IoFile *stream);
 extern void bak_setbuf(IoFile *stream, char *buffer);
 extern void bak_init_resources(void);
 extern void bak_shutdown_resources(void);
-extern void bak_invalidate_archives(void);
+/**
+ * @brief Mark the open archives stale so the next @ref bak_fopen reopens them.
+ *
+ * A media-change hook that raises @ref g_ioArchivesDirty. Unused in this build;
+ * the same recovery is driven live by @ref bak_int24_critical_handler.
+ */
+extern void io_invalidate_archives(void);
+
+
 /**
  * @brief Hash of a resource filename for the `KRONDOR.RMF` directory lookup.
  *
@@ -187,6 +208,8 @@ extern void bak_invalidate_archives(void);
  * @return The 32-bit hash (a mirror of @ref g_ioLookupHash).
  */
 extern unsigned long io_filename_hash(char *filename);
+
+
 extern int bak_resource_lookup(FileHandle *slot);
 extern void bak_select_archive(int archive_index);
 extern void bak_archive_seek(unsigned long absolute_offset);

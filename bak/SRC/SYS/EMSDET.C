@@ -1,5 +1,6 @@
 #include <dos.h>
 #include "structs.h"
+#include "defines.h"
 #include "SRC/SYS/EMS.H"
 #include "SRC/SYS/EMSDET.H"
 
@@ -15,24 +16,24 @@ int ems_detect_driver(void) {
     L_check_zf : asm jnz L_no_ems;
 
     _AH = 0x40;
-    geninterrupt(0x67);
+    geninterrupt(INT_EMS);
     if (_AH)
         goto L_no_ems;
 
     _AH = 0x41;
-    geninterrupt(0x67);
+    geninterrupt(INT_EMS);
     if (_AH)
         goto L_no_ems;
     g_ems_free_pages = _BX;
 
     _AH = 0x46;
-    geninterrupt(0x67);
+    geninterrupt(INT_EMS);
     if (_AH)
         goto L_no_ems;
     asm { cmp al, 32h; jc L_check_zf }
 
     _AH = 0x42;
-    geninterrupt(0x67);
+    geninterrupt(INT_EMS);
     if (_AH)
         goto L_no_ems;
     g_ems_total_pages = _BX;
@@ -40,7 +41,7 @@ int ems_detect_driver(void) {
         goto L_no_ems;
 
     _AH = 0x43;
-    geninterrupt(0x67);
+    geninterrupt(INT_EMS);
     if (_AH)
         goto L_no_ems;
     g_ems_frame_segment = _DX;
