@@ -27,8 +27,8 @@ int g_ioCurrentArchive;
 int g_ioArchiveCount;
 short g_ioHashSeed;
 unsigned short g_ioHashRotate;
-FileHandle *g_pBakFindHandleCacheVal;
-IoFile *g_pBakFindHandleCacheKey;
+FileHandle *g_ioFindHandleCacheVal;
+IoFile *g_ioFindHandleCacheKey;
 
 bool8 g_ioInitialized = FALSE;
 
@@ -490,15 +490,15 @@ FileHandle *bak_find_handle(IoFile *file) {
     int count;
 
     if (file == 0) {
-        g_pBakFindHandleCacheKey = 0;
-        g_pBakFindHandleCacheVal = 0;
-        return 0;
+        g_ioFindHandleCacheKey = NULL;
+        g_ioFindHandleCacheVal = NULL;
+        return NULL;
     }
     if (g_ioArchiveCount == 0)
         return 0;
-    if (file == g_pBakFindHandleCacheKey)
-        return g_pBakFindHandleCacheVal;
-    g_pBakFindHandleCacheKey = file;
+    if (file == g_ioFindHandleCacheKey)
+        return g_ioFindHandleCacheVal;
+    g_ioFindHandleCacheKey = file;
     slot = g_ioHandles;
     count = IO_HANDLE_POOL_SIZE;
     while (count != 0 && slot != (FileHandle *)file) {
@@ -506,10 +506,10 @@ FileHandle *bak_find_handle(IoFile *file) {
         count--;
     }
     if (count == 0 || !slot->inUse) {
-        slot = 0;
-        g_pBakFindHandleCacheKey = 0;
+        slot = NULL;
+        g_ioFindHandleCacheKey = NULL;
     }
-    return g_pBakFindHandleCacheVal = slot;
+    return g_ioFindHandleCacheVal = slot;
 }
 
 void interrupt far bak_int24_critical_handler(unsigned reg_bp, unsigned reg_di, unsigned reg_si,

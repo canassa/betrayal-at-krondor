@@ -216,8 +216,24 @@ extern short g_ioHashSeed;
 extern unsigned short g_ioHashRotate;
 
 
-extern FileHandle *g_pBakFindHandleCacheVal;
-extern IoFile *g_pBakFindHandleCacheKey;
+/**
+ * @brief Cached result of the last @ref bak_find_handle lookup: the
+ *        @ref FileHandle resolved for @ref g_ioFindHandleCacheKey.
+ *
+ * The value half of a one-entry memoization cache. When @ref bak_find_handle is
+ * called again with the same @ref IoFile token it returns this directly,
+ * skipping the pool scan.
+ */
+extern FileHandle *g_ioFindHandleCacheVal;
+
+/**
+ * @brief Cache key for @ref bak_find_handle: the @ref IoFile token whose lookup
+ *        produced @ref g_ioFindHandleCacheVal.
+ *
+ * Set on each miss and cleared together with the value on a `NULL` query or a
+ * failed lookup; a matching token on the next call is a cache hit.
+ */
+extern IoFile *g_ioFindHandleCacheKey;
 
 extern IoFile *bak_fopen(char *filename, char *mode);
 extern int bak_fclose(IoFile *file);
