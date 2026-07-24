@@ -21,9 +21,9 @@ int toupper(int c);
 /* Borland's ctype.h implements the is*() macros against a classification table
  * (`_ctype`) and per-class bitmasks (`_IS_*`). Some sources expand that macro
  * form inline — e.g. `((unsigned char *)_ctype)[c + 1] & _IS_DIG`. These
- * declarations exist ONLY so that expression type-checks for the indexer; the
- * mask values here are NOT load-bearing (nothing is executed — see clion_shim.h)
- * and are not guaranteed to equal Borland's real bit assignments. */
+ * declarations exist so the expression type-checks for the indexer; nothing
+ * here is executed (see clion_shim.h), so only the type-correctness matters.
+ * The values below nonetheless match Borland C++ 3.1's CTYPE.H exactly. */
 extern char _ctype[];
 #define _IS_SP 0x01
 #define _IS_DIG 0x02
@@ -32,5 +32,4 @@ extern char _ctype[];
 #define _IS_HEX 0x10
 #define _IS_CTL 0x20
 #define _IS_PUN 0x40
-#define _IS_BLK 0x80
 #endif

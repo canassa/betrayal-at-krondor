@@ -35,4 +35,9 @@ void *bsearch(const void *key, const void *base, size_t n, size_t size,
               int (*cmp)(const void *, const void *));
 int abs(int x);
 long labs(long x);
+/* Borland bit-rotate intrinsics (real header: STDLIB.H) */
+unsigned long _lrotl(unsigned long val, int count);
+unsigned long _lrotr(unsigned long val, int count);
+unsigned _rotl(unsigned val, int count);
+unsigned _rotr(unsigned val, int count);
 #endif
