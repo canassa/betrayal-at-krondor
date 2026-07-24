@@ -55,7 +55,7 @@ IoFile *bak_fopen(char *filename, char *mode) {
         count--;
     }
     if (count == 0) {
-        return 0;
+        return NULL;
     }
     io_filename_hash(filename);
     g_ioInFopen = TRUE;
@@ -64,14 +64,14 @@ IoFile *bak_fopen(char *filename, char *mode) {
         fp = fopen(filename, mode);
     } while (g_ioFopenRetry);
     g_ioInFopen = FALSE;
-    if (fp != 0) {
+    if (fp != NULL) {
         slot->archiveIndex = 0;
         slot->baseOffset = slot->length = slot->curOffset = 0UL;
         slot->inUse = TRUE;
         slot->stdioFile = fp;
     } else {
         if (!bak_resource_lookup(slot)) {
-            return 0;
+            return NULL;
         }
         bak_select_archive(slot->archiveIndex);
         io_archive_seek(slot->baseOffset + slot->curOffset);
@@ -80,10 +80,10 @@ IoFile *bak_fopen(char *filename, char *mode) {
         fread(&slot->length, 4, 1, fp);
         g_ioArchives[g_ioCurrentArchive].filePos = slot->baseOffset = ftell(fp);
         if (stricmp(name, filename) != 0) {
-            return 0;
+            return NULL;
         }
         slot->curOffset = 0;
-        slot->stdioFile = 0;
+        slot->stdioFile = NULL;
         slot->inUse = TRUE;
     }
     g_ioOpenHandleCount++;
@@ -95,13 +95,13 @@ int bak_fclose(IoFile *file) {
     FileHandle *handle;
 
     result = 0;
-    if (file == 0)
+    if (file == NULL)
         return -1;
-    if ((g_ioArchiveCount == 0) || (handle = bak_find_handle(file)) == 0) {
+    if ((g_ioArchiveCount == 0) || (handle = bak_find_handle(file)) == NULL) {
         result = fclose((FILE *)file);
     } else {
-        bak_find_handle(0);
-        if (handle->stdioFile != 0)
+        bak_find_handle(NULL);
+        if (handle->stdioFile != NULL)
             result = fclose(handle->stdioFile);
         handle->inUse = FALSE;
         g_ioOpenHandleCount--;
@@ -111,47 +111,47 @@ int bak_fclose(IoFile *file) {
 }
 
 int bak_fread(void *ptr, int size, int count, IoFile *file) {
-    int n_read;
-    int single_obj;
-    unsigned nbytes;
+    int nRead;
+    bool16 singleObj;
+    unsigned nBytes;
     FileHandle *handle;
 
-    single_obj = 0;
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0) {
+    singleObj = FALSE;
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL) {
         return fread(ptr, size, count, (FILE *)file);
     }
-    if (handle->stdioFile != 0) {
+    if (handle->stdioFile != NULL) {
         return fread(ptr, size, count, handle->stdioFile);
     }
     if (count == 1) {
         count = size;
         size = 1;
-        single_obj = 1;
+        singleObj = TRUE;
     }
-    nbytes = size * count;
-    while (nbytes != 0 && nbytes > handle->length - handle->curOffset) {
+    nBytes = size * count;
+    while (nBytes != 0 && nBytes > handle->length - handle->curOffset) {
         count--;
-        nbytes -= size;
+        nBytes -= size;
     }
     bak_select_archive(handle->archiveIndex);
     io_archive_seek(handle->baseOffset + handle->curOffset);
     file = (IoFile *)g_ioArchives[handle->archiveIndex].fp;
-    n_read = fread(ptr, size, count, (FILE *)file);
-    nbytes = n_read * size;
-    handle->curOffset += nbytes;
-    g_ioArchives[handle->archiveIndex].filePos += nbytes;
-    if (single_obj != 0 && n_read == count) {
-        n_read = 1;
+    nRead = fread(ptr, size, count, (FILE *)file);
+    nBytes = nRead * size;
+    handle->curOffset += nBytes;
+    g_ioArchives[handle->archiveIndex].filePos += nBytes;
+    if (singleObj && nRead == count) {
+        nRead = 1;
     }
-    return n_read;
+    return nRead;
 }
 
 int bak_fseek(IoFile *file, long offset, int whence) {
     FileHandle *handle;
 
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0)
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL)
         return fseek((FILE *)file, offset, whence);
-    if (handle->stdioFile != 0)
+    if (handle->stdioFile != NULL)
         return fseek(handle->stdioFile, offset, whence);
     if (whence == SEEK_CUR) {
         offset += handle->curOffset;
@@ -170,25 +170,25 @@ int bak_fseek(IoFile *file, long offset, int whence) {
 long bak_ftell(IoFile *file) {
     FileHandle *handle;
 
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0)
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL)
         return ftell((FILE *)file);
-    if (handle->stdioFile != 0)
+    if (handle->stdioFile != NULL)
         return ftell(handle->stdioFile);
     else
         return handle->curOffset;
 }
 
 long bak_filelength(IoFile *file) {
-    long saved_pos;
+    long savedPos;
     long result;
     FileHandle *handle;
 
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0 ||
-        (file = (IoFile *)handle->stdioFile) != 0) {
-        saved_pos = ftell((FILE *)file);
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL ||
+        (file = (IoFile *)handle->stdioFile) != NULL) {
+        savedPos = ftell((FILE *)file);
         fseek((FILE *)file, 0L, SEEK_END);
         result = ftell((FILE *)file);
-        fseek((FILE *)file, saved_pos, SEEK_SET);
+        fseek((FILE *)file, savedPos, SEEK_SET);
     } else {
         result = handle->length;
     }
@@ -204,9 +204,9 @@ int bak_fgetc(IoFile *file) {
     FileHandle *handle;
 
     g_ioLastFgetcFile = file;
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0)
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL)
         return fgetc(g_ioLastFgetcCrtFile = (FILE *)file);
-    if (handle->stdioFile != 0)
+    if (handle->stdioFile != NULL)
         return fgetc(g_ioLastFgetcCrtFile = handle->stdioFile);
     if (handle->curOffset >= handle->length)
         return -1;
@@ -222,9 +222,9 @@ int bak_fgetc(IoFile *file) {
 int bak_feof(IoFile *file) {
     FileHandle *handle;
 
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0)
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL)
         return ((FILE *)file)->flags & 0x20;
-    if (handle->stdioFile != 0)
+    if (handle->stdioFile != NULL)
         return handle->stdioFile->flags & 0x20;
     else
         return handle->curOffset >= handle->length ? 1 : 0;
@@ -236,9 +236,9 @@ int bak_fwrite(void *ptr, int size, int count, IoFile *file) {
     int written;
 
     buf = ptr;
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0) {
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL) {
         written = fwrite(buf, size, count, (FILE *)file);
-    } else if (handle->stdioFile != 0) {
+    } else if (handle->stdioFile != NULL) {
         written = fwrite(buf, size, count, handle->stdioFile);
     } else {
         written = 0;
@@ -251,10 +251,10 @@ int bak_putc(int c, IoFile *file) {
     FileHandle *handle;
     int result;
 
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0) {
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL) {
         result = fputc(c, (FILE *)file);
     } else {
-        if (handle->stdioFile != 0) {
+        if (handle->stdioFile != NULL) {
             result = fputc(c, handle->stdioFile);
         } else {
             result = -1;
@@ -267,28 +267,28 @@ int bak_putc(int c, IoFile *file) {
 void bak_setbuf(IoFile *file, char *buffer) {
     FileHandle *handle;
 
-    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == 0) {
+    if (g_ioArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL) {
         setbuf((FILE *)file, buffer);
     } else {
-        if (handle->stdioFile != 0)
+        if (handle->stdioFile != NULL)
             setbuf(handle->stdioFile, buffer);
     }
 }
 
 void bak_init_resources(void) {
     RmfEntry far *entry;
-    short archive_idx;
-    short read_count;
+    short archiveIdx;
+    short readCount;
     unsigned long hashVal;
     unsigned long offsetVal;
-    char *filename_ptr;
+    char *filenamePtr;
     register FILE *fp;
     register Archive *arc;
 #ifdef V102CD
     char path[80];
 #endif
 
-    if (g_ioInitialized != 0)
+    if (g_ioInitialized)
         return;
 
     g_ioPrevInt24Vector = getvect(INT_CRITICAL_ERROR);
@@ -300,33 +300,33 @@ void bak_init_resources(void) {
 #ifdef V102CD
     strcpy(path, g_cfgResourceDrivePrefix);
     strcat(path, "krondor.rmf");
-    filename_ptr = path;
-    if ((fp = fopen(filename_ptr, "rb")) == 0)
+    filenamePtr = path;
+    if ((fp = fopen(filenamePtr, "rb")) == NULL)
         return;
 #else
-    filename_ptr = "krondor.rmf";
-    if ((fp = fopen(filename_ptr, "rb")) == 0)
+    filenamePtr = "krondor.rmf";
+    if ((fp = fopen(filenamePtr, "rb")) == NULL)
         return;
 #endif
 
-    fread(&read_count, 2, 1, fp);
+    fread(&readCount, 2, 1, fp);
     fread(&g_ioHashSeed, 2, 1, fp);
     fread(&g_ioHashRotate, 2, 1, fp);
 
-    g_ioArchiveCount += read_count;
-    archive_idx = g_ioArchiveCount - read_count + 1;
+    g_ioArchiveCount += readCount;
+    archiveIdx = g_ioArchiveCount - readCount + 1;
 
-    while (archive_idx <= g_ioArchiveCount) {
-        arc = &g_ioArchives[archive_idx];
+    while (archiveIdx <= g_ioArchiveCount) {
+        arc = &g_ioArchives[archiveIdx];
 
         fread(arc, 13, 1, fp);
-        fread(&read_count, 2, 1, fp);
+        fread(&readCount, 2, 1, fp);
 
-        entry = alloc_far((unsigned long)((unsigned short)(read_count + 1) * 8), ALLOC_FAR_ZERO_FILL);
+        entry = alloc_far((unsigned long)((unsigned short)(readCount + 1) * 8), ALLOC_FAR_ZERO_FILL);
         arc->directory = entry;
-        arc->slotIndex = archive_idx;
+        arc->slotIndex = archiveIdx;
 
-        while (read_count--) {
+        while (readCount--) {
             fread(&hashVal, 4, 1, fp);
             fread(&offsetVal, 4, 1, fp);
             entry->hash = hashVal;
@@ -334,7 +334,7 @@ void bak_init_resources(void) {
             entry++;
         }
 
-        archive_idx++;
+        archiveIdx++;
     }
 
     fclose(fp);
@@ -345,9 +345,9 @@ void bak_shutdown_resources(void) {
 
     i = 0;
     while (i <= IO_ARCHIVE_MAX) {
-        if (g_ioArchives[i].directory != 0) {
+        if (g_ioArchives[i].directory != NULL) {
             _freemem(g_ioArchives[i].directory);
-            g_ioArchives[i].directory = 0;
+            g_ioArchives[i].directory = NULL;
         }
         i++;
     }
@@ -421,56 +421,56 @@ int bak_resource_lookup(FileHandle *slot) {
         slot->archiveIndex = i;
         slot->baseOffset = entry->headerOffset;
         slot->length = slot->curOffset = 0;
-        return 1;
+        return TRUE;
     } else {
-        return 0;
+        return FALSE;
     }
 }
 
-void bak_select_archive(int archive_index) {
-    int probe_failed;
+void bak_select_archive(int archiveIndex) {
+    bool16 probeFailed;
     Archive *arc;
 #ifdef V102CD
     char path[80];
 #endif
 
-    probe_failed = 0;
+    probeFailed = FALSE;
 #ifdef V102CD
     strcpy(path, g_cfgResourceDrivePrefix);
-    strcat(path, g_ioArchives[archive_index].fileName);
-    if (!(char)g_ioOpenHandleCount && archive_index) {
+    strcat(path, g_ioArchives[archiveIndex].fileName);
+    if (!(char)g_ioOpenHandleCount && archiveIndex) {
         if (fclose(fopen(path, "rb")))
-            probe_failed = 1;
+            probeFailed = TRUE;
     }
 #else
-    if (!(char)g_ioOpenHandleCount && archive_index) {
-        if (fclose(fopen(g_ioArchives[archive_index].fileName, "rb")))
-            probe_failed = 1;
+    if (!(char)g_ioOpenHandleCount && archiveIndex) {
+        if (fclose(fopen(g_ioArchives[archiveIndex].fileName, "rb")))
+            probeFailed = TRUE;
     }
 #endif
-    if (archive_index != g_ioCurrentArchive || probe_failed || g_ioArchivesDirty) {
+    if (archiveIndex != g_ioCurrentArchive || probeFailed || g_ioArchivesDirty) {
         arc = &g_ioArchives[g_ioCurrentArchive];
         if (arc->fp) {
             fclose(arc->fp);
-            arc->fp = 0;
+            arc->fp = NULL;
         }
-        g_ioCurrentArchive = archive_index;
+        g_ioCurrentArchive = archiveIndex;
         arc = &g_ioArchives[g_ioCurrentArchive];
-        if (archive_index) {
+        if (archiveIndex) {
 #ifdef V102CD
             strcpy(path, g_cfgResourceDrivePrefix);
             strcat(path, arc->fileName);
             g_ioInFopen = TRUE;
-            while ((arc->fp = fopen(path, "rb")) == 0)
+            while ((arc->fp = fopen(path, "rb")) == NULL)
                 g_ioInFopen = FALSE;
 #else
             g_ioInFopen = TRUE;
-            while ((arc->fp = fopen(arc->fileName, "rb")) == 0)
+            while ((arc->fp = fopen(arc->fileName, "rb")) == NULL)
                 g_ioInFopen = FALSE;
 #endif
         }
         arc->filePos = 0;
-        bak_find_handle(0);
+        bak_find_handle(NULL);
         g_ioArchivesDirty = FALSE;
     }
 }
@@ -489,13 +489,13 @@ FileHandle *bak_find_handle(IoFile *file) {
     FileHandle *slot;
     int count;
 
-    if (file == 0) {
+    if (file == NULL) {
         g_ioFindHandleCacheKey = NULL;
         g_ioFindHandleCacheVal = NULL;
         return NULL;
     }
     if (g_ioArchiveCount == 0)
-        return 0;
+        return NULL;
     if (file == g_ioFindHandleCacheKey)
         return g_ioFindHandleCacheVal;
     g_ioFindHandleCacheKey = file;
