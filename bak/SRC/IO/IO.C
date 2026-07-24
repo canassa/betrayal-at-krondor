@@ -351,9 +351,9 @@ void bak_shutdown_resources(void) {
         }
         i++;
     }
-    if (g_ioPrevInt24Vector != 0) {
+    if (g_ioPrevInt24Vector != NULL) {
         setvect(INT_CRITICAL_ERROR, g_ioPrevInt24Vector);
-        g_ioPrevInt24Vector = 0;
+        g_ioPrevInt24Vector = NULL;
     }
     g_ioInitialized = FALSE;
 }

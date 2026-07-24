@@ -35,3 +35,4 @@ The project currently has a mix of several naming conventions and Hungarian nota
 ## Rules
 
 - **Never add comments** — Never add comments to the code unless instructed to do so, all documentation is human-reviwed.
+- **`NULL` for pointers** — use `NULL` for a null pointer, never bare `0`. Reserve `0` for integers. (In this medium-model build `NULL` expands to `0`, so it's byte-free.)
