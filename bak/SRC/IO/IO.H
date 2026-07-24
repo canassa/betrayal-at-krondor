@@ -27,7 +27,7 @@
  * all-zero terminator entry.
  */
 typedef struct RmfEntry {
-    /** 0x00: @ref bak_filename_hash of the uppercased resource name. */
+    /** 0x00: @ref io_filename_hash of the uppercased resource name. */
     unsigned long hash;
     /** 0x04: offset in `KRONDOR.001` of the 17-byte entry header. */
     unsigned long headerOffset;
@@ -122,7 +122,7 @@ extern unsigned char g_ioOpenHandleCount;
 
 
 /**
- * @brief The query filename's hash, passed from @ref bak_filename_hash to
+ * @brief The query filename's hash, passed from @ref io_filename_hash to
  *        @ref bak_resource_lookup as the directory-scan key.
  */
 extern unsigned long g_ioLookupHash;
@@ -142,7 +142,7 @@ extern int g_ioArchiveCount;
 
 
 /**
- * @brief Initial accumulator for @ref bak_filename_hash, from the
+ * @brief Initial accumulator for @ref io_filename_hash, from the
  *        `KRONDOR.RMF` header (0 in shipped data).
  *
  * Signed — sign-extended into the 32-bit hash, so the type is load-bearing.
@@ -151,7 +151,7 @@ extern short g_ioHashSeed;
 
 
 /**
- * @brief Per-character left-rotate count for @ref bak_filename_hash, from the
+ * @brief Per-character left-rotate count for @ref io_filename_hash, from the
  *        `KRONDOR.RMF` header (4 in shipped data).
  */
 extern unsigned short g_ioHashRotate;
@@ -175,7 +175,18 @@ extern void bak_setbuf(IoFile *stream, char *buffer);
 extern void bak_init_resources(void);
 extern void bak_shutdown_resources(void);
 extern void bak_invalidate_archives(void);
-extern unsigned long bak_filename_hash(char *filename);
+/**
+ * @brief Hash of a resource filename for the `KRONDOR.RMF` directory lookup.
+ *
+ * Uppercases @p filename in place and folds it into a rotating 32-bit hash
+ * (seeded by @ref g_ioHashSeed, rotated by @ref g_ioHashRotate). The result is
+ * also written to @ref g_ioLookupHash — the channel @ref bak_resource_lookup
+ * actually reads — so the return value is redundant.
+ *
+ * @param filename Resource name; uppercased in place. NULL yields a 0 hash.
+ * @return The 32-bit hash (a mirror of @ref g_ioLookupHash).
+ */
+extern unsigned long io_filename_hash(char *filename);
 extern int bak_resource_lookup(FileHandle *slot);
 extern void bak_select_archive(int archive_index);
 extern void bak_archive_seek(unsigned long absolute_offset);

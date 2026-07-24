@@ -56,7 +56,7 @@ IoFile *bak_fopen(char *filename, char *mode) {
     if (count == 0) {
         return 0;
     }
-    bak_filename_hash(filename);
+    io_filename_hash(filename);
     g_bak_in_fopen = 1;
     do {
         g_bak_fopen_retry = 0;
@@ -361,7 +361,7 @@ void bak_invalidate_archives(void) {
     g_bak_archives_dirty = 1;
 }
 
-unsigned long bak_filename_hash(char *filename) {
+unsigned long io_filename_hash(char *filename) {
     unsigned long val;
 
     val = g_ioHashSeed;
