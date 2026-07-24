@@ -190,6 +190,75 @@ def classify(changed: list[str]) -> tuple[bool, bool, bool]:
     return kvm, tcg, full
 
 
+def _all_kvm_stems() -> set[str]:
+    """Every KVM-island object basename (upper), parsed from the MAKEFILE's KVMOBJ
+    macro — the universe a shard target may draw from."""
+    text = (paths.BAK / "MAKEFILE").read_text()
+    joined = re.sub(r"\\\s*\n", " ", text)
+    m = re.search(r"^KVMOBJ\s*=(.*)$", joined, re.MULTILINE)
+    if not m:
+        raise RuntimeError("could not find KVMOBJ macro in bak/MAKEFILE")
+    return {b.upper() for b in re.findall(r"OUT\\(\w+)\.OBJ", m.group(1))}
+
+
+def kvm_targets(changed: list[str]) -> list[str] | None:
+    """The explicit KVM object stems a build must recompile, for sharding the KVM
+    compile across several concurrent VMs — or None when the exact set can't be
+    enumerated (an unresolvable include graph), in which case the caller builds the
+    whole ``kvmobjs`` target in one VM.
+
+    Only ``.C``/``.ASM``/``.H``/``.INC`` inputs contribute objects; a bare ``.C``/
+    ``.ASM`` edit is its own single object, a header expands to its KVM dependents.
+    The returned stems are a *superset* of what's actually stale — MAKE's own mtime
+    check still no-ops the fresh ones, so an over-broad shard target is safe, never
+    wrong. Stems outside the KVMOBJ universe (e.g. GEN vtables built implicitly) are
+    dropped; they ride the always-run link."""
+    island = _tcg_basenames()
+    all_kvm = _all_kvm_stems()
+    stems: set[str] = set()
+    headers: list[Path] = []
+    for rel in changed:
+        p = Path(rel)
+        ext, stem = p.suffix.upper(), p.stem.upper()
+        if ext in (".H", ".INC"):
+            headers.append(paths.BAK / rel)
+        elif ext == ".C" and stem not in island:
+            stems.add(stem)
+        elif ext == ".ASM":
+            stems.add(stem)
+    if headers:
+        tus = _dependent_tus(headers)
+        if tus is None:
+            return None  # unresolved graph — can't enumerate; caller builds all
+        stems |= {t.stem.upper() for t in tus} - island
+    return sorted(stems & all_kvm)
+
+
+def tcg_targets(changed: list[str]) -> list[str] | None:
+    """The explicit TCG-island object stems a build must recompile, for sharding the
+    TCG compile across concurrent VMs — or None when the set can't be enumerated (an
+    unresolvable include graph → build the whole ``tcgobjs`` target in one VM).
+
+    Same superset guarantee as ``kvm_targets``: MAKE no-ops any listed object that is
+    already fresh, so an over-broad shard target can't build the wrong thing."""
+    island = _tcg_basenames()
+    stems: set[str] = set()
+    headers: list[Path] = []
+    for rel in changed:
+        p = Path(rel)
+        ext, stem = p.suffix.upper(), p.stem.upper()
+        if ext in (".H", ".INC"):
+            headers.append(paths.BAK / rel)
+        elif ext == ".C" and stem in island:
+            stems.add(stem)
+    if headers:
+        tus = _dependent_tus(headers)
+        if tus is None:
+            return None
+        stems |= {t.stem.upper() for t in tus} & island
+    return sorted(stems)
+
+
 def needs_full_link(changed: list[str]) -> bool:
     """True if the link must run the full ``make all`` (tlink ``/m`` + OVL repack);
     False if a plain KRONDOR.EXE relink suffices (the dev fast path, which drops the
