@@ -86,27 +86,89 @@ def _tcg_basenames() -> set[str]:
     return {b.upper() for b in re.findall(r"OUT\\(\w+)\.OBJ", m.group(1))}
 
 
+# A header change is coarse: the current TU is not the only rebuild. We resolve the
+# real include graph so the pass/link decision follows the *actual* dependents, not a
+# blanket "a header could feed anything". `.C`/`.H` use `#include "..."` (bcc: -IINCLUDE
+# then project-root then file-local); `.ASM`/`.INC` use TASM `INCLUDE <file>` (assembled
+# with /iINCLUDE, so the same search order). Only quoted/bare includes are graphed —
+# `<system>` includes resolve to the Borland CRT, never a bak/ source, so they can't
+# make a bak/ header a dependent.
+_C_INCLUDE = re.compile(r'^[ \t]*#[ \t]*include[ \t]*"([^"]+)"', re.MULTILINE)
+_ASM_INCLUDE = re.compile(r'^[ \t]*INCLUDE[ \t]+(\S+)', re.MULTILINE | re.IGNORECASE)
+
+
+def _resolve_include(spec: str, from_file: Path) -> Path | None:
+    """Resolve one ``#include``/``INCLUDE`` spec to a bak/ file, or None if it names no
+    tracked source (a system/CRT header). Search order mirrors the toolchain: the
+    ``-IINCLUDE`` dir, the project (image) root, then the including file's own dir."""
+    rel = spec.replace("\\", "/")
+    for cand in (paths.BAK / "INCLUDE" / rel, paths.BAK / rel, from_file.parent / rel):
+        if cand.is_file():
+            return cand.resolve()
+    return None
+
+
+def _direct_includes() -> dict[Path, set[Path]]:
+    """Map every bak/ source (``.C``/``.H``/``.INC``/``.ASM``) to the set of bak/ files
+    it directly ``#include``s / ``INCLUDE``s."""
+    edges: dict[Path, set[Path]] = {}
+    for f in paths.BAK.rglob("*"):
+        if not f.is_file() or f.suffix.upper() not in (".C", ".H", ".INC", ".ASM"):
+            continue
+        text = f.read_text(errors="replace")
+        deps = {r for m in _C_INCLUDE.finditer(text)
+                if (r := _resolve_include(m.group(1), f)) is not None}
+        if f.suffix.upper() in (".ASM", ".INC"):
+            deps |= {r for m in _ASM_INCLUDE.finditer(text)
+                     if (r := _resolve_include(m.group(1), f)) is not None}
+        edges[f.resolve()] = deps
+    return edges
+
+
+def _dependent_tus(headers: list[Path]) -> set[Path] | None:
+    """The set of TUs (``.C``/``.ASM``) that transitively include any of *headers*,
+    or None if the include graph can't be resolved for one of them (→ caller falls back
+    to the conservative "rebuild everything" so an unresolved edge never drops work).
+
+    A header not found in the graph means an unmodelled include path — treat it as
+    reaching every TU (return None) rather than risk skipping a real dependent."""
+    edges = _direct_includes()
+    if any(h.resolve() not in edges for h in headers):
+        return None
+    frontier = {h.resolve() for h in headers}
+    seen: set[Path] = set(frontier)
+    while frontier:
+        nxt = {f for f, deps in edges.items() if deps & frontier} - seen
+        seen |= nxt
+        frontier = nxt
+    return {f for f in seen if f.suffix.upper() in (".C", ".ASM")}
+
+
 def classify(changed: list[str]) -> tuple[bool, bool, bool]:
     """Decide which passes a set of changed source paths requires.
 
     Returns ``(kvm_needed, tcg_needed, must_full)``:
       * ``.C`` → KVM or TCG by whether its basename is in the island.
       * ``.ASM`` → KVM (GEN vtables + TASM anchors all build under KVM).
-      * ``.H``/``.INC`` → both passes (a header can feed either; ``.autodepend``
-        then narrows it to the real dependents within each pass).
+      * ``.H``/``.INC`` → the passes of its *real dependents*, resolved from the
+        include graph: a header that reaches no TCG-island TU skips the (slow) TCG
+        boot entirely; one that reaches no KVM TU skips the KVM compile. MAKE's
+        ``.autodepend`` then narrows to the exact objects within each booted pass.
+        If the graph can't be resolved, fall back to both passes.
       * MAKEFILE / ``*.MAK`` → build *rules* changed; force a clean rebuild.
       * anything else (``.RSP``/``.PAK``/``.BIN``/``.TXT``) → no compile; the
         always-run link/pack stage picks it up.
     """
     island = _tcg_basenames()
     kvm = tcg = full = False
+    headers: list[Path] = []
     for rel in changed:
         p = Path(rel)
         name, ext, stem = p.name.upper(), p.suffix.upper(), p.stem.upper()
         if name == "MAKEFILE" or ext == ".MAK":
             full = True
         elif ext in (".H", ".INC"):
-            kvm = tcg = True
+            headers.append(paths.BAK / rel)
         elif ext == ".C":
             if stem in island:
                 tcg = True
@@ -114,27 +176,54 @@ def classify(changed: list[str]) -> tuple[bool, bool, bool]:
                 kvm = True
         elif ext == ".ASM":
             kvm = True
+
+    if headers:
+        tus = _dependent_tus(headers)
+        if tus is None:
+            kvm = tcg = True  # unresolved include graph — rebuild both passes
+        else:
+            stems = {t.stem.upper() for t in tus}
+            if stems & island:
+                tcg = True
+            if stems - island:  # any non-island (KVM) dependent TU
+                kvm = True
     return kvm, tcg, full
 
 
 def needs_full_link(changed: list[str]) -> bool:
     """True if the link must run the full ``make all`` (tlink ``/m`` + OVL repack);
     False if a plain KRONDOR.EXE relink suffices (the dev fast path, which drops the
-    unused ``/m`` public-symbol map, ~0.77s).
+    unused ``/m`` public-symbol map + the OVL repack, ~0.77s).
 
-    A relink-only is safe exactly when every changed file is a ``.C``/``.ASM`` that
-    feeds *only* KRONDOR.EXE — i.e. not a driver chunk (``SRC/DRIVERS``), not the
-    PACKOVL tool (``TOOLS``), and not a header (which via ``.autodepend`` could pull a
-    driver chunk) or an OVL data blob (``.PAK``/``.BIN``). Anything else → full link,
-    so the OVLs and their tool stay correct."""
+    A relink-only is safe exactly when nothing changed feeds the OVLs or their packer:
+    not a driver chunk (``SRC/DRIVERS``), not the PACKOVL tool (``TOOLS``), not an OVL
+    data blob (``.PAK``/``.BIN``). For a changed **header** this is decided by its real
+    include closure — the OVL drivers are pure TASM (``INCLUDE gfxctx.inc`` only) and no
+    C header reaches them, so a C-header edit never forces the repack. An unresolvable
+    graph falls back to the full link."""
+    driver_or_tool = ("SRC/DRIVERS", "TOOLS")
+    headers: list[Path] = []
     for rel in changed:
         u = rel.upper()
         ext = Path(rel).suffix.upper()
-        exe_only = (
-            ext in (".C", ".ASM")
-            and not u.startswith("SRC/DRIVERS")
-            and not u.startswith("TOOLS")
-        )
+        if ext in (".H", ".INC"):
+            # A header/inc that physically lives beside the OVL drivers or the packer
+            # tool is treated as OVL-affecting outright: TASM's own include search can
+            # resolve a driver-local .INC ahead of the -iINCLUDE copy, which the C-style
+            # include graph doesn't model — so repack rather than guess.
+            if u.startswith(driver_or_tool):
+                return True
+            headers.append(paths.BAK / rel)
+            continue
+        exe_only = ext in (".C", ".ASM") and not u.startswith(driver_or_tool)
         if not exe_only:
+            return True  # driver/tool source or an OVL data blob (.PAK/.BIN)
+
+    if headers:
+        tus = _dependent_tus(headers)
+        if tus is None:
+            return True  # unresolved include graph — be safe, repack the OVLs
+        if any(str(t.relative_to(paths.BAK)).upper().replace("\\", "/").startswith(
+                driver_or_tool) for t in tus):
             return True
     return False
