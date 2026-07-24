@@ -8,6 +8,17 @@
 
 #include "structs.h"
 
+
+/** @brief Number of slots in the @ref g_ioHandles pool — the cap on
+ *         simultaneously-open @ref bak_fopen handles. */
+#define IO_HANDLE_POOL_SIZE 10
+
+
+/** @brief Max archives registerable from `KRONDOR.RMF`; @ref g_ioArchives
+ *         has one more slot (index 0 is the "no archive" sentinel). */
+#define IO_ARCHIVE_MAX 10
+
+
 /**
  * @brief One record of the `KRONDOR.RMF` resource-index directory: a resource
  *        name's hash and where its data lives.
@@ -25,15 +36,14 @@ typedef struct RmfEntry {
 /**
  * @brief Runtime descriptor for one open resource archive (`KRONDOR.001`).
  *
- * Held in @ref g_bak_archives (1-based; slot 0 is the "loose file / no archive"
+ * Held in @ref g_ioArchives (1-based; slot 0 is the "loose file / no archive"
  * sentinel). Pairs the archive's identity from the RMF (@ref Archive::fileName,
  * @ref Archive::directory) with its live stdio stream (@ref Archive::fp,
- * @ref Archive::filePos). A runtime object, not an on-disk record — hence the
- * two unused fields. Byte-packed; `sizeof` is 28.
+ * @ref Archive::filePos). A runtime object, not an on-disk record.
+ * Byte-packed; `sizeof` is 28.
  */
 typedef struct Archive {
-    char fileName[13];        /**< 0x00: NUL-padded payload name. */
-    char padUnused;           /**< 0x0d: alignment filler; unused. */
+    char fileName[14];        /**< 0x00: NUL-padded payload name (13B used). */
     short slotIndex;          /**< 0x0e: own pool slot; write-once, unread. */
     FILE *fp;                 /**< 0x10: open CRT stream on the payload. */
     unsigned long filePos;    /**< 0x12: cached fp seek offset. */
@@ -59,9 +69,6 @@ typedef struct FileHandle {
     FILE *stdioFile;          /**< 0x10: loose stream; 0 = archive window. */
 } FileHandle;
 
-/** @brief Number of slots in the @ref g_ioHandles pool — the cap on
- *         simultaneously-open @ref bak_fopen handles. */
-#define IO_HANDLE_POOL_SIZE 10
 
 /**
  * @brief Opaque file token returned by @ref bak_fopen.
@@ -71,6 +78,8 @@ typedef struct FileHandle {
  * pass it only to the `bak_*` functions, never dereference it. No definition.
  */
 typedef struct IoFile IoFile;
+
+
 /**
  * @brief A file reference: either a filename (`char *`) or an open @ref IoFile
  *        token.
@@ -82,36 +91,72 @@ typedef void FileRef;
 extern unsigned char g_bak_initialized;
 extern short g_bak_io_error;
 extern void far *g_int24_old_vector;
+
+
 /**
  * @brief Fixed pool of @ref IO_HANDLE_POOL_SIZE open-file handle slots
  *        (@ref FileHandle) shared by all @ref bak_fopen streams.
  */
 extern FileHandle g_ioHandles[IO_HANDLE_POOL_SIZE];
-extern Archive g_bak_archives[11];
+
+
+/**
+ * @brief The registered resource archives (@ref Archive), indexed 1-based;
+ *        index 0 is the "no archive" / loose-file sentinel.
+ */
+extern Archive g_ioArchives[IO_ARCHIVE_MAX + 1];
+
+
 extern IoFile *g_pBakFgetcLastStream;
 extern FILE *g_pBakActiveFgetcStream;
 extern unsigned char g_bak_in_fopen;
 extern unsigned char g_bak_fopen_retry;
 extern unsigned char g_bak_archives_dirty;
+
+
 /**
  * @brief Number of currently-open @ref g_ioHandles slots; gates the archive
  *        drive-probe in @ref bak_select_archive.
  */
 extern unsigned char g_ioOpenHandleCount;
-extern unsigned long g_bak_lookup_hash;
+
+
+/**
+ * @brief The query filename's hash, passed from @ref bak_filename_hash to
+ *        @ref bak_resource_lookup as the directory-scan key.
+ */
+extern unsigned long g_ioLookupHash;
+
+
 extern short g_bak_current_archive;
+
 
 /**
  * @brief Number of archives registered from `KRONDOR.RMF` (indices `1..count`
- *        of @ref g_bak_archives).
+ *        of @ref g_ioArchives).
  *
  * 0 before the map is read, or if it cannot be opened — which leaves the whole
  * archive layer disabled.
  */
 extern int g_ioArchiveCount;
 
-extern short g_bak_hash_seed;
-extern unsigned short g_bak_hash_rotate;
+
+/**
+ * @brief Initial accumulator for @ref bak_filename_hash, from the
+ *        `KRONDOR.RMF` header (0 in shipped data).
+ *
+ * Signed — sign-extended into the 32-bit hash, so the type is load-bearing.
+ */
+extern short g_ioHashSeed;
+
+
+/**
+ * @brief Per-character left-rotate count for @ref bak_filename_hash, from the
+ *        `KRONDOR.RMF` header (4 in shipped data).
+ */
+extern unsigned short g_ioHashRotate;
+
+
 extern FileHandle *g_pBakFindHandleCacheVal;
 extern IoFile *g_pBakFindHandleCacheKey;
 
