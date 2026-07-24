@@ -3,7 +3,7 @@
 #include "SRC/STREAM/RESLOAD/RELBUF.H"
 #include "SRC/STREAM/CODEC/STREAM.H"
 
-void far *stream_load_to_buffer(BakFile *file, unsigned long size, unsigned long *out_desc,
+void far *stream_load_to_buffer(IoFile *file, unsigned long size, unsigned long *out_desc,
                                 unsigned short allocTag) {
     register int stream_id;
     unsigned long stream_size_full;

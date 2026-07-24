@@ -9,7 +9,7 @@
 #undef fmemcpy_far
 extern void fmemcpy_far();
 
-int stream_open(int codec_kind, BakFile *file, char *mode, unsigned long size) {
+int stream_open(int codec_kind, IoFile *file, char *mode, unsigned long size) {
     int slot;
     char buf[4];
 

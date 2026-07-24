@@ -4,8 +4,8 @@
 #include "structs.h"
 #include "SRC/IO/IO.H"
 
-extern int iff_chunk_loader_2f1c(BakFile *file, unsigned short *count, unsigned short *out_handle);
-extern unsigned short bak_load_image_record_chunked(BakFileRef *fname);
+extern int iff_chunk_loader_2f1c(IoFile *file, unsigned short *count, unsigned short *out_handle);
+extern unsigned short bak_load_image_record_chunked(FileRef *fname);
 extern void free_container_pair(int *container);
 extern void free_image_record(ImageRecord **record);
 extern int null_terminated_count(ImageRecord **table);

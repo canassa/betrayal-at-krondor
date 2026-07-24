@@ -15,7 +15,7 @@
 
 void unpack_2bpp_to_byte_per_pixel(unsigned char huge *src, unsigned char huge *dst, unsigned count);
 
-int iff_chunk_loader_2f1c(BakFile *file, unsigned short *count, unsigned short *out_handle) {
+int iff_chunk_loader_2f1c(IoFile *file, unsigned short *count, unsigned short *out_handle) {
 
     unsigned short *width;
     unsigned short *height;
@@ -73,7 +73,7 @@ L_fail:
     return 0;
 }
 
-unsigned short bak_load_image_record_chunked(BakFileRef *fname) {
+unsigned short bak_load_image_record_chunked(FileRef *fname) {
     unsigned short *image;
     int stream;
     unsigned char huge *buf;

@@ -28,7 +28,7 @@ void monstat_roll_stats_from_file(CombatActor *actor) {
     char filename[13] = "monst";
     char ext[5] = ".dat";
     int class_id;
-    BakFile *stream;
+    IoFile *stream;
 
     if (actor->inner->class_id == 0x12 &&
         cbstat_find_intact_equip_cat(actor, 2) != (ItemRecord far *)0) {
@@ -41,7 +41,7 @@ void monstat_roll_stats_from_file(CombatActor *actor) {
     strcat(filename, ext);
 
     stream = bak_fopen(filename, "rb");
-    if (stream == (BakFile *)0)
+    if (stream == (IoFile *)0)
         return;
 
     bak_fread(&min_val, 2, 1, stream);

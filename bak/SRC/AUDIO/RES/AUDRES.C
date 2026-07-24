@@ -6,7 +6,7 @@
 #include "SRC/STREAM/RESLOAD/RELBUF.H"
 #include "SRC/STREAM/CODEC/STREAM.H"
 
-unsigned char far *audres_load_chunk_by_mode(BakFile *file, unsigned int size_lo, unsigned int size_hi, unsigned int *out_size,
+unsigned char far *audres_load_chunk_by_mode(IoFile *file, unsigned int size_lo, unsigned int size_hi, unsigned int *out_size,
                                      unsigned short allocTag) {
     AudFragNode far *cursor;
     unsigned char ssmRecordTag;

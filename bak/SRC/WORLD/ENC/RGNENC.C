@@ -64,7 +64,7 @@ void rgnenc_free_3bufs_clear(void) {
 }
 
 int far rgnenc_load_zone_shape_index(char *filename) {
-    BakFile *fp;
+    IoFile *fp;
     int i;
 
     if (g_pZoneShapeIndex != 0) {
@@ -826,7 +826,7 @@ void far rgnenc_vis_pool_remove_matching(unsigned char far *pKey) {
 }
 
 int far rgnenc_chap_shp_init(void) {
-    BakFile *stream;
+    IoFile *stream;
     int i;
     int j;
 

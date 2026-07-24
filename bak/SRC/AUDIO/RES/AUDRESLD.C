@@ -10,7 +10,7 @@
 #include "SRC/AUDIO/ENGINE/AUDITER.H"
 #include "SRC/AUDIO/ENGINE/AUDSTOP.H"
 
-BakFile *audio_resource_load_chunk(BakFileRef *file, int chunk_id) {
+IoFile *audio_resource_load_chunk(FileRef *file, int chunk_id) {
     long found_offset;
     long buf_size;
     MusicChunkEntry far *entry;

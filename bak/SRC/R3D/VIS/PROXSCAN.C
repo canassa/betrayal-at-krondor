@@ -32,7 +32,7 @@ typedef struct {
 } OctPos;
 
 void far proxscan_filter_table_load(void) {
-    BakFile *stream;
+    IoFile *stream;
 
     stream = bak_fopen("filter.dat", "rb");
     if (g_engine_prefs != (EnginePrefs *)0 && g_engine_prefs->detail_level != 0) {

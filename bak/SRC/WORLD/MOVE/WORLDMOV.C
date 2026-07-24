@@ -29,7 +29,7 @@ short g_nWorldGridStride;
 long g_lWorldTimePerStep;
 
 void worldmove_dat_load(void) {
-    BakFile *stream;
+    IoFile *stream;
     long seek_off;
     int time_raw;
 

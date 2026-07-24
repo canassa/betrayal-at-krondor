@@ -13,12 +13,12 @@ extern unsigned short g_wLastTempWriteRecordKind;
 extern char g_abChapterEventSlot[9];
 
 /**
- * @brief Open @ref BakFile token for `TEMP.GAM`, the on-disk game-state
+ * @brief Open @ref IoFile token for `TEMP.GAM`, the on-disk game-state
  *        swap image.
  *
  * NULL whenever the file is closed (outside the world loop).
  */
-extern BakFile *g_tempGamFP;
+extern IoFile *g_tempGamFP;
 
 
 extern char g_abSleepStatDelta[6];

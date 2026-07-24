@@ -10,7 +10,7 @@ extern unsigned char g_abLowBitMaskByWidth[9];
 extern StreamDesc *g_pCurStreamDesc;
 extern unsigned char *g_pCurStreamRingBuf;
 extern unsigned char g_bCurStreamCodecId;
-extern BakFile *g_pCurStreamFp;
+extern IoFile *g_pCurStreamFp;
 extern unsigned char huge *g_pStreamReadDst;
 extern unsigned char huge *g_pCurCodecScratch;
 extern StreamDesc *g_apStreamSlots[100];

@@ -19,7 +19,7 @@ extern short g_palette_cycle_end[10];
 extern short g_palette_cycle_start[10];
 extern short g_palette_cycle_target[10];
 
-extern unsigned char far *chunk_load_into_slot(BakFileRef *file);
+extern unsigned char far *chunk_load_into_slot(FileRef *file);
 extern unsigned char far *palette_set_active(unsigned char far *palette);
 extern void cache_release(unsigned char far *buf_farptr);
 extern void palette_set_scaled(unsigned int first_color, unsigned int last_color, int target_color, int intensity);

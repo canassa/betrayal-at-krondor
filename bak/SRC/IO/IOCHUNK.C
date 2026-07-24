@@ -4,7 +4,7 @@
 #include "SRC/IO/IOCHUNK.H"
 #include "SRC/IO/IO.H"
 
-long bak_fread_chunked(unsigned char huge *dest, long size, long count, BakFile *fp) {
+long bak_fread_chunked(unsigned char huge *dest, long size, long count, IoFile *fp) {
     long remaining;
     int n;
     char buf[128];
@@ -20,7 +20,7 @@ long bak_fread_chunked(unsigned char huge *dest, long size, long count, BakFile 
     return count;
 }
 
-unsigned long bak_fwrite_chunked(unsigned char huge *src, unsigned long elem_size, unsigned long count, BakFile *stream) {
+unsigned long bak_fwrite_chunked(unsigned char huge *src, unsigned long elem_size, unsigned long count, IoFile *stream) {
     unsigned long remaining;
     char buf[128];
     int n;

@@ -55,7 +55,7 @@ void map_color_remap_load(char *filename) {
     int i;
     unsigned char idx;
     unsigned char val;
-    BakFile *stream;
+    IoFile *stream;
 
     g_pColorRemap = galloc_safe_zcalloc(256);
     i = 0;

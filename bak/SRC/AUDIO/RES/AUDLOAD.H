@@ -4,6 +4,6 @@
 #include "structs.h"
 #include "SRC/IO/IO.H"
 
-extern int music_chunk_load_and_link(BakFile *file, char mode);
+extern int music_chunk_load_and_link(IoFile *file, char mode);
 
 #endif

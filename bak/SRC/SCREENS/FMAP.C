@@ -225,7 +225,7 @@ void far fmap_screen_run(void) {
 }
 
 void fmap_twn_load(void) {
-    BakFile *stream;
+    IoFile *stream;
     unsigned short *labelPtr;
     int i;
     unsigned short *xPtr;
@@ -310,13 +310,13 @@ int far fmap_xy_lookup_for_chapter(int *out_x, int *out_y) {
     unsigned int i;
     int entry_chapter;
     unsigned char refIndex;
-    register BakFile *stream;
+    register IoFile *stream;
     register int found;
 
     found = 0;
     refIndex = g_apCombat_zone_actor_lists[0]->bRef_pair_index;
     stream = bak_fopen("fmap_xy.dat", "rb");
-    if (stream != (BakFile *)0x0) {
+    if (stream != (IoFile *)0x0) {
         for (i = 1; (int)i <= 0xc; i++) {
             bak_fread(&entry_chapter, 2, 1, stream);
             if (g_gameState.nZoneId == i) {

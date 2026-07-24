@@ -18,7 +18,7 @@ extern unsigned short g_nAudioBufLastError;
 extern unsigned char g_bAudioLooseTag;
 extern short g_nAudioFilterMode;
 extern MusicChunkHeader far *g_pMusicChunkBuf;
-extern BakFile *g_music_archive;
+extern IoFile *g_music_archive;
 extern int g_music_archive_owned;
 extern unsigned short g_bMusicDriverInstalled;
 extern unsigned short g_nAudioStreamCodec;

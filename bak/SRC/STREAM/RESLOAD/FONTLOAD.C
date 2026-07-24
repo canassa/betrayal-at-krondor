@@ -11,7 +11,7 @@
 
 unsigned short g_font_chunk_tag_ptr = (unsigned short)"FNT:";
 
-int font_load(BakFileRef *filename) {
+int font_load(FileRef *filename) {
     int openedCache;
     int dataSize;
     int stream_id;

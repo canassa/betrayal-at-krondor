@@ -28,7 +28,7 @@ extern void audio_sfx_stop_50(void);
 extern void audio_sfx_register_45(void);
 extern void audio_sfx_stop_45(void);
 extern void audio_play(int sound_id);
-extern int audio_sfx_register(BakFile *file, int sfx_id);
+extern int audio_sfx_register(IoFile *file, int sfx_id);
 extern int audio_sfx_stop(int sfx_id);
 extern int audio_sfx_play_n_times(int sfx_id, int extra_repeats, int blocking);
 

@@ -34,7 +34,7 @@ unsigned short g_apszPalChunkTagByAdapter[16] = {
     (unsigned short)g_szPalVgaChunkTag,   (unsigned short)g_szPalVgaChunkTag};
 unsigned char far *g_pCurPalette = {0};
 
-unsigned char far *chunk_load_into_slot(BakFileRef *file) {
+unsigned char far *chunk_load_into_slot(FileRef *file) {
     int openedHere;
     unsigned char far *pDst;
     unsigned char far *pPalette;

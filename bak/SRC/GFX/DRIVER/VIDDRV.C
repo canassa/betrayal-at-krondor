@@ -34,11 +34,11 @@ char g_szDrvSuffix_HVG[5] = "HVG:";
 char g_szDrvSuffix_HEG[5] = "HEG:";
 char g_szDrvSuffix_NEW[5] = "NEW:";
 
-unsigned long far *video_driver_load(int mode, BakFileRef *file) {
+unsigned long far *video_driver_load(int mode, FileRef *file) {
     long size;
     int stream_id;
     int did_open;
-    BakFile *handle;
+    IoFile *handle;
 
     did_open = 0;
 

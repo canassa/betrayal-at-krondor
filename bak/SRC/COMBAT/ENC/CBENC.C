@@ -161,7 +161,7 @@ void far combatenc_mnames_lookup_dest(int index, char **p_dest) {
     unsigned int blob_size;
     int count;
     char *blob;
-    BakFile *stream;
+    IoFile *stream;
     int *offsets;
 
     stream = bak_fopen("mnames.dat", "rb");
@@ -206,7 +206,7 @@ void far combatenc_release_actors(void) {
 
 void far combatenc_save_state(void) {
     char *filename;
-    BakFile *stream;
+    IoFile *stream;
     int i;
 
     filename = combatenc_build_save_filename(g_encounter_id);
@@ -1017,7 +1017,7 @@ Actor far *combatenc_corpse_tbl_spawn_actor(long record_id, int slot) {
 }
 
 void combatenc_spawns_load_zones_tmp(void) {
-    BakFile *stream;
+    IoFile *stream;
     int i;
     int zone;
     int gidx;
@@ -1034,7 +1034,7 @@ void combatenc_spawns_load_zones_tmp(void) {
             index[i] = -1;
         filename = combatenc_build_save_filename(zone);
         stream = bak_fopen(filename, "rb");
-        if (stream != (BakFile *)0) {
+        if (stream != (IoFile *)0) {
             bak_fread(&count, 2, 1, stream);
         } else {
             count = 0;
@@ -1066,8 +1066,8 @@ void combatenc_spawns_load_zones_tmp(void) {
 
 void combatenc_saves_migr_all_slots(void) {
     char *filename;
-    BakFile *stream;
-    BakFile *outStream;
+    IoFile *stream;
+    IoFile *outStream;
     int encounterId;
     int j;
     int gidx;
@@ -1085,7 +1085,7 @@ void combatenc_saves_migr_all_slots(void) {
 
         filename = combatenc_build_save_filename(encounterId);
         stream = bak_fopen(filename, "rb");
-        if (stream == (BakFile *)0)
+        if (stream == (IoFile *)0)
             goto L_null;
         filename[3] = 'n';
         outStream = bak_fopen(filename, "wb");
@@ -1094,7 +1094,7 @@ void combatenc_saves_migr_all_slots(void) {
         goto L_shared;
     L_null:
         count = 0;
-        outStream = (BakFile *)0;
+        outStream = (IoFile *)0;
     L_shared:
         j = 0;
         if (j < count) {
@@ -1110,7 +1110,7 @@ void combatenc_saves_migr_all_slots(void) {
             } while (j < count);
         }
         bak_fclose(stream);
-        if (outStream != (BakFile *)0)
+        if (outStream != (IoFile *)0)
             bak_fclose(outStream);
         encounterId++;
     } while (encounterId < 700);

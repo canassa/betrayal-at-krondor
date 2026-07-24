@@ -47,7 +47,7 @@ void adscript_set_dbb_if_202d_eq_0c(void) {
     }
 }
 
-int adscript_resource_load(BakFileRef *file) {
+int adscript_resource_load(FileRef *file) {
     int tt3_bytes_read;
     int tt3_stream_size;
     char far *tt3_buf;

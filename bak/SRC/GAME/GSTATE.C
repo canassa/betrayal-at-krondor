@@ -18,7 +18,7 @@
 
 unsigned short g_wLastTempWriteRecordKind = 0xffff;
 char g_abChapterEventSlot[9] = {0x00, 0x04, 0x04, 0x01, 0x04, 0x02, 0x04, 0x02, 0x03};
-BakFile *g_tempGamFP = NULL;
+IoFile *g_tempGamFP = NULL;
 char g_abSleepStatDelta[6] = {0xfe, 0xff, 0xfe, 0xfe, 0xfe, 0xfd};
 char g_abRegenPerChar[6] = {0x01, 0x01, 0x01, 0x01, 0x01, 0x01};
 
@@ -155,19 +155,19 @@ int gstate_temp_file_open(void) {
 
     if (g_cfgTempDrive != 0) {
         sprintf(buf, "%c:%s", g_cfgTempDrive, "TEMP.GAM");
-        if ((g_tempGamFP = bak_fopen(buf, "r+b")) != (BakFile *)0)
+        if ((g_tempGamFP = bak_fopen(buf, "r+b")) != (IoFile *)0)
             return 1;
         return 0;
     }
 
-    if ((g_tempGamFP = bak_fopen("TEMP.GAM", "r+b")) != (BakFile *)0)
+    if ((g_tempGamFP = bak_fopen("TEMP.GAM", "r+b")) != (IoFile *)0)
         return 1;
     return 0;
 }
 
 void gstate_temp_file_close(void) {
     bak_fclose(g_tempGamFP);
-    g_tempGamFP = (BakFile *)0;
+    g_tempGamFP = (IoFile *)0;
     return;
 }
 
@@ -187,7 +187,7 @@ int gstate_temp_file_write_at(unsigned char far *src_far, unsigned long offset, 
 #ifdef V102CD
     unsigned long lo;
     unsigned long hi;
-    if (g_tempGamFP == (BakFile *)0 || offset > 0x51aa9)
+    if (g_tempGamFP == (IoFile *)0 || offset > 0x51aa9)
         return 0;
     switch (g_wLastTempWriteRecordKind) {
     case 1:

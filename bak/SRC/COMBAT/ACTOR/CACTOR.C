@@ -62,7 +62,7 @@ ImageRecord **g_aCombatResCacheValue[8][3];
 void far combat_actor_init_pool(void) {
     CombatActorInner *pInnerPool;
     long lSeekOffset;
-    BakFile *stream;
+    IoFile *stream;
     int i;
 
     g_combat_actors_A = (CombatActor *)galloc_safe_zcalloc(sizeof(CombatActor) * MAX_COMBAT_ACTORS);
@@ -471,7 +471,7 @@ ImageRecord **far combat_actor_bnames_load_cached(int class_id, int col) {
     int neg_count;
     char fname[14];
 
-    BakFile *fp;
+    IoFile *fp;
     int slot;
     int i;
 
@@ -511,7 +511,7 @@ ImageRecord **far combat_actor_bnames_load_cached(int class_id, int col) {
             palette = galloc_safe_zcalloc(0x100);
             local_pfx[2] = nameMeta[3] + '0';
             fp = bak_fopen(local_pfx, "rb");
-            if (fp != (BakFile *)0) {
+            if (fp != (IoFile *)0) {
                 bak_fread(palette, 1, 0x100, fp);
                 bak_fclose(fp);
             } else {

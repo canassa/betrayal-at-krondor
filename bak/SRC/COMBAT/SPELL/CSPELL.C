@@ -72,7 +72,7 @@ short *g_pSpellSymbolX;
 short *g_pSpellSymbolY;
 
 void cspell_subsystem_load(void) {
-    BakFile *f;
+    IoFile *f;
     int i;
     unsigned int blobLen;
     int docCount;
@@ -1738,7 +1738,7 @@ void cspell_scroll_clamp_cursor(int *cursor, int *scroll, int visible_rows, int 
 }
 
 void far cspell_symbol_resources_load(int chapter) {
-    BakFile *f;
+    IoFile *f;
     char *szFile = "symbolx.dat";
     int i;
 

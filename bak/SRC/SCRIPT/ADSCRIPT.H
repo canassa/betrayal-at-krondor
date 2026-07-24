@@ -13,7 +13,7 @@ extern unsigned char g_bTtmViewportClampFlag;
 extern unsigned short g_nVgaRenderMode;
 
 extern void adscript_set_dbb_if_202d_eq_0c(void);
-extern int adscript_resource_load(BakFileRef *file);
+extern int adscript_resource_load(FileRef *file);
 extern int adscript_select_object(int id);
 extern short adscript_channel_dispatch_loop(unsigned short script_obj_id);
 extern void adscript_object_unload(int param_1);

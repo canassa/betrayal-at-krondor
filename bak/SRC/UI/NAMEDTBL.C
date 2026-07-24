@@ -7,7 +7,7 @@
 
 int *namedtbl_load(char *filename) {
     int *ptr;
-    BakFile *stream;
+    IoFile *stream;
     void *strPool;
     unsigned int poolSize;
     int i;

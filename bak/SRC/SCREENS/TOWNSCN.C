@@ -79,7 +79,7 @@ static int far townscene_load(int chapter, int sub, int preserve) {
     int i;
     unsigned int size;
     MenuEntry *pEntry;
-    BakFile *stream;
+    IoFile *stream;
     TownSceneActor *pActor;
     ActorSubrecord far *pSub;
 

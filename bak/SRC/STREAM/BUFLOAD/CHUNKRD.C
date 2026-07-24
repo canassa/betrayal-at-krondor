@@ -15,7 +15,7 @@
  */
 int g_nChunk_session_owns_close = -1;
 
-unsigned long chunkread_fread_far_large(char far *dst, unsigned long len, BakFile *file) {
+unsigned long chunkread_fread_far_large(char far *dst, unsigned long len, IoFile *file) {
     char far *p;
     char *scratch;
     unsigned long remaining;
@@ -66,7 +66,7 @@ unsigned long chunkread_fread_far_large(char far *dst, unsigned long len, BakFil
     return remaining - len;
 }
 
-int far chunkread_session_close(BakFile *file) {
+int far chunkread_session_close(IoFile *file) {
 
     g_nChunk_session_owns_close != -1 || panic(NULL);
     if (g_nChunk_session_owns_close != 0)
@@ -74,7 +74,7 @@ int far chunkread_session_close(BakFile *file) {
     g_nChunk_session_owns_close = -1;
 }
 
-BakFile *far chunkread_session_open(BakFileRef *file, char *chunk_id) {
+IoFile *far chunkread_session_open(FileRef *file, char *chunk_id) {
     (g_nChunk_session_owns_close == -1) || panic(NULL);
     if (is_file_cached(file) == 0) {
         if ((file = cached_file_open(file)) == 0)
@@ -90,7 +90,7 @@ BakFile *far chunkread_session_open(BakFileRef *file, char *chunk_id) {
     return file;
 }
 
-void far *chunkread_read_all_far(BakFileRef *file, char *chunk_id) {
+void far *chunkread_read_all_far(FileRef *file, char *chunk_id) {
     void far *buf;
     unsigned long size;
 
