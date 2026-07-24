@@ -513,30 +513,15 @@ FileHandle *bak_find_handle(IoFile *file) {
 }
 
 /**
- * @brief DOS INT 24h (critical-error) ISR: fail the DOS call so the resource
- *        layer can retry an open in C rather than let DOS retry blindly.
+ * @brief DOS INT 24h (critical-error) ISR: while a resource open is in flight
+ *        (@ref g_ioInFopen), fail the DOS call so @ref bak_fopen retries in C.
  *
- * Installed by @ref bak_init_resources (which saves the prior vector in
- * @ref g_ioPrevInt24Vector) and restored by @ref bak_shutdown_resources. On a
- * critical error it returns DOS code 3 (fail) while a resource open is in flight
- * (@ref g_ioInFopen set), handing control back to @ref bak_fopen's retry loop,
- * else 1 (retry). It also raises @ref g_ioFopenRetry (which drives that loop)
- * and @ref g_ioArchivesDirty (forcing the stale archive stream to be reopened).
+ * Returns DOS code 3 (fail) when @ref g_ioInFopen is set, else 1 (retry), and
+ * raises @ref g_ioFopenRetry and @ref g_ioArchivesDirty. A Borland `interrupt`
+ * function: the params are the pushed register frame; only @p ax is used.
  *
- * A Borland `interrupt` function: the parameters are the pushed register frame.
- * Only @p ax is used — assigning it sets the return code in the restored AX; the
- * rest merely position @p ax at its stack offset and are otherwise unused.
- *
- * @param bp Saved BP register (unused; positions the frame).
- * @param di Saved DI register (unused; positions the frame).
- * @param si Saved SI register (unused; positions the frame).
- * @param ds Saved DS register (unused; positions the frame).
- * @param es Saved ES register (unused; positions the frame).
- * @param dx Saved DX register (unused; positions the frame).
- * @param cx Saved CX register (unused; positions the frame).
- * @param bx Saved BX register (unused; positions the frame).
- * @param ax Saved AX register; overwritten with the DOS INT 24h return code
- *           (3 = fail, 1 = retry).
+ * @param bp,di,si,ds,es,dx,cx,bx  Saved registers; unused (positions @p ax).
+ * @param ax  Saved AX; overwritten with the return code (3 = fail, 1 = retry).
  */
 void interrupt far io_critical_error_handler(unsigned bp, unsigned di, unsigned si,
                                              unsigned ds, unsigned es, unsigned dx,
