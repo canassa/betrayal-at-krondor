@@ -117,7 +117,7 @@ typedef void interrupt (far *IsrVector)();
  * @brief Saved previous DOS INT 24h (critical-error) handler vector.
  *
  * Captured by @ref bak_init_resources via `getvect` before it installs
- * @ref bak_int24_critical_handler, and restored by @ref bak_shutdown_resources,
+ * @ref io_critical_error_handler, and restored by @ref bak_shutdown_resources,
  * which then zeroes this slot so a second shutdown is a no-op.
  */
 extern IsrVector g_ioPrevInt24Vector;
@@ -160,7 +160,7 @@ extern FILE *g_ioLastFgetcCrtFile;
  * @brief Reentrancy guard: `TRUE` while the resource layer is inside a `fopen`
  *        it wants to survive a DOS critical error.
  *
- * Read by @ref bak_int24_critical_handler: while set, the handler fails the DOS
+ * Read by @ref io_critical_error_handler: while set, the handler fails the DOS
  * call (returns 3) so @ref bak_fopen / @ref bak_select_archive can retry the
  * open in C, rather than letting DOS blindly retry (return 1).
  */
@@ -170,14 +170,14 @@ extern bool8 g_ioInFopen;
  * @brief ISR-to-open signal: `TRUE` when a DOS critical error occurred during
  *        the current open, so it should be retried.
  *
- * Raised by @ref bak_int24_critical_handler and consumed by @ref bak_fopen's
+ * Raised by @ref io_critical_error_handler and consumed by @ref bak_fopen's
  * retry loop, which clears it at the top of each attempt.
  */
 extern bool8 g_ioFopenRetry;
 /**
  * @brief The open archive stream is stale — close and reopen before next use.
  *
- * Raised by @ref bak_int24_critical_handler on a DOS critical error (media
+ * Raised by @ref io_critical_error_handler on a DOS critical error (media
  * change / drive-not-ready) during archive I/O; @ref bak_fopen then resets to
  * the slot-0 sentinel to tear down the suspect stream, clearing the flag.
  */
@@ -270,7 +270,7 @@ extern void bak_shutdown_resources(void);
  * @brief Mark the open archives stale so the next @ref bak_fopen reopens them.
  *
  * A media-change hook that raises @ref g_ioArchivesDirty. Unused in this build;
- * the same recovery is driven live by @ref bak_int24_critical_handler.
+ * the same recovery is driven live by @ref io_critical_error_handler.
  */
 extern void io_invalidate_archives(void);
 
@@ -309,7 +309,7 @@ extern void io_archive_seek(long offset);
 
 extern FileHandle *bak_find_handle(IoFile *file);
 
-extern void interrupt far bak_int24_critical_handler();
+extern void interrupt far io_critical_error_handler();
 
 extern long far dos_read(unsigned char far *buf, long count, int fd);
 extern long far dos_write(unsigned char far *buf, long count, int fd);
