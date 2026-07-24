@@ -328,8 +328,8 @@ void bak_init_resources(void) {
         while (read_count--) {
             fread(&hashVal, 4, 1, fp);
             fread(&offsetVal, 4, 1, fp);
-            entry->dwHash = hashVal;
-            entry->dwBase_offset = offsetVal;
+            entry->hash = hashVal;
+            entry->headerOffset = offsetVal;
             entry++;
         }
 
@@ -388,35 +388,35 @@ int bak_resource_lookup(BakHandle *slot) {
         i = 1;
 
     entry = g_bak_archives[i].directory;
-    while (entry->dwHash != 0 && entry->dwHash != hash)
+    while (entry->hash != 0 && entry->hash != hash)
         entry++;
 
     above = g_bak_current_archive + 1;
     below = g_bak_current_archive - 1;
 
-    while (entry->dwHash != hash && (below > 0 || above <= g_ioArchiveCount)) {
+    while (entry->hash != hash && (below > 0 || above <= g_ioArchiveCount)) {
         if (above <= g_ioArchiveCount) {
             i = above;
             above++;
             entry = g_bak_archives[i].directory;
-            while (entry->dwHash != 0 && entry->dwHash != hash)
+            while (entry->hash != 0 && entry->hash != hash)
                 entry++;
         }
 
-        if (entry->dwHash != hash) {
+        if (entry->hash != hash) {
             if (below > 0) {
                 i = below;
                 below--;
                 entry = g_bak_archives[i].directory;
-                while (entry->dwHash != 0 && entry->dwHash != hash)
+                while (entry->hash != 0 && entry->hash != hash)
                     entry++;
             }
         }
     }
 
-    if (entry->dwHash == hash) {
+    if (entry->hash == hash) {
         slot->archive_idx = i;
-        slot->base_offset = entry->dwBase_offset;
+        slot->base_offset = entry->headerOffset;
         slot->length = slot->cur_offset = 0;
         return 1;
     } else {
