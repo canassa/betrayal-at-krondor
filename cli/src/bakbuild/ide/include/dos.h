@@ -31,10 +31,14 @@ unsigned inport(unsigned port);
 void outportb(unsigned port, unsigned char val);
 void outport(unsigned port, unsigned val);
 
-/* interrupts / vectors */
+/* interrupts / vectors. get/setvect exchange interrupt-handler pointers; the
+ * `interrupt`/`far` keywords are defined away in clion_shim.h, so the ISR type
+ * reduces to a plain `void (*)()`. */
 void geninterrupt(int intno);
 void enable(void);
 void disable(void);
 void delay(unsigned ms);
+void (*getvect(int intno))();
+void setvect(int intno, void (*isr)());
 
 #endif
