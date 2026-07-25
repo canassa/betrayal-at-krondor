@@ -42,7 +42,7 @@ static FileHandle *res_resolve_handle(ResFile *file);
 ResFile *bak_fopen(char *filename, char *mode) {
     char name[14];
     int count;
-    register FileHandle *slot;
+    register FileHandle *handle;
     register FILE *fp;
 
     if (g_resArchivesDirty) {
@@ -55,10 +55,10 @@ ResFile *bak_fopen(char *filename, char *mode) {
     }
     g_resLastFgetcCrtFile = NULL;
     g_resLastFgetcFile = NULL;
-    slot = g_resHandles;
+    handle = g_resHandles;
     count = RES_HANDLE_POOL_SIZE;
-    while (count != 0 && slot->inUse) {
-        slot++;
+    while (count != 0 && handle->inUse) {
+        handle++;
         count--;
     }
     if (count == 0) {
@@ -72,29 +72,29 @@ ResFile *bak_fopen(char *filename, char *mode) {
     } while (g_resFopenRetry);
     g_resInFopen = FALSE;
     if (fp != NULL) {
-        slot->archiveIndex = 0;
-        slot->baseOffset = slot->length = slot->curOffset = 0UL;
-        slot->inUse = TRUE;
-        slot->stdioFile = fp;
+        handle->archiveIndex = 0;
+        handle->baseOffset = handle->length = handle->curOffset = 0UL;
+        handle->inUse = TRUE;
+        handle->stdioFile = fp;
     } else {
-        if (!res_lookup(slot)) {
+        if (!res_lookup(handle)) {
             return NULL;
         }
-        res_select_archive(slot->archiveIndex);
-        res_archive_seek(slot->baseOffset + slot->curOffset);
+        res_select_archive(handle->archiveIndex);
+        res_archive_seek(handle->baseOffset + handle->curOffset);
         fp = g_resArchives[g_resCurrentArchive].fp;
         fread(name, 0xd, 1, fp);
-        fread(&slot->length, sizeof(slot->length), 1, fp);
-        g_resArchives[g_resCurrentArchive].filePos = slot->baseOffset = ftell(fp);
+        fread(&handle->length, sizeof(handle->length), 1, fp);
+        g_resArchives[g_resCurrentArchive].filePos = handle->baseOffset = ftell(fp);
         if (stricmp(name, filename) != 0) {
             return NULL;
         }
-        slot->curOffset = 0;
-        slot->stdioFile = NULL;
-        slot->inUse = TRUE;
+        handle->curOffset = 0;
+        handle->stdioFile = NULL;
+        handle->inUse = TRUE;
     }
     g_resOpenHandleCount++;
-    return (ResFile *)slot;
+    return (ResFile *)handle;
 }
 
 int bak_fclose(ResFile *file) {
@@ -385,7 +385,7 @@ unsigned long res_filename_hash(char *filename) {
     return g_resLookupHash = val;
 }
 
-int res_lookup(FileHandle *file) {
+int res_lookup(FileHandle *handle) {
     RmfEntry far *entry;
     unsigned long hash;
     int above;
@@ -432,9 +432,9 @@ int res_lookup(FileHandle *file) {
 
     // Found: record where the resource lives; else report a miss.
     if (entry->hash == hash) {
-        file->archiveIndex = i;
-        file->baseOffset = entry->headerOffset;
-        file->length = file->curOffset = 0;
+        handle->archiveIndex = i;
+        handle->baseOffset = entry->headerOffset;
+        handle->length = handle->curOffset = 0;
         return TRUE;
     } else {
         return FALSE;
@@ -506,7 +506,7 @@ void res_archive_seek(unsigned long offset) {
  * Backed by a one-entry cache for hot read loops; a `NULL` token flushes it.
  */
 static FileHandle *res_resolve_handle(ResFile *file) {
-    FileHandle *slot;
+    FileHandle *handle;
     int count;
 
     // A NULL token is a request to flush the one-entry lookup cache.
@@ -526,22 +526,22 @@ static FileHandle *res_resolve_handle(ResFile *file) {
 
 
     g_resFindHandleCacheKey = file;
-    slot = g_resHandles;
+    handle = g_resHandles;
     count = RES_HANDLE_POOL_SIZE;
 
-    // Scan the handle pool for the slot this token points at.
-    while (count != 0 && slot != (FileHandle *)file) {
-        slot++;
+    // Scan the handle pool for the handle this token points at.
+    while (count != 0 && handle != (FileHandle *)file) {
+        handle++;
         count--;
     }
 
-    // Not found, or the slot is no longer in use: a miss.
-    if (count == 0 || !slot->inUse) {
-        slot = NULL;
+    // Not found, or the handle is no longer in use: a miss.
+    if (count == 0 || !handle->inUse) {
+        handle = NULL;
         g_resFindHandleCacheKey = NULL;
     }
 
-    return g_resFindHandleCacheVal = slot;
+    return g_resFindHandleCacheVal = handle;
 }
 
 /**

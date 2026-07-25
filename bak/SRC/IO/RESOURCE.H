@@ -323,7 +323,7 @@ extern unsigned long res_filename_hash(char *filename);
 
 /**
  * @brief Locate the resource hashed into @ref g_resLookupHash and record where
- *        it lives — archive index and offset — into @p file.
+ *        it lives — archive index and offset — into @p handle.
  *
  * The search starts in the current archive and spirals outward to its
  * neighbours (the archive above, then below, widening each round). That
@@ -331,10 +331,10 @@ extern unsigned long res_filename_hash(char *filename);
  * (`KRONDOR.001`) is registered, so the loop never runs and every resource
  * resolves within that single archive.
  *
- * @param file Handle to fill with the resource's location on success.
+ * @param handle Handle to fill with the resource's location on success.
  * @return `TRUE` if the resource was found, `FALSE` otherwise.
  */
-extern int res_lookup(FileHandle *file);
+extern int res_lookup(FileHandle *handle);
 
 /**
  * @brief Make @p archiveIndex the currently-open archive, (re)opening its
