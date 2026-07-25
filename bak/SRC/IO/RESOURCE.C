@@ -394,17 +394,22 @@ int bak_resource_lookup(FileHandle *slot) {
 
     hash = g_resLookupHash;
 
+    // Start in the current archive (or the first, if none is selected).
     if ((i = g_resCurrentArchive) == 0)
         i = 1;
 
+    // Scan its directory for the hash — stop at a match or the 0 terminator.
     entry = g_resArchives[i].directory;
     while (entry->hash != 0 && entry->hash != hash)
         entry++;
 
+    // Not here — prepare to spiral out to the neighbouring archives.
     above = g_resCurrentArchive + 1;
     below = g_resCurrentArchive - 1;
 
+    // Search outward through the other archives, nearest first, until found.
     while (entry->hash != hash && (below > 0 || above <= g_resArchiveCount)) {
+        // Check the next archive above.
         if (above <= g_resArchiveCount) {
             i = above;
             above++;
@@ -413,6 +418,7 @@ int bak_resource_lookup(FileHandle *slot) {
                 entry++;
         }
 
+        // Still no match — check the next archive below.
         if (entry->hash != hash) {
             if (below > 0) {
                 i = below;
@@ -424,6 +430,7 @@ int bak_resource_lookup(FileHandle *slot) {
         }
     }
 
+    // Found: record where the resource lives; else report a miss.
     if (entry->hash == hash) {
         slot->archiveIndex = i;
         slot->baseOffset = entry->headerOffset;
