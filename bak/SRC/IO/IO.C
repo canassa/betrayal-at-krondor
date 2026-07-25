@@ -77,7 +77,7 @@ IoFile *bak_fopen(char *filename, char *mode) {
         io_archive_seek(slot->baseOffset + slot->curOffset);
         fp = g_ioArchives[g_ioCurrentArchive].fp;
         fread(name, 0xd, 1, fp);
-        fread(&slot->length, 4, 1, fp);
+        fread(&slot->length, sizeof(slot->length), 1, fp);
         g_ioArchives[g_ioCurrentArchive].filePos = slot->baseOffset = ftell(fp);
         if (stricmp(name, filename) != 0) {
             return NULL;
@@ -309,9 +309,9 @@ void bak_init_resources(void) {
         return;
 #endif
 
-    fread(&readCount, 2, 1, fp);
-    fread(&g_ioHashSeed, 2, 1, fp);
-    fread(&g_ioHashRotate, 2, 1, fp);
+    fread(&readCount, sizeof(readCount), 1, fp);
+    fread(&g_ioHashSeed, sizeof(g_ioHashSeed), 1, fp);
+    fread(&g_ioHashRotate, sizeof(g_ioHashRotate), 1, fp);
 
     g_ioArchiveCount += readCount;
     archiveIdx = g_ioArchiveCount - readCount + 1;
@@ -320,15 +320,15 @@ void bak_init_resources(void) {
         arc = &g_ioArchives[archiveIdx];
 
         fread(arc, 13, 1, fp);
-        fread(&readCount, 2, 1, fp);
+        fread(&readCount, sizeof(readCount), 1, fp);
 
         entry = alloc_far((unsigned long)((unsigned short)(readCount + 1) * 8), ALLOC_FAR_ZERO_FILL);
         arc->directory = entry;
         arc->slotIndex = archiveIdx;
 
         while (readCount--) {
-            fread(&hashVal, 4, 1, fp);
-            fread(&offsetVal, 4, 1, fp);
+            fread(&hashVal, sizeof(hashVal), 1, fp);
+            fread(&offsetVal, sizeof(offsetVal), 1, fp);
             entry->hash = hashVal;
             entry->headerOffset = offsetVal;
             entry++;
