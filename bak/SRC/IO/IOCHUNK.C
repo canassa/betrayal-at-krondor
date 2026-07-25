@@ -2,9 +2,9 @@
 
 #include "structs.h"
 #include "SRC/IO/IOCHUNK.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 
-long bak_fread_chunked(unsigned char huge *dest, long size, long count, IoFile *fp) {
+long bak_fread_chunked(unsigned char huge *dest, long size, long count, ResFile *fp) {
     long remaining;
     int n;
     char buf[128];
@@ -20,7 +20,7 @@ long bak_fread_chunked(unsigned char huge *dest, long size, long count, IoFile *
     return count;
 }
 
-unsigned long bak_fwrite_chunked(unsigned char huge *src, unsigned long elem_size, unsigned long count, IoFile *file) {
+unsigned long bak_fwrite_chunked(unsigned char huge *src, unsigned long elem_size, unsigned long count, ResFile *file) {
     unsigned long remaining;
     char buf[128];
     int n;

@@ -4,7 +4,7 @@
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 #include "SRC/COMBAT/STATS/CBSTAT.H"
 #include "SRC/SYS/RAND.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/CHAR/STAT.H"
@@ -92,7 +92,7 @@ static int far cbstat_actor_find_equipped_item(CombatActor *actor, ItemRecord fa
 }
 
 void cbstat_spell_tables_load(void) {
-    IoFile *file;
+    ResFile *file;
     int count;
 
     file = bak_fopen("spellwea.dat", "rb");

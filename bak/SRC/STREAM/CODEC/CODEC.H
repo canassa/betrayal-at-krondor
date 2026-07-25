@@ -2,7 +2,7 @@
 #define BAK_CODEC_H
 
 #include "structs.h"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 
 extern unsigned char huge *g_pCodecScratchFp;
 extern CodecVtable g_codec_vtable[4];
@@ -10,7 +10,7 @@ extern unsigned char g_abLowBitMaskByWidth[9];
 extern StreamDesc *g_pCurStreamDesc;
 extern unsigned char *g_pCurStreamRingBuf;
 extern unsigned char g_bCurStreamCodecId;
-extern IoFile *g_pCurStreamFp;
+extern ResFile *g_pCurStreamFp;
 extern unsigned char huge *g_pStreamReadDst;
 extern unsigned char huge *g_pCurCodecScratch;
 extern StreamDesc *g_apStreamSlots[100];

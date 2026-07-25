@@ -11,7 +11,7 @@
 #include "structs.h"
 
 #include "SRC/DIALOG/ASKABOUT.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "SRC/GFX/SPRITE/RESBLIT.H"
@@ -45,7 +45,7 @@ void askabout_keyword_table_free(void) {
 
 void far askabout_keyword_table_load(void) {
     unsigned int size;
-    IoFile *file;
+    ResFile *file;
     int i;
 
     if (g_pKeywordTable == (unsigned short *)0) {

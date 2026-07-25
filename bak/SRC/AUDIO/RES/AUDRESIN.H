@@ -2,7 +2,7 @@
 #define BAK_AUDRESIN_H
 
 #include "structs.h"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 
 extern unsigned char g_abIntensityCurve[64];
 extern unsigned short g_nSfxResourceId;
@@ -18,7 +18,7 @@ extern unsigned short g_nAudioBufLastError;
 extern unsigned char g_bAudioLooseTag;
 extern short g_nAudioFilterMode;
 extern MusicChunkHeader far *g_pMusicChunkBuf;
-extern IoFile *g_music_archive;
+extern ResFile *g_music_archive;
 extern int g_music_archive_owned;
 extern unsigned short g_bMusicDriverInstalled;
 extern unsigned short g_nAudioStreamCodec;

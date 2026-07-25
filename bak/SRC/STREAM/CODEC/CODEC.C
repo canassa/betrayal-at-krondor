@@ -2,7 +2,7 @@
 #include "SRC/STREAM/CODEC/CODEC.H"
 
 #define fmemcpy_far fmemcpy_far__proto
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/FARTHUNK.H"
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/SYS/FARPTR.H"
@@ -26,7 +26,7 @@ int g_nStreamBytesWritten;
 StreamDesc *g_apStreamSlots[100];
 unsigned char huge *g_pCurCodecScratch;
 unsigned char huge *g_pStreamReadDst;
-IoFile *g_pCurStreamFp;
+ResFile *g_pCurStreamFp;
 unsigned char g_bCurStreamCodecId;
 unsigned char *g_pCurStreamRingBuf;
 StreamDesc *g_pCurStreamDesc;

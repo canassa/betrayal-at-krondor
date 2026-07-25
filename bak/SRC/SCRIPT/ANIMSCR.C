@@ -9,7 +9,7 @@
 
 #include "SRC/SCRIPT/ANIMSCR.H"
 #include "SRC/SYS/RAND.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/FARTHUNK.H"
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/STREAM/RESLOAD/IFFREAD.H"
@@ -61,7 +61,7 @@ static int anim_script_register_resource(char *name, unsigned short resource_id)
 
 int anim_script_open(char *filename, int mode) {
     int err;
-    IoFile *fp;
+    ResFile *fp;
     char *filenameArg;
     Slot far *slot;
     int streamId;
@@ -93,7 +93,7 @@ int anim_script_open(char *filename, int mode) {
     }
     g_anim_slots[newSlotIdx] = slot;
     streamId = -1;
-    if ((fp = cached_file_open(filenameArg)) == (IoFile *)0) {
+    if ((fp = cached_file_open(filenameArg)) == (ResFile *)0) {
         _freemem(g_anim_slots[newSlotIdx]);
         g_anim_slots[newSlotIdx] = (Slot far *)0;
         return 0;
@@ -145,7 +145,7 @@ cleanup:
     if (streamId >= 0) {
         stream_close(streamId);
     }
-    if (fp != (IoFile *)0) {
+    if (fp != (ResFile *)0) {
         cached_file_close(fp);
     }
     anim_script_activate(0);

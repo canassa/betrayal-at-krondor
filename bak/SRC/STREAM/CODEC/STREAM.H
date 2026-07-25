@@ -2,9 +2,9 @@
 #define BAK_STREAM_H
 
 #include "structs.h"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 
-extern int stream_open(int codec_kind, IoFile *file, char *mode, unsigned long size);
+extern int stream_open(int codec_kind, ResFile *file, char *mode, unsigned long size);
 extern int stream_open_from_memory(int codec_id, unsigned char huge *pSrc, char *mode, unsigned long size);
 extern int stream_close(int stream_id);
 extern unsigned int stream_read(int handle, void far *dest, unsigned int count);

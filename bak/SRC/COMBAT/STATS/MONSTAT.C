@@ -1,7 +1,7 @@
 #include "structs.h"
 #include "SRC/COMBAT/STATS/MONSTAT.H"
 #include "SRC/SYS/RAND.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/COMBAT/STATS/CBSTAT.H"
 
 #include <stdlib.h>
@@ -28,7 +28,7 @@ void monstat_roll_stats_from_file(CombatActor *actor) {
     char filename[13] = "monst";
     char ext[5] = ".dat";
     int class_id;
-    IoFile *file;
+    ResFile *file;
 
     if (actor->inner->class_id == 0x12 &&
         cbstat_find_intact_equip_cat(actor, 2) != (ItemRecord far *)0) {
@@ -41,7 +41,7 @@ void monstat_roll_stats_from_file(CombatActor *actor) {
     strcat(filename, ext);
 
     file = bak_fopen(filename, "rb");
-    if (file == (IoFile *)0)
+    if (file == (ResFile *)0)
         return;
 
     bak_fread(&min_val, 2, 1, file);

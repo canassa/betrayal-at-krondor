@@ -7,7 +7,7 @@
 #include "structs.h"
 #include "SRC/WORLD/MOVE/WORLDMOV.H"
 #include "SRC/SYS/RAND.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/GAME/MAINDATA.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
@@ -29,7 +29,7 @@ short g_nWorldGridStride;
 long g_lWorldTimePerStep;
 
 void worldmove_dat_load(void) {
-    IoFile *file;
+    ResFile *file;
     long seek_off;
     int time_raw;
 

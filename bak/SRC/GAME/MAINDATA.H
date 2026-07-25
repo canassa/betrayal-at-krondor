@@ -2,12 +2,12 @@
 #define BAK_MAINDATA_H
 
 #include "structs.h"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 
 extern short g_nPolygonTextureMode;
 extern unsigned short g_nWorldRenderJitter;
 extern char *g_versionBanner;
-extern IoFile *g_pSfxArchiveStream;
+extern ResFile *g_pSfxArchiveStream;
 extern unsigned int _ovrbuffer;
 extern unsigned char far *g_pMainScratchBuf;
 

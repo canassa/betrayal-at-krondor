@@ -10,7 +10,7 @@
 #include "SRC/R3D/ACTOR/ACTOROVL.H"
 #include "structs.h"
 #include "SRC/WORLD/CURSOR/WCURSOR.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/GFX/DRIVER/PALDRV.H"
@@ -41,7 +41,7 @@ unsigned short g_nHitTestEntryCount = 0x0000;
 unsigned short g_nHitTestWriteSlot = 0x0000;
 
 void far wcursor_load_detect_dat(void) {
-    IoFile *file;
+    ResFile *file;
 
     file = bak_fopen("detect.dat", "rb");
     if (g_game_mode == 2) {

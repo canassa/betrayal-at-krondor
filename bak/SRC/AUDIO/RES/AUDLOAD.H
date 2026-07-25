@@ -2,8 +2,8 @@
 #define BAK_AUDLOAD_H
 
 #include "structs.h"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 
-extern int music_chunk_load_and_link(IoFile *file, char mode);
+extern int music_chunk_load_and_link(ResFile *file, char mode);
 
 #endif

@@ -2,9 +2,9 @@
 #define BAK_IOCHUNK_H
 
 #include "structs.h"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 
-extern long bak_fread_chunked(unsigned char huge *dest, long size, long count, IoFile *fp);
-extern unsigned long bak_fwrite_chunked(unsigned char huge *src_far, unsigned long elem_size, unsigned long count, IoFile *file);
+extern long bak_fread_chunked(unsigned char huge *dest, long size, long count, ResFile *fp);
+extern unsigned long bak_fwrite_chunked(unsigned char huge *src_far, unsigned long elem_size, unsigned long count, ResFile *file);
 
 #endif

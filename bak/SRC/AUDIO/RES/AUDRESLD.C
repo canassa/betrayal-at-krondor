@@ -1,7 +1,7 @@
 #include "structs.h"
 #include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/AUDIO/RES/AUDRESLD.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/IO/IOCHUNK.H"
 #include "SRC/AUDIO/RES/POOL.H"
 #include "SRC/STREAM/RESLOAD/RELBUF.H"
@@ -10,7 +10,7 @@
 #include "SRC/AUDIO/ENGINE/AUDITER.H"
 #include "SRC/AUDIO/ENGINE/AUDSTOP.H"
 
-IoFile *audio_resource_load_chunk(FileRef *file, int chunk_id) {
+ResFile *audio_resource_load_chunk(FileRef *file, int chunk_id) {
     long found_offset;
     long buf_size;
     MusicChunkEntry far *entry;

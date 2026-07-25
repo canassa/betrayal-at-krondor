@@ -12,7 +12,7 @@
 #include "SRC/SYS/SYSLOWIO.H"
 #include "structs.h"
 #include "SRC/SCREENS/MAINMENU.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/GFX/FONT/FONT.H"
@@ -59,12 +59,12 @@ char g_szSaveSlotDirName_51cc[13];
 unsigned char g_abSaveFileHeader[90];
 
 int mainmenu_save_cfg_load_settings(void) {
-    IoFile *file;
+    ResFile *file;
 
     g_engine_prefs = galloc_safe_zcalloc(5);
     if (g_engine_prefs != (EnginePrefs *)0x0) {
         file = bak_fopen("KRONDOR.CFG", "rb");
-        if (file == (IoFile *)0x0) {
+        if (file == (ResFile *)0x0) {
 #ifdef V102CD
             if (g_cd_present != 0) {
                 file = bak_fopen("CDEFAULT.DAT", "rb");
@@ -1067,7 +1067,7 @@ int mainmenu_save_prefs_menu_run(void) {
     MenuPage *page;
     MenuEntry *pe;
     unsigned int i;
-    IoFile *fp;
+    ResFile *fp;
 
     prefs = *g_engine_prefs;
     ret_value = 0;
@@ -1256,7 +1256,7 @@ int mainmenu_save_prefs_menu_run(void) {
             }
 #endif
             *g_engine_prefs = prefs;
-            if ((fp = bak_fopen("KRONDOR.CFG", "wb")) == (IoFile *)0) {
+            if ((fp = bak_fopen("KRONDOR.CFG", "wb")) == (ResFile *)0) {
                 file_error = 1;
             } else {
                 if (bak_fwrite(g_engine_prefs, 5, 1, fp) != 1)
@@ -1518,13 +1518,13 @@ void mainmenu_save_party_to_tmp(void) {
 
 int mainmenu_save_file_read_header(char *path, void *sig_block, int *ds_state_1, int *ds_state_2,
                                    int *ds_state_3, int *ds_state_4) {
-    IoFile *file;
+    ResFile *file;
     register int ok;
     int version;
 
     ok = 1;
     file = bak_fopen(path, "rb");
-    if (file != (IoFile *)0x0) {
+    if (file != (ResFile *)0x0) {
         if (!(bak_fread(sig_block, 1, 0x5a, file) == 0x5a &&
               bak_fread(ds_state_1, 2, 1, file) == 1 &&
               bak_fread(ds_state_2, 2, 1, file) == 1 &&
@@ -1588,7 +1588,7 @@ int mainmenu_save_slot_is_at_cap(char *entry) {
 
 void mainmenu_save_slot_exists(void) {
     char local[90];
-    IoFile *file;
+    ResFile *file;
 
     if (g_wSaveSlotDirValid != 0) {
         sprintf(local, "%s\\%s.G%02d\\SAVE%02d.GAM", "GAMES", g_szSaveSlotDirName_51cc,

@@ -1,14 +1,14 @@
 #include "structs.h"
 #include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/AUDIO/RES/AUDLOAD.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/IO/IOCHUNK.H"
 #include "SRC/AUDIO/RES/POOL.H"
 #include "SRC/STREAM/RESLOAD/RELBUF.H"
 #include "SRC/AUDIO/RES/AUDRES.H"
 #include "SRC/STREAM/BUFLOAD/STRMLOAD.H"
 
-int music_chunk_load_and_link(IoFile *file, char mode) {
+int music_chunk_load_and_link(ResFile *file, char mode) {
     long size;
     unsigned short out_size[2];
     AudioListNode far *node;

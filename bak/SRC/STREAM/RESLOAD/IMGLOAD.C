@@ -5,7 +5,7 @@
 #include "SRC/STREAM/CODEC/CODEC.H"
 #include "structs.h"
 #include "SRC/STREAM/RESLOAD/IMGLOAD.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/FARTHUNK.H"
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/SYS/FARPTR.H"
@@ -15,7 +15,7 @@
 
 void unpack_2bpp_to_byte_per_pixel(unsigned char huge *src, unsigned char huge *dst, unsigned count);
 
-int iff_chunk_loader_2f1c(IoFile *file, unsigned short *count, unsigned short *out_handle) {
+int iff_chunk_loader_2f1c(ResFile *file, unsigned short *count, unsigned short *out_handle) {
 
     unsigned short *width;
     unsigned short *height;

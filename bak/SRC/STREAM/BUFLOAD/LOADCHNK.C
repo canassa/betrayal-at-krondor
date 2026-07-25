@@ -6,7 +6,7 @@
 void far *bak_load_chunk(FileRef *file, char *chunk_id, int mode) {
     void far *out_buf;
     int opened;
-    IoFile *fp;
+    ResFile *fp;
 
     opened = 0;
     out_buf = 0;

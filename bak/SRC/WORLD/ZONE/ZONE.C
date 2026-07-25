@@ -3,7 +3,7 @@
 #include "SRC/GEN/GFXCTX.H"
 #include "structs.h"
 #include "SRC/WORLD/ZONE/ZONE.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/IO/IOCHUNK.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
@@ -42,7 +42,7 @@ unsigned short g_wZoneFlags = 0x0000;
 char g_szZoneRefFilenameTmpl[11] = "ZzzREF.DAT";
 
 void far zone_subsystem_init(void) {
-    IoFile *file;
+    ResFile *file;
 
     ts_init(3, 10);
     g_world_camera = actormotion_vec_alloc(0);
@@ -66,7 +66,7 @@ void far zone_subsystem_shutdown(void) {
 }
 
 void far zone_load(void) {
-    IoFile *file;
+    ResFile *file;
     short slot;
     long inset_z;
     ImageRecord **render_table;
@@ -286,7 +286,7 @@ void zone_free_400byte_buffer(void) {
 }
 
 void far zone_map_data_load(unsigned char zone_id) {
-    IoFile *file;
+    ResFile *file;
 
     sprintf(g_szZoneMapFilename, "Z%02uMAP.DAT", (unsigned int)zone_id);
     file = bak_fopen(g_szZoneMapFilename, "rb");
@@ -307,7 +307,7 @@ int far zone_grid_bit_get(unsigned char x, unsigned char y) {
 }
 
 unsigned char zone_ref_find_pair_index(unsigned char zone, unsigned char key1, unsigned char key2) {
-    IoFile *file;
+    ResFile *file;
     unsigned char record_count;
     unsigned char index;
     unsigned char rec_key1;

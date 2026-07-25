@@ -1,22 +1,22 @@
 /**
- * @file    IO.H
+ * @file    RESOURCE.H
  * @brief   Resource-archive I/O layer: stdio-shaped `bak_*` wrappers over
  *          loose files and the `KRONDOR.RMF`-mapped archive resources.
  */
-#ifndef BAK_IO_H
-#define BAK_IO_H
+#ifndef BAK_RESOURCE_H
+#define BAK_RESOURCE_H
 
 #include "structs.h"
 
 
-/** @brief Number of slots in the @ref g_ioHandles pool — the cap on
+/** @brief Number of slots in the @ref g_resHandles pool — the cap on
  *         simultaneously-open @ref bak_fopen handles. */
-#define IO_HANDLE_POOL_SIZE 10
+#define RES_HANDLE_POOL_SIZE 10
 
 
-/** @brief Max archives registerable from `KRONDOR.RMF`; @ref g_ioArchives
+/** @brief Max archives registerable from `KRONDOR.RMF`; @ref g_resArchives
  *         has one more slot (index 0 is the "no archive" sentinel). */
-#define IO_ARCHIVE_MAX 10
+#define RES_ARCHIVE_MAX 10
 
 
 /**
@@ -27,7 +27,7 @@
  * all-zero terminator entry.
  */
 typedef struct RmfEntry {
-    /** 0x00: @ref io_filename_hash of the uppercased resource name. */
+    /** 0x00: @ref res_filename_hash of the uppercased resource name. */
     unsigned long hash;
     /** 0x04: offset in `KRONDOR.001` of the 17-byte entry header. */
     unsigned long headerOffset;
@@ -36,7 +36,7 @@ typedef struct RmfEntry {
 /**
  * @brief Runtime descriptor for one open resource archive (`KRONDOR.001`).
  *
- * Held in @ref g_ioArchives (1-based; slot 0 is the "loose file / no archive"
+ * Held in @ref g_resArchives (1-based; slot 0 is the "loose file / no archive"
  * sentinel). Pairs the archive's identity from the RMF (@ref Archive::fileName,
  * @ref Archive::directory) with its live stdio stream (@ref Archive::fp,
  * @ref Archive::filePos). A runtime object, not an on-disk record.
@@ -77,11 +77,11 @@ typedef struct FileHandle {
  * Under the hood a CRT `FILE *` or a @ref FileHandle slot; treat it as opaque —
  * pass it only to the `bak_*` functions, never dereference it. No definition.
  */
-typedef struct IoFile IoFile;
+typedef struct ResFile ResFile;
 
 
 /**
- * @brief A file reference: either a filename (`char *`) or an open @ref IoFile
+ * @brief A file reference: either a filename (`char *`) or an open @ref ResFile
  *        token.
  *
  * Typed `void` so both kinds pass without a cast.
@@ -95,7 +95,7 @@ typedef void FileRef;
  * `bak_init_resources` is called from every @ref bak_fopen; this flag makes it
  * idempotent (open `KRONDOR.RMF` + install the INT 24h handler exactly once).
  */
-extern bool8 g_ioInitialized;
+extern bool8 g_resInitialized;
 /**
  * @brief Sticky I/O-error flag: set on a write/close failure, cleared at the
  *        start of each @ref bak_fopen. Set-only — nothing reads it.
@@ -105,7 +105,7 @@ extern bool8 g_ioInitialized;
  * next @ref bak_fopen resets it. No code tests, returns, or branches on it in
  * this build, so it is a vestigial accumulator kept for layout fidelity.
  */
-extern bool16 g_ioError;
+extern bool16 g_resError;
 
 /**
  * @brief Far pointer to a DOS interrupt-service routine — the `getvect` /
@@ -117,176 +117,176 @@ typedef void interrupt (far *IsrVector)();
  * @brief Saved previous DOS INT 24h (critical-error) handler vector.
  *
  * Captured by @ref bak_init_resources via `getvect` before it installs
- * @ref io_critical_error_handler, and restored by @ref bak_shutdown_resources,
+ * @ref res_critical_error_handler, and restored by @ref bak_shutdown_resources,
  * which then zeroes this slot so a second shutdown is a no-op.
  */
-extern IsrVector g_ioPrevInt24Vector;
+extern IsrVector g_resPrevInt24Vector;
 
 
 /**
- * @brief Fixed pool of @ref IO_HANDLE_POOL_SIZE open-file handle slots
+ * @brief Fixed pool of @ref RES_HANDLE_POOL_SIZE open-file handle slots
  *        (@ref FileHandle) shared by all @ref bak_fopen streams.
  */
-extern FileHandle g_ioHandles[IO_HANDLE_POOL_SIZE];
+extern FileHandle g_resHandles[RES_HANDLE_POOL_SIZE];
 
 
 /**
  * @brief The registered resource archives (@ref Archive), indexed 1-based;
  *        index 0 is the "no archive" / loose-file sentinel.
  */
-extern Archive g_ioArchives[IO_ARCHIVE_MAX + 1];
+extern Archive g_resArchives[RES_ARCHIVE_MAX + 1];
 
 
 /**
- * @brief The @ref IoFile token most recently passed to @ref bak_fgetc.
+ * @brief The @ref ResFile token most recently passed to @ref bak_fgetc.
  *
  * Written on every @ref bak_fgetc call and cleared by @ref bak_fopen, but never
  * read back anywhere in this build — a write-only trace latch, not a lookup
  * cache. Nothing consults it to short-circuit a later call.
  */
-extern IoFile *g_ioLastFgetcFile;
+extern ResFile *g_resLastFgetcFile;
 
 /**
- * @brief The CRT `FILE *` that @ref bak_fgetc resolved @ref g_ioLastFgetcFile
+ * @brief The CRT `FILE *` that @ref bak_fgetc resolved @ref g_resLastFgetcFile
  *        to and read a byte through.
  *
  * Mirrors the stdio stream actually handed to `fgetc`; written on every call and
- * cleared by @ref bak_fopen. Like @ref g_ioLastFgetcFile it is never read back,
+ * cleared by @ref bak_fopen. Like @ref g_resLastFgetcFile it is never read back,
  * so it too is a write-only trace, not consulted on later calls.
  */
-extern FILE *g_ioLastFgetcCrtFile;
+extern FILE *g_resLastFgetcCrtFile;
 
 /**
  * @brief Reentrancy guard: `TRUE` while the resource layer is inside a `fopen`
  *        it wants to survive a DOS critical error.
  *
- * Read by @ref io_critical_error_handler: while set, the handler fails the DOS
+ * Read by @ref res_critical_error_handler: while set, the handler fails the DOS
  * call (returns 3) so @ref bak_fopen / @ref bak_select_archive can retry the
  * open in C, rather than letting DOS blindly retry (return 1).
  */
-extern bool8 g_ioInFopen;
+extern bool8 g_resInFopen;
 
 /**
  * @brief ISR-to-open signal: `TRUE` when a DOS critical error occurred during
  *        the current open, so it should be retried.
  *
- * Raised by @ref io_critical_error_handler and consumed by @ref bak_fopen's
+ * Raised by @ref res_critical_error_handler and consumed by @ref bak_fopen's
  * retry loop, which clears it at the top of each attempt.
  */
-extern bool8 g_ioFopenRetry;
+extern bool8 g_resFopenRetry;
 /**
  * @brief The open archive stream is stale — close and reopen before next use.
  *
- * Raised by @ref io_critical_error_handler on a DOS critical error (media
+ * Raised by @ref res_critical_error_handler on a DOS critical error (media
  * change / drive-not-ready) during archive I/O; @ref bak_fopen then resets to
  * the slot-0 sentinel to tear down the suspect stream, clearing the flag.
  */
-extern bool8 g_ioArchivesDirty;
+extern bool8 g_resArchivesDirty;
 
 
 /**
- * @brief Number of currently-open @ref g_ioHandles slots; gates the archive
+ * @brief Number of currently-open @ref g_resHandles slots; gates the archive
  *        drive-probe in @ref bak_select_archive.
  */
-extern char g_ioOpenHandleCount;
+extern char g_resOpenHandleCount;
 
 
 /**
- * @brief The query filename's hash, passed from @ref io_filename_hash to
+ * @brief The query filename's hash, passed from @ref res_filename_hash to
  *        @ref bak_resource_lookup as the directory-scan key.
  */
-extern unsigned long g_ioLookupHash;
+extern unsigned long g_resLookupHash;
 
 
 /**
- * @brief Index into @ref g_ioArchives of the currently-open archive; 0 = none.
+ * @brief Index into @ref g_resArchives of the currently-open archive; 0 = none.
  *
  * Set by @ref bak_select_archive, which closes the previous archive's stream
  * before opening the new one; 0 is the loose / no-archive state.
  */
-extern int g_ioCurrentArchive;
+extern int g_resCurrentArchive;
 
 
 /**
  * @brief Number of archives registered from `KRONDOR.RMF` (indices `1..count`
- *        of @ref g_ioArchives).
+ *        of @ref g_resArchives).
  *
  * 0 before the map is read, or if it cannot be opened — which leaves the whole
  * archive layer disabled.
  */
-extern int g_ioArchiveCount;
+extern int g_resArchiveCount;
 
 
 /**
- * @brief Initial accumulator for @ref io_filename_hash, from the
+ * @brief Initial accumulator for @ref res_filename_hash, from the
  *        `KRONDOR.RMF` header (0 in shipped data).
  *
  * Signed — sign-extended into the 32-bit hash, so the type is load-bearing.
  */
-extern int g_ioHashSeed;
+extern int g_resHashSeed;
 
 
 /**
- * @brief Per-character left-rotate count for @ref io_filename_hash, from the
+ * @brief Per-character left-rotate count for @ref res_filename_hash, from the
  *        `KRONDOR.RMF` header (4 in shipped data).
  */
-extern int g_ioHashRotate;
+extern int g_resHashRotate;
 
 
 /**
  * @brief Cached result of the last @ref bak_find_handle lookup: the
- *        @ref FileHandle resolved for @ref g_ioFindHandleCacheKey.
+ *        @ref FileHandle resolved for @ref g_resFindHandleCacheKey.
  *
  * The value half of a one-entry memoization cache. When @ref bak_find_handle is
- * called again with the same @ref IoFile token it returns this directly,
+ * called again with the same @ref ResFile token it returns this directly,
  * skipping the pool scan.
  */
-extern FileHandle *g_ioFindHandleCacheVal;
+extern FileHandle *g_resFindHandleCacheVal;
 
 /**
- * @brief Cache key for @ref bak_find_handle: the @ref IoFile token whose lookup
- *        produced @ref g_ioFindHandleCacheVal.
+ * @brief Cache key for @ref bak_find_handle: the @ref ResFile token whose lookup
+ *        produced @ref g_resFindHandleCacheVal.
  *
  * Set on each miss and cleared together with the value on a `NULL` query or a
  * failed lookup; a matching token on the next call is a cache hit.
  */
-extern IoFile *g_ioFindHandleCacheKey;
+extern ResFile *g_resFindHandleCacheKey;
 
-extern IoFile *bak_fopen(char *filename, char *mode);
-extern int bak_fclose(IoFile *file);
-extern int bak_fread(void *ptr, int size, int count, IoFile *file);
-extern int bak_fseek(IoFile *file, long offset, int whence);
-extern long bak_ftell(IoFile *file);
-extern long bak_filelength(IoFile *file);
-extern void bak_rewind(IoFile *file);
-extern int bak_fgetc(IoFile *file);
-extern int bak_feof(IoFile *file);
-extern int bak_fwrite(void *ptr, int size, int count, IoFile *file);
-extern int bak_putc(int c, IoFile *file);
-extern void bak_setbuf(IoFile *file, char *buffer);
+extern ResFile *bak_fopen(char *filename, char *mode);
+extern int bak_fclose(ResFile *file);
+extern int bak_fread(void *ptr, int size, int count, ResFile *file);
+extern int bak_fseek(ResFile *file, long offset, int whence);
+extern long bak_ftell(ResFile *file);
+extern long bak_filelength(ResFile *file);
+extern void bak_rewind(ResFile *file);
+extern int bak_fgetc(ResFile *file);
+extern int bak_feof(ResFile *file);
+extern int bak_fwrite(void *ptr, int size, int count, ResFile *file);
+extern int bak_putc(int c, ResFile *file);
+extern void bak_setbuf(ResFile *file, char *buffer);
 extern void bak_init_resources(void);
 extern void bak_shutdown_resources(void);
 /**
  * @brief Mark the open archives stale so the next @ref bak_fopen reopens them.
  *
- * A media-change hook that raises @ref g_ioArchivesDirty. Unused in this build;
- * the same recovery is driven live by @ref io_critical_error_handler.
+ * A media-change hook that raises @ref g_resArchivesDirty. Unused in this build;
+ * the same recovery is driven live by @ref res_critical_error_handler.
  */
-extern void io_invalidate_archives(void);
+extern void res_invalidate_archives(void);
 
 
 /**
  * @brief Hash of a resource filename for the `KRONDOR.RMF` directory lookup.
  *
  * Uppercases @p filename in place and folds it into a rotating 32-bit hash
- * (seeded by @ref g_ioHashSeed, rotated by @ref g_ioHashRotate). The result is
- * also written to @ref g_ioLookupHash — the channel @ref bak_resource_lookup
+ * (seeded by @ref g_resHashSeed, rotated by @ref g_resHashRotate). The result is
+ * also written to @ref g_resLookupHash — the channel @ref bak_resource_lookup
  * actually reads — so the return value is redundant.
  *
  * @param filename Resource name; uppercased in place. NULL yields a 0 hash.
- * @return The 32-bit hash (a mirror of @ref g_ioLookupHash).
+ * @return The 32-bit hash (a mirror of @ref g_resLookupHash).
  */
-extern unsigned long io_filename_hash(char *filename);
+extern unsigned long res_filename_hash(char *filename);
 
 
 extern int bak_resource_lookup(FileHandle *slot);
@@ -297,7 +297,7 @@ extern void bak_select_archive(int archive_index);
  * @brief Seek the current archive's stream to an absolute byte offset in
  *        `KRONDOR.001`.
  *
- * Indexes @ref g_ioArchives via @ref g_ioCurrentArchive and moves its
+ * Indexes @ref g_resArchives via @ref g_resCurrentArchive and moves its
  * @ref Archive::fp there, but only when @ref Archive::filePos shows it isn't
  * already positioned — the cache skips a redundant `fseek`.
  *
@@ -305,10 +305,10 @@ extern void bak_select_archive(int archive_index);
  *        cursor). Unsigned — always a non-negative file position, never a
  *        relative displacement (the seek is always `SEEK_SET`).
  */
-extern void io_archive_seek(unsigned long offset);
+extern void res_archive_seek(unsigned long offset);
 
 
-extern FileHandle *bak_find_handle(IoFile *file);
+extern FileHandle *bak_find_handle(ResFile *file);
 
 
 extern long far dos_read(unsigned char far *buf, long count, int fd);

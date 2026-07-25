@@ -8,7 +8,7 @@
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
 #include "SRC/UI/MODALSCR.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "SRC/GFX/SPRITE/RESBLIT.H"
@@ -40,7 +40,7 @@
 
 
 void modalscreen_teleport_dat_load(int n_index) {
-    IoFile *file;
+    ResFile *file;
 
     file = bak_fopen("TELEPORT.DAT", "rb");
     bak_fseek(file, n_index * sizeof(g_gameState.abTeleportRecord), SEEK_SET);

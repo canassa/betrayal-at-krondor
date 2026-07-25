@@ -7,7 +7,7 @@
 #include "SRC/SCREENS/INVENTOR.H"
 #include "structs.h"
 #include "SRC/GFX/SPRITE/RESBLIT.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/FARTHUNK.H"
 #include "SRC/GFX/SPRITE/DECOMP.H"
 #include "SRC/GFX/DRIVER/VTHUNKS.H"
@@ -55,7 +55,7 @@ void resblit_load_resource_set_1ec(int flags) {
 ImageRecord **resblit_load_asset_table(char *path, int storage_mode) {
     int i;
     ImageRecord **tbl = 0;
-    IoFile *fp;
+    ResFile *fp;
     unsigned char huge *pPayload;
     unsigned char huge *cursor;
     int published = 0;
@@ -238,7 +238,7 @@ void resblit_load_pal_or_stream(char *filename) {
     int rows;
     int local;
     int sHandle;
-    IoFile *file;
+    ResFile *file;
     unsigned char huge *buf = 0;
 
     pHandle = 0;

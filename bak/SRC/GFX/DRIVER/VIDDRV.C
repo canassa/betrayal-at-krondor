@@ -38,7 +38,7 @@ unsigned long far *video_driver_load(int mode, FileRef *file) {
     long size;
     int stream_id;
     int did_open;
-    IoFile *handle;
+    ResFile *handle;
 
     did_open = 0;
 

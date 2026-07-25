@@ -29,7 +29,7 @@ unsigned char far g_abStatNames[16][15] = {
 
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SYS/RAND.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/IO/IOCHUNK.H"
 #include "SRC/GFX/RASTER/VGABLIT.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
@@ -109,7 +109,7 @@ PDdxRecord dialog_load_record_by_key(unsigned long record_key, int use_offset) {
     unsigned char far *body_ptr;
     int alloc_size;
     char filename[16];
-    IoFile *file;
+    ResFile *file;
     int sub_size;
     int i;
 

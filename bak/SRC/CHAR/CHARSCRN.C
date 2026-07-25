@@ -8,7 +8,7 @@
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
 #include "structs.h"
 #include "SRC/CHAR/CHARSCRN.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/GFX/SPRITE/RESBLIT.H"
 #include "SRC/GFX/DRIVER/PALDRV.H"
@@ -41,7 +41,7 @@ static void charscreen_draw_spell_book_actor(CombatActor *actor, unsigned char f
     int spell_icon;
     int spell_count;
     int first;
-    IoFile *file;
+    ResFile *file;
     struct SpellRecord spell_rec;
     register int panel_y;
     register int spell_idx;

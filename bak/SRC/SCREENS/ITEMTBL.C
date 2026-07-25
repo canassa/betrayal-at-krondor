@@ -3,7 +3,7 @@
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 #include "SRC/SCREENS/ITEMTBL.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/IO/IOCHUNK.H"
 #include "SRC/SYS/FARTHUNK.H"
 #include "SRC/SYS/DOSMEM.H"
@@ -47,7 +47,7 @@ void itemtbl_free(void) {
 }
 
 int itemtbl_load(void) {
-    IoFile *fp;
+    ResFile *fp;
     int size;
 
     if (g_pItemDefTable == (ItemRecord far *)0) {

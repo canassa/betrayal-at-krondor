@@ -1,7 +1,7 @@
 #include <dos.h>
 #include "structs.h"
 #include "SRC/STREAM/BUFLOAD/CHUNKRD.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/FARTHUNK.H"
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/STREAM/RESLOAD/IFFREAD.H"
@@ -15,7 +15,7 @@
  */
 int g_nChunk_session_owns_close = -1;
 
-unsigned long chunkread_fread_far_large(char far *dst, unsigned long len, IoFile *file) {
+unsigned long chunkread_fread_far_large(char far *dst, unsigned long len, ResFile *file) {
     char far *p;
     char *scratch;
     unsigned long remaining;
@@ -66,7 +66,7 @@ unsigned long chunkread_fread_far_large(char far *dst, unsigned long len, IoFile
     return remaining - len;
 }
 
-int far chunkread_session_close(IoFile *file) {
+int far chunkread_session_close(ResFile *file) {
 
     g_nChunk_session_owns_close != -1 || panic(NULL);
     if (g_nChunk_session_owns_close != 0)
@@ -74,7 +74,7 @@ int far chunkread_session_close(IoFile *file) {
     g_nChunk_session_owns_close = -1;
 }
 
-IoFile *far chunkread_session_open(FileRef *file, char *chunk_id) {
+ResFile *far chunkread_session_open(FileRef *file, char *chunk_id) {
     (g_nChunk_session_owns_close == -1) || panic(NULL);
     if (is_file_cached(file) == 0) {
         if ((file = cached_file_open(file)) == 0)

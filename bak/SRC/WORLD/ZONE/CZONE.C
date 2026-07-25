@@ -2,7 +2,7 @@
 #include "SRC/SCREENS/MAINMENU.H"
 #include "structs.h"
 #include "SRC/WORLD/ZONE/CZONE.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/R3D/TBLSTORE/SHAPETBL.H"
@@ -104,7 +104,7 @@ struct ZoneActorRecord {
 
 void far czone_load_actors(unsigned char zone, unsigned char x, unsigned char y, VisibleEntryList *list) {
     unsigned short count;
-    IoFile *fp;
+    ResFile *fp;
     int i;
     int throttle_reset;
     int throttle;

@@ -2,7 +2,7 @@
 #include "SRC/SYS/SYSLOWIO.H"
 #include "structs.h"
 #include "SRC/UI/DLGWIDG.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "SRC/GFX/SPRITE/RECTSPR.H"
@@ -22,7 +22,7 @@ int g_nCursorBlinkOn = 0;
 unsigned long g_dwCursorBlinkPhaseStart = 0x00000000UL;
 
 Dialog *dlgwidget_dialog_load(char *filename) {
-    IoFile *file;
+    ResFile *file;
     Dialog *dialog;
     DialogWidget *widget;
     void *string_table;

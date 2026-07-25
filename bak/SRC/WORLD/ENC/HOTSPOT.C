@@ -3,7 +3,7 @@
 #include "structs.h"
 #include "SRC/WORLD/ENC/HOTSPOT.H"
 #include "SRC/SYS/RAND.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
 #include "SRC/R3D/ACTOR/ACTMOTN.H"
@@ -50,7 +50,7 @@ char g_aDefFileNames[12][13] = {
 short g_aDefRecordSizes[12] = {21, 399, 10, 8, 13, 7, 21, 409, 19, 7, 7, 8};
 
 void far hotspotevt_monst_load_tbl_cur_id(void) {
-    IoFile *file;
+    ResFile *file;
     VisibleEntryList *p;
 
     p = g_apCombat_zone_actor_lists[0];
@@ -61,7 +61,7 @@ void far hotspotevt_monst_load_tbl_cur_id(void) {
     g_monst_filename_buf[5] = 0x30 | p->bParty_y / 10;
     g_monst_filename_buf[6] = 0x30 | p->bParty_y % 10;
     file = bak_fopen(g_monst_filename_buf, "rb");
-    if (file != (IoFile *)0) {
+    if (file != (ResFile *)0) {
         bak_fseek(file, (unsigned long)((g_gameState.nChapter - 1) * 0xc0), SEEK_CUR);
         bak_fread(&g_nHotspotCount, 2, 1, file);
         bak_fread(g_aZoneHotspots, 0x13, g_nHotspotCount, file);
@@ -1155,7 +1155,7 @@ char far hotspotevt_bak_load_indexed_rec(int record_id, void *dest, long offset)
     int record_size;
     char header[4];
     char present;
-    IoFile *file;
+    ResFile *file;
 
     hotspotevt_bak_indexed_rec_info(record_id, &filename, &record_size);
     file = bak_fopen(filename, "rb");

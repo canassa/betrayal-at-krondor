@@ -7,18 +7,18 @@
 #define BAK_GSTATE_H
 
 #include "structs.h"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 
 extern unsigned short g_wLastTempWriteRecordKind;
 extern char g_abChapterEventSlot[9];
 
 /**
- * @brief Open @ref IoFile token for `TEMP.GAM`, the on-disk game-state
+ * @brief Open @ref ResFile token for `TEMP.GAM`, the on-disk game-state
  *        swap image.
  *
  * NULL whenever the file is closed (outside the world loop).
  */
-extern IoFile *g_tempGamFP;
+extern ResFile *g_tempGamFP;
 
 
 extern char g_abSleepStatDelta[6];

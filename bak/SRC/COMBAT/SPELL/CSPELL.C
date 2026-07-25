@@ -10,7 +10,7 @@
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 #include "SRC/COMBAT/SPELL/CSPELL.H"
 #include "SRC/SYS/RAND.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/IO/IOCHUNK.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
@@ -72,7 +72,7 @@ short *g_pSpellSymbolX;
 short *g_pSpellSymbolY;
 
 void cspell_subsystem_load(void) {
-    IoFile *f;
+    ResFile *f;
     int i;
     unsigned int blobLen;
     int docCount;
@@ -1738,7 +1738,7 @@ void cspell_scroll_clamp_cursor(int *cursor, int *scroll, int visible_rows, int 
 }
 
 void far cspell_symbol_resources_load(int chapter) {
-    IoFile *f;
+    ResFile *f;
     char *szFile = "symbolx.dat";
     int i;
 

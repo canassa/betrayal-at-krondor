@@ -5,7 +5,7 @@
 #include "structs.h"
 #include "SRC/WORLD/ENC/RGNENC.H"
 #include "SRC/SYS/RAND.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/R3D/SPRITE/WORLDRND.H"
 #include "SRC/R3D/CORE/R3D.H"
@@ -64,7 +64,7 @@ void rgnenc_free_3bufs_clear(void) {
 }
 
 int far rgnenc_load_zone_shape_index(char *filename) {
-    IoFile *fp;
+    ResFile *fp;
     int i;
 
     if (g_pZoneShapeIndex != 0) {
@@ -826,7 +826,7 @@ void far rgnenc_vis_pool_remove_matching(unsigned char far *pKey) {
 }
 
 int far rgnenc_chap_shp_init(void) {
-    IoFile *file;
+    ResFile *file;
     int i;
     int j;
 

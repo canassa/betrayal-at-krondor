@@ -2,8 +2,8 @@
 #define BAK_AUDRESLD_H
 
 #include "structs.h"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 
-extern IoFile *audio_resource_load_chunk(FileRef *file, int chunk_id);
+extern ResFile *audio_resource_load_chunk(FileRef *file, int chunk_id);
 
 #endif

@@ -10,7 +10,7 @@
 #include "SRC/WORLD/ENC/RGNENC.H"
 #include "structs.h"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/R3D/CORE/DISTDIR.H"
@@ -514,7 +514,7 @@ void far combatgrid_actor_set_grid_pos(int actor_idx, int new_x, int new_y) {
 
 void combatgrid_load_traps_dat(void) {
     int skip;
-    IoFile *file;
+    ResFile *file;
     int actor_idx;
     unsigned char tileX;
     unsigned char tileY;
@@ -714,7 +714,7 @@ void far combatgrid_tile_fx_init_pass(void) {
 }
 
 void combatgrid_load_and_init(void) {
-    IoFile *file;
+    ResFile *file;
     int col;
     int row;
 
@@ -1134,7 +1134,7 @@ void combatgrid_clear_tile_effects(void) {
 }
 
 void combatgrid_save_traps_terr(int encounter_idx) {
-    IoFile *file;
+    ResFile *file;
     int i;
     char tileX;
     char tileY;

@@ -3,7 +3,7 @@
 #include "structs.h"
 #include "SRC/SCREENS/CREDITS.H"
 #include "SRC/SYS/RAND.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "SRC/GFX/SPRITE/RESBLIT.H"
@@ -21,7 +21,7 @@ short g_credits_scroll_y;
 unsigned short g_nCreditsPassCount = 0x0000;
 
 void credits_load(void) {
-    IoFile *file;
+    ResFile *file;
     int i;
     unsigned short blobSize;
 

@@ -1,7 +1,7 @@
 #include "SRC/STREAM/CODEC/CODEC.H"
 #include "structs.h"
 #include "SRC/STREAM/RESLOAD/IFFREAD.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 
 IffResReader *near iff_reader_find(FileRef *key) {
     int i;
@@ -16,7 +16,7 @@ IffResReader *near iff_reader_find(FileRef *key) {
 }
 
 void near bakfile_reset_preserve_cursor(IffResReader *reader) {
-    IoFile *file;
+    ResFile *file;
     long end;
     register char *p;
     register int count;
@@ -60,13 +60,13 @@ int cache_slot_write(IffResReader *record) {
     return 1;
 }
 
-IoFile *far cached_file_open(char *filename) {
+ResFile *far cached_file_open(char *filename) {
     IffResReader *reader;
 
     if ((reader = iff_reader_find((void *)0)) == 0)
-        return (IoFile *)0;
+        return (ResFile *)0;
     if ((reader->pStream = bak_fopen(filename, "rb")) == 0)
-        return (IoFile *)0;
+        return (ResFile *)0;
     bak_fseek(reader->pStream, 0L, SEEK_END);
     *(long *)&reader->pLevel_cache[0] = bak_ftell(reader->pStream) | 0x80000000L;
     bakfile_reset_preserve_cursor(reader);
@@ -79,7 +79,7 @@ long near chunk_seek_rollback(IffResReader *reader) {
     return -1L;
 }
 
-long chunk_seek(IoFile *handle, char *chunk_id, int mode) {
+long chunk_seek(ResFile *handle, char *chunk_id, int mode) {
     IffResReader *reader;
     int len;
     short saved_skip_count;
@@ -193,14 +193,14 @@ long chunk_seek(IoFile *handle, char *chunk_id, int mode) {
     return reader->nCursor;
 }
 
-unsigned long far cached_file_chunk_size(register IoFile *file) {
+unsigned long far cached_file_chunk_size(register ResFile *file) {
     IffResReader *reader;
     if (!file || !((reader = iff_reader_find(file)) != 0))
         return 0xFFFFFFFFUL;
     return (unsigned long)reader->wChunk_size_hi_flags << 16 | reader->wChunk_size_lo;
 }
 
-int far cached_file_close(IoFile *file) {
+int far cached_file_close(ResFile *file) {
     register IffResReader *reader;
     if (!file || !((reader = iff_reader_find(file)) != 0))
         return 0;

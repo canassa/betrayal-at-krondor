@@ -7,7 +7,7 @@
 #include "SRC/INPUT/TIMER.H"
 #include "structs.h"
 #include "SRC/GAME/SAVEGAME.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/GFX/PALETTE/PALETTE.H"
 #include "SRC/GAME/GSTATE.H"
 #include "SRC/CHAR/STAT.H"
@@ -156,7 +156,7 @@ void far savegame_chapter_start_dispatch(int chapter) {
 
     g_pChapDatFilename[4] = (char)chapter + '0';
     {
-        IoFile *file = bak_fopen(g_pChapDatFilename, "rb");
+        ResFile *file = bak_fopen(g_pChapDatFilename, "rb");
         bak_fread(&g_gameState, 1, 0x10, file);
         bak_fread(&spawn_rec, 7, 1, file);
         bak_fclose(file);

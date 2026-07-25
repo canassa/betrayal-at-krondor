@@ -6,7 +6,7 @@
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 #include "SRC/WORLD/LOOP/MAP.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/GFX/PALETTE/PALCYC.H"
 #include "SRC/GFX/SPRITE/RESBLIT.H"
@@ -55,7 +55,7 @@ void map_color_remap_load(char *filename) {
     int i;
     unsigned char idx;
     unsigned char val;
-    IoFile *file;
+    ResFile *file;
 
     g_pColorRemap = galloc_safe_zcalloc(256);
     i = 0;

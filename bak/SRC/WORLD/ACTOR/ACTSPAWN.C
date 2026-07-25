@@ -7,7 +7,7 @@
 #include "SRC/SYS/RAND.H"
 
 #include "SRC/WORLD/ACTOR/ACTSPAWN.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/IO/IOCHUNK.H"
 #include "SRC/R3D/CORE/DISTDIR.H"
 #include "SRC/SYS/DOSMEM.H"
@@ -93,7 +93,7 @@ int actorspawn_for_location_by_time(int location_id) {
 }
 
 Actor far *actorspawn_objfixed(int kind, long world_x, long world_y) {
-    register IoFile *file;
+    register ResFile *file;
     register int ipass;
     int rec_idx;
     unsigned int chap_min;

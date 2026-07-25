@@ -4,7 +4,7 @@
 #include "SRC/UI/DLGWIDG.H"
 #include "structs.h"
 #include "SRC/UI/MENUPAGE.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/INPUT/KEYBOARD.H"
@@ -25,7 +25,7 @@ short g_nJoyXVel = 0;
 short g_nJoyYVel = 0;
 
 MenuPage *menupage_load(char *filename) {
-    IoFile *file;
+    ResFile *file;
     MenuPage *page;
     int i;
     void *stringBlob;

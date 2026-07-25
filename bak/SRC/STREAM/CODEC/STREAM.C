@@ -3,13 +3,13 @@
 #include "SRC/STREAM/CODEC/STREAM.H"
 
 #define fmemcpy_far fmemcpy_far__proto
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/FARPTR.H"
 #include "SRC/STREAM/CODEC/CODEC.H"
 #undef fmemcpy_far
 extern void fmemcpy_far();
 
-int stream_open(int codec_kind, IoFile *file, char *mode, unsigned long size) {
+int stream_open(int codec_kind, ResFile *file, char *mode, unsigned long size) {
     int slot;
     char buf[4];
 

@@ -7,7 +7,7 @@
 #include "SRC/GEN/GFXCTX.H"
 
 #include "SRC/SCRIPT/ADSCRIPT.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/FARTHUNK.H"
 #include "SRC/GFX/DRIVER/PALDRV.H"
 #include "SRC/GFX/RASTER/PRESENT.H"

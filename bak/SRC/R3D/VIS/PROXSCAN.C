@@ -5,7 +5,7 @@
 #include "SRC/WORLD/ZONE/PROXIM.H"
 #include "structs.h"
 #include "SRC/R3D/VIS/PROXSCAN.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/R3D/CORE/DISTDIR.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
@@ -32,7 +32,7 @@ typedef struct {
 } OctPos;
 
 void far proxscan_filter_table_load(void) {
-    IoFile *file;
+    ResFile *file;
 
     file = bak_fopen("filter.dat", "rb");
     if (g_engine_prefs != (EnginePrefs *)0 && g_engine_prefs->detail_level != 0) {

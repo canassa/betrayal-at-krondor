@@ -2,9 +2,9 @@
 #define BAK_AUDRES_H
 
 #include "structs.h"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 
-extern unsigned char far *audres_load_chunk_by_mode(IoFile *file, unsigned int size_lo, unsigned int size_hi,
+extern unsigned char far *audres_load_chunk_by_mode(ResFile *file, unsigned int size_lo, unsigned int size_hi,
                                             unsigned int *out_size, unsigned short allocTag);
 extern void audres_release_buffer_chain(AudFragNode far *head);
 extern int audres_stream_find_tagged_record(int stream, unsigned char tag);

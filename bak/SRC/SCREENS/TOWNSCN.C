@@ -9,7 +9,7 @@
 #include "SRC/SCRIPT/TTM.H"
 #include "structs.h"
 #include "SRC/SCREENS/TOWNSCN.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/GFX/PALETTE/PALCYC.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
@@ -79,7 +79,7 @@ static int far townscene_load(int chapter, int sub, int preserve) {
     int i;
     unsigned int size;
     MenuEntry *pEntry;
-    IoFile *file;
+    ResFile *file;
     TownSceneActor *pActor;
     ActorSubrecord far *pSub;
 

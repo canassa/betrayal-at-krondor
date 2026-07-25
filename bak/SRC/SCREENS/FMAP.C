@@ -6,7 +6,7 @@
 #include "SRC/WORLD/ZONE/CZONE.H"
 #include "structs.h"
 #include "SRC/SCREENS/FMAP.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/GFX/PALETTE/PALCYC.H"
 #include "SRC/GFX/FONT/FONT.H"
@@ -225,7 +225,7 @@ void far fmap_screen_run(void) {
 }
 
 void fmap_twn_load(void) {
-    IoFile *file;
+    ResFile *file;
     unsigned short *labelPtr;
     int i;
     unsigned short *xPtr;
@@ -310,13 +310,13 @@ int far fmap_xy_lookup_for_chapter(int *out_x, int *out_y) {
     unsigned int i;
     int entry_chapter;
     unsigned char refIndex;
-    register IoFile *file;
+    register ResFile *file;
     register int found;
 
     found = 0;
     refIndex = g_apCombat_zone_actor_lists[0]->bRef_pair_index;
     file = bak_fopen("fmap_xy.dat", "rb");
-    if (file != (IoFile *)0x0) {
+    if (file != (ResFile *)0x0) {
         for (i = 1; (int)i <= 0xc; i++) {
             bak_fread(&entry_chapter, 2, 1, file);
             if (g_gameState.nZoneId == i) {

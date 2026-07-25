@@ -10,7 +10,7 @@
 
 #include "SRC/GAME/BOOT.H"
 #include "SRC/SYS/RAND.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/SYSLOWIO.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/AUDIO/RES/POOL.H"
@@ -61,7 +61,7 @@ char g_szVmcodeOvl[11] = "vmcode.ovl";
 #endif
 
 void boot_start_dat_load(void) {
-    IoFile *file;
+    ResFile *file;
 
     file = bak_fopen("start.dat", "rb");
     g_render_camera_scratch = actormotion_vec_alloc(0);
@@ -113,7 +113,7 @@ void far boot_audio_init(void) {
 void boot_sfx_resources_release(void) {
     audio_sfx_stop_environment_set();
     cached_file_close(g_pSfxArchiveStream);
-    g_pSfxArchiveStream = (IoFile *)0x0;
+    g_pSfxArchiveStream = (ResFile *)0x0;
 #ifdef V102CD
     v102_cdaudio_stop();
 #endif
@@ -158,14 +158,14 @@ void boot_video_init_for_mode(int mode) {
 }
 
 void boot_check_memory_or_die(void) {
-    IoFile *file;
+    ResFile *file;
     int file_missing;
     unsigned short emmPagesFree;
     unsigned long requiredBytes;
     unsigned long freeBytes;
 
     file = bak_fopen("mem.dat", "rb");
-    if (file != (IoFile *)0x0) {
+    if (file != (ResFile *)0x0) {
         file_missing = 0;
         bak_fread(&requiredBytes, 4, 1, file);
         bak_fclose(file);
@@ -177,7 +177,7 @@ void boot_check_memory_or_die(void) {
     freeBytes = (unsigned long)(long)alloc_far(0xffffffff, 0);
     if (((int)emmPagesFree < 0x40) || (freeBytes < requiredBytes)) {
         boot_sfx_resources_release();
-        if (g_pSfxArchiveStream != (IoFile *)0x0) {
+        if (g_pSfxArchiveStream != (ResFile *)0x0) {
             cached_file_close(g_pSfxArchiveStream);
         }
         if (g_nEmsInit != 0) {
@@ -273,7 +273,7 @@ void far boot_main_menu_resources_free(void) {
 
 void boot_engine_exit(int exit_code) {
     boot_sfx_resources_release();
-    if (g_pSfxArchiveStream != (IoFile *)0x0) {
+    if (g_pSfxArchiveStream != (ResFile *)0x0) {
         cached_file_close(g_pSfxArchiveStream);
     }
     if (g_nEmsInit != 0) {

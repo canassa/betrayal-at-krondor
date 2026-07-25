@@ -2,7 +2,7 @@
 #include "SRC/GEN/GFXCTX.H"
 #include "structs.h"
 #include "SRC/UI/LISTWDG.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "SRC/GFX/SCREEN/SCREEN.H"
@@ -61,7 +61,7 @@ ListWidget *far listwidget_attach(short x, short y, short width, short line_coun
 }
 
 ListWidget *far listwidget_load(char *filename, MenuPage *parent, short child_idx) {
-    IoFile *file;
+    ResFile *file;
     short x;
     short y;
     short width;
@@ -74,7 +74,7 @@ ListWidget *far listwidget_load(char *filename, MenuPage *parent, short child_id
 
     widget = (ListWidget *)0;
     file = bak_fopen(filename, "rb");
-    if (file != (IoFile *)0) {
+    if (file != (ResFile *)0) {
         bak_fread(&x, 2, 1, file);
         bak_fread(&y, 2, 1, file);
         bak_fread(&width, 2, 1, file);

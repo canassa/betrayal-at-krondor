@@ -2,7 +2,7 @@
 #include "SRC/GEN/GFXCTX.H"
 #include "structs.h"
 #include "SRC/STREAM/RESLOAD/FONTLOAD.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/FARTHUNK.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "SRC/SYS/DOSMEM.H"

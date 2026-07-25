@@ -3,7 +3,7 @@
 #include "SRC/GFX/FONT/FONT.H"
 #include "structs.h"
 #include "SRC/GFX/DRIVER/PALDRV.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/SYS/FARPTR.H"
 #include "SRC/STREAM/RESLOAD/IFFREAD.H"

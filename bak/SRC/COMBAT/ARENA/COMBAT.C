@@ -11,7 +11,7 @@
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/SYS/RAND.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/IO/IOCHUNK.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
@@ -172,7 +172,7 @@ void far combat_arena_mode_exit(void) {
 }
 
 void far combat_arena_load_remap_pals(void) {
-    IoFile *fp;
+    ResFile *fp;
 
     fp = bak_fopen("red.rmp", "rb");
     bak_fread_chunked(g_abCursorPaletteLut + 0x100, (long)0x100, (long)1, fp);

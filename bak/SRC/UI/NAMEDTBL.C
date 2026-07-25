@@ -1,13 +1,13 @@
 #include "SRC/GEN/GFXCTX.H"
 #include "structs.h"
 #include "SRC/UI/NAMEDTBL.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/GFX/FONT/FONT.H"
 
 int *namedtbl_load(char *filename) {
     int *ptr;
-    IoFile *file;
+    ResFile *file;
     void *strPool;
     unsigned int poolSize;
     int i;

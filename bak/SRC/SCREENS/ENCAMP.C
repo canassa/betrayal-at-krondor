@@ -6,7 +6,7 @@
 #include "SRC/INPUT/TIMER.H"
 #include "structs.h"
 #include "SRC/SCREENS/ENCAMP.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/GFX/FONT/FONT.H"
 #include "SRC/GFX/SPRITE/RESBLIT.H"
@@ -260,7 +260,7 @@ void far encamp_run(void) {
 }
 
 void far encamp_load(void) {
-    register IoFile *file;
+    register ResFile *file;
     unsigned short *ptx;
     unsigned short *pty;
     register int i;

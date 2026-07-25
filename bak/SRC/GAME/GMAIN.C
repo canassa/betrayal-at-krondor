@@ -5,7 +5,7 @@
 #include "SRC/SYS/SYSLOWIO.H"
 #include "structs.h"
 #include "SRC/GAME/GMAIN.H"
-#include "SRC/IO/IO.H"
+#include "SRC/IO/RESOURCE.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/GFX/FONT/FONT.H"
@@ -290,7 +290,7 @@ void far gmain_play_intro_animation(void) {
 }
 
 int far gmain_play_chapter_intro(int chapter, int part) {
-    IoFile *file;
+    ResFile *file;
     int result;
     int trackId;
     char bookName[20];
