@@ -1,3 +1,8 @@
+/**
+ * @file    IO.C
+ * @brief   Resource-archive I/O layer: the `bak_*` stdio wrappers, the
+ *          `KRONDOR.RMF` directory loader, and the INT 24h critical-error ISR.
+ */
 #include <ctype.h>
 #include <dos.h>
 #include <stdio.h>
@@ -275,6 +280,8 @@ void bak_setbuf(IoFile *file, char *buffer) {
     }
 }
 
+static void interrupt far io_critical_error_handler();
+
 void bak_init_resources(void) {
     RmfEntry far *entry;
     int archiveIdx;
@@ -522,7 +529,7 @@ FileHandle *bak_find_handle(IoFile *file) {
  * @param bp,di,si,ds,es,dx,cx,bx  Saved registers; unused (positions @p ax).
  * @param ax  Saved AX; overwritten with the INT 24h return code.
  */
-void interrupt far io_critical_error_handler(unsigned bp, unsigned di, unsigned si,
+static void interrupt far io_critical_error_handler(unsigned bp, unsigned di, unsigned si,
                                              unsigned ds, unsigned es, unsigned dx,
                                              unsigned cx, unsigned bx, unsigned ax) {
     ax = g_ioInFopen ? INT24_FAIL : INT24_RETRY;

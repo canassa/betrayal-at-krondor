@@ -309,7 +309,6 @@ extern void io_archive_seek(long offset);
 
 extern FileHandle *bak_find_handle(IoFile *file);
 
-extern void interrupt far io_critical_error_handler();
 
 extern long far dos_read(unsigned char far *buf, long count, int fd);
 extern long far dos_write(unsigned char far *buf, long count, int fd);
