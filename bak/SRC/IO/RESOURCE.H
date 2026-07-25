@@ -1,9 +1,18 @@
 /**
  * @file    RESOURCE.H
- * @brief   The game's resource-I/O layer: open any asset by name, whether it
- *          lives as a loose file on disk or packed inside the CD archive.
+ * @brief   The game's resource-I/O layer.
+ * @ingroup resource
+ */
+#ifndef BAK_RESOURCE_H
+#define BAK_RESOURCE_H
+
+#include "structs.h"
+
+/**
+ * @defgroup resource Resource I/O Layer
+ * @brief Open any asset by name, whether it lives as a loose file on disk or
+ *        packed inside the CD archive.
  *
- * @details
  * This module is the single gateway between the game and its data. Every
  * subsystem — screens, dialog, sound, world, combat, save — reads its assets
  * through the stdio-shaped `bak_*` API declared here: a caller names a
@@ -28,11 +37,8 @@
  *
  * Nothing else in the codebase touches `KRONDOR.RMF` / `KRONDOR.001`
  * directly — this header is the entire public contract for reading game data.
+ * @{
  */
-#ifndef BAK_RESOURCE_H
-#define BAK_RESOURCE_H
-
-#include "structs.h"
 
 
 /** @brief Number of slots in the @ref g_resHandles pool — the cap on
@@ -339,5 +345,7 @@ extern FileHandle *bak_find_handle(ResFile *file);
 
 extern long far dos_read(unsigned char far *buf, long count, int fd);
 extern long far dos_write(unsigned char far *buf, long count, int fd);
+
+/** @} */
 
 #endif
