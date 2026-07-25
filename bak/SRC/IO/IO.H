@@ -61,7 +61,7 @@ typedef struct Archive {
  * @ref FileHandle::curOffset locate it). Byte-packed; `sizeof` 18.
  */
 typedef struct FileHandle {
-    short archiveIndex;       /**< 0x00: 1-based archive index; 0 = loose. */
+    int archiveIndex;         /**< 0x00: 1-based archive index; 0 = loose. */
     unsigned long baseOffset; /**< 0x02: payload start in KRONDOR.001. */
     unsigned long length;     /**< 0x06: resource payload size. */
     unsigned long curOffset;  /**< 0x0a: read cursor within the window. */
