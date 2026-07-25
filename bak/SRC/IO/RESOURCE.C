@@ -494,26 +494,38 @@ FileHandle *bak_find_handle(ResFile *file) {
     FileHandle *slot;
     int count;
 
+    // A NULL token is a request to flush the one-entry lookup cache.
     if (file == NULL) {
         g_resFindHandleCacheKey = NULL;
         g_resFindHandleCacheVal = NULL;
         return NULL;
     }
+
+    // No archive loaded: every file is a loose stdio stream, not a pooled handle.
     if (g_resArchiveCount == 0)
         return NULL;
+
+    // Cache hit: the same token as the last lookup returns its handle directly.
     if (file == g_resFindHandleCacheKey)
         return g_resFindHandleCacheVal;
+
+
     g_resFindHandleCacheKey = file;
     slot = g_resHandles;
     count = RES_HANDLE_POOL_SIZE;
+
+    // Scan the handle pool for the slot this token points at.
     while (count != 0 && slot != (FileHandle *)file) {
         slot++;
         count--;
     }
+
+    // Not found, or the slot is no longer in use: a miss.
     if (count == 0 || !slot->inUse) {
         slot = NULL;
         g_resFindHandleCacheKey = NULL;
     }
+
     return g_resFindHandleCacheVal = slot;
 }
 
