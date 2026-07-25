@@ -31,7 +31,7 @@ unsigned long g_ioLookupHash;
 int g_ioCurrentArchive;
 int g_ioArchiveCount;
 int g_ioHashSeed;
-unsigned int g_ioHashRotate;
+int g_ioHashRotate;
 FileHandle *g_ioFindHandleCacheVal;
 IoFile *g_ioFindHandleCacheKey;
 
@@ -529,7 +529,7 @@ FileHandle *bak_find_handle(IoFile *file) {
  * @param bp,di,si,ds,es,dx,cx,bx  Saved registers; unused (positions @p ax).
  * @param ax  Saved AX; overwritten with the INT 24h return code.
  */
-static void interrupt far io_critical_error_handler(unsigned bp, unsigned di, unsigned si,
+static void interrupt far io_critical_error_handler(unsigned _bp, unsigned di, unsigned si,
                                              unsigned ds, unsigned es, unsigned dx,
                                              unsigned cx, unsigned bx, unsigned ax) {
     ax = g_ioInFopen ? INT24_FAIL : INT24_RETRY;

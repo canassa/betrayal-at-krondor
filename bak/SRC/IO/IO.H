@@ -230,7 +230,7 @@ extern int g_ioHashSeed;
  * @brief Per-character left-rotate count for @ref io_filename_hash, from the
  *        `KRONDOR.RMF` header (4 in shipped data).
  */
-extern unsigned int g_ioHashRotate;
+extern int g_ioHashRotate;
 
 
 /**
