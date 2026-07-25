@@ -8,6 +8,7 @@
 #include "structs.h"
 #include "SRC/GAME/SAVEGAME.H"
 #include "SRC/IO/RESOURCE.H"
+#include "SRC/IO/DOSRW.H"
 #include "SRC/GFX/PALETTE/PALETTE.H"
 #include "SRC/GAME/GSTATE.H"
 #include "SRC/CHAR/STAT.H"

@@ -363,10 +363,6 @@ extern void res_select_archive(int archiveIndex);
  */
 extern void res_archive_seek(unsigned long offset);
 
-
-extern long far dos_read(unsigned char far *buf, long count, int fd);
-extern long far dos_write(unsigned char far *buf, long count, int fd);
-
 /** @} */
 
 #endif
