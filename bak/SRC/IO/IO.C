@@ -480,12 +480,12 @@ void bak_select_archive(int archiveIndex) {
     }
 }
 
-void io_archive_seek(long offset) {
+void io_archive_seek(unsigned long offset) {
     Archive *ar;
 
     ar = &g_ioArchives[g_ioCurrentArchive];
     if (ar->filePos != offset) {
-        fseek(ar->fp, offset, SEEK_SET);
+        fseek(ar->fp, (long)offset, SEEK_SET);
         ar->filePos = offset;
     }
 }

@@ -301,10 +301,11 @@ extern void bak_select_archive(int archive_index);
  * @ref Archive::fp there, but only when @ref Archive::filePos shows it isn't
  * already positioned — the cache skips a redundant `fseek`.
  *
- * @param offset Byte position within the archive (window base + read
- *        cursor). `long` to match `fseek`; always a non-negative file position.
+ * @param offset Absolute byte position within `KRONDOR.001` (window base + read
+ *        cursor). Unsigned — always a non-negative file position, never a
+ *        relative displacement (the seek is always `SEEK_SET`).
  */
-extern void io_archive_seek(long offset);
+extern void io_archive_seek(unsigned long offset);
 
 
 extern FileHandle *bak_find_handle(IoFile *file);
