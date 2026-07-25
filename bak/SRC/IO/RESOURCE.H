@@ -1,7 +1,33 @@
 /**
  * @file    RESOURCE.H
- * @brief   Resource-archive I/O layer: stdio-shaped `bak_*` wrappers over
- *          loose files and the `KRONDOR.RMF`-mapped archive resources.
+ * @brief   The game's resource-I/O layer: open any asset by name, whether it
+ *          lives as a loose file on disk or packed inside the CD archive.
+ *
+ * @details
+ * This module is the single gateway between the game and its data. Every
+ * subsystem — screens, dialog, sound, world, combat, save — reads its assets
+ * through the stdio-shaped `bak_*` API declared here: a caller names a
+ * resource and gets back an opaque @ref ResFile token that acts like an
+ * ordinary file.
+ *
+ * An asset can live in one of two places, and this layer hides which:
+ *   - a loose file on disk (dev builds, floppy installs, or a patch), or
+ *   - a byte-range packed inside the archive `KRONDOR.001`.
+ *
+ * A loose file is tried first, so a loose copy transparently shadows the
+ * packed one — ship packed, iterate loose.
+ *
+ * The archive is a pair of files: `KRONDOR.RMF` is the index (it maps each
+ * resource name to where its bytes begin) and `KRONDOR.001` holds the packed
+ * payload. Bundling the game's many resources behind a single open file keeps
+ * it within DOS's open-handle limit while still serving many logical files.
+ *
+ * Because the data may sit on a CD, the layer also rides out "drive not
+ * ready / please insert the disc" errors, retrying the open instead of
+ * aborting.
+ *
+ * Nothing else in the codebase touches `KRONDOR.RMF` / `KRONDOR.001`
+ * directly — this header is the entire public contract for reading game data.
  */
 #ifndef BAK_RESOURCE_H
 #define BAK_RESOURCE_H
