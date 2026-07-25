@@ -301,13 +301,11 @@ void bak_init_resources(void) {
     strcpy(path, g_cfgResourceDrivePrefix);
     strcat(path, "krondor.rmf");
     filenamePtr = path;
-    if ((fp = fopen(filenamePtr, "rb")) == NULL)
-        return;
 #else
     filenamePtr = "krondor.rmf";
+#endif
     if ((fp = fopen(filenamePtr, "rb")) == NULL)
         return;
-#endif
 
     fread(&readCount, sizeof(readCount), 1, fp);
     fread(&g_ioHashSeed, sizeof(g_ioHashSeed), 1, fp);
