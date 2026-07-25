@@ -77,7 +77,7 @@ ResFile *bak_fopen(char *filename, char *mode) {
         slot->inUse = TRUE;
         slot->stdioFile = fp;
     } else {
-        if (!bak_resource_lookup(slot)) {
+        if (!res_lookup(slot)) {
             return NULL;
         }
         res_select_archive(slot->archiveIndex);
@@ -385,7 +385,7 @@ unsigned long res_filename_hash(char *filename) {
     return g_resLookupHash = val;
 }
 
-int bak_resource_lookup(FileHandle *slot) {
+int res_lookup(FileHandle *file) {
     RmfEntry far *entry;
     unsigned long hash;
     int above;
@@ -432,9 +432,9 @@ int bak_resource_lookup(FileHandle *slot) {
 
     // Found: record where the resource lives; else report a miss.
     if (entry->hash == hash) {
-        slot->archiveIndex = i;
-        slot->baseOffset = entry->headerOffset;
-        slot->length = slot->curOffset = 0;
+        file->archiveIndex = i;
+        file->baseOffset = entry->headerOffset;
+        file->length = file->curOffset = 0;
         return TRUE;
     } else {
         return FALSE;

@@ -225,7 +225,7 @@ extern char g_resOpenHandleCount;
 
 /**
  * @brief The query filename's hash, passed from @ref res_filename_hash to
- *        @ref bak_resource_lookup as the directory-scan key.
+ *        @ref res_lookup as the directory-scan key.
  */
 extern unsigned long g_resLookupHash;
 
@@ -312,7 +312,7 @@ extern void res_invalidate_archives(void);
  *
  * Uppercases @p filename in place and folds it into a rotating 32-bit hash
  * (seeded by @ref g_resHashSeed, rotated by @ref g_resHashRotate). The result is
- * also written to @ref g_resLookupHash — the channel @ref bak_resource_lookup
+ * also written to @ref g_resLookupHash — the channel @ref res_lookup
  * actually reads — so the return value is redundant.
  *
  * @param filename Resource name; uppercased in place. NULL yields a 0 hash.
@@ -321,7 +321,20 @@ extern void res_invalidate_archives(void);
 extern unsigned long res_filename_hash(char *filename);
 
 
-extern int bak_resource_lookup(FileHandle *slot);
+/**
+ * @brief Locate the resource hashed into @ref g_resLookupHash and record where
+ *        it lives — archive index and offset — into @p file.
+ *
+ * The search starts in the current archive and spirals outward to its
+ * neighbours (the archive above, then below, widening each round). That
+ * multi-archive search is unused in the shipped game: only one archive
+ * (`KRONDOR.001`) is registered, so the loop never runs and every resource
+ * resolves within that single archive.
+ *
+ * @param file Handle to fill with the resource's location on success.
+ * @return `TRUE` if the resource was found, `FALSE` otherwise.
+ */
+extern int res_lookup(FileHandle *file);
 
 /**
  * @brief Make @p archiveIndex the currently-open archive, (re)opening its
