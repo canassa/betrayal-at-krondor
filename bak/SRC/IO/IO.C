@@ -25,8 +25,8 @@ char g_ioOpenHandleCount;
 unsigned long g_ioLookupHash;
 int g_ioCurrentArchive;
 int g_ioArchiveCount;
-short g_ioHashSeed;
-unsigned short g_ioHashRotate;
+int g_ioHashSeed;
+unsigned int g_ioHashRotate;
 FileHandle *g_ioFindHandleCacheVal;
 IoFile *g_ioFindHandleCacheKey;
 
@@ -277,8 +277,8 @@ void bak_setbuf(IoFile *file, char *buffer) {
 
 void bak_init_resources(void) {
     RmfEntry far *entry;
-    short archiveIdx;
-    short readCount;
+    int archiveIdx;
+    int readCount;
     unsigned long hashVal;
     unsigned long offsetVal;
     char *filenamePtr;

@@ -44,10 +44,10 @@ typedef struct RmfEntry {
  */
 typedef struct Archive {
     char fileName[14];        /**< 0x00: NUL-padded payload name (13B used). */
-    short slotIndex;          /**< 0x0e: own pool slot; write-once, unread. */
+    int slotIndex;            /**< 0x0e: own pool slot; write-once, unread. */
     FILE *fp;                 /**< 0x10: open CRT stream on the payload. */
     unsigned long filePos;    /**< 0x12: cached fp seek offset. */
-    unsigned short unused;    /**< 0x16: never read or written. */
+    unsigned int unused;      /**< 0x16: never read or written. */
     RmfEntry far *directory;  /**< 0x18: loaded hash->offset table. */
 } Archive;
 
@@ -223,14 +223,14 @@ extern int g_ioArchiveCount;
  *
  * Signed — sign-extended into the 32-bit hash, so the type is load-bearing.
  */
-extern short g_ioHashSeed;
+extern int g_ioHashSeed;
 
 
 /**
  * @brief Per-character left-rotate count for @ref io_filename_hash, from the
  *        `KRONDOR.RMF` header (4 in shipped data).
  */
-extern unsigned short g_ioHashRotate;
+extern unsigned int g_ioHashRotate;
 
 
 /**
