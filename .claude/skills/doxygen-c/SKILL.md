@@ -227,6 +227,60 @@ int          czone_actor_count(const CombatZone *zone);
 - `@addtogroup combat_grid` (with `@{ @}`) appends to an existing group across files.
 - `@name Grid helpers` + `@{ @}` groups members *within* one struct/file without a module.
 
+### Where a *module overview* belongs — `@file` brief + `@defgroup` narrative
+
+A `@file` block documents a **file**; a `@defgroup` documents a **concept/subsystem**. A
+"what is this module about" overview (the 10,000-foot narrative — purpose and high-level
+design, *no implementation detail*) is a *concept*, so it belongs in a `@defgroup`, **not**
+stuffed into a fat `@file` detailed description. Rules:
+
+- **Put the overview in the public header, never the `.c`.** The header is the public
+  contract readers browse; source-file docs organize worse and risk duplicate-`@file`
+  warnings. Reserve the `.c` for `@internal` implementation notes.
+- **Keep every `@file` block a one-liner** — `@brief` (one line) + `@ingroup <label>` so the
+  file page links to the module. The narrative lives in the group, so all your `@file`
+  blocks stay uniform instead of one being fat.
+- **Define the group exactly once.** For a single-header module, put the
+  `@defgroup <label> <Title>` (carrying the narrative) at the top of that header, right after
+  the includes, open it with `@{`, and close with `@}` before `#endif`; the header's
+  declarations become the group's members. If the module later grows a second file, that
+  file uses `@addtogroup <label>` — **never** a second `@defgroup`.
+- A whole project's group taxonomy can instead be centralized in one `groups.dox` holding
+  every `@defgroup`, with each header `@addtogroup`-ing in — reach for that only once you
+  have *many* modules and want a curated (nested) tree. Premature for a single group.
+- **One brief, one detailed per entity.** Don't split the overview across `.h` and `.c`, and
+  don't give the `@file` and the `@defgroup` the same text — they're different entities: the
+  `@file` brief names the *file*, the `@defgroup` carries the *subsystem* overview.
+- **Don't** use `@mainpage` or a separate `.md` (`USE_MDFILE_AS_MAINPAGE`) for one module —
+  that's for *project-wide* front matter.
+
+Single-header module, the canonical shape:
+
+```c
+/**
+ * @file    resource.h
+ * @brief   The resource-I/O layer.
+ * @ingroup resource
+ */
+#ifndef RESOURCE_H
+#define RESOURCE_H
+
+/**
+ * @defgroup resource Resource I/O Layer
+ * @brief One-line what-it-is.
+ *
+ * The 10,000-foot narrative: purpose, high-level design, what it abstracts — no
+ * implementation detail. Reference symbols with @ref (e.g. @ref ResFile).
+ * @{
+ */
+
+/* ... typedefs / externs / function decls ... */
+
+/** @} */
+
+#endif
+```
+
 ## Cross-referencing (never hardcode a symbol)
 
 **HARD RULE: every reference to a symbol is an `@ref`.** It is the only form Doxygen
