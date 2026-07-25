@@ -46,7 +46,7 @@ ResFile *bak_fopen(char *filename, char *mode) {
     register FILE *fp;
 
     if (g_resArchivesDirty) {
-        bak_select_archive(0);
+        res_select_archive(0);
     }
     bak_init_resources();
     g_resError = FALSE;
@@ -80,7 +80,7 @@ ResFile *bak_fopen(char *filename, char *mode) {
         if (!bak_resource_lookup(slot)) {
             return NULL;
         }
-        bak_select_archive(slot->archiveIndex);
+        res_select_archive(slot->archiveIndex);
         res_archive_seek(slot->baseOffset + slot->curOffset);
         fp = g_resArchives[g_resCurrentArchive].fp;
         fread(name, 0xd, 1, fp);
@@ -140,7 +140,7 @@ int bak_fread(void *ptr, int size, int count, ResFile *file) {
         count--;
         nBytes -= size;
     }
-    bak_select_archive(handle->archiveIndex);
+    res_select_archive(handle->archiveIndex);
     res_archive_seek(handle->baseOffset + handle->curOffset);
     file = (ResFile *)g_resArchives[handle->archiveIndex].fp;
     nRead = fread(ptr, size, count, (FILE *)file);
@@ -217,7 +217,7 @@ int bak_fgetc(ResFile *file) {
         return fgetc(g_resLastFgetcCrtFile = handle->stdioFile);
     if (handle->curOffset >= handle->length)
         return -1;
-    bak_select_archive(handle->archiveIndex);
+    res_select_archive(handle->archiveIndex);
     res_archive_seek(handle->baseOffset + handle->curOffset);
     file = (ResFile *)g_resArchives[handle->archiveIndex].fp;
     result = fgetc(g_resLastFgetcCrtFile = (FILE *)file);
@@ -434,7 +434,7 @@ int bak_resource_lookup(FileHandle *slot) {
     }
 }
 
-void bak_select_archive(int archiveIndex) {
+void res_select_archive(int archiveIndex) {
     bool16 probeFailed;
     Archive *arc;
 #ifdef V102CD

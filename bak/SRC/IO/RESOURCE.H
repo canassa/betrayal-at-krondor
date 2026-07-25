@@ -193,7 +193,7 @@ extern FILE *g_resLastFgetcCrtFile;
  *        it wants to survive a DOS critical error.
  *
  * Read by @ref res_critical_error_handler: while set, the handler fails the DOS
- * call (returns 3) so @ref bak_fopen / @ref bak_select_archive can retry the
+ * call (returns 3) so @ref bak_fopen / @ref res_select_archive can retry the
  * open in C, rather than letting DOS blindly retry (return 1).
  */
 extern bool8 g_resInFopen;
@@ -218,7 +218,7 @@ extern bool8 g_resArchivesDirty;
 
 /**
  * @brief Number of currently-open @ref g_resHandles slots; gates the archive
- *        drive-probe in @ref bak_select_archive.
+ *        drive-probe in @ref res_select_archive.
  */
 extern char g_resOpenHandleCount;
 
@@ -233,7 +233,7 @@ extern unsigned long g_resLookupHash;
 /**
  * @brief Index into @ref g_resArchives of the currently-open archive; 0 = none.
  *
- * Set by @ref bak_select_archive, which closes the previous archive's stream
+ * Set by @ref res_select_archive, which closes the previous archive's stream
  * before opening the new one; 0 is the loose / no-archive state.
  */
 extern int g_resCurrentArchive;
@@ -322,7 +322,18 @@ extern unsigned long res_filename_hash(char *filename);
 
 
 extern int bak_resource_lookup(FileHandle *slot);
-extern void bak_select_archive(int archive_index);
+
+/**
+ * @brief Make @p archiveIndex the currently-open archive, (re)opening its
+ *        `KRONDOR.001` stream when switching to it.
+ *
+ * A no-op when it is already current and the stream is healthy; otherwise the
+ * previous archive's stream is closed and the new one opened (retrying on a
+ * not-ready CD). Index 0 selects the "no archive" state.
+ *
+ * @param archiveIndex 1-based archive index to activate; 0 = no archive.
+ */
+extern void res_select_archive(int archiveIndex);
 
 
 /**
