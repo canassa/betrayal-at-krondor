@@ -266,17 +266,17 @@ extern int g_resHashRotate;
 
 
 /**
- * @brief Cached result of the last @ref bak_find_handle lookup: the
+ * @brief Cached result of the last @ref res_resolve_handle lookup: the
  *        @ref FileHandle resolved for @ref g_resFindHandleCacheKey.
  *
- * The value half of a one-entry memoization cache. When @ref bak_find_handle is
+ * The value half of a one-entry memoization cache. When @ref res_resolve_handle is
  * called again with the same @ref ResFile token it returns this directly,
  * skipping the pool scan.
  */
 extern FileHandle *g_resFindHandleCacheVal;
 
 /**
- * @brief Cache key for @ref bak_find_handle: the @ref ResFile token whose lookup
+ * @brief Cache key for @ref res_resolve_handle: the @ref ResFile token whose lookup
  *        produced @ref g_resFindHandleCacheVal.
  *
  * Set on each miss and cleared together with the value on a `NULL` query or a
@@ -338,9 +338,6 @@ extern void bak_select_archive(int archive_index);
  *        relative displacement (the seek is always `SEEK_SET`).
  */
 extern void res_archive_seek(unsigned long offset);
-
-
-extern FileHandle *bak_find_handle(ResFile *file);
 
 
 extern long far dos_read(unsigned char far *buf, long count, int fd);

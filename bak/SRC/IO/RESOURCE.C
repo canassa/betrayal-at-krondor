@@ -37,6 +37,8 @@ ResFile *g_resFindHandleCacheKey;
 
 bool8 g_resInitialized = FALSE;
 
+static FileHandle *res_resolve_handle(ResFile *file);
+
 ResFile *bak_fopen(char *filename, char *mode) {
     char name[14];
     int count;
@@ -102,10 +104,10 @@ int bak_fclose(ResFile *file) {
     result = 0;
     if (file == NULL)
         return -1;
-    if ((g_resArchiveCount == 0) || (handle = bak_find_handle(file)) == NULL) {
+    if ((g_resArchiveCount == 0) || (handle = res_resolve_handle(file)) == NULL) {
         result = fclose((FILE *)file);
     } else {
-        bak_find_handle(NULL);
+        res_resolve_handle(NULL);
         if (handle->stdioFile != NULL)
             result = fclose(handle->stdioFile);
         handle->inUse = FALSE;
@@ -122,7 +124,7 @@ int bak_fread(void *ptr, int size, int count, ResFile *file) {
     FileHandle *handle;
 
     singleObj = FALSE;
-    if (g_resArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL) {
+    if (g_resArchiveCount == 0 || (handle = res_resolve_handle(file)) == NULL) {
         return fread(ptr, size, count, (FILE *)file);
     }
     if (handle->stdioFile != NULL) {
@@ -154,7 +156,7 @@ int bak_fread(void *ptr, int size, int count, ResFile *file) {
 int bak_fseek(ResFile *file, long offset, int whence) {
     FileHandle *handle;
 
-    if (g_resArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL)
+    if (g_resArchiveCount == 0 || (handle = res_resolve_handle(file)) == NULL)
         return fseek((FILE *)file, offset, whence);
     if (handle->stdioFile != NULL)
         return fseek(handle->stdioFile, offset, whence);
@@ -175,7 +177,7 @@ int bak_fseek(ResFile *file, long offset, int whence) {
 long bak_ftell(ResFile *file) {
     FileHandle *handle;
 
-    if (g_resArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL)
+    if (g_resArchiveCount == 0 || (handle = res_resolve_handle(file)) == NULL)
         return ftell((FILE *)file);
     if (handle->stdioFile != NULL)
         return ftell(handle->stdioFile);
@@ -188,7 +190,7 @@ long bak_filelength(ResFile *file) {
     long result;
     FileHandle *handle;
 
-    if (g_resArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL ||
+    if (g_resArchiveCount == 0 || (handle = res_resolve_handle(file)) == NULL ||
         (file = (ResFile *)handle->stdioFile) != NULL) {
         savedPos = ftell((FILE *)file);
         fseek((FILE *)file, 0L, SEEK_END);
@@ -209,7 +211,7 @@ int bak_fgetc(ResFile *file) {
     FileHandle *handle;
 
     g_resLastFgetcFile = file;
-    if (g_resArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL)
+    if (g_resArchiveCount == 0 || (handle = res_resolve_handle(file)) == NULL)
         return fgetc(g_resLastFgetcCrtFile = (FILE *)file);
     if (handle->stdioFile != NULL)
         return fgetc(g_resLastFgetcCrtFile = handle->stdioFile);
@@ -227,7 +229,7 @@ int bak_fgetc(ResFile *file) {
 int bak_feof(ResFile *file) {
     FileHandle *handle;
 
-    if (g_resArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL)
+    if (g_resArchiveCount == 0 || (handle = res_resolve_handle(file)) == NULL)
         return ((FILE *)file)->flags & 0x20;
     if (handle->stdioFile != NULL)
         return handle->stdioFile->flags & 0x20;
@@ -241,7 +243,7 @@ int bak_fwrite(void *ptr, int size, int count, ResFile *file) {
     int written;
 
     buf = ptr;
-    if (g_resArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL) {
+    if (g_resArchiveCount == 0 || (handle = res_resolve_handle(file)) == NULL) {
         written = fwrite(buf, size, count, (FILE *)file);
     } else if (handle->stdioFile != NULL) {
         written = fwrite(buf, size, count, handle->stdioFile);
@@ -256,7 +258,7 @@ int bak_putc(int c, ResFile *file) {
     FileHandle *handle;
     int result;
 
-    if (g_resArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL) {
+    if (g_resArchiveCount == 0 || (handle = res_resolve_handle(file)) == NULL) {
         result = fputc(c, (FILE *)file);
     } else {
         if (handle->stdioFile != NULL) {
@@ -272,7 +274,7 @@ int bak_putc(int c, ResFile *file) {
 void bak_setbuf(ResFile *file, char *buffer) {
     FileHandle *handle;
 
-    if (g_resArchiveCount == 0 || (handle = bak_find_handle(file)) == NULL) {
+    if (g_resArchiveCount == 0 || (handle = res_resolve_handle(file)) == NULL) {
         setbuf((FILE *)file, buffer);
     } else {
         if (handle->stdioFile != NULL)
@@ -475,7 +477,7 @@ void bak_select_archive(int archiveIndex) {
 #endif
         }
         arc->filePos = 0;
-        bak_find_handle(NULL);
+        res_resolve_handle(NULL);
         g_resArchivesDirty = FALSE;
     }
 }
@@ -490,7 +492,13 @@ void res_archive_seek(unsigned long offset) {
     }
 }
 
-FileHandle *bak_find_handle(ResFile *file) {
+/**
+ * @brief Resolve a @ref ResFile token to its pooled @ref FileHandle, or `NULL`
+ *        if it has none (a loose stdio file).
+ *
+ * Backed by a one-entry cache for hot read loops; a `NULL` token flushes it.
+ */
+static FileHandle *res_resolve_handle(ResFile *file) {
     FileHandle *slot;
     int count;
 
