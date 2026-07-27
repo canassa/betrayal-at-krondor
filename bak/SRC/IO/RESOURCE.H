@@ -295,6 +295,8 @@ extern int bak_fgetc(ResFile *file);
 extern int bak_feof(ResFile *file);
 extern int bak_fwrite(void *ptr, int size, int count, ResFile *file);
 extern int bak_putc(int c, ResFile *file);
+
+
 /**
  * @brief Set the stdio buffer on a resource stream — the `setbuf` member of the
  *        resource layer's stdio-shaped file API.
@@ -306,6 +308,8 @@ extern int bak_putc(int c, ResFile *file);
  * API mirroring the whole stdio `f*` family.
  */
 extern void res_setbuf(ResFile *file, char *buffer);
+
+
 /**
  * @brief Bring the resource layer up on first use — the setup half of the
  *        @ref res_cleanup pair: install the INT 24h critical-error handler and
