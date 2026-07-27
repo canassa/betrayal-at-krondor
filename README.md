@@ -33,7 +33,9 @@ See [BUILDING](docs/BUILDING.md)
 
 ## Contributing
 
-The project has achieved a full byte-match, but it isn't finished: the code still carries decompilation artifacts, baked-in constants, and wrong names. PRs that improve code quality are welcome. See [`ACTORREC.C`](bak/SRC/WORLD/ACTOR/ACTORREC.C) and [`ACTORREC.H`](bak/SRC/WORLD/ACTOR/ACTORREC.H) for examples of clean modules.
+The project has achieved a full byte-match, but it isn't finished: the code still carries decompilation artifacts, baked-in constants, and wrong names. What's left is human work: reading each function until you understand it, then naming and documenting it truthfully, without breaking the byte-match.
+
+PRs that improve code quality are welcome. Start with [CONTRIBUTING](CONTRIBUTING.md), then pick an unclaimed module from [the status list](docs/PROGRESS.md). See [`ACTORREC.C`](bak/SRC/WORLD/ACTOR/ACTORREC.C) and [`ACTORREC.H`](bak/SRC/WORLD/ACTOR/ACTORREC.H) for examples of clean modules.
 
 ## Acknowledgements
 
