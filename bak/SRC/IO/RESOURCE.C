@@ -48,7 +48,7 @@ ResFile *bak_fopen(char *filename, char *mode) {
     if (g_resArchivesDirty) {
         res_select_archive(0);
     }
-    bak_init_resources();
+    res_setup();
     g_resError = FALSE;
     if (g_resArchiveCount == 0) {
         return (ResFile *)fopen(filename, mode);
@@ -271,7 +271,7 @@ int bak_putc(int c, ResFile *file) {
     return result;
 }
 
-void bak_setbuf(ResFile *file, char *buffer) {
+void res_setbuf(ResFile *file, char *buffer) {
     FileHandle *handle;
 
     if (g_resArchiveCount == 0 || (handle = res_resolve_handle(file)) == NULL) {
@@ -284,7 +284,7 @@ void bak_setbuf(ResFile *file, char *buffer) {
 
 static void interrupt far res_critical_error_handler();
 
-void bak_init_resources(void) {
+void res_setup(void) {
     RmfEntry far *entry;
     int archiveIdx;
     int readCount;
@@ -297,13 +297,13 @@ void bak_init_resources(void) {
     char path[80];
 #endif
 
+    // Init-once: called from every bak_fopen, but only the first call runs.
     if (g_resInitialized)
         return;
 
+    // Take over the DOS critical-error vector so a not-ready drive is survivable.
     g_resPrevInt24Vector = getvect(INT_CRITICAL_ERROR);
-
     setvect(INT_CRITICAL_ERROR, res_critical_error_handler);
-
     g_resInitialized = TRUE;
 
 #ifdef V102CD
@@ -313,6 +313,7 @@ void bak_init_resources(void) {
 #else
     filenamePtr = "krondor.rmf";
 #endif
+    // Open the RMF index; if it's absent the archive layer stays disabled (0 archives).
     if ((fp = fopen(filenamePtr, "rb")) == NULL)
         return;
 
@@ -323,16 +324,20 @@ void bak_init_resources(void) {
     g_resArchiveCount += readCount;
     archiveIdx = g_resArchiveCount - readCount + 1;
 
+    // Load every archive the header registered.
     while (archiveIdx <= g_resArchiveCount) {
         arc = &g_resArchives[archiveIdx];
 
+        // Read the archive's fixed record (payload name), then its entry count.
         fread(arc, 13, 1, fp);
         fread(&readCount, sizeof(readCount), 1, fp);
 
+        // Allocate its directory table: one slot per entry plus a zero terminator.
         entry = alloc_far((unsigned long)((unsigned short)(readCount + 1) * 8), ALLOC_FAR_ZERO_FILL);
         arc->directory = entry;
         arc->slotIndex = archiveIdx;
 
+        // Fill the directory: one hash -> payload-offset record per resource.
         while (readCount--) {
             fread(&hashVal, sizeof(hashVal), 1, fp);
             fread(&offsetVal, sizeof(offsetVal), 1, fp);
@@ -347,9 +352,10 @@ void bak_init_resources(void) {
     fclose(fp);
 }
 
-void bak_shutdown_resources(void) {
+void res_cleanup(void) {
     int i;
 
+    // Free each archive's loaded directory table.
     i = 0;
     while (i <= RES_ARCHIVE_MAX) {
         if (g_resArchives[i].directory != NULL) {
@@ -358,10 +364,14 @@ void bak_shutdown_resources(void) {
         }
         i++;
     }
+
+    // Restore the previous INT 24h handler; zero the slot so a second call is a no-op.
     if (g_resPrevInt24Vector != NULL) {
         setvect(INT_CRITICAL_ERROR, g_resPrevInt24Vector);
         g_resPrevInt24Vector = NULL;
     }
+
+    // Re-arm the init-once guard so res_setup runs again next time.
     g_resInitialized = FALSE;
 }
 

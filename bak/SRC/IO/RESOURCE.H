@@ -122,9 +122,9 @@ typedef void FileRef;
 
 /**
  * @brief Init-once guard for the resource layer: `TRUE` after
- *        @ref bak_init_resources has run its one-time setup.
+ *        @ref res_setup has run its one-time setup.
  *
- * `bak_init_resources` is called from every @ref bak_fopen; this flag makes it
+ * `res_setup` is called from every @ref bak_fopen; this flag makes it
  * idempotent (open `KRONDOR.RMF` + install the INT 24h handler exactly once).
  */
 extern bool8 g_resInitialized;
@@ -148,8 +148,8 @@ typedef void interrupt (far *IsrVector)();
 /**
  * @brief Saved previous DOS INT 24h (critical-error) handler vector.
  *
- * Captured by @ref bak_init_resources via `getvect` before it installs
- * @ref res_critical_error_handler, and restored by @ref bak_shutdown_resources,
+ * Captured by @ref res_setup via `getvect` before it installs
+ * @ref res_critical_error_handler, and restored by @ref res_cleanup,
  * which then zeroes this slot so a second shutdown is a no-op.
  */
 extern IsrVector g_resPrevInt24Vector;
@@ -295,9 +295,42 @@ extern int bak_fgetc(ResFile *file);
 extern int bak_feof(ResFile *file);
 extern int bak_fwrite(void *ptr, int size, int count, ResFile *file);
 extern int bak_putc(int c, ResFile *file);
-extern void bak_setbuf(ResFile *file, char *buffer);
-extern void bak_init_resources(void);
-extern void bak_shutdown_resources(void);
+/**
+ * @brief Set the stdio buffer on a resource stream — the `setbuf` member of the
+ *        resource layer's stdio-shaped file API.
+ *
+ * Forwards to C `setbuf` on the token's underlying `FILE *` (a loose stream, or
+ * a pooled handle's own stream); passing a `NULL` @p buffer makes that stream
+ * unbuffered. An archive byte-window has no `FILE *`, so for one this is a
+ * deliberate no-op. Unused in this build — a completeness wrapper that keeps the
+ * API mirroring the whole stdio `f*` family.
+ */
+extern void res_setbuf(ResFile *file, char *buffer);
+/**
+ * @brief Bring the resource layer up on first use — the setup half of the
+ *        @ref res_cleanup pair: install the INT 24h critical-error handler and
+ *        load the `KRONDOR.RMF` archive index into @ref g_resArchives.
+ *
+ * Lazy and idempotent: @ref bak_fopen calls it on every open, but the
+ * @ref g_resInitialized guard lets only the first call do the work. If
+ * `KRONDOR.RMF` cannot be opened the layer stays disabled (zero archives) and
+ * every `bak_*` call transparently falls back to plain stdio — the path that
+ * serves loose-file dev builds and floppy installs.
+ */
+extern void res_setup(void);
+
+/**
+ * @brief Release the resource layer and undo @ref res_setup — free the
+ *        loaded `KRONDOR.RMF` directory tables and restore the prior INT 24h handler.
+ *
+ * Never called in this build. The layer holds only what DOS reclaims on its own
+ * at process exit — the far-heap directories and the INT 24h vector (restored
+ * from the PSP) — so no explicit teardown is needed; this is init's symmetric
+ * twin, written for completeness but left unwired.
+ */
+extern void res_cleanup(void);
+
+
 /**
  * @brief Mark the open archives stale so the next @ref bak_fopen reopens them.
  *
