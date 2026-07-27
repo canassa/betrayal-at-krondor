@@ -295,38 +295,34 @@ int far combataiturn_select_and_engage(CombatActor *actor) {
     int i;
 
     flag = 0;
-    i = 0;
-    goto loop_test;
 
-loop_body:
-    dist = combatgrid_chebyshev_distance(actor->inner->grid_x, actor->inner->grid_y,
-                                         g_pCombatActiveActors[i].inner->grid_x,
-                                         g_pCombatActiveActors[i].inner->grid_y);
-    speed_thr = (int)g_acting_actor_speed - 3;
-    if (speed_thr >= dist) {
-        rand_pct = RND(100);
-        if (rand_pct >= 50) {
-        do_advance:
-            combatenc_set_flag8_clear_flag1(actor);
-            flag = 1;
-            goto after_loop;
+    for (i = 0; i < g_nCombatActiveCount; i++) {
+        dist = combatgrid_chebyshev_distance(actor->inner->grid_x, actor->inner->grid_y,
+                                             g_pCombatActiveActors[i].inner->grid_x,
+                                             g_pCombatActiveActors[i].inner->grid_y);
+        speed_thr = (int)g_acting_actor_speed - 3;
+        if (speed_thr >= dist) {
+            rand_pct = RND(100);
+            if (rand_pct >= 50) {
+                combatenc_set_flag8_clear_flag1(actor);
+                flag = 1;
+                break;
+            }
+        } else {
+            if (stat_actor_get(&g_pCombatActiveActors[i], 7, 0) == 0)
+                continue;
+            actor->inner->target = &g_pCombatActiveActors[i];
+            rand_pct = RND(100);
+            if (combat_actor_trace_proj_path(actor, &g_pCombatActiveActors[i], 0) == 0)
+                continue;
+            if (rand_pct >= 75) {
+                combatenc_set_flag8_clear_flag1(actor);
+                flag = 1;
+                break;
+            }
         }
-    } else {
-        if (stat_actor_get(&g_pCombatActiveActors[i], 7, 0) == 0)
-            goto loop_inc;
-        actor->inner->target = &g_pCombatActiveActors[i];
-        rand_pct = RND(100);
-        if (combat_actor_trace_proj_path(actor, &g_pCombatActiveActors[i], 0) == 0)
-            goto loop_inc;
-        if (rand_pct >= 75)
-            goto do_advance;
     }
-loop_inc:
-    i++;
-loop_test:
-    if (i < g_nCombatActiveCount)
-        goto loop_body;
-after_loop:
+
     if (flag == 0)
         flag = combataiturn_action_4000a(actor);
     return flag;
