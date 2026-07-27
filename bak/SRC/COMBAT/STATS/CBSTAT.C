@@ -95,16 +95,16 @@ void cbstat_spell_tables_load(void) {
     ResFile *file;
     int count;
 
-    file = bak_fopen("spellwea.dat", "rb");
-    bak_fread(&count, 2, 1, file);
+    file = res_fopen("spellwea.dat", "rb");
+    res_fread(&count, 2, 1, file);
     g_pSpellWeaTable = galloc_safe_zcalloc((count << 1) * 3);
-    bak_fread(g_pSpellWeaTable, 6, count, file);
-    bak_fclose(file);
-    file = bak_fopen("spellres.dat", "rb");
-    bak_fread(&count, 2, 1, file);
+    res_fread(g_pSpellWeaTable, 6, count, file);
+    res_fclose(file);
+    file = res_fopen("spellres.dat", "rb");
+    res_fread(&count, 2, 1, file);
     g_pSpellResTable = galloc_safe_zcalloc((count << 1) * 3);
-    bak_fread(g_pSpellResTable, 6, count, file);
-    bak_fclose(file);
+    res_fread(g_pSpellResTable, 6, count, file);
+    res_fclose(file);
 }
 
 void cbstat_spell_tables_free(void) {

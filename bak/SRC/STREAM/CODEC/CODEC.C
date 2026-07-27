@@ -85,7 +85,7 @@ int near codec_raw_read(unsigned char huge *dst, unsigned int count) {
     nread = 1;
     while (count > 0 && nread > 0) {
         chunk = count > 0x32 ? 0x32 : count;
-        count -= (nread = bak_fread(g_codecRawTransitBuf, 1, chunk, g_pCurStreamFp));
+        count -= (nread = res_fread(g_codecRawTransitBuf, 1, chunk, g_pCurStreamFp));
         fmemcpy_far((unsigned char far *)dst, (unsigned char far *)g_codecRawTransitBuf, nread);
         dst += nread;
     }
@@ -97,7 +97,7 @@ int near stream_getc(void) {
         return -1;
     g_pCurStreamDesc->dwInPos += 1;
     if (g_bCurStreamDescFlags & 0x20)
-        return bak_fgetc(g_pCurStreamFp);
+        return res_fgetc(g_pCurStreamFp);
     return *g_pCurStreamSrcCursor++ & 0xff;
 }
 
@@ -109,7 +109,7 @@ int near codec_raw_block_read(register void *dest, register unsigned int count) 
     remaining = count > remaining ? remaining : count;
     g_pCurStreamDesc->dwInPos += remaining;
     if (g_bCurStreamDescFlags & 0x20)
-        return bak_fread(dest, 1, (unsigned int)remaining, g_pCurStreamFp);
+        return res_fread(dest, 1, (unsigned int)remaining, g_pCurStreamFp);
     fmemcpy_far((unsigned char far *)dest, (unsigned char far *)g_pCurStreamSrcCursor, (unsigned int)remaining);
     g_pCurStreamSrcCursor += remaining;
     return (int)remaining;
@@ -121,7 +121,7 @@ int near codec_rle_literal_run(unsigned int count) {
         if (g_bCurStreamOpMode & 0x40)
             codec_raw_read(g_pStreamReadDst, count);
         else
-            bak_fseek(g_pCurStreamFp, (long)count, SEEK_CUR);
+            res_fseek(g_pCurStreamFp, (long)count, SEEK_CUR);
         g_wCodecBytesRemaining -= count;
         g_pStreamReadDst += count;
         return 1;
@@ -162,7 +162,7 @@ int near codec_emit_byte(int byte_val) {
 int near stream_putc(int c) {
     g_nStreamBytesWritten++;
     if (g_bCurStreamDescFlags & 0x20)
-        return bak_putc(c, g_pCurStreamFp);
+        return res_putc(c, g_pCurStreamFp);
     else
         return (char)(g_pCurStreamDesc->src.pBufBase[g_pCurStreamDesc->dwInPos++] = (char)c);
 }

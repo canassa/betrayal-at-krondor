@@ -157,10 +157,10 @@ void far savegame_chapter_start_dispatch(int chapter) {
 
     g_pChapDatFilename[4] = (char)chapter + '0';
     {
-        ResFile *file = bak_fopen(g_pChapDatFilename, "rb");
-        bak_fread(&g_gameState, 1, 0x10, file);
-        bak_fread(&spawn_rec, 7, 1, file);
-        bak_fclose(file);
+        ResFile *file = res_fopen(g_pChapDatFilename, "rb");
+        res_fread(&g_gameState, 1, 0x10, file);
+        res_fread(&spawn_rec, 7, 1, file);
+        res_fclose(file);
     }
 
     zone_set_plr_pos_rec(&spawn_rec);

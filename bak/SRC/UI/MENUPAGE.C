@@ -32,16 +32,16 @@ MenuPage *menupage_load(char *filename) {
     unsigned int blobSize;
 
     stringBlob = (void *)0;
-    file = bak_fopen(filename, "rb");
+    file = res_fopen(filename, "rb");
     page = galloc_safe_zcalloc(0x1c);
-    bak_fread(page, 0x1c, 1, file);
-    bak_fread(&page->wEntry_count, 2, 1, file);
+    res_fread(page, 0x1c, 1, file);
+    res_fread(&page->wEntry_count, 2, 1, file);
     page->pEntries = galloc_safe_zcalloc(page->wEntry_count * 0x21);
-    bak_fread(page->pEntries, 0x21, page->wEntry_count, file);
-    bak_fread(&blobSize, 2, 1, file);
+    res_fread(page->pEntries, 0x21, page->wEntry_count, file);
+    res_fread(&blobSize, 2, 1, file);
     if (blobSize != 0) {
         stringBlob = galloc_safe_zcalloc(blobSize);
-        bak_fread(stringBlob, 1, blobSize, file);
+        res_fread(stringBlob, 1, blobSize, file);
     }
     if ((int)page->pTitle == -1) {
         page->pTitle = (char *)0;
@@ -65,7 +65,7 @@ MenuPage *menupage_load(char *filename) {
             page->pEntries[i].pAlt_label += (int)stringBlob;
         }
     }
-    bak_fclose(file);
+    res_fclose(file);
     return page;
 }
 

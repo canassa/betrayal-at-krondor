@@ -126,29 +126,29 @@ PDdxRecord dialog_load_record_by_key(unsigned long record_key, int use_offset) {
     strcpy(filename, "DIAL_Z__.DDX");
     filename[6] = g_nDialogChapterId / 10 + '0';
     filename[7] = g_nDialogChapterId % 10 + '0';
-    file = bak_fopen(filename, "rb");
+    file = res_fopen(filename, "rb");
     if (file_offset == 0) {
-        bak_fread(&record_count, 2, 1, file);
+        res_fread(&record_count, 2, 1, file);
         i = file_offset = 0;
         for (; file_offset == 0 && i < record_count; i++) {
-            bak_fread(&dir_entry, 8, 1, file);
+            res_fread(&dir_entry, 8, 1, file);
             if (dir_entry.node_id == record_key) {
                 file_offset = dir_entry.file_off;
             }
         }
     }
     if (file_offset > 0) {
-        bak_fseek(file, file_offset, SEEK_SET);
-        bak_fread(&header, 9, 1, file);
+        res_fseek(file, file_offset, SEEK_SET);
+        res_fread(&header, 9, 1, file);
         sub_size = header.bCnt1 * 10 + header.bCnt2 * 10;
         alloc_size = sub_size + header.wBody_len + 9;
         record = (DDXRecord far *)alloc_far((long)alloc_size, 0);
         *record = header;
-        bak_fread_chunked((unsigned char far *)record + 9, 1, (long)sub_size, file);
+        res_fread_chunked((unsigned char far *)record + 9, 1, (long)sub_size, file);
         body_ptr = (unsigned char far *)record + sub_size + 9;
-        bak_fread_chunked(body_ptr, 1, (unsigned long)header.wBody_len, file);
+        res_fread_chunked(body_ptr, 1, (unsigned long)header.wBody_len, file);
     }
-    bak_fclose(file);
+    res_fclose(file);
     return record;
 }
 

@@ -268,38 +268,38 @@ void far encamp_load(void) {
     g_pEncampBmpAssetTable = (unsigned short *)resblit_load_asset_table("encamp.bmp", 2);
     g_graphics_context.wGfxBlitDstPage = g_graphics_context.wVgaPage1Base;
     resblit_load_pal_or_stream("encamp.scx");
-    file = bak_fopen("encamp.dat", "rb");
-    bak_fread(&g_wEncampHotspotSubW, 2, 1, file);
-    bak_fread(&g_wEncampHotspotSubH, 2, 1, file);
-    bak_fread(&g_wEncampHotspotBoxW, 2, 1, file);
-    bak_fread(&g_wEncampHotspotBoxH, 2, 1, file);
-    bak_fread(&g_wEncampHotspotCount, 2, 1, file);
+    file = res_fopen("encamp.dat", "rb");
+    res_fread(&g_wEncampHotspotSubW, 2, 1, file);
+    res_fread(&g_wEncampHotspotSubH, 2, 1, file);
+    res_fread(&g_wEncampHotspotBoxW, 2, 1, file);
+    res_fread(&g_wEncampHotspotBoxH, 2, 1, file);
+    res_fread(&g_wEncampHotspotCount, 2, 1, file);
     g_pEncampHotspotX = ptx = galloc_safe_zcalloc(g_wEncampHotspotCount << 1);
     g_pEncampHotspotY = pty = galloc_safe_zcalloc(g_wEncampHotspotCount << 1);
     i = 0;
     if (i < (int)g_wEncampHotspotCount) {
         do {
-            bak_fread(ptx, 2, 1, file);
-            bak_fread(pty, 2, 1, file);
+            res_fread(ptx, 2, 1, file);
+            res_fread(pty, 2, 1, file);
             i++;
             ptx++;
             pty++;
         } while (i < (int)g_wEncampHotspotCount);
     }
-    bak_fread(&g_wEncampClockVertexCount, 2, 1, file);
+    res_fread(&g_wEncampClockVertexCount, 2, 1, file);
     g_pClockHandVertsX = ptx = galloc_safe_zcalloc(g_wEncampClockVertexCount << 1);
     g_pClockHandVertsY = pty = galloc_safe_zcalloc(g_wEncampClockVertexCount << 1);
     i = 0;
     if (i < (int)g_wEncampClockVertexCount) {
         do {
-            bak_fread(ptx, 2, 1, file);
-            bak_fread(pty, 2, 1, file);
+            res_fread(ptx, 2, 1, file);
+            res_fread(pty, 2, 1, file);
             i++;
             ptx++;
             pty++;
         } while (i < (int)g_wEncampClockVertexCount);
     }
-    bak_fclose(file);
+    res_fclose(file);
     encamp_build_palette_remap_lut();
 }
 

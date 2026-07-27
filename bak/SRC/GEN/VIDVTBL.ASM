@@ -17,18 +17,18 @@
 	extrn	_alloc_far:far
 	extrn	__freemem:far
 	extrn	_my_read:far
-	extrn	_bak_fseek:far
-	extrn	_bak_ftell:far
-	extrn	_bak_fwrite:far
-	extrn	_bak_putc:far
-	extrn	_bak_rewind:far
+	extrn	_res_fseek:far
+	extrn	_res_ftell:far
+	extrn	_res_fwrite:far
+	extrn	_res_putc:far
+	extrn	_res_rewind:far
 	extrn	_my_close:far
-	extrn	_bak_fopen:far
-	extrn	_bak_fread:far
-	extrn	_bak_fclose:far
+	extrn	_res_fopen:far
+	extrn	_res_fread:far
+	extrn	_res_fclose:far
 	extrn	_my_malloc:far
 	extrn	_my_calloc:far
-	extrn	_bak_fgetc:far
+	extrn	_res_fgetc:far
 	extrn	_my_free:far
 	extrn	_my_strcat:far
 	extrn	_my_strcpy:far
@@ -49,18 +49,18 @@ _g_video_driver_imports	label byte
 	dd	_alloc_far	; +0x00 pfn_alloc_far
 	dd	__freemem	; +0x04 pfn_freemem
 	dd	_my_read	; +0x08 pfn_read_far
-	dd	_bak_fseek	; +0x0c pfn_fseek
-	dd	_bak_ftell	; +0x10 pfn_ftell
-	dd	_bak_fwrite	; +0x14 pfn_fwrite
-	dd	_bak_putc	; +0x18 pfn_putc
-	dd	_bak_rewind	; +0x1c pfn_rewind
+	dd	_res_fseek	; +0x0c pfn_fseek
+	dd	_res_ftell	; +0x10 pfn_ftell
+	dd	_res_fwrite	; +0x14 pfn_fwrite
+	dd	_res_putc	; +0x18 pfn_putc
+	dd	_res_rewind	; +0x1c pfn_rewind
 	dd	_my_close	; +0x20 pfn_close_far
-	dd	_bak_fopen	; +0x24 pfn_fopen
-	dd	_bak_fread	; +0x28 pfn_fread
-	dd	_bak_fclose	; +0x2c pfn_fclose
+	dd	_res_fopen	; +0x24 pfn_fopen
+	dd	_res_fread	; +0x28 pfn_fread
+	dd	_res_fclose	; +0x2c pfn_fclose
 	dd	_my_malloc	; +0x30 pfn_malloc_far
 	dd	_my_calloc	; +0x34 pfn_calloc_far
-	dd	_bak_fgetc	; +0x38 pfn_fgetc
+	dd	_res_fgetc	; +0x38 pfn_fgetc
 	dd	_my_free	; +0x3c pfn_free
 	dd	_my_strcat	; +0x40 pfn_strcat_far
 	dd	_my_strcpy	; +0x44 pfn_strcpy_far

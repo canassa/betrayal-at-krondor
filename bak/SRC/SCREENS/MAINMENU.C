@@ -63,20 +63,20 @@ int mainmenu_save_cfg_load_settings(void) {
 
     g_engine_prefs = galloc_safe_zcalloc(5);
     if (g_engine_prefs != (EnginePrefs *)0x0) {
-        file = bak_fopen("KRONDOR.CFG", "rb");
+        file = res_fopen("KRONDOR.CFG", "rb");
         if (file == (ResFile *)0x0) {
 #ifdef V102CD
             if (g_cd_present != 0) {
-                file = bak_fopen("CDEFAULT.DAT", "rb");
+                file = res_fopen("CDEFAULT.DAT", "rb");
             } else {
-                file = bak_fopen("DEFAULT.DAT", "rb");
+                file = res_fopen("DEFAULT.DAT", "rb");
             }
 #else
-            file = bak_fopen("DEFAULT.DAT", "rb");
+            file = res_fopen("DEFAULT.DAT", "rb");
 #endif
         }
-        bak_fread(g_engine_prefs, 5, 1, file);
-        bak_fclose(file);
+        res_fread(g_engine_prefs, 5, 1, file);
+        res_fclose(file);
         mainmenu_save_request_load_game();
         return 1;
     }
@@ -1256,12 +1256,12 @@ int mainmenu_save_prefs_menu_run(void) {
             }
 #endif
             *g_engine_prefs = prefs;
-            if ((fp = bak_fopen("KRONDOR.CFG", "wb")) == (ResFile *)0) {
+            if ((fp = res_fopen("KRONDOR.CFG", "wb")) == (ResFile *)0) {
                 file_error = 1;
             } else {
-                if (bak_fwrite(g_engine_prefs, 5, 1, fp) != 1)
+                if (res_fwrite(g_engine_prefs, 5, 1, fp) != 1)
                     file_error = 1;
-                if (bak_fclose(fp) != 0)
+                if (res_fclose(fp) != 0)
                     file_error = 1;
             }
             if (file_error) {
@@ -1297,14 +1297,14 @@ int mainmenu_save_prefs_menu_run(void) {
             if (dialog_play_record(0x72, 1) == 0) {
 #ifdef V102CD
                 if (g_cd_present != 0)
-                    fp = bak_fopen("CDEFAULT.DAT", "rb");
+                    fp = res_fopen("CDEFAULT.DAT", "rb");
                 else
-                    fp = bak_fopen("DEFAULT.DAT", "rb");
+                    fp = res_fopen("DEFAULT.DAT", "rb");
 #else
-                fp = bak_fopen("DEFAULT.DAT", "rb");
+                fp = res_fopen("DEFAULT.DAT", "rb");
 #endif
-                bak_fread(&prefs, 5, 1, fp);
-                bak_fclose(fp);
+                res_fread(&prefs, 5, 1, fp);
+                res_fclose(fp);
                 dirty_checkbox = 1;
                 dirty_screen = 1;
                 dirty_text = 1;
@@ -1523,16 +1523,16 @@ int mainmenu_save_file_read_header(char *path, void *sig_block, int *ds_state_1,
     int version;
 
     ok = 1;
-    file = bak_fopen(path, "rb");
+    file = res_fopen(path, "rb");
     if (file != (ResFile *)0x0) {
-        if (!(bak_fread(sig_block, 1, 0x5a, file) == 0x5a &&
-              bak_fread(ds_state_1, 2, 1, file) == 1 &&
-              bak_fread(ds_state_2, 2, 1, file) == 1 &&
-              bak_fread(ds_state_3, 2, 1, file) == 1 &&
-              bak_fread(ds_state_4, 2, 1, file) == 1 && bak_fread(&version, 2, 1, file) == 1 &&
+        if (!(res_fread(sig_block, 1, 0x5a, file) == 0x5a &&
+              res_fread(ds_state_1, 2, 1, file) == 1 &&
+              res_fread(ds_state_2, 2, 1, file) == 1 &&
+              res_fread(ds_state_3, 2, 1, file) == 1 &&
+              res_fread(ds_state_4, 2, 1, file) == 1 && res_fread(&version, 2, 1, file) == 1 &&
               version == 0x16))
             ok = 0;
-        if (!bak_fclose(file))
+        if (!res_fclose(file))
             return ok;
     }
     ok = 0;
@@ -1593,9 +1593,9 @@ void mainmenu_save_slot_exists(void) {
     if (g_wSaveSlotDirValid != 0) {
         sprintf(local, "%s\\%s.G%02d\\SAVE%02d.GAM", "GAMES", g_szSaveSlotDirName_51cc,
                 g_wCurrentSaveSlotKey, 0x15);
-        file = bak_fopen(local, "wb");
+        file = res_fopen(local, "wb");
         if (file != 0) {
-            bak_fclose(file);
+            res_fclose(file);
         }
     }
 }

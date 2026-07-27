@@ -73,24 +73,24 @@ ListWidget *far listwidget_load(char *filename, MenuPage *parent, short child_id
     int pos;
 
     widget = (ListWidget *)0;
-    file = bak_fopen(filename, "rb");
+    file = res_fopen(filename, "rb");
     if (file != (ResFile *)0) {
-        bak_fread(&x, 2, 1, file);
-        bak_fread(&y, 2, 1, file);
-        bak_fread(&width, 2, 1, file);
-        bak_fread(&line_count, 2, 1, file);
-        bak_fread(&capacity, 2, 1, file);
+        res_fread(&x, 2, 1, file);
+        res_fread(&y, 2, 1, file);
+        res_fread(&width, 2, 1, file);
+        res_fread(&line_count, 2, 1, file);
+        res_fread(&capacity, 2, 1, file);
         widget = listwidget_attach(x, y, width, line_count, capacity, parent, child_idx);
         if (widget != (ListWidget *)0) {
             pos = 0;
             while (pos < capacity) {
-                bak_fread(&len, 2, 1, file);
-                bak_fread(buf, 1, len, file);
+                res_fread(&len, 2, 1, file);
+                res_fread(buf, 1, len, file);
                 listwidget_insert_item(widget, pos, buf, 0);
                 pos++;
             }
         }
-        bak_fclose(file);
+        res_fclose(file);
     }
     return widget;
 }

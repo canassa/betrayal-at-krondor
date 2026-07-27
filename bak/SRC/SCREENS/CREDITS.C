@@ -25,14 +25,14 @@ void credits_load(void) {
     int i;
     unsigned short blobSize;
 
-    file = bak_fopen("cred.dat", "rb");
-    bak_fread(&g_credits_pair_count, 2, 1, file);
+    file = res_fopen("cred.dat", "rb");
+    res_fread(&g_credits_pair_count, 2, 1, file);
     g_credits_strings = galloc_safe_zcalloc(g_credits_pair_count << 1);
-    bak_fread(g_credits_strings, 2, g_credits_pair_count, file);
-    bak_fread(&blobSize, 2, 1, file);
+    res_fread(g_credits_strings, 2, g_credits_pair_count, file);
+    res_fread(&blobSize, 2, 1, file);
     g_pCreditsBlob = galloc_safe_zcalloc(blobSize);
-    bak_fread(g_pCreditsBlob, 1, blobSize, file);
-    bak_fclose(file);
+    res_fread(g_pCreditsBlob, 1, blobSize, file);
+    res_fclose(file);
     for (i = 0; i < g_credits_pair_count; i++) {
         g_credits_strings[i] += (int)g_pCreditsBlob;
     }

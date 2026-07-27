@@ -81,15 +81,15 @@ void cspell_subsystem_load(void) {
         audio_sfx_stop_scene_sounds();
     }
     g_pCastfaceSpriteTable = resblit_load_asset_table("castface.bmp", 2);
-    f = bak_fopen("spells.dat", "rb");
-    bak_fread(&g_nSpellCount, 2, 1, f);
+    f = res_fopen("spells.dat", "rb");
+    res_fread(&g_nSpellCount, 2, 1, f);
     g_pSpellDefs = galloc_safe_zcalloc(g_nSpellCount * sizeof(SpellDef));
     g_pSpellCastableScratch = galloc_safe_zcalloc(g_nSpellCount << 1);
-    bak_fread(g_pSpellDefs, sizeof(SpellDef), g_nSpellCount, f);
-    bak_fread(&blobLen, 2, 1, f);
+    res_fread(g_pSpellDefs, sizeof(SpellDef), g_nSpellCount, f);
+    res_fread(&blobLen, 2, 1, f);
     g_szSpellNameBlob = galloc_safe_zcalloc(blobLen);
-    bak_fread(g_szSpellNameBlob, 1, blobLen, f);
-    bak_fclose(f);
+    res_fread(g_szSpellNameBlob, 1, blobLen, f);
+    res_fclose(f);
     i = 0;
     if (i < g_nSpellCount) {
         do {
@@ -98,14 +98,14 @@ void cspell_subsystem_load(void) {
         } while (i < g_nSpellCount);
     }
     audio_sfx_register(g_pSfxArchiveStream, 0x1b);
-    f = bak_fopen("spelldoc.dat", "rb");
-    bak_fread(&docCount, 2, 1, f);
+    f = res_fopen("spelldoc.dat", "rb");
+    res_fread(&docCount, 2, 1, f);
     g_pSpellDocRows = galloc_safe_zcalloc(docCount << 2);
-    bak_fread(g_pSpellDocRows, 4, docCount, f);
-    bak_fread(&blobLen, 2, 1, f);
+    res_fread(g_pSpellDocRows, 4, docCount, f);
+    res_fread(&blobLen, 2, 1, f);
     g_pSpellDocBlob = alloc_far((long)(int)blobLen, 0);
-    bak_fread_chunked(g_pSpellDocBlob, 1, (long)(int)blobLen, f);
-    bak_fclose(f);
+    res_fread_chunked(g_pSpellDocBlob, 1, (long)(int)blobLen, f);
+    res_fclose(f);
     i = 0;
     if (i < docCount) {
         do {
@@ -1743,11 +1743,11 @@ void far cspell_symbol_resources_load(int chapter) {
     int i;
 
     szFile[6] = chapter + '1';
-    f = bak_fopen(szFile, "rb");
-    bak_fread(&g_nSpellSymbolCount, 2, 1, f);
+    f = res_fopen(szFile, "rb");
+    res_fread(&g_nSpellSymbolCount, 2, 1, f);
     g_pSpellSymbolRecords = galloc_safe_zcalloc(g_nSpellSymbolCount * sizeof(SpellSymbolRecord));
-    bak_fread(g_pSpellSymbolRecords, sizeof(SpellSymbolRecord), g_nSpellSymbolCount, f);
-    bak_fclose(f);
+    res_fread(g_pSpellSymbolRecords, sizeof(SpellSymbolRecord), g_nSpellSymbolCount, f);
+    res_fclose(f);
     i = 0;
     if (i < g_nSpellSymbolCount) {
         do {
@@ -1758,10 +1758,10 @@ void far cspell_symbol_resources_load(int chapter) {
     }
     g_pSpellSymbolX = galloc_safe_zcalloc(0x3c);
     g_pSpellSymbolY = galloc_safe_zcalloc(0x3c);
-    f = bak_fopen("ring.dat", "rb");
-    bak_fread(g_pSpellSymbolX, 2, 0x1e, f);
-    bak_fread(g_pSpellSymbolY, 2, 0x1e, f);
-    bak_fclose(f);
+    f = res_fopen("ring.dat", "rb");
+    res_fread(g_pSpellSymbolX, 2, 0x1e, f);
+    res_fread(g_pSpellSymbolY, 2, 0x1e, f);
+    res_fclose(f);
 }
 
 static void cspell_symbol_resources_free(void) {

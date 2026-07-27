@@ -67,7 +67,7 @@ unsigned char far *chunk_load_into_slot(FileRef *file) {
 
         if ((pPalette = (unsigned char far *)alloc_far((long)g_nCurChunkSize, 0L)) == (unsigned char far *)0L)
             goto close_file;
-        bak_fread(paletteBuf, 1, g_nCurChunkSize, file);
+        res_fread(paletteBuf, 1, g_nCurChunkSize, file);
         fmemmove(pPalette, (unsigned char far *)paletteBuf, (long)g_nCurChunkSize);
         goto close_file;
     }
@@ -78,7 +78,7 @@ unsigned char far *chunk_load_into_slot(FileRef *file) {
     if (chunk_seek(file, "PAL:AMG:", 0) == -1L)
         goto close_file;
 
-    if (bak_fread(amgBuf, 1, 0x40, file) == 0)
+    if (res_fread(amgBuf, 1, 0x40, file) == 0)
         goto close_file;
 
     if ((pPalette = (unsigned char far *)alloc_far((long)g_nCurChunkSize, 0L)) == (unsigned char far *)0L)

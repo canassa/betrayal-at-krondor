@@ -119,8 +119,8 @@ void far czone_load_actors(unsigned char zone, unsigned char x, unsigned char y,
     g_szZoneWldFilename[4] = 0x30 | x % 10;
     g_szZoneWldFilename[5] = 0x30 | y / 10;
     g_szZoneWldFilename[6] = 0x30 | y % 10;
-    fp = bak_fopen(g_szZoneWldFilename, "rb");
-    count = (unsigned short)(bak_filelength(fp) / 0x14);
+    fp = res_fopen(g_szZoneWldFilename, "rb");
+    count = (unsigned short)(res_filelength(fp) / 0x14);
 
     if (300 < (int)count) {
         count = 300;
@@ -134,7 +134,7 @@ void far czone_load_actors(unsigned char zone, unsigned char x, unsigned char y,
     i = 0;
     if (i < (int)count) {
         do {
-            bak_fread(&rec, 0x14, 1, fp);
+            res_fread(&rec, 0x14, 1, fp);
             prec = ts_get_shape(rec.wId);
             if (prec->kind != 5 || throttle-- > 0) {
                 cur->shapeId = rec.wId;
@@ -149,7 +149,7 @@ void far czone_load_actors(unsigned char zone, unsigned char x, unsigned char y,
             i++;
         } while (i < (int)count);
     }
-    bak_fclose(fp);
+    res_fclose(fp);
     list->bRef_pair_index = zone_ref_find_pair_index(zone, x, y);
     if (g_game_mode == 2) {
         worlddoor_load_door_records(list);

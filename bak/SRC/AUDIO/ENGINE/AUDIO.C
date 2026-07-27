@@ -37,10 +37,10 @@ static void v102_cdaudio_play_track(int track_id) {
 
     track = track_id;
     track -= 999;
-    fp = bak_fopen("cd.dat", "rb");
-    bak_fseek(fp, (long)(unsigned)((track - 1) << 2), SEEK_SET);
-    bak_fread(&frame_offset, 4, 1, fp);
-    bak_fclose(fp);
+    fp = res_fopen("cd.dat", "rb");
+    res_fseek(fp, (long)(unsigned)((track - 1) << 2), SEEK_SET);
+    res_fread(&frame_offset, 4, 1, fp);
+    res_fclose(fp);
     v102_cdaudio_stop();
     v102_cdaudio_set_track_msf(track, -75L, frame_offset);
     v102_cdaudio_play();

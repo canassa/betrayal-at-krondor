@@ -34,12 +34,12 @@ typedef struct {
 void far proxscan_filter_table_load(void) {
     ResFile *file;
 
-    file = bak_fopen("filter.dat", "rb");
+    file = res_fopen("filter.dat", "rb");
     if (g_engine_prefs != (EnginePrefs *)0 && g_engine_prefs->detail_level != 0) {
-        bak_fseek(file, (unsigned long)((unsigned int)g_engine_prefs->detail_level * 0xac), SEEK_CUR);
+        res_fseek(file, (unsigned long)((unsigned int)g_engine_prefs->detail_level * 0xac), SEEK_CUR);
     }
-    bak_fread((void *)g_aFilterTable, 4, 0x2b, file);
-    bak_fclose(file);
+    res_fread((void *)g_aFilterTable, 4, 0x2b, file);
+    res_fclose(file);
     return;
 }
 

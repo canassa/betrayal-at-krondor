@@ -66,8 +66,8 @@ ImageRecord **resblit_load_asset_table(char *path, int storage_mode) {
     struct BmxHeader hdr;
 
     path[strlen(path) - 1] = 'x';
-    if ((fp = bak_fopen(path, "rb")) != 0) {
-        bak_fread(&hdr, 12, 1, fp);
+    if ((fp = res_fopen(path, "rb")) != 0) {
+        res_fread(&hdr, 12, 1, fp);
 
         if (hdr.wImageCount != 0 && hdr.wMagic == 0x1066) {
             if ((tbl = my_calloc((hdr.wImageCount + 1) * 2, 1)) != 0) {
@@ -79,7 +79,7 @@ ImageRecord **resblit_load_asset_table(char *path, int storage_mode) {
                     }
                     i = 0;
                     while (i < hdr.wImageCount) {
-                        bak_fread(&tbl[i]->wImageOff, 2, 4, fp);
+                        res_fread(&tbl[i]->wImageOff, 2, 4, fp);
                         i++;
                     }
                     tbl[hdr.wImageCount] = 0;
@@ -156,7 +156,7 @@ ImageRecord **resblit_load_asset_table(char *path, int storage_mode) {
             emsimg_free_paged(tbl);
             tbl = 0;
         }
-        bak_fclose(fp);
+        res_fclose(fp);
     }
     return tbl;
 }
@@ -255,8 +255,8 @@ void resblit_load_pal_or_stream(char *filename) {
 
         cga_rect_paste_from_buffer(dest_far, 0, 0, 0x140, 200);
     } else {
-        if ((file = bak_fopen(fn, "rb")) != 0) {
-            bak_fread(&local, 2, 1, file);
+        if ((file = res_fopen(fn, "rb")) != 0) {
+            res_fread(&local, 2, 1, file);
 
             if (local == 0x27b6) {
                 int size;
@@ -277,7 +277,7 @@ void resblit_load_pal_or_stream(char *filename) {
                 }
                 _freemem(buf);
             }
-            bak_fclose(file);
+            res_fclose(file);
         } else
             return;
     }

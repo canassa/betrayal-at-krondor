@@ -164,14 +164,14 @@ void far combatenc_mnames_lookup_dest(int index, char **p_dest) {
     ResFile *file;
     int *offsets;
 
-    file = bak_fopen("mnames.dat", "rb");
-    bak_fread(&count, 2, 1, file);
+    file = res_fopen("mnames.dat", "rb");
+    res_fread(&count, 2, 1, file);
     offsets = galloc_safe_zcalloc(count << 1);
-    bak_fread(offsets, 2, count, file);
-    bak_fread(&blob_size, 2, 1, file);
+    res_fread(offsets, 2, count, file);
+    res_fread(&blob_size, 2, 1, file);
     blob = galloc_safe_zcalloc(blob_size);
-    bak_fread(blob, 1, blob_size, file);
-    bak_fclose(file);
+    res_fread(blob, 1, blob_size, file);
+    res_fclose(file);
     offsets[index] += (int)blob;
     strcpy(*p_dest, (char *)offsets[index]);
     galloc_zfree(blob);
@@ -210,17 +210,17 @@ void far combatenc_save_state(void) {
     int i;
 
     filename = combatenc_build_save_filename(g_encounter_id);
-    file = bak_fopen(filename, "wb");
-    bak_fwrite(&g_combat_count_B, 2, 1, file);
+    file = res_fopen(filename, "wb");
+    res_fwrite(&g_combat_count_B, 2, 1, file);
     i = 0;
     if (i < g_combat_count_B) {
         do {
-            bak_fwrite(&g_combat_actors_B[i], 0x5f, 1, file);
-            bak_fwrite(g_combat_actors_B[i].inner, 0x16, 1, file);
+            res_fwrite(&g_combat_actors_B[i], 0x5f, 1, file);
+            res_fwrite(g_combat_actors_B[i].inner, 0x16, 1, file);
             i++;
         } while (i < g_combat_count_B);
     }
-    bak_fclose(file);
+    res_fclose(file);
     combatgrid_save_traps_terr(g_encounter_id);
     combatenc_persist_actors_to_temp(g_encounter_id);
     return;
@@ -1033,16 +1033,16 @@ void combatenc_spawns_load_zones_tmp(void) {
         for (i = 0; i < 7; i++)
             index[i] = -1;
         filename = combatenc_build_save_filename(zone);
-        file = bak_fopen(filename, "rb");
+        file = res_fopen(filename, "rb");
         if (file != (ResFile *)0) {
-            bak_fread(&count, 2, 1, file);
+            res_fread(&count, 2, 1, file);
         } else {
             count = 0;
         }
         for (i = 0; i < count; i++) {
             index[i] = gidx;
-            bak_fread(&actor, 0x5f, 1, file);
-            bak_fread(&inner, 0x16, 1, file);
+            res_fread(&actor, 0x5f, 1, file);
+            res_fread(&inner, 0x16, 1, file);
             actor.stats[0].base = actor.stats[0].max;
             actor.stats[1].base = actor.stats[1].max;
             inner.flags = CAF_READY;
@@ -1054,7 +1054,7 @@ void combatenc_spawns_load_zones_tmp(void) {
                                       GAM_COMBAT_ACTOR_INNER((long)gidx), 0x16);
             gidx++;
         }
-        bak_fclose(file);
+        res_fclose(file);
         g_wLastTempWriteRecordKind = 1;
 
         gstate_temp_file_write_at((unsigned char far *)index,
@@ -1084,13 +1084,13 @@ void combatenc_saves_migr_all_slots(void) {
             index[i] = -1;
 
         filename = combatenc_build_save_filename(encounterId);
-        file = bak_fopen(filename, "rb");
+        file = res_fopen(filename, "rb");
         if (file == (ResFile *)0)
             goto L_null;
         filename[3] = 'n';
-        outStream = bak_fopen(filename, "wb");
-        bak_fread(&count, 2, 1, file);
-        bak_fwrite(&count, 2, 1, outStream);
+        outStream = res_fopen(filename, "wb");
+        res_fread(&count, 2, 1, file);
+        res_fwrite(&count, 2, 1, outStream);
         goto L_shared;
     L_null:
         count = 0;
@@ -1100,18 +1100,18 @@ void combatenc_saves_migr_all_slots(void) {
         if (j < count) {
             do {
                 index[j] = gidx;
-                bak_fread(actorBuf, 0x5e, 1, file);
-                bak_fread(innerBuf, 0x16, 1, file);
+                res_fread(actorBuf, 0x5e, 1, file);
+                res_fread(innerBuf, 0x16, 1, file);
                 actorBuf[0x58] = 0;
-                bak_fwrite(actorBuf, 0x5f, 1, outStream);
-                bak_fwrite(innerBuf, 0x16, 1, outStream);
+                res_fwrite(actorBuf, 0x5f, 1, outStream);
+                res_fwrite(innerBuf, 0x16, 1, outStream);
                 gidx++;
                 j++;
             } while (j < count);
         }
-        bak_fclose(file);
+        res_fclose(file);
         if (outStream != (ResFile *)0)
-            bak_fclose(outStream);
+            res_fclose(outStream);
         encounterId++;
     } while (encounterId < 700);
 }

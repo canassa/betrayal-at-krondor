@@ -29,7 +29,7 @@ int iff_chunk_loader_2f1c(ResFile *file, unsigned short *count, unsigned short *
     *out_handle = 0;
     if (chunk_seek(file, "BMP:INF:", 0) == -1L)
         goto L_fail;
-    if (bak_fread(count, 2, 1, file) != 1)
+    if (res_fread(count, 2, 1, file) != 1)
         goto L_fail;
     if (!(*out_handle = (unsigned short)my_calloc((*count + 1) * 2, 1)))
         goto L_cleanup;
@@ -41,7 +41,7 @@ int iff_chunk_loader_2f1c(ResFile *file, unsigned short *count, unsigned short *
         n = *count;
     if (!(buf = (unsigned short *)my_malloc(n << 2)))
         goto L_cleanup;
-    if (bak_fread(buf, n << 2, 1, file) != 1)
+    if (res_fread(buf, n << 2, 1, file) != 1)
         goto L_cleanup;
     width = buf;
     height = buf + n;

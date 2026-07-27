@@ -43,28 +43,28 @@ Dialog *dlgwidget_dialog_load(char *filename) {
     int i;
 
     string_table = (void *)0x0;
-    file = bak_fopen(filename, "rb");
-    bak_fread(&widget_count, 2, 1, file);
+    file = res_fopen(filename, "rb");
+    res_fread(&widget_count, 2, 1, file);
     if (widget_count != 0) {
         string_table = galloc_safe_zcalloc(widget_count);
-        bak_fread(string_table, 1, widget_count, file);
+        res_fread(string_table, 1, widget_count, file);
     }
-    bak_fread(&widget_count, 2, 1, file);
+    res_fread(&widget_count, 2, 1, file);
     dialog = dlgwidget_dialog_create(widget_count);
     for (i = 0; i < (int)widget_count; i++) {
-        bak_fread(&capacity, 2, 1, file);
-        bak_fread(&rect_x, 2, 1, file);
-        bak_fread(&rect_y, 2, 1, file);
-        bak_fread(&rect_w, 2, 1, file);
-        bak_fread(&bg_color, 1, 1, file);
-        bak_fread(&fg_color, 1, 1, file);
-        bak_fread(&cursor_color, 1, 1, file);
-        bak_fread(&label_fg, 1, 1, file);
-        bak_fread(&selection_color, 1, 1, file);
-        bak_fread(&label_offset, 2, 1, file);
-        bak_fread(&label_x, 2, 1, file);
-        bak_fread(&label_y, 2, 1, file);
-        bak_fread(&has_fill_image, 2, 1, file);
+        res_fread(&capacity, 2, 1, file);
+        res_fread(&rect_x, 2, 1, file);
+        res_fread(&rect_y, 2, 1, file);
+        res_fread(&rect_w, 2, 1, file);
+        res_fread(&bg_color, 1, 1, file);
+        res_fread(&fg_color, 1, 1, file);
+        res_fread(&cursor_color, 1, 1, file);
+        res_fread(&label_fg, 1, 1, file);
+        res_fread(&selection_color, 1, 1, file);
+        res_fread(&label_offset, 2, 1, file);
+        res_fread(&label_x, 2, 1, file);
+        res_fread(&label_y, 2, 1, file);
+        res_fread(&has_fill_image, 2, 1, file);
         if (label_offset == -1) {
             label_offset = 0;
         } else {
@@ -75,7 +75,7 @@ Dialog *dlgwidget_dialog_load(char *filename) {
         dlgwidget_dialog_add_widget(dialog, widget, (char *)0x0, (char *)label_offset, label_x,
                                     label_y);
     }
-    bak_fclose(file);
+    res_fclose(file);
     return dialog;
 }
 

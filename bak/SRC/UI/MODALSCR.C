@@ -42,10 +42,10 @@
 void modalscreen_teleport_dat_load(int n_index) {
     ResFile *file;
 
-    file = bak_fopen("TELEPORT.DAT", "rb");
-    bak_fseek(file, n_index * sizeof(g_gameState.abTeleportRecord), SEEK_SET);
-    bak_fread(g_gameState.abTeleportRecord, sizeof(g_gameState.abTeleportRecord), 1, file);
-    bak_fclose(file);
+    file = res_fopen("TELEPORT.DAT", "rb");
+    res_fseek(file, n_index * sizeof(g_gameState.abTeleportRecord), SEEK_SET);
+    res_fread(g_gameState.abTeleportRecord, sizeof(g_gameState.abTeleportRecord), 1, file);
+    res_fclose(file);
 }
 
 int far modalscreen_pending_scene_trans(void) {

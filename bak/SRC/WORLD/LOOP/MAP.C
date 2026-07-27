@@ -63,17 +63,17 @@ void map_color_remap_load(char *filename) {
         g_pColorRemap[i] = (unsigned char)i;
         i++;
     } while (i < 256);
-    file = bak_fopen(filename, "rb");
-    bak_fread(&g_wSkyColorR, 2, 1, file);
-    bak_fread(&g_wSkyColorG, 2, 1, file);
-    bak_fread(&g_wSkyColorB, 2, 1, file);
-    bak_fread(&i, 2, 1, file);
+    file = res_fopen(filename, "rb");
+    res_fread(&g_wSkyColorR, 2, 1, file);
+    res_fread(&g_wSkyColorG, 2, 1, file);
+    res_fread(&g_wSkyColorB, 2, 1, file);
+    res_fread(&i, 2, 1, file);
     for (; i != 0; i--) {
-        bak_fread(&idx, 1, 1, file);
-        bak_fread(&val, 1, 1, file);
+        res_fread(&idx, 1, 1, file);
+        res_fread(&val, 1, 1, file);
         g_pColorRemap[idx] = val;
     }
-    bak_fclose(file);
+    res_fclose(file);
     if (g_full_redraw_needed != 0) {
         g_world_widget->colorRemap = g_pColorRemap;
     }

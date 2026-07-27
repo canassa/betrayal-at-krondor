@@ -35,18 +35,18 @@ int font_load(FileRef *filename) {
     if (chunk_seek(filename, (char *)g_font_chunk_tag_ptr, 0) == -1L)
         goto fail;
 
-    bak_fread(&g_graphics_context.pFont_glyph_width_bits[slot], 1, 1, filename);
+    res_fread(&g_graphics_context.pFont_glyph_width_bits[slot], 1, 1, filename);
 
     if ((char)g_graphics_context.pFont_glyph_width_bits[slot] == -3 ||
         (char)g_graphics_context.pFont_glyph_width_bits[slot] == -1) {
 
         g_font_format[slot] = -(char)g_graphics_context.pFont_glyph_width_bits[slot];
-        bak_fread(&g_graphics_context.pFont_glyph_width_bits[slot], 1, 1, filename);
-        bak_fread(&g_graphics_context.pFont_height[slot], 1, 1, filename);
-        bak_fread(&g_font_underline_offset[slot], 1, 1, filename);
-        bak_fread(&g_graphics_context.pFont_base_char[slot], 1, 1, filename);
-        bak_fread(&g_graphics_context.pFont_glyph_count[slot], 1, 1, filename);
-        bak_fread(&dataSize, 1, 2, filename);
+        res_fread(&g_graphics_context.pFont_glyph_width_bits[slot], 1, 1, filename);
+        res_fread(&g_graphics_context.pFont_height[slot], 1, 1, filename);
+        res_fread(&g_font_underline_offset[slot], 1, 1, filename);
+        res_fread(&g_graphics_context.pFont_base_char[slot], 1, 1, filename);
+        res_fread(&g_graphics_context.pFont_glyph_count[slot], 1, 1, filename);
+        res_fread(&dataSize, 1, 2, filename);
 
         error_flag =
             ((stream_id = stream_open(-1, filename, "r", cached_file_chunk_size(filename))) < 0);
@@ -84,15 +84,15 @@ int font_load(FileRef *filename) {
 
         if ((char)g_graphics_context.pFont_glyph_width_bits[slot] == -2) {
             g_font_format[slot] = 2;
-            bak_fread(&g_graphics_context.pFont_glyph_width_bits[slot], 1, 1, filename);
+            res_fread(&g_graphics_context.pFont_glyph_width_bits[slot], 1, 1, filename);
             dataSize = (unsigned int)g_graphics_context.pFont_glyph_width_bits[slot];
         } else {
             g_font_format[slot] = 0;
             dataSize = ((int)g_graphics_context.pFont_glyph_width_bits[slot] + 7) >> 3;
         }
-        bak_fread(&g_graphics_context.pFont_height[slot], 1, 1, filename);
-        bak_fread(&g_graphics_context.pFont_base_char[slot], 1, 1, filename);
-        bak_fread(&g_graphics_context.pFont_glyph_count[slot], 1, 1, filename);
+        res_fread(&g_graphics_context.pFont_height[slot], 1, 1, filename);
+        res_fread(&g_graphics_context.pFont_base_char[slot], 1, 1, filename);
+        res_fread(&g_graphics_context.pFont_glyph_count[slot], 1, 1, filename);
 
         dataSize *= (int)(unsigned char)g_graphics_context.pFont_height[slot] *
                     (int)(unsigned char)g_graphics_context.pFont_glyph_count[slot];
@@ -100,7 +100,7 @@ int font_load(FileRef *filename) {
         error_flag = !((malloc_result = my_malloc(dataSize)));
 
         if (error_flag == 0) {
-            bak_fread(malloc_result, dataSize, 1, filename);
+            res_fread(malloc_result, dataSize, 1, filename);
         }
 
         if (error_flag == 0) {

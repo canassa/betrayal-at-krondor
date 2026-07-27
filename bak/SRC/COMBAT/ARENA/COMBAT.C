@@ -174,18 +174,18 @@ void far combat_arena_mode_exit(void) {
 void far combat_arena_load_remap_pals(void) {
     ResFile *fp;
 
-    fp = bak_fopen("red.rmp", "rb");
-    bak_fread_chunked(g_abCursorPaletteLut + 0x100, (long)0x100, (long)1, fp);
-    bak_fclose(fp);
-    fp = bak_fopen("green.rmp", "rb");
-    bak_fread_chunked(g_abCursorPaletteLut + 0x200, (long)0x100, (long)1, fp);
-    bak_fclose(fp);
-    fp = bak_fopen("white.rmp", "rb");
-    bak_fread_chunked(g_abCursorPaletteLut + 0x300, (long)0x100, (long)1, fp);
-    bak_fclose(fp);
-    fp = bak_fopen("blue.rmp", "rb");
-    bak_fread_chunked(g_abCursorPaletteLut + 0x400, (long)0x100, (long)1, fp);
-    bak_fclose(fp);
+    fp = res_fopen("red.rmp", "rb");
+    res_fread_chunked(g_abCursorPaletteLut + 0x100, (long)0x100, (long)1, fp);
+    res_fclose(fp);
+    fp = res_fopen("green.rmp", "rb");
+    res_fread_chunked(g_abCursorPaletteLut + 0x200, (long)0x100, (long)1, fp);
+    res_fclose(fp);
+    fp = res_fopen("white.rmp", "rb");
+    res_fread_chunked(g_abCursorPaletteLut + 0x300, (long)0x100, (long)1, fp);
+    res_fclose(fp);
+    fp = res_fopen("blue.rmp", "rb");
+    res_fread_chunked(g_abCursorPaletteLut + 0x400, (long)0x100, (long)1, fp);
+    res_fclose(fp);
 }
 
 int far combat_arena_wait_confirm_cancel(void) {

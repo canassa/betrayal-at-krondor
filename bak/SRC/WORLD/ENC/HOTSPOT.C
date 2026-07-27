@@ -60,12 +60,12 @@ void far hotspotevt_monst_load_tbl_cur_id(void) {
     g_monst_filename_buf[4] = 0x30 | p->bParty_x % 10;
     g_monst_filename_buf[5] = 0x30 | p->bParty_y / 10;
     g_monst_filename_buf[6] = 0x30 | p->bParty_y % 10;
-    file = bak_fopen(g_monst_filename_buf, "rb");
+    file = res_fopen(g_monst_filename_buf, "rb");
     if (file != (ResFile *)0) {
-        bak_fseek(file, (unsigned long)((g_gameState.nChapter - 1) * 0xc0), SEEK_CUR);
-        bak_fread(&g_nHotspotCount, 2, 1, file);
-        bak_fread(g_aZoneHotspots, 0x13, g_nHotspotCount, file);
-        bak_fclose(file);
+        res_fseek(file, (unsigned long)((g_gameState.nChapter - 1) * 0xc0), SEEK_CUR);
+        res_fread(&g_nHotspotCount, 2, 1, file);
+        res_fread(g_aZoneHotspots, 0x13, g_nHotspotCount, file);
+        res_fclose(file);
     } else {
         g_nHotspotCount = 0;
     }
@@ -1158,13 +1158,13 @@ char far hotspotevt_bak_load_indexed_rec(int record_id, void *dest, long offset)
     ResFile *file;
 
     hotspotevt_bak_indexed_rec_info(record_id, &filename, &record_size);
-    file = bak_fopen(filename, "rb");
-    bak_fread(header, 4, 1, file);
-    bak_fseek(file, (unsigned long)(unsigned int)(record_size + 1) * offset, SEEK_CUR);
-    bak_fread(&present, 1, 1, file);
+    file = res_fopen(filename, "rb");
+    res_fread(header, 4, 1, file);
+    res_fseek(file, (unsigned long)(unsigned int)(record_size + 1) * offset, SEEK_CUR);
+    res_fread(&present, 1, 1, file);
     if (present != '\0') {
-        bak_fread(dest, record_size, 1, file);
+        res_fread(dest, record_size, 1, file);
     }
-    bak_fclose(file);
+    res_fclose(file);
     return present;
 }

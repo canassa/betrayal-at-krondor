@@ -71,7 +71,7 @@ int adscript_resource_load(FileRef *file) {
 
         page_count = 0x14a;
     } else {
-        bak_fread(&page_count, 2, 1, file);
+        res_fread(&page_count, 2, 1, file);
         page_count = page_count;
     }
     if (chunk_seek(file, "TT3:", 0) == -1L) {

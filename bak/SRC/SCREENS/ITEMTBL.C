@@ -53,10 +53,10 @@ int itemtbl_load(void) {
     if (g_pItemDefTable == (ItemRecord far *)0) {
 
         size = 0x2b7a;
-        fp = bak_fopen("OBJINFO.DAT", "rb");
+        fp = res_fopen("OBJINFO.DAT", "rb");
         g_pItemDefTable = (ItemRecord far *)alloc_far((long)size, 0);
-        bak_fread_chunked((unsigned char far *)g_pItemDefTable, 1, (long)size, fp);
-        bak_fclose(fp);
+        res_fread_chunked((unsigned char far *)g_pItemDefTable, 1, (long)size, fp);
+        res_fclose(fp);
         g_pItemPriceTable = (unsigned long *)my_malloc(0x228);
         return 1;
     }

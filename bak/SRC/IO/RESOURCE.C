@@ -1,6 +1,6 @@
 /**
  * @file    RESOURCE.C
- * @brief   Resource-archive I/O layer: the `bak_*` stdio wrappers, the
+ * @brief   Resource-archive I/O layer: the `res_*` stdio wrappers, the
  *          `KRONDOR.RMF` directory loader, and the INT 24h critical-error ISR.
  */
 #include <ctype.h>
@@ -39,53 +39,70 @@ bool8 g_resInitialized = FALSE;
 
 static FileHandle *res_resolve_handle(ResFile *file);
 
-ResFile *bak_fopen(char *filename, char *mode) {
+ResFile *res_fopen(char *filename, char *mode) {
     char name[14];
     int count;
     register FileHandle *handle;
     register FILE *fp;
 
+    // Recover from a prior media-change error before touching the archive.
     if (g_resArchivesDirty) {
         res_select_archive(0);
     }
+
     res_setup();
     g_resError = FALSE;
     if (g_resArchiveCount == 0) {
         return (ResFile *)fopen(filename, mode);
     }
+
     g_resLastFgetcCrtFile = NULL;
     g_resLastFgetcFile = NULL;
     handle = g_resHandles;
     count = RES_HANDLE_POOL_SIZE;
+
+    // Find the first free slot in the handle pool.
     while (count != 0 && handle->inUse) {
         handle++;
         count--;
     }
+
+    // Pool exhausted — no free handle.
     if (count == 0) {
         return NULL;
     }
+
     res_filename_hash(filename);
+
+    // Try a loose file first, retrying if a critical error interrupts the open.
     g_resInFopen = TRUE;
     do {
         g_resFopenRetry = FALSE;
         fp = fopen(filename, mode);
     } while (g_resFopenRetry);
+
     g_resInFopen = FALSE;
+
+    // Loose file: hand back a stdio-backed handle.
     if (fp != NULL) {
         handle->archiveIndex = 0;
         handle->baseOffset = handle->length = handle->curOffset = 0UL;
         handle->inUse = TRUE;
         handle->stdioFile = fp;
     } else {
+        // Not loose: locate it in the archive by hash.
         if (!res_lookup(handle)) {
             return NULL;
         }
+
         res_select_archive(handle->archiveIndex);
         res_archive_seek(handle->baseOffset + handle->curOffset);
         fp = g_resArchives[g_resCurrentArchive].fp;
-        fread(name, 0xd, 1, fp);
+        fread(name, sizeof(name) - 1, 1, fp);
         fread(&handle->length, sizeof(handle->length), 1, fp);
         g_resArchives[g_resCurrentArchive].filePos = handle->baseOffset = ftell(fp);
+
+        // Confirm the hash didn't collide: the stored name must match.
         if (stricmp(name, filename) != 0) {
             return NULL;
         }
@@ -93,11 +110,13 @@ ResFile *bak_fopen(char *filename, char *mode) {
         handle->stdioFile = NULL;
         handle->inUse = TRUE;
     }
+
     g_resOpenHandleCount++;
+
     return (ResFile *)handle;
 }
 
-int bak_fclose(ResFile *file) {
+int res_fclose(ResFile *file) {
     int result;
     FileHandle *handle;
 
@@ -117,10 +136,10 @@ int bak_fclose(ResFile *file) {
     return result;
 }
 
-int bak_fread(void *ptr, int size, int count, ResFile *file) {
-    int nRead;
+int res_fread(void *ptr, int size, int count, ResFile *file) {
+    int itemsRead;
     bool16 singleObj;
-    unsigned nBytes;
+    unsigned byteCount;
     FileHandle *handle;
 
     singleObj = FALSE;
@@ -135,25 +154,25 @@ int bak_fread(void *ptr, int size, int count, ResFile *file) {
         size = 1;
         singleObj = TRUE;
     }
-    nBytes = size * count;
-    while (nBytes != 0 && nBytes > handle->length - handle->curOffset) {
+    byteCount = size * count;
+    while (byteCount != 0 && byteCount > handle->length - handle->curOffset) {
         count--;
-        nBytes -= size;
+        byteCount -= size;
     }
     res_select_archive(handle->archiveIndex);
     res_archive_seek(handle->baseOffset + handle->curOffset);
     file = (ResFile *)g_resArchives[handle->archiveIndex].fp;
-    nRead = fread(ptr, size, count, (FILE *)file);
-    nBytes = nRead * size;
-    handle->curOffset += nBytes;
-    g_resArchives[handle->archiveIndex].filePos += nBytes;
-    if (singleObj && nRead == count) {
-        nRead = 1;
+    itemsRead = fread(ptr, size, count, (FILE *)file);
+    byteCount = itemsRead * size;
+    handle->curOffset += byteCount;
+    g_resArchives[handle->archiveIndex].filePos += byteCount;
+    if (singleObj && itemsRead == count) {
+        itemsRead = 1;
     }
-    return nRead;
+    return itemsRead;
 }
 
-int bak_fseek(ResFile *file, long offset, int whence) {
+int res_fseek(ResFile *file, long offset, int whence) {
     FileHandle *handle;
 
     if (g_resArchiveCount == 0 || (handle = res_resolve_handle(file)) == NULL)
@@ -174,7 +193,7 @@ int bak_fseek(ResFile *file, long offset, int whence) {
     return 0;
 }
 
-long bak_ftell(ResFile *file) {
+long res_ftell(ResFile *file) {
     FileHandle *handle;
 
     if (g_resArchiveCount == 0 || (handle = res_resolve_handle(file)) == NULL)
@@ -185,7 +204,7 @@ long bak_ftell(ResFile *file) {
         return handle->curOffset;
 }
 
-long bak_filelength(ResFile *file) {
+long res_filelength(ResFile *file) {
     long savedPos;
     long result;
     FileHandle *handle;
@@ -202,42 +221,50 @@ long bak_filelength(ResFile *file) {
     return result;
 }
 
-void bak_rewind(ResFile *file) {
-    bak_fseek(file, 0L, SEEK_SET);
+void res_rewind(ResFile *file) {
+    res_fseek(file, 0L, SEEK_SET);
 }
 
-int bak_fgetc(ResFile *file) {
+int res_fgetc(ResFile *file) {
     int result;
     FileHandle *handle;
 
     g_resLastFgetcFile = file;
+
+    // No archive, or a loose token: read straight from the CRT stream.
     if (g_resArchiveCount == 0 || (handle = res_resolve_handle(file)) == NULL)
         return fgetc(g_resLastFgetcCrtFile = (FILE *)file);
+
+    // Loose pooled handle: read from its stdio stream.
     if (handle->stdioFile != NULL)
         return fgetc(g_resLastFgetcCrtFile = handle->stdioFile);
+
+    // Archive window: -1 at end of window, else read the next byte below.
     if (handle->curOffset >= handle->length)
         return -1;
+
     res_select_archive(handle->archiveIndex);
     res_archive_seek(handle->baseOffset + handle->curOffset);
     file = (ResFile *)g_resArchives[handle->archiveIndex].fp;
     result = fgetc(g_resLastFgetcCrtFile = (FILE *)file);
     handle->curOffset++;
     g_resArchives[handle->archiveIndex].filePos++;
+
     return result;
 }
 
-int bak_feof(ResFile *file) {
+int res_feof(ResFile *file) {
     FileHandle *handle;
 
     if (g_resArchiveCount == 0 || (handle = res_resolve_handle(file)) == NULL)
-        return ((FILE *)file)->flags & 0x20;
+        return feof((FILE *)file);
     if (handle->stdioFile != NULL)
-        return handle->stdioFile->flags & 0x20;
+        return feof(handle->stdioFile);
     else
         return handle->curOffset >= handle->length ? 1 : 0;
 }
 
-int bak_fwrite(void *ptr, int size, int count, ResFile *file) {
+int res_fwrite(void *ptr, int size, int count, ResFile *file) {
     void *buf;
     FileHandle *handle;
     int written;
@@ -254,7 +281,7 @@ int bak_fwrite(void *ptr, int size, int count, ResFile *file) {
     return written;
 }
 
-int bak_putc(int c, ResFile *file) {
+int res_putc(int c, ResFile *file) {
     FileHandle *handle;
     int result;
 
@@ -282,7 +309,9 @@ void res_setbuf(ResFile *file, char *buffer) {
     }
 }
 
+
 static void interrupt far res_critical_error_handler();
+
 
 void res_setup(void) {
     RmfEntry far *entry;
@@ -297,7 +326,7 @@ void res_setup(void) {
     char path[80];
 #endif
 
-    // Init-once: called from every bak_fopen, but only the first call runs.
+    // Init-once: called from every res_fopen, but only the first call runs.
     if (g_resInitialized)
         return;
 
@@ -329,11 +358,11 @@ void res_setup(void) {
         arc = &g_resArchives[archiveIdx];
 
         // Read the archive's fixed record (payload name), then its entry count.
-        fread(arc, 13, 1, fp);
+        fread(arc, sizeof(arc->fileName) - 1, 1, fp);
         fread(&readCount, sizeof(readCount), 1, fp);
 
         // Allocate its directory table: one slot per entry plus a zero terminator.
-        entry = alloc_far((unsigned long)((unsigned short)(readCount + 1) * 8), ALLOC_FAR_ZERO_FILL);
+        entry = alloc_far((readCount + 1) * sizeof(RmfEntry), ALLOC_FAR_ZERO_FILL);
         arc->directory = entry;
         arc->slotIndex = archiveIdx;
 
@@ -375,9 +404,11 @@ void res_cleanup(void) {
     g_resInitialized = FALSE;
 }
 
+
 void res_invalidate_archives(void) {
     g_resArchivesDirty = TRUE;
 }
+
 
 unsigned long res_filename_hash(char *filename) {
     unsigned long val;
@@ -394,6 +425,7 @@ unsigned long res_filename_hash(char *filename) {
 
     return g_resLookupHash = val;
 }
+
 
 int res_lookup(FileHandle *handle) {
     RmfEntry far *entry;
@@ -451,6 +483,7 @@ int res_lookup(FileHandle *handle) {
     }
 }
 
+
 void res_select_archive(int archiveIndex) {
     bool16 probeFailed;
     Archive *arc;
@@ -499,6 +532,7 @@ void res_select_archive(int archiveIndex) {
     }
 }
 
+
 void res_archive_seek(unsigned long offset) {
     Archive *ar;
 
@@ -508,6 +542,7 @@ void res_archive_seek(unsigned long offset) {
         ar->filePos = offset;
     }
 }
+
 
 /**
  * @brief Resolve a @ref ResFile token to its pooled @ref FileHandle, or `NULL`
@@ -554,9 +589,10 @@ static FileHandle *res_resolve_handle(ResFile *file) {
     return g_resFindHandleCacheVal = handle;
 }
 
+
 /**
  * @brief DOS INT 24h (critical-error) ISR: while a resource open is in flight
- *        (@ref g_resInFopen), fail the DOS call so @ref bak_fopen retries in C.
+ *        (@ref g_resInFopen), fail the DOS call so @ref res_fopen retries in C.
  *
  * Returns @ref INT24_FAIL when @ref g_resInFopen is set, else @ref INT24_RETRY,
  * and raises @ref g_resFopenRetry and @ref g_resArchivesDirty. A Borland

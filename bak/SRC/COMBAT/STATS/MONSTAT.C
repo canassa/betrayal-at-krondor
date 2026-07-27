@@ -40,49 +40,49 @@ void monstat_roll_stats_from_file(CombatActor *actor) {
     strcat(filename, numbuf);
     strcat(filename, ext);
 
-    file = bak_fopen(filename, "rb");
+    file = res_fopen(filename, "rb");
     if (file == (ResFile *)0)
         return;
 
-    bak_fread(&min_val, 2, 1, file);
-    bak_fread(&max_val, 2, 1, file);
+    res_fread(&min_val, 2, 1, file);
+    res_fread(&max_val, 2, 1, file);
     monstat_roll_stat_in_range(actor, max_val, min_val, 0);
-    bak_fread(&min_val, 2, 1, file);
-    bak_fread(&max_val, 2, 1, file);
+    res_fread(&min_val, 2, 1, file);
+    res_fread(&max_val, 2, 1, file);
     monstat_roll_stat_in_range(actor, max_val, min_val, 1);
-    bak_fread(&min_val, 2, 1, file);
-    bak_fread(&max_val, 2, 1, file);
+    res_fread(&min_val, 2, 1, file);
+    res_fread(&max_val, 2, 1, file);
     monstat_roll_stat_in_range(actor, max_val, min_val, 2);
-    bak_fread(&min_val, 2, 1, file);
-    bak_fread(&max_val, 2, 1, file);
+    res_fread(&min_val, 2, 1, file);
+    res_fread(&max_val, 2, 1, file);
     monstat_roll_stat_in_range(actor, max_val, min_val, 3);
-    bak_fread(&min_val, 2, 1, file);
-    bak_fread(&max_val, 2, 1, file);
+    res_fread(&min_val, 2, 1, file);
+    res_fread(&max_val, 2, 1, file);
     monstat_roll_stat_in_range(actor, max_val, min_val, 5);
-    bak_fread(&min_val, 2, 1, file);
-    bak_fread(&max_val, 2, 1, file);
+    res_fread(&min_val, 2, 1, file);
+    res_fread(&max_val, 2, 1, file);
     monstat_roll_stat_in_range(actor, max_val, min_val, 6);
-    bak_fread(&min_val, 2, 1, file);
-    bak_fread(&max_val, 2, 1, file);
+    res_fread(&min_val, 2, 1, file);
+    res_fread(&max_val, 2, 1, file);
     monstat_roll_stat_in_range(actor, max_val, min_val, 7);
-    bak_fread(&min_val, 2, 1, file);
-    bak_fread(&max_val, 2, 1, file);
+    res_fread(&min_val, 2, 1, file);
+    res_fread(&max_val, 2, 1, file);
     monstat_roll_stat_in_range(actor, max_val, min_val, 4);
 
-    bak_fread(&min_val, 2, 1, file);
-    bak_fread(&max_val, 2, 1, file);
+    res_fread(&min_val, 2, 1, file);
+    res_fread(&max_val, 2, 1, file);
     actor->inner->pad_e[1] = (unsigned char)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
-    bak_fread(&min_val, 2, 1, file);
-    bak_fread(&max_val, 2, 1, file);
+    res_fread(&min_val, 2, 1, file);
+    res_fread(&max_val, 2, 1, file);
     actor->inner->pad_e[2] = (unsigned char)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
-    bak_fread(&min_val, 2, 1, file);
-    bak_fread(&max_val, 2, 1, file);
+    res_fread(&min_val, 2, 1, file);
+    res_fread(&max_val, 2, 1, file);
     actor->inner->pad_e[3] = (unsigned char)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
 
-    bak_fread(&min_val, 2, 1, file);
-    bak_fread(&max_val, 2, 1, file);
+    res_fread(&min_val, 2, 1, file);
+    res_fread(&max_val, 2, 1, file);
     if (actor->inner->pad_e[0] != '\0') {
         actor->inner->pad_e[0] = (unsigned char)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
     }
-    bak_fclose(file);
+    res_fclose(file);
 }

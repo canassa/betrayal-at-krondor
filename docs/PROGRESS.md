@@ -267,7 +267,7 @@ Headers with no `.C` are declaration headers for an assembly module; they mostly
 |---|---|---:|:--:|
 | `DOSRW` | .H | 33 | ✅ |
 | `IOCHUNK` | .C + .H | 47 | ⬜ |
-| `RESOURCE` | .C + .H | 980 | 🚧 |
+| `RESOURCE` | .C + .H | 980 | ✅ |
 
 ### `bak/SRC/R3D/ACTOR`
 
@@ -473,4 +473,4 @@ Headers with no `.C` are declaration headers for an assembly module; they mostly
 
 ---
 
-**207 modules — 7 done, 5 in progress, 195 untouched.**
+**207 modules — 8 done, 4 in progress, 195 untouched.**

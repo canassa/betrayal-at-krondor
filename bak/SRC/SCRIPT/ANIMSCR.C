@@ -101,14 +101,14 @@ int anim_script_open(char *filename, int mode) {
     if (chunk_seek(fp, "ADS:RES:", 0) == -1) {
         err++;
     } else {
-        bak_fread(&resourceCount, 2, 1, fp);
+        res_fread(&resourceCount, 2, 1, fp);
         g_pScriptObjectChainHead = (ScriptAnimNode *)0;
         g_pScriptObjectListHead = (ScriptObject far *)0;
         while (resourceCount-- != 0 && err == 0) {
-            bak_fread(&g_wAnimResSfxId, 2, 1, fp);
+            res_fread(&g_wAnimResSfxId, 2, 1, fp);
             namePtr = nameBuf;
             do {
-                bak_fread(namePtr, 1, 1, fp);
+                res_fread(namePtr, 1, 1, fp);
             } while (*namePtr++ != '\0');
             if (anim_script_register_resource(nameBuf, g_wAnimResSfxId) == -1) {
                 err++;

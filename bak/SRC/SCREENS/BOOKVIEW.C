@@ -42,7 +42,7 @@ void bookview_init(void) {
     g_pBookViewer->pFontSlots[1] = font_load("BOOK.FNT");
     g_pBookViewer->nEmsPage0 = ems_alloc_pages(0xffffL);
     g_pBookViewer->nEmsPage1 = ems_alloc_pages(0xffffL);
-    if ((file = bak_fopen("BOOK.SCX", "rb")) != 0) {
+    if ((file = res_fopen("BOOK.SCX", "rb")) != 0) {
         if ((stream = stream_open(-1, file, "r", 0xcd2dL)) != -1) {
             p = ems_map_resource_pages(g_pBookViewer->nEmsPage0);
             stream_read(stream, p, 56000U);
@@ -50,7 +50,7 @@ void bookview_init(void) {
             stream_read(stream, p, 56000U);
             stream_close(stream);
         }
-        bak_fclose(file);
+        res_fclose(file);
     }
     boot_video_init_for_mode(1);
     g_graphics_context.wGfxBlitSrcPage = g_graphics_context.wGfxBlitDstPage =
@@ -112,14 +112,14 @@ static PageDirectory far *bookview_load_page_directory(char *filename) {
     ResFile *file;
     int i;
 
-    file = bak_fopen(filename, "rb");
+    file = res_fopen(filename, "rb");
     if (!file) {
         return (PageDirectory far *)0;
     }
-    bak_fread(&size, 1, 4, file);
+    res_fread(&size, 1, 4, file);
     dir = (PageDirectory far *)alloc_far(size, 0L);
-    bak_fread_chunked((unsigned char huge *)dir, 1L, (long)size, file);
-    bak_fclose(file);
+    res_fread_chunked((unsigned char huge *)dir, 1L, (long)size, file);
+    res_fclose(file);
     for (i = 0; i < dir->nCount; i++) {
         dir->pPages[i] = (BookPage far *)((char huge *)dir + (unsigned long)dir->pPages[i]);
     }

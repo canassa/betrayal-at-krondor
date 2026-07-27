@@ -23,7 +23,7 @@
 
 	.286
 
-	extrn	_bak_fread:far			; 1000:0751  __cdecl file read
+	extrn	_res_fread:far			; 1000:0751  __cdecl file read
 
 _DATA	segment word public 'DATA'
 _DATA	ends
@@ -45,7 +45,7 @@ S149F_TEXT	segment word public use16 'CODE'
 ;;
 ;; No stack frame of its own; reads the CALLER's frame.  Returns SI=buf_ptr,
 ;; CX=size for the caller's string-instruction loop.  size = min(buf_size,
-;; remaining); remaining -= size; bak_fread(buf_ptr, size, 1, bakfile).
+;; remaining); remaining -= size; res_fread(buf_ptr, size, 1, bakfile).
 ;; ===========================================================================
 _decomp_stream_refill	proc far
 	push	bx
@@ -61,11 +61,11 @@ use_cx:
 	push	cx			; save size
 	mov	ax,word ptr [bp+10h]	; AX = bakfile
 	mov	bx,word ptr [bp+0ch]	; BX = buf_ptr
-	push	ax			; bak_fread arg4: stream
-	push	1			; bak_fread arg3: count = 1
-	push	cx			; bak_fread arg2: size
-	push	bx			; bak_fread arg1: ptr
-	call	_bak_fread
+	push	ax			; res_fread arg4: stream
+	push	1			; res_fread arg3: count = 1
+	push	cx			; res_fread arg2: size
+	push	bx			; res_fread arg1: ptr
+	call	_res_fread
 	add	sp,8			; __cdecl caller cleanup (4 args)
 	pop	cx			; CX = size (for the caller)
 	pop	es

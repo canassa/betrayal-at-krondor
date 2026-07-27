@@ -49,11 +49,11 @@ void far askabout_keyword_table_load(void) {
     int i;
 
     if (g_pKeywordTable == (unsigned short *)0) {
-        file = bak_fopen("KEYWORD.DAT", "rb");
-        bak_fread(&size, 2, 1, file);
+        file = res_fopen("KEYWORD.DAT", "rb");
+        res_fread(&size, 2, 1, file);
         g_pKeywordTable = galloc_safe_zcalloc(size);
-        bak_fread(g_pKeywordTable, 1, size, file);
-        bak_fclose(file);
+        res_fread(g_pKeywordTable, 1, size, file);
+        res_fclose(file);
         for (i = 0; i < (int)*g_pKeywordTable; i = i + 1) {
             *(unsigned short *)((char *)g_pKeywordTable + 2 + i * 2) +=
                 (int)((unsigned)g_pKeywordTable - 2);

@@ -15,7 +15,7 @@
  *
  * This module is the single gateway between the game and its data. Every
  * subsystem — screens, dialog, sound, world, combat, save — reads its assets
- * through the stdio-shaped `bak_*` API declared here: a caller names a
+ * through the stdio-shaped `res_*` API declared here: a caller names a
  * resource and gets back an opaque @ref ResFile token that acts like an
  * ordinary file.
  *
@@ -42,7 +42,7 @@
 
 
 /** @brief Number of slots in the @ref g_resHandles pool — the cap on
- *         simultaneously-open @ref bak_fopen handles. */
+ *         simultaneously-open @ref res_fopen handles. */
 #define RES_HANDLE_POOL_SIZE 10
 
 
@@ -65,6 +65,7 @@ typedef struct RmfEntry {
     unsigned long headerOffset;
 } RmfEntry;
 
+
 /**
  * @brief Runtime descriptor for one open resource archive (`KRONDOR.001`).
  *
@@ -82,6 +83,7 @@ typedef struct Archive {
     unsigned int unused;      /**< 0x16: never read or written. */
     RmfEntry far *directory;  /**< 0x18: loaded hash->offset table. */
 } Archive;
+
 
 /**
  * @brief A pooled open-file handle: either a loose stdio file or a byte-window
@@ -103,11 +105,11 @@ typedef struct FileHandle {
 
 
 /**
- * @brief Opaque file token returned by @ref bak_fopen.
+ * @brief Opaque file token returned by @ref res_fopen.
  *
  * Also produced by @c cached_file_open  (TBD-ref: IFFREAD.H lacks @file).
  * Under the hood a CRT `FILE *` or a @ref FileHandle slot; treat it as opaque —
- * pass it only to the `bak_*` functions, never dereference it. No definition.
+ * pass it only to the `res_*` functions, never dereference it. No definition.
  */
 typedef struct ResFile ResFile;
 
@@ -120,30 +122,35 @@ typedef struct ResFile ResFile;
  */
 typedef void FileRef;
 
+
 /**
  * @brief Init-once guard for the resource layer: `TRUE` after
  *        @ref res_setup has run its one-time setup.
  *
- * `res_setup` is called from every @ref bak_fopen; this flag makes it
+ * `res_setup` is called from every @ref res_fopen; this flag makes it
  * idempotent (open `KRONDOR.RMF` + install the INT 24h handler exactly once).
  */
 extern bool8 g_resInitialized;
+
+
 /**
  * @brief Sticky I/O-error flag: set on a write/close failure, cleared at the
- *        start of each @ref bak_fopen. Set-only — nothing reads it.
+ *        start of each @ref res_fopen. Set-only — nothing reads it.
  *
- * OR-ed to `TRUE` by @ref bak_fclose, @ref bak_fwrite and @ref bak_putc when
+ * OR-ed to `TRUE` by @ref res_fclose, @ref res_fwrite and @ref res_putc when
  * their underlying CRT call fails; the `|=` makes it sticky across ops until the
- * next @ref bak_fopen resets it. No code tests, returns, or branches on it in
+ * next @ref res_fopen resets it. No code tests, returns, or branches on it in
  * this build, so it is a vestigial accumulator kept for layout fidelity.
  */
 extern bool16 g_resError;
+
 
 /**
  * @brief Far pointer to a DOS interrupt-service routine — the `getvect` /
  *        `setvect` vector shape, used to save and restore a handler.
  */
 typedef void interrupt (far *IsrVector)();
+
 
 /**
  * @brief Saved previous DOS INT 24h (critical-error) handler vector.
@@ -157,7 +164,7 @@ extern IsrVector g_resPrevInt24Vector;
 
 /**
  * @brief Fixed pool of @ref RES_HANDLE_POOL_SIZE open-file handle slots
- *        (@ref FileHandle) shared by all @ref bak_fopen streams.
+ *        (@ref FileHandle) shared by all @ref res_fopen streams.
  */
 extern FileHandle g_resHandles[RES_HANDLE_POOL_SIZE];
 
@@ -170,47 +177,52 @@ extern Archive g_resArchives[RES_ARCHIVE_MAX + 1];
 
 
 /**
- * @brief The @ref ResFile token most recently passed to @ref bak_fgetc.
+ * @brief The @ref ResFile token most recently passed to @ref res_fgetc.
  *
- * Written on every @ref bak_fgetc call and cleared by @ref bak_fopen, but never
+ * Written on every @ref res_fgetc call and cleared by @ref res_fopen, but never
  * read back anywhere in this build — a write-only trace latch, not a lookup
  * cache. Nothing consults it to short-circuit a later call.
  */
 extern ResFile *g_resLastFgetcFile;
 
+
 /**
- * @brief The CRT `FILE *` that @ref bak_fgetc resolved @ref g_resLastFgetcFile
+ * @brief The CRT `FILE *` that @ref res_fgetc resolved @ref g_resLastFgetcFile
  *        to and read a byte through.
  *
  * Mirrors the stdio stream actually handed to `fgetc`; written on every call and
- * cleared by @ref bak_fopen. Like @ref g_resLastFgetcFile it is never read back,
+ * cleared by @ref res_fopen. Like @ref g_resLastFgetcFile it is never read back,
  * so it too is a write-only trace, not consulted on later calls.
  */
 extern FILE *g_resLastFgetcCrtFile;
+
 
 /**
  * @brief Reentrancy guard: `TRUE` while the resource layer is inside a `fopen`
  *        it wants to survive a DOS critical error.
  *
  * Read by @ref res_critical_error_handler: while set, the handler fails the DOS
- * call (returns 3) so @ref bak_fopen / @ref res_select_archive can retry the
+ * call (returns 3) so @ref res_fopen / @ref res_select_archive can retry the
  * open in C, rather than letting DOS blindly retry (return 1).
  */
 extern bool8 g_resInFopen;
+
 
 /**
  * @brief ISR-to-open signal: `TRUE` when a DOS critical error occurred during
  *        the current open, so it should be retried.
  *
- * Raised by @ref res_critical_error_handler and consumed by @ref bak_fopen's
+ * Raised by @ref res_critical_error_handler and consumed by @ref res_fopen's
  * retry loop, which clears it at the top of each attempt.
  */
 extern bool8 g_resFopenRetry;
+
+
 /**
  * @brief The open archive stream is stale — close and reopen before next use.
  *
  * Raised by @ref res_critical_error_handler on a DOS critical error (media
- * change / drive-not-ready) during archive I/O; @ref bak_fopen then resets to
+ * change / drive-not-ready) during archive I/O; @ref res_fopen then resets to
  * the slot-0 sentinel to tear down the suspect stream, clearing the flag.
  */
 extern bool8 g_resArchivesDirty;
@@ -275,6 +287,7 @@ extern int g_resHashRotate;
  */
 extern FileHandle *g_resFindHandleCacheVal;
 
+
 /**
  * @brief Cache key for @ref res_resolve_handle: the @ref ResFile token whose lookup
  *        produced @ref g_resFindHandleCacheVal.
@@ -284,17 +297,128 @@ extern FileHandle *g_resFindHandleCacheVal;
  */
 extern ResFile *g_resFindHandleCacheKey;
 
-extern ResFile *bak_fopen(char *filename, char *mode);
-extern int bak_fclose(ResFile *file);
-extern int bak_fread(void *ptr, int size, int count, ResFile *file);
-extern int bak_fseek(ResFile *file, long offset, int whence);
-extern long bak_ftell(ResFile *file);
-extern long bak_filelength(ResFile *file);
-extern void bak_rewind(ResFile *file);
-extern int bak_fgetc(ResFile *file);
-extern int bak_feof(ResFile *file);
-extern int bak_fwrite(void *ptr, int size, int count, ResFile *file);
-extern int bak_putc(int c, ResFile *file);
+
+/**
+ * @brief Open a named resource, returning an opaque @ref ResFile token — the
+ *        resource layer's `fopen`, and the layer's main entry point.
+ *
+ * Tries a loose file on disk first (so a loose copy shadows the packed one); on
+ * miss, locates the resource in `KRONDOR.001` by name hash and returns a
+ * read-only byte-window into it. The first call lazily brings the layer up via
+ * @ref res_setup, and a pending media-change error is recovered before the open.
+ * Rides out CD-not-ready critical errors by retrying the open.
+ *
+ * @param filename Resource name; uppercased in place for the archive lookup.
+ * @param mode     `fopen` mode string (e.g. `"rb"`), used for the loose-file open.
+ * @return An opaque @ref ResFile token, or `NULL` if the handle pool is full or
+ *         the resource is found in neither place.
+ */
+extern ResFile *res_fopen(char *filename, char *mode);
+
+
+/**
+ * @brief Close a resource token opened by @ref res_fopen.
+ *
+ * Archive byte-windows share the archive's stream, so only loose streams are
+ * actually closed; the pool slot is freed either way. OR-s a failure into
+ * @ref g_resError.
+ *
+ * @return The CRT `fclose` result (`0` on success), or `-1` for a `NULL` token.
+ */
+extern int res_fclose(ResFile *file);
+
+
+/**
+ * @brief Read from a resource stream, `fread`-style, over a @ref ResFile token.
+ *
+ * Loose streams forward to CRT `fread`; an archive read is clamped to the
+ * resource's window so it never spills into the next packed resource. @p size
+ * and @p count are `int` by design — the internal signed multiply is
+ * load-bearing.
+ *
+ * @return Number of whole objects read (the `count == 1` single-object
+ *         convention is preserved).
+ */
+extern int res_fread(void *ptr, int size, int count, ResFile *file);
+
+
+/**
+ * @brief Seek within a resource stream, `fseek`-style.
+ *
+ * For an archive window the resulting position is clamped to `[0, length]` and
+ * the call always reports success; loose streams forward the CRT `fseek` result.
+ *
+ * @param whence `SEEK_SET`, `SEEK_CUR`, or `SEEK_END`.
+ * @return `0` on the archive path; the CRT `fseek` result for a loose stream.
+ */
+extern int res_fseek(ResFile *file, long offset, int whence);
+
+
+/**
+ * @brief Current read position in a resource stream, `ftell`-style.
+ *
+ * @return For an archive window, the offset within the window (0-based); for a
+ *         loose stream, the CRT `ftell` result.
+ */
+extern long res_ftell(ResFile *file);
+
+
+/**
+ * @brief Total byte length of a resource.
+ *
+ * @return An archive window's size taken directly from its handle; for a loose
+ *         stream, measured by seeking to the end and restoring the position.
+ */
+extern long res_filelength(ResFile *file);
+
+
+/**
+ * @brief Reset a resource stream to offset 0 — a thin
+ *        @ref res_fseek `(file, 0, SEEK_SET)` alias.
+ */
+extern void res_rewind(ResFile *file);
+
+
+/**
+ * @brief Read the next byte from a resource stream, `fgetc`-style.
+ *
+ * @return The byte as an `int`, or `-1`/`EOF` at the end of an archive window or
+ *         on CRT EOF for a loose stream.
+ */
+extern int res_fgetc(ResFile *file);
+
+
+/**
+ * @brief End-of-file test for a resource stream.
+ *
+ * Returns nonzero at EOF but NOT a normalized `1`: the loose path returns the
+ * raw `_F_EOF` bit (`0x20`) via the CRT `feof` macro, while the archive path
+ * returns `1`. Unused in this build.
+ */
+extern int res_feof(ResFile *file);
+
+
+/**
+ * @brief Write to a resource stream, `fwrite`-style.
+ *
+ * The packed archive is read-only, so a write to an archive-window token does
+ * nothing and returns 0; loose streams forward to CRT `fwrite`. OR-s a short
+ * write into @ref g_resError.
+ *
+ * @return The element count actually written (`0` on the read-only-archive path).
+ */
+extern int res_fwrite(void *ptr, int size, int count, ResFile *file);
+
+
+/**
+ * @brief Write one character to a resource stream, `fputc`-style.
+ *
+ * Returns `-1` for an archive-window token (the packed archive is read-only);
+ * loose streams forward to CRT `fputc`. OR-s a failure into @ref g_resError.
+ *
+ * @return The character written, or `-1`/`EOF` on failure.
+ */
+extern int res_putc(int c, ResFile *file);
 
 
 /**
@@ -315,10 +439,10 @@ extern void res_setbuf(ResFile *file, char *buffer);
  *        @ref res_cleanup pair: install the INT 24h critical-error handler and
  *        load the `KRONDOR.RMF` archive index into @ref g_resArchives.
  *
- * Lazy and idempotent: @ref bak_fopen calls it on every open, but the
+ * Lazy and idempotent: @ref res_fopen calls it on every open, but the
  * @ref g_resInitialized guard lets only the first call do the work. If
  * `KRONDOR.RMF` cannot be opened the layer stays disabled (zero archives) and
- * every `bak_*` call transparently falls back to plain stdio — the path that
+ * every `res_*` call transparently falls back to plain stdio — the path that
  * serves loose-file dev builds and floppy installs.
  */
 extern void res_setup(void);
@@ -336,7 +460,7 @@ extern void res_cleanup(void);
 
 
 /**
- * @brief Mark the open archives stale so the next @ref bak_fopen reopens them.
+ * @brief Mark the open archives stale so the next @ref res_fopen reopens them.
  *
  * A media-change hook that raises @ref g_resArchivesDirty. Unused in this build;
  * the same recovery is driven live by @ref res_critical_error_handler.

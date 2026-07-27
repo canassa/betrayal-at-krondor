@@ -96,11 +96,11 @@ static int far townscene_load(int chapter, int sub, int preserve) {
     g_szTownSceneFilenameSuffix[0] = (char)sub + '@';
     strcat(fname, g_szTownSceneFilenameSuffix);
 
-    file = bak_fopen(fname, "rb");
-    bak_fread(&size, 2, 1, file);
+    file = res_fopen(fname, "rb");
+    res_fread(&size, 2, 1, file);
     g_pCurrentTownScene = galloc_safe_zcalloc(size);
-    bak_fread(g_pCurrentTownScene, size, 1, file);
-    bak_fclose(file);
+    res_fread(g_pCurrentTownScene, size, 1, file);
+    res_fclose(file);
 
     g_nTownSceneAnimHandle = -1;
     if (g_pCurrentTownScene->pAnimPrefix[0] != '\0') {

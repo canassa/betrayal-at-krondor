@@ -155,31 +155,31 @@ int gstate_temp_file_open(void) {
 
     if (g_cfgTempDrive != 0) {
         sprintf(buf, "%c:%s", g_cfgTempDrive, "TEMP.GAM");
-        if ((g_tempGamFP = bak_fopen(buf, "r+b")) != (ResFile *)0)
+        if ((g_tempGamFP = res_fopen(buf, "r+b")) != (ResFile *)0)
             return 1;
         return 0;
     }
 
-    if ((g_tempGamFP = bak_fopen("TEMP.GAM", "r+b")) != (ResFile *)0)
+    if ((g_tempGamFP = res_fopen("TEMP.GAM", "r+b")) != (ResFile *)0)
         return 1;
     return 0;
 }
 
 void gstate_temp_file_close(void) {
-    bak_fclose(g_tempGamFP);
+    res_fclose(g_tempGamFP);
     g_tempGamFP = (ResFile *)0;
     return;
 }
 
 int gstate_temp_file_read_at(unsigned char far *dst_far, unsigned long offset, unsigned int bytes) {
-    if (bak_fseek(g_tempGamFP, offset, SEEK_SET) != 0) {
-        bak_fseek(g_tempGamFP, 0, SEEK_SET);
-        if (bak_fseek(g_tempGamFP, offset, SEEK_SET) != 0) {
+    if (res_fseek(g_tempGamFP, offset, SEEK_SET) != 0) {
+        res_fseek(g_tempGamFP, 0, SEEK_SET);
+        if (res_fseek(g_tempGamFP, offset, SEEK_SET) != 0) {
         }
     }
-    if ((unsigned long)bak_ftell(g_tempGamFP) == offset) {
+    if ((unsigned long)res_ftell(g_tempGamFP) == offset) {
     }
-    bak_fread_chunked(dst_far, 1, (long)bytes, g_tempGamFP);
+    res_fread_chunked(dst_far, 1, (long)bytes, g_tempGamFP);
     return 1;
 }
 
@@ -223,14 +223,14 @@ int gstate_temp_file_write_at(unsigned char far *src_far, unsigned long offset, 
     }
     g_wLastTempWriteRecordKind = 0xffff;
 #endif
-    if (bak_fseek(g_tempGamFP, offset, SEEK_SET) != 0) {
-        bak_fseek(g_tempGamFP, 0, SEEK_SET);
-        if (bak_fseek(g_tempGamFP, offset, SEEK_SET) != 0)
+    if (res_fseek(g_tempGamFP, offset, SEEK_SET) != 0) {
+        res_fseek(g_tempGamFP, 0, SEEK_SET);
+        if (res_fseek(g_tempGamFP, offset, SEEK_SET) != 0)
             ;
     }
-    if (bak_ftell(g_tempGamFP) == (long)offset)
+    if (res_ftell(g_tempGamFP) == (long)offset)
         ;
-    bak_fwrite_chunked(src_far, 1, (unsigned long)bytes, g_tempGamFP);
+    res_fwrite_chunked(src_far, 1, (unsigned long)bytes, g_tempGamFP);
     return 1;
 }
 

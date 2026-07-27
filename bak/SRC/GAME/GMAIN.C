@@ -298,10 +298,10 @@ int far gmain_play_chapter_intro(int chapter, int part) {
     trackId = -999;
     result = 1;
     if ((part == 1) || (part == 2)) {
-        file = bak_fopen("chapsong.dat", "rb");
-        bak_fseek(file, (long)(unsigned int)((part + (chapter - 1) * 2 - 1) * 2), SEEK_SET);
-        bak_fread(&trackId, 2, 1, file);
-        bak_fclose(file);
+        file = res_fopen("chapsong.dat", "rb");
+        res_fseek(file, (long)(unsigned int)((part + (chapter - 1) * 2 - 1) * 2), SEEK_SET);
+        res_fread(&trackId, 2, 1, file);
+        res_fclose(file);
     }
     bookview_init();
     audio_music_play(trackId);

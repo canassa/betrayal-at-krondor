@@ -77,14 +77,14 @@ void far combat_actor_init_pool(void) {
     pInnerPool =
         (CombatActorInner *)galloc_safe_zcalloc(sizeof(CombatActorInner) * MAX_COMBAT_ACTORS);
     g_anim_pool_A = (AnimSlot *)galloc_safe_zcalloc(sizeof(AnimSlot) * MAX_COMBAT_ACTORS);
-    file = bak_fopen("p1.dat", "rb");
+    file = res_fopen("p1.dat", "rb");
     for (i = 0; i < g_combat_count_A; i++) {
         lSeekOffset =
             (long)(unsigned int)((g_combat_actors_A[i].cParty_slot - 1) * sizeof(CombatActorInner));
-        bak_fseek(file, lSeekOffset, SEEK_SET);
-        bak_fread(&pInnerPool[i], sizeof(CombatActorInner), 1, file);
+        res_fseek(file, lSeekOffset, SEEK_SET);
+        res_fread(&pInnerPool[i], sizeof(CombatActorInner), 1, file);
     }
-    bak_fclose(file);
+    res_fclose(file);
 
     i = 0;
     do {
@@ -485,14 +485,14 @@ ImageRecord **far combat_actor_bnames_load_cached(int class_id, int col) {
         i = i + 1;
     } while (i < RES_CACHE_SLOTS);
 
-    fp = bak_fopen("bnames.dat", "rb");
-    bak_fread(&offCount, 2, 1, fp);
+    fp = res_fopen("bnames.dat", "rb");
+    res_fread(&offCount, 2, 1, fp);
     offTable = galloc_safe_zcalloc(offCount << 1);
-    bak_fread(offTable, 2, offCount, fp);
-    bak_fread(&blobSize, 2, 1, fp);
+    res_fread(offTable, 2, offCount, fp);
+    res_fread(&blobSize, 2, 1, fp);
     strBlob = galloc_safe_zcalloc(blobSize);
-    bak_fread(strBlob, 1, blobSize, fp);
-    bak_fclose(fp);
+    res_fread(strBlob, 1, blobSize, fp);
+    res_fclose(fp);
 
     ((int *)offTable)[class_id] += (int)strBlob;
 
@@ -510,10 +510,10 @@ ImageRecord **far combat_actor_bnames_load_cached(int class_id, int col) {
 
             palette = galloc_safe_zcalloc(0x100);
             local_pfx[2] = nameMeta[3] + '0';
-            fp = bak_fopen(local_pfx, "rb");
+            fp = res_fopen(local_pfx, "rb");
             if (fp != (ResFile *)0) {
-                bak_fread(palette, 1, 0x100, fp);
-                bak_fclose(fp);
+                res_fread(palette, 1, 0x100, fp);
+                res_fclose(fp);
             } else {
                 galloc_zfree(palette);
                 palette = (unsigned char *)0;

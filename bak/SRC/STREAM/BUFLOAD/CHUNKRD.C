@@ -48,7 +48,7 @@ unsigned long chunkread_fread_far_large(char far *dst, unsigned long len, ResFil
     p = dst;
     while (len != 0) {
         n = (long)len < (long)size ? (int)len : size;
-        n = bak_fread(scratch, 1, n, file);
+        n = res_fread(scratch, 1, n, file);
         if (n == 0)
             break;
         movedata(_DS, (unsigned int)scratch, FP_SEG(p), FP_OFF(p), n);

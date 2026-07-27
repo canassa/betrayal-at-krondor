@@ -63,24 +63,24 @@ char g_szVmcodeOvl[11] = "vmcode.ovl";
 void boot_start_dat_load(void) {
     ResFile *file;
 
-    file = bak_fopen("start.dat", "rb");
+    file = res_fopen("start.dat", "rb");
     g_render_camera_scratch = actormotion_vec_alloc(0);
     g_render_camera_scratch->base.pos.xy.nWorld_x = g_render_camera_scratch->base.pos.xy.nWorld_y =
         0;
-    bak_fread(&g_nWorldViewFovNormal, 2, 1, file);
-    bak_fread(&g_nWorldViewFovChapter, 2, 1, file);
+    res_fread(&g_nWorldViewFovNormal, 2, 1, file);
+    res_fread(&g_nWorldViewFovChapter, 2, 1, file);
     g_render_camera_scratch->base.orientation.roll = g_render_camera_scratch->base.orientation.yaw =
         0;
-    bak_fread(&g_nWorldViewYawNormal, 2, 1, file);
-    bak_fread(&g_nWorldViewYawChapter, 2, 1, file);
-    bak_fread(&g_grid_tile_size, 2, 1, file);
+    res_fread(&g_nWorldViewYawNormal, 2, 1, file);
+    res_fread(&g_nWorldViewYawChapter, 2, 1, file);
+    res_fread(&g_grid_tile_size, 2, 1, file);
     g_active_window = ts_create_fullscreen_view(g_render_camera_scratch);
-    bak_fread(&g_active_window->viewport.x, 2, 1, file);
-    bak_fread(&g_active_window->viewport.y, 2, 1, file);
-    bak_fread(&g_active_window->viewport.width, 2, 1, file);
-    bak_fread(&g_active_window->viewport.height, 2, 1, file);
-    bak_fread(g_active_window, 2, 1, file);
-    bak_fclose(file);
+    res_fread(&g_active_window->viewport.x, 2, 1, file);
+    res_fread(&g_active_window->viewport.y, 2, 1, file);
+    res_fread(&g_active_window->viewport.width, 2, 1, file);
+    res_fread(&g_active_window->viewport.height, 2, 1, file);
+    res_fread(g_active_window, 2, 1, file);
+    res_fclose(file);
     g_active_window->faceMaterials = NULL;
     return;
 }
@@ -164,11 +164,11 @@ void boot_check_memory_or_die(void) {
     unsigned long requiredBytes;
     unsigned long freeBytes;
 
-    file = bak_fopen("mem.dat", "rb");
+    file = res_fopen("mem.dat", "rb");
     if (file != (ResFile *)0x0) {
         file_missing = 0;
-        bak_fread(&requiredBytes, 4, 1, file);
-        bak_fclose(file);
+        res_fread(&requiredBytes, 4, 1, file);
+        res_fclose(file);
     } else {
         requiredBytes = 0x927c0;
         file_missing = 1;

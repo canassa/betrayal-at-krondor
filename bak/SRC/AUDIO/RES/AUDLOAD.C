@@ -15,16 +15,16 @@ int music_chunk_load_and_link(ResFile *file, char mode) {
     unsigned short scratch;
     int allocTag;
 
-    bak_fread(&size, 4, 1, file);
-    bak_fread(&scratch, 2, 1, file);
+    res_fread(&size, 4, 1, file);
+    res_fread(&scratch, 2, 1, file);
 
     if ((node = pool_acquire_buffer(sizeof(AudioListNode), 3)) == 0)
         return 0;
 
     node->wId = scratch;
-    bak_fread(&scratch, 1, 1, file);
+    res_fread(&scratch, 1, 1, file);
     *(unsigned short far *)&node->bPriority = (unsigned char)scratch;
-    bak_fread(&scratch, 1, 1, file);
+    res_fread(&scratch, 1, 1, file);
     node->wFlags = (unsigned char)scratch;
 
     allocTag = (node->wFlags & 1) ? 4 : 7;
@@ -34,7 +34,7 @@ int music_chunk_load_and_link(ResFile *file, char mode) {
 
     if (mode == 'c') {
         if ((node->pData = pool_acquire_buffer(size, allocTag)) == 0 ||
-            bak_fread_chunked(node->pData, size, 1, file) != 1) {
+            res_fread_chunked(node->pData, size, 1, file) != 1) {
             release_buffer(node, 3);
             return 0;
         }

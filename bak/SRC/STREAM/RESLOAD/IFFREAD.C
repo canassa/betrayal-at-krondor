@@ -30,7 +30,7 @@ void near bakfile_reset_preserve_cursor(IffResReader *reader) {
         p++;
     }
     *(long *)&reader->pLevel_cache[0] = end;
-    bak_rewind(reader->pStream = file);
+    res_rewind(reader->pStream = file);
 }
 
 int near strncmp_eq(char *a, char *b, int n) {
@@ -56,7 +56,7 @@ int cache_slot_write(IffResReader *record) {
     if (record == 0 || record->pStream == 0 || (slot = iff_reader_find(record->pStream)) == 0)
         return 0;
     *slot = *record;
-    bak_fseek(slot->pStream, slot->nCursor, SEEK_SET);
+    res_fseek(slot->pStream, slot->nCursor, SEEK_SET);
     return 1;
 }
 
@@ -65,17 +65,17 @@ ResFile *far cached_file_open(char *filename) {
 
     if ((reader = iff_reader_find((void *)0)) == 0)
         return (ResFile *)0;
-    if ((reader->pStream = bak_fopen(filename, "rb")) == 0)
+    if ((reader->pStream = res_fopen(filename, "rb")) == 0)
         return (ResFile *)0;
-    bak_fseek(reader->pStream, 0L, SEEK_END);
-    *(long *)&reader->pLevel_cache[0] = bak_ftell(reader->pStream) | 0x80000000L;
+    res_fseek(reader->pStream, 0L, SEEK_END);
+    *(long *)&reader->pLevel_cache[0] = res_ftell(reader->pStream) | 0x80000000L;
     bakfile_reset_preserve_cursor(reader);
     return reader->pStream;
 }
 
 long near chunk_seek_rollback(IffResReader *reader) {
     *reader = g_chunkSeekSaveIffReader;
-    bak_fseek(reader->pStream, reader->nCursor, SEEK_SET);
+    res_fseek(reader->pStream, reader->nCursor, SEEK_SET);
     return -1L;
 }
 
@@ -100,12 +100,12 @@ long chunk_seek(ResFile *handle, char *chunk_id, int mode) {
     if (strncmp_eq(chunk_id, reader->pChunk_id_stack, 0x19)) {
 
         if (mode == 0) {
-            if (bak_ftell(reader->pStream) == reader->nCursor) {
+            if (res_ftell(reader->pStream) == reader->nCursor) {
                 return reader->nCursor;
             }
         }
         if (mode == -1) {
-            bak_fseek(reader->pStream, reader->nCursor, SEEK_SET);
+            res_fseek(reader->pStream, reader->nCursor, SEEK_SET);
             return reader->nCursor;
         }
         if (reader->nSkip_count != 0) {
@@ -116,7 +116,7 @@ long chunk_seek(ResFile *handle, char *chunk_id, int mode) {
                 } else if (reader->nSkip_count > mode) {
                     bakfile_reset_preserve_cursor(reader);
                 } else {
-                    bak_fseek(reader->pStream, reader->nCursor, SEEK_SET);
+                    res_fseek(reader->pStream, reader->nCursor, SEEK_SET);
                     return reader->nCursor;
                 }
             } else {
@@ -142,7 +142,7 @@ long chunk_seek(ResFile *handle, char *chunk_id, int mode) {
     if (!(*(long *)&reader->pLevel_cache[reader->nDepth >> 2] & 0x80000000L)) {
         reader->nCursor += *(long *)&reader->wChunk_size_lo;
     }
-    bak_fseek(reader->pStream, reader->nCursor, SEEK_SET);
+    res_fseek(reader->pStream, reader->nCursor, SEEK_SET);
 
     while (mode-- != 0) {
         for (;;) {
@@ -156,11 +156,11 @@ long chunk_seek(ResFile *handle, char *chunk_id, int mode) {
             }
             if (!(*(long *)&reader->pLevel_cache[reader->nDepth >> 2] & 0x80000000L)) {
                 reader->nCursor += *(long *)&reader->wChunk_size_lo;
-                bak_fseek(reader->pStream, reader->nCursor, SEEK_SET);
+                res_fseek(reader->pStream, reader->nCursor, SEEK_SET);
                 continue;
             }
 
-            if (bak_fread(reader->pChunk_id_stack + reader->nDepth, 1, 4, reader->pStream) != 4) {
+            if (res_fread(reader->pChunk_id_stack + reader->nDepth, 1, 4, reader->pStream) != 4) {
                 return chunk_seek_rollback(reader);
             }
             if ((reader->nDepth += 4) >= 0x18) {
@@ -169,7 +169,7 @@ long chunk_seek(ResFile *handle, char *chunk_id, int mode) {
             reader->pChunk_id_stack[reader->nDepth] = 0;
             reader->nCursor += 8;
 
-            if (bak_fread(&reader->wChunk_size_lo, 4, 1, reader->pStream) != 1) {
+            if (res_fread(&reader->wChunk_size_lo, 4, 1, reader->pStream) != 1) {
                 return chunk_seek_rollback(reader);
             }
 
@@ -205,7 +205,7 @@ int far cached_file_close(ResFile *file) {
     if (!file || !((reader = iff_reader_find(file)) != 0))
         return 0;
     reader->pStream = 0;
-    bak_fclose(file);
+    res_fclose(file);
     return 1;
 }
 
