@@ -35,6 +35,8 @@ _g_pfn_blit_glyph_row	label dword	; slot  1 (+0x04)
 	dd	_gfx_retf_stub	; slot  7 (+0x1c)
 	dd	_gfx_retf_stub	; slot  8 (+0x20)
 	dd	_gfx_retf_stub	; slot  9 (+0x24)
+	public	_g_pfn_fill_run_a
+_g_pfn_fill_run_a	label dword	; slot 10 (+0x28)
 	dd	_gfx_retf_stub	; slot 10 (+0x28)
 	dd	_gfx_retf_stub	; slot 11 (+0x2c)
 	dd	_gfx_retf_stub	; slot 12 (+0x30)
@@ -65,6 +67,8 @@ _g_pfn_blit_glyph_row	label dword	; slot  1 (+0x04)
 	public	_g_pfn_blit_stretched
 _g_pfn_blit_stretched	label dword	; slot 37 (+0x94)
 	dd	_gfx_retf_stub	; slot 37 (+0x94)
+	public	_g_pfn_blit_sprite_chunky_flip
+_g_pfn_blit_sprite_chunky_flip	label dword	; slot 38 (+0x98)
 	dd	_gfx_retf_stub	; slot 38 (+0x98)
 	dd	_gfx_retf_stub	; slot 39 (+0x9c)
 	dd	_gfx_retf_stub	; slot 40 (+0xa0)
