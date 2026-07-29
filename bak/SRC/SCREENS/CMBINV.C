@@ -264,11 +264,11 @@ int cmbinv_inventory_screen_run(Actor far *actor, int idx, int flag) {
                 g_gameState.nEvtArgActor0 =
                     (short)(signed char)((char *)&g_gameState.partySize)[memberIdx];
                 stat_actor_recalc_equip_bonuses(
-                    &g_gameState.party_members[g_gameState.nEvtArgActor0]);
+                    &g_gameState.characters[g_gameState.nEvtArgActor0]);
             } else {
 
                 g_gameState.nEvtArgActor0 =
-                    (short)(signed char)g_gameState.party_roster[RND(g_gameState.partySize)];
+                    (short)(signed char)g_gameState.activeParty[RND(g_gameState.partySize)];
             }
             cmbinv_combat_encounter_begin(g_pInventoryMenuPage, actor, page * 6);
             invui_render_present_sync(g_pInventoryMenuPage, actor, memberIdx, selSlot);
@@ -856,8 +856,8 @@ int far cmbinv_pty_distribute_item_stack(Actor far *src, ItemSlot far *item) {
                 ACTOR_ITEM(recipient, recipient->itemCount++) = itemCopy;
                 cmbinv_consolidate_stacks(recipient);
                 if (itemtbl_record_ptr((ItemSlot far *)&itemCopy)->wCategory == 0x17 &&
-                    g_gameState.abActorStatusRanks[g_gameState.party_roster[i]][5] != 0) {
-                    gstate_member_consume_rations(g_gameState.party_roster[i], 1);
+                    g_gameState.abActorStatusRanks[g_gameState.activeParty[i]][5] != 0) {
+                    gstate_member_consume_rations(g_gameState.activeParty[i], 1);
                 }
             }
         }
@@ -1021,7 +1021,7 @@ int far cmbinv_actor_acquire_item(Actor far *actor, ItemSlot far *item) {
         return 1;
     }
     for (i = 0; i < g_gameState.partySize; i++) {
-        actor = g_gameState.party_members[(signed char)g_gameState.party_roster[i]].actor_record;
+        actor = g_gameState.characters[(signed char)g_gameState.activeParty[i]].actor_record;
         if (cmbinv_has_space_for_item(actor, item)) {
             ACTOR_ITEM(actor, actor->itemCount++) = *item;
             cmbinv_combat_sort_initiative(actor);

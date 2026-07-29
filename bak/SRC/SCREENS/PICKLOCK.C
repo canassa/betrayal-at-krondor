@@ -88,7 +88,7 @@ int far picklock_screen_run(int score, int mode, Actor far *record) {
             g_pPicklockOwnerActor = record;
             cmbinv_inventory_screen_run(
                 (Actor far *)&workActor,
-                gstate_find_party_slot(&g_gameState.party_members[memberIdx]) + 1, 0);
+                gstate_find_party_slot(&g_gameState.characters[memberIdx]) + 1, 0);
             g_bInventoryShopMode = '\0';
             screen_render_main_frame(0);
             g_nSceneReloadPending = 0;
@@ -105,7 +105,7 @@ int far picklock_screen_handle_drop(int item_kind, int slot) {
     int threshold;
 
     skill = stat_actor_get(gstate_party_member_record(slot - 1), 0xd, 0);
-    g_gameState.nEvtArgActor0 = slot = g_gameState.party_roster[slot - 1];
+    g_gameState.nEvtArgActor0 = slot = g_gameState.activeParty[slot - 1];
     g_gameState.nEvtArgCount = g_nPicklockMode;
 
     if (item_kind != 0) {
@@ -147,7 +147,7 @@ int far picklock_screen_handle_drop(int item_kind, int slot) {
 
         if (g_nPicklockScore <= 100 && g_nPicklockScore < skill) {
 
-            stat_combatant_modify(&g_gameState.party_members[g_gameState.nEvtArgActor0], 0xd, 2L,
+            stat_combatant_modify(&g_gameState.characters[g_gameState.nEvtArgActor0], 0xd, 2L,
                                   3);
             audio_play(0x16);
             picklock_lock_slide_animation(1);
@@ -159,7 +159,7 @@ int far picklock_screen_handle_drop(int item_kind, int slot) {
 
         if (RND(100) <= 40) {
 
-            stat_combatant_modify(&g_gameState.party_members[g_gameState.nEvtArgActor0], 0xd, 1L,
+            stat_combatant_modify(&g_gameState.characters[g_gameState.nEvtArgActor0], 0xd, 1L,
                                   3);
         }
 

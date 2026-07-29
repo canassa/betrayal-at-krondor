@@ -2146,7 +2146,7 @@ int cspell_cast_menu_loop(CombatActor *caster, int *out_result, int *preferred_c
     int prevHotspot;
     int state;
     int saved_palblend;
-    unsigned short can_cast[3];
+    unsigned short can_cast[MAX_ACTIVE_PARTY];
     int casterSlot;
     int save_flag;
     unsigned char far *pDest;
@@ -2181,10 +2181,10 @@ int cspell_cast_menu_loop(CombatActor *caster, int *out_result, int *preferred_c
             school = 5;
         }
         prevSchool = -1;
-        for (i = 0; i < 3; i++) {
+        for (i = 0; i < MAX_ACTIVE_PARTY; i++) {
             if (i < g_gameState.partySize) {
                 can_cast[i] = stat_actor_get(
-                    &g_gameState.party_members[(char)g_gameState.party_roster[i]], 7, 1);
+                    &g_gameState.characters[(char)g_gameState.activeParty[i]], 7, 1);
                 if (can_cast[i] != 0 && casterSlot == -1) {
                     casterSlot = i;
                 }
@@ -2196,7 +2196,7 @@ int cspell_cast_menu_loop(CombatActor *caster, int *out_result, int *preferred_c
             can_cast[*preferred_caster_slot] != 0) {
             casterSlot = *preferred_caster_slot;
         }
-        pCaster = &g_gameState.party_members[(char)g_gameState.party_roster[casterSlot]];
+        pCaster = &g_gameState.characters[(char)g_gameState.activeParty[casterSlot]];
         pDest = alloc_far((unsigned long)(unsigned)rect_byte_size(0xa8, 0x2d), 0);
         cga_save_rect_to_buffer(pDest, 0xf, 0x8e, 0xa8, 0x2d);
         save_flag = 1;
@@ -2293,7 +2293,7 @@ int cspell_cast_menu_loop(CombatActor *caster, int *out_result, int *preferred_c
                 if (casterSlot != party_slot) {
                     casterSlot = party_slot;
                     pCaster =
-                        &g_gameState.party_members[(char)g_gameState.party_roster[casterSlot]];
+                        &g_gameState.characters[(char)g_gameState.activeParty[casterSlot]];
                     save_flag = 1;
                 }
                 goto post_switch;

@@ -679,7 +679,7 @@ int far invui_handle_item_drag(MenuPage *page, Actor far *actor, int selected_sl
             }
             if (target_slot >= 0 && target_slot <= g_gameState.partySize) {
                 if (target_slot > 0) {
-                    g_gameState.nEvtArgActor1 = g_gameState.party_roster[target_slot - 1];
+                    g_gameState.nEvtArgActor1 = g_gameState.activeParty[target_slot - 1];
                     if (selected_slot == 0)
                         g_gameState.nEvtArgActor0 = g_gameState.nEvtArgActor1;
                 }
@@ -742,7 +742,7 @@ int far invui_handle_item_drag(MenuPage *page, Actor far *actor, int selected_sl
         invui_cur_spr_paint_ctrd(spr, 0);
         screen_frame_sync_buffers_rect(0, 200);
         party_actor =
-            g_gameState.party_members[g_gameState.party_roster[target_slot - 1]].actor_record;
+            g_gameState.characters[g_gameState.activeParty[target_slot - 1]].actor_record;
         g_gameState.nEvtArgCount = 1;
         *p_selected_slot = -1;
         if ((xfer_result = cmbinv_actor_transfer_item(party_actor, actor, item_ptr)) == 0) {

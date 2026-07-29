@@ -209,10 +209,10 @@ unsigned short far askabout_dispatch_topic(unsigned short topic_id) {
         avail = avail && evtcond_range_d_read_handler(0x9c44) != 0;
         break;
     case 0x0047:
-        avail = avail && (g_gameState.party_members[CHR_OWYN].pSpellsKnown[0] & 0x10) == 0;
+        avail = avail && (g_gameState.characters[CHR_OWYN].pSpellsKnown[0] & 0x10) == 0;
         break;
     case 0x006a:
-        avail = avail && (g_gameState.party_members[CHR_OWYN].pSpellsKnown[2] & 0x200) == 0;
+        avail = avail && (g_gameState.characters[CHR_OWYN].pSpellsKnown[2] & 0x200) == 0;
         break;
     case 0x0084:
         avail = avail && (gstate_event_read(0xc74d) != 0 || gstate_event_read(0x1979) != 0);
@@ -519,7 +519,7 @@ int far askabout_menu_page_run_selection(DDXRecord far *record) {
     } else if (page->wEntry_count - 1 == selected) {
         selected = 1;
     } else {
-        dialog_cmbt_name_assign_kind(0, (int)g_gameState.party_roster[selected] + 1, 0, 0);
+        dialog_cmbt_name_assign_kind(0, (int)g_gameState.activeParty[selected] + 1, 0, 0);
         selected = 0;
     }
     menupage_end(page);

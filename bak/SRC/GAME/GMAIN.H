@@ -3,6 +3,12 @@
 
 #include "structs.h"
 
+/** Size of the recruitable character pool. */
+#define CHARACTER_POOL_SIZE 6
+
+/** Maximum members in the active/traveling party. */
+#define MAX_ACTIVE_PARTY 3
+
 typedef struct GameState {
     unsigned short nChapter;
     long nParty_gold;
@@ -25,16 +31,36 @@ typedef struct GameState {
     unsigned char nWorldStepTickCount;
     unsigned short world_step_tick;
     long lInsetCameraPosZ;
-    char pParty_names[6][10];
-    CombatActor party_members[6];
+    char characterNames[CHARACTER_POOL_SIZE][10];
+
+    /**
+     * The six recruitable characters' persistent @ref CombatActor records,
+     * indexed by character id (0..5). The active traveling subset is chosen
+     * by @ref GameState::activeParty; each record is copied to and from the
+     * combat grid at combat start and end.
+     */
+    CombatActor characters[CHARACTER_POOL_SIZE];
+
+    /**
+     * Number of members in the active/traveling party — the count of
+     * valid @ref GameState::activeParty entries (0..3), not the 6-member
+     * character pool (@ref GameState::characters).
+     */
     char partySize;
-    char party_roster[3];
+
+    /**
+     * Pool indices (0..5, into @ref GameState::characters) of the active
+     * traveling party; @ref GameState::partySize entries are valid, and 0xFF
+     * marks an empty slot.
+     */
+    char activeParty[MAX_ACTIVE_PARTY];
+
     struct Actor far *shared_inventory;
     struct Actor far *ground_pile;
     unsigned char bPartyDirtyFlags;
     unsigned int dwPopup_retry_state;
-    unsigned short aConditionTickAdvance[6];
-    unsigned char abActorStatusRanks[6][7];
+    unsigned short aConditionTickAdvance[CHARACTER_POOL_SIZE];
+    unsigned char abActorStatusRanks[CHARACTER_POOL_SIZE][7];
     ActorStatModTable aActorStatModifiers;
     short nEvtArgActor0;
     short nEvtArgActor1;

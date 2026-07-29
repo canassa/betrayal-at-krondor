@@ -482,14 +482,14 @@ void far worldloop_pty_stat7_flag_cd(void) {
         i = 0;
         do {
             if (i < g_gameState.partySize) {
-                if (stat_actor_get(&g_gameState.party_members[g_gameState.party_roster[i]], 7, 1) !=
+                if (stat_actor_get(&g_gameState.characters[g_gameState.activeParty[i]], 7, 1) !=
                     0) {
                     found = 1;
                     break;
                 }
             }
             i = i + 1;
-        } while (i < 3);
+        } while (i < MAX_ACTIVE_PARTY);
         if (found) {
             g_pReqMainPage->pEntries[6].wEnable_gate = 0;
         } else {

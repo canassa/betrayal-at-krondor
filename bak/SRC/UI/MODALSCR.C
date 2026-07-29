@@ -400,12 +400,12 @@ void modalscreen_req_inv_run(int kind_or_id, int tax, int qty_mult, int char_slo
     g_graphics_context.wGfxBlitDstPage = g_graphics_context.wVgaPage2Base;
     g_pPalQueuedForFlip = palChunk = chunk_load_into_slot("INVENTOR.PAL");
     g_nPalBlendMode = 0;
-    act_rec = g_gameState.party_members[g_gameState.party_roster[partySlot - 1]].actor_record;
+    act_rec = g_gameState.characters[g_gameState.activeParty[partySlot - 1]].actor_record;
 
     do {
         do {
             if (redraw != 0) {
-                g_gameState.nEvtArgActor0 = g_gameState.party_roster[partySlot - 1];
+                g_gameState.nEvtArgActor0 = g_gameState.activeParty[partySlot - 1];
                 cmbinv_combat_encounter_begin(page, act_rec, 0);
                 i = 0;
                 entry = page->pEntries;
@@ -437,7 +437,7 @@ void modalscreen_req_inv_run(int kind_or_id, int tax, int qty_mult, int char_slo
                 } else if (memberSlot != partySlot) {
                     audio_play(0x53);
                     partySlot = memberSlot;
-                    act_rec = g_gameState.party_members[g_gameState.party_roster[partySlot - 1]]
+                    act_rec = g_gameState.characters[g_gameState.activeParty[partySlot - 1]]
                                   .actor_record;
                     redraw = 1;
                 }
@@ -532,12 +532,12 @@ void modalscreen_inventory_request(unsigned int category_mask, int discount_pct)
     g_graphics_context.wGfxBlitDstPage = g_graphics_context.wVgaPage2Base;
     g_pPalQueuedForFlip = palChunk = chunk_load_into_slot("INVENTOR.PAL");
     g_nPalBlendMode = 0;
-    act_rec = g_gameState.party_members[g_gameState.party_roster[party_slot - 1]].actor_record;
+    act_rec = g_gameState.characters[g_gameState.activeParty[party_slot - 1]].actor_record;
 
     do {
         do {
             if (redraw != 0) {
-                g_gameState.nEvtArgActor0 = g_gameState.party_roster[party_slot - 1];
+                g_gameState.nEvtArgActor0 = g_gameState.activeParty[party_slot - 1];
                 cmbinv_combat_encounter_begin(page, act_rec, 0);
                 i = 0;
                 entry = page->pEntries;
@@ -573,7 +573,7 @@ void modalscreen_inventory_request(unsigned int category_mask, int discount_pct)
                         audio_play(0x53);
                         party_slot = di;
                         act_rec =
-                            g_gameState.party_members[g_gameState.party_roster[party_slot - 1]]
+                            g_gameState.characters[g_gameState.activeParty[party_slot - 1]]
                                 .actor_record;
                         redraw = 1;
                     }

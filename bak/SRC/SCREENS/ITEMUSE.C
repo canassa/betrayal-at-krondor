@@ -462,18 +462,18 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
                 unsigned int bits;
                 g_gameState.lEvtArgGoldCost = 0;
                 g_gameState.lEvtArgGoldCost = (long)combat_actor_bitmap_set_bit(
-                    (int)&g_gameState.party_members[CHR_PUG], RND(0x2d));
+                    (int)&g_gameState.characters[CHR_PUG], RND(0x2d));
                 if (g_gameState.lEvtArgGoldCost == 0) {
                     g_gameState.lEvtArgGoldCost = (long)combat_actor_bitmap_set_bit(
-                        (int)&g_gameState.party_members[CHR_PUG], RND(0x2d));
+                        (int)&g_gameState.characters[CHR_PUG], RND(0x2d));
                 }
                 i = 0;
                 outcome = 1;
                 for (; i < 3; i++) {
-                    bits = g_gameState.party_members[CHR_OWYN].pSpellsKnown[i] |
-                           g_gameState.party_members[CHR_PUG].pSpellsKnown[i];
-                    g_gameState.party_members[CHR_OWYN].pSpellsKnown[i] = bits;
-                    g_gameState.party_members[CHR_PUG].pSpellsKnown[i] = bits;
+                    bits = g_gameState.characters[CHR_OWYN].pSpellsKnown[i] |
+                           g_gameState.characters[CHR_PUG].pSpellsKnown[i];
+                    g_gameState.characters[CHR_OWYN].pSpellsKnown[i] = bits;
+                    g_gameState.characters[CHR_PUG].pSpellsKnown[i] = bits;
                 }
             }
             break;

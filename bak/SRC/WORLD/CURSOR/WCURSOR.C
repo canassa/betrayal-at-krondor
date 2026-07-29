@@ -582,7 +582,7 @@ void far wcursor_click_inn_or_lock_npc(WorldHotspot *pHotspot) {
                         dialog_play_record(0xbf, 1);
                         *((unsigned char far *)&pInteract->interact_msg.dwMessage_id + 1) = 0;
                         pActor->needsFlush = TRUE;
-                        stat_combatant_modify(&g_gameState.party_members[member_idx], 0xd, 2, 3);
+                        stat_combatant_modify(&g_gameState.characters[member_idx], 0xd, 2, 3);
                     apply_bonus:
                         bHandled = 1;
                         bRunProx = 0;

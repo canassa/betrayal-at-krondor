@@ -151,7 +151,7 @@ void far encamp_run(void) {
                             g_gameState.game_time / 0x708 - (long)startGameTime / 0x708 >= 0xd) {
                             for (i = 0; i < g_gameState.partySize; i++) {
                                 stat_combatant_apply_delta(
-                                    &g_gameState.party_members[g_gameState.party_roster[i]], 0,
+                                    &g_gameState.characters[g_gameState.activeParty[i]], 0,
                                     -100);
                             }
                             sickCurePending = 0;
@@ -491,12 +491,12 @@ void far encamp_draw_party_stats(void) {
     p = 0;
     goto LAB_check;
 LAB_body:
-    iVar1 = g_gameState.party_roster[p];
-    healthStamina = stat_actor_get(&g_gameState.party_members[iVar1], 0x10, 0);
-    maxHealthStamina = stat_actor_get(&g_gameState.party_members[iVar1], 0x10, 1);
-    rations = itemtbl_inv_count_by_kind(g_gameState.party_members[iVar1].actor_record, 0x48);
-    rations += itemtbl_inv_count_by_kind(g_gameState.party_members[iVar1].actor_record, 0x4a);
-    rations += itemtbl_inv_count_by_kind(g_gameState.party_members[iVar1].actor_record, 0x49);
+    iVar1 = g_gameState.activeParty[p];
+    healthStamina = stat_actor_get(&g_gameState.characters[iVar1], 0x10, 0);
+    maxHealthStamina = stat_actor_get(&g_gameState.characters[iVar1], 0x10, 1);
+    rations = itemtbl_inv_count_by_kind(g_gameState.characters[iVar1].actor_record, 0x48);
+    rations += itemtbl_inv_count_by_kind(g_gameState.characters[iVar1].actor_record, 0x4a);
+    rations += itemtbl_inv_count_by_kind(g_gameState.characters[iVar1].actor_record, 0x49);
     y = p * 0x10 + 0x25;
     if ((g_gameState.abActorStatusRanks[iVar1][0] != '\0') ||
         (g_gameState.abActorStatusRanks[iVar1][1] != '\0') ||
@@ -506,7 +506,7 @@ LAB_body:
         (g_gameState.abActorStatusRanks[iVar1][6] != '\0')) {
         g_graphics_context.bText_fg_color = 'k';
     }
-    font_draw_text_ds(g_gameState.pParty_names[iVar1], 0x8b, y);
+    font_draw_text_ds(g_gameState.characterNames[iVar1], 0x8b, y);
     g_graphics_context.bText_fg_color = '\0';
     iVar1 = 0;
     do {

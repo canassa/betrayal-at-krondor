@@ -113,7 +113,7 @@ static void far charscreen_draw_sheet_stat_row(int stat_idx, int value, int part
     selected = gstate_event_read(SKILL_SELECTED(skillIdx));
     improved = gstate_event_read(SKILL_IMPROVED(skillIdx));
     gstate_event_write(SKILL_IMPROVED(skillIdx), 0);
-    if (stat_actor_get(&g_gameState.party_members[party_slot], stat_idx, 1) != 0) {
+    if (stat_actor_get(&g_gameState.characters[party_slot], stat_idx, 1) != 0) {
         sprintf(buf, "%3d%%", value);
     } else {
         sprintf(buf, "N/A");
@@ -284,12 +284,12 @@ void charscreen_info_loop(CombatActor *actor) {
         do {
             do {
                 if (redrawFlag != 0) {
-                    memberIdx = (unsigned short)g_gameState.party_roster[slot];
-                    actor = &g_gameState.party_members[memberIdx];
+                    memberIdx = (unsigned short)g_gameState.activeParty[slot];
+                    actor = &g_gameState.characters[memberIdx];
                     page->pEntries[2].bActive_flag = (unsigned char)gstate_actor_is_caster(actor);
                     if (redrawFlag != 1) {
-                        memberIdx = (unsigned short)g_gameState.party_roster[slot];
-                        actor = &g_gameState.party_members[memberIdx];
+                        memberIdx = (unsigned short)g_gameState.activeParty[slot];
+                        actor = &g_gameState.characters[memberIdx];
                         charscreen_info_draw(actor, page, memberIdx, 1, pal_buf);
                         if ((g_pPalQueuedForFlip != (unsigned char far *)0x0) && (firstDraw != 0)) {
                             palette_set(g_pPalQueuedForFlip);
@@ -378,7 +378,7 @@ void far charscreen_recalc_condition_tick(void) {
         }
         g_gameState.aConditionTickAdvance[memberIdx] = count != 0 ? 0x1a / count : 0;
         memberIdx = memberIdx + 1;
-    } while (memberIdx < 6);
+    } while (memberIdx < CHARACTER_POOL_SIZE);
     return;
 }
 
@@ -468,17 +468,17 @@ LAB_main:
                 if (redraw_flag == 1) {
                     menupage_draw(page);
                 } else {
-                    member_idx = (signed char)g_gameState.party_roster[slot];
+                    member_idx = (signed char)g_gameState.activeParty[slot];
                     g_gameState.nEvtArgActor0 = member_idx;
-                    price = charscreen_temple_heal_price(&g_gameState.party_members[member_idx],
+                    price = charscreen_temple_heal_price(&g_gameState.characters[member_idx],
                                                          actor_filter);
                     if (mode == 4) {
                         price +=
-                            (int)(stat_actor_get(&g_gameState.party_members[member_idx], 0x10, 1) -
-                                  stat_actor_get(&g_gameState.party_members[member_idx], 0x10, 0));
+                            (int)(stat_actor_get(&g_gameState.characters[member_idx], 0x10, 1) -
+                                  stat_actor_get(&g_gameState.characters[member_idx], 0x10, 0));
                     }
                     g_gameState.lEvtArgGoldCost = price;
-                    charscreen_info_draw(&g_gameState.party_members[member_idx], page, member_idx,
+                    charscreen_info_draw(&g_gameState.characters[member_idx], page, member_idx,
                                          0, pal_buf);
                     dialog_cmbt_name_assign_kind(0, 0x13, 0, 0);
                     dialog_render_text_with_tokens(dlg_rec, (char far *)0, 1, -1, 1, 0);
@@ -519,14 +519,14 @@ LAB_main:
                 g_gameState.dwLastActionTimeSnapshot = g_gameState.game_time;
                 stat_idx = 0;
                 do {
-                    stat_combatant_apply_delta(&g_gameState.party_members[member_idx], stat_idx,
+                    stat_combatant_apply_delta(&g_gameState.characters[member_idx], stat_idx,
                                                stat_idx == 4 ? 0x14 : -100);
                     stat_idx++;
                 } while (stat_idx < 7);
                 if (mode == 4) {
-                    stat_combatant_modify(&g_gameState.party_members[member_idx], 0x10, 0x7fff,
+                    stat_combatant_modify(&g_gameState.characters[member_idx], 0x10, 0x7fff,
                                           100);
-                    stat_combatant_apply_delta(&g_gameState.party_members[member_idx], 4, 100);
+                    stat_combatant_apply_delta(&g_gameState.characters[member_idx], 4, 100);
                 }
                 key = 0x31;
             }

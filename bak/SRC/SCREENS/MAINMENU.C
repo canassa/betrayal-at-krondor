@@ -1510,9 +1510,9 @@ void mainmenu_save_party_to_tmp(void) {
     actorspawn_persist_to_temp(g_gameState.shared_inventory);
     g_gameState.ground_pile->needsFlush = TRUE;
     actorspawn_persist_to_temp(g_gameState.ground_pile);
-    for (i = 0; i < 6; i++) {
-        g_gameState.party_members[i].actor_record->needsFlush = TRUE;
-        actorspawn_persist_to_temp(g_gameState.party_members[i].actor_record);
+    for (i = 0; i < CHARACTER_POOL_SIZE; i++) {
+        g_gameState.characters[i].actor_record->needsFlush = TRUE;
+        actorspawn_persist_to_temp(g_gameState.characters[i].actor_record);
     }
 }
 

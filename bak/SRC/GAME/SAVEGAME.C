@@ -179,23 +179,23 @@ void far savegame_chapter_start_dispatch(int chapter) {
 
     switch (chapter) {
     case 2:
-        itemuse_actor_spawn_clone_inv(g_gameState.party_members[CHR_LOCKLEAR].actor_record, 0xf, 2L,
+        itemuse_actor_spawn_clone_inv(g_gameState.characters[CHR_LOCKLEAR].actor_record, 0xf, 2L,
                                       2L);
         break;
 
     case 4:
-        itemuse_actor_spawn_clone_inv(g_gameState.party_members[CHR_OWYN].actor_record, 0xc,
+        itemuse_actor_spawn_clone_inv(g_gameState.characters[CHR_OWYN].actor_record, 0xc,
                                       0xa9a10L, 0xab180L);
-        itemuse_actor_spawn_clone_inv(g_gameState.party_members[CHR_GORATH].actor_record, 0xc,
+        itemuse_actor_spawn_clone_inv(g_gameState.characters[CHR_GORATH].actor_record, 0xc,
                                       0xaa820L, 0xaa1e0L);
         for (i = 1; i <= 2; i++) {
-            actor_ptr = (Actor far *)((unsigned char far *)g_gameState.party_members[i].actor_record +
+            actor_ptr = (Actor far *)((unsigned char far *)g_gameState.characters[i].actor_record +
                                       sizeof(Actor));
             ((ItemSlot far *)actor_ptr)->item_id = 0x54;
             ((ItemSlot far *)actor_ptr)->condition = 0x06;
 
             ((ItemSlot far *)actor_ptr)->flags = (i == 1) ? 1 : 0;
-            g_gameState.party_members[i].actor_record->itemCount = 1;
+            g_gameState.characters[i].actor_record->itemCount = 1;
         }
         palette_fade_run_scheduled(palette_fade_schedule(0, 0x2a30L));
         g_gameState.nParty_gold = 0;
@@ -203,9 +203,9 @@ void far savegame_chapter_start_dispatch(int chapter) {
 
     case 5:
         actor_ptr = actorspawn_objfixed(0, 10L, 0L);
-        g_gameState.party_members[CHR_LOCKLEAR].actor_record->itemCount = actor_ptr->itemCount;
+        g_gameState.characters[CHR_LOCKLEAR].actor_record->itemCount = actor_ptr->itemCount;
         for (i = 0; i < (int)(unsigned int)actor_ptr->itemCount; i++) {
-            ACTOR_ITEM(g_gameState.party_members[CHR_LOCKLEAR].actor_record, i) =
+            ACTOR_ITEM(g_gameState.characters[CHR_LOCKLEAR].actor_record, i) =
                 ACTOR_ITEM(actor_ptr, i);
         }
         actorspawn_destroy_and_persist(actor_ptr);

@@ -220,11 +220,11 @@ void resblit_hud_draw_party_icons_row(char *filename) {
         }
         if (dst_y != 0) {
             for (i = 0; i < g_gameState.partySize; i++) {
-                resblit_sprite(g_pHeadsBmxAssetTable[g_gameState.party_roster[i]],
+                resblit_sprite(g_pHeadsBmxAssetTable[g_gameState.activeParty[i]],
                                i * PORTRAIT_PANEL_STRIDE + PORTRAIT_ROW_X0, dst_y);
             }
-            for (; i < 3; i++) {
-                resblit_sprite(g_pHeadsBmxAssetTable[6],
+            for (; i < MAX_ACTIVE_PARTY; i++) {
+                resblit_sprite(g_pHeadsBmxAssetTable[CHARACTER_POOL_SIZE],
                                i * PORTRAIT_PANEL_STRIDE + PORTRAIT_ROW_X0, dst_y);
             }
         }

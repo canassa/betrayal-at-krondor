@@ -406,7 +406,7 @@ static void far dialog_assign_rand_cmbt_name(int slot_index, int param_2, int pa
     if (g_gameState.partySize == 0)
         return;
     do {
-        candidate = g_gameState.party_roster[RND(g_gameState.partySize)];
+        candidate = g_gameState.activeParty[RND(g_gameState.partySize)];
         for (i = 0; i < slot_index; i++) {
             if (g_speaker_kinds[i] == candidate)
                 candidate = -1;
@@ -434,11 +434,11 @@ static void far dialog_assign_rand_cmbt_name(int slot_index, int param_2, int pa
         candidate = -1;
     keep:
         if (--retry_ctr < 0) {
-            candidate = param_3 ? g_speaker_kinds[param_3 - 1] : g_gameState.party_roster[0];
+            candidate = param_3 ? g_speaker_kinds[param_3 - 1] : g_gameState.activeParty[0];
         }
     } while (candidate < 0);
     g_speaker_kinds[slot_index] = (char)candidate;
-    strcpy(g_speaker_names[slot_index], g_gameState.party_members[candidate].name);
+    strcpy(g_speaker_names[slot_index], g_gameState.characters[candidate].name);
 }
 
 void far dialog_cmbt_name_assign_kind(int slot, int kind, int aux, int name_token) {
@@ -460,18 +460,18 @@ void far dialog_cmbt_name_assign_kind(int slot, int kind, int aux, int name_toke
     case 5:
     case 6:
         g_speaker_kinds[slot] = (char)(kind - 1);
-        strcpy(g_speaker_names[slot], g_gameState.party_members[kind - 1].name);
+        strcpy(g_speaker_names[slot], g_gameState.characters[kind - 1].name);
         break;
 
     case 7:
         g_speaker_kinds[slot] = (char)gstate_event_read(0x7535);
-        strcpy(g_speaker_names[slot], g_gameState.party_members[g_speaker_kinds[slot]].name);
+        strcpy(g_speaker_names[slot], g_gameState.characters[g_speaker_kinds[slot]].name);
         break;
 
     case 10:
     case 30:
         g_speaker_kinds[slot] = (char)g_gameState.nEvtArgActor0;
-        strcpy(g_speaker_names[slot], g_gameState.party_members[g_gameState.nEvtArgActor0].name);
+        strcpy(g_speaker_names[slot], g_gameState.characters[g_gameState.nEvtArgActor0].name);
         break;
 
     case 32:
@@ -480,12 +480,12 @@ void far dialog_cmbt_name_assign_kind(int slot, int kind, int aux, int name_toke
 
     case 11:
         g_speaker_kinds[slot] = (char)g_gameState.nEvtArgActor1;
-        strcpy(g_speaker_names[slot], g_gameState.party_members[g_gameState.nEvtArgActor1].name);
+        strcpy(g_speaker_names[slot], g_gameState.characters[g_gameState.nEvtArgActor1].name);
         break;
 
     case 12:
         g_speaker_kinds[slot] = (char)g_gameState.nEvtArgStat;
-        strcpy(g_speaker_names[slot], g_gameState.party_members[g_gameState.nEvtArgStat].name);
+        strcpy(g_speaker_names[slot], g_gameState.characters[g_gameState.nEvtArgStat].name);
         break;
 
     case 13:
@@ -529,7 +529,7 @@ void far dialog_cmbt_name_assign_kind(int slot, int kind, int aux, int name_toke
 
     case 27:
         _fstrcpy((char far *)g_speaker_names[0], g_abStatNames[(int)g_gameState.lEvtArgValue]);
-        itoa(stat_actor_get(&g_gameState.party_members[g_gameState.nEvtArgActor0],
+        itoa(stat_actor_get(&g_gameState.characters[g_gameState.nEvtArgActor0],
                             (int)g_gameState.lEvtArgValue, 1),
              g_speaker_names[1], 10);
         break;
@@ -622,7 +622,7 @@ void dialog_render_text_with_tokens(DDXRecord far *record, char far *text, int f
                     pName = g_speaker_names[idx];
                 }
             } else {
-                pName = g_gameState.party_members[g_gameState.nEvtArgActor0].name;
+                pName = g_gameState.characters[g_gameState.nEvtArgActor0].name;
             }
             _fstrcpy(g_pMainScratchBuf + nScratchLen, pName);
             nScratchLen += strlen(pName);
@@ -793,7 +793,7 @@ void far dialog_combatant_name_table_init(void) {
 #ifdef V102CD
     found = 0;
     for (i = found; i < g_gameState.partySize; i++) {
-        if (g_gameState.party_roster[i] == g_gameState.nEvtArgActor0)
+        if (g_gameState.activeParty[i] == g_gameState.nEvtArgActor0)
             found = 1;
     }
     if (!found)
@@ -949,7 +949,7 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
             if ((record->wSpeaker_id >= CHR_LOCKLEAR + 1) &&
                 (record->wSpeaker_id <= CHR_PATRUS + 1)) {
                 /* wSpeaker_id-1 = CHR_ slot */
-                if (gstate_find_party_slot(&g_gameState.party_members[record->wSpeaker_id - 1]) <
+                if (gstate_find_party_slot(&g_gameState.characters[record->wSpeaker_id - 1]) <
                     0) {
                     if ((((g_gameState.nChapter != 2) || (record->wSpeaker_id != CHR_OWYN + 1)) &&
                          ((g_gameState.nChapter != 8 || (record->wSpeaker_id != CHR_PUG + 1)))) &&
@@ -976,7 +976,7 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                     bNeedImageFree = 1;
                     if (g_dialog_in_scene != 0) {
                         townscene_anim_channel_play_sync(g_dialog_anim_channel);
-                        if ((record->wSpeaker_id <= 6) &&
+                        if ((record->wSpeaker_id <= CHARACTER_POOL_SIZE) &&
                             (g_pCurScriptObject->pAhPagedImage[5] != 0)) {
                             unsigned int *p = (unsigned int *)g_pCurScriptObject->pAhPagedImage[5];
                             if (p != (unsigned int *)0) {
@@ -1009,7 +1009,7 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                             g_lZoneDefaultZ + g_dwWorldCrossingCoord;
                         g_world_camera->base.orientation.pitch = g_wZoneDefaultYaw;
                         g_world_widget->colorRemap = NULL;
-                        if (record->wSpeaker_id <= 6) {
+                        if (record->wSpeaker_id <= CHARACTER_POOL_SIZE) {
                             if (gstate_is_party_member(record->wSpeaker_id - 1) != 0) {
                                 int m;
                                 g_world_camera->base.orientation.yaw =
@@ -1017,7 +1017,7 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                                 j = 0;
                                 m = 0;
                                 for (; j < g_gameState.partySize; j = j + 1) {
-                                    if ((int)g_gameState.party_roster[j] ==
+                                    if ((int)g_gameState.activeParty[j] ==
                                         record->wSpeaker_id - 1) {
                                         m = j;
                                     }
@@ -1110,7 +1110,7 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                             slot.flags = 0;
                             if ((int)speakerSel > 1) {
                                 if (cmbinv_actor_acquire_item(
-                                        g_gameState.party_members[(g_speaker_kinds - 2)[speakerSel]]
+                                        g_gameState.characters[(g_speaker_kinds - 2)[speakerSel]]
                                             .actor_record,
                                         (ItemSlot far *)&slot) != 0) {
                                     g_gameState.nParty_gold -= (long)(unsigned int)op->nA3;
@@ -1148,7 +1148,7 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                                 pActor =
                                     (g_gameState.partySize == i)
                                         ? g_gameState.shared_inventory
-                                        : g_gameState.party_members[g_gameState.party_roster[i]]
+                                        : g_gameState.characters[g_gameState.activeParty[i]]
                                               .actor_record;
                                 for (slotIdx = 0; slotIdx < pActor->itemCount;
                                      slotIdx = slotIdx + 1) {
@@ -1213,15 +1213,15 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                     } break;
                     case 17:
                         g_gameState.partySize = (char)op->nA1;
-                        g_gameState.party_roster[0] = (char)op->nA2;
-                        g_gameState.party_roster[1] = (char)op->nA3;
-                        g_gameState.party_roster[2] = (char)op->nA4;
+                        g_gameState.activeParty[0] = (char)op->nA2;
+                        g_gameState.activeParty[1] = (char)op->nA3;
+                        g_gameState.activeParty[2] = (char)op->nA4;
                         worldloop_pty_stat7_flag_cd();
                         break;
                     case 10:
                         if ((unsigned int)op->nA1 > 1) {
                             g_gameState.nEvtArgDlgResult = stat_actor_get(
-                                &g_gameState.party_members[g_speaker_kinds[(unsigned short)op->nA1 - 2]],
+                                &g_gameState.characters[g_speaker_kinds[(unsigned short)op->nA1 - 2]],
                                 op->nA2, 0);
                         } else {
                             g_gameState.nEvtArgDlgResult =
@@ -1247,7 +1247,7 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                         }
                         if ((int)speakerSel > 1) {
                             stat_combatant_modify(
-                                &g_gameState.party_members[(g_speaker_kinds - 2)[speakerSel]],
+                                &g_gameState.characters[(g_speaker_kinds - 2)[speakerSel]],
                                 op->nA2, (long)amt, val);
                         } else {
                             stat_party_broadcast_status_op(op->nA2, (long)amt, val);
@@ -1265,13 +1265,13 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                         }
                         if ((unsigned int)op->nA1 > 1) {
                             stat_combatant_apply_delta(
-                                &g_gameState.party_members[g_speaker_kinds[(unsigned short)op->nA1 - 2]],
+                                &g_gameState.characters[g_speaker_kinds[(unsigned short)op->nA1 - 2]],
                                 op->nA2, amt);
                         } else {
                             i = 0;
                             while (i < g_gameState.partySize) {
                                 stat_combatant_apply_delta(
-                                    &g_gameState.party_members[g_gameState.party_roster[i]],
+                                    &g_gameState.characters[g_gameState.activeParty[i]],
                                     op->nA2, amt);
                                 i = i + 1;
                             }
@@ -1280,7 +1280,7 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                     case 18:
                         if ((unsigned int)op->nA1 > 1) {
                             stat_combatant_heal(
-                                &g_gameState.party_members[g_speaker_kinds[(unsigned short)op->nA1 - 2]],
+                                &g_gameState.characters[g_speaker_kinds[(unsigned short)op->nA1 - 2]],
                                 op->nA2);
                         } else {
                             stat_party_heal_all(op->nA2);
@@ -1315,7 +1315,7 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                         break;
                     case 19:
                         combat_actor_bitmap_set_bit(
-                            (int)&g_gameState.party_members[g_speaker_kinds[(unsigned short)op->nA1 - 2]],
+                            (int)&g_gameState.characters[g_speaker_kinds[(unsigned short)op->nA1 - 2]],
                             op->nA2);
                         break;
                     case 20:

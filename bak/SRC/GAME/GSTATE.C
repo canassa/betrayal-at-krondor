@@ -19,8 +19,8 @@
 unsigned short g_wLastTempWriteRecordKind = 0xffff;
 char g_abChapterEventSlot[9] = {0x00, 0x04, 0x04, 0x01, 0x04, 0x02, 0x04, 0x02, 0x03};
 ResFile *g_tempGamFP = NULL;
-char g_abSleepStatDelta[6] = {0xfe, 0xff, 0xfe, 0xfe, 0xfe, 0xfd};
-char g_abRegenPerChar[6] = {0x01, 0x01, 0x01, 0x01, 0x01, 0x01};
+char g_abSleepStatDelta[CHARACTER_POOL_SIZE] = {0xfe, 0xff, 0xfe, 0xfe, 0xfe, 0xfd};
+char g_abRegenPerChar[CHARACTER_POOL_SIZE] = {0x01, 0x01, 0x01, 0x01, 0x01, 0x01};
 
 unsigned short far gstate_event_read(unsigned short id) {
 
@@ -242,7 +242,7 @@ static int far gstate_consume_rations_tick(int ctx) {
     table_loaded = itemtbl_load();
     i = event_total = 0;
     for (; i < g_gameState.partySize; i = i + 1) {
-        event_total += gstate_member_consume_rations(g_gameState.party_roster[i], ctx);
+        event_total += gstate_member_consume_rations(g_gameState.activeParty[i], ctx);
     }
     if (table_loaded != 0) {
         itemtbl_free();
@@ -254,7 +254,7 @@ int far gstate_member_consume_rations(int member_slot, int a) {
     int ret;
     CombatActor *actor;
 
-    actor = &g_gameState.party_members[member_slot];
+    actor = &g_gameState.characters[member_slot];
     ret = 0;
     g_gameState.nEvtArgActor0 = member_slot;
 
@@ -290,8 +290,8 @@ static int gstate_30min_tick(int arg0, int arg1, int arg2) {
         if ((arg1 == 0) || (elapsed < 0x7e90))
             goto party_regen;
         for (slot = 0; slot < g_gameState.partySize; slot = slot + 1) {
-            actor = g_gameState.party_roster[slot];
-            if (stat_combatant_modify(&g_gameState.party_members[actor], 0x10,
+            actor = g_gameState.activeParty[slot];
+            if (stat_combatant_modify(&g_gameState.characters[actor], 0x10,
                                       (long)((int)g_abSleepStatDelta[actor] << 8), 100) == 0) {
                 allConscious = 0;
             }
@@ -302,9 +302,9 @@ static int gstate_30min_tick(int arg0, int arg1, int arg2) {
     dialog_play_record(0x40, eventFired = 1);
 party_regen:
     for (slot = 0; slot < g_gameState.partySize; slot = slot + 1) {
-        actor = g_gameState.party_roster[slot];
+        actor = g_gameState.activeParty[slot];
         if (arg2 != 0) {
-            stat_combatant_apply_delta(&g_gameState.party_members[actor], 0, -3);
+            stat_combatant_apply_delta(&g_gameState.characters[actor], 0, -3);
             val = (arg2 == 100) ? 0x50 : 100;
             regen = (g_abRegenPerChar[actor] * arg2) / 100;
             if (g_gameState.abActorStatusRanks[actor][4] != '\0') {
@@ -322,7 +322,7 @@ party_regen:
                 if ((cond < 4) && (g_gameState.abActorStatusRanks[actor][4] != '\0')) {
                     amount -= (cond == 0) + 2;
                 }
-                stat_combatant_apply_delta(&g_gameState.party_members[actor], cond, amount);
+                stat_combatant_apply_delta(&g_gameState.characters[actor], cond, amount);
             }
             if ((g_gameState.abActorStatusRanks[actor][cond] != '\0') &&
                 (g_aConditionInfo[cond].nRegenDelta != 0)) {
@@ -331,7 +331,7 @@ party_regen:
             cond++;
         } while (cond < 7);
         if (regen != 0) {
-            stat_combatant_modify(&g_gameState.party_members[actor], 0x10, (long)(regen << 8), val);
+            stat_combatant_modify(&g_gameState.characters[actor], 0x10, (long)(regen << 8), val);
         }
     }
     if ((arg0 != 0) && ((g_gameState.bPartyDirtyFlags & 2) != 0)) {
@@ -361,11 +361,11 @@ int far gstate_advance_time(long seconds, int flags, int recompute_party, int a,
     if (g_gameState.game_time / 0xa8c0 != (long)old_hd) {
         if (old_hd % 0x1e == 0) {
             for (i = 0; i < g_gameState.partySize; i = i + 1) {
-                member = &g_gameState.party_members[g_gameState.party_roster[i]];
+                member = &g_gameState.characters[g_gameState.activeParty[i]];
                 member->stats[0].max = member->stats[0].max + (member->stats[0].max < 0xfa);
                 member->stats[1].max = member->stats[1].max + (member->stats[1].max < 0xfa);
 
-                n = SKILL_IMPROVED(g_gameState.party_roster[i] * 0x11);
+                n = SKILL_IMPROVED(g_gameState.activeParty[i] * 0x11);
                 gstate_event_write(n, 1);
                 gstate_event_write(n + 1, 1);
             }
@@ -374,14 +374,14 @@ int far gstate_advance_time(long seconds, int flags, int recompute_party, int a,
             eventTotal += gstate_consume_rations_tick(flags);
         }
         for (i = 0; i < g_gameState.partySize; i = i + 1) {
-            actor = g_gameState.party_roster[i];
+            actor = g_gameState.activeParty[i];
             rank = (char)g_gameState.abActorStatusRanks[actor][6];
             n = (rank + -100) / 10 + -1;
             if (g_gameState.abActorStatusRanks[actor][4] != '\0') {
                 n *= 2;
             }
             if (rank != 0) {
-                stat_combatant_apply_delta(&g_gameState.party_members[actor], 6, n);
+                stat_combatant_apply_delta(&g_gameState.characters[actor], 6, n);
             }
         }
     }
@@ -406,7 +406,7 @@ int gstate_is_party_member(int actor_id) {
     int i;
 
     for (i = 0; g_gameState.partySize > i; i++) {
-        if (g_gameState.party_roster[i] == actor_id) {
+        if (g_gameState.activeParty[i] == actor_id) {
             return 1;
         }
     }
@@ -419,7 +419,7 @@ int gstate_actor_is_caster(CombatActor *actor) {
 
 CombatActor *gstate_party_member_record(int slot) {
     if (slot >= 0 && slot < g_gameState.partySize) {
-        return &g_gameState.party_members[g_gameState.party_roster[slot]];
+        return &g_gameState.characters[g_gameState.activeParty[slot]];
     }
     return 0;
 }
@@ -431,7 +431,7 @@ int gstate_find_party_slot(CombatActor *actor) {
     i = 0;
     result_slot = -1;
     for (; i < g_gameState.partySize; i = i + 1) {
-        if (g_gameState.party_members[g_gameState.party_roster[i]].cParty_slot ==
+        if (g_gameState.characters[g_gameState.activeParty[i]].cParty_slot ==
             actor->cParty_slot) {
             result_slot = i;
         }

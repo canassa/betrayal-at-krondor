@@ -36,7 +36,7 @@ void far worldcross_dungeon_descent_anim(void) {
         if (probe_kind == 0xf) {
             for (i = 0; i < (int)g_gameState.partySize; i++) {
                 stat_combatant_apply_delta(
-                    &g_gameState.party_members[(int)g_gameState.party_roster[i]], 6, 100);
+                    &g_gameState.characters[(int)g_gameState.activeParty[i]], 6, 100);
             }
             if (g_full_redraw_needed == 0 && proxscan_paged_find_next_type0f(&pFound) != 0) {
                 screen_cursor_show_busy();

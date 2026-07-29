@@ -68,8 +68,8 @@ void far combat_actor_init_pool(void) {
     g_combat_actors_A = (CombatActor *)galloc_safe_zcalloc(sizeof(CombatActor) * MAX_COMBAT_ACTORS);
     g_combat_count_A = 0;
     for (i = 0; i < g_gameState.partySize; i++) {
-        if (g_gameState.party_roster[i] > (char)-1) {
-            g_combat_actors_A[i] = g_gameState.party_members[g_gameState.party_roster[i]];
+        if (g_gameState.activeParty[i] > (char)-1) {
+            g_combat_actors_A[i] = g_gameState.characters[g_gameState.activeParty[i]];
             g_combat_count_A++;
         }
     }
@@ -90,7 +90,7 @@ void far combat_actor_init_pool(void) {
     do {
         g_combat_actors_A[i].inner = &pInnerPool[i];
         if ((i < g_nCombatActiveCount) &&
-            (g_gameState.abActorStatusRanks[g_gameState.party_roster[i]][2] != 0)) {
+            (g_gameState.abActorStatusRanks[g_gameState.activeParty[i]][2] != 0)) {
             cbstat_apply_drain_tick(&g_combat_actors_A[i]);
         }
         i++;
@@ -121,16 +121,16 @@ void far combat_actor_pool_teardown(void) {
     for (i = 0; i < g_combat_count_A; i++) {
         if (g_combat_actors_A[i].cParty_slot != 0) {
             g_combat_actors_A[i].inner = (CombatActorInner *)0;
-            g_gameState.party_members[g_gameState.party_roster[i]] = g_combat_actors_A[i];
+            g_gameState.characters[g_gameState.activeParty[i]] = g_combat_actors_A[i];
         }
     }
 
     galloc_zfree(g_combat_actors_A);
 
     for (i = 0; i < g_gameState.partySize; i++) {
-        actor_rec = g_gameState.party_members[g_gameState.party_roster[i]].actor_record;
+        actor_rec = g_gameState.characters[g_gameState.activeParty[i]].actor_record;
 
-        stat_actor_clear_mods_mask(&g_gameState.party_members[g_gameState.party_roster[i]], 0x100);
+        stat_actor_clear_mods_mask(&g_gameState.characters[g_gameState.activeParty[i]], 0x100);
         for (j = 0; actor_rec->itemCount > j; j++) {
             if (ACTOR_ITEM(actor_rec, j).flags & 4)
                 ACTOR_ITEM(actor_rec, j).flags &= 0xe07b;

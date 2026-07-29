@@ -125,9 +125,9 @@ void far boot_party_state_load_from_temp(void) {
     int i;
 
     gstate_temp_file_read_at((unsigned char far *)&g_gameState, 0L, 0xad7);
-    for (i = 0; i < 6; i++) {
-        g_gameState.party_members[i].name = g_gameState.pParty_names[i];
-        g_gameState.party_members[i].actor_record = actorspawn_objfixed(0, i + 1, 0L);
+    for (i = 0; i < CHARACTER_POOL_SIZE; i++) {
+        g_gameState.characters[i].name = g_gameState.characterNames[i];
+        g_gameState.characters[i].actor_record = actorspawn_objfixed(0, i + 1, 0L);
     }
     g_gameState.shared_inventory = actorspawn_objfixed(0, 7L, 0L);
     g_gameState.ground_pile = actorspawn_objfixed(0, 8L, 0L);
@@ -141,8 +141,8 @@ void far boot_party_state_save_to_temp(void) {
     gstate_temp_file_write_at((unsigned char far *)&g_gameState, 0L, 0xad7);
     actorspawn_destroy_and_persist(g_gameState.shared_inventory);
     actorspawn_destroy_and_persist(g_gameState.ground_pile);
-    for (i = 0; i < 6; i++) {
-        actorspawn_destroy_and_persist(g_gameState.party_members[i].actor_record);
+    for (i = 0; i < CHARACTER_POOL_SIZE; i++) {
+        actorspawn_destroy_and_persist(g_gameState.characters[i].actor_record);
     }
 }
 

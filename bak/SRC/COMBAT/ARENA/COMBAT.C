@@ -1863,10 +1863,10 @@ void far combat_arena_suspend_char_screen(CombatActor *actor, int *p_spell_resul
         do {
             if (g_combat_actors_A[i].cParty_slot != '\0') {
                 *(CombatActor
-                  far *)&g_gameState.party_members[(signed char)g_gameState.party_roster[i]] =
+                  far *)&g_gameState.characters[(signed char)g_gameState.activeParty[i]] =
                     g_combat_actors_A[i];
                 ((CombatActor
-                  far *)&g_gameState.party_members[(signed char)g_gameState.party_roster[i]])
+                  far *)&g_gameState.characters[(signed char)g_gameState.activeParty[i]])
                     ->inner = (CombatActorInner *)0;
             }
             i = i + 1;
@@ -1886,7 +1886,7 @@ void far combat_arena_suspend_char_screen(CombatActor *actor, int *p_spell_resul
                 savedInner = g_combat_actors_A[i].inner;
                 g_combat_actors_A[i] =
                     *(CombatActor
-                      far *)&g_gameState.party_members[(signed char)g_gameState.party_roster[i]];
+                      far *)&g_gameState.characters[(signed char)g_gameState.activeParty[i]];
                 g_combat_actors_A[i].inner = savedInner;
             }
             i = i + 1;

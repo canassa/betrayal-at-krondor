@@ -65,7 +65,7 @@ int evtcond_range_d_read_handler(unsigned int cond) {
            into the item-condition value space (cond compared to slot->condition) */
         cond += 0x38c8;
         for (i = 0; i < (int)g_gameState.partySize; i++) {
-            actor = g_gameState.party_members[g_gameState.party_roster[i]].actor_record;
+            actor = g_gameState.characters[g_gameState.activeParty[i]].actor_record;
             j = 0;
             slot = ACTOR_ITEMS(actor);
             for (; j < (int)actor->itemCount; j++, slot++) {
@@ -80,13 +80,13 @@ int evtcond_range_d_read_handler(unsigned int cond) {
     switch (cond) {
     case 0x9c42: /* idx1 */
         for (i = 0; i < (int)g_gameState.partySize; i++) {
-            if (g_gameState.abActorStatusRanks[g_gameState.party_roster[i]][1] != 0)
+            if (g_gameState.abActorStatusRanks[g_gameState.activeParty[i]][1] != 0)
                 return 1;
         }
         goto L_def0;
     case 0x9c41: /* idx0 */
         for (i = 0; i < (int)g_gameState.partySize; i++) {
-            if (!(char)g_gameState.abActorStatusRanks[g_gameState.party_roster[i]][5])
+            if (!(char)g_gameState.abActorStatusRanks[g_gameState.activeParty[i]][5])
                 goto L_def0;
         }
         goto L_match;
@@ -116,9 +116,9 @@ int evtcond_range_d_read_handler(unsigned int cond) {
     case 0x9c46: { /* idx5 */
         int loaded;
         loaded = itemtbl_load();
-        i = cmbinv_find_equipped_in_category(g_gameState.party_members[CHR_OWYN].actor_record, 3) !=
+        i = cmbinv_find_equipped_in_category(g_gameState.characters[CHR_OWYN].actor_record, 3) !=
             0;
-        j = cmbinv_find_equipped_in_category(g_gameState.party_members[CHR_GORATH].actor_record,
+        j = cmbinv_find_equipped_in_category(g_gameState.characters[CHR_GORATH].actor_record,
                                              1) != 0;
         if (loaded != 0)
             itemtbl_free();
@@ -128,7 +128,7 @@ int evtcond_range_d_read_handler(unsigned int cond) {
         for (i = 0; i < (int)g_gameState.partySize; i++) {
             j = 0;
             do {
-                if (j != 4 && g_gameState.abActorStatusRanks[g_gameState.party_roster[i]][j] != 0)
+                if (j != 4 && g_gameState.abActorStatusRanks[g_gameState.activeParty[i]][j] != 0)
                     goto L_match;
                 j++;
             } while (j < 7);
@@ -300,16 +300,16 @@ void evtcond_dialog_action_dispatch(DdxOp far *action_record) {
         break;
     }
     case 15:
-        stat_combatant_modify(&g_gameState.party_members[g_gameState.nEvtArgActor0],
+        stat_combatant_modify(&g_gameState.characters[g_gameState.nEvtArgActor0],
                               (int)g_gameState.lEvtArgValue, 0x200L, 0);
         break;
     case 16: {
         int i;
         for (i = 0; i < 3; i++) {
-            temp = g_gameState.party_members[CHR_OWYN].pSpellsKnown[i] |
-                   g_gameState.party_members[CHR_PUG].pSpellsKnown[i];
-            g_gameState.party_members[CHR_OWYN].pSpellsKnown[i] = temp;
-            g_gameState.party_members[CHR_PUG].pSpellsKnown[i] = temp;
+            temp = g_gameState.characters[CHR_OWYN].pSpellsKnown[i] |
+                   g_gameState.characters[CHR_PUG].pSpellsKnown[i];
+            g_gameState.characters[CHR_OWYN].pSpellsKnown[i] = temp;
+            g_gameState.characters[CHR_PUG].pSpellsKnown[i] = temp;
         }
         break;
     }
@@ -335,12 +335,12 @@ void evtcond_pty_dirty_flags_process(void) {
     if ((g_gameState.bPartyDirtyFlags & 1) != 0) {
         for (member_idx = 0; member_idx < (int)g_gameState.partySize; member_idx++) {
             for (slot_idx = 2; slot_idx < 0x11; slot_idx++) {
-                event_addr = g_gameState.party_roster[member_idx] * 0x11 + slot_idx;
+                event_addr = g_gameState.activeParty[member_idx] * 0x11 + slot_idx;
                 if (gstate_event_read(SKILL_IMPROVED(event_addr)) != 0) {
                     if ((affected_members_mask & (1 << member_idx)) == 0) {
                         affected_members_mask |= (1 << member_idx);
                         affected_members_count++;
-                        g_gameState.nEvtArgActor0 = g_gameState.party_roster[member_idx];
+                        g_gameState.nEvtArgActor0 = g_gameState.activeParty[member_idx];
                     }
                     if ((affected_slots_mask & (1 << slot_idx)) == 0) {
                         affected_slots_mask |= (1 << slot_idx);
@@ -365,13 +365,13 @@ void evtcond_pty_dirty_flags_process(void) {
             slot_idx = g_gameState.nEvtArgCount = 0;
             g_gameState.nEvtArgActor0 = g_gameState.nEvtArgActor1 = -1;
             for (; slot_idx < g_gameState.partySize; slot_idx++) {
-                event_addr = CONDITION(g_gameState.party_roster[slot_idx] * 7 + member_idx);
+                event_addr = CONDITION(g_gameState.activeParty[slot_idx] * 7 + member_idx);
                 if (gstate_event_read(event_addr) != 0) {
                     gstate_event_write(event_addr, 0);
                     if (g_gameState.nEvtArgActor0 < 0) {
-                        g_gameState.nEvtArgActor0 = g_gameState.party_roster[slot_idx];
+                        g_gameState.nEvtArgActor0 = g_gameState.activeParty[slot_idx];
                     } else {
-                        g_gameState.nEvtArgActor1 = g_gameState.party_roster[slot_idx];
+                        g_gameState.nEvtArgActor1 = g_gameState.activeParty[slot_idx];
                     }
                     g_gameState.nEvtArgCount++;
                 }

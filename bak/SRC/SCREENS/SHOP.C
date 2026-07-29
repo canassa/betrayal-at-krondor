@@ -147,10 +147,10 @@ int far shop_npc_transaction(Actor far *actor, Actor far *merchant, ItemSlot far
                     if (rec->wUse_sfx != 0) {
                         audio_sfx_play_n_times(rec->wUse_sfx & 0xff, rec->wUse_sfx >> 8, 1);
                     }
-                    stat_combatant_apply_delta(&g_gameState.party_members[partySlot], 3,
+                    stat_combatant_apply_delta(&g_gameState.characters[partySlot], 3,
                                                rec->wEffect_arg_b);
-                    stat_combatant_apply_delta(&g_gameState.party_members[partySlot], 5, -100);
-                    stat_combatant_modify(&g_gameState.party_members[partySlot], 0x10, 0x300, 0x3c);
+                    stat_combatant_apply_delta(&g_gameState.characters[partySlot], 5, -100);
+                    stat_combatant_modify(&g_gameState.characters[partySlot], 0x10, 0x300, 0x3c);
                 }
             } else {
                 if (item->flags & 2) {
@@ -176,7 +176,7 @@ int far shop_npc_transaction(Actor far *actor, Actor far *merchant, ItemSlot far
             if (item->item_id == 0x85) {
                 dialog_play_record(0x1b775f, 0);
                 done = 0;
-            } else if (shop_haggle_attempt_purchase(actor, &g_gameState.party_members[partySlot],
+            } else if (shop_haggle_attempt_purchase(actor, &g_gameState.characters[partySlot],
                                                     item, 0) != 0) {
                 dialog_play_record(0x1b7755, 0);
                 done = 0;

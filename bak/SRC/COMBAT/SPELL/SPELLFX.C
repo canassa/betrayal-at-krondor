@@ -34,7 +34,7 @@ void far spellfx_cast_and_dispatch(void) {
 
     cspell_subsystem_load();
     nSpellId =
-        cspell_cast_menu_loop(&g_gameState.party_members[g_gameState.party_roster[0]], &nDamage,
+        cspell_cast_menu_loop(&g_gameState.characters[g_gameState.activeParty[0]], &nDamage,
                               &g_gameState.nSpellMenuCasterSlot, &g_gameState.nSpellMenuPreselect);
 
     if ((-1 < nSpellId) && (nSpellId < 0x2d)) {
@@ -409,7 +409,7 @@ void far spellfx_party_member_take_damage(short roster_slot, short damage) {
     CombatActor *member;
     int i;
 
-    member = &g_gameState.party_members[g_gameState.party_roster[roster_slot]];
+    member = &g_gameState.characters[g_gameState.activeParty[roster_slot]];
     stat_combatant_modify(member, 0x10, (long)(short)(-damage << 8), 100);
 
     if (g_gameState.nChapter == 8) {
