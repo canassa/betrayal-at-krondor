@@ -28,3 +28,6 @@ __pycache__/
 
 # local-only internal notes / working docs — not published
 /internal/
+
+# agent/investigation scratch (repo-local)
+scratchpad/
