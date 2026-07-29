@@ -528,7 +528,7 @@ void far hotspotevt_type1_encounter_run(ZoneHotspot *pHotspot, int *out_moved) {
         dialog_play_record(*(unsigned long *)(buf + 6), 1);
     }
     combat_arena_actor_turn_loop((unsigned short) * (unsigned long *)(buf + 2), &combatStatus, hasFired);
-    g_wLastTempWriteRecordKind = 1;
+    g_pendingTempWriteRegion = TWR_ENCOUNTER_STATE;
     gstate_temp_file_write_at((unsigned char far *)&g_gameState.game_time,
                               GAM_ENC_FOUGHT_TIME(*(unsigned long *)(buf + 2)), 4);
     if (combatStatus == 2) {
@@ -787,7 +787,7 @@ void far hotspotevt_trap_main_fire(ZoneHotspot *pHotspot, unsigned short *pOut_s
         *(CamPos far *)&g_world_camera->base.pos.xy.nWorld_x = *(CamPos far *)originalCamera;
         g_world_camera->base.orientation.yaw = wOrig_heading;
     }
-    g_wLastTempWriteRecordKind = 1;
+    g_pendingTempWriteRegion = TWR_ENCOUNTER_STATE;
     gstate_temp_file_write_at((unsigned char far *)&g_gameState.game_time,
                               GAM_ENC_FOUGHT_TIME(trapRec.dwCombat_index), 4);
 

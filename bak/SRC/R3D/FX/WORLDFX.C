@@ -33,7 +33,7 @@ VfxRec *g_pVfxParticlePool = {0};
 #define VFX_PARTICLE_COUNT 25
 #define VFX_SPARKLE_COUNT 6
 
-void worldfx_sparkle_burst(CombatActor *actor, int color) {
+void worldfx_sparkle_burst(Combatant *actor, int color) {
     int scr[3];
     int base_x;
     int base_y;
@@ -43,9 +43,9 @@ void worldfx_sparkle_burst(CombatActor *actor, int color) {
 
     g_pVfxSparkleScratch = galloc_safe_zcalloc(VFX_SPARKLE_COUNT * sizeof(VfxRec));
 
-    base_x = actor->inner->grid_x * g_grid_tile_size + (g_grid_tile_size >> 1) - 0x546;
+    base_x = actor->inner->gridX * g_grid_tile_size + (g_grid_tile_size >> 1) - 0x546;
 
-    base_y = actor->inner->grid_y * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80;
+    base_y = actor->inner->gridY * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80;
 
     for (i = 0; i < VFX_SPARKLE_COUNT; i++) {
 
@@ -89,21 +89,21 @@ void far worldfx_flux_vortex_step_particle(int slot, int base_ang_step) {
     g_wVfxActiveParticleCount++;
 }
 
-void far worldfx_render_particle_blast(CombatActor *actor, int color) {
+void far worldfx_render_particle_blast(Combatant *actor, int color) {
     int radius;
     short saved_status;
     int i;
 
     radius = 1;
-    saved_status = actor->inner->status_head;
-    actor->inner->status_head = 0x13;
+    saved_status = actor->inner->statusHead;
+    actor->inner->statusHead = 0x13;
     i = RNDR(10, 24);
     while (i != 0) {
         world_render_with_overlay(MK_FP(0, 0xffff));
         screen_frame_present();
         i--;
     }
-    actor->inner->status_head = saved_status;
+    actor->inner->statusHead = saved_status;
     g_pVfxParticlePool = galloc_safe_zcalloc(VFX_PARTICLE_COUNT * sizeof(VfxRec));
     i = 0;
     do {
@@ -170,7 +170,7 @@ void worldfx_flux_vortex_play(int color) {
     g_pVfxParticlePool = 0;
 }
 
-void far worldfx_ptcl_overlay_step_back(CombatActor *pActor) {
+void far worldfx_ptcl_overlay_step_back(Combatant *pActor) {
     int scr[3];
     int scr2[3];
     int base_x;
@@ -181,8 +181,8 @@ void far worldfx_ptcl_overlay_step_back(CombatActor *pActor) {
 
     if (g_pVfxParticlePool != 0) {
         world_rndr_apply_window_vport();
-        base_x = pActor->inner->grid_x * g_grid_tile_size + (g_grid_tile_size >> 1) + -0x4b0;
-        base_y = pActor->inner->grid_y * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80;
+        base_x = pActor->inner->gridX * g_grid_tile_size + (g_grid_tile_size >> 1) + -0x4b0;
+        base_y = pActor->inner->gridY * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80;
         index = 0;
         do {
             if ((g_pVfxParticlePool[index].nW0 > 0x4b) && (g_pVfxParticlePool[index].nW1 > 0)) {
@@ -212,7 +212,7 @@ void far worldfx_ptcl_overlay_step_back(CombatActor *pActor) {
     }
 }
 
-void worldfx_ptcl_overlay_render_front(CombatActor *pActor) {
+void worldfx_ptcl_overlay_render_front(Combatant *pActor) {
     int scr[3];
     int scr2[3];
     int x_base;
@@ -222,8 +222,8 @@ void worldfx_ptcl_overlay_render_front(CombatActor *pActor) {
     if (g_pVfxParticlePool != 0) {
         world_rndr_apply_window_vport();
 
-        x_base = pActor->inner->grid_x * g_grid_tile_size + (g_grid_tile_size >> 1) - 0x546;
-        y_base = pActor->inner->grid_y * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80;
+        x_base = pActor->inner->gridX * g_grid_tile_size + (g_grid_tile_size >> 1) - 0x546;
+        y_base = pActor->inner->gridY * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80;
         x_base += 0x96;
 
         for (i = 0; i < VFX_PARTICLE_COUNT; i++) {
@@ -253,16 +253,16 @@ void worldfx_ptcl_overlay_render_front(CombatActor *pActor) {
     }
 }
 
-void far worldfx_rndr_rand_flash_at_actor(CombatActor *actor) {
+void far worldfx_rndr_rand_flash_at_actor(Combatant *actor) {
     short scr_buf[7];
     WorldObject entry;
     (void)scr_buf;
     entry.shapeId = 4;
     entry.state.stateBits = 0;
     entry.pos.xy.nWorld_x =
-        (long)(actor->inner->grid_x * g_grid_tile_size + (g_grid_tile_size >> 1) + (-0x4b0));
+        (long)(actor->inner->gridX * g_grid_tile_size + (g_grid_tile_size >> 1) + (-0x4b0));
     entry.pos.xy.nWorld_y =
-        (long)(actor->inner->grid_y * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80);
+        (long)(actor->inner->gridY * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80);
     entry.pos.nWorld_z = 0;
     entry.orientation.pitch = entry.orientation.roll = entry.orientation.yaw = 0;
     g_nActorSpriteFlip = RND2(2) << 1;
@@ -278,15 +278,15 @@ void far worldfx_render_world_100_frames(void) {
     }
 }
 
-void far worldfx_combat_damage_ptcl_burst(CombatActor *actor, int spread) {
+void far worldfx_combat_damage_ptcl_burst(Combatant *actor, int spread) {
     int x;
     int i;
 
     g_pVfxParticlePool = galloc_safe_zcalloc(VFX_PARTICLE_COUNT * sizeof(VfxRec));
     g_pVfxVelocityPool = galloc_safe_zcalloc(VFX_PARTICLE_COUNT * sizeof(VfxRec));
-    x = actor->inner->grid_x * g_grid_tile_size + (g_grid_tile_size >> 1) + -0x4b0;
+    x = actor->inner->gridX * g_grid_tile_size + (g_grid_tile_size >> 1) + -0x4b0;
     g_nVfxParticleBurstOriginY =
-        actor->inner->grid_y * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80;
+        actor->inner->gridY * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80;
     i = 0;
     do {
         g_pVfxParticlePool[i].nW0 = x;
@@ -373,7 +373,7 @@ void far worldfx_sparkle_render(void) {
     return;
 }
 
-void worldfx_render_flame_at_actor(CombatActor *actor) {
+void worldfx_render_flame_at_actor(Combatant *actor) {
     int scr[3];
     int z;
     int c1, c2;
@@ -384,8 +384,8 @@ void worldfx_render_flame_at_actor(CombatActor *actor) {
     world_rndr_apply_window_vport();
     g_graphics_context.wGfxBlitDstPage = g_graphics_context.wVgaPage2Base;
 
-    scr_x = actor->inner->grid_x * g_grid_tile_size + (g_grid_tile_size >> 1) + -0x4b0;
-    scr_y = actor->inner->grid_y * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80;
+    scr_x = actor->inner->gridX * g_grid_tile_size + (g_grid_tile_size >> 1) + -0x4b0;
+    scr_y = actor->inner->gridY * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80;
     z = 0xfa;
     project_world_to_screen(scr_x, scr_y, z, scr, g_active_window);
 
@@ -420,7 +420,7 @@ static int actor_box_verts[8][3] = {
 };
 short g_nVfxTickCountdown = 0;
 
-void worldfx_actor_box_scr_verts(Vec3Short *vertex_buf, CombatActor *actor) {
+void worldfx_actor_box_scr_verts(Vec3Short *vertex_buf, Combatant *actor) {
     int out[3];
     int x_base;
     int tx;
@@ -431,8 +431,8 @@ void worldfx_actor_box_scr_verts(Vec3Short *vertex_buf, CombatActor *actor) {
     int i;
 
     world_rndr_apply_window_vport();
-    x_base = actor->inner->grid_x * g_grid_tile_size + (g_grid_tile_size >> 1) - 0x4b0;
-    y_base = actor->inner->grid_y * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80;
+    x_base = actor->inner->gridX * g_grid_tile_size + (g_grid_tile_size >> 1) - 0x4b0;
+    y_base = actor->inner->gridY * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80;
     z_base = 0;
     i = 0;
     do {
@@ -446,12 +446,12 @@ void worldfx_actor_box_scr_verts(Vec3Short *vertex_buf, CombatActor *actor) {
     } while (i < 8);
 }
 
-void worldfx_draw_actor_box_wireframe(CombatActor *actor, int color_idx) {
+void worldfx_draw_actor_box_wireframe(Combatant *actor, int color_idx) {
     Vec3Short v[8];
 
     worldfx_actor_box_scr_verts(v, actor);
     g_graphics_context.bGfx_outline_color = (char)(color_idx % 7) + 0xd0;
-    if (actor->inner->grid_x > 4) {
+    if (actor->inner->gridX > 4) {
         draw_line(v[6].nX, v[6].nY, v[1].nX, v[1].nY);
         draw_line(v[2].nX, v[2].nY, v[7].nX, v[7].nY);
     } else {
@@ -464,12 +464,12 @@ void worldfx_draw_actor_box_wireframe(CombatActor *actor, int color_idx) {
     draw_line(v[2].nX, v[2].nY, v[1].nX, v[1].nY);
 }
 
-void worldfx_draw_actor_box_wireframe_front(CombatActor *entity, int color_mod) {
+void worldfx_draw_actor_box_wireframe_front(Combatant *entity, int color_mod) {
     Vec3Short v[8];
 
     worldfx_actor_box_scr_verts(v, entity);
     g_graphics_context.bGfx_outline_color = (char)(color_mod % 7) + 0xd1;
-    if (entity->inner->grid_x <= 4) {
+    if (entity->inner->gridX <= 4) {
         draw_line(v[6].nX, v[6].nY, v[1].nX, v[1].nY);
         draw_line(v[2].nX, v[2].nY, v[7].nX, v[7].nY);
     } else {
@@ -487,7 +487,7 @@ void worldfx_state_arm_minus2(void) {
     return;
 }
 
-void worldfx_depth_clip_actor_scr_y(CombatActor *actor) {
+void worldfx_depth_clip_actor_scr_y(Combatant *actor) {
     int out[3];
     int wx, wy;
 
@@ -495,8 +495,8 @@ void worldfx_depth_clip_actor_scr_y(CombatActor *actor) {
     g_savedClip.ymax = g_graphics_context.clip.ymax;
     g_savedClip.xmax = g_graphics_context.clip.xmax;
     g_savedClip.xmin = g_graphics_context.clip.xmin;
-    wx = actor->inner->grid_x * g_grid_tile_size + (g_grid_tile_size >> 1) + -0x4b0;
-    wy = actor->inner->grid_y * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80;
+    wx = actor->inner->gridX * g_grid_tile_size + (g_grid_tile_size >> 1) + -0x4b0;
+    wy = actor->inner->gridY * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80;
     project_world_to_screen(wx, wy, 0, out, g_active_window);
     world_rndr_apply_window_vport();
     g_graphics_context.clip.ymax = out[1];
@@ -536,7 +536,7 @@ void far worldfx_rndr_spr_shadow(short shadow_palette_idx) {
                                     g_nActorSpriteFlip, g_nBillboardW, g_nBillboardH);
 }
 
-void far worldfx_draw_path_segment(int grid_x, int grid_y) {
+void far worldfx_draw_path_segment(int gridX, int gridY) {
     int scr[3];
     int p2y;
     int p1y;
@@ -552,17 +552,17 @@ void far worldfx_draw_path_segment(int grid_x, int grid_y) {
     int wy;
 
     g_graphics_context.bClip_enabled = 1;
-    combatgrid_find_adj_pass_tile(grid_x, grid_y, 4, &dx, &dy);
-    if (combatgrid_tile_terrain_field((char)grid_x - (char)dx, (char)grid_y - (char)dy) != 4) {
+    combatgrid_find_adj_pass_tile(gridX, gridY, 4, &dx, &dy);
+    if (combatgrid_tile_terrain_field((char)gridX - (char)dx, (char)gridY - (char)dy) != 4) {
         shape = 1;
-    } else if (combatgrid_tile_terrain_field((char)grid_x + (char)dx, (char)grid_y + (char)dy) !=
+    } else if (combatgrid_tile_terrain_field((char)gridX + (char)dx, (char)gridY + (char)dy) !=
                4) {
         shape = 2;
     } else {
         shape = 0;
     }
-    wx = grid_x * g_grid_tile_size + (g_grid_tile_size >> 1) + -0x4b0;
-    wy = grid_y * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80;
+    wx = gridX * g_grid_tile_size + (g_grid_tile_size >> 1) + -0x4b0;
+    wy = gridY * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80;
     wx = wx - (g_grid_tile_size >> 1) * dx;
     wy = wy - (g_grid_tile_size >> 1) * dy;
     project_world_to_screen(wx, wy, 0xeb, scr, g_active_window);

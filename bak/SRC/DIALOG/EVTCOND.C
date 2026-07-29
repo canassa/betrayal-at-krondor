@@ -306,10 +306,10 @@ void evtcond_dialog_action_dispatch(DdxOp far *action_record) {
     case 16: {
         int i;
         for (i = 0; i < 3; i++) {
-            temp = g_gameState.characters[CHR_OWYN].pSpellsKnown[i] |
-                   g_gameState.characters[CHR_PUG].pSpellsKnown[i];
-            g_gameState.characters[CHR_OWYN].pSpellsKnown[i] = temp;
-            g_gameState.characters[CHR_PUG].pSpellsKnown[i] = temp;
+            temp = g_gameState.characters[CHR_OWYN].spellsKnown[i] |
+                   g_gameState.characters[CHR_PUG].spellsKnown[i];
+            g_gameState.characters[CHR_OWYN].spellsKnown[i] = temp;
+            g_gameState.characters[CHR_PUG].spellsKnown[i] = temp;
         }
         break;
     }

@@ -87,7 +87,7 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
     int combat_result;
     unsigned int flags;
     unsigned short category;
-    CombatActor *member;
+    Combatant *member;
     int outcome;
     int i;
 
@@ -186,7 +186,7 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
         }
     } else if (category == 10) {
 
-        int slot_idx = member->cParty_slot + -1;
+        int slot_idx = member->charSlot + -1;
         if (item->item_id == 'q' && (char)g_gameState.abActorStatusRanks[slot_idx][2] != '\0' &&
             target == (ItemSlot far *)0) {
             outcome = -1;
@@ -303,7 +303,7 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
 
         ActorStatModifier modifier;
         ActorStatModifier *slot_mods;
-        int slot_idx = member->cParty_slot + -1;
+        int slot_idx = member->charSlot + -1;
         int stat_out;
         modifier.wMaskFlags = rec->wEffect_arg_a;
         modifier.payload.wStatMask = rec->wEffect_arg_b;
@@ -470,10 +470,10 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
                 i = 0;
                 outcome = 1;
                 for (; i < 3; i++) {
-                    bits = g_gameState.characters[CHR_OWYN].pSpellsKnown[i] |
-                           g_gameState.characters[CHR_PUG].pSpellsKnown[i];
-                    g_gameState.characters[CHR_OWYN].pSpellsKnown[i] = bits;
-                    g_gameState.characters[CHR_PUG].pSpellsKnown[i] = bits;
+                    bits = g_gameState.characters[CHR_OWYN].spellsKnown[i] |
+                           g_gameState.characters[CHR_PUG].spellsKnown[i];
+                    g_gameState.characters[CHR_OWYN].spellsKnown[i] = bits;
+                    g_gameState.characters[CHR_PUG].spellsKnown[i] = bits;
                 }
             }
             break;
@@ -510,13 +510,13 @@ done:
     return result;
 }
 
-void far itemuse_apply_stat_effects(CombatActor *actor, ItemSlot far *item,
+void far itemuse_apply_stat_effects(Combatant *actor, ItemSlot far *item,
                                     ItemRecord far *record) {
     int slotIdx;
     unsigned short event_idx;
     int i;
 
-    slotIdx = actor->cParty_slot - 1;
+    slotIdx = actor->charSlot - 1;
 
     event_idx = ITEM_USED(slotIdx * 0x14 + item->item_id);
 

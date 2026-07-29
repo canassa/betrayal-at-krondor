@@ -20,8 +20,8 @@
 #include "SRC/COMBAT/STATS/CBSTAT.H"
 #include "defines.h"
 
-void far combataiact_pick_melee_or_missl(CombatActor *actor) {
-    CombatActor *target;
+void far combataiact_pick_melee_or_missl(Combatant *actor) {
+    Combatant *target;
     int distance;
 
     target = combatenc_find_nearest_actor(actor, &distance);
@@ -36,8 +36,8 @@ void far combataiact_pick_melee_or_missl(CombatActor *actor) {
     }
 }
 
-void far combataiact_random_move_attack(CombatActor *actor) {
-    CombatActor *target;
+void far combataiact_random_move_attack(Combatant *actor) {
+    Combatant *target;
     unsigned int roll;
     int distance;
     int halfStat;
@@ -49,8 +49,8 @@ void far combataiact_random_move_attack(CombatActor *actor) {
         g_cursor_tile_x = RND2(8);
         g_cursor_tile_y = RND(0xd);
     }
-    actor->inner->pad_6[0] = (unsigned char)g_cursor_tile_x;
-    actor->inner->pad_6[1] = (unsigned char)g_cursor_tile_y;
+    actor->inner->destX = (unsigned char)g_cursor_tile_x;
+    actor->inner->destY = (unsigned char)g_cursor_tile_y;
     combataipath_actor_walk_path(actor, 0);
 #ifdef V102CD
     if ((actor->inner->flags & 2) == 0) {
@@ -82,8 +82,8 @@ void far combataiact_random_move_attack(CombatActor *actor) {
     return;
 }
 
-void far combataiact_ranged_attack_turn(CombatActor *actor) {
-    CombatActor *target;
+void far combataiact_ranged_attack_turn(Combatant *actor) {
+    Combatant *target;
     int distance;
     int hit;
     unsigned short actionId;
@@ -95,8 +95,8 @@ void far combataiact_ranged_attack_turn(CombatActor *actor) {
     if ((combat_actor_trace_proj_path(actor, target, 1) == 0) || (RND(100) < 0x32)) {
         combataipath_select_action(actor);
     } else {
-        if ((RND2(4) <= 2) || (actor->inner->class_id == 0x39)) {
-            switch (actor->inner->class_id) {
+        if ((RND2(4) <= 2) || (actor->inner->creatureType == 0x39)) {
+            switch (actor->inner->creatureType) {
             case 0x29:
                 actionId = 2;
                 knockback = 1;
@@ -113,7 +113,7 @@ void far combataiact_ranged_attack_turn(CombatActor *actor) {
             }
         do_audio:
             audio_play(0x12);
-            if (actor->inner->class_id == 0x39) {
+            if (actor->inner->creatureType == 0x39) {
                 combat_actor_play_ranged_windup(actor, combat_actor_heading_from_to(actor, target));
             } else {
                 combat_actor_anim7_field2_var(actor, combat_actor_heading_from_to(actor, target));
@@ -121,8 +121,8 @@ void far combataiact_ranged_attack_turn(CombatActor *actor) {
             target = world_rndr_ranged_attack_anim(actor, target, &hit, actionId, 0xfa, -1);
             combat_actor_anim0_if_not_dead(actor, -1);
             target->inner->flags |= CAF_KNOCKBACK;
-            target->inner->knockback_value = (unsigned char)knockback;
-            target->inner->knockback_timer = 'd';
+            target->inner->knockbackFrame = (unsigned char)knockback;
+            target->inner->knockbackTimer = 'd';
             cspell_slot = cspell_status_effect_add(target, 4, 0, 0, '\0');
             g_nVfxParticleColor = 0xa0;
             audio_play(0x15);
@@ -139,8 +139,8 @@ void far combataiact_ranged_attack_turn(CombatActor *actor) {
     return;
 }
 
-void far combataiact_actor_melee_attack(CombatActor *actor) {
-    CombatActor *target;
+void far combataiact_actor_melee_attack(Combatant *actor) {
+    Combatant *target;
     int distance;
     int hit;
     int i;
@@ -148,7 +148,7 @@ void far combataiact_actor_melee_attack(CombatActor *actor) {
     hit = 1;
     target = combatenc_find_nearest_actor(actor, &distance);
 #ifdef V102CD
-    if (target == (CombatActor *)0)
+    if (target == (Combatant *)0)
         return;
 #endif
     if (combat_actor_trace_proj_path(actor, target, 1) != 0 && distance > 1) {
@@ -159,8 +159,8 @@ void far combataiact_actor_melee_attack(CombatActor *actor) {
         i = 0;
         do {
             target->inner->flags |= CAF_KNOCKBACK;
-            target->inner->knockback_value = (unsigned char)i + 1;
-            target->inner->knockback_timer = 0x64;
+            target->inner->knockbackFrame = (unsigned char)i + 1;
+            target->inner->knockbackTimer = 0x64;
             world_render_with_overlay((void far *)0xffff);
             screen_frame_present();
             ++i;
@@ -174,9 +174,9 @@ void far combataiact_actor_melee_attack(CombatActor *actor) {
     }
 }
 
-void far combataiact_action_charge_near(CombatActor *actor) {
+void far combataiact_action_charge_near(Combatant *actor) {
     int distance;
-    CombatActor *target;
+    Combatant *target;
 
     target = combatenc_find_nearest_actor(actor, &distance);
     if (distance >= 3 && combat_actor_trace_proj_path(actor, target, 0) != 0 && RND(100) >= 5) {
@@ -187,15 +187,15 @@ void far combataiact_action_charge_near(CombatActor *actor) {
 ranged:
     combataiturn_ranged_attack(actor, target, 8);
 clear:
-    actor->inner->target = (CombatActor *)0x0;
+    actor->inner->target = (Combatant *)0x0;
     return;
 }
 
-void far combataiact_melee_random_attack(CombatActor *actor) {
+void far combataiact_melee_random_attack(Combatant *actor) {
     int distance;
     int hit;
     int knockback;
-    CombatActor *target;
+    Combatant *target;
     int damage;
 
     hit = 1;
@@ -232,8 +232,8 @@ void far combataiact_melee_random_attack(CombatActor *actor) {
     return;
 }
 
-void far combataiact_ranged_attack(CombatActor *actor) {
-    CombatActor *target;
+void far combataiact_ranged_attack(Combatant *actor) {
+    Combatant *target;
     int distance;
     int hit;
     int cspellSlot;
@@ -257,17 +257,17 @@ void far combataiact_ranged_attack(CombatActor *actor) {
     return;
 }
 
-void far combataiact_bhood_revive_cycle(CombatActor *actor) {
+void far combataiact_bhood_revive_cycle(Combatant *actor) {
     int slot;
     int done;
     int i;
 
     done = 0;
-    if (combatgrid_tile_is_blocked(actor->inner->grid_x, actor->inner->grid_y) == 0) {
+    if (combatgrid_tile_is_blocked(actor->inner->gridX, actor->inner->gridY) == 0) {
         i = 0;
         if (i < g_combat_count_B) {
             do {
-                if ((g_combat_actors_B[i].inner)->class_id == 0x16)
+                if ((g_combat_actors_B[i].inner)->creatureType == 0x16)
                     break;
                 i = i + 1;
             } while (i < g_combat_count_B);
@@ -281,25 +281,25 @@ void far combataiact_bhood_revive_cycle(CombatActor *actor) {
             } while (i < g_combat_count_B);
         }
         actor->inner->flags |= CAF_KNOCKBACK;
-        actor->inner->knockback_value = '\x03';
-        actor->inner->knockback_timer = '\xe8';
+        actor->inner->knockbackFrame = '\x03';
+        actor->inner->knockbackTimer = '\xe8';
         combat_actor_grid_remove(actor);
         audio_play(0x47);
         slot = cspell_status_effect_add(actor, 0x20, 0, 0, '\0');
         cspell_vfx_run_and_wait();
         cspell_status_effect_remove(actor, slot);
-        if (actor->inner->class_id == 0x17) {
-            combat_actor_release_anim_images(actor->inner->class_id);
-            actor->inner->class_id = 0x16;
+        if (actor->inner->creatureType == 0x17) {
+            combat_actor_release_anim_images(actor->inner->creatureType);
+            actor->inner->creatureType = 0x16;
             combat_actor_rsrc_load_3values(0x16, g_abCombatInnerPoolB[i]);
             g_anim_pool_B[i].sprite_header = g_abCombatInnerPoolB[i];
         }
         actor->stats[0].base = actor->stats[0].max;
         actor->stats[1].base = actor->stats[1].max;
-        combatgrid_set_tile_effect(actor->inner->grid_x, actor->inner->grid_y, 9, 400);
-        actor->inner->knockback_timer = '\0';
-        actor->inner->dmg_value = '\0';
-        actor->inner->dmg_frames_left = '\0';
+        combatgrid_set_tile_effect(actor->inner->gridX, actor->inner->gridY, 9, 400);
+        actor->inner->knockbackTimer = '\0';
+        actor->inner->dmgFloatValue = '\0';
+        actor->inner->dmgFloatFrames = '\0';
         actor->inner->flags = CAF_READY;
         combat_actor_anim0_if_not_dead(actor, -1);
         while (!done) {
@@ -310,11 +310,11 @@ void far combataiact_bhood_revive_cycle(CombatActor *actor) {
             } while (i < 0xf);
             world_render_with_overlay(MK_FP(0, 0xffff));
             screen_frame_present();
-            if (combatgrid_tile_terrain_field(actor->inner->grid_x, actor->inner->grid_y) != 9) {
+            if (combatgrid_tile_terrain_field(actor->inner->gridX, actor->inner->gridY) != 9) {
                 done = 1;
             }
         }
-        combatgrid_set_tile_effect(actor->inner->grid_x, actor->inner->grid_y, 0, -1);
+        combatgrid_set_tile_effect(actor->inner->gridX, actor->inner->gridY, 0, -1);
     }
     return;
 }
@@ -327,7 +327,7 @@ int combataiact_cnt_pty_stat_22(void) {
     i = 0;
     if (i < g_combat_count_B) {
         do {
-            if (g_combat_actors_B[i].inner->class_id == CREATURE_BLACK_SLAYER) {
+            if (g_combat_actors_B[i].inner->creatureType == CREATURE_BLACK_SLAYER) {
                 count = count + 1;
             }
             i = i + 1;
@@ -347,14 +347,14 @@ void far combataiact_party_tick_status(void) {
             do {
                 if ((g_combat_actors_B[i].inner)->flags & 2) {
                     if (!((flags = (char)(g_combat_actors_B[i].inner)->flags) & 0x10)) {
-                        if ((g_combat_actors_B[i].inner)->class_id == 0x16 ||
-                            (g_combat_actors_B[i].inner)->class_id == 0x17) {
+                        if ((g_combat_actors_B[i].inner)->creatureType == 0x16 ||
+                            (g_combat_actors_B[i].inner)->creatureType == 0x17) {
                             if ((dmgFramesLeft =
-                                     (char)(g_combat_actors_B[i].inner)->dmg_frames_left) == 0 &&
-                                (g_combat_actors_B[i].inner)->grid_x != -1) {
+                                     (char)(g_combat_actors_B[i].inner)->dmgFloatFrames) == 0 &&
+                                (g_combat_actors_B[i].inner)->gridX != -1) {
                                 combataiact_bhood_revive_cycle(&g_combat_actors_B[i]);
                             } else {
-                                (g_combat_actors_B[i].inner)->dmg_frames_left--;
+                                (g_combat_actors_B[i].inner)->dmgFloatFrames--;
                             }
                         }
                     }

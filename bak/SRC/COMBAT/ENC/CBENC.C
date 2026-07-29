@@ -57,7 +57,7 @@ void far combatenc_pty_load_chap_state(void) {
     long last_visit_time;
     int slot;
 
-    g_combat_actors_B = (CombatActor *)galloc_safe_zcalloc(0x299);
+    g_combat_actors_B = (Combatant *)galloc_safe_zcalloc(0x299);
     g_inner_pool_B = (unsigned short)galloc_safe_zcalloc(0x9a);
     g_anim_pool_B = (AnimSlot *)galloc_safe_zcalloc(0x77);
 
@@ -76,7 +76,7 @@ void far combatenc_pty_load_chap_state(void) {
         do {
             gstate_temp_file_read_at((unsigned char far *)&g_combat_actors_B[slot],
                                      GAM_COMBAT_ACTOR((long)g_chapter_roster[slot]), 0x5f);
-            gstate_temp_file_read_at((unsigned char far *)((CombatActorInner *)g_inner_pool_B + slot),
+            gstate_temp_file_read_at((unsigned char far *)((CombatantState *)g_inner_pool_B + slot),
                                      GAM_COMBAT_ACTOR_INNER((long)g_chapter_roster[slot]), 0x16);
             gstate_temp_file_read_at((unsigned char far *)&last_visit_time,
                                      (unsigned long)GAM_ENC_FOUGHT_TIME(g_encounter_id), 4);
@@ -90,19 +90,19 @@ void far combatenc_pty_load_chap_state(void) {
     }
     slot = 0;
     do {
-        g_combat_actors_B[slot].inner = (CombatActorInner *)g_inner_pool_B + slot;
-        g_combat_actors_B[slot].inner->target = (CombatActor *)0;
+        g_combat_actors_B[slot].inner = (CombatantState *)g_inner_pool_B + slot;
+        g_combat_actors_B[slot].inner->target = (Combatant *)0;
         slot++;
     } while (slot < 7);
     slot = 0;
     if (slot < g_combat_count_B) {
         do {
             g_combat_actors_B[slot].name = (char *)galloc_safe_zcalloc(0x20);
-            combatenc_mnames_lookup_dest(g_combat_actors_B[slot].inner->class_id,
+            combatenc_mnames_lookup_dest(g_combat_actors_B[slot].inner->creatureType,
                                          &g_combat_actors_B[slot].name);
             g_combat_actors_B[slot].actor_record =
                 actorspawn_objfixed(100, (long)slot, (long)(int)g_encounter_id);
-            g_combat_actors_B[slot].inner->status_head = -1;
+            g_combat_actors_B[slot].inner->statusHead = -1;
             slot++;
         } while (slot < g_combat_count_B);
     }
@@ -119,16 +119,16 @@ void combatenc_persist_actors_to_temp(int srcEncounterId) {
 
     gstate_temp_file_read_at((unsigned char far *)roster, (unsigned long)(unsigned)GAM_ENC_ROSTER(srcEncounterId),
                              0xe);
-    g_wLastTempWriteRecordKind = 1;
+    g_pendingTempWriteRegion = TWR_ENCOUNTER_STATE;
     gstate_temp_file_write_at((unsigned char far *)roster, (unsigned long)(unsigned)GAM_ENC_ROSTER(g_encounter_id),
                               0xe);
     i = 0;
     if (i < g_combat_count_B) {
         do {
-            g_wLastTempWriteRecordKind = 2;
+            g_pendingTempWriteRegion = TWR_COMBAT_ACTOR;
             gstate_temp_file_write_at((unsigned char far *)&g_combat_actors_B[i],
                                       GAM_COMBAT_ACTOR((long)roster[i]), 0x5f);
-            g_wLastTempWriteRecordKind = 3;
+            g_pendingTempWriteRegion = TWR_COMBAT_ACTOR_INNER;
             gstate_temp_file_write_at((unsigned char far *)g_combat_actors_B[i].inner,
                                       GAM_COMBAT_ACTOR_INNER((long)roster[i]), 0x16);
             i++;
@@ -141,7 +141,7 @@ void far combatenc_init_actor_anim_pool(void) {
     int i;
 
     for (i = 0; i < g_combat_count_B; i++) {
-        combat_actor_rsrc_load_3values((g_combat_actors_B[i].inner)->class_id,
+        combat_actor_rsrc_load_3values((g_combat_actors_B[i].inner)->creatureType,
                                        g_abCombatInnerPoolB[i]);
         g_anim_pool_B[i].sprite_header = g_abCombatInnerPoolB[i];
     }
@@ -152,7 +152,7 @@ void far combatenc_vis_actors_call_rev(void) {
     int i;
 
     for (i = g_combat_count_B - 1; i >= 0; i--) {
-        combat_actor_release_anim_images((g_combat_actors_B[i].inner)->class_id);
+        combat_actor_release_anim_images((g_combat_actors_B[i].inner)->creatureType);
     }
     return;
 }
@@ -195,7 +195,7 @@ void far combatenc_release_actors(void) {
         actorspawn_destroy_and_persist(g_combat_actors_B[i].actor_record);
         galloc_zfree(g_combat_actors_B[i].name);
     }
-    g_actors_B_origin = (CombatActor *)0;
+    g_actors_B_origin = (Combatant *)0;
     galloc_zfree(g_anim_pool_B);
     galloc_zfree((void *)g_inner_pool_B);
     galloc_zfree(g_combat_actors_B);
@@ -226,7 +226,7 @@ void far combatenc_save_state(void) {
     return;
 }
 
-void combatenc_draw_actor_roster_idx(CombatActor *actor) {
+void combatenc_draw_actor_roster_idx(Combatant *actor) {
     short x;
     short y;
     char buf[10];
@@ -306,17 +306,17 @@ static void far combatenc_stat_roll_draw_line(char *label, int stat_val, int *px
 
 #include "structs.h"
 
-void far combatenc_anim_actor_stat_rolls(CombatActor *actor) {
+void far combatenc_anim_actor_stat_rolls(Combatant *actor) {
     int stat_anim_state[3];
 
     stat_anim_state[2] = 0x44;
     stat_anim_state[1] = 0x46;
     stat_anim_state[0] = 0;
-    if (actor != (CombatActor *)0x0) {
+    if (actor != (Combatant *)0x0) {
         g_graphics_context.bText_fg_color = g_graphics_context.bText_bg_color = '\0';
         screen_cursor_hide();
-        g_gameState.nEvtArgActor0 = g_current_actor->cParty_slot + -1;
-        g_gameState.nEvtArgAux1 = actor->inner->class_id;
+        g_gameState.nEvtArgActor0 = g_current_actor->charSlot + -1;
+        g_gameState.nEvtArgAux1 = actor->inner->creatureType;
         dialog_play_record(0x84, 0);
         while (stat_anim_state[0] == 0) {
             combatenc_stat_roll_draw_line("Health:", (int)stat_actor_get(actor, 0, 0),
@@ -367,8 +367,8 @@ void combatenc_clear_pty_grid_occ(void) {
     int i;
 
     for (i = 0; i < g_combat_count_B; i++) {
-        combatgrid_tile_set_word(g_combat_actors_B[i].inner->grid_x,
-                                 g_combat_actors_B[i].inner->grid_y, 0);
+        combatgrid_tile_set_word(g_combat_actors_B[i].inner->gridX,
+                                 g_combat_actors_B[i].inner->gridY, 0);
     }
     return;
 }
@@ -381,7 +381,7 @@ void far combatenc_apply_flee_tile_team(int team_id) {
     i = 0;
     if (i < g_nCombatOtherCount) {
         do {
-            if ((g_pCombatOtherActors[i].inner->class_id == team_id) &&
+            if ((g_pCombatOtherActors[i].inner->creatureType == team_id) &&
                 (!((signed char)g_pCombatOtherActors[i].inner->flags & CAF_DEAD))) {
                 combatenc_actor_flee_tile_east(&g_pCombatOtherActors[i]);
             }
@@ -393,34 +393,34 @@ void far combatenc_apply_flee_tile_team(int team_id) {
 
 #include "structs.h"
 
-int far combatenc_actor_stat_above_table(int threshold_idx, CombatActor *actor) {
+int far combatenc_actor_stat_above_table(int threshold_idx, Combatant *actor) {
     return (unsigned int)((int)stat_actor_get(actor, 0, 0) > g_anStatCheckThreshold[threshold_idx]);
 }
 
 #include "structs.h"
 
-int far combatenc_actor_has_spell_1or4(CombatActor *actor) {
+int far combatenc_actor_has_spell_1or4(Combatant *actor) {
     return cbstat_find_intact_equip_cat(actor, 1) != (ItemRecord far *)0 ||
            cbstat_find_intact_equip_cat(actor, 4) != (ItemRecord far *)0;
 }
 
-int combatenc_actor_id_eq_22(CombatActor *actor) {
+int combatenc_actor_id_eq_22(Combatant *actor) {
     int flag = 0;
-    int class_id = actor->inner->class_id;
-    if (class_id == CREATURE_BLACK_SLAYER)
+    int creatureType = actor->inner->creatureType;
+    if (creatureType == CREATURE_BLACK_SLAYER)
         flag = 1;
     return flag;
 }
 
 #include "structs.h"
 
-CombatActor *far combatenc_find_nearest_actor(CombatActor *from, int *out_dist) {
-    CombatActor *best_actor;
+Combatant *far combatenc_find_nearest_actor(Combatant *from, int *out_dist) {
+    Combatant *best_actor;
     int best_dist;
     int i;
     int did_swap;
 
-    best_actor = (CombatActor *)0;
+    best_actor = (Combatant *)0;
     best_dist = 100;
     did_swap = 0;
     if (combatenc_is_encounter_actor(from) == 0) {
@@ -430,9 +430,9 @@ CombatActor *far combatenc_find_nearest_actor(CombatActor *from, int *out_dist) 
     i = 0;
     if (i < g_nCombatActiveCount) {
         do {
-            CombatActor *cand = &g_pCombatActiveActors[i];
-            int dist = combatgrid_chebyshev_distance(from->inner->grid_x, from->inner->grid_y,
-                                                     cand->inner->grid_x, cand->inner->grid_y);
+            Combatant *cand = &g_pCombatActiveActors[i];
+            int dist = combatgrid_chebyshev_distance(from->inner->gridX, from->inner->gridY,
+                                                     cand->inner->gridX, cand->inner->gridY);
             if (dist < best_dist) {
                 if (!((int)(signed char)cand->inner->flags & CAF_DEAD)) {
                     best_dist = dist;
@@ -451,15 +451,15 @@ CombatActor *far combatenc_find_nearest_actor(CombatActor *from, int *out_dist) 
     return best_actor;
 }
 
-int far combatenc_compute_hit_chance(CombatActor *attacker, CombatActor *target, int base_skill,
+int far combatenc_compute_hit_chance(Combatant *attacker, Combatant *target, int base_skill,
                                      int quarrel_kind) {
     int dist;
     int result;
     ItemRecord far *rec = 0;
     ItemSlot far *slot;
 
-    dist = combatgrid_chebyshev_distance(attacker->inner->grid_x, attacker->inner->grid_y,
-                                         target->inner->grid_x, target->inner->grid_y);
+    dist = combatgrid_chebyshev_distance(attacker->inner->gridX, attacker->inner->gridY,
+                                         target->inner->gridX, target->inner->gridY);
     if (--dist < 0) {
         dist = 0;
     }
@@ -494,7 +494,7 @@ int far combatenc_compute_hit_chance(CombatActor *attacker, CombatActor *target,
     return result;
 }
 
-int combatenc_skill_check_random(CombatActor *attacker, CombatActor *target, int base_skill,
+int combatenc_skill_check_random(Combatant *attacker, Combatant *target, int base_skill,
                                  int quarrel_kind) {
     int hit_chance;
     int rand_val;
@@ -506,15 +506,15 @@ int combatenc_skill_check_random(CombatActor *attacker, CombatActor *target, int
 
 #include "structs.h"
 
-int far combatenc_show_missile_stat_row(CombatActor *actor) {
+int far combatenc_show_missile_stat_row(Combatant *actor) {
     int nearestDist;
 
-    if ((actor != (CombatActor *)0x0) &&
-        (combatgrid_tile_terrain_field(actor->inner->grid_x, actor->inner->grid_y) != 1)) {
+    if ((actor != (Combatant *)0x0) &&
+        (combatgrid_tile_terrain_field(actor->inner->gridX, actor->inner->gridY) != 1)) {
         combatenc_find_nearest_actor(actor, &nearestDist);
         if ((((combat_actor_cnt_qrls_kind(actor, -1) != 0) &&
               (cbstat_find_intact_equip_cat(actor, 2) != (ItemRecord far *)0x0)) ||
-             (actor->inner->class_id == 0x1a)) &&
+             (actor->inner->creatureType == 0x1a)) &&
             ((1 < nearestDist && (stat_actor_get(actor, 5, 0) != 0)))) {
             return 1;
         }
@@ -522,16 +522,16 @@ int far combatenc_show_missile_stat_row(CombatActor *actor) {
     return 0;
 }
 
-int far combatenc_actor_can_cast_spells(CombatActor *actor, int find_nearest) {
+int far combatenc_actor_can_cast_spells(Combatant *actor, int find_nearest) {
     int total_stats;
     int nearest_dist;
 
     total_stats = 0;
     if (!actor)
         return 0;
-    if (combatgrid_tile_terrain_field(actor->inner->grid_x, actor->inner->grid_y) == 1)
+    if (combatgrid_tile_terrain_field(actor->inner->gridX, actor->inner->gridY) == 1)
         return 0;
-    if (g_gameState.nChapter == 8 && actor->cParty_slot != 0 &&
+    if (g_gameState.nChapter == 8 && actor->charSlot != 0 &&
         itemtbl_inv_count_by_kind(actor->actor_record, 1) == 0)
         return 0;
     if (find_nearest != 0) {
@@ -550,7 +550,7 @@ int far combatenc_actor_can_cast_spells(CombatActor *actor, int find_nearest) {
 
 #include "structs.h"
 
-void far combatenc_ai_pick_target_by_role(CombatActor *actor, int max_distance,
+void far combatenc_ai_pick_target_by_role(Combatant *actor, int max_distance,
                                           unsigned int role_filter, int min_party_clearance) {
     int accepted;
     int dist;
@@ -558,11 +558,11 @@ void far combatenc_ai_pick_target_by_role(CombatActor *actor, int max_distance,
     int flagtmp;
     int i;
 
-    actor->inner->target = (CombatActor *)0;
+    actor->inner->target = (Combatant *)0;
     for (i = 0; i < g_nCombatActiveCount; i++) {
-        dist = combatgrid_chebyshev_distance(actor->inner->grid_x, actor->inner->grid_y,
-                                             g_pCombatActiveActors[i].inner->grid_x,
-                                             g_pCombatActiveActors[i].inner->grid_y);
+        dist = combatgrid_chebyshev_distance(actor->inner->gridX, actor->inner->gridY,
+                                             g_pCombatActiveActors[i].inner->gridX,
+                                             g_pCombatActiveActors[i].inner->gridY);
         if (dist > max_distance)
             continue;
         if ((flagtmp = (char)g_pCombatActiveActors[i].inner->flags) & CAF_DEAD)
@@ -591,12 +591,12 @@ void far combatenc_ai_pick_target_by_role(CombatActor *actor, int max_distance,
                 accepted = 1;
             break;
         case 6:
-            if (g_pCombatActiveActors[i].inner->target != (CombatActor *)0 &&
+            if (g_pCombatActiveActors[i].inner->target != (Combatant *)0 &&
                 (g_pCombatActiveActors[i].inner->target->inner->flags & CAF_DEAD) != 0)
                 goto accept;
             goto skip;
         case 4:
-            if (g_pCombatActiveActors[i].inner->target != (CombatActor *)0 &&
+            if (g_pCombatActiveActors[i].inner->target != (Combatant *)0 &&
                 ((flagtmp = (char)g_pCombatActiveActors[i].inner->target->inner->flags) &
                  CAF_DEAD) == 0)
                 goto accept;
@@ -616,24 +616,24 @@ void far combatenc_ai_pick_target_by_role(CombatActor *actor, int max_distance,
 
 #include <stdlib.h>
 
-void far combatenc_actor_flee_tile_east(CombatActor *actor) {
+void far combatenc_actor_flee_tile_east(Combatant *actor) {
     int v;
     int best_y;
     int x;
     int y;
 
     best_y = 0;
-    if ((v = (signed char)actor->inner->pad_e[0]) == 0)
+    if ((v = (signed char)actor->inner->morale) == 0)
         return;
     actor->inner->flags |= CAF_FLEE;
-    actor->inner->target = (CombatActor *)0;
+    actor->inner->target = (Combatant *)0;
     for (x = 0; x < 8; x++) {
         for (y = 0; y < 13; y++) {
             if (!combatgrid_tile_is_blocked((char)x, (char)y)) {
                 if (y > best_y) {
                     if (RND(100) > 50) {
-                        actor->inner->pad_6[0] = (unsigned char)x;
-                        actor->inner->pad_6[1] = (unsigned char)y;
+                        actor->inner->destX = (unsigned char)x;
+                        actor->inner->destY = (unsigned char)y;
                         best_y = y;
                     }
                 }
@@ -642,20 +642,20 @@ void far combatenc_actor_flee_tile_east(CombatActor *actor) {
     }
 }
 
-void far combatenc_ai_morale_flee_check(CombatActor *actor) {
+void far combatenc_ai_morale_flee_check(Combatant *actor) {
     int threshold;
     int rand_pct;
     int morale_adj;
     int index;
 
-    if (actor->inner->pad_e[0] == 0xff)
+    if (actor->inner->morale == 0xff)
         return;
     if (g_game_mode == 2)
         return;
 
     index = combat_actor_stat_percent(actor, 1) / 10 - 1;
 
-    morale_adj = 8 - (signed char)actor->inner->pad_e[0];
+    morale_adj = 8 - (signed char)actor->inner->morale;
     index += morale_adj;
 
     if (index > 9)
@@ -668,7 +668,7 @@ void far combatenc_ai_morale_flee_check(CombatActor *actor) {
     if (threshold <= rand_pct)
         return;
 
-    if (actor->inner->pad_e[0] == 0)
+    if (actor->inner->morale == 0)
         return;
 
     combatenc_actor_flee_tile_east(actor);
@@ -676,7 +676,7 @@ void far combatenc_ai_morale_flee_check(CombatActor *actor) {
 
 #include "structs.h"
 
-int far combatenc_actor_can_act(CombatActor *actor, int strict) {
+int far combatenc_actor_can_act(Combatant *actor, int strict) {
     int result;
 
     result = 1;
@@ -702,9 +702,9 @@ L_done:
 
 void far combatenc_pick_next_active_actor(void) {
     int i;
-    CombatActor *actor;
-    CombatActor sentinel;
-    CombatActor *cand;
+    Combatant *actor;
+    Combatant sentinel;
+    Combatant *cand;
 
     i = 0;
     do {
@@ -733,10 +733,10 @@ void far combatenc_pick_next_active_actor(void) {
         i = i + 1;
     }
     if (&sentinel == actor) {
-        actor = (CombatActor *)0x0;
+        actor = (Combatant *)0x0;
     }
     g_picked_actor = actor;
-    if (g_picked_actor != (CombatActor *)0x0) {
+    if (g_picked_actor != (Combatant *)0x0) {
         g_acting_actor_speed = stat_actor_get(g_picked_actor, 2, 0);
     } else {
         g_acting_actor_speed = 0;
@@ -752,9 +752,9 @@ void combatenc_refresh_actor_flags(void) {
         do {
             g_pCombatOtherActors[i].inner->flags |= CAF_READY;
             g_pCombatOtherActors[i].inner->flags &= ~CAF_DEFEND_CMD;
-            if ((g_pCombatOtherActors[i].inner->target != (CombatActor *)0x0) &&
+            if ((g_pCombatOtherActors[i].inner->target != (Combatant *)0x0) &&
                 ((g_pCombatOtherActors[i].inner->target->inner->flags & CAF_DEAD) != 0)) {
-                g_pCombatOtherActors[i].inner->target = (CombatActor *)0x0;
+                g_pCombatOtherActors[i].inner->target = (Combatant *)0x0;
             }
             i = i + 1;
         } while (i < g_nCombatOtherCount);
@@ -766,37 +766,37 @@ void combatenc_refresh_actor_flags(void) {
 
 #include <dos.h>
 
-void far combatenc_ai_suicide_on_arrival(CombatActor *actor) {
+void far combatenc_ai_suicide_on_arrival(Combatant *actor) {
     int hit;
-    CombatActor tmpActor;
-    CombatActorInner tmpInner;
+    Combatant tmpActor;
+    CombatantState tmpInner;
 
     hit = 0;
     if (g_acting_actor_speed == 0) {
         g_acting_actor_speed = 1;
     }
     combataipath_actor_walk_path(actor, 0);
-    if ((actor->inner->grid_x == actor->inner->pad_6[0]) &&
-        (actor->inner->grid_y == actor->inner->pad_6[1])) {
-        combatgrid_tile_set_word(actor->inner->grid_x, actor->inner->grid_y, 0);
+    if ((actor->inner->gridX == actor->inner->destX) &&
+        (actor->inner->gridY == actor->inner->destY)) {
+        combatgrid_tile_set_word(actor->inner->gridX, actor->inner->gridY, 0);
         tmpActor.inner = &tmpInner;
         tmpActor.actor_record = (Actor far *)0x0;
-        tmpInner = *(CombatActorInner far *)MK_FP(FP_SEG(g_pMapIconsTable), (unsigned)actor->inner);
-        world_rndr_ranged_attack_anim(actor, &tmpActor, &hit, tmpInner.class_id, 0x96, -1);
+        tmpInner = *(CombatantState far *)MK_FP(FP_SEG(g_pMapIconsTable), (unsigned)actor->inner);
+        world_rndr_ranged_attack_anim(actor, &tmpActor, &hit, tmpInner.creatureType, 0x96, -1);
         combat_arena_actor_die(actor, 0);
     }
     return;
 }
 
-void combatenc_set_flag8_clear_flag1(CombatActor *actor) {
+void combatenc_set_flag8_clear_flag1(Combatant *actor) {
     actor->inner->flags |= CAF_PARRY;
     actor->inner->flags &= ~CAF_READY;
 }
 
 #include "structs.h"
 
-void far combatenc_actor_enter_defense(CombatActor *actor) {
-    CombatActor *to;
+void far combatenc_actor_enter_defense(Combatant *actor) {
+    Combatant *to;
     int healAmt;
     int sumMax;
 
@@ -805,13 +805,13 @@ void far combatenc_actor_enter_defense(CombatActor *actor) {
     if (healAmt < 1) {
         healAmt = 1;
     }
-    if (!actor->cParty_slot ||
-        ((!*(char *)((int)g_gameState.aConditionTickAdvance + 5 + actor->cParty_slot * 7) &&
-          !*(char *)((int)g_gameState.aConditionTickAdvance + 6 + actor->cParty_slot * 7)) &&
-         (!*(char *)((int)g_gameState.aConditionTickAdvance + 7 + actor->cParty_slot * 7) &&
-          ((!*(char *)((int)g_gameState.aConditionTickAdvance + 8 + actor->cParty_slot * 7) &&
-            !*(char *)((int)g_gameState.aConditionTickAdvance + 10 + actor->cParty_slot * 7)) &&
-           !*(char *)((int)g_gameState.aConditionTickAdvance + 0xb + actor->cParty_slot * 7))))) {
+    if (!actor->charSlot ||
+        ((!*(char *)((int)g_gameState.aConditionTickAdvance + 5 + actor->charSlot * 7) &&
+          !*(char *)((int)g_gameState.aConditionTickAdvance + 6 + actor->charSlot * 7)) &&
+         (!*(char *)((int)g_gameState.aConditionTickAdvance + 7 + actor->charSlot * 7) &&
+          ((!*(char *)((int)g_gameState.aConditionTickAdvance + 8 + actor->charSlot * 7) &&
+            !*(char *)((int)g_gameState.aConditionTickAdvance + 10 + actor->charSlot * 7)) &&
+           !*(char *)((int)g_gameState.aConditionTickAdvance + 0xb + actor->charSlot * 7))))) {
         stat_combatant_modify(actor, 0x10, (long)(int)(healAmt << 8), 0x50);
     }
     g_acting_actor_speed = 0;
@@ -827,12 +827,12 @@ void far combatenc_actor_enter_defense(CombatActor *actor) {
 
 #include "structs.h"
 
-void far combatenc_ai_attempt_melee(CombatActor *actor) {
+void far combatenc_ai_attempt_melee(Combatant *actor) {
     int rand_roll;
     int total_score;
     ItemRecord far *weapon_rec;
 
-    if ((actor->inner->target != (CombatActor *)0) &&
+    if ((actor->inner->target != (Combatant *)0) &&
         ((actor->inner->target->inner->flags & CAF_DEAD) == 0)) {
         rand_roll = RND(100);
         weapon_rec = cbstat_find_intact_equip_cat(actor, 1);
@@ -858,14 +858,14 @@ int far combatenc_count_active_enemies(void) {
     anyEngaged = 0;
     count = 0;
     for (i = 0; i < g_nCombatOtherCount; i = i + 1) {
-        if (g_pCombatOtherActors[i].cParty_slot != '\0') {
+        if (g_pCombatOtherActors[i].charSlot != '\0') {
             anyEngaged = 1;
         }
     }
     for (i = 0; i < g_nCombatOtherCount; i = i + 1) {
         if ((((g_pCombatOtherActors[i].inner->flags & CAF_DEAD) != 0) &&
              (!((signed char)g_pCombatOtherActors[i].inner->flags & CAF_FLEE))) &&
-            (((anyEngaged && (g_pCombatOtherActors[i].cParty_slot != '\0')) || (!anyEngaged)))) {
+            (((anyEngaged && (g_pCombatOtherActors[i].charSlot != '\0')) || (!anyEngaged)))) {
             count = count + 1;
         }
     }
@@ -874,7 +874,7 @@ int far combatenc_count_active_enemies(void) {
 
 #include "structs.h"
 
-int far combatenc_party_within_cheby(CombatActor *actor, int range) {
+int far combatenc_party_within_cheby(Combatant *actor, int range) {
     int count;
     int i;
     int dist;
@@ -882,9 +882,9 @@ int far combatenc_party_within_cheby(CombatActor *actor, int range) {
     count = 0;
     if (range != 0) {
         for (i = 0; i < g_combat_count_B; i = i + 1) {
-            dist = combatgrid_chebyshev_distance(actor->inner->grid_x, actor->inner->grid_y,
-                                                 g_combat_actors_B[i].inner->grid_x,
-                                                 g_combat_actors_B[i].inner->grid_y);
+            dist = combatgrid_chebyshev_distance(actor->inner->gridX, actor->inner->gridY,
+                                                 g_combat_actors_B[i].inner->gridX,
+                                                 g_combat_actors_B[i].inner->gridY);
             if (dist < range) {
                 count++;
             }
@@ -907,7 +907,7 @@ int combatenc_alive_actor_count(void) {
     return count;
 }
 
-int combatenc_is_encounter_actor(CombatActor *actor) {
+int combatenc_is_encounter_actor(Combatant *actor) {
     int i;
 
     for (i = 0; i < g_nCombatOtherCount; i++) {
@@ -924,12 +924,12 @@ void combatenc_refr_actor_flags_far(void) {
 
 #include "structs.h"
 
-void far combatenc_ai_sel_execute_action(CombatActor *actor) {
+void far combatenc_ai_sel_execute_action(Combatant *actor) {
     combatenc_ai_morale_flee_check(actor);
     if (actor->inner->flags & CAF_FLEE) {
         combatenc_ai_suicide_on_arrival(actor);
     } else {
-        switch (actor->inner->class_id) {
+        switch (actor->inner->creatureType) {
         case 0x13:
             combataiact_pick_melee_or_missl(actor);
             break;
@@ -973,12 +973,12 @@ void far combatenc_ai_sel_execute_action(CombatActor *actor) {
 #include "structs.h"
 
 void combatenc_ai_run_turn(void) {
-    if (((g_picked_actor == (CombatActor *)0x0) ||
+    if (((g_picked_actor == (Combatant *)0x0) ||
          ((g_picked_actor->inner->flags & CAF_DEAD) == 0)) &&
-        (g_picked_actor != (CombatActor *)0x0)) {
-        if ((g_picked_actor->inner->target != (CombatActor *)0x0) &&
+        (g_picked_actor != (Combatant *)0x0)) {
+        if ((g_picked_actor->inner->target != (Combatant *)0x0) &&
             ((g_picked_actor->inner->target->inner->flags & CAF_DEAD) != 0)) {
-            g_picked_actor->inner->target = (CombatActor *)0x0;
+            g_picked_actor->inner->target = (Combatant *)0x0;
         }
         combatenc_ai_sel_execute_action(g_picked_actor);
         if ((combat_actor_enc_lookup_field2(g_picked_actor) != 7) &&
@@ -991,10 +991,10 @@ void combatenc_ai_run_turn(void) {
 
 #include "structs.h"
 
-void far combatenc_actor_face_target(CombatActor *actor) {
-    CombatActor *to;
+void far combatenc_actor_face_target(Combatant *actor) {
+    Combatant *to;
 
-    if (actor->inner->target == (CombatActor *)0x0) {
+    if (actor->inner->target == (Combatant *)0x0) {
         to = combatenc_find_nearest_actor(actor, (int *)0x0);
     } else {
         to = actor->inner->target;
@@ -1024,8 +1024,8 @@ void combatenc_spawns_load_zones_tmp(void) {
     int count;
     char *filename;
     int index[7];
-    CombatActor actor;
-    CombatActorInner inner;
+    Combatant actor;
+    CombatantState inner;
 
     gidx = 0;
     zone = 0;
@@ -1046,16 +1046,16 @@ void combatenc_spawns_load_zones_tmp(void) {
             actor.stats[0].base = actor.stats[0].max;
             actor.stats[1].base = actor.stats[1].max;
             inner.flags = CAF_READY;
-            g_wLastTempWriteRecordKind = 2;
+            g_pendingTempWriteRegion = TWR_COMBAT_ACTOR;
             gstate_temp_file_write_at((unsigned char far *)&actor, GAM_COMBAT_ACTOR((long)gidx),
                                       0x5f);
-            g_wLastTempWriteRecordKind = 3;
+            g_pendingTempWriteRegion = TWR_COMBAT_ACTOR_INNER;
             gstate_temp_file_write_at((unsigned char far *)&inner,
                                       GAM_COMBAT_ACTOR_INNER((long)gidx), 0x16);
             gidx++;
         }
         res_fclose(file);
-        g_wLastTempWriteRecordKind = 1;
+        g_pendingTempWriteRegion = TWR_ENCOUNTER_STATE;
 
         gstate_temp_file_write_at((unsigned char far *)index,
                                   (unsigned long)(unsigned)GAM_ENC_ROSTER(zone), 0xe);
@@ -1118,11 +1118,11 @@ void combatenc_saves_migr_all_slots(void) {
 
 
 unsigned char g_bssgap_5128[2];
-CombatActor *g_combat_actors_B;
+Combatant *g_combat_actors_B;
 AnimSlot *g_anim_pool_B;
 int g_combat_count_B;
 unsigned char g_bssgap_511e[4];
-CombatActor *g_actors_B_origin;
+Combatant *g_actors_B_origin;
 short g_chapter_roster[7];
 /* Per-actor sprite tables: 11 near ImageRecord ** asset-table entries per row
    (22 bytes/row). Entries [2] and [10] of each row are never written (BSS zero). */
@@ -1155,10 +1155,10 @@ void combatenc_chap_load_party_grn(int chapter) {
                                      0x16);
             innerBuf[8] = 1;
             actorBuf[9] = actorBuf[8];
-            g_wLastTempWriteRecordKind = 2;
+            g_pendingTempWriteRegion = TWR_COMBAT_ACTOR;
             gstate_temp_file_write_at((unsigned char far *)actorBuf, GAM_COMBAT_ACTOR((long)roster[i]),
                                       0x5f);
-            g_wLastTempWriteRecordKind = 3;
+            g_pendingTempWriteRegion = TWR_COMBAT_ACTOR_INNER;
             gstate_temp_file_write_at((unsigned char far *)innerBuf,
                                       GAM_COMBAT_ACTOR_INNER((long)roster[i]), 0x16);
             i++;

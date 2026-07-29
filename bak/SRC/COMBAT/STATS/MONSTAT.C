@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int monstat_roll_stat_in_range(CombatActor *actor, int max_val, int min_val, int stat_index) {
+int monstat_roll_stat_in_range(Combatant *actor, int max_val, int min_val, int stat_index) {
     int result;
 
     if (max_val == min_val) {
@@ -21,22 +21,22 @@ int monstat_roll_stat_in_range(CombatActor *actor, int max_val, int min_val, int
     return result;
 }
 
-void monstat_roll_stats_from_file(CombatActor *actor) {
+void monstat_roll_stats_from_file(Combatant *actor) {
     int max_val;
     int min_val;
     char numbuf[6];
     char filename[13] = "monst";
     char ext[5] = ".dat";
-    int class_id;
+    int creatureType;
     ResFile *file;
 
-    if (actor->inner->class_id == 0x12 &&
+    if (actor->inner->creatureType == 0x12 &&
         cbstat_find_intact_equip_cat(actor, 2) != (ItemRecord far *)0) {
-        class_id = 10;
+        creatureType = 10;
     } else {
-        class_id = actor->inner->class_id;
+        creatureType = actor->inner->creatureType;
     }
-    itoa(class_id, numbuf, 10);
+    itoa(creatureType, numbuf, 10);
     strcat(filename, numbuf);
     strcat(filename, ext);
 
@@ -71,18 +71,18 @@ void monstat_roll_stats_from_file(CombatActor *actor) {
 
     res_fread(&min_val, 2, 1, file);
     res_fread(&max_val, 2, 1, file);
-    actor->inner->pad_e[1] = (unsigned char)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
+    actor->inner->aiTurnProfile = (unsigned char)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
     res_fread(&min_val, 2, 1, file);
     res_fread(&max_val, 2, 1, file);
-    actor->inner->pad_e[2] = (unsigned char)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
+    actor->inner->aiEncounterProfile = (unsigned char)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
     res_fread(&min_val, 2, 1, file);
     res_fread(&max_val, 2, 1, file);
-    actor->inner->pad_e[3] = (unsigned char)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
+    actor->inner->aiPathProfile = (unsigned char)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
 
     res_fread(&min_val, 2, 1, file);
     res_fread(&max_val, 2, 1, file);
-    if (actor->inner->pad_e[0] != '\0') {
-        actor->inner->pad_e[0] = (unsigned char)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
+    if (actor->inner->morale != '\0') {
+        actor->inner->morale = (unsigned char)monstat_roll_stat_in_range(actor, max_val, min_val, -1);
     }
     res_fclose(file);
 }

@@ -36,7 +36,7 @@ struct SpellRecord {
     int idx;
 };
 
-static void charscreen_draw_spell_book_actor(CombatActor *actor, unsigned char far *pal_scratch) {
+static void charscreen_draw_spell_book_actor(Combatant *actor, unsigned char far *pal_scratch) {
     int row;
     int spell_icon;
     int spell_count;
@@ -69,7 +69,7 @@ static void charscreen_draw_spell_book_actor(CombatActor *actor, unsigned char f
                 do {
                     res_fread(&spell_rec, 1, 0x1a, file);
                     if (((1 << (spell_rec.idx % 0x10)) &
-                         actor->pSpellsKnown[spell_rec.idx / 0x10]) != 0) {
+                         actor->spellsKnown[spell_rec.idx / 0x10]) != 0) {
                         if (first == 0) {
                             _fstrcat((char far *)g_pMainScratchBuf, ", ");
                         }
@@ -188,7 +188,7 @@ static void far charscreen_draw_stat_row(int stat_idx, int cur_val, int max_val,
     }
 }
 
-static void far charscreen_info_draw(CombatActor *actor, MenuPage *page, int party_slot,
+static void far charscreen_info_draw(Combatant *actor, MenuPage *page, int party_slot,
                                      int full_sheet, unsigned char far *pal_buf) {
     int condCount;
     char buf[80];
@@ -250,7 +250,7 @@ static void far charscreen_info_draw(CombatActor *actor, MenuPage *page, int par
     }
 }
 
-void charscreen_info_loop(CombatActor *actor) {
+void charscreen_info_loop(Combatant *actor) {
     unsigned short memberIdx;
     int firstDraw;
     unsigned short redrawFlag;
@@ -382,7 +382,7 @@ void far charscreen_recalc_condition_tick(void) {
     return;
 }
 
-static long charscreen_temple_heal_price(CombatActor *actor, int multiplier_pct) {
+static long charscreen_temple_heal_price(Combatant *actor, int multiplier_pct) {
     int cond;
     int i;
     long total;
@@ -390,7 +390,7 @@ static long charscreen_temple_heal_price(CombatActor *actor, int multiplier_pct)
     i = total = 0;
     for (; i < 7; i++) {
         if ((cond = (signed char)((unsigned char *)&g_gameState
-                                      .aConditionTickAdvance)[5 + actor->cParty_slot * 7 + i]) !=
+                                      .aConditionTickAdvance)[5 + actor->charSlot * 7 + i]) !=
             0) {
             switch (i) {
             case 0:

@@ -10,8 +10,8 @@ extern unsigned short g_bStormAmplify;
 extern unsigned short **g_pTerrainBackupGrid;
 extern unsigned short g_awQuarrelKindItemIdTable[8];
 extern unsigned short g_quarrel_kind_field19_table[8];
-extern CombatActor *g_current_actor;
-extern CombatActor *g_picked_actor;
+extern Combatant *g_current_actor;
+extern Combatant *g_picked_actor;
 extern unsigned short g_acting_actor_speed;
 extern int g_grid_tile_size;
 extern short g_cursor_tile_x;
@@ -24,13 +24,13 @@ extern unsigned short g_combat_menu_current_page;
 extern short g_nCurrentQuarrelKindIdx;
 extern unsigned short g_combat_cancelled;
 extern unsigned short g_combat_music_handle;
-extern CombatActor *g_acting_actor;
+extern Combatant *g_acting_actor;
 extern unsigned short g_traps_loaded_flag;
 extern unsigned short g_encounter_id;
-extern CombatActor *g_pCombatActiveActors;
+extern Combatant *g_pCombatActiveActors;
 extern AnimSlot *g_pCombatActiveAnimPool;
 extern int g_nCombatActiveCount;
-extern CombatActor *g_pCombatOtherActors;
+extern Combatant *g_pCombatOtherActors;
 extern AnimSlot *g_pCombatOtherAnimPool;
 extern int g_nCombatOtherCount;
 extern ImageRecord **g_combat_sprites;
@@ -41,25 +41,25 @@ extern void combat_arena_mode_enter(void);
 extern void combat_arena_mode_exit(void);
 extern void combat_arena_tick_status_timers(void);
 extern void combat_arena_actor_turn_loop(int encounter_id, int *p_status, int b_has_fired);
-extern void combat_arena_suspend_char_screen(CombatActor *actor, int *p_spell_result,
+extern void combat_arena_suspend_char_screen(Combatant *actor, int *p_spell_result,
                                              int *p_spell_out);
-extern void combat_arena_splash_dmg_near(CombatActor *source_actor, int damage);
-extern void combat_arena_actor_set_anim_pose(CombatActor *actor, unsigned char frame);
+extern void combat_arena_splash_dmg_near(Combatant *source_actor, int damage);
+extern void combat_arena_actor_set_anim_pose(Combatant *actor, unsigned char frame);
 extern void combat_arena_swap_tgt_state(void);
 extern int combat_arena_wait_confirm_cancel(void);
-extern void combat_arena_resolve_melee_swing(CombatActor *attacker, CombatActor *defender,
+extern void combat_arena_resolve_melee_swing(Combatant *attacker, Combatant *defender,
                                              int damage);
-extern void combat_arena_melee_attack(CombatActor *attacker, CombatActor *defender, int damage);
-extern void combat_arena_apply_damage(CombatActor *actor, int damage, int apply_magic_defense,
+extern void combat_arena_melee_attack(Combatant *attacker, Combatant *defender, int damage);
+extern void combat_arena_apply_damage(Combatant *actor, int damage, int apply_magic_defense,
                                       int knockback, unsigned int flags, int source_type);
-extern void combat_arena_actor_poison_tick(CombatActor *actor);
-extern void combat_arena_actor_die(CombatActor *actor, int play_anim);
+extern void combat_arena_actor_poison_tick(Combatant *actor);
+extern void combat_arena_actor_die(Combatant *actor, int play_anim);
 extern void combat_arena_load_remap_pals(void);
 extern void combat_arena_remove_flagd_actors(void);
 extern int combat_arena_all_targets_immune(void);
 extern unsigned short combat_arena_anim_tbl_lookup_2d(int row, int col);
 extern void combat_arena_round_trans_show(int param_1);
-extern void combat_arena_draw_tgt_info_hud(CombatActor *param_1, int param_2, int param_3,
+extern void combat_arena_draw_tgt_info_hud(Combatant *param_1, int param_2, int param_3,
                                            int param_4);
 extern void combat_arena_draw_tgt_info_panel(void);
 extern void combat_arena_hud_melee_panel(void);
@@ -72,13 +72,13 @@ extern void combat_arena_show_message_by_id(int message_id, unsigned short *p_me
                                             int *p_param4, int *p_param5, int *p_spell_result,
                                             int *p_spell_out, int *p_param8, MenuPage **p_menu_slot,
                                             int *p_param10, int *p_param11);
-extern CombatActor *combat_arena_disp_spell_action(int *param_1, int *param_2, int *param_3,
+extern Combatant *combat_arena_disp_spell_action(int *param_1, int *param_2, int *param_3,
                                                    int param_4, int *param_5, int *param_6);
 extern void combat_arena_turn_actor_inact(unsigned int *p_far_offset, int *p_turn_done, int *p_hud_state,
                                           int *p_ai_flag);
 extern void combat_arena_resolve_menu_action(int *p_state_a, int *p_move_cost, int *p_state_b,
                                              int b_input_locked, int b_input_gate, int *p_dirty_hud,
-                                             CombatActor **pp_cursor_target, int arg8,
+                                             Combatant **pp_cursor_target, int arg8,
                                              int spell_record_id, int arg10,
                                              MenuPage **pp_menu_slot);
 

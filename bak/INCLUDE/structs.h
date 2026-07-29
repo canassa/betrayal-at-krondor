@@ -122,8 +122,8 @@ typedef struct WorldPos WorldPos;
 typedef struct CircObj CircObj;
 typedef struct SpriteBillboard SpriteBillboard;
 typedef struct CodecVtable CodecVtable;
-typedef struct CombatActor CombatActor;
-typedef struct CombatActorInner CombatActorInner;
+typedef struct Combatant Combatant;
+typedef struct CombatantState CombatantState;
 typedef struct CombatTile CombatTile;
 typedef struct CombatantData CombatantData;
 typedef struct ConditionInfo ConditionInfo;
@@ -220,11 +220,11 @@ typedef void(far *BlitChunkyFn)(unsigned char *src_off, unsigned short src_seg, 
 typedef void(far *BlitSpriteFn)(int sprite_desc_offset, int dst_x, int dst_y);
 typedef void(far *BlitSpriteSimpleFn)(ImageRecord *sprite, int x, int y);
 typedef void(far *CirclePlotterFn)(int x, int y);
-typedef void(far *CombatAiActionFn)(CombatActor far *actor);
+typedef void(far *CombatAiActionFn)(Combatant far *actor);
 typedef void(far *CrtExitFn)(void);
 typedef void(far *DefaultStubFn)(void);
-typedef void(far *EncounterAiActionFn)(CombatActor *actor);
-typedef void(far *EncounterAiTurnFn)(CombatActor *actor);
+typedef void(far *EncounterAiActionFn)(Combatant *actor);
+typedef void(far *EncounterAiTurnFn)(Combatant *actor);
 typedef void(far *FARFN)(void);
 typedef unsigned int(far *GetpixelFn)(int x, int y);
 typedef unsigned long(far *ImageInstallFn)(unsigned short *image_descs_table,
@@ -526,29 +526,35 @@ struct StatSlot {
     char perm_mod;
 };
 
-struct CombatActor {
+struct Combatant {
     char *name;
-    unsigned short pSpellsKnown[3];
+    unsigned short spellsKnown[3];
     StatSlot stats[16];
-    char cParty_slot;
+    char charSlot;
     struct Actor far *actor_record;
-    CombatActorInner *inner;
+    CombatantState *inner;
 };
 
-struct CombatActorInner {
-    CombatActor *target;
-    short class_id;
-    char grid_x;
-    char grid_y;
-    unsigned char pad_6[2];
+struct CombatantState {
+    Combatant *target;
+    short creatureType;
+    char gridX;
+    char gridY;
+    unsigned char destX;
+    unsigned char destY;
     unsigned char flags;
-    unsigned char knockback_value;
-    short status_head;
+    unsigned char knockbackFrame;
+    short statusHead;
     unsigned char pad_c;
-    unsigned char knockback_timer;
-    unsigned char pad_e[6];
-    char dmg_value;
-    unsigned char dmg_frames_left;
+    unsigned char knockbackTimer;
+    unsigned char morale;
+    unsigned char aiTurnProfile;
+    unsigned char aiEncounterProfile;
+    unsigned char aiPathProfile;
+    unsigned char selectedMenuCmd;
+    unsigned char spellSchool;
+    char dmgFloatValue;
+    unsigned char dmgFloatFrames;
 };
 
 struct GamePositionAndHeading {
@@ -570,7 +576,7 @@ struct CombatantData {
 };
 
 struct CombatTile {
-    CombatActor *pOccupant;
+    Combatant *pOccupant;
     unsigned short wTerrain;
     short nEffectTimer;
 };

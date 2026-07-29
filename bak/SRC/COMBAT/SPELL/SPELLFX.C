@@ -406,7 +406,7 @@ void spellfx_draw_events_caption(void) {
 }
 
 void far spellfx_party_member_take_damage(short roster_slot, short damage) {
-    CombatActor *member;
+    Combatant *member;
     int i;
 
     member = &g_gameState.characters[g_gameState.activeParty[roster_slot]];

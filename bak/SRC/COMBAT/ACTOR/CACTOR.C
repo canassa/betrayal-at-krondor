@@ -40,10 +40,10 @@
 #include <string.h>
 
 int g_combat_count_A;
-CombatActor *g_combat_actors_A;
+Combatant *g_combat_actors_A;
 AnimSlot *g_anim_pool_A;
 unsigned char g_bssgap_5028[2];
-CombatActor **g_active_combatants;
+Combatant **g_active_combatants;
 /* Per-actor sprite tables: 11 near ImageRecord ** asset-table entries per row
    (22 bytes/row). Entries [2] and [10] of each row are never written (BSS zero). */
 ImageRecord **g_aCombatInnerPool[7][11];
@@ -60,12 +60,12 @@ ImageRecord **g_aCombatResCacheValue[8][3];
 #define RES_CACHE_SLOTS 8
 
 void far combat_actor_init_pool(void) {
-    CombatActorInner *pInnerPool;
+    CombatantState *pInnerPool;
     long lSeekOffset;
     ResFile *file;
     int i;
 
-    g_combat_actors_A = (CombatActor *)galloc_safe_zcalloc(sizeof(CombatActor) * MAX_COMBAT_ACTORS);
+    g_combat_actors_A = (Combatant *)galloc_safe_zcalloc(sizeof(Combatant) * MAX_COMBAT_ACTORS);
     g_combat_count_A = 0;
     for (i = 0; i < g_gameState.partySize; i++) {
         if (g_gameState.activeParty[i] > (char)-1) {
@@ -75,14 +75,14 @@ void far combat_actor_init_pool(void) {
     }
 
     pInnerPool =
-        (CombatActorInner *)galloc_safe_zcalloc(sizeof(CombatActorInner) * MAX_COMBAT_ACTORS);
+        (CombatantState *)galloc_safe_zcalloc(sizeof(CombatantState) * MAX_COMBAT_ACTORS);
     g_anim_pool_A = (AnimSlot *)galloc_safe_zcalloc(sizeof(AnimSlot) * MAX_COMBAT_ACTORS);
     file = res_fopen("p1.dat", "rb");
     for (i = 0; i < g_combat_count_A; i++) {
         lSeekOffset =
-            (long)(unsigned int)((g_combat_actors_A[i].cParty_slot - 1) * sizeof(CombatActorInner));
+            (long)(unsigned int)((g_combat_actors_A[i].charSlot - 1) * sizeof(CombatantState));
         res_fseek(file, lSeekOffset, SEEK_SET);
-        res_fread(&pInnerPool[i], sizeof(CombatActorInner), 1, file);
+        res_fread(&pInnerPool[i], sizeof(CombatantState), 1, file);
     }
     res_fclose(file);
 
@@ -97,13 +97,13 @@ void far combat_actor_init_pool(void) {
     } while (i < MAX_COMBAT_ACTORS);
 
     for (i = 0; i < g_combat_count_A; i++) {
-        combat_actor_rsrc_load_3values(g_combat_actors_A[i].inner->class_id, g_aCombatInnerPool[i]);
+        combat_actor_rsrc_load_3values(g_combat_actors_A[i].inner->creatureType, g_aCombatInnerPool[i]);
         g_anim_pool_A[i].sprite_header = g_aCombatInnerPool[i];
-        g_combat_actors_A[i].inner->status_head = -1;
+        g_combat_actors_A[i].inner->statusHead = -1;
     }
 
     g_active_combatants =
-        (CombatActor **)galloc_safe_zcalloc(sizeof(CombatActor *) * MAX_ACTIVE_COMBATANTS);
+        (Combatant **)galloc_safe_zcalloc(sizeof(Combatant *) * MAX_ACTIVE_COMBATANTS);
 }
 
 void far combat_actor_pool_teardown(void) {
@@ -112,15 +112,15 @@ void far combat_actor_pool_teardown(void) {
     int j;
 
     for (i = g_combat_count_A - 1; i >= 0; i--)
-        combat_actor_release_anim_images(g_combat_actors_A[i].inner->class_id);
+        combat_actor_release_anim_images(g_combat_actors_A[i].inner->creatureType);
 
     galloc_zfree(g_active_combatants);
     galloc_zfree(g_anim_pool_A);
     galloc_zfree(g_combat_actors_A->inner);
 
     for (i = 0; i < g_combat_count_A; i++) {
-        if (g_combat_actors_A[i].cParty_slot != 0) {
-            g_combat_actors_A[i].inner = (CombatActorInner *)0;
+        if (g_combat_actors_A[i].charSlot != 0) {
+            g_combat_actors_A[i].inner = (CombatantState *)0;
             g_gameState.characters[g_gameState.activeParty[i]] = g_combat_actors_A[i];
         }
     }
@@ -138,18 +138,18 @@ void far combat_actor_pool_teardown(void) {
     }
 }
 
-void far combat_actor_place_on_free_tile(CombatActor *actor) {
+void far combat_actor_place_on_free_tile(Combatant *actor) {
     int col;
     int row;
 
     if (combatgrid_any_terrain_6() != 0 || (actor->inner->flags & CAF_DEAD) == 0) {
-        for (row = actor->inner->grid_y; row > -1; row--) {
-            col = (actor->inner->grid_y == row) ? actor->inner->grid_x : 0;
+        for (row = actor->inner->gridY; row > -1; row--) {
+            col = (actor->inner->gridY == row) ? actor->inner->gridX : 0;
             for (; col < COMBAT_GRID_COLS; col++) {
                 if (combatgrid_tile_is_blocked((char)col, (char)row) == 0 ||
-                    (CombatActor *)combatgrid_tile_terrain((char)col, (char)row) == actor) {
-                    actor->inner->grid_x = col;
-                    actor->inner->grid_y = row;
+                    (Combatant *)combatgrid_tile_terrain((char)col, (char)row) == actor) {
+                    actor->inner->gridX = col;
+                    actor->inner->gridY = row;
                     if (actor->inner->flags & CAF_DEAD) {
                         combat_actor_register(actor);
                         return;
@@ -164,9 +164,9 @@ void far combat_actor_place_on_free_tile(CombatActor *actor) {
             col = 0;
             do {
                 if (combatgrid_tile_is_blocked((char)col, (char)row) == 0 ||
-                    (CombatActor *)combatgrid_tile_terrain((char)col, (char)row) == actor) {
-                    actor->inner->grid_x = col;
-                    actor->inner->grid_y = row;
+                    (Combatant *)combatgrid_tile_terrain((char)col, (char)row) == actor) {
+                    actor->inner->gridX = col;
+                    actor->inner->gridY = row;
                     if (actor->inner->flags & CAF_DEAD) {
                         combat_actor_register(actor);
                         return;
@@ -181,33 +181,33 @@ void far combat_actor_place_on_free_tile(CombatActor *actor) {
     }
 }
 
-CombatActor *combat_actor_party_add(int class_id) {
+Combatant *combat_actor_party_add(int creatureType) {
     int slot;
 
     if (g_combat_count_A < MAX_COMBAT_ACTORS) {
         slot = g_combat_count_A;
-        combat_actor_rsrc_load_3values(class_id, g_aCombatInnerPool[slot]);
+        combat_actor_rsrc_load_3values(creatureType, g_aCombatInnerPool[slot]);
         g_anim_pool_A[slot].sprite_header = g_aCombatInnerPool[slot];
-        (g_combat_actors_A[slot].inner)->class_id = class_id;
-        (g_combat_actors_A[slot].inner)->status_head = -1;
+        (g_combat_actors_A[slot].inner)->creatureType = creatureType;
+        (g_combat_actors_A[slot].inner)->statusHead = -1;
         if (g_aCombatInnerPool[0] == 0)
-            return (CombatActor *)0;
+            return (Combatant *)0;
         if (g_aCombatInnerPool[1] == 0)
-            return (CombatActor *)0;
+            return (Combatant *)0;
         if (g_aCombatInnerPool[2] == 0)
-            return (CombatActor *)0;
+            return (Combatant *)0;
         g_combat_count_A++;
         g_nCombatActiveCount++;
         return &g_combat_actors_A[slot];
     }
-    return (CombatActor *)0;
+    return (Combatant *)0;
 }
 
 #ifdef V102CD
-CombatActor *far combat_actor_remove(CombatActor *actor) {
+Combatant *far combat_actor_remove(Combatant *actor) {
     int i;
     int removed_slot;
-    CombatActor tmp;
+    Combatant tmp;
 
     i = 0;
     while (i < g_combat_count_A) {
@@ -221,23 +221,23 @@ CombatActor *far combat_actor_remove(CombatActor *actor) {
         tmp = g_combat_actors_A[i];
         g_combat_actors_A[i] = g_combat_actors_A[g_combat_count_A];
         g_combat_actors_A[g_combat_count_A] = tmp;
-        combatgrid_tile_set_word(g_combat_actors_A[i].inner->grid_x,
-                                 g_combat_actors_A[i].inner->grid_y,
+        combatgrid_tile_set_word(g_combat_actors_A[i].inner->gridX,
+                                 g_combat_actors_A[i].inner->gridY,
                                  (unsigned int)(&g_combat_actors_A[i]));
     }
     removed_slot = g_combat_count_A;
     i = 0;
     while (i < g_combat_count_B) {
         if ((g_combat_actors_B[i].inner)->target == actor) {
-            (g_combat_actors_B[i].inner)->target = (CombatActor *)0x0;
+            (g_combat_actors_B[i].inner)->target = (Combatant *)0x0;
         }
         i = i + 1;
     }
-    combat_actor_release_anim_images(actor->inner->class_id);
+    combat_actor_release_anim_images(actor->inner->creatureType);
     return &g_combat_actors_A[removed_slot];
 }
 #else
-void far combat_actor_remove(CombatActor *actor) {
+void far combat_actor_remove(Combatant *actor) {
     int i;
 
     i = 0;
@@ -250,24 +250,24 @@ void far combat_actor_remove(CombatActor *actor) {
     g_nCombatActiveCount--;
     if (i != g_combat_count_A) {
         g_combat_actors_A[i] = g_combat_actors_A[g_combat_count_A];
-        combatgrid_tile_set_word(g_combat_actors_A[i].inner->grid_x,
-                                 g_combat_actors_A[i].inner->grid_y, (unsigned int)(&g_combat_actors_A[i]));
+        combatgrid_tile_set_word(g_combat_actors_A[i].inner->gridX,
+                                 g_combat_actors_A[i].inner->gridY, (unsigned int)(&g_combat_actors_A[i]));
     }
     i = 0;
     while (i < g_combat_count_B) {
         if ((g_combat_actors_B[i].inner)->target == actor) {
-            (g_combat_actors_B[i].inner)->target = (CombatActor *)0x0;
+            (g_combat_actors_B[i].inner)->target = (Combatant *)0x0;
         }
         i = i + 1;
     }
-    combat_actor_release_anim_images(actor->inner->class_id);
+    combat_actor_release_anim_images(actor->inner->creatureType);
 }
 #endif
 
-void combat_actor_register(CombatActor *actor) {
+void combat_actor_register(Combatant *actor) {
     int i;
 
-    combatgrid_tile_set_word(actor->inner->grid_x, actor->inner->grid_y, 0);
+    combatgrid_tile_set_word(actor->inner->gridX, actor->inner->gridY, 0);
     i = 0;
     do {
         if (g_active_combatants[i] == 0) {
@@ -279,55 +279,55 @@ void combat_actor_register(CombatActor *actor) {
     return;
 }
 
-void far combat_actor_grid_remove(CombatActor *actor) {
+void far combat_actor_grid_remove(Combatant *actor) {
     int i;
 
 #ifdef V102CD
-    if (combatgrid_tile_terrain(actor->inner->grid_x, actor->inner->grid_y) == 0)
-        combatgrid_tile_set_word(actor->inner->grid_x, actor->inner->grid_y, (unsigned int)actor);
+    if (combatgrid_tile_terrain(actor->inner->gridX, actor->inner->gridY) == 0)
+        combatgrid_tile_set_word(actor->inner->gridX, actor->inner->gridY, (unsigned int)actor);
 #else
-    combatgrid_tile_set_word(actor->inner->grid_x, actor->inner->grid_y, (unsigned int)actor);
+    combatgrid_tile_set_word(actor->inner->gridX, actor->inner->gridY, (unsigned int)actor);
 #endif
     i = 0;
     do {
         if (g_active_combatants[i] == actor) {
-            g_active_combatants[i] = (CombatActor *)0;
+            g_active_combatants[i] = (Combatant *)0;
             return;
         }
         i = i + 1;
     } while (i < MAX_ACTIVE_COMBATANTS);
 }
 
-CombatActor *combat_actor_visible_at_tile(int tile_x, int tile_y) {
+Combatant *combat_actor_visible_at_tile(int tile_x, int tile_y) {
     int i;
 
     i = 0;
     do {
-        if (((g_active_combatants[i] != 0) && (g_active_combatants[i]->inner->grid_x == tile_x)) &&
-            (g_active_combatants[i]->inner->grid_y == tile_y)) {
+        if (((g_active_combatants[i] != 0) && (g_active_combatants[i]->inner->gridX == tile_x)) &&
+            (g_active_combatants[i]->inner->gridY == tile_y)) {
             return g_active_combatants[i];
         }
         i = i + 1;
     } while (i < MAX_ACTIVE_COMBATANTS);
-    return (CombatActor *)0;
+    return (Combatant *)0;
 }
 
-CombatActor *combat_actor_encounter_at_tile(int tile_x, int tile_y) {
+Combatant *combat_actor_encounter_at_tile(int tile_x, int tile_y) {
     int i;
 
     i = 0;
     do {
-        if (((g_active_combatants[i] != 0 && (g_active_combatants[i]->inner->grid_x == tile_x)) &&
-             (g_active_combatants[i]->inner->grid_y == tile_y)) &&
+        if (((g_active_combatants[i] != 0 && (g_active_combatants[i]->inner->gridX == tile_x)) &&
+             (g_active_combatants[i]->inner->gridY == tile_y)) &&
             (combatenc_is_encounter_actor(g_active_combatants[i]) != 0)) {
             return g_active_combatants[i];
         }
         i = i + 1;
     } while (i < MAX_ACTIVE_COMBATANTS);
-    return (CombatActor *)0;
+    return (Combatant *)0;
 }
 
-int combat_actor_is_visible(CombatActor *actor) {
+int combat_actor_is_visible(Combatant *actor) {
     int i;
 
     i = 0;
@@ -342,31 +342,31 @@ int combat_actor_is_visible(CombatActor *actor) {
 
 void combat_actor_deploy_encounter(void) {
     EncounterObjectPose pose;
-    int grid_x;
-    int grid_y;
+    int gridX;
+    int gridY;
     long world[3];
 
     int slot_index;
-    CombatActor *actor;
-    CombatActor *occupant;
+    Combatant *actor;
+    Combatant *occupant;
 
     for (slot_index = 0; slot_index < g_combat_count_B; slot_index++) {
         if (combat_actor_is_visible(&g_combat_actors_B[slot_index]) != 0) {
             actor = &g_combat_actors_B[slot_index];
-            grid_x = actor->inner->grid_x;
-            grid_y = actor->inner->grid_y;
+            gridX = actor->inner->gridX;
+            gridY = actor->inner->gridY;
             goto tile_check;
         tile_loop:
-            grid_x = (grid_x >= COMBAT_GRID_COLS - 1) ? 0 : grid_x + 1;
-            if (grid_x == 0)
-                grid_y = (grid_y >= COMBAT_GRID_ROWS - 1) ? 0 : grid_y + 1;
-            actor->inner->grid_x = (unsigned char)grid_x;
-            actor->inner->grid_y = (unsigned char)grid_y;
+            gridX = (gridX >= COMBAT_GRID_COLS - 1) ? 0 : gridX + 1;
+            if (gridX == 0)
+                gridY = (gridY >= COMBAT_GRID_ROWS - 1) ? 0 : gridY + 1;
+            actor->inner->gridX = (unsigned char)gridX;
+            actor->inner->gridY = (unsigned char)gridY;
         tile_check:
-            occupant = combat_actor_visible_at_tile(grid_x, grid_y);
-            if (occupant != (CombatActor *)0 && occupant != actor)
+            occupant = combat_actor_visible_at_tile(gridX, gridY);
+            if (occupant != (Combatant *)0 && occupant != actor)
                 goto tile_loop;
-            combatgrid_tile_to_world_rotated((WorldPos2 *)world, grid_x, grid_y);
+            combatgrid_tile_to_world_rotated((WorldPos2 *)world, gridX, gridY);
             pose.nWorld_x_offset = world[0];
             pose.nWorld_y_offset = world[1];
             pose.nFacing = g_anim_pool_B[slot_index].facing * R3D_DEG(45) +
@@ -400,7 +400,7 @@ void far combat_actor_flag_bitset_clear(int record, int bit) {
     *(unsigned *)(record + word_index * 2 + 2) &= ~mask;
 }
 
-int combat_actor_cnt_qrls_kind(CombatActor *actor, int kind) {
+int combat_actor_cnt_qrls_kind(Combatant *actor, int kind) {
     int counts[10];
     Actor far *rec;
     int i;
@@ -455,7 +455,7 @@ static void combat_actor_copy_11_words(unsigned short *dst, unsigned short *src)
     }
 }
 
-ImageRecord **far combat_actor_bnames_load_cached(int class_id, int col) {
+ImageRecord **far combat_actor_bnames_load_cached(int creatureType, int col) {
 
     char nameMeta[4];
     char nameChars[4];
@@ -478,7 +478,7 @@ ImageRecord **far combat_actor_bnames_load_cached(int class_id, int col) {
     palette = (unsigned char *)0;
     i = 0;
     do {
-        if (g_aCombatResCacheKey[i] == class_id && g_aCombatResCacheValue[i][col] != 0) {
+        if (g_aCombatResCacheKey[i] == creatureType && g_aCombatResCacheValue[i][col] != 0) {
             g_aCombatResCacheRefcount[i][col]++;
             return g_aCombatResCacheValue[i][col];
         }
@@ -494,11 +494,11 @@ ImageRecord **far combat_actor_bnames_load_cached(int class_id, int col) {
     res_fread(strBlob, 1, blobSize, fp);
     res_fclose(fp);
 
-    ((int *)offTable)[class_id] += (int)strBlob;
+    ((int *)offTable)[creatureType] += (int)strBlob;
 
     i = 0;
     do {
-        nameChars[i] = ((char *)((int *)offTable)[class_id])[i];
+        nameChars[i] = ((char *)((int *)offTable)[creatureType])[i];
         i = i + 1;
     } while (i < 8);
 
@@ -537,7 +537,7 @@ ImageRecord **far combat_actor_bnames_load_cached(int class_id, int col) {
     slot = -1;
     i = 0;
     do {
-        if (g_aCombatResCacheKey[i] == class_id) {
+        if (g_aCombatResCacheKey[i] == creatureType) {
             slot = i;
             break;
         }
@@ -559,12 +559,12 @@ ImageRecord **far combat_actor_bnames_load_cached(int class_id, int col) {
 
         neg_count = -nameMeta[col];
         assetTable = g_aCombatResCacheValue[slot][col - 1] + neg_count;
-        g_aCombatResCacheKey[slot] = class_id;
+        g_aCombatResCacheKey[slot] = creatureType;
         g_aCombatResCacheRefcount[slot][col]++;
         g_aCombatResCacheValue[slot][col] = assetTable;
         g_aCombatResCacheKindFlag[slot][col] = 0;
     } else {
-        g_aCombatResCacheKey[slot] = class_id;
+        g_aCombatResCacheKey[slot] = creatureType;
         g_aCombatResCacheRefcount[slot][col]++;
         g_aCombatResCacheValue[slot][col] = assetTable;
         g_aCombatResCacheKindFlag[slot][col] = 1;
@@ -574,13 +574,13 @@ ImageRecord **far combat_actor_bnames_load_cached(int class_id, int col) {
 
 unsigned short g_wCombatSpinnerYaw = 0;
 
-void far combat_actor_rsrc_load_3values(int class_id, ImageRecord ***table) {
+void far combat_actor_rsrc_load_3values(int creatureType, ImageRecord ***table) {
     ImageRecord **loaded[3];
     int i;
 
     i = 0;
     do {
-        loaded[i] = combat_actor_bnames_load_cached(class_id, i);
+        loaded[i] = combat_actor_bnames_load_cached(creatureType, i);
         i = i + 1;
     } while (i < 3);
 
@@ -595,13 +595,13 @@ void far combat_actor_rsrc_load_3values(int class_id, ImageRecord ***table) {
     table[9] = loaded[2];
 }
 
-void far combat_actor_release_anim_images(int class_id) {
+void far combat_actor_release_anim_images(int creatureType) {
     int slot;
     int col;
 
     slot = 0;
     do {
-        if (g_aCombatResCacheKey[slot] == class_id) {
+        if (g_aCombatResCacheKey[slot] == creatureType) {
             for (col = 2; col >= 0; col--) {
                 if ((int)--g_aCombatResCacheRefcount[slot][col] < 1) {
                     g_aCombatResCacheRefcount[slot][col] = 0;
@@ -623,12 +623,12 @@ void far combat_actor_release_anim_images(int class_id) {
     } while (slot < RES_CACHE_SLOTS);
 }
 
-ImageRecord **far combat_actor_rsrc_cache_val(int class_id, int col) {
+ImageRecord **far combat_actor_rsrc_cache_val(int creatureType, int col) {
     int row;
 
     row = 0;
     do {
-        if (g_aCombatResCacheKey[row] == class_id) {
+        if (g_aCombatResCacheKey[row] == creatureType) {
             if ((int)g_aCombatResCacheRefcount[row][col] <= 0) {
                 return 0;
             }
@@ -639,7 +639,7 @@ ImageRecord **far combat_actor_rsrc_cache_val(int class_id, int col) {
     return 0;
 }
 
-int combat_actor_cursor_distance(CombatActor *actor) {
+int combat_actor_cursor_distance(Combatant *actor) {
     int distance;
 
     if ((((g_cursor_tile_x < 0) || (g_cursor_tile_x >= COMBAT_GRID_COLS)) ||
@@ -648,7 +648,7 @@ int combat_actor_cursor_distance(CombatActor *actor) {
         distance = 1000;
     } else {
         distance = combatgrid_chebyshev_distance((char)g_cursor_tile_x, (char)g_cursor_tile_y,
-                                                 actor->inner->grid_x, actor->inner->grid_y);
+                                                 actor->inner->gridX, actor->inner->gridY);
     }
     return distance;
 }
@@ -696,7 +696,7 @@ ItemRecord far *far combat_actor_qrl_rec_kind(int kind) {
     return rec;
 }
 
-int far combat_actor_calc_weapon_damage(CombatActor *actor, int kind) {
+int far combat_actor_calc_weapon_damage(Combatant *actor, int kind) {
     ItemRecord far *qrlRec;
     ItemRecord far *weaponRec;
     int damage;
@@ -718,7 +718,7 @@ int far combat_actor_calc_weapon_damage(CombatActor *actor, int kind) {
     return damage;
 }
 
-int combat_actor_stat_percent(CombatActor *actor, int with_modifier) {
+int combat_actor_stat_percent(Combatant *actor, int with_modifier) {
     unsigned int cur;
     unsigned int maxv;
     int pct;
@@ -759,19 +759,19 @@ int combat_actor_cur_tile_block(void) {
     return v;
 }
 
-void far combat_actor_move_to_cursor(CombatActor *actor) {
+void far combat_actor_move_to_cursor(Combatant *actor) {
     g_acting_actor_speed++;
-    actor->inner->pad_6[0] = (unsigned char)g_cursor_tile_x;
-    actor->inner->pad_6[1] = (unsigned char)g_cursor_tile_y;
+    actor->inner->destX = (unsigned char)g_cursor_tile_x;
+    actor->inner->destY = (unsigned char)g_cursor_tile_y;
     combataipath_actor_walk_path(actor, 0);
     return;
 }
 
-int far combat_actor_find_by_subrec_id(int class_id) {
+int far combat_actor_find_by_subrec_id(int creatureType) {
     int i;
 
     for (i = 0; i < g_nCombatActiveCount; i++) {
-        if (g_pCombatActiveActors[i].inner->class_id == class_id) {
+        if (g_pCombatActiveActors[i].inner->creatureType == creatureType) {
             break;
         }
     }
@@ -782,28 +782,28 @@ int far combat_actor_find_by_subrec_id(int class_id) {
     return i;
 }
 
-int combat_actor_find_by_id(int class_id) {
+int combat_actor_find_by_id(int creatureType) {
     int i;
     int f;
 
     for (i = 0; i < g_combat_count_A; i++) {
-        if (g_combat_actors_A[i].inner->class_id != class_id)
+        if (g_combat_actors_A[i].inner->creatureType != creatureType)
             continue;
         if ((f = (signed char)g_combat_actors_A[i].inner->flags) & CAF_DEAD)
             continue;
-        if (combatgrid_tile_terrain(g_combat_actors_A[i].inner->grid_x,
-                                    g_combat_actors_A[i].inner->grid_y) != 0)
+        if (combatgrid_tile_terrain(g_combat_actors_A[i].inner->gridX,
+                                    g_combat_actors_A[i].inner->gridY) != 0)
             continue;
         return i;
     }
 
     for (i = 0; i < g_combat_count_B; i++) {
-        if (g_combat_actors_B[i].inner->class_id != class_id)
+        if (g_combat_actors_B[i].inner->creatureType != creatureType)
             continue;
         if ((f = (signed char)g_combat_actors_B[i].inner->flags) & CAF_DEAD)
             continue;
-        if (combatgrid_tile_terrain(g_combat_actors_B[i].inner->grid_x,
-                                    g_combat_actors_B[i].inner->grid_y) != 0)
+        if (combatgrid_tile_terrain(g_combat_actors_B[i].inner->gridX,
+                                    g_combat_actors_B[i].inner->gridY) != 0)
             continue;
         return i + 100;
     }
@@ -811,7 +811,7 @@ int combat_actor_find_by_id(int class_id) {
     return -1;
 }
 
-void combat_actor_apply_render_table(CombatActor *actor) {
+void combat_actor_apply_render_table(Combatant *actor) {
     int is_target;
     int slot;
 
@@ -832,7 +832,7 @@ void combat_actor_apply_render_table(CombatActor *actor) {
     return;
 }
 
-void combat_actor_anim_step(unsigned char *anim_state_buf, CombatActor *actor) {
+void combat_actor_anim_step(unsigned char *anim_state_buf, Combatant *actor) {
     int did_swap;
     int slot;
 
@@ -900,14 +900,14 @@ void combat_actor_anim_step(unsigned char *anim_state_buf, CombatActor *actor) {
     return;
 }
 
-static void far combat_actor_rndr_stat_vfx_pre(CombatActor *actor) {
+static void far combat_actor_rndr_stat_vfx_pre(Combatant *actor) {
     int slot;
     SpellDef *spell;
     unsigned int nTerrain;
     int i;
     unsigned int count;
 
-    for (slot = actor->inner->status_head; slot != -1; slot = g_pStatusEffectPool[slot].nNext) {
+    for (slot = actor->inner->statusHead; slot != -1; slot = g_pStatusEffectPool[slot].nNext) {
         spell = &g_pSpellDefs[g_pStatusEffectPool[slot].nType];
         switch ((unsigned int)spell->nEffect_kind - 3) {
         case 0:
@@ -962,7 +962,7 @@ static void far combat_actor_rndr_stat_vfx_pre(CombatActor *actor) {
        so (void)&nTerrain is required to keep the [bp-4] write. The single-case
        switch-on-assignment emits a cmp ax,1 / je / jmp two-jump dispatch. */
     (void)&nTerrain;
-    switch (nTerrain = combatgrid_tile_terrain_field(actor->inner->grid_x, actor->inner->grid_y)) {
+    switch (nTerrain = combatgrid_tile_terrain_field(actor->inner->gridX, actor->inner->gridY)) {
     case 1:
         g_nActorShakeX = RND(3);
         g_nActorShakeY = RND2(2);
@@ -970,7 +970,7 @@ static void far combat_actor_rndr_stat_vfx_pre(CombatActor *actor) {
     }
 }
 
-void combat_actor_draw_float_damage(CombatActor *actor) {
+void combat_actor_draw_float_damage(Combatant *actor) {
     int v;
     int textWidth;
     int x;
@@ -979,20 +979,20 @@ void combat_actor_draw_float_damage(CombatActor *actor) {
     int yBound;
     char buf[10];
 
-    if (actor->inner->dmg_value != 0 && actor->inner->dmg_frames_left != 0) {
-        v = (int)actor->inner->dmg_value;
+    if (actor->inner->dmgFloatValue != 0 && actor->inner->dmgFloatFrames != 0) {
+        v = (int)actor->inner->dmgFloatValue;
         g_graphics_context.bClip_enabled = 1;
-        if ((char)actor->inner->dmg_frames_left > 0) {
-            actor->inner->dmg_frames_left--;
+        if ((char)actor->inner->dmgFloatFrames > 0) {
+            actor->inner->dmgFloatFrames--;
             itoa(v < 0 ? (v == -0x8000 ? 0x7fff : -v) : v, buf, 10);
         } else {
-            actor->inner->dmg_frames_left++;
+            actor->inner->dmgFloatFrames++;
             strcpy(buf, "miss");
         }
         if (v > 0) {
-            g_graphics_context.bText_fg_color = (char)-0x78 - actor->inner->dmg_frames_left;
+            g_graphics_context.bText_fg_color = (char)-0x78 - actor->inner->dmgFloatFrames;
         } else {
-            g_graphics_context.bText_fg_color = (char)-0x11 - actor->inner->dmg_frames_left;
+            g_graphics_context.bText_fg_color = (char)-0x11 - actor->inner->dmgFloatFrames;
         }
         textWidth = font_text_width_ds(buf);
 
@@ -1019,7 +1019,7 @@ void combat_actor_draw_float_damage(CombatActor *actor) {
     return;
 }
 
-static void combat_actor_render_status_vfx(CombatActor *actor) {
+static void combat_actor_render_status_vfx(Combatant *actor) {
     short slot;
     SpellDef *spell;
     int i;
@@ -1031,7 +1031,7 @@ static void combat_actor_render_status_vfx(CombatActor *actor) {
     combat_actor_draw_float_damage(actor);
 #endif
 
-    for (slot = actor->inner->status_head; slot != -1; slot = g_pStatusEffectPool[slot].nNext) {
+    for (slot = actor->inner->statusHead; slot != -1; slot = g_pStatusEffectPool[slot].nNext) {
         spell = &g_pSpellDefs[g_pStatusEffectPool[slot].nType];
         g_pStatusEffectPool[slot].nAge_ticks++;
 
@@ -1075,12 +1075,12 @@ static void combat_actor_render_status_vfx(CombatActor *actor) {
 #endif
 }
 
-void far combat_actor_play_short_cine(CombatActor *actor, int overlay_id) {
+void far combat_actor_play_short_cine(Combatant *actor, int overlay_id) {
     int i;
 
     i = 0;
     do {
-        if (actor != (CombatActor *)0) {
+        if (actor != (Combatant *)0) {
             combat_arena_actor_set_anim_pose(actor, 3);
         }
         world_render_with_overlay(MK_FP(overlay_id, -1));
@@ -1124,7 +1124,7 @@ void far combat_actor_tile_entry_effect(int tile_x, int tile_y, int *p_status, i
             }
         } else {
             combatgrid_spread_tile_fx_line(tile_x, tile_y);
-            combat_actor_play_short_cine((CombatActor *)0x0, (int)p_status);
+            combat_actor_play_short_cine((Combatant *)0x0, (int)p_status);
             combatgrid_line_effect_propagate(tile_x, tile_y);
         }
         *p_status = -1;
@@ -1158,8 +1158,8 @@ void far combat_actor_tile_entry_effect(int tile_x, int tile_y, int *p_status, i
     }
 }
 
-int far combat_actor_trace_proj_path(CombatActor *shooter, CombatActor *target, int flags) {
-    CombatActor *hitActor;
+int far combat_actor_trace_proj_path(Combatant *shooter, Combatant *target, int flags) {
+    Combatant *hitActor;
     WorldEntity motion_state;
     int tile_x;
     int tile_y;
@@ -1167,10 +1167,10 @@ int far combat_actor_trace_proj_path(CombatActor *shooter, CombatActor *target, 
 
     result = 1;
     motion_state.base.pos.xy.nWorld_x =
-        (long)(shooter->inner->grid_x * g_grid_tile_size + (g_grid_tile_size >> 1) + -0x4b0);
+        (long)(shooter->inner->gridX * g_grid_tile_size + (g_grid_tile_size >> 1) + -0x4b0);
 
     motion_state.base.pos.xy.nWorld_y =
-        (long)(shooter->inner->grid_y * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80);
+        (long)(shooter->inner->gridY * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80);
     motion_state.base.pos.nWorld_z = 0;
     motion_state.base.orientation.pitch = motion_state.base.orientation.roll = 0;
     motion_state.base.orientation.yaw = world_rndr_actor_angle_actor(shooter, target);
@@ -1187,12 +1187,12 @@ int far combat_actor_trace_proj_path(CombatActor *shooter, CombatActor *target, 
         tile_x = (motion_state.base.pos.xy.nWorld_x + 0x4b0) / g_grid_tile_size;
         tile_y = (motion_state.base.pos.xy.nWorld_y + -0xc80) / g_grid_tile_size;
         combat_actor_tile_entry_effect(tile_x, tile_y, (int *)&motion_state, 0, flags);
-        hitActor = (CombatActor *)combatgrid_tile_terrain((char)tile_x, (char)tile_y);
-        if ((hitActor != (CombatActor *)0x0) && ((hitActor->inner->flags & CAF_DEAD) != 0)) {
-            hitActor = (CombatActor *)0x0;
+        hitActor = (Combatant *)combatgrid_tile_terrain((char)tile_x, (char)tile_y);
+        if ((hitActor != (Combatant *)0x0) && ((hitActor->inner->flags & CAF_DEAD) != 0)) {
+            hitActor = (Combatant *)0x0;
         }
         if (((short)motion_state.base.shapeId == -1) ||
-            (((hitActor != (CombatActor *)0x0 && (hitActor != target)) && (hitActor != shooter)))) {
+            (((hitActor != (Combatant *)0x0 && (hitActor != target)) && (hitActor != shooter)))) {
             result = 0;
             break;
         }
@@ -1291,9 +1291,9 @@ static void far combat_actor_grid_rndr_tile_feat(int cell_kind, int tile_x, int 
         } else {
             combatant = (GridCombatant *)combatgrid_tile_terrain((char)tile_x, (char)tile_y);
             if (combatant != (GridCombatant *)0x0) {
-                combat_actor_apply_render_table((CombatActor *)combatant);
-                world_render_actor_at_tile(((CombatActor *)combatant)->inner->class_id, tile_x,
-                                           tile_y, -(int)field4, 0, (CombatActor *)combatant);
+                combat_actor_apply_render_table((Combatant *)combatant);
+                world_render_actor_at_tile(((Combatant *)combatant)->inner->creatureType, tile_x,
+                                           tile_y, -(int)field4, 0, (Combatant *)combatant);
             }
         }
         g_graphics_context.clip.ymax = saved_ymax;
@@ -1307,12 +1307,12 @@ void far combat_actor_redraw_at_tile(int tile_x, int tile_y) {
 
     i = 0;
     do {
-        if (g_active_combatants[i] != (CombatActor *)0 &&
-            g_active_combatants[i]->inner->grid_x == tile_x &&
-            g_active_combatants[i]->inner->grid_y == tile_y) {
+        if (g_active_combatants[i] != (Combatant *)0 &&
+            g_active_combatants[i]->inner->gridX == tile_x &&
+            g_active_combatants[i]->inner->gridY == tile_y) {
             combat_actor_rndr_stat_vfx_pre(g_active_combatants[i]);
             combat_actor_apply_render_table(g_active_combatants[i]);
-            world_render_actor_at_tile(g_active_combatants[i]->inner->class_id, tile_x, tile_y, 0,
+            world_render_actor_at_tile(g_active_combatants[i]->inner->creatureType, tile_x, tile_y, 0,
                                        0, g_active_combatants[i]);
             combat_actor_render_status_vfx(g_active_combatants[i]);
             g_nActorSpriteFlip = 0;
@@ -1328,7 +1328,7 @@ void far combat_actor_grid_render(WorldObject *focus_actor) {
     int focus_row;
     unsigned int terrain_kind;
     GridCombatant *combatant;
-    CombatActor *actor;
+    Combatant *actor;
 
     if (g_bCombatGridLinesEnabled != 0) {
         combatgrid_rndr_engagement_lines();
@@ -1348,7 +1348,7 @@ void far combat_actor_grid_render(WorldObject *focus_actor) {
             if ((terrain_kind != 0) && (g_bCombatGridTerrainFeaturesEnabled != 0)) {
                 combat_actor_grid_rndr_tile_feat(terrain_kind, col, row);
             }
-            actor = (CombatActor *)combatgrid_tile_terrain((unsigned char)col, (unsigned char)row);
+            actor = (Combatant *)combatgrid_tile_terrain((unsigned char)col, (unsigned char)row);
             combatant = combatgrid_find_cmbt_at_tile((unsigned char)col, (unsigned char)row);
             if ((focus_actor != (WorldObject *)0x0) && (focus_col == col) && (focus_row == row)) {
                 world_render_combat_grid_sprite(focus_actor);
@@ -1361,17 +1361,17 @@ void far combat_actor_grid_render(WorldObject *focus_actor) {
                 combat_actor_grid_rndr_terr_prop(combatant, col, row, terrain_kind, 0);
             }
             combat_actor_redraw_at_tile(col, row);
-            if (actor != (CombatActor *)0x0) {
+            if (actor != (Combatant *)0x0) {
                 if (actor == g_current_actor) {
                     world_render_actor_at_position(2, col, row);
                 }
                 if ((actor->inner->flags & CAF_KNOCKBACK) != 0) {
-                    g_nActorKnockbackColorIdx = (short)(char)actor->inner->knockback_value;
+                    g_nActorKnockbackColorIdx = (short)(char)actor->inner->knockbackFrame;
                 }
                 combat_actor_rndr_stat_vfx_pre(actor);
-                if ((actor->inner->class_id != -1) && (terrain_kind != 9)) {
+                if ((actor->inner->creatureType != -1) && (terrain_kind != 9)) {
                     combat_actor_apply_render_table(actor);
-                    world_render_actor_at_tile(actor->inner->class_id, col, row, 0, 0, actor);
+                    world_render_actor_at_tile(actor->inner->creatureType, col, row, 0, 0, actor);
                 }
                 combat_actor_render_status_vfx(actor);
                 g_nActorSpriteFlip = 0;
@@ -1434,10 +1434,10 @@ void far combat_actor_refresh_all_stats(void) {
 }
 
 void combat_actor_pick_next(void) {
-    CombatActor sentinel;
+    Combatant sentinel;
     unsigned int candSpeed;
-    CombatActor *candidate;
-    CombatActor *actor;
+    Combatant *candidate;
+    Combatant *actor;
     int i;
     int n_active_alive;
     int n_other_alive;
@@ -1451,7 +1451,7 @@ void combat_actor_pick_next(void) {
     if (g_current_actor != 0 &&
         ((flags = (int)(signed char)(g_current_actor)->inner->flags) & CAF_DEAD) == 0) {
         combat_arena_actor_poison_tick(g_current_actor);
-        if ((g_current_actor)->cParty_slot != 0 &&
+        if ((g_current_actor)->charSlot != 0 &&
             combatenc_actor_can_act(g_current_actor, 1) != 0) {
             g_acting_actor = g_current_actor;
         }
@@ -1461,7 +1461,7 @@ void combat_actor_pick_next(void) {
     for (i = 0; i < g_nCombatActiveCount; i++) {
 #ifdef V102CD
         if (((flags = (int)(signed char)g_pCombatActiveActors[i].inner->flags) & CAF_DEAD) == 0 &&
-            g_pCombatActiveActors[i].cParty_slot != 0)
+            g_pCombatActiveActors[i].charSlot != 0)
             n_active_alive++;
 #else
         if (((flags = (int)(signed char)g_pCombatActiveActors[i].inner->flags) & CAF_DEAD) == 0)
@@ -1477,7 +1477,7 @@ void combat_actor_pick_next(void) {
 
     if (n_active_alive == 0 || (n_other_alive == 0 && combatgrid_any_terrain_6() == 0)) {
         g_current_actor = 0;
-        g_picked_actor = (CombatActor *)0;
+        g_picked_actor = (Combatant *)0;
         return;
     }
 
@@ -1488,7 +1488,7 @@ void combat_actor_pick_next(void) {
         sentinel.stats[i].frac = 0;
         sentinel.stats[i].perm_mod = 0;
     }
-    sentinel.cParty_slot = 0;
+    sentinel.charSlot = 0;
     sentinel.stats[0].max = 0;
 
     for (i = 0; i < NUM_ACTOR_STATS; i++) {
@@ -1501,12 +1501,12 @@ void combat_actor_pick_next(void) {
         candSpeed = stat_actor_get(candidate, 2, 0);
         if (candSpeed == 0 &&
             ((flags = (int)(signed char)candidate->inner->flags) & CAF_DEAD) == 0 &&
-            candidate->cParty_slot != 0) {
+            candidate->charSlot != 0) {
             candSpeed = 1;
         }
         bestSpeed = stat_actor_get(actor, 2, 0);
         if (bestSpeed == 0 && ((flags = (int)(signed char)actor->inner->flags) & CAF_DEAD) == 0 &&
-            actor->cParty_slot != 0) {
+            actor->charSlot != 0) {
             bestSpeed = 1;
         }
         if ((int)candSpeed >= (int)bestSpeed && combatenc_actor_can_act(candidate, 1) != 0) {
@@ -1519,12 +1519,12 @@ void combat_actor_pick_next(void) {
         candSpeed = stat_actor_get(candidate, 2, 0);
         if ((candSpeed == 0 &&
              ((flags = (int)(signed char)candidate->inner->flags) & CAF_DEAD) == 0) ||
-            candidate->inner->class_id == 0x36) {
+            candidate->inner->creatureType == 0x36) {
             candSpeed = 1;
         }
         bestSpeed = stat_actor_get(actor, 2, 0);
         if (bestSpeed == 0 && ((flags = (int)(signed char)actor->inner->flags) & CAF_DEAD) == 0 &&
-            actor->cParty_slot != 0) {
+            actor->charSlot != 0) {
             bestSpeed = 1;
         }
         if ((int)candSpeed >= (int)bestSpeed && combatenc_actor_can_act(candidate, 1) != 0) {
@@ -1533,14 +1533,14 @@ void combat_actor_pick_next(void) {
     }
 
     if (&sentinel == actor) {
-        actor = (CombatActor *)0;
+        actor = (Combatant *)0;
     }
     g_current_actor = actor;
     if (g_current_actor != 0) {
         (g_current_actor)->inner->flags &= ~CAF_PARRY;
         if (((flags = (int)(signed char)(g_current_actor)->inner->flags) & CAF_DEAD) == 0) {
             g_acting_actor_speed = stat_actor_get(g_current_actor, 2, 0);
-            if (g_acting_actor_speed == 0 && (g_current_actor)->cParty_slot != 0)
+            if (g_acting_actor_speed == 0 && (g_current_actor)->charSlot != 0)
                 g_acting_actor_speed = 1;
         } else {
             g_acting_actor_speed = 0;
@@ -1605,15 +1605,15 @@ void far combat_actor_path_blocked_anim(void) {
     }
 }
 
-void far combat_actor_draw_stats_panel(CombatActor *actor) {
+void far combat_actor_draw_stats_panel(Combatant *actor) {
     char numStr[6];
     unsigned int strength;
     int x;
     int y;
 
-    if (actor != (CombatActor *)0 && !!actor->cParty_slot) {
+    if (actor != (Combatant *)0 && !!actor->charSlot) {
         g_graphics_context.wGfxBlitDstPage = g_graphics_context.wVgaPage2Base;
-        resblit_sprite_frame(g_pHeadsBmxAssetTable[(int)actor->cParty_slot - 1], 0xe, 0x8f, 0);
+        resblit_sprite_frame(g_pHeadsBmxAssetTable[(int)actor->charSlot - 1], 0xe, 0x8f, 0);
         blit_sprite_indirect((unsigned short)*g_parch_bmx, 0x49, 0x81, 0);
         g_graphics_context.bText_fg_color = 0;
         y = 0x84;
@@ -1639,7 +1639,7 @@ void far combat_actor_draw_stats_panel(CombatActor *actor) {
     }
 }
 
-int far combat_actor_step_to_tgt_adj(CombatActor *attacker, CombatActor *defender) {
+int far combat_actor_step_to_tgt_adj(Combatant *attacker, Combatant *defender) {
     int candX[4];
     int candY[4];
     int dist[4];
@@ -1648,14 +1648,14 @@ int far combat_actor_step_to_tgt_adj(CombatActor *attacker, CombatActor *defende
     if (combatgrid_actors_ortho_adj(attacker, defender) != 0) {
         return 1;
     }
-    dist[0] = combatgrid_chebyshev_distance(attacker->inner->grid_x, attacker->inner->grid_y,
-                                            defender->inner->grid_x + 1, defender->inner->grid_y);
-    dist[1] = combatgrid_chebyshev_distance(attacker->inner->grid_x, attacker->inner->grid_y,
-                                            defender->inner->grid_x - 1, defender->inner->grid_y);
-    dist[2] = combatgrid_chebyshev_distance(attacker->inner->grid_x, attacker->inner->grid_y,
-                                            defender->inner->grid_x, defender->inner->grid_y + 1);
-    dist[3] = combatgrid_chebyshev_distance(attacker->inner->grid_x, attacker->inner->grid_y,
-                                            defender->inner->grid_x, defender->inner->grid_y - 1);
+    dist[0] = combatgrid_chebyshev_distance(attacker->inner->gridX, attacker->inner->gridY,
+                                            defender->inner->gridX + 1, defender->inner->gridY);
+    dist[1] = combatgrid_chebyshev_distance(attacker->inner->gridX, attacker->inner->gridY,
+                                            defender->inner->gridX - 1, defender->inner->gridY);
+    dist[2] = combatgrid_chebyshev_distance(attacker->inner->gridX, attacker->inner->gridY,
+                                            defender->inner->gridX, defender->inner->gridY + 1);
+    dist[3] = combatgrid_chebyshev_distance(attacker->inner->gridX, attacker->inner->gridY,
+                                            defender->inner->gridX, defender->inner->gridY - 1);
     {
         unsigned int best = 0;
         for (i = 1; i < 4; i++) {
@@ -1665,45 +1665,45 @@ int far combat_actor_step_to_tgt_adj(CombatActor *attacker, CombatActor *defende
         }
         switch (best) {
         case 0:
-            candX[0] = defender->inner->grid_x + 1;
-            candY[0] = (int)defender->inner->grid_y;
-            candX[1] = (int)defender->inner->grid_x;
-            candY[1] = defender->inner->grid_y + 1;
-            candX[2] = (int)defender->inner->grid_x;
-            candY[2] = defender->inner->grid_y + -1;
-            candX[3] = defender->inner->grid_x + -1;
+            candX[0] = defender->inner->gridX + 1;
+            candY[0] = (int)defender->inner->gridY;
+            candX[1] = (int)defender->inner->gridX;
+            candY[1] = defender->inner->gridY + 1;
+            candX[2] = (int)defender->inner->gridX;
+            candY[2] = defender->inner->gridY + -1;
+            candX[3] = defender->inner->gridX + -1;
 
         LAB_5ce3_2703:
-            candY[3] = (int)defender->inner->grid_y;
+            candY[3] = (int)defender->inner->gridY;
             break;
         case 1:
-            candX[0] = defender->inner->grid_x + -1;
-            candY[0] = (int)defender->inner->grid_y;
-            candX[1] = (int)defender->inner->grid_x;
-            candY[1] = defender->inner->grid_y + -1;
-            candX[2] = (int)defender->inner->grid_x;
-            candY[2] = defender->inner->grid_y + 1;
-            candX[3] = defender->inner->grid_x + 1;
+            candX[0] = defender->inner->gridX + -1;
+            candY[0] = (int)defender->inner->gridY;
+            candX[1] = (int)defender->inner->gridX;
+            candY[1] = defender->inner->gridY + -1;
+            candX[2] = (int)defender->inner->gridX;
+            candY[2] = defender->inner->gridY + 1;
+            candX[3] = defender->inner->gridX + 1;
             goto LAB_5ce3_2703;
         case 2:
-            candX[0] = (int)defender->inner->grid_x;
-            candY[0] = defender->inner->grid_y + 1;
-            candX[1] = defender->inner->grid_x + 1;
-            candY[1] = (int)defender->inner->grid_y;
-            candX[2] = defender->inner->grid_x + -1;
-            candY[2] = (int)defender->inner->grid_y;
-            candX[3] = (int)defender->inner->grid_x;
-            candY[3] = defender->inner->grid_y + -1;
+            candX[0] = (int)defender->inner->gridX;
+            candY[0] = defender->inner->gridY + 1;
+            candX[1] = defender->inner->gridX + 1;
+            candY[1] = (int)defender->inner->gridY;
+            candX[2] = defender->inner->gridX + -1;
+            candY[2] = (int)defender->inner->gridY;
+            candX[3] = (int)defender->inner->gridX;
+            candY[3] = defender->inner->gridY + -1;
             break;
         case 3:
-            candX[0] = (int)defender->inner->grid_x;
-            candY[0] = defender->inner->grid_y + -1;
-            candX[1] = defender->inner->grid_x + -1;
-            candY[1] = (int)defender->inner->grid_y;
-            candX[2] = defender->inner->grid_x + 1;
-            candY[2] = (int)defender->inner->grid_y;
-            candX[3] = (int)defender->inner->grid_x;
-            candY[3] = defender->inner->grid_y + 1;
+            candX[0] = (int)defender->inner->gridX;
+            candY[0] = defender->inner->gridY + -1;
+            candX[1] = defender->inner->gridX + -1;
+            candY[1] = (int)defender->inner->gridY;
+            candX[2] = defender->inner->gridX + 1;
+            candY[2] = (int)defender->inner->gridY;
+            candX[3] = (int)defender->inner->gridX;
+            candY[3] = defender->inner->gridY + 1;
         }
     }
 LAB_5ce3_27c4: {
@@ -1711,8 +1711,8 @@ LAB_5ce3_27c4: {
     i = 0;
     do {
         if (combatgrid_tile_is_blocked((char)candX[i], (char)candY[i]) == 0) {
-            attacker->inner->pad_6[0] = (unsigned char)candX[i];
-            attacker->inner->pad_6[1] = (unsigned char)candY[i];
+            attacker->inner->destX = (unsigned char)candX[i];
+            attacker->inner->destY = (unsigned char)candY[i];
             if (combataipath_actor_walk_path(attacker, 1) != 0) {
                 result = 1;
                 break;
@@ -1724,13 +1724,13 @@ LAB_5ce3_27c4: {
 }
 }
 
-int far combat_actor_melee_approach(CombatActor *attacker, CombatActor *defender) {
+int far combat_actor_melee_approach(Combatant *attacker, Combatant *defender) {
     int distance;
 
-    distance = combatgrid_chebyshev_distance(attacker->inner->grid_x, attacker->inner->grid_y,
-                                             defender->inner->grid_x, defender->inner->grid_y);
-    if (combatgrid_is_pure_diagonal(attacker, (int)defender->inner->grid_x,
-                                    (int)defender->inner->grid_y) != 0) {
+    distance = combatgrid_chebyshev_distance(attacker->inner->gridX, attacker->inner->gridY,
+                                             defender->inner->gridX, defender->inner->gridY);
+    if (combatgrid_is_pure_diagonal(attacker, (int)defender->inner->gridX,
+                                    (int)defender->inner->gridY) != 0) {
         ++distance;
     }
     if (2 <= distance)
@@ -1779,28 +1779,28 @@ static int __cdecl __far combat_actor_heading_from_dxdy(int dx, int dy) {
 int combat_actor_direction_to_cursor(void) {
     int heading;
 
-    if ((g_current_actor->inner->grid_x == g_cursor_tile_x) &&
-        (g_current_actor->inner->grid_y == g_cursor_tile_y)) {
+    if ((g_current_actor->inner->gridX == g_cursor_tile_x) &&
+        (g_current_actor->inner->gridY == g_cursor_tile_y)) {
         heading = -1;
     } else {
-        heading = combat_actor_heading_from_dxdy(g_cursor_tile_x - g_current_actor->inner->grid_x,
-                                                 g_cursor_tile_y - g_current_actor->inner->grid_y);
+        heading = combat_actor_heading_from_dxdy(g_cursor_tile_x - g_current_actor->inner->gridX,
+                                                 g_cursor_tile_y - g_current_actor->inner->gridY);
     }
     return heading;
 }
 
-int far combat_actor_heading_from_to(CombatActor *from, CombatActor *to) {
+int far combat_actor_heading_from_to(Combatant *from, Combatant *to) {
     int heading;
     char dx, dy;
 
-    if ((to == (CombatActor *)0x0) || (from == (CombatActor *)0x0)) {
+    if ((to == (Combatant *)0x0) || (from == (Combatant *)0x0)) {
         return -1;
     }
     if (from == to) {
         to = combatenc_find_nearest_actor(from, (int *)0x0);
     }
-    dx = to->inner->grid_x - from->inner->grid_x;
-    dy = to->inner->grid_y - from->inner->grid_y;
+    dx = to->inner->gridX - from->inner->gridX;
+    dy = to->inner->gridY - from->inner->gridY;
     heading = combat_actor_heading_from_dxdy((int)dx, (int)dy);
     return heading;
 }
@@ -1825,7 +1825,7 @@ static void far combat_actor_anim_wait_rndr_loop(AnimSlot *rec) {
     }
 }
 
-static void far combat_actor_anim_play(CombatActor *actor, unsigned int sprite_id, int speed_mode,
+static void far combat_actor_anim_play(Combatant *actor, unsigned int sprite_id, int speed_mode,
                                        int dir_arg, int dir_mode, int direction, int wait,
                                        unsigned int loop_count) {
     int swapped;
@@ -1900,7 +1900,7 @@ static void far combat_actor_anim_play(CombatActor *actor, unsigned int sprite_i
         combat_arena_swap_tgt_state();
 }
 
-void far combat_actor_anim7_field2_var(CombatActor *actor, int direction) {
+void far combat_actor_anim7_field2_var(Combatant *actor, int direction) {
     if (combat_actor_enc_lookup_field2(actor) == 7) {
         combat_actor_anim_play(actor, 7, 1, 4, 5, direction, 1, 4);
         return;
@@ -1909,7 +1909,7 @@ void far combat_actor_anim7_field2_var(CombatActor *actor, int direction) {
     return;
 }
 
-void far combat_actor_anim0_if_not_dead(CombatActor *actor, int direction) {
+void far combat_actor_anim0_if_not_dead(Combatant *actor, int direction) {
     int v;
     if ((v = (char)actor->inner->flags) & CAF_DEAD) {
         return;
@@ -1918,7 +1918,7 @@ void far combat_actor_anim0_if_not_dead(CombatActor *actor, int direction) {
     return;
 }
 
-void combat_actor_anim_rand_phase(CombatActor *actor) {
+void combat_actor_anim_rand_phase(Combatant *actor) {
     int swapped;
     int i;
 
@@ -1944,39 +1944,39 @@ void combat_actor_anim_rand_phase(CombatActor *actor) {
     return;
 }
 
-void far combat_actor_play_anim_sprite4(CombatActor *actor, int direction) {
+void far combat_actor_play_anim_sprite4(Combatant *actor, int direction) {
     combat_actor_anim_play(actor, 4, 0, 2, 3, direction, 1, 4);
     return;
 }
 
-void far combat_actor_play_anim_sprite3(CombatActor *actor, int direction) {
+void far combat_actor_play_anim_sprite3(Combatant *actor, int direction) {
     combat_actor_anim_play(actor, 3, 0, 4, 3, direction, 1, 4);
     return;
 }
 
-void far combat_actor_play_anim_sprite1(CombatActor *actor, int direction) {
+void far combat_actor_play_anim_sprite1(Combatant *actor, int direction) {
     combat_actor_anim_play(actor, 1, 0, 4, 3, direction, 1, 4);
     return;
 }
 
-void far combat_actor_anim_spr1_alt(CombatActor *actor, int direction) {
+void far combat_actor_anim_spr1_alt(Combatant *actor, int direction) {
     combat_actor_anim_play(actor, 1, 1, 4, 3, direction, 0, 4);
     return;
 }
 
-void far combat_actor_play_ranged_windup(CombatActor *actor, int direction) {
+void far combat_actor_play_ranged_windup(Combatant *actor, int direction) {
     combat_actor_anim_play(actor, 8, 0, 2, 5, direction, 1, 4);
     combat_actor_anim_play(actor, 8, 1, 2, 5, direction, 1, 4);
     return;
 }
 
-void far combat_actor_play_melee_swing(CombatActor *actor, int direction) {
+void far combat_actor_play_melee_swing(Combatant *actor, int direction) {
     combat_actor_anim_play(actor, 9, 0, 2, 3, direction, 1, 4);
     combat_actor_anim_play(actor, 9, 1, 2, 3, direction, 1, 4);
     return;
 }
 
-void combat_actor_anim_mark_dirty(CombatActor *actor, int frame) {
+void combat_actor_anim_mark_dirty(Combatant *actor, int frame) {
     int encounter = 0;
     int i;
 
@@ -2001,17 +2001,17 @@ void combat_actor_anim_mark_dirty(CombatActor *actor, int frame) {
     return;
 }
 
-void far combat_actor_play_anim_sprite5(CombatActor *actor, int frame) {
+void far combat_actor_play_anim_sprite5(Combatant *actor, int frame) {
     combat_actor_anim_play(actor, 5, 1, 1, 3, frame, 0, 4);
     return;
 }
 
-void far combat_actor_play_anim_sprite6(CombatActor *actor, int frame) {
+void far combat_actor_play_anim_sprite6(Combatant *actor, int frame) {
     combat_actor_anim_play(actor, 6, 1, 1, 3, frame, 0, 4);
     return;
 }
 
-int far combat_actor_enc_lookup_field2(CombatActor *actor) {
+int far combat_actor_enc_lookup_field2(Combatant *actor) {
     int swapped;
     int result;
     int i;
@@ -2037,7 +2037,7 @@ int far combat_actor_enc_lookup_field2(CombatActor *actor) {
     return result;
 }
 
-int far combat_actor_lookup_param_rec(CombatActor *actor) {
+int far combat_actor_lookup_param_rec(Combatant *actor) {
     int swapped;
     int result;
     int i;

@@ -47,7 +47,7 @@ void stat_apply_modifier(unsigned short *mod, int *stat) {
     }
 }
 
-void stat_actor_recalc_equip_bonuses(CombatActor *actor) {
+void stat_actor_recalc_equip_bonuses(Combatant *actor) {
     int statIdx;
     int statVal;
 #ifdef V102CD
@@ -88,7 +88,7 @@ ConditionInfo far g_aConditionInfo[7] = {
     {"Healing", -3, 1, {0, 0, 0, 0}},  {"Starving", 0, -2, {0, 0, 0, 0}},
     {"Near-death", 0, 0, {0, 0, 0, 0}}};
 
-unsigned int stat_actor_get(CombatActor *actor, int stat_idx, int mode) {
+unsigned int stat_actor_get(Combatant *actor, int stat_idx, int mode) {
     unsigned int value;
     int rowIdx;
     unsigned int n;
@@ -102,9 +102,9 @@ unsigned int stat_actor_get(CombatActor *actor, int stat_idx, int mode) {
      * persistent DI register; `st` takes SI. Declaration order (st then a) fixes
      * SI/DI. */
     register StatSlot *st;
-    register CombatActor *a = actor;
+    register Combatant *a = actor;
 
-    rowIdx = a->cParty_slot + -1;
+    rowIdx = a->charSlot + -1;
     st = &a->stats[stat_idx];
     if (stat_idx == 0x10) {
         return stat_actor_get(a, 0, mode) + stat_actor_get(a, 1, mode);
@@ -124,7 +124,7 @@ unsigned int stat_actor_get(CombatActor *actor, int stat_idx, int mode) {
         }
         st->cached = (unsigned char)value;
     }
-    if (a->cParty_slot != 0) {
+    if (a->charSlot != 0) {
         statMask = 1 << (unsigned char)stat_idx;
         n = 0;
         modPtr = (unsigned short *)&g_gameState.aActorStatModifiers[rowIdx][0];
@@ -182,7 +182,7 @@ unsigned int stat_actor_get(CombatActor *actor, int stat_idx, int mode) {
     return value;
 }
 
-unsigned int far stat_combatant_modify(CombatActor *actor, int stat_idx, long delta, int mode) {
+unsigned int far stat_combatant_modify(Combatant *actor, int stat_idx, long delta, int mode) {
     StatSlot *slot;
     int origBase;
     int rowIdx;
@@ -193,7 +193,7 @@ unsigned int far stat_combatant_modify(CombatActor *actor, int stat_idx, long de
 
     slot = actor->stats + stat_idx;
     origBase = (unsigned int)slot->base;
-    rowIdx = actor->cParty_slot + -1;
+    rowIdx = actor->charSlot + -1;
     if (stat_idx == 0x10) {
         unsigned int target;
         int rank;
@@ -204,7 +204,7 @@ unsigned int far stat_combatant_modify(CombatActor *actor, int stat_idx, long de
         sum = (unsigned int)actor->stats[1].base + (unsigned int)actor->stats[0].base;
         uMaxSum = (unsigned int)(actor->stats + 1)->max + (unsigned int)actor->stats->max;
         target = (unsigned int)((long)(int)(mode * uMaxSum) / 100L);
-        if (actor->cParty_slot != 0) {
+        if (actor->charSlot != 0) {
             rank = (char)g_gameState.abActorStatusRanks[rowIdx][6];
             if (rank != 0) {
                 target = ((100 - rank) * 0x1e) / 100 + 1;
@@ -221,7 +221,7 @@ unsigned int far stat_combatant_modify(CombatActor *actor, int stat_idx, long de
             sum = sum + (int)(delta / 0x100);
             if ((int)sum <= 0) {
                 sum = 0;
-                if (actor->cParty_slot != 0) {
+                if (actor->charSlot != 0) {
                     stat_combatant_apply_delta(actor, 6, 100);
                 }
             }
@@ -267,7 +267,7 @@ unsigned int far stat_combatant_modify(CombatActor *actor, int stat_idx, long de
         delta = ((int)(unsigned int)slot->base * delta) / 100;
     }
 
-    if ((actor->cParty_slot != 0) &&
+    if ((actor->charSlot != 0) &&
         (gstate_event_read(SKILL_SELECTED(rowIdx * 0x11 + stat_idx)) != 0)) {
         delta += (delta * (short)g_gameState.aConditionTickAdvance[rowIdx]) / 0x34;
     }
@@ -297,7 +297,7 @@ clamp_finalize:
     if (slot->max < slot->base) {
         slot->max = slot->base;
     }
-    if (((actor->cParty_slot != 0) && ((unsigned int)slot->base != (unsigned int)origBase)) && (stat_idx != 0x10)) {
+    if (((actor->charSlot != 0) && ((unsigned int)slot->base != (unsigned int)origBase)) && (stat_idx != 0x10)) {
         if ((1 < stat_idx) || (origBase < slot->base)) {
 
             gstate_event_write(SKILL_IMPROVED(rowIdx * 0x11 + stat_idx), 1);
@@ -352,13 +352,13 @@ void far stat_party_broadcast_status_op(int stat_idx, long delta, int mode) {
     }
 }
 
-unsigned int stat_combatant_apply_delta(CombatActor *actor, int stat_idx, int amount) {
+unsigned int stat_combatant_apply_delta(Combatant *actor, int stat_idx, int amount) {
     int slot_idx;
     int new_val;
     int old_val;
 
-    slot_idx = actor->cParty_slot - 1;
-    if (actor->cParty_slot != 0 && amount != 0) {
+    slot_idx = actor->charSlot - 1;
+    if (actor->charSlot != 0 && amount != 0) {
         new_val = (signed char)g_gameState.abActorStatusRanks[slot_idx][stat_idx];
         old_val = new_val;
         new_val = new_val + amount;
@@ -402,7 +402,7 @@ unsigned int stat_combatant_apply_delta(CombatActor *actor, int stat_idx, int am
     }
 }
 
-void far stat_modifier_table_insert(CombatActor *actor, ActorStatModifier *pNewMod) {
+void far stat_modifier_table_insert(Combatant *actor, ActorStatModifier *pNewMod) {
     int bestCost;
     int i;
     int row;
@@ -410,8 +410,8 @@ void far stat_modifier_table_insert(CombatActor *actor, ActorStatModifier *pNewM
     ActorStatModifier *pBest;
     ActorStatModifier *pSlot;
 
-    row = actor->cParty_slot - 1;
-    if (!actor->cParty_slot)
+    row = actor->charSlot - 1;
+    if (!actor->charSlot)
         return;
     i = 0;
 
@@ -432,12 +432,12 @@ void far stat_modifier_table_insert(CombatActor *actor, ActorStatModifier *pNewM
     *pBest = *pNewMod;
 }
 
-void far stat_actor_clear_mods_mask(CombatActor *actor, unsigned short mask) {
+void far stat_actor_clear_mods_mask(Combatant *actor, unsigned short mask) {
     int party_slot_idx;
     int i;
 
-    party_slot_idx = actor->cParty_slot - 1;
-    if (actor->cParty_slot != 0) {
+    party_slot_idx = actor->charSlot - 1;
+    if (actor->charSlot != 0) {
         i = 0;
         do {
             if (g_gameState.aActorStatModifiers[party_slot_idx][i].wMaskFlags & mask) {
@@ -469,7 +469,7 @@ int far stat_party_all_above_pct(int percent) {
     return 1;
 }
 
-void far stat_combatant_heal(CombatActor *combatant, int amount_pct) {
+void far stat_combatant_heal(Combatant *combatant, int amount_pct) {
     long delta;
     int stat_idx;
 

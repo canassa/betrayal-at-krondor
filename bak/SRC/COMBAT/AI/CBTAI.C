@@ -26,12 +26,12 @@ unsigned char __dat_153c[128] = {
     0x07, 0x00, 0x03, 0x00, 0x02, 0x00, 0x08, 0x00, 0x06, 0x00, 0x01, 0x00, 0x05, 0x00, 0x04, 0x00,
     0x08, 0x00, 0x02, 0x00, 0x03, 0x00, 0x07, 0x00, 0x05, 0x00, 0x01, 0x00, 0x06, 0x00, 0x04, 0x00};
 
-void far combat_ai_actor_cast_spell(CombatActor *caster, CombatActor *target, int spell_id) {
+void far combat_ai_actor_cast_spell(Combatant *caster, Combatant *target, int spell_id) {
     cspell_resolve_cast(caster, target, spell_id,
                         cspell_actor_stat_get_comb_dflt(caster, spell_id));
 }
 
-void far combat_ai_resolve_attack_attempt(CombatActor *attacker, CombatActor *target,
+void far combat_ai_resolve_attack_attempt(Combatant *attacker, Combatant *target,
                                           int spell_id) {
     if (combatenc_skill_check_random(attacker, target, stat_actor_get(attacker, 7, 0), -1) != 0) {
         cspell_resolve_cast(attacker, target, spell_id,
@@ -42,32 +42,32 @@ void far combat_ai_resolve_attack_attempt(CombatActor *attacker, CombatActor *ta
 }
 
 #ifndef V102CD
-void far combat_ai_resolve_hit(CombatActor *attacker, CombatActor *target, int damage, int dir) {
+void far combat_ai_resolve_hit(Combatant *attacker, Combatant *target, int damage, int dir) {
     int hpBefore;
     int staminaBefore;
     int b;
 
-    if ((attacker == (CombatActor *)0x0) || (cspell_stat_effect_find_type(attacker, 0x1f) == -1)) {
+    if ((attacker == (Combatant *)0x0) || (cspell_stat_effect_find_type(attacker, 0x1f) == -1)) {
         hpBefore = target->stats[0].base;
         staminaBefore = target->stats[1].base;
         combat_arena_actor_set_anim_pose(target, '\x04');
         combat_arena_apply_damage(attacker, damage, 0, 0, 0, 1);
         attacker->inner->flags &= ~CAF_KNOCKBACK;
-        if (((b = target->cParty_slot) == '\0') ||
-            ((((b = (char)g_gameState.abActorStatusRanks[target->cParty_slot - 1][0]) == '\0' &&
-               (b = (char)g_gameState.abActorStatusRanks[target->cParty_slot - 1][1]) == '\0' &&
-               (b = (char)g_gameState.abActorStatusRanks[target->cParty_slot - 1][2]) == '\0' &&
-               (b = (char)g_gameState.abActorStatusRanks[target->cParty_slot - 1][3]) == '\0' &&
-               (b = (char)g_gameState.abActorStatusRanks[target->cParty_slot - 1][5]) == '\0' &&
-               (b = (char)g_gameState.abActorStatusRanks[target->cParty_slot - 1][6]) == '\0')))) {
+        if (((b = target->charSlot) == '\0') ||
+            ((((b = (char)g_gameState.abActorStatusRanks[target->charSlot - 1][0]) == '\0' &&
+               (b = (char)g_gameState.abActorStatusRanks[target->charSlot - 1][1]) == '\0' &&
+               (b = (char)g_gameState.abActorStatusRanks[target->charSlot - 1][2]) == '\0' &&
+               (b = (char)g_gameState.abActorStatusRanks[target->charSlot - 1][3]) == '\0' &&
+               (b = (char)g_gameState.abActorStatusRanks[target->charSlot - 1][5]) == '\0' &&
+               (b = (char)g_gameState.abActorStatusRanks[target->charSlot - 1][6]) == '\0')))) {
             stat_combatant_modify(target, 0x10, (long)(dir << 8), 0x50);
         }
-        target->inner->dmg_value =
+        target->inner->dmgFloatValue =
             -(((target->stats[0].base - hpBefore) + target->stats[1].base) - staminaBefore);
-        target->inner->dmg_frames_left = '\b';
+        target->inner->dmgFloatFrames = '\b';
         stat_actor_get(target, 0, 0);
         stat_actor_get(target, 1, 0);
-        if (attacker != (CombatActor *)0x0) {
+        if (attacker != (Combatant *)0x0) {
             combat_actor_anim0_if_not_dead(attacker,
                                            combat_actor_heading_from_to(attacker, target));
         }
@@ -76,15 +76,15 @@ void far combat_ai_resolve_hit(CombatActor *attacker, CombatActor *target, int d
 }
 #endif
 
-int far combat_ai_pick_action(CombatActor *actor) {
+int far combat_ai_pick_action(Combatant *actor) {
     int action_id;
     int i;
     int sc;
 
     action_id = -1;
     for (i = 0; i < g_nCombatActiveCount; i++) {
-        if (g_pCombatActiveActors[i].inner->class_id == 0x16 ||
-            g_pCombatActiveActors[i].inner->class_id == 0x17) {
+        if (g_pCombatActiveActors[i].inner->creatureType == 0x16 ||
+            g_pCombatActiveActors[i].inner->creatureType == 0x17) {
             if (RND(100) > 10)
                 break;
         }
@@ -93,12 +93,12 @@ int far combat_ai_pick_action(CombatActor *actor) {
         if (((sc = (signed char)g_pCombatActiveActors[i].inner->flags) & 2) == 0 &&
             cspell_check_castable(9, actor, 0) != 0 &&
             combat_actor_trace_proj_path(actor, &g_pCombatActiveActors[i], 1) != 0 &&
-            g_pCombatActiveActors[i].inner->class_id != 0x17) {
+            g_pCombatActiveActors[i].inner->creatureType != 0x17) {
             action_id = 9;
         } else if ((g_pCombatActiveActors[i].inner->flags & CAF_DEAD) != 0 &&
                    cspell_check_castable(0x20, actor, 0) != 0 &&
                    ((sc = (signed char)g_pCombatActiveActors[i].inner->flags) & 0x10) == 0 &&
-                   g_pCombatActiveActors[i].inner->grid_x != -1) {
+                   g_pCombatActiveActors[i].inner->gridX != -1) {
             action_id = 0x20;
         }
         if (action_id == -1)
@@ -110,7 +110,7 @@ int far combat_ai_pick_action(CombatActor *actor) {
 
 L_phase2:
     for (i = 0; i < g_nCombatActiveCount; i++) {
-        if (g_pCombatActiveActors[i].inner->class_id == 0x36) {
+        if (g_pCombatActiveActors[i].inner->creatureType == 0x36) {
             if (RND(100) > 10)
                 break;
         }
@@ -124,9 +124,9 @@ L_phase2:
     }
 
     for (i = 0; i < g_nCombatActiveCount; i++) {
-        if (g_pCombatActiveActors[i].inner->class_id == 0x29 ||
-            g_pCombatActiveActors[i].inner->class_id == 0x2a ||
-            g_pCombatActiveActors[i].inner->class_id == 0x2b) {
+        if (g_pCombatActiveActors[i].inner->creatureType == 0x29 ||
+            g_pCombatActiveActors[i].inner->creatureType == 0x2a ||
+            g_pCombatActiveActors[i].inner->creatureType == 0x2b) {
             if (RND(100) > 10)
                 break;
         }
@@ -142,7 +142,7 @@ L_phase2:
     return 0;
 }
 
-int far combat_ai_execute_turn(CombatActor *actor, int param_2, unsigned int param_3) {
+int far combat_ai_execute_turn(Combatant *actor, int param_2, unsigned int param_3) {
     int ret;
     int clearance;
     int spell_id;
@@ -153,7 +153,7 @@ int far combat_ai_execute_turn(CombatActor *actor, int param_2, unsigned int par
     ret = 0;
     clearance = 4 - (int)stat_actor_get(actor, 7, 0) / 0x19;
     combatenc_ai_pick_target_by_role(actor, param_2, param_3, clearance);
-    if (actor->inner->target != (CombatActor *)0) {
+    if (actor->inner->target != (Combatant *)0) {
         spell_id = cspell_ai_pick_castable_spell(actor, actor->inner->target, 1, 0);
         if (spell_id < 0) {
             spell_id = cspell_ai_pick_castable_spell(actor, actor->inner->target, 1, 1);
@@ -168,7 +168,7 @@ int far combat_ai_execute_turn(CombatActor *actor, int param_2, unsigned int par
         }
     } else {
         combatenc_ai_pick_target_by_role(actor, param_2, param_3, 0);
-        if (actor->inner->target != (CombatActor *)0) {
+        if (actor->inner->target != (Combatant *)0) {
             spell_id = cspell_ai_pick_castable_spell(actor, actor->inner->target, 1, 1);
             if (spell_id > -1) {
                 if (combatenc_actor_stat_above_table(1, actor) != 0) {
@@ -181,7 +181,7 @@ int far combat_ai_execute_turn(CombatActor *actor, int param_2, unsigned int par
     return ret;
 }
 
-int far combat_ai_pick_heal_spell(CombatActor *caster, CombatActor *target) {
+int far combat_ai_pick_heal_spell(Combatant *caster, Combatant *target) {
     unsigned int curHp;
     unsigned int min_hp_pct;
     unsigned int threshold;
@@ -216,10 +216,10 @@ int far combat_ai_pick_heal_spell(CombatActor *caster, CombatActor *target) {
     return result;
 }
 
-int far combat_ai_try_cast_heal(register CombatActor *caster) {
+int far combat_ai_try_cast_heal(register Combatant *caster) {
     int casted;
     int spell_id;
-    CombatActor *target;
+    Combatant *target;
 
     casted = 0;
     target = g_pCombatOtherActors;
@@ -256,51 +256,51 @@ int far combat_ai_try_cast_heal(register CombatActor *caster) {
     return casted;
 }
 
-int far combat_ai_turn_kind6(CombatActor *actor) {
+int far combat_ai_turn_kind6(Combatant *actor) {
     int result;
 
     result = combat_ai_execute_turn(actor, 6, 0);
     return result;
 }
 
-int far combat_ai_turn_packet_10006(CombatActor *actor) {
+int far combat_ai_turn_packet_10006(Combatant *actor) {
     int result;
 
     result = combat_ai_execute_turn(actor, 6, 1);
     return result;
 }
 
-int far combat_ai_turn_packet_20006(CombatActor *actor) {
+int far combat_ai_turn_packet_20006(Combatant *actor) {
     int result;
 
     result = combat_ai_execute_turn(actor, 6, 2);
     return result;
 }
 
-int far combat_ai_turn_packet_40006(CombatActor *actor) {
+int far combat_ai_turn_packet_40006(Combatant *actor) {
     int result;
 
     result = combat_ai_execute_turn(actor, 6, 4);
     return result;
 }
 
-int far combat_ai_turn_packet_50006(CombatActor *actor) {
+int far combat_ai_turn_packet_50006(Combatant *actor) {
     int result;
 
     result = combat_ai_execute_turn(actor, 6, 5);
     return result;
 }
 
-int far combat_ai_turn_packet_30006(CombatActor *actor) {
+int far combat_ai_turn_packet_30006(Combatant *actor) {
     int result;
 
     result = combat_ai_execute_turn(actor, 6, 3);
     return result;
 }
 
-int far combat_ai_try_aoe_cast_spell_7(CombatActor *actor) {
+int far combat_ai_try_aoe_cast_spell_7(Combatant *actor) {
     int result;
-    CombatActor *target_actor;
+    Combatant *target_actor;
     register int i;
     int stat;
 
@@ -341,9 +341,9 @@ int far combat_ai_try_aoe_cast_spell_7(CombatActor *actor) {
 
 #define AI_TURN_FN ((EncounterAiTurnFn far *)((char *)&__dat_1492 + (0x1518 - 0x1492)))
 
-typedef int(far *AiTurnFn)(CombatActor *actor);
+typedef int(far *AiTurnFn)(Combatant *actor);
 
-void far combat_ai_take_turn(CombatActor *actor) {
+void far combat_ai_take_turn(Combatant *actor) {
     int spell_attempt;
     int dist;
     int rand_mod;
@@ -360,11 +360,11 @@ void far combat_ai_take_turn(CombatActor *actor) {
             spell_attempt = 8;
     }
 
-    while (result == 0 && spell_attempt < 8 && actor->inner->pad_e[1] != '\0') {
+    while (result == 0 && spell_attempt < 8 && actor->inner->aiTurnProfile != '\0') {
         rand_mod = RND(100);
         if (rand_mod < 0x5b) {
             fn = (AiTurnFn)
-                AI_TURN_FN[AI_TURN_INDEX[(int)(signed char)actor->inner->pad_e[1]][spell_attempt]];
+                AI_TURN_FN[AI_TURN_INDEX[(int)(signed char)actor->inner->aiTurnProfile][spell_attempt]];
             result = fn(actor);
         }
         spell_attempt++;
@@ -372,7 +372,7 @@ void far combat_ai_take_turn(CombatActor *actor) {
 
     if (result == 0) {
         stat_pct = combat_actor_stat_percent(actor, 1);
-        if (stat_pct > 0x28 && RND(100) > 0xa && !actor->cParty_slot) {
+        if (stat_pct > 0x28 && RND(100) > 0xa && !actor->charSlot) {
             combatenc_find_nearest_actor(g_picked_actor, &dist);
             if (dist <= 6)
                 dist = 7;
@@ -384,5 +384,5 @@ void far combat_ai_take_turn(CombatActor *actor) {
         }
     }
 
-    actor->inner->target = (CombatActor *)0;
+    actor->inner->target = (Combatant *)0;
 }

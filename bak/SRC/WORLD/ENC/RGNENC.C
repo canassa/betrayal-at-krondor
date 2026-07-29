@@ -120,7 +120,7 @@ void far rgnenc_savefile_init_35slot_tbl(void) {
         p->pose.nFacing = 0;
     }
     for (i = 0; i < 0x28; i++) {
-        g_wLastTempWriteRecordKind = 1;
+        g_pendingTempWriteRegion = TWR_ENCOUNTER_STATE;
         gstate_temp_file_write_at((unsigned char far *)tbl,
                                   (unsigned long)(unsigned)GAM_ENC_OBJ_STATE((unsigned)(i * 0x23)), 0x1a4);
     }
@@ -162,7 +162,7 @@ void far rgnenc_load_encounter_actors(void) {
     struct Type1BakRec type1_rec;
     struct Type7BakRec type7_rec;
     short aActorSlots[7];
-    CombatActorInner inner;
+    CombatantState inner;
     int j;
     EncounterActorAux *pAux;
     int v;
@@ -379,7 +379,7 @@ void far rgnenc_zone_rectr_save_objects(void) {
         else
             *p = empty1;
     }
-    g_wLastTempWriteRecordKind = 1;
+    g_pendingTempWriteRegion = TWR_ENCOUNTER_STATE;
     gstate_temp_file_write_at((unsigned char far *)table, (unsigned long)(unsigned)GAM_ENC_OBJ_STATE(zone_rec),
                               0x1a4);
 }
@@ -406,7 +406,7 @@ void far rgnenc_persist_zone_snapshot(void) {
             pState->pose.nFacing = pCurEntry->orientation.yaw;
         }
     }
-    g_wLastTempWriteRecordKind = 1;
+    g_pendingTempWriteRegion = TWR_ENCOUNTER_STATE;
     gstate_temp_file_write_at((unsigned char far *)g_pEncounterObjectState,
                               (unsigned long)(unsigned)GAM_ENC_OBJ_STATE(record_base), 0x1a4);
     g_nCombatTempZoneEncounterCount = g_nEncounter_record_count;
@@ -428,7 +428,7 @@ int far rgnenc_persist_actor_placed(long record_id, int slot_index,
             else
                 record.pose = src_partial->pose;
             record.wKind_state = 0x400;
-            g_wLastTempWriteRecordKind = 1;
+            g_pendingTempWriteRegion = TWR_ENCOUNTER_STATE;
             gstate_temp_file_write_at((unsigned char far *)&record,
                                       (unsigned long)(unsigned)GAM_ENC_OBJ_STATE(nFileIdx), 0xc);
             return 1;
@@ -448,7 +448,7 @@ int far rgnenc_persist_actor_removed(long record_id, int slot_index) {
             removalRecord.pose.nWorld_x_offset = removalRecord.pose.nWorld_y_offset = 0;
             removalRecord.pose.nFacing = 0;
             removalRecord.wKind_state = 0x100;
-            g_wLastTempWriteRecordKind = 1;
+            g_pendingTempWriteRegion = TWR_ENCOUNTER_STATE;
             gstate_temp_file_write_at((unsigned char far *)&removalRecord,
                                       (unsigned long)(unsigned)GAM_ENC_OBJ_STATE(nFileIdx), 0xc);
             return 1;
@@ -473,7 +473,7 @@ void far rgnenc_reset_and_save(void) {
             pState->wKind_state = 0x200;
         }
     }
-    g_wLastTempWriteRecordKind = 1;
+    g_pendingTempWriteRegion = TWR_ENCOUNTER_STATE;
     gstate_temp_file_write_at((unsigned char far *)g_pEncounterObjectState,
                               (unsigned long)(unsigned)GAM_ENC_OBJ_STATE(record_base), 0x1a4);
     rgnenc_load_encounter_actors();
@@ -485,7 +485,7 @@ void far rgnenc_mark_defended(unsigned long filter_encounter_id) {
     unsigned int kind_hi;
     int v;
     short actor_ids[7];
-    CombatActorInner inner;
+    CombatantState inner;
 
     for (i = 0; i < g_nEncounter_record_count; i++) {
         enc_id = g_anEncounterRecordIds[i];
@@ -516,7 +516,7 @@ void far rgnenc_mark_defended(unsigned long filter_encounter_id) {
             if ((v = (int)(signed char)inner.flags) & CAF_DEAD)
                 continue;
             inner.flags |= CAF_DEAD;
-            g_wLastTempWriteRecordKind = 3;
+            g_pendingTempWriteRegion = TWR_COMBAT_ACTOR_INNER;
             gstate_temp_file_write_at((unsigned char far *)&inner,
                                       GAM_COMBAT_ACTOR_INNER((long)actor_ids[j]), 0x16);
         }

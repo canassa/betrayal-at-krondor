@@ -150,7 +150,7 @@ void far savegame_chapter_start_dispatch(int chapter) {
     }
 
     if (chapter > 1) {
-        g_wLastTempWriteRecordKind = 1;
+        g_pendingTempWriteRegion = TWR_ENCOUNTER_STATE;
         gstate_temp_file_write_at((unsigned char *)&g_gameState.nParty_gold,
                                   (unsigned long)(unsigned int)((chapter - 1) * 4 + 0x12f7), 4);
     }

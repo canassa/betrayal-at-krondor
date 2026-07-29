@@ -153,7 +153,7 @@ void far actorspawn_persist_to_temp(Actor far *actor) {
         if (sub != (ActorSubrec10_LastTouch far *)0) {
             sub->dwLast_touch_time = g_gameState.game_time;
         }
-        g_wLastTempWriteRecordKind = 4;
+        g_pendingTempWriteRegion = TWR_ACTOR_POOL;
         gstate_temp_file_write_at(&actor->kind, *(unsigned long far *)actor->temp_file_off,
                                   actorrec_payload_size(actor) + sizeof(Actor) - 6);
     }

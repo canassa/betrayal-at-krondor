@@ -53,7 +53,7 @@ void far shop_items_compute_actor_prices(Actor far *actor) {
     return;
 }
 
-int far shop_haggle_attempt_purchase(Actor far *actor, CombatActor *combatant, ItemSlot far *item,
+int far shop_haggle_attempt_purchase(Actor far *actor, Combatant *combatant, ItemSlot far *item,
                                      int mode) {
     register long *prices;
     int partyRoll;
@@ -69,7 +69,7 @@ int far shop_haggle_attempt_purchase(Actor far *actor, CombatActor *combatant, I
     price =
         (long)(unsigned int)rec->nBase_price * ((long)(int)sub->interact_msg.bFlags + 100) / 100;
     if ((unsigned char)sub->interact_msg.dwMessage_id != 0 && prices[item->item_id] == price) {
-        g_gameState.nEvtArgStat = combatant->cParty_slot - 1;
+        g_gameState.nEvtArgStat = combatant->charSlot - 1;
         partyRoll = stat_actor_get(combatant, 0xc, 0);
         partyRoll = shop_rand_max_of_3(partyRoll);
         merchantRoll = shop_rand_max_of_3(merchantRoll);

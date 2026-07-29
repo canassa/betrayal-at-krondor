@@ -33,23 +33,23 @@ typedef struct {
     unsigned char b[10];
 } AnimBuf10;
 
-static void far combataipath_rng_atk_tmp_tile(CombatActor *actor, int x, int y) {
+static void far combataipath_rng_atk_tmp_tile(Combatant *actor, int x, int y) {
     int hit;
     AnimBuf10 animBuf;
-    CombatActor savedActor;
-    CombatActorInner savedInner;
+    Combatant savedActor;
+    CombatantState savedInner;
     unsigned short action_id;
     int direction;
 
     hit = 1;
     animBuf = *(AnimBuf10 far *)MK_FP(FP_SEG(__dat_1492), (unsigned)__dat_1492);
     savedActor.inner = &savedInner;
-    savedInner.grid_x = actor->inner->grid_x;
-    savedInner.grid_y = actor->inner->grid_y;
-    actor->inner->grid_x = x;
-    actor->inner->grid_y = y;
-    action_id = actor->inner->class_id;
-    savedInner.class_id = action_id;
+    savedInner.gridX = actor->inner->gridX;
+    savedInner.gridY = actor->inner->gridY;
+    actor->inner->gridX = x;
+    actor->inner->gridY = y;
+    action_id = actor->inner->creatureType;
+    savedInner.creatureType = action_id;
     combatgrid_tile_set_word(x, y, 0);
     if (cspell_stat_effect_find_type(actor, 0x10) != -1) {
         direction = -1;
@@ -59,9 +59,9 @@ static void far combataipath_rng_atk_tmp_tile(CombatActor *actor, int x, int y) 
     combat_actor_anim0_if_not_dead(actor, direction);
     combat_actor_anim_step(animBuf.b, actor);
     world_rndr_ranged_attack_anim(actor, &savedActor, &hit, action_id, 100, animBuf.b[0]);
-    actor->inner->grid_x = savedInner.grid_x;
-    actor->inner->grid_y = savedInner.grid_y;
-    combatgrid_tile_set_word(savedInner.grid_x, savedInner.grid_y, (unsigned int)actor);
+    actor->inner->gridX = savedInner.gridX;
+    actor->inner->gridY = savedInner.gridY;
+    combatgrid_tile_set_word(savedInner.gridX, savedInner.gridY, (unsigned int)actor);
     return;
 }
 
@@ -79,60 +79,60 @@ static void combataipath_resolv_blockd_diag(int x, int y, int *dx, int *dy) {
     }
 }
 
-static int far combataipath_step_to_target(CombatActor *actor, int ranged) {
+static int far combataipath_step_to_target(Combatant *actor, int ranged) {
     int dx;
     int dy;
     int orig_x;
     int orig_y;
     int new_x;
     int new_y;
-    CombatActor prevActor;
-    CombatActorInner prevInner;
+    Combatant prevActor;
+    CombatantState prevInner;
     int target_x;
     int target_y;
     unsigned char scratch;
 
     prevActor.inner = &prevInner;
-    target_x = (char)actor->inner->pad_6[0];
-    target_y = (char)actor->inner->pad_6[1];
+    target_x = (char)actor->inner->destX;
+    target_y = (char)actor->inner->destY;
 
-    if (actor->inner->grid_x == target_x && actor->inner->grid_y == target_y)
+    if (actor->inner->gridX == target_x && actor->inner->gridY == target_y)
         goto LAB_0408;
 
     if (target_x < 0 || target_x >= 8 || target_y < 0 || target_y >= 13)
         return 0;
 
-    if (actor->inner->grid_x > target_x)
+    if (actor->inner->gridX > target_x)
         dx = -1;
-    else if (actor->inner->grid_x < target_x)
+    else if (actor->inner->gridX < target_x)
         dx = 1;
     else
         dx = 0;
 
-    if (actor->inner->grid_y > target_y)
+    if (actor->inner->gridY > target_y)
         dy = -1;
-    else if (actor->inner->grid_y < target_y)
+    else if (actor->inner->gridY < target_y)
         dy = 1;
     else
         dy = 0;
 
-    orig_x = actor->inner->grid_x;
-    orig_y = actor->inner->grid_y;
+    orig_x = actor->inner->gridX;
+    orig_y = actor->inner->gridY;
     combataipath_resolv_blockd_diag(orig_x, orig_y, &dx, &dy);
 
-    actor->inner->grid_x = actor->inner->grid_x + (char)dx;
-    actor->inner->grid_y = actor->inner->grid_y + (char)dy;
+    actor->inner->gridX = actor->inner->gridX + (char)dx;
+    actor->inner->gridY = actor->inner->gridY + (char)dy;
 
-    new_x = actor->inner->grid_x;
-    new_y = actor->inner->grid_y;
+    new_x = actor->inner->gridX;
+    new_y = actor->inner->gridY;
 
     if (combatgrid_tile_is_blocked(new_x, new_y) != 0) {
         if (combatgrid_tile_terrain_field(new_x, new_y) == 5 && g_bActorAdjacentToTarget != 0) {
             if (ranged != 0)
                 goto LAB_0408;
             if (combatgrid_place_actor_on_tile(new_x, new_y, new_x + dx, new_y + dy) == 0) {
-                actor->inner->grid_y = actor->inner->grid_y - (char)dy;
-                actor->inner->grid_x = actor->inner->grid_x - (char)dx;
+                actor->inner->gridY = actor->inner->gridY - (char)dy;
+                actor->inner->gridX = actor->inner->gridX - (char)dx;
                 combat_actor_path_blocked_anim();
                 goto LAB_038e;
             }
@@ -143,47 +143,47 @@ static int far combataipath_step_to_target(CombatActor *actor, int ranged) {
         }
         if (!((dx == 0 || dy != 0) && (dx != 0 || dy == 0))) {
 
-            if (combatgrid_tile_is_blocked(actor->inner->grid_x + (char)dy,
-                                           actor->inner->grid_y + (char)dx) == 0) {
-                actor->inner->grid_y = actor->inner->grid_y + (char)dx;
-                actor->inner->grid_x = actor->inner->grid_x + (char)dy;
+            if (combatgrid_tile_is_blocked(actor->inner->gridX + (char)dy,
+                                           actor->inner->gridY + (char)dx) == 0) {
+                actor->inner->gridY = actor->inner->gridY + (char)dx;
+                actor->inner->gridX = actor->inner->gridX + (char)dy;
             } else {
-                if (combatgrid_tile_is_blocked(actor->inner->grid_x - (char)dy,
-                                               actor->inner->grid_y - (char)dx) != 0)
+                if (combatgrid_tile_is_blocked(actor->inner->gridX - (char)dy,
+                                               actor->inner->gridY - (char)dx) != 0)
                     goto LAB_038e;
-                actor->inner->grid_y = actor->inner->grid_y - (char)dx;
-                actor->inner->grid_x = actor->inner->grid_x - (char)dy;
+                actor->inner->gridY = actor->inner->gridY - (char)dx;
+                actor->inner->gridX = actor->inner->gridX - (char)dy;
             }
         } else {
 
-            if (combatgrid_tile_is_blocked(actor->inner->grid_x - (char)dx, actor->inner->grid_y) ==
+            if (combatgrid_tile_is_blocked(actor->inner->gridX - (char)dx, actor->inner->gridY) ==
                 0) {
-                actor->inner->grid_x = actor->inner->grid_x - (char)dx;
-            } else if (combatgrid_tile_is_blocked(actor->inner->grid_x,
-                                                  actor->inner->grid_y - (char)dy) == 0) {
-                actor->inner->grid_y = actor->inner->grid_y - (char)dy;
+                actor->inner->gridX = actor->inner->gridX - (char)dx;
+            } else if (combatgrid_tile_is_blocked(actor->inner->gridX,
+                                                  actor->inner->gridY - (char)dy) == 0) {
+                actor->inner->gridY = actor->inner->gridY - (char)dy;
             }
         }
     }
 LAB_038e:
-    if (combatgrid_tile_is_blocked(actor->inner->grid_x, actor->inner->grid_y) == 0) {
+    if (combatgrid_tile_is_blocked(actor->inner->gridX, actor->inner->gridY) == 0) {
         if (ranged == 0) {
             combataipath_rng_atk_tmp_tile(actor, orig_x, orig_y);
-            prevActor.inner->grid_x = (unsigned char)orig_x;
-            prevActor.inner->grid_y = (unsigned char)orig_y;
+            prevActor.inner->gridX = (unsigned char)orig_x;
+            prevActor.inner->gridY = (unsigned char)orig_y;
             combat_actor_anim0_if_not_dead(actor, combat_actor_heading_from_to(&prevActor, actor));
         }
         return 1;
-    } else if (actor->inner->grid_x != orig_x || actor->inner->grid_y != orig_y) {
-        actor->inner->grid_x = (unsigned char)orig_x;
-        actor->inner->grid_y = (unsigned char)orig_y;
+    } else if (actor->inner->gridX != orig_x || actor->inner->gridY != orig_y) {
+        actor->inner->gridX = (unsigned char)orig_x;
+        actor->inner->gridY = (unsigned char)orig_y;
         return 0;
     }
 LAB_0408:
     return 1;
 }
 
-int far combataipath_actor_walk_path(CombatActor *actor, int ranged) {
+int far combataipath_actor_walk_path(Combatant *actor, int ranged) {
     int iSpeedRem;
     int result;
     int savedX;
@@ -192,14 +192,14 @@ int far combataipath_actor_walk_path(CombatActor *actor, int ranged) {
 
     result = 1;
     if (ranged != 0) {
-        savedX = actor->inner->grid_x;
-        savedY = actor->inner->grid_y;
+        savedX = actor->inner->gridX;
+        savedY = actor->inner->gridY;
     }
     {
         int iDist;
         int iSteps;
-        iDist = combatgrid_chebyshev_distance(actor->inner->grid_x, actor->inner->grid_y,
-                                              actor->inner->pad_6[0], actor->inner->pad_6[1]);
+        iDist = combatgrid_chebyshev_distance(actor->inner->gridX, actor->inner->gridY,
+                                              actor->inner->destX, actor->inner->destY);
         iSteps = g_acting_actor_speed;
         iSpeedRem = iSteps - iDist;
         if (iDist == 1) {
@@ -209,20 +209,20 @@ int far combataipath_actor_walk_path(CombatActor *actor, int ranged) {
         }
         while (iSteps != 0) {
             result = combataipath_step_to_target(actor, ranged);
-            if ((actor->inner->pad_6[0] == actor->inner->grid_x) &&
-                (actor->inner->pad_6[1] == actor->inner->grid_y)) {
+            if ((actor->inner->destX == actor->inner->gridX) &&
+                (actor->inner->destY == actor->inner->gridY)) {
                 iSteps = 0;
             } else {
                 iSteps = iSteps - 1;
             }
             if (ranged == 0) {
                 uTerrain =
-                    combatgrid_tile_terrain_field(actor->inner->grid_x, actor->inner->grid_y);
+                    combatgrid_tile_terrain_field(actor->inner->gridX, actor->inner->gridY);
                 switch (uTerrain) {
                 case 3:
-                    combatgrid_spread_tile_fx_line(actor->inner->grid_x, actor->inner->grid_y);
+                    combatgrid_spread_tile_fx_line(actor->inner->gridX, actor->inner->gridY);
                     combat_actor_play_short_cine(actor, 0);
-                    combatgrid_line_effect_propagate(actor->inner->grid_x, actor->inner->grid_y);
+                    combatgrid_line_effect_propagate(actor->inner->gridX, actor->inner->gridY);
                     combat_arena_apply_damage(actor, 100, 0, 3, 0x200, 0);
                     break;
                 case 8:
@@ -239,13 +239,13 @@ int far combataipath_actor_walk_path(CombatActor *actor, int ranged) {
     if (ranged == 0) {
         g_acting_actor_speed = iSpeedRem > 0 ? iSpeedRem : 0;
     } else {
-        actor->inner->grid_x = (unsigned char)savedX;
-        actor->inner->grid_y = (unsigned char)savedY;
+        actor->inner->gridX = (unsigned char)savedX;
+        actor->inner->gridY = (unsigned char)savedY;
     }
     return result;
 }
 
-void combataipath_select_target(CombatActor *actor, int max_dist, int target_mode) {
+void combataipath_select_target(Combatant *actor, int max_dist, int target_mode) {
     int attackers;
     int iDist;
     int bMatch;
@@ -286,11 +286,11 @@ void combataipath_select_target(CombatActor *actor, int max_dist, int target_mod
         maxAttackersPerTarget = 1;
     }
 
-    if (actor->inner->target == (CombatActor *)0) {
+    if (actor->inner->target == (Combatant *)0) {
         for (di = 0; di < g_nCombatActiveCount; di++) {
-            iDist = combatgrid_chebyshev_distance(actor->inner->grid_x, actor->inner->grid_y,
-                                                  g_pCombatActiveActors[di].inner->grid_x,
-                                                  g_pCombatActiveActors[di].inner->grid_y);
+            iDist = combatgrid_chebyshev_distance(actor->inner->gridX, actor->inner->gridY,
+                                                  g_pCombatActiveActors[di].inner->gridX,
+                                                  g_pCombatActiveActors[di].inner->gridY);
             bMatch = 0;
             switch (target_mode) {
             case 0:
@@ -310,12 +310,12 @@ void combataipath_select_target(CombatActor *actor, int max_dist, int target_mod
                     bMatch = 1;
                 break;
             case 6:
-                if (g_pCombatActiveActors[di].inner->target != (CombatActor *)0 &&
+                if (g_pCombatActiveActors[di].inner->target != (Combatant *)0 &&
                     (g_pCombatActiveActors[di].inner->target->inner->flags & CAF_DEAD) != 0)
                     bMatch = 1;
                 break;
             case 4:
-                if (g_pCombatActiveActors[di].inner->target != (CombatActor *)0 &&
+                if (g_pCombatActiveActors[di].inner->target != (Combatant *)0 &&
                     ((flags = (char)g_pCombatActiveActors[di].inner->target->inner->flags) & 2) ==
                         0)
                     bMatch = 1;
@@ -328,23 +328,23 @@ void combataipath_select_target(CombatActor *actor, int max_dist, int target_mod
             if (bMatch && ((flags = (char)g_pCombatActiveActors[di].inner->flags) & 2) == 0 &&
                 iDist < max_dist) {
 
-                if (g_pCombatActiveActors[di].inner->grid_x < actor->inner->grid_x) {
-                    approachX = g_pCombatActiveActors[di].inner->grid_x + 1;
+                if (g_pCombatActiveActors[di].inner->gridX < actor->inner->gridX) {
+                    approachX = g_pCombatActiveActors[di].inner->gridX + 1;
                 } else {
-                    approachX = g_pCombatActiveActors[di].inner->grid_x - 1;
+                    approachX = g_pCombatActiveActors[di].inner->gridX - 1;
                 }
-                tile_y = g_pCombatActiveActors[di].inner->grid_y;
-                if (g_pCombatActiveActors[di].inner->grid_y < actor->inner->grid_y) {
-                    tile_x = g_pCombatActiveActors[di].inner->grid_x;
-                    approachY = g_pCombatActiveActors[di].inner->grid_y + 1;
+                tile_y = g_pCombatActiveActors[di].inner->gridY;
+                if (g_pCombatActiveActors[di].inner->gridY < actor->inner->gridY) {
+                    tile_x = g_pCombatActiveActors[di].inner->gridX;
+                    approachY = g_pCombatActiveActors[di].inner->gridY + 1;
                 } else {
-                    tile_x = g_pCombatActiveActors[di].inner->grid_x;
-                    approachY = g_pCombatActiveActors[di].inner->grid_y - 1;
+                    tile_x = g_pCombatActiveActors[di].inner->gridX;
+                    approachY = g_pCombatActiveActors[di].inner->gridY - 1;
                 }
                 if (combatgrid_tile_is_blocked(approachX, tile_y) == 0 ||
                     combatgrid_tile_is_blocked(tile_x, approachY) == 0 ||
-                    (actor->inner->grid_x == approachX && actor->inner->grid_y == tile_y) ||
-                    (actor->inner->grid_x == tile_x && actor->inner->grid_y == approachY)) {
+                    (actor->inner->gridX == approachX && actor->inner->gridY == tile_y) ||
+                    (actor->inner->gridX == tile_x && actor->inner->gridY == approachY)) {
 
                     attackers = 0;
                     for (jj = 0; jj < g_nCombatOtherCount; jj++) {
@@ -357,12 +357,12 @@ void combataipath_select_target(CombatActor *actor, int max_dist, int target_mod
                         max_dist = iDist;
                         actor->inner->target = &g_pCombatActiveActors[di];
                         if (combatgrid_tile_is_blocked(approachX, tile_y) == 0 ||
-                            (actor->inner->grid_x == approachX && actor->inner->grid_y == tile_y)) {
-                            actor->inner->pad_6[0] = (unsigned char)approachX;
-                            actor->inner->pad_6[1] = (unsigned char)tile_y;
+                            (actor->inner->gridX == approachX && actor->inner->gridY == tile_y)) {
+                            actor->inner->destX = (unsigned char)approachX;
+                            actor->inner->destY = (unsigned char)tile_y;
                         } else {
-                            actor->inner->pad_6[0] = (unsigned char)tile_x;
-                            actor->inner->pad_6[1] = (unsigned char)approachY;
+                            actor->inner->destX = (unsigned char)tile_x;
+                            actor->inner->destY = (unsigned char)approachY;
                         }
                     }
                 }
@@ -371,14 +371,14 @@ void combataipath_select_target(CombatActor *actor, int max_dist, int target_mod
     }
 
     if (actor->inner->target != 0 &&
-        (actor->inner->grid_x != actor->inner->pad_6[0] ||
-         actor->inner->grid_y != actor->inner->pad_6[1]) &&
+        (actor->inner->gridX != actor->inner->destX ||
+         actor->inner->gridY != actor->inner->destY) &&
         combataipath_actor_walk_path(actor, 0) == 0) {
         actor->inner->target = 0;
     }
 }
 
-void far combataipath_followup_action(CombatActor *actor) {
+void far combataipath_followup_action(Combatant *actor) {
     int r;
     r = RND(100);
     if (r > 0x19) {
@@ -388,7 +388,7 @@ void far combataipath_followup_action(CombatActor *actor) {
     combatenc_set_flag8_clear_flag1(actor);
 }
 
-int combataipath_follow_tgt_check(CombatActor *actor, int max_dist, int target_mode) {
+int combataipath_follow_tgt_check(Combatant *actor, int max_dist, int target_mode) {
     int savedX;
     int savedY;
     int bFlag;
@@ -396,27 +396,27 @@ int combataipath_follow_tgt_check(CombatActor *actor, int max_dist, int target_m
     int f;
 
     bFlag = 0;
-    if (actor->inner->target != (CombatActor *)0x0) {
-        dist = combatgrid_chebyshev_distance(actor->inner->grid_x, actor->inner->grid_y,
-                                             actor->inner->target->inner->grid_x,
-                                             actor->inner->target->inner->grid_y);
+    if (actor->inner->target != (Combatant *)0x0) {
+        dist = combatgrid_chebyshev_distance(actor->inner->gridX, actor->inner->gridY,
+                                             actor->inner->target->inner->gridX,
+                                             actor->inner->target->inner->gridY);
     } else {
         dist = 2;
     }
-    savedX = actor->inner->grid_x;
-    savedY = actor->inner->grid_y;
+    savedX = actor->inner->gridX;
+    savedY = actor->inner->gridY;
     if ((dist > 1) || (combatgrid_actors_ortho_adj(actor, actor->inner->target) == 0)) {
         if (cspell_stat_effect_find_type(actor, 3) != -1) {
             g_acting_actor_speed = 0;
         }
-        actor->inner->target = (CombatActor *)0x0;
+        actor->inner->target = (Combatant *)0x0;
         combataipath_select_target(actor, max_dist, target_mode);
         bFlag = 1;
     }
-    if (actor->inner->target != (CombatActor *)0x0) {
-        dist = combatgrid_chebyshev_distance(actor->inner->grid_x, actor->inner->grid_y,
-                                             actor->inner->target->inner->grid_x,
-                                             actor->inner->target->inner->grid_y);
+    if (actor->inner->target != (Combatant *)0x0) {
+        dist = combatgrid_chebyshev_distance(actor->inner->gridX, actor->inner->gridY,
+                                             actor->inner->target->inner->gridX,
+                                             actor->inner->target->inner->gridY);
         if ((dist <= 1) && (combatgrid_actors_ortho_adj(actor, actor->inner->target) != 0) &&
             (((f = (signed char)actor->inner->flags) & 2) == 0)) {
             if (bFlag) {
@@ -426,14 +426,14 @@ int combataipath_follow_tgt_check(CombatActor *actor, int max_dist, int target_m
         }
         return 1;
     } else {
-        if ((actor->inner->grid_x == savedX) && (actor->inner->grid_y == savedY)) {
+        if ((actor->inner->gridX == savedX) && (actor->inner->gridY == savedY)) {
             return 0;
         }
     }
     return 1;
 }
 
-int far combataipath_low_health_action(CombatActor *actor) {
+int far combataipath_low_health_action(Combatant *actor) {
     int stat_pct;
     int dist;
     int r;
@@ -447,43 +447,43 @@ int far combataipath_low_health_action(CombatActor *actor) {
     return 0;
 }
 
-int far combataipath_action_6(CombatActor *actor) {
+int far combataipath_action_6(Combatant *actor) {
     int r;
     r = combataipath_follow_tgt_check(actor, 6, 0);
     return r;
 }
 
-int far combataipath_action_100_1(CombatActor *actor) {
+int far combataipath_action_100_1(Combatant *actor) {
     int r;
     r = combataipath_follow_tgt_check(actor, 100, 1);
     return r;
 }
 
-int far combataipath_action_100_2(CombatActor *actor) {
+int far combataipath_action_100_2(Combatant *actor) {
     int r;
     r = combataipath_follow_tgt_check(actor, 100, 2);
     return r;
 }
 
-int far combataipath_action_60064(CombatActor *actor) {
+int far combataipath_action_60064(Combatant *actor) {
     int r;
     r = combataipath_follow_tgt_check(actor, 100, 6);
     return r;
 }
 
-int far combataipath_action_50064(CombatActor *actor) {
+int far combataipath_action_50064(Combatant *actor) {
     int r;
     r = combataipath_follow_tgt_check(actor, 100, 5);
     return r;
 }
 
-int far combataipath_action_30064(CombatActor *actor) {
+int far combataipath_action_30064(Combatant *actor) {
     int r;
     r = combataipath_follow_tgt_check(actor, 100, 3);
     return r;
 }
 
-int far combataipath_action_40064(CombatActor *actor) {
+int far combataipath_action_40064(Combatant *actor) {
     int r;
     r = combataipath_follow_tgt_check(actor, 100, 4);
     return r;
@@ -493,14 +493,14 @@ int far combataipath_action_40064(CombatActor *actor) {
 
 #define AI_ACTION_INDEX ((short (*)[8])(g_combat_ai_action_table + 7))
 
-void far combataipath_select_action(CombatActor *actor) {
-    int(far * fn)(CombatActor *);
+void far combataipath_select_action(Combatant *actor) {
+    int(far * fn)(Combatant *);
 
     int i = 0;
     int ret = 0;
-    while (ret == 0 && i < 8 && actor->inner->pad_e[3] != 0) {
+    while (ret == 0 && i < 8 && actor->inner->aiPathProfile != 0) {
         fn = (int(far *)(
-            CombatActor *))AI_ACTION_FN[AI_ACTION_INDEX[(signed char)actor->inner->pad_e[3]][i]];
+            Combatant *))AI_ACTION_FN[AI_ACTION_INDEX[(signed char)actor->inner->aiPathProfile][i]];
         ret = fn(actor);
         i++;
     }

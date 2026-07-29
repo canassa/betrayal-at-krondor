@@ -35,7 +35,7 @@ void far worldframe_encounter_table_load(void) {
 }
 
 void far worldframe_encounter_table_apply(void) {
-    g_wLastTempWriteRecordKind = 1;
+    g_pendingTempWriteRegion = TWR_ENCOUNTER_STATE;
     gstate_temp_file_write_at((unsigned char far *)g_pEncounterTable, GAM_ENCOUNTER_TABLE, 0x668);
     galloc_zfree(g_pEncounterTable);
     g_pEncounterTable = 0;
@@ -44,7 +44,7 @@ void far worldframe_encounter_table_apply(void) {
 void worldframe_enc_tbl_reapply_chap(void) {
     if (g_game_mode == 2 && g_pEncounterTable != 0) {
 
-        g_wLastTempWriteRecordKind = 1;
+        g_pendingTempWriteRegion = TWR_ENCOUNTER_STATE;
         gstate_temp_file_write_at((unsigned char far *)g_pEncounterTable, GAM_ENCOUNTER_TABLE,
                                   sizeof(EncounterTable));
     }

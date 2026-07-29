@@ -709,7 +709,7 @@ static int cmbinv_actor_can_auto_equip(Actor far *actor, ItemSlot far *item) {
     if (actor->bResidence != RES_PARTY_SLOT) {
         return 0;
     }
-    slot = gstate_find_party_slot((CombatActor *)((char *)&g_gameState + 0x18 +
+    slot = gstate_find_party_slot((Combatant *)((char *)&g_gameState + 0x18 +
                                                   actor->loc.party_slot.wSlot_id * 0x5f)) +
            1;
     return cmbinv_member_can_equip_cat(slot, item) != 0 &&
@@ -957,7 +957,7 @@ int cmbinv_actor_pickup_item(Actor far *dst_actor, Actor far *src_actor, ItemSlo
             cmbinv_actor_inv_remove_item(src_actor, item);
         if (dst_actor->bResidence == RES_PARTY_SLOT)
             stat_actor_recalc_equip_bonuses(
-                (CombatActor *)((char *)&g_gameState + 0x18 +
+                (Combatant *)((char *)&g_gameState + 0x18 +
                                 dst_actor->loc.party_slot.wSlot_id * 0x5f));
         return 1;
     }

@@ -137,7 +137,7 @@ void far boot_party_state_load_from_temp(void) {
 void far boot_party_state_save_to_temp(void) {
     int i;
 
-    g_wLastTempWriteRecordKind = 0;
+    g_pendingTempWriteRegion = TWR_GAMESTATE;
     gstate_temp_file_write_at((unsigned char far *)&g_gameState, 0L, 0xad7);
     actorspawn_destroy_and_persist(g_gameState.shared_inventory);
     actorspawn_destroy_and_persist(g_gameState.ground_pile);

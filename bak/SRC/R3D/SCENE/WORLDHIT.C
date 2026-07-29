@@ -398,7 +398,7 @@ void world_rndr_apply_window_vport(void) {
     g_graphics_context.bClip_enabled = 1;
 }
 
-void far world_render_actor_at_position(int actor_kind, int grid_x, int grid_y) {
+void far world_render_actor_at_position(int actor_kind, int gridX, int gridY) {
     WorldObject entry;
     unsigned char animState[2];
 
@@ -408,7 +408,7 @@ void far world_render_actor_at_position(int actor_kind, int grid_x, int grid_y) 
     entry.shapeId = 0;
     entry.orientation.pitch = entry.orientation.roll = entry.orientation.yaw = 0;
     entry.state.stateBits = (unsigned short)animState;
-    if (grid_x == -1) {
+    if (gridX == -1) {
         if (screen_cursor_get_y() > 0x8c) {
             entry.pos.xy.nWorld_y = 0;
         } else {
@@ -416,9 +416,9 @@ void far world_render_actor_at_position(int actor_kind, int grid_x, int grid_y) 
         }
     } else {
         entry.pos.xy.nWorld_x =
-            (long)(grid_x * g_grid_tile_size + (g_grid_tile_size >> 1) + (-0x4b0));
+            (long)(gridX * g_grid_tile_size + (g_grid_tile_size >> 1) + (-0x4b0));
 
-        entry.pos.xy.nWorld_y = (long)(grid_y * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80);
+        entry.pos.xy.nWorld_y = (long)(gridY * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80);
         entry.pos.nWorld_z = 0;
     }
     if (entry.pos.xy.nWorld_y != 0) {
@@ -431,7 +431,7 @@ typedef struct {
 } ActorAnimBuf;
 
 void far world_render_actor_at_tile(int actor_id, int tile_x, int tile_y, int z, unsigned int yaw,
-                                    CombatActor *override_actor) {
+                                    Combatant *override_actor) {
     ActorAnimBuf animBuf;
     Shape far *pShape;
     WorldObject entry;
@@ -446,7 +446,7 @@ void far world_render_actor_at_tile(int actor_id, int tile_x, int tile_y, int z,
     entry.pos.xy.nWorld_x = (long)(tile_x * g_grid_tile_size + (g_grid_tile_size >> 1) + (-0x4b0));
     entry.pos.xy.nWorld_y = (long)(tile_y * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80);
     entry.pos.nWorld_z = z;
-    if (override_actor != 0 && override_actor->inner->class_id != -1) {
+    if (override_actor != 0 && override_actor->inner->creatureType != -1) {
         combat_actor_anim_step(animBuf.b, override_actor);
     }
     if (pShape->kind != 0) {
@@ -560,17 +560,17 @@ void far world_render_view(int force_overlay, int chapter_split) {
     }
 }
 
-int far world_rndr_actor_angle_actor(CombatActor *from, CombatActor *to) {
+int far world_rndr_actor_angle_actor(Combatant *from, Combatant *to) {
     long dx, dy;
     int result;
     Vec3Long from_pos;
     Vec3Long to_pos;
 
     from_pos.nX =
-        (long)(from->inner->grid_x * g_grid_tile_size + (g_grid_tile_size >> 1) + (-0x4b0));
-    from_pos.nY = (long)(from->inner->grid_y * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80);
-    to_pos.nX = (long)(to->inner->grid_x * g_grid_tile_size + (g_grid_tile_size >> 1) + (-0x4b0));
-    to_pos.nY = (long)(to->inner->grid_y * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80);
+        (long)(from->inner->gridX * g_grid_tile_size + (g_grid_tile_size >> 1) + (-0x4b0));
+    from_pos.nY = (long)(from->inner->gridY * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80);
+    to_pos.nX = (long)(to->inner->gridX * g_grid_tile_size + (g_grid_tile_size >> 1) + (-0x4b0));
+    to_pos.nY = (long)(to->inner->gridY * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80);
     dx = to_pos.nX - from_pos.nX;
     dy = to_pos.nY - from_pos.nY;
     result = actormotion_atan2_long(dx, dy);
@@ -582,11 +582,11 @@ typedef struct {
 } AnimBuf10;
 
 #pragma option -O-b
-CombatActor *world_rndr_ranged_attack_anim(CombatActor *attacker, CombatActor *target,
+Combatant *world_rndr_ranged_attack_anim(Combatant *attacker, Combatant *target,
                                            int *p_hit_out, unsigned short action_id, int speed,
                                            char anim_override) {
-    CombatActor *tgt;
-    CombatActor *hit;
+    Combatant *tgt;
+    Combatant *hit;
     Shape far *pShape;
     int scr[3]; /* projected screen pos; scr[2] never read */
     char animBuf[10];
@@ -611,11 +611,11 @@ CombatActor *world_rndr_ranged_attack_anim(CombatActor *attacker, CombatActor *t
 
     *(AnimBuf10 *)animBuf =
         *(AnimBuf10 far *)MK_FP(FP_SEG(g_pMapIconsTable), (unsigned)g_abActorAnimTemplateRanged);
-    targetIsActionClass = (unsigned int)(tgt->inner->class_id == (short)action_id);
+    targetIsActionClass = (unsigned int)(tgt->inner->creatureType == (short)action_id);
 
     /* No random deflection once the shot already hit, or when the target has
      * no class record; otherwise deflect the heading by a random ±[0x400,0x700). */
-    if (*p_hit_out != 0 || tgt->inner->class_id == -1) {
+    if (*p_hit_out != 0 || tgt->inner->creatureType == -1) {
         deflectAngle = 0;
     } else {
         r_local = RND2(2);
@@ -634,17 +634,17 @@ CombatActor *world_rndr_ranged_attack_anim(CombatActor *attacker, CombatActor *t
         }
     }
     projectile.base.pos.xy.nWorld_x =
-        (long)(attacker->inner->grid_x * g_grid_tile_size + (g_grid_tile_size >> 1) + (-0x4b0));
+        (long)(attacker->inner->gridX * g_grid_tile_size + (g_grid_tile_size >> 1) + (-0x4b0));
     projectile.base.pos.xy.nWorld_y =
-        (long)(attacker->inner->grid_y * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80);
+        (long)(attacker->inner->gridY * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80);
     if ((targetIsActionClass == 0) && (action_id != 4)) {
         projectile.base.pos.nWorld_z = 200;
     } else {
         projectile.base.pos.nWorld_z = 0;
     }
     startPos.nX =
-        (long)(tgt->inner->grid_x * g_grid_tile_size + (g_grid_tile_size >> 1) + (-0x4b0));
-    startPos.nY = (long)(tgt->inner->grid_y * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80);
+        (long)(tgt->inner->gridX * g_grid_tile_size + (g_grid_tile_size >> 1) + (-0x4b0));
+    startPos.nY = (long)(tgt->inner->gridY * g_grid_tile_size + (g_grid_tile_size >> 1) + 0xc80);
     startPos.nZ = (long)250; /* z set but never read — the 2D distance below only uses nX/nY */
     projectile.base.orientation.pitch = projectile.base.orientation.roll = 0;
     projectile.base.orientation.yaw =
@@ -697,7 +697,7 @@ CombatActor *world_rndr_ranged_attack_anim(CombatActor *attacker, CombatActor *t
         screen_frame_present();
         tileX = (projectile.base.pos.xy.nWorld_x + 0x4b0) / g_grid_tile_size;
         tileY = (projectile.base.pos.xy.nWorld_y + (-0xc80)) / g_grid_tile_size;
-        hit = (CombatActor *)combatgrid_tile_terrain((char)tileX, (char)tileY);
+        hit = (Combatant *)combatgrid_tile_terrain((char)tileX, (char)tileY);
         if ((hit == attacker) || (hit == tgt) || (canHitOthers == 0) ||
             (hit != 0 && (hit->inner->flags & CAF_DEAD) != 0) || (*p_hit_out != 0)) {
             hit = 0;

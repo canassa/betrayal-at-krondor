@@ -1503,7 +1503,7 @@ void mainmenu_save_party_to_tmp(void) {
     int i;
 
     zone_savegame_snap_world_state();
-    g_wLastTempWriteRecordKind = 0;
+    g_pendingTempWriteRegion = TWR_GAMESTATE;
 
     gstate_temp_file_write_at((unsigned char far *)&g_gameState, 0L, 0xad7);
     g_gameState.shared_inventory->needsFlush = TRUE;

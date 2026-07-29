@@ -71,7 +71,7 @@ int cbstat_item_get_condition(ItemSlot far *slot) {
     return condition;
 }
 
-static int far cbstat_actor_find_equipped_item(CombatActor *actor, ItemRecord far *item) {
+static int far cbstat_actor_find_equipped_item(Combatant *actor, ItemRecord far *item) {
     Actor far *actor_record;
     int i;
     int result;
@@ -138,30 +138,30 @@ int cbstat_char_bitmap_3w_test_170c(int char_idx, int bit_idx) {
     return result;
 }
 
-unsigned int cbstat_actor_class_table_1802(CombatActor *actor) {
-    return g_aClassCombatGroup[actor->inner->class_id];
+unsigned int cbstat_actor_class_table_1802(Combatant *actor) {
+    return g_aClassCombatGroup[actor->inner->creatureType];
 }
 
-int far cbstat_apply_proficiency_bonus(CombatActor *actor, int value, unsigned int proficiency_mask) {
+int far cbstat_apply_proficiency_bonus(Combatant *actor, int value, unsigned int proficiency_mask) {
     unsigned int entry;
-    entry = g_aClassProficiencyMask[actor->inner->class_id];
+    entry = g_aClassProficiencyMask[actor->inner->creatureType];
     if ((entry & proficiency_mask) != 0) {
         value = value + (value >> 1);
     }
     return value;
 }
 
-int cbstat_apply_weakness_penalty(CombatActor *actor, int value, unsigned int weakness_mask) {
+int cbstat_apply_weakness_penalty(Combatant *actor, int value, unsigned int weakness_mask) {
     unsigned int entry;
-    entry = g_aClassWeaknessMask[actor->inner->class_id];
+    entry = g_aClassWeaknessMask[actor->inner->creatureType];
     if ((entry & weakness_mask) != 0) {
         value = value >> 1;
     }
     return value;
 }
 
-void far cbstat_apply_drain_tick(CombatActor *actor) {
-    if ((g_aClassWeaknessMask[actor->inner->class_id] & 1) == 0) {
+void far cbstat_apply_drain_tick(Combatant *actor) {
+    if ((g_aClassWeaknessMask[actor->inner->creatureType] & 1) == 0) {
         if (cbstat_damage_apply_protection(actor, 1, 0x80) != 0) {
             actor->inner->flags |= CAF_POISON;
             stat_combatant_apply_delta(actor, 2, RNDR(10, 59));
@@ -169,7 +169,7 @@ void far cbstat_apply_drain_tick(CombatActor *actor) {
     }
 }
 
-unsigned int cbstat_armor_coverage_mask(CombatActor *combat_actor) {
+unsigned int cbstat_armor_coverage_mask(Combatant *combat_actor) {
     Actor far *actor_record;
     ItemSlot far *slot;
     ItemRecord far *item_rec;
@@ -219,7 +219,7 @@ unsigned int cbstat_armor_coverage_mask(CombatActor *combat_actor) {
     return mask;
 }
 
-int far cbstat_scale_base_stat_pct(CombatActor *actor, int percent) {
+int far cbstat_scale_base_stat_pct(Combatant *actor, int percent) {
     int result;
     int base;
 
@@ -228,7 +228,7 @@ int far cbstat_scale_base_stat_pct(CombatActor *actor, int percent) {
     return result;
 }
 
-int cbstat_apply_equipped_item_mult(CombatActor *actor, int value, int category) {
+int cbstat_apply_equipped_item_mult(Combatant *actor, int value, int category) {
     int result;
     Actor far *actor_record;
     ItemSlot far *slot;
@@ -263,7 +263,7 @@ int cbstat_apply_equipped_item_mult(CombatActor *actor, int value, int category)
     return result;
 }
 
-static int far cbstat_compute_defense_value(CombatActor *actor) {
+static int far cbstat_compute_defense_value(Combatant *actor) {
     int value;
 
     if (combatenc_actor_can_act(actor, 0) != 0) {
@@ -281,7 +281,7 @@ static int far cbstat_compute_defense_value(CombatActor *actor) {
     return value;
 }
 
-int cbstat_damage_apply_protection(CombatActor *actor, int damage, int damage_type) {
+int cbstat_damage_apply_protection(Combatant *actor, int damage, int damage_type) {
     Actor far *actor_record;
     int i;
     ItemSlot far *slot;
@@ -325,7 +325,7 @@ int cbstat_damage_apply_protection(CombatActor *actor, int damage, int damage_ty
     return damage;
 }
 
-int far cbstat_armor_absorption_by_class(CombatActor *attacker, CombatActor *defender,
+int far cbstat_armor_absorption_by_class(Combatant *attacker, Combatant *defender,
                                          int attack_type) {
     int i;
     Actor far *actor_record;
@@ -385,8 +385,8 @@ LAB_077a:
     return damage;
 }
 
-int far cbstat_compute_attack_damage(ItemRecord far *weapon, CombatActor *attacker,
-                                     CombatActor *defender, int attack_type) {
+int far cbstat_compute_attack_damage(ItemRecord far *weapon, Combatant *attacker,
+                                     Combatant *defender, int attack_type) {
     int mult;
     int damage;
 
@@ -400,7 +400,7 @@ int far cbstat_compute_attack_damage(ItemRecord far *weapon, CombatActor *attack
     } else {
     }
     damage += cbstat_armor_absorption_by_class(attacker, defender, attack_type);
-    if (defender->inner->class_id == 0x12 || defender->inner->class_id == 0x15)
+    if (defender->inner->creatureType == 0x12 || defender->inner->creatureType == 0x15)
         if (itemtbl_find_by_full_record(weapon) == 0x16)
             damage <<= 1;
     if (damage < 1)
@@ -412,7 +412,7 @@ int far cbstat_compute_attack_damage(ItemRecord far *weapon, CombatActor *attack
     return damage;
 }
 
-ItemRecord far *cbstat_find_intact_equip_cat(CombatActor *actor, int category) {
+ItemRecord far *cbstat_find_intact_equip_cat(Combatant *actor, int category) {
     Actor far *actor_record;
     ItemRecord far *pItem;
     int altcategory;
@@ -436,7 +436,7 @@ ItemRecord far *cbstat_find_intact_equip_cat(CombatActor *actor, int category) {
     return (ItemRecord far *)0;
 }
 
-void cbstat_damage_equipped_items(CombatActor *actor, int category, int severity) {
+void cbstat_damage_equipped_items(Combatant *actor, int category, int severity) {
     Actor far *actor_record;
     ItemRecord far *item_rec;
     int altcategory;
@@ -494,7 +494,7 @@ void cbstat_damage_equipped_items(CombatActor *actor, int category, int severity
     return;
 }
 
-int far cbstat_magic_attack_bonus(CombatActor *actor) {
+int far cbstat_magic_attack_bonus(Combatant *actor) {
     int interim;
     int class_group;
     int modifier;
@@ -522,7 +522,7 @@ int far cbstat_magic_attack_bonus(CombatActor *actor) {
     return 0;
 }
 
-int far cbstat_magic_defense_bonus(CombatActor *actor) {
+int far cbstat_magic_defense_bonus(Combatant *actor) {
     int class_group;
     int modifier;
     ItemRecord far *item_rec;
@@ -558,7 +558,7 @@ int far cbstat_magic_defense_bonus(CombatActor *actor) {
     return result;
 }
 
-int cbstat_to_hit_roll(CombatActor *attacker, CombatActor *target, int roll,
+int cbstat_to_hit_roll(Combatant *attacker, Combatant *target, int roll,
                        ItemRecord far *weapon_item) {
     unsigned int class_idx;
     int table_acc;
@@ -602,7 +602,7 @@ int cbstat_to_hit_roll(CombatActor *attacker, CombatActor *target, int roll,
     return result;
 }
 
-int cbstat_inv_item_condition_rec(ItemRecord far *target_far, CombatActor *actor) {
+int cbstat_inv_item_condition_rec(ItemRecord far *target_far, Combatant *actor) {
     Actor far *actor_record;
     int i;
     int condition;

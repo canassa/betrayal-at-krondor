@@ -16,7 +16,7 @@
 #include "SRC/COMBAT/SPELL/SPELLFX.H"
 #include "SRC/GAME/CFGPARSE.H"
 
-unsigned short g_wLastTempWriteRecordKind = 0xffff;
+TempWriteRegion g_pendingTempWriteRegion = TWR_NONE;
 char g_abChapterEventSlot[9] = {0x00, 0x04, 0x04, 0x01, 0x04, 0x02, 0x04, 0x02, 0x03};
 ResFile *g_tempGamFP = NULL;
 char g_abSleepStatDelta[CHARACTER_POOL_SIZE] = {0xfe, 0xff, 0xfe, 0xfe, 0xfe, 0xfd};
@@ -189,39 +189,39 @@ int gstate_temp_file_write_at(unsigned char far *src_far, unsigned long offset, 
     unsigned long hi;
     if (g_tempGamFP == (ResFile *)0 || offset > 0x51aa9)
         return 0;
-    switch (g_wLastTempWriteRecordKind) {
-    case 1:
+    switch (g_pendingTempWriteRegion) {
+    case TWR_ENCOUNTER_STATE:
         lo = 0xad7;
         hi = 0x90e7;
         if (offset < lo || offset + bytes > hi)
             return 0;
         break;
-    case 2:
+    case TWR_COMBAT_ACTOR:
         lo = 0x90e7;
         hi = lo + 0x281fe;
         if (offset < lo || offset + bytes > hi)
             return 0;
         break;
-    case 3:
+    case TWR_COMBAT_ACTOR_INNER:
         lo = 0x312e5;
         hi = lo + 0x94ac;
         if (offset < lo || offset + bytes > hi)
             return 0;
         break;
-    case 4:
+    case TWR_ACTOR_POOL:
         lo = 0x3a791;
         hi = 0x51aa9;
         if (offset < lo || offset + bytes > hi)
             return 0;
         break;
-    case 0:
+    case TWR_GAMESTATE:
         lo = 0;
         hi = 0xad7;
         if (offset < lo || offset + bytes > hi)
             return 0;
         break;
     }
-    g_wLastTempWriteRecordKind = 0xffff;
+    g_pendingTempWriteRegion = TWR_NONE;
 #endif
     if (res_fseek(g_tempGamFP, offset, SEEK_SET) != 0) {
         res_fseek(g_tempGamFP, 0, SEEK_SET);
@@ -252,7 +252,7 @@ static int far gstate_consume_rations_tick(int ctx) {
 
 int far gstate_member_consume_rations(int member_slot, int a) {
     int ret;
-    CombatActor *actor;
+    Combatant *actor;
 
     actor = &g_gameState.characters[member_slot];
     ret = 0;
@@ -352,7 +352,7 @@ int far gstate_advance_time(long seconds, int flags, int recompute_party, int a,
     int old_hd;
     int eventTotal;
     int old_tick;
-    CombatActor *member;
+    Combatant *member;
 
     eventTotal = 0;
     old_tick = (int)(g_gameState.game_time % 0xa8c0 / 0x708);
@@ -413,26 +413,26 @@ int gstate_is_party_member(int actor_id) {
     return 0;
 }
 
-int gstate_actor_is_caster(CombatActor *actor) {
+int gstate_actor_is_caster(Combatant *actor) {
     return actor->stats[SKILL_CASTING].max != 0;
 }
 
-CombatActor *gstate_party_member_record(int slot) {
+Combatant *gstate_party_member_record(int slot) {
     if (slot >= 0 && slot < g_gameState.partySize) {
         return &g_gameState.characters[g_gameState.activeParty[slot]];
     }
     return 0;
 }
 
-int gstate_find_party_slot(CombatActor *actor) {
+int gstate_find_party_slot(Combatant *actor) {
     int result_slot;
     int i;
 
     i = 0;
     result_slot = -1;
     for (; i < g_gameState.partySize; i = i + 1) {
-        if (g_gameState.characters[g_gameState.activeParty[i]].cParty_slot ==
-            actor->cParty_slot) {
+        if (g_gameState.characters[g_gameState.activeParty[i]].charSlot ==
+            actor->charSlot) {
             result_slot = i;
         }
     }

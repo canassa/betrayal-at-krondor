@@ -112,9 +112,9 @@ GridCombatant *combatgrid_find_cmbt_at_tile(char tile_x, char tile_y) {
 }
 
 unsigned int combatgrid_tile_blockd_cmbt(char tile_x, char tile_y) {
-    CombatActor *actor;
-    actor = (CombatActor *)combatgrid_tile_terrain(tile_x, tile_y);
-    if (actor == (CombatActor *)0 || (actor->inner->flags & CAF_DEAD) != 0)
+    Combatant *actor;
+    actor = (Combatant *)combatgrid_tile_terrain(tile_x, tile_y);
+    if (actor == (Combatant *)0 || (actor->inner->flags & CAF_DEAD) != 0)
         return 0;
     return 1;
 }
@@ -137,7 +137,7 @@ unsigned int combatgrid_tile_is_blocked(char tile_x, char tile_y) {
 
 void combatgrid_tile_set_word(char x, char y, unsigned int value) {
     if (combatgrid_coord_valid((int)x, (int)y) != 0) {
-        g_combat_tile_grid[x][y].pOccupant = (CombatActor *)value;
+        g_combat_tile_grid[x][y].pOccupant = (Combatant *)value;
     }
     return;
 }
@@ -504,10 +504,10 @@ void combatgrid_tile_to_world_rotated(WorldPos2 *p_out, int tile_x, int tile_y) 
 }
 
 void far combatgrid_actor_set_grid_pos(int actor_idx, int new_x, int new_y) {
-    combatgrid_tile_set_word((g_combat_actors_A[actor_idx].inner)->grid_x,
-                             (g_combat_actors_A[actor_idx].inner)->grid_y, 0);
-    (g_combat_actors_A[actor_idx].inner)->grid_x = (unsigned char)new_x;
-    (g_combat_actors_A[actor_idx].inner)->grid_y = (unsigned char)new_y;
+    combatgrid_tile_set_word((g_combat_actors_A[actor_idx].inner)->gridX,
+                             (g_combat_actors_A[actor_idx].inner)->gridY, 0);
+    (g_combat_actors_A[actor_idx].inner)->gridX = (unsigned char)new_x;
+    (g_combat_actors_A[actor_idx].inner)->gridY = (unsigned char)new_y;
     combat_actor_place_on_free_tile(&g_combat_actors_A[actor_idx]);
     return;
 }
@@ -572,8 +572,8 @@ void combatgrid_load_traps_dat(void) {
                 actor_idx = (int)recordId - 0xf;
                 if (actor_idx < g_combat_count_A) {
                     combatgrid_actor_set_grid_pos(actor_idx, (int)(char)tileX, (int)(char)tileY);
-                    combatgrid_set_tile_effect(g_combat_actors_A[actor_idx].inner->grid_x,
-                                               g_combat_actors_A[actor_idx].inner->grid_y, recordId,
+                    combatgrid_set_tile_effect(g_combat_actors_A[actor_idx].inner->gridX,
+                                               g_combat_actors_A[actor_idx].inner->gridY, recordId,
                                                -1);
                 }
             } else if (recordId == 0x12) {
@@ -619,7 +619,7 @@ void combatgrid_tile_fx_init_walk(void) {
                 combatgrid_set_tile_effect((char)col, (char)row, 0, -1);
             else
                 combatgrid_set_tile_effect((char)col, (char)row, 2, -1);
-            g_combat_tile_grid[col][row].pOccupant = (CombatActor *)0;
+            g_combat_tile_grid[col][row].pOccupant = (Combatant *)0;
             g_world_camera->forwardVelocity = g_grid_tile_size;
             actormotion_integrate(g_world_camera);
             col++;
@@ -669,7 +669,7 @@ void far combatgrid_classify_tiles_px(void) {
                 combatgrid_set_tile_effect((char)row, (char)col, 0, -1);
             else
                 combatgrid_set_tile_effect((char)row, (char)col, 2, -1);
-            g_combat_tile_grid[row][col].pOccupant = (CombatActor *)0;
+            g_combat_tile_grid[row][col].pOccupant = (Combatant *)0;
             col++;
         } while (col < 0xd);
         row++;
@@ -794,18 +794,18 @@ void combatgrid_draw_terrain_walls(void) {
 
 void far combatgrid_apply_tile_status_fx(int tile_x, int tile_y, int target_actor) {
     int effect_slot;
-    CombatActor tempActor;
-    CombatActorInner tempInner;
+    Combatant tempActor;
+    CombatantState tempInner;
 
     if (target_actor != 0) {
         combatgrid_tile_set_word(tile_x, tile_y, (unsigned int)&tempActor);
     }
-    tempInner.grid_x = tile_x;
-    tempInner.grid_y = tile_y;
-    tempInner.dmg_value = '\0';
-    tempInner.dmg_frames_left = '\0';
+    tempInner.gridX = tile_x;
+    tempInner.gridY = tile_y;
+    tempInner.dmgFloatValue = '\0';
+    tempInner.dmgFloatFrames = '\0';
     tempActor.inner = &tempInner;
-    tempActor.inner->class_id = -1;
+    tempActor.inner->creatureType = -1;
     if (target_actor != 0) {
         effect_slot = cspell_status_effect_add(&tempActor, 4, 0, 0, '\0');
         g_nVfxParticleColor = 0x6f;
@@ -878,7 +878,7 @@ int far combatgrid_place_actor_on_tile(int tile_x, int tile_y, int new_tile_x, i
     combatgrid_set_tile_effect((unsigned char)tile_x, (unsigned char)tile_y, 0, -1);
     if (combatgrid_tile_terrain_field((unsigned char)new_tile_x, (unsigned char)new_tile_y) == 3) {
         combatgrid_spread_tile_fx_line(new_tile_x, new_tile_y);
-        combat_actor_play_short_cine((CombatActor *)0, 0);
+        combat_actor_play_short_cine((Combatant *)0, 0);
         combatgrid_line_effect_propagate(new_tile_x, new_tile_y);
         combatgrid_apply_tile_status_fx(new_tile_x, new_tile_y, 1);
         cmbt->tile_x = 0xff;
@@ -1303,8 +1303,8 @@ int combatgrid_actor_past_terr6_row(void) {
     i = 0;
     if (i < g_combat_count_A) {
         do {
-            if (g_combat_actors_A[i].cParty_slot != '\0' &&
-                g_combat_actors_A[i].inner->grid_y >= foundY) {
+            if (g_combat_actors_A[i].charSlot != '\0' &&
+                g_combat_actors_A[i].inner->gridY >= foundY) {
                 return 1;
             }
             i++;
@@ -1365,24 +1365,24 @@ int combatgrid_chebyshev_distance(char x1, char y1, char x2, char y2) {
     return result;
 }
 
-int combatgrid_actors_ortho_adj(CombatActor *actor_a, CombatActor *actor_b) {
+int combatgrid_actors_ortho_adj(Combatant *actor_a, Combatant *actor_b) {
     int dist;
 
-    dist = combatgrid_chebyshev_distance(actor_a->inner->grid_x, actor_a->inner->grid_y,
-                                         actor_b->inner->grid_x, actor_b->inner->grid_y);
-    return (dist == 1) && (combatgrid_is_pure_diagonal(actor_a, (int)actor_b->inner->grid_x,
-                                                       (int)actor_b->inner->grid_y) == 0);
+    dist = combatgrid_chebyshev_distance(actor_a->inner->gridX, actor_a->inner->gridY,
+                                         actor_b->inner->gridX, actor_b->inner->gridY);
+    return (dist == 1) && (combatgrid_is_pure_diagonal(actor_a, (int)actor_b->inner->gridX,
+                                                       (int)actor_b->inner->gridY) == 0);
 }
 
-int combatgrid_is_pure_diagonal(CombatActor *actor, int target_x, int target_y) {
+int combatgrid_is_pure_diagonal(Combatant *actor, int target_x, int target_y) {
     int ax;
     int ay;
     int t;
     int dx;
     int dy;
 
-    ax = (int)actor->inner->grid_x;
-    ay = (int)actor->inner->grid_y;
+    ax = (int)actor->inner->gridX;
+    ay = (int)actor->inner->gridY;
     if (ax > target_x) {
         t = target_x;
         target_x = ax;
@@ -1398,26 +1398,26 @@ int combatgrid_is_pure_diagonal(CombatActor *actor, int target_x, int target_y) 
     return (unsigned int)(dx == dy);
 }
 
-int far combatgrid_actor_try_step_tile(CombatActor *actor, int tx, int ty) {
+int far combatgrid_actor_try_step_tile(Combatant *actor, int tx, int ty) {
     int result;
 
     if (combatgrid_tile_terrain_field((unsigned char)tx, (unsigned char)ty) == 5) {
-        if (combatgrid_chebyshev_distance(actor->inner->grid_x, actor->inner->grid_y, (unsigned char)tx,
+        if (combatgrid_chebyshev_distance(actor->inner->gridX, actor->inner->gridY, (unsigned char)tx,
                                           (unsigned char)ty) == 1) {
             result = 1;
         } else {
             result = 0;
         }
     } else {
-        actor->inner->pad_6[0] = (unsigned char)tx;
-        actor->inner->pad_6[1] = (unsigned char)ty;
+        actor->inner->destX = (unsigned char)tx;
+        actor->inner->destY = (unsigned char)ty;
         result = combataipath_actor_walk_path(actor, 1);
     }
     return result;
 }
 
-void far combatgrid_build_move_attack_map(CombatActor *actor) {
-    CombatActor *target;
+void far combatgrid_build_move_attack_map(Combatant *actor) {
+    Combatant *target;
     int col;
     int row;
 
@@ -1429,8 +1429,8 @@ void far combatgrid_build_move_attack_map(CombatActor *actor) {
             if (combatgrid_actor_try_step_tile(actor, col, row) != 0) {
                 g_combat_move_map[col][row] |= 1;
             }
-            target = (CombatActor *)combatgrid_tile_terrain((char)col, (char)row);
-            if (target != (CombatActor *)0x0) {
+            target = (Combatant *)combatgrid_tile_terrain((char)col, (char)row);
+            if (target != (Combatant *)0x0) {
                 if (combat_actor_trace_proj_path(actor, target, 0) != 0) {
                     g_combat_move_map[col][row] |= 2;
                 }
@@ -1446,15 +1446,15 @@ int combatgrid_cursor_tile_movable(void) {
     return (signed char)g_combat_move_map[g_cursor_tile_x][g_cursor_tile_y] & 1;
 }
 
-int combatgrid_tile_has_terr_bit2(CombatActor *actor) {
-    if (actor != (CombatActor *)0 &&
-        combatgrid_coord_valid((int)actor->inner->grid_x, (int)actor->inner->grid_y) != 0) {
-        return (int)(char)g_combat_move_map[actor->inner->grid_x][actor->inner->grid_y] & 2;
+int combatgrid_tile_has_terr_bit2(Combatant *actor) {
+    if (actor != (Combatant *)0 &&
+        combatgrid_coord_valid((int)actor->inner->gridX, (int)actor->inner->gridY) != 0) {
+        return (int)(char)g_combat_move_map[actor->inner->gridX][actor->inner->gridY] & 2;
     }
     return 0;
 }
 
-void far combatgrid_actor_step_to_tile(CombatActor *mover, int tile_x, int tile_y) {
+void far combatgrid_actor_step_to_tile(Combatant *mover, int tile_x, int tile_y) {
     audio_play(1);
     g_nCombatTileX = tile_x;
     g_nCombatTileY = tile_y;
@@ -1463,34 +1463,34 @@ void far combatgrid_actor_step_to_tile(CombatActor *mover, int tile_x, int tile_
 }
 
 void far combatgrid_pathfind_from_tile(int tx, int ty, int dest) {
-    CombatActor tempActor;
-    CombatActorInner tempInner;
+    Combatant tempActor;
+    CombatantState tempInner;
 
     tempActor.inner = &tempInner;
-    tempInner.class_id = -1;
-    tempInner.dmg_value = '\0';
-    tempInner.dmg_frames_left = '\0';
+    tempInner.creatureType = -1;
+    tempInner.dmgFloatValue = '\0';
+    tempInner.dmgFloatFrames = '\0';
     tempInner.flags = '\x01';
-    tempInner.grid_x = (unsigned char)tx;
-    tempInner.grid_y = (unsigned char)ty;
-    tempInner.status_head = -1;
+    tempInner.gridX = (unsigned char)tx;
+    tempInner.gridY = (unsigned char)ty;
+    tempInner.statusHead = -1;
     combatgrid_tile_set_word((unsigned char)tx, (unsigned char)ty, (unsigned int)&tempActor);
     combatgrid_step_search(&tempActor, dest);
     combatgrid_tile_set_word((unsigned char)tx, (unsigned char)ty, 0);
     return;
 }
 
-int combatgrid_tile_blockd_kind10(CombatActor *actor) {
+int combatgrid_tile_blockd_kind10(Combatant *actor) {
     GridCombatant *cmbt;
 
-    cmbt = combatgrid_find_cmbt_at_tile(actor->inner->grid_x, actor->inner->grid_y);
+    cmbt = combatgrid_find_cmbt_at_tile(actor->inner->gridX, actor->inner->gridY);
     if (cmbt != 0 && cmbt->paged_id == 10)
         return 0;
     return 1;
 }
 
 int far combatgrid_tile_passable_check(int required_terrain, int tile_x, int tile_y,
-                                       CombatActor *mover) {
+                                       Combatant *mover) {
     unsigned int terrain;
     GridCombatant *cmbt;
 
@@ -1510,21 +1510,21 @@ int far combatgrid_tile_passable_check(int required_terrain, int tile_x, int til
     return 0;
 }
 
-void combatgrid_step_search(CombatActor *actor, int preferred_dir) {
+void combatgrid_step_search(Combatant *actor, int preferred_dir) {
     int tile_x;
     int tile_y;
 
     if ((actor->inner->flags & CAF_DEAD) != 0)
         return;
-    tile_x = (int)actor->inner->grid_x;
-    tile_y = (int)actor->inner->grid_y;
+    tile_x = (int)actor->inner->gridX;
+    tile_y = (int)actor->inner->gridY;
     if ((preferred_dir == 0xb) || (preferred_dir < 0)) {
         while (tile_x >= 0) {
             tile_x--;
             if (combatgrid_tile_passable_check(0xb, tile_x, tile_y, actor) != 0)
                 break;
         }
-        tile_x = (int)actor->inner->grid_x;
+        tile_x = (int)actor->inner->gridX;
     }
     if ((preferred_dir == 10) || (preferred_dir < 0)) {
         while (tile_x < 8) {
@@ -1532,7 +1532,7 @@ void combatgrid_step_search(CombatActor *actor, int preferred_dir) {
             if (combatgrid_tile_passable_check(10, tile_x, tile_y, actor) != 0)
                 break;
         }
-        tile_x = (int)actor->inner->grid_x;
+        tile_x = (int)actor->inner->gridX;
     }
     if ((preferred_dir == 0xc) || (preferred_dir < 0)) {
         while (tile_y >= 0) {
@@ -1540,7 +1540,7 @@ void combatgrid_step_search(CombatActor *actor, int preferred_dir) {
             if (combatgrid_tile_passable_check(0xc, tile_x, tile_y, actor) != 0)
                 break;
         }
-        tile_y = (int)actor->inner->grid_y;
+        tile_y = (int)actor->inner->gridY;
     }
     if ((preferred_dir == 0xd) || (preferred_dir < 0)) {
         while (tile_y < 0xd) {
@@ -1599,8 +1599,8 @@ void combatgrid_unhighlight_terr_type(unsigned short terrain) {
 int far combatgrid_tile_has_mobility(int col, int row, int tile_count) {
     int reachCount;
     int hasMobility;
-    CombatActor tempActor;
-    CombatActorInner tempInner;
+    Combatant tempActor;
+    CombatantState tempInner;
     int c;
     int r;
 
@@ -1611,16 +1611,16 @@ int far combatgrid_tile_has_mobility(int col, int row, int tile_count) {
     } else {
         g_acting_actor_speed = 0x34;
         tempActor.inner = &tempInner;
-        tempInner.grid_x = (unsigned char)col;
-        tempInner.grid_y = (unsigned char)row;
+        tempInner.gridX = (unsigned char)col;
+        tempInner.gridY = (unsigned char)row;
         c = 0;
         do {
             r = 0;
             do {
                 if ((c != col) || (r != row)) {
                     if (combatgrid_tile_is_blocked((unsigned char)c, (unsigned char)r) == 0) {
-                        tempInner.pad_6[0] = (unsigned char)c;
-                        tempInner.pad_6[1] = (unsigned char)r;
+                        tempInner.destX = (unsigned char)c;
+                        tempInner.destY = (unsigned char)r;
                         if (combataipath_actor_walk_path(&tempActor, 1) != 0) {
                             reachCount = reachCount + 1;
                             if (tile_count >> 1 < reachCount) {

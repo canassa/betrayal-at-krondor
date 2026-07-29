@@ -209,10 +209,10 @@ unsigned short far askabout_dispatch_topic(unsigned short topic_id) {
         avail = avail && evtcond_range_d_read_handler(0x9c44) != 0;
         break;
     case 0x0047:
-        avail = avail && (g_gameState.characters[CHR_OWYN].pSpellsKnown[0] & 0x10) == 0;
+        avail = avail && (g_gameState.characters[CHR_OWYN].spellsKnown[0] & 0x10) == 0;
         break;
     case 0x006a:
-        avail = avail && (g_gameState.characters[CHR_OWYN].pSpellsKnown[2] & 0x200) == 0;
+        avail = avail && (g_gameState.characters[CHR_OWYN].spellsKnown[2] & 0x200) == 0;
         break;
     case 0x0084:
         avail = avail && (gstate_event_read(0xc74d) != 0 || gstate_event_read(0x1979) != 0);

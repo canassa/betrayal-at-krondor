@@ -34,12 +34,12 @@ typedef struct GameState {
     char characterNames[CHARACTER_POOL_SIZE][10];
 
     /**
-     * The six recruitable characters' persistent @ref CombatActor records,
+     * The six recruitable characters' persistent @ref Combatant records,
      * indexed by character id (0..5). The active traveling subset is chosen
      * by @ref GameState::activeParty; each record is copied to and from the
      * combat grid at combat start and end.
      */
-    CombatActor characters[CHARACTER_POOL_SIZE];
+    Combatant characters[CHARACTER_POOL_SIZE];
 
     /**
      * Number of members in the active/traveling party — the count of
