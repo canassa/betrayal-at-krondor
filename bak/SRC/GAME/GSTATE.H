@@ -10,6 +10,7 @@
 #include "SRC/IO/RESOURCE.H"
 #include "SRC/GAME/GMAIN.H"
 
+
 /**
  * @brief Save-region selector for the 1.02 write-region bounds guard in
  * @ref gstate_temp_file_write_at: a caller arms the `TEMP.GAM` region its next
@@ -26,6 +27,7 @@ typedef enum TempWriteRegion {
     TWR_ACTOR_POOL         = 4   /**< Persistent world-object records. */
 } TempWriteRegion;
 
+
 /**
  * @brief The live pending-region latch: the @ref TempWriteRegion the next
  * `TEMP.GAM` write is allowed to touch, or @ref TWR_NONE when disarmed.
@@ -33,7 +35,14 @@ typedef enum TempWriteRegion {
 extern TempWriteRegion g_pendingTempWriteRegion;
 
 
-extern char g_abChapterEventSlot[9];
+/**
+ * @brief Default dialog speaker for each chapter, indexed by chapter - 1.
+ *
+ * Each entry is a @ref CharacterId slot into @ref GameState::characters — the
+ * party member who voices generic lines when no scripted speaker applies.
+ */
+extern char g_chapterDefaultSpeaker[];
+
 
 /**
  * @brief Open @ref ResFile token for `TEMP.GAM`, the on-disk game-state

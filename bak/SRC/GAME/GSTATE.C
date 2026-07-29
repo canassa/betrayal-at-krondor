@@ -17,7 +17,8 @@
 #include "SRC/GAME/CFGPARSE.H"
 
 TempWriteRegion g_pendingTempWriteRegion = TWR_NONE;
-char g_abChapterEventSlot[9] = {0x00, 0x04, 0x04, 0x01, 0x04, 0x02, 0x04, 0x02, 0x03};
+char g_chapterDefaultSpeaker[] = {CHR_LOCKLEAR, CHR_JAMES, CHR_JAMES, CHR_GORATH, CHR_JAMES,
+                                  CHR_OWYN,     CHR_JAMES, CHR_OWYN,  CHR_PUG};
 ResFile *g_tempGamFP = NULL;
 char g_abSleepStatDelta[CHARACTER_POOL_SIZE] = {0xfe, 0xff, 0xfe, 0xfe, 0xfe, 0xfd};
 char g_abRegenPerChar[CHARACTER_POOL_SIZE] = {0x01, 0x01, 0x01, 0x01, 0x01, 0x01};
@@ -63,7 +64,8 @@ unsigned short far gstate_event_read(unsigned short id) {
     case 13:
         return g_gameState.nEvtArgDlgResult;
     case 5:
-        return gstate_is_party_member(3) ? 3 : g_abChapterEventSlot[g_gameState.nChapter - 1];
+        return gstate_is_party_member(CHR_PUG) ? CHR_PUG
+                                               : g_chapterDefaultSpeaker[g_gameState.nChapter - 1];
     case 10: {
         short h = (short)(g_gameState.game_time % 0xa8c0 / 0x708);
         return (h >= 4 && h < 0x14) ? 1 : 0;
