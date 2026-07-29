@@ -24,7 +24,7 @@
 #include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/CHAR/STAT.H"
 #include "SRC/DIALOG/DIALOG.H"
-#include "SRC/UI/MODALSCR.H"
+#include "SRC/SCREENS/MODALSCR.H"
 #include "SRC/SCRIPT/ANIMSCR.H"
 #include "SRC/SCRIPT/ADSCRIPT.H"
 #include "SRC/SCREENS/CMBINV.H"

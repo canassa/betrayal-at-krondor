@@ -15,7 +15,7 @@
 #include "SRC/R3D/CORE/R3D.H"
 #include "SRC/UI/UIWIDGET.H"
 #include "SRC/DIALOG/DIALOG.H"
-#include "SRC/SCREENS/ITEMTBL.H"
+#include "SRC/GAME/ACTOR/ITEMTBL.H"
 #include "SRC/GAME/WORLD/WORLDMOV.H"
 #include "SRC/R3D/SCENE/CZONE.H"
 

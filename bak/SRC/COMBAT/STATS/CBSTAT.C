@@ -8,7 +8,7 @@
 #include "SRC/SYS/MEM.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/CHAR/STAT.H"
-#include "SRC/SCREENS/ITEMTBL.H"
+#include "SRC/GAME/ACTOR/ITEMTBL.H"
 #include "SRC/COMBAT/ACTOR/CACTOR.H"
 #include "SRC/COMBAT/ENC/CBENC.H"
 #include "defines.h"

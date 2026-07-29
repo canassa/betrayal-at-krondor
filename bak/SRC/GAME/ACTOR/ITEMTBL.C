@@ -2,7 +2,7 @@
 #include "SRC/GAME/STATE/GMAIN.H"
 #include "structs.h"
 #include "SRC/GAME/ACTOR/ACTOR.H"
-#include "SRC/SCREENS/ITEMTBL.H"
+#include "SRC/GAME/ACTOR/ITEMTBL.H"
 #include "SRC/IO/RESOURCE.H"
 #include "SRC/IO/IOCHUNK.H"
 #include "SRC/SYS/FARTHUNK.H"

@@ -7,7 +7,7 @@
 #include "SRC/CHAR/STAT.H"
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SCREENS/CMBINV.H"
-#include "SRC/SCREENS/ITEMTBL.H"
+#include "SRC/GAME/ACTOR/ITEMTBL.H"
 #include "SRC/GAME/ACTOR/ACTORREC.H"
 
 

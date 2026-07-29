@@ -23,7 +23,7 @@
 #include "SRC/UI/UIWIDGET.H"
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SCREENS/TOWNSCN.H"
-#include "SRC/UI/MODALSCR.H"
+#include "SRC/SCREENS/MODALSCR.H"
 #include "SRC/SCREENS/CMBINV.H"
 #include "SRC/CHAR/CHARSCRN.H"
 #include "SRC/SCREENS/ITEMUSE.H"

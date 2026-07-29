@@ -25,7 +25,7 @@
 #include "SRC/DIALOG/EVTCOND.H"
 #include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/DIALOG/DIALOG.H"
-#include "SRC/SCREENS/ITEMTBL.H"
+#include "SRC/GAME/ACTOR/ITEMTBL.H"
 
 
 unsigned short *g_pKeywordTable = {0};

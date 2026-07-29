@@ -12,7 +12,7 @@
 #include "SRC/CHAR/STAT.H"
 #include "SRC/GAME/STATE/TIMERPL.H"
 #include "SRC/DIALOG/DIALOG.H"
-#include "SRC/SCREENS/ITEMTBL.H"
+#include "SRC/GAME/ACTOR/ITEMTBL.H"
 #include "SRC/COMBAT/SPELL/SPELLFX.H"
 #include "SRC/SYS/CFGPARSE.H"
 

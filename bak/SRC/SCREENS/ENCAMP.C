@@ -21,7 +21,7 @@
 #include "SRC/CHAR/STAT.H"
 #include "SRC/R3D/VIS/PROXSCAN.H"
 #include "SRC/DIALOG/DIALOG.H"
-#include "SRC/SCREENS/ITEMTBL.H"
+#include "SRC/GAME/ACTOR/ITEMTBL.H"
 
 unsigned short g_wEncampHotspotSubW;
 unsigned short g_wEncampHotspotSubH;

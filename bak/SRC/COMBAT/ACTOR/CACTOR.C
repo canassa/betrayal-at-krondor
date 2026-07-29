@@ -24,7 +24,7 @@
 #include "SRC/R3D/FX/WORLDFX.H"
 #include "SRC/SYS/EMSIMG.H"
 #include "SRC/CHAR/STAT.H"
-#include "SRC/SCREENS/ITEMTBL.H"
+#include "SRC/GAME/ACTOR/ITEMTBL.H"
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/COMBAT/ENC/CBENC.H"
 #include "SRC/COMBAT/AI/CMBTAI.H"

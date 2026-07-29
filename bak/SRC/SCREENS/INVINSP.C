@@ -13,7 +13,7 @@
 #include "SRC/UI/MENUPAGE.H"
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SCREENS/INVENTOR.H"
-#include "SRC/SCREENS/ITEMTBL.H"
+#include "SRC/GAME/ACTOR/ITEMTBL.H"
 
 DDXRecord g_invInspectPanelDdx = {0x05, 0x0000, 0x0000, 0x00, 0x01, 0x0001};
 unsigned char g_abInvInspectPanelDdxStyle[10] = {0x06, 0x00, 0x67, 0x00, 0x0b,
