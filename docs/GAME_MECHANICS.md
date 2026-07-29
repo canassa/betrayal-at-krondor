@@ -1,51 +1,76 @@
 # Game Mechanics                                                {#game_mechanics}
 
-The player-facing rules of *Betrayal at Krondor* — what the game does, described
-independently of how the engine implements it. Each section carries a stable
-anchor (`{#mech_*}`) so code documentation can link to the rule it implements
-with `@ref`.
+A specification of *Betrayal at Krondor*'s gameplay systems, described in game
+terms and precise enough to reimplement from. Only the **rest and fatigue**
+system is documented so far; the other systems have not yet been investigated.
 
 ## Sleep & Fatigue                                              {#mech_fatigue}
 
-Party members tire as they travel. The game tracks how long it has been since
-the party last rested: nothing happens for the first stretch, but pressing on
-without sleep eventually wears the characters down.
+Party members tire as they travel. What counts is the time **since the party
+last rested**, not the total time spent awake: any rest resets that clock to
+zero, so fatigue never carries over from one leg of travel to the next.
 
-**Warning.** After **17 hours** of travel without rest, a companion speaks up —
-*"We need rest… if we go much further without sleep, we might not be able to
-handle any unexpected surprises on the road."* — a prompt to make camp.
+### Warning and exhaustion
 
-**Exhaustion.** After **18 hours** without rest, each **active** party member
-begins losing **1–3 points per hour** from their combined Health/Stamina
-reserve. The rate is per character: hardier members (e.g. Gorath) lose the
-least, frailer ones (e.g. Patrus) the most. The loss repeats every hour until
-the party rests. A member whose reserve reaches zero **collapses** (the
-*Near-death* condition), and if the whole party goes down they are
-incapacitated.
+| Time since last rest | Effect |
+|---|---|
+| Under 17 hours | No effect. |
+| 17 hours | A companion warns the party to rest. No loss yet. |
+| 18 hours and beyond | Each active member loses reserve points every hour (see rates). The warning repeats each hour until the party rests. |
 
-**Health & Stamina.** A character's Health and Stamina act as a single reserve.
-Stamina is spent first — it is the non-lethal buffer that absorbs fatigue and
-lighter blows — and only once it is gone does Health, the lethal remainder,
-begin to fall.
+The loss repeats every hour, so traveling indefinitely without rest eventually
+knocks out the whole party.
 
-**Recovery.** Resting clears the exhaustion timer and refills the reserve at
-about **1 point per hour** per member (faster while a character is under the
-*Healing* condition). How full a rest gets depends on where it is taken:
+Warning line: *"'We need rest,' he said, looking for a good place to camp. 'If
+we go much further without sleep, we might not be able to handle any unexpected
+surprises on the road.'"*
 
-- **Camp** (on the road) restores the reserve up to **80%** of maximum. You can
-  set a wake-up hour on the camp clock, or sleep until everyone is healed. You
-  cannot camp with enemies nearby.
-- **Inns** restore the reserve to **100%**, for a fee, resting through to a
+Because the warning always arrives a full in-game hour before any loss begins,
+and **any** rest — even a single hour — resets the clock completely, a party
+that makes camp when warned never takes fatigue damage. Camping needs a safe
+spot and is refused with enemies nearby.
+
+### Fatigue drain rate
+
+Once exhausted, each active member loses this many reserve points **per hour**,
+by character — reflecting each character's constitution:
+
+| Character | Loss per hour |
+|---|---:|
+| Gorath | 1 (hardiest) |
+| Locklear | 2 |
+| Owyn | 2 |
+| Pug | 2 |
+| James | 2 |
+| Patrus | 3 (frailest) |
+
+### The Health / Stamina reserve
+
+Each character's Health and Stamina together form a single reserve that fatigue
+and combat draw down:
+
+- **Stamina is spent first** — the non-lethal buffer that absorbs fatigue and
+  lighter blows.
+- **Health falls only once Stamina is gone** — the lethal remainder.
+- Healing works in the opposite order: it refills Health to full before topping
+  up Stamina.
+
+If a character's reserve reaches zero they **collapse** (unconscious, near
+death): held at the brink, taking no further part until healed. If the entire
+active party collapses, the party is incapacitated.
+
+### Recovery through rest
+
+Resting stops the fatigue clock and refills the reserve.
+
+- **Recovery rate:** about **1 reserve point per hour** per member (faster while
+  a character is under a healing effect). Recovering N points therefore takes
+  roughly N in-game hours of rest.
+- **Camp** (on the road): refills the reserve up to **80%** of its maximum. The
+  party may set a wake-up hour, or sleep until every member is healed (all at
+  80%). Camping is not allowed with enemies nearby.
+- **Inn:** refills the reserve to **100%**, for a fee, resting through to a
   chosen hour.
 
-Resting also passes time normally: it cures the *Sick* condition gradually,
-lets other conditions run their course, and consumes the party's rations as the
-days pass.
-
-## Combat                                                       {#mech_combat}
-
-_To be documented._
-
-## Skills                                                       {#mech_skills}
-
-_To be documented._
+Resting also passes time normally: it gradually cures illness and consumes the
+party's rations as the days pass.
