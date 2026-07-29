@@ -1,6 +1,6 @@
 /**
  * @file  ACTOR.H
- * @brief The Actor record and its subrecord family, owned by the WORLD/ACTOR
+ * @brief The Actor record and its subrecord family, owned by the GAME/ACTOR
  *        module (see ACTORREC.C for the record format, ACTSPAWN.C for the
  *        lifecycle). Owns the whole family; consumers include this header
  *        directly (structs.h no longer carries these types).
