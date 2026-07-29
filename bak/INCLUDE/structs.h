@@ -753,17 +753,6 @@ struct ObjFixedLocationCacheEntry {
     unsigned char pUnk_14[8];
 };
 
-/* Fixed party-roster slots: index into GameState.characters[6]. The
-   slot->character binding is engine-fixed (names are *.GAM-seeded but never
-   reassigned; see the availability gates in DIALOG.C). A dialog record's
-   wSpeaker_id encodes these as slot+1 (1..6), reserving 0 for the narrator. */
-#define CHR_LOCKLEAR 0
-#define CHR_GORATH 1
-#define CHR_OWYN 2
-#define CHR_PUG 3
-#define CHR_JAMES 4
-#define CHR_PATRUS 5
-
 struct GraphicsContext {
     unsigned char bText_fg_color;
     unsigned char bText_bg_color;

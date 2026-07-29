@@ -9,6 +9,22 @@
 /** Maximum members in the active/traveling party. */
 #define MAX_ACTIVE_PARTY 3
 
+/**
+ * @brief Fixed identity of each @ref GameState::characters pool slot.
+ *
+ * The slot-to-character binding never changes at runtime, so these indices
+ * name the six party members directly. Dialog speaker ids encode a slot as
+ * slot+1 (1..6), reserving 0 for the narrator.
+ */
+typedef enum CharacterId {
+    CHR_LOCKLEAR = 0, /**< Squire Locklear. */
+    CHR_GORATH   = 1, /**< Gorath, the Moredhel. */
+    CHR_OWYN     = 2, /**< Owyn, magician. */
+    CHR_PUG      = 3, /**< Pug, magician. */
+    CHR_JAMES    = 4, /**< James (Jimmy the Hand). */
+    CHR_PATRUS   = 5  /**< Patrus, magician. */
+} CharacterId;
+
 typedef struct GameState {
     unsigned short nChapter;
     long nParty_gold;

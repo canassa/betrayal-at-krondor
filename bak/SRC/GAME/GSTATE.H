@@ -26,7 +26,13 @@ typedef enum TempWriteRegion {
     TWR_ACTOR_POOL         = 4   /**< Persistent world-object records. */
 } TempWriteRegion;
 
+/**
+ * @brief The live pending-region latch: the @ref TempWriteRegion the next
+ * `TEMP.GAM` write is allowed to touch, or @ref TWR_NONE when disarmed.
+ */
 extern TempWriteRegion g_pendingTempWriteRegion;
+
+
 extern char g_abChapterEventSlot[9];
 
 /**
