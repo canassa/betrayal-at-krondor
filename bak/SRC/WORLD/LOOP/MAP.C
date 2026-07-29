@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/INPUT/TIMER.H"
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
@@ -32,7 +32,7 @@
 #include "SRC/SCREENS/ENCAMP.H"
 #include "SRC/SCREENS/FMAP.H"
 #include "SRC/WORLD/MOVE/WORLDMOV.H"
-#include "SRC/WORLD/ZONE/CZONE.H"
+#include "SRC/R3D/SCENE/CZONE.H"
 #include "SRC/WORLD/ENC/HOTSPOT.H"
 #include "SRC/WORLD/MOVE/WORLDCRS.H"
 #ifdef V102CD

@@ -16,7 +16,7 @@
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SCREENS/ITEMUSE.H"
 #include "SRC/WORLD/ACTOR/ACTSPAWN.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/WORLD/ENC/HOTSPOT.H"
 #include "SRC/SYS/CFGPARSE.H"
 

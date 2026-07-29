@@ -2,7 +2,7 @@
 #include <mem.h>
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
 #include "SRC/GEN/RNDVTBL.H"
 #include "SRC/GFX/FONT/FONT.H"

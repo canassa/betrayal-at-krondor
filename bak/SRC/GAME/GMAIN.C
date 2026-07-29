@@ -35,7 +35,7 @@
 #include "SRC/SCRIPT/ADSCRIPT.H"
 #include "SRC/WORLD/LOOP/WORLDLP.H"
 #include "SRC/SCREENS/MAINMENU.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 
 unsigned char g_bssgap_4863[3];
 GameState g_gameState;

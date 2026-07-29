@@ -1,6 +1,6 @@
 #include <dos.h>
 #include "SRC/GEN/GFXCTX.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 #include "structs.h"
 #include "SRC/UI/UIWIDGET.H"
 #include "SRC/GFX/FONT/FONT.H"

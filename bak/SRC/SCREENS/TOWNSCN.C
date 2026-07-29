@@ -32,7 +32,7 @@
 #include "SRC/CHAR/CHARSCRN.H"
 #include "SRC/WORLD/ACTOR/ACTSPAWN.H"
 #include "SRC/WORLD/ACTOR/ACTORREC.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/SCREENS/CIPHER.H"
 #include "defines.h"
 

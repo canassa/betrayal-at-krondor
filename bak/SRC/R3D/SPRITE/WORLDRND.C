@@ -3,7 +3,7 @@
 #include "structs.h"
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/R3D/ACTOR/ACTMOTN.H"
 #include "r3d.h"
 #include "SRC/R3D/SPRITE/WORLDRND.H"

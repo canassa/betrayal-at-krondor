@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/WORLD/LOOP/WORLDLP.H"
-#include "SRC/WORLD/ZONE/CZONE.H"
-#include "SRC/WORLD/ZONE/PROXIM.H"
+#include "SRC/R3D/SCENE/CZONE.H"
+#include "SRC/R3D/SCENE/PROXIM.H"
 #include "SRC/WORLD/ENC/RGNENC.H"
 #include "SRC/R3D/ACTOR/ACTOROVL.H"
 #include "structs.h"

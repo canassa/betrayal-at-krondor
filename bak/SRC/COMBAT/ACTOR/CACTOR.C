@@ -1,6 +1,6 @@
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 #include "SRC/COMBAT/ACTOR/CACTOR.H"
 #include "SRC/SYS/RAND.H"

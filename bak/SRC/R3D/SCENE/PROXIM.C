@@ -1,6 +1,6 @@
 #include <dos.h>
 #include "structs.h"
-#include "SRC/WORLD/ZONE/PROXIM.H"
+#include "SRC/R3D/SCENE/PROXIM.H"
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/R3D/CORE/R3D.H"
 #include "SRC/R3D/TBLSTORE/SHAPETBL.H"

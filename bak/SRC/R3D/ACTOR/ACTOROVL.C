@@ -1,4 +1,4 @@
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 #include "structs.h"
 #include "SRC/R3D/ACTOR/ACTOROVL.H"
 #include "SRC/GFX/SPRITE/RESBLIT.H"

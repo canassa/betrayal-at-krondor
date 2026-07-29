@@ -1,6 +1,6 @@
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/WORLD/LOOP/MAP.H"
 #include "structs.h"
 #include "SRC/WORLD/MOVE/WORLDCRS.H"
@@ -17,7 +17,7 @@
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SCREENS/ITEMTBL.H"
 #include "SRC/WORLD/MOVE/WORLDMOV.H"
-#include "SRC/WORLD/ZONE/CZONE.H"
+#include "SRC/R3D/SCENE/CZONE.H"
 
 void far worldcross_dungeon_descent_anim(void) {
     unsigned short probe_kind;

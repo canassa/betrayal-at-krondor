@@ -1,6 +1,6 @@
 #include "SRC/GAME/GMAIN.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
-#include "SRC/WORLD/ZONE/PROXIM.H"
+#include "SRC/R3D/SCENE/ZONE.H"
+#include "SRC/R3D/SCENE/PROXIM.H"
 #include "SRC/R3D/ACTOR/ACTMOTN.H"
 #include "structs.h"
 #include "SRC/WORLD/ENC/RGNENC.H"
@@ -15,7 +15,7 @@
 #include "SRC/COMBAT/ACTOR/CACTOR.H"
 #include "SRC/COMBAT/ENC/CBENC.H"
 #include "SRC/WORLD/MOVE/WORLDMOV.H"
-#include "SRC/WORLD/ZONE/CZONE.H"
+#include "SRC/R3D/SCENE/CZONE.H"
 #include "SRC/WORLD/ENC/HOTSPOT.H"
 #include "defines.h"
 

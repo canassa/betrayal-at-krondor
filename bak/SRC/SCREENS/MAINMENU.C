@@ -39,8 +39,8 @@
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/SCREENS/FMAP.H"
 #include "SRC/WORLD/MOVE/WORLDMOV.H"
-#include "SRC/WORLD/ZONE/CZONE.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/CZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/SYS/CFGPARSE.H"
 #include "defines.h"
 

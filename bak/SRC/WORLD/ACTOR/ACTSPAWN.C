@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/COMBAT/ARENA/COMBAT.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
-#include "SRC/WORLD/ZONE/CZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
+#include "SRC/R3D/SCENE/CZONE.H"
 #include "structs.h"
 #include "SRC/SYS/RAND.H"
 

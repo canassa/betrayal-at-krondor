@@ -21,8 +21,8 @@
 #include "SRC/COMBAT/SPELL/SPELLFX.H"
 #include "SRC/WORLD/LOOP/MAP.H"
 #include "SRC/WORLD/MOVE/WORLDMOV.H"
-#include "SRC/WORLD/ZONE/CZONE.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/CZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/WORLD/ENC/RGNENC.H"
 #include <stdlib.h>
 

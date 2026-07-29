@@ -1,8 +1,8 @@
 #include <dos.h>
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/SCREENS/MAINMENU.H"
-#include "SRC/WORLD/ZONE/CZONE.H"
-#include "SRC/WORLD/ZONE/PROXIM.H"
+#include "SRC/R3D/SCENE/CZONE.H"
+#include "SRC/R3D/SCENE/PROXIM.H"
 #include "structs.h"
 #include "SRC/R3D/VIS/PROXSCAN.H"
 #include "SRC/IO/RESOURCE.H"

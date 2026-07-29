@@ -3,7 +3,7 @@
 #include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/COMBAT/ARENA/COMBAT.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/SCREENS/TOWNSCN.H"
 #include "SRC/WORLD/LOOP/WORLDLP.H"
 #include "SRC/SCREENS/ITEMUSE.H"

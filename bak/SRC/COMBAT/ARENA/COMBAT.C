@@ -42,7 +42,7 @@
 #include "SRC/COMBAT/AI/CBTAITRN.H"
 #include "SRC/COMBAT/SPELL/CSPELL.H"
 #include "SRC/COMBAT/STATS/CBSTAT.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/WORLD/ENC/HOTSPOT.H"
 #include "SRC/WORLD/ENC/RGNENC.H"
 #include "defines.h"

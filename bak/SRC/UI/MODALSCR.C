@@ -36,7 +36,7 @@
 #include "SRC/SCREENS/INVINSP.H"
 #include "SRC/WORLD/ACTOR/ACTORREC.H"
 #include "SRC/SCREENS/ENCAMP.H"
-#include "SRC/WORLD/ZONE/ZONE.H"
+#include "SRC/R3D/SCENE/ZONE.H"
 
 
 void modalscreen_teleport_dat_load(int n_index) {
