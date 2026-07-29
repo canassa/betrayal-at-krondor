@@ -5,7 +5,7 @@
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/SCREENS/TOWNSCN.H"
-#include "SRC/WORLD/LOOP/WORLDLP.H"
+#include "SRC/GAME/WORLD/WORLDLP.H"
 #include "SRC/SCREENS/ITEMUSE.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
@@ -26,7 +26,7 @@
 #include "SRC/SCREENS/ITEMTBL.H"
 #include "SRC/GAME/ACTOR/ACTSPAWN.H"
 #include "SRC/COMBAT/ACTOR/CACTOR.H"
-#include "SRC/WORLD/LOOP/MAP.H"
+#include "SRC/GAME/WORLD/MAP.H"
 
 #include "defines.h"
 

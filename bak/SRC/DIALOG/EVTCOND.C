@@ -1,7 +1,7 @@
 #include <dos.h>
 #include <stdlib.h>
 #include "SRC/GAME/STATE/GMAIN.H"
-#include "SRC/WORLD/LOOP/WORLDLP.H"
+#include "SRC/GAME/WORLD/WORLDLP.H"
 #include "structs.h"
 
 #include "SRC/DIALOG/EVTCOND.H"

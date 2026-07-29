@@ -3,7 +3,7 @@
 #include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/R3D/SCENE/ZONE.H"
-#include "SRC/WORLD/LOOP/WORLDLP.H"
+#include "SRC/GAME/WORLD/WORLDLP.H"
 #include "SRC/R3D/SCENE/CZONE.H"
 #include "SRC/R3D/SCENE/PROXIM.H"
 #include "SRC/WORLD/ENC/RGNENC.H"
@@ -31,7 +31,7 @@
 #include "SRC/COMBAT/SPELL/SPELLFX.H"
 #include "SRC/WORLD/ENC/HOTSPOT.H"
 #include "SRC/SCREENS/CIPHER.H"
-#include "SRC/WORLD/MOVE/WORLDCRS.H"
+#include "SRC/GAME/WORLD/WORLDCRS.H"
 #include "defines.h"
 
 WorldHotspot *g_pWorldHitTestTable;

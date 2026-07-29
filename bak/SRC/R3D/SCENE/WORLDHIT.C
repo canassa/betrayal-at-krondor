@@ -6,7 +6,7 @@
 #include "SRC/SYS/BOOT.H"
 #include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/SCREENS/MAINMENU.H"
-#include "SRC/WORLD/LOOP/MAP.H"
+#include "SRC/GAME/WORLD/MAP.H"
 #include "SRC/COMBAT/ENC/CBENC.H"
 #include "SRC/INPUT/WCURSOR.H"
 #include "SRC/R3D/SCENE/CZONE.H"

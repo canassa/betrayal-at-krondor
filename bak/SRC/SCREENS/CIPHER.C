@@ -1,6 +1,6 @@
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
-#include "SRC/WORLD/LOOP/WORLDLP.H"
+#include "SRC/GAME/WORLD/WORLDLP.H"
 #include "SRC/INPUT/TIMER.H"
 #include "structs.h"
 #include "SRC/SCREENS/CIPHER.H"

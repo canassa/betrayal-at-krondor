@@ -3,9 +3,9 @@
 
 #include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
-#include "SRC/WORLD/LOOP/MAP.H"
+#include "SRC/GAME/WORLD/MAP.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
-#include "SRC/WORLD/LOOP/WORLDLP.H"
+#include "SRC/GAME/WORLD/WORLDLP.H"
 #include "SRC/SCRIPT/TTM.H"
 #include "structs.h"
 #include "SRC/SCREENS/TOWNSCN.H"

@@ -1,9 +1,9 @@
 #include <conio.h>
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/SCREENS/MAINMENU.H"
-#include "SRC/WORLD/LOOP/MAP.H"
+#include "SRC/GAME/WORLD/MAP.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
-#include "SRC/WORLD/LOOP/WORLDLP.H"
+#include "SRC/GAME/WORLD/WORLDLP.H"
 #include "SRC/SYS/SYSLOWIO.H"
 #include "SRC/INPUT/TIMER.H"
 #include "structs.h"

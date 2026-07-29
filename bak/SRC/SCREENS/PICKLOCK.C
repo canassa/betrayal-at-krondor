@@ -1,7 +1,7 @@
 #include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/SCREENS/INVENTOR.H"
-#include "SRC/WORLD/LOOP/WORLDLP.H"
+#include "SRC/GAME/WORLD/WORLDLP.H"
 #include "SRC/INPUT/TIMER.H"
 #include "structs.h"
 #include "SRC/GAME/ACTOR/ACTOR.H"

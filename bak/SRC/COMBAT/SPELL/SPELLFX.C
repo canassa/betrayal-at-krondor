@@ -19,7 +19,7 @@
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/GAME/ACTOR/ACTSPAWN.H"
 #include "SRC/COMBAT/SPELL/CSPELL.H"
-#include "SRC/WORLD/LOOP/MAP.H"
+#include "SRC/GAME/WORLD/MAP.H"
 
 unsigned short g_aPalEventBitMask[9] = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010,
                                         0x0020, 0x0040, 0x0080, 0x0100};

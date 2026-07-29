@@ -8,12 +8,12 @@
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/SCREENS/MAINMENU.H"
-#include "SRC/WORLD/LOOP/MAP.H"
+#include "SRC/GAME/WORLD/MAP.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
 #include "SRC/SCREENS/INVENTOR.H"
 #include "SRC/SYS/SYSLOWIO.H"
 #include "SRC/R3D/SCENE/CZONE.H"
-#include "SRC/WORLD/MOVE/WORLDMOV.H"
+#include "SRC/GAME/WORLD/WORLDMOV.H"
 #include "SRC/SCREENS/BOOKVIEW.H"
 #include "SRC/SCRIPT/ADSCRIPT.H"
 #include "SRC/CHAR/CHARSCRN.H"
@@ -61,7 +61,7 @@ unsigned char far g_abStatNames[16][15] = {
 #include "SRC/SCREENS/ITEMTBL.H"
 #include "SRC/COMBAT/ACTOR/CACTOR.H"
 #include "SRC/COMBAT/ENC/CBENC.H"
-#include "SRC/WORLD/LOOP/WORLDLP.H"
+#include "SRC/GAME/WORLD/WORLDLP.H"
 #include "defines.h"
 
 

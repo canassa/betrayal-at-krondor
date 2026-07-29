@@ -1,9 +1,9 @@
 #include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/R3D/SCENE/ZONE.H"
-#include "SRC/WORLD/LOOP/MAP.H"
+#include "SRC/GAME/WORLD/MAP.H"
 #include "structs.h"
-#include "SRC/WORLD/MOVE/WORLDCRS.H"
+#include "SRC/GAME/WORLD/WORLDCRS.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/INPUT/KEYBOARD.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
@@ -16,7 +16,7 @@
 #include "SRC/UI/UIWIDGET.H"
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SCREENS/ITEMTBL.H"
-#include "SRC/WORLD/MOVE/WORLDMOV.H"
+#include "SRC/GAME/WORLD/WORLDMOV.H"
 #include "SRC/R3D/SCENE/CZONE.H"
 
 void far worldcross_dungeon_descent_anim(void) {

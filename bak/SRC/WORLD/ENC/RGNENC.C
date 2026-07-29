@@ -14,7 +14,7 @@
 #include "SRC/GAME/ACTOR/ACTSPAWN.H"
 #include "SRC/COMBAT/ACTOR/CACTOR.H"
 #include "SRC/COMBAT/ENC/CBENC.H"
-#include "SRC/WORLD/MOVE/WORLDMOV.H"
+#include "SRC/GAME/WORLD/WORLDMOV.H"
 #include "SRC/R3D/SCENE/CZONE.H"
 #include "SRC/WORLD/ENC/HOTSPOT.H"
 #include "defines.h"
