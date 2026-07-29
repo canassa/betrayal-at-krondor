@@ -17,8 +17,8 @@
 #include "SRC/R3D/TBLSTORE/SHAPETBL.H"
 #include "SRC/UI/UIWIDGET.H"
 #include "SRC/R3D/SCENE/CZONE.H"
-#include "SRC/WORLD/ENC/HOTSPOT.H"
-#include "SRC/WORLD/ENC/RGNENC.H"
+#include "SRC/GAME/ENC/HOTSPOT.H"
+#include "SRC/GAME/ENC/RGNENC.H"
 
 unsigned short g_bWorldCrossing = 0x0000;
 unsigned short g_nWorldCrossingKind = 0x0000;

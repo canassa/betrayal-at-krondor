@@ -17,7 +17,7 @@
 #include "SRC/SCREENS/ITEMUSE.H"
 #include "SRC/GAME/ACTOR/ACTSPAWN.H"
 #include "SRC/R3D/SCENE/ZONE.H"
-#include "SRC/WORLD/ENC/HOTSPOT.H"
+#include "SRC/GAME/ENC/HOTSPOT.H"
 #include "SRC/SYS/CFGPARSE.H"
 
 int far savegame_write(char *filename) {

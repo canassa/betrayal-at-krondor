@@ -3,7 +3,7 @@
 #include "SRC/R3D/SCENE/PROXIM.H"
 #include "SRC/R3D/ACTOR/ACTMOTN.H"
 #include "structs.h"
-#include "SRC/WORLD/ENC/RGNENC.H"
+#include "SRC/GAME/ENC/RGNENC.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
@@ -16,7 +16,7 @@
 #include "SRC/COMBAT/ENC/CBENC.H"
 #include "SRC/GAME/WORLD/WORLDMOV.H"
 #include "SRC/R3D/SCENE/CZONE.H"
-#include "SRC/WORLD/ENC/HOTSPOT.H"
+#include "SRC/GAME/ENC/HOTSPOT.H"
 #include "defines.h"
 
 EncounterRecordTemplate *g_pEncounterRecordTemplates;

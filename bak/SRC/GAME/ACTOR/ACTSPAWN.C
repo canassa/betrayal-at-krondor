@@ -14,7 +14,7 @@
 #include "SRC/R3D/TBLSTORE/SHAPETBL.H"
 #include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/GAME/ACTOR/ACTORREC.H"
-#include "SRC/WORLD/ENC/RGNENC.H"
+#include "SRC/GAME/ENC/RGNENC.H"
 
 /**
  * @brief Allocate a live heap @ref Actor for a template record and copy the

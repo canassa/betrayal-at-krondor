@@ -14,7 +14,7 @@
 #include "SRC/R3D/VIS/VISLIST.H"
 #include "SRC/R3D/SCENE/WORLDFRM.H"
 #include "SRC/COMBAT/SPELL/SPELLFX.H"
-#include "SRC/WORLD/ENC/RGNENC.H"
+#include "SRC/GAME/ENC/RGNENC.H"
 #ifdef V102CD
 #include "SRC/SYS/CFGPARSE.H"
 #endif

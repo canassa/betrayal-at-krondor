@@ -7,9 +7,9 @@
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/R3D/TBLSTORE/SHAPETBL.H"
 #include "SRC/R3D/SCENE/ZONE.H"
-#include "SRC/WORLD/ENC/HOTSPOT.H"
-#include "SRC/WORLD/ENC/RGNENC.H"
-#include "SRC/WORLD/CURSOR/WORLDDOR.H"
+#include "SRC/GAME/ENC/HOTSPOT.H"
+#include "SRC/GAME/ENC/RGNENC.H"
+#include "SRC/GAME/ENC/WORLDDOR.H"
 #include "SRC/R3D/VIS/VISENTRY.H"
 
 VisibleEntryList *g_apCombat_zone_actor_lists[9];

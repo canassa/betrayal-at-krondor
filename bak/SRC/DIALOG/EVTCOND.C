@@ -14,7 +14,7 @@
 #include "SRC/SCREENS/ITEMTBL.H"
 #include "SRC/SCREENS/ITEMUSE.H"
 #include "SRC/GAME/ACTOR/ACTSPAWN.H"
-#include "SRC/WORLD/ENC/RGNENC.H"
+#include "SRC/GAME/ENC/RGNENC.H"
 #include "defines.h"
 
 

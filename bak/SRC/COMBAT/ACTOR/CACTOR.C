@@ -31,7 +31,7 @@
 #include "SRC/COMBAT/SPELL/CSPELL.H"
 #include "SRC/COMBAT/AI/CBTAIACT.H"
 #include "SRC/COMBAT/STATS/CBSTAT.H"
-#include "SRC/WORLD/ENC/RGNENC.H"
+#include "SRC/GAME/ENC/RGNENC.H"
 #include "defines.h"
 #include "structs.h"
 

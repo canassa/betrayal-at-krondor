@@ -33,7 +33,7 @@
 #include "SRC/SCREENS/FMAP.H"
 #include "SRC/GAME/WORLD/WORLDMOV.H"
 #include "SRC/R3D/SCENE/CZONE.H"
-#include "SRC/WORLD/ENC/HOTSPOT.H"
+#include "SRC/GAME/ENC/HOTSPOT.H"
 #include "SRC/GAME/WORLD/WORLDCRS.H"
 #ifdef V102CD
 #include "SRC/SYS/CFGPARSE.H"

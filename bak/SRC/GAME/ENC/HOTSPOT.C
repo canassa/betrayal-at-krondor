@@ -1,7 +1,7 @@
 #include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "structs.h"
-#include "SRC/WORLD/ENC/HOTSPOT.H"
+#include "SRC/GAME/ENC/HOTSPOT.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/IO/RESOURCE.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
@@ -23,7 +23,7 @@
 #include "SRC/GAME/WORLD/WORLDMOV.H"
 #include "SRC/R3D/SCENE/CZONE.H"
 #include "SRC/R3D/SCENE/ZONE.H"
-#include "SRC/WORLD/ENC/RGNENC.H"
+#include "SRC/GAME/ENC/RGNENC.H"
 #include <stdlib.h>
 
 ZoneHotspot g_aZoneHotspots[10];

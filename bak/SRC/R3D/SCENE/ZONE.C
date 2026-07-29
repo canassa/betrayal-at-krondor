@@ -24,7 +24,7 @@
 #include "SRC/GAME/WORLD/MAP.H"
 #include "SRC/GAME/WORLD/WORLDMOV.H"
 #include "SRC/R3D/SCENE/CZONE.H"
-#include "SRC/WORLD/ENC/RGNENC.H"
+#include "SRC/GAME/ENC/RGNENC.H"
 #include "SRC/INPUT/WCURSOR.H"
 #include "SRC/R3D/ACTOR/ACTOROVL.H"
 #include "gfx169d.h"

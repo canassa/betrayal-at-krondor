@@ -7,7 +7,7 @@
 #include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/R3D/VIS/PROXSCAN.H"
 #include "SRC/R3D/SCENE/CZONE.H"
-#include "SRC/WORLD/ENC/RGNENC.H"
+#include "SRC/GAME/ENC/RGNENC.H"
 #include "structs.h"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
 #include "SRC/IO/RESOURCE.H"

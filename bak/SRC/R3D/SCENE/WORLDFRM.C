@@ -21,8 +21,8 @@
 #include "SRC/R3D/VIS/VISLIST.H"
 #include "SRC/R3D/VIS/PROXSCAN.H"
 #include "SRC/R3D/SKY/SKYREND.H"
-#include "SRC/WORLD/ENC/RGNENC.H"
-#include "SRC/WORLD/CURSOR/WORLDDOR.H"
+#include "SRC/GAME/ENC/RGNENC.H"
+#include "SRC/GAME/ENC/WORLDDOR.H"
 #include "SRC/R3D/ACTOR/ACTOROVL.H"
 #include "r3d.h"
 #include <dos.h>
