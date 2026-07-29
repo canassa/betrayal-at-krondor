@@ -222,7 +222,7 @@ unsigned int far stat_combatant_modify(Combatant *actor, int stat_idx, long delt
             if ((int)sum <= 0) {
                 sum = 0;
                 if (actor->charSlot != 0) {
-                    stat_combatant_apply_delta(actor, 6, 100);
+                    stat_combatant_apply_condition(actor, 6, 100);
                 }
             }
         }
@@ -269,7 +269,7 @@ unsigned int far stat_combatant_modify(Combatant *actor, int stat_idx, long delt
 
     if ((actor->charSlot != 0) &&
         (gstate_event_read(SKILL_SELECTED(rowIdx * 0x11 + stat_idx)) != 0)) {
-        delta += (delta * (short)g_gameState.aConditionTickAdvance[rowIdx]) / 0x34;
+        delta += (delta * (short)g_gameState.aSkillTrainRate[rowIdx]) / 0x34;
     }
     delta += (int)(unsigned int)slot->frac;
     slot->frac = (unsigned char)(delta % 0x100);
@@ -352,7 +352,7 @@ void far stat_party_broadcast_status_op(int stat_idx, long delta, int mode) {
     }
 }
 
-unsigned int stat_combatant_apply_delta(Combatant *actor, int stat_idx, int amount) {
+unsigned int stat_combatant_apply_condition(Combatant *actor, int stat_idx, int amount) {
     int slot_idx;
     int new_val;
     int old_val;
@@ -477,7 +477,7 @@ void far stat_combatant_heal(Combatant *combatant, int amount_pct) {
         g_gameState.dwLastActionTimeSnapshot = g_gameState.game_time;
         stat_idx = 0;
         do {
-            stat_combatant_apply_delta(combatant, stat_idx, -100);
+            stat_combatant_apply_condition(combatant, stat_idx, -100);
             stat_idx++;
         } while (stat_idx < 7);
     }

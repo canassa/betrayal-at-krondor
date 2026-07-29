@@ -20,8 +20,8 @@ TempWriteRegion g_pendingTempWriteRegion = TWR_NONE;
 char g_chapterDefaultSpeaker[] = {CHR_LOCKLEAR, CHR_JAMES, CHR_JAMES, CHR_GORATH, CHR_JAMES,
                                   CHR_OWYN,     CHR_JAMES, CHR_OWYN,  CHR_PUG};
 ResFile *g_tempGamFP = NULL;
-char g_abSleepStatDelta[CHARACTER_POOL_SIZE] = {0xfe, 0xff, 0xfe, 0xfe, 0xfe, 0xfd};
-char g_abRegenPerChar[CHARACTER_POOL_SIZE] = {0x01, 0x01, 0x01, 0x01, 0x01, 0x01};
+char g_fatigueDrainPerChar[CHARACTER_POOL_SIZE] = {0xfe, 0xff, 0xfe, 0xfe, 0xfe, 0xfd};
+char g_restRegenPerChar[CHARACTER_POOL_SIZE] = {0x01, 0x01, 0x01, 0x01, 0x01, 0x01};
 
 unsigned short far gstate_event_read(unsigned short id) {
 
@@ -261,21 +261,21 @@ int far gstate_member_consume_rations(int member_slot, int a) {
     g_gameState.nEvtArgActor0 = member_slot;
 
     if (itemtbl_inv_consume_one_by_kind(actor->actor_record, 0x48) != 0) {
-        stat_combatant_apply_delta(actor, 5, -100);
+        stat_combatant_apply_condition(actor, 5, -100);
     } else if (itemtbl_inv_consume_one_by_kind(actor->actor_record, 0x4a) != 0) {
-        stat_combatant_apply_delta(actor, 5, -100);
-        stat_combatant_apply_delta(actor, 0, 3);
+        stat_combatant_apply_condition(actor, 5, -100);
+        stat_combatant_apply_condition(actor, 0, 3);
     } else if (itemtbl_inv_consume_one_by_kind(actor->actor_record, 0x49) != 0) {
-        stat_combatant_apply_delta(actor, 2, 4);
+        stat_combatant_apply_condition(actor, 2, 4);
     } else {
-        stat_combatant_apply_delta(actor, 5, 5);
+        stat_combatant_apply_condition(actor, 5, 5);
     }
     return ret;
 }
 
 extern ConditionInfo far g_aConditionInfo[7];
 
-static int gstate_30min_tick(int arg0, int arg1, int arg2) {
+static int gstate_hourly_tick(int arg0, int arg1, int arg2) {
     int cond;
     int regen;
     int eventFired;
@@ -294,7 +294,7 @@ static int gstate_30min_tick(int arg0, int arg1, int arg2) {
         for (slot = 0; slot < g_gameState.partySize; slot = slot + 1) {
             actor = g_gameState.activeParty[slot];
             if (stat_combatant_modify(&g_gameState.characters[actor], 0x10,
-                                      (long)((int)g_abSleepStatDelta[actor] << 8), 100) == 0) {
+                                      (long)((int)g_fatigueDrainPerChar[actor] << 8), 100) == 0) {
                 allConscious = 0;
             }
         }
@@ -306,9 +306,9 @@ party_regen:
     for (slot = 0; slot < g_gameState.partySize; slot = slot + 1) {
         actor = g_gameState.activeParty[slot];
         if (arg2 != 0) {
-            stat_combatant_apply_delta(&g_gameState.characters[actor], 0, -3);
+            stat_combatant_apply_condition(&g_gameState.characters[actor], 0, -3);
             val = (arg2 == 100) ? 0x50 : 100;
-            regen = (g_abRegenPerChar[actor] * arg2) / 100;
+            regen = (g_restRegenPerChar[actor] * arg2) / 100;
             if (g_gameState.abActorStatusRanks[actor][4] != '\0') {
                 regen *= 2;
             }
@@ -324,7 +324,7 @@ party_regen:
                 if ((cond < 4) && (g_gameState.abActorStatusRanks[actor][4] != '\0')) {
                     amount -= (cond == 0) + 2;
                 }
-                stat_combatant_apply_delta(&g_gameState.characters[actor], cond, amount);
+                stat_combatant_apply_condition(&g_gameState.characters[actor], cond, amount);
             }
             if ((g_gameState.abActorStatusRanks[actor][cond] != '\0') &&
                 (g_aConditionInfo[cond].nRegenDelta != 0)) {
@@ -383,23 +383,23 @@ int far gstate_advance_time(long seconds, int flags, int recompute_party, int a,
                 n *= 2;
             }
             if (rank != 0) {
-                stat_combatant_apply_delta(&g_gameState.characters[actor], 6, n);
+                stat_combatant_apply_condition(&g_gameState.characters[actor], 6, n);
             }
         }
     }
     if ((g_gameState.game_time % 0xa8c0) / 0x708 != (long)old_tick) {
-        eventTotal += gstate_30min_tick(flags, a, b);
+        eventTotal += gstate_hourly_tick(flags, a, b);
     }
     timerpool_tick((int)seconds);
     palette_daylight_tick();
     return eventTotal;
 }
 
-int far gstate_advance_half_hours(int half_hours, int pad, int flags) {
+int far gstate_advance_hours(int hours, int pad, int flags) {
     int eventTotal;
 
     g_gameState.dwLastActionTimeSnapshot = g_gameState.game_time;
-    eventTotal = gstate_advance_time((long)half_hours * 0x708, 1, 1, 0, flags);
+    eventTotal = gstate_advance_time((long)hours * 0x708, 1, 1, 0, flags);
     g_gameState.dwLastActionTimeSnapshot = g_gameState.game_time;
     return eventTotal;
 }

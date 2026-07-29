@@ -36,7 +36,7 @@ shared_inventory	db	4 dup(?)
 ground_pile	db	4 dup(?)
 bPartyDirtyFlags	db	?
 dwPopup_retry_state	dw	?
-aConditionTickAdvance	dw	6 dup(?)
+aSkillTrainRate	dw	6 dup(?)
 abActorStatusRanks	db	42 dup(?)
 aActorStatModifiers	db	672 dup(?)
 nEvtArgActor0	dw	?

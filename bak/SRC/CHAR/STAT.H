@@ -16,7 +16,7 @@ extern unsigned int stat_actor_get(Combatant *actor, int stat_idx, int mode);
 extern unsigned int stat_combatant_modify(Combatant *actor, int stat_idx, long delta, int mode);
 extern unsigned int stat_party_find_extreme(int stat_id, int param_2, short *result_out);
 extern void stat_party_broadcast_status_op(int stat_idx, long delta, int mode);
-extern unsigned int stat_combatant_apply_delta(Combatant *actor, int stat_idx, int amount);
+extern unsigned int stat_combatant_apply_condition(Combatant *actor, int stat_idx, int amount);
 extern void stat_modifier_table_insert(Combatant *actor, ActorStatModifier *pNewMod);
 extern void stat_actor_clear_mods_mask(Combatant *actor, unsigned short mask);
 extern void stat_combatant_heal(Combatant *combatant, int amount_pct);

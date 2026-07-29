@@ -147,9 +147,9 @@ int far shop_npc_transaction(Actor far *actor, Actor far *merchant, ItemSlot far
                     if (rec->wUse_sfx != 0) {
                         audio_sfx_play_n_times(rec->wUse_sfx & 0xff, rec->wUse_sfx >> 8, 1);
                     }
-                    stat_combatant_apply_delta(&g_gameState.characters[partySlot], 3,
+                    stat_combatant_apply_condition(&g_gameState.characters[partySlot], 3,
                                                rec->wEffect_arg_b);
-                    stat_combatant_apply_delta(&g_gameState.characters[partySlot], 5, -100);
+                    stat_combatant_apply_condition(&g_gameState.characters[partySlot], 5, -100);
                     stat_combatant_modify(&g_gameState.characters[partySlot], 0x10, 0x300, 0x3c);
                 }
             } else {

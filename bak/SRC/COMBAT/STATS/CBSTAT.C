@@ -164,7 +164,7 @@ void far cbstat_apply_drain_tick(Combatant *actor) {
     if ((g_aClassWeaknessMask[actor->inner->creatureType] & 1) == 0) {
         if (cbstat_damage_apply_protection(actor, 1, 0x80) != 0) {
             actor->inner->flags |= CAF_POISON;
-            stat_combatant_apply_delta(actor, 2, RNDR(10, 59));
+            stat_combatant_apply_condition(actor, 2, RNDR(10, 59));
         }
     }
 }

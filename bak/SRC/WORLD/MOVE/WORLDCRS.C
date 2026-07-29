@@ -35,7 +35,7 @@ void far worldcross_dungeon_descent_anim(void) {
         worldmove_cross_get_probe_result(&probe_kind, &probe_coord);
         if (probe_kind == 0xf) {
             for (i = 0; i < (int)g_gameState.partySize; i++) {
-                stat_combatant_apply_delta(
+                stat_combatant_apply_condition(
                     &g_gameState.characters[(int)g_gameState.activeParty[i]], 6, 100);
             }
             if (g_full_redraw_needed == 0 && proxscan_paged_find_next_type0f(&pFound) != 0) {

@@ -771,7 +771,7 @@ void modalscreen_rest_until_time(Actor far *pActor) {
         g_gameState.nEvtArgCount = (short)!firstLoop;
         if (dialog_play_record(0x13d672, 0) == 0) {
             g_dialog_in_scene = 0;
-            gstate_advance_half_hours(1, 100, 0x85);
+            gstate_advance_hours(1, 100, 0x85);
             do {
                 for (i = 0; i < 2; i++) {
                     done = (int)((unsigned long)(g_gameState.game_time % 0xa8c0) / 0x708 * 0x708) +
@@ -787,10 +787,10 @@ void modalscreen_rest_until_time(Actor far *pActor) {
                     screen_frame_present();
                     screen_frame_sync_buffers_rect(10, 0x6e);
                 }
-                gstate_advance_half_hours(1, 100, 0x85);
+                gstate_advance_hours(1, 100, 0x85);
                 if (g_gameState.game_time - saved_time >= 0x5b68) {
                     for (i = 0; i < (unsigned)(int)g_gameState.partySize; i++) {
-                        stat_combatant_apply_delta(gstate_party_member_record(i), 0, -100);
+                        stat_combatant_apply_condition(gstate_party_member_record(i), 0, -100);
                     }
                 }
             } while ((unsigned long)(g_gameState.game_time % 0xa8c0) / 0x708 !=

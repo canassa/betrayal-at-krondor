@@ -376,7 +376,7 @@ void far charscreen_recalc_condition_tick(void) {
                 count++;
             }
         }
-        g_gameState.aConditionTickAdvance[memberIdx] = count != 0 ? 0x1a / count : 0;
+        g_gameState.aSkillTrainRate[memberIdx] = count != 0 ? 0x1a / count : 0;
         memberIdx = memberIdx + 1;
     } while (memberIdx < CHARACTER_POOL_SIZE);
     return;
@@ -390,7 +390,7 @@ static long charscreen_temple_heal_price(Combatant *actor, int multiplier_pct) {
     i = total = 0;
     for (; i < 7; i++) {
         if ((cond = (signed char)((unsigned char *)&g_gameState
-                                      .aConditionTickAdvance)[5 + actor->charSlot * 7 + i]) !=
+                                      .aSkillTrainRate)[5 + actor->charSlot * 7 + i]) !=
             0) {
             switch (i) {
             case 0:
@@ -519,14 +519,14 @@ LAB_main:
                 g_gameState.dwLastActionTimeSnapshot = g_gameState.game_time;
                 stat_idx = 0;
                 do {
-                    stat_combatant_apply_delta(&g_gameState.characters[member_idx], stat_idx,
+                    stat_combatant_apply_condition(&g_gameState.characters[member_idx], stat_idx,
                                                stat_idx == 4 ? 0x14 : -100);
                     stat_idx++;
                 } while (stat_idx < 7);
                 if (mode == 4) {
                     stat_combatant_modify(&g_gameState.characters[member_idx], 0x10, 0x7fff,
                                           100);
-                    stat_combatant_apply_delta(&g_gameState.characters[member_idx], 4, 100);
+                    stat_combatant_apply_condition(&g_gameState.characters[member_idx], 4, 100);
                 }
                 key = 0x31;
             }

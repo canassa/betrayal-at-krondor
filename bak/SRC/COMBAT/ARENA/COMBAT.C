@@ -275,7 +275,7 @@ LAB_600f_0486:
     actor->stats[1].base = '\0';
     stat_actor_get(actor, 1, 0);
     actor->inner->flags |= CAF_DEAD;
-    stat_combatant_apply_delta(actor, 6, 100);
+    stat_combatant_apply_condition(actor, 6, 100);
     if (removed) {
         for (i = 0; i < g_combat_count_B; i++) {
             if (&g_combat_actors_B[i] == actor) {

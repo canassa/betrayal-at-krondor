@@ -58,14 +58,14 @@ extern ResFile *g_tempGamFP;
  * Health/Stamina reserve each hour the party travels overtired. Indexed by
  * @ref CharacterId. See @ref mech_fatigue.
  */
-extern char g_abSleepStatDelta[6];
+extern char g_fatigueDrainPerChar[6];
 
 /**
  * @brief Per-character recovery rate — points restored to the combined
  * Health/Stamina reserve on each hour of rest. Indexed by @ref CharacterId.
  * See @ref mech_fatigue.
  */
-extern char g_abRegenPerChar[6];
+extern char g_restRegenPerChar[6];
 
 extern unsigned short gstate_event_read(unsigned short event_idx);
 extern int gstate_event_write(unsigned int event_id, unsigned int value);
@@ -104,7 +104,7 @@ extern int gstate_temp_file_write_at(unsigned char far *src_far, unsigned long o
 #define GAM_COMBAT_ACTOR_INNER(idx) ((idx) * sizeof(CombatantState) + GAM_COMBAT_ACTOR(1730L))
 extern int gstate_member_consume_rations(int member_slot, int a);
 extern int gstate_advance_time(long seconds, int flags, int recompute_party, int a, int b);
-extern int gstate_advance_half_hours(int half_hours, int pad, int flags);
+extern int gstate_advance_hours(int hours, int pad, int flags);
 extern int gstate_is_party_member(int actor_id);
 extern int gstate_actor_is_caster(Combatant *actor);
 extern Combatant *gstate_party_member_record(int slot);

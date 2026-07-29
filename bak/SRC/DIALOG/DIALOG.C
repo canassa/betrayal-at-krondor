@@ -1264,13 +1264,13 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                             amt = amt + RND(nA4_snap - amt_snap);
                         }
                         if ((unsigned int)op->nA1 > 1) {
-                            stat_combatant_apply_delta(
+                            stat_combatant_apply_condition(
                                 &g_gameState.characters[g_speaker_kinds[(unsigned short)op->nA1 - 2]],
                                 op->nA2, amt);
                         } else {
                             i = 0;
                             while (i < g_gameState.partySize) {
-                                stat_combatant_apply_delta(
+                                stat_combatant_apply_condition(
                                     &g_gameState.characters[g_gameState.activeParty[i]],
                                     op->nA2, amt);
                                 i = i + 1;

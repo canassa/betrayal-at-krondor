@@ -190,7 +190,7 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
         if (item->item_id == 'q' && (char)g_gameState.abActorStatusRanks[slot_idx][2] != '\0' &&
             target == (ItemSlot far *)0) {
             outcome = -1;
-            stat_combatant_apply_delta(member, 2, -100);
+            stat_combatant_apply_condition(member, 2, -100);
             if (g_wInCombatMode != 0) {
                 g_current_actor->inner->flags &= ~CAF_POISON;
             }
@@ -255,7 +255,7 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
         }
     } else if (category == 0x14) {
 
-        stat_combatant_apply_delta(member, rec->wEffect_arg_a, rec->wEffect_arg_b);
+        stat_combatant_apply_condition(member, rec->wEffect_arg_a, rec->wEffect_arg_b);
         outcome = 1;
     } else if (category == 0xd) {
 
@@ -338,7 +338,7 @@ int itemuse_dispatch_on_target(Actor far *actor, ItemSlot far *item, ItemSlot fa
             }
             for (i = 0; i < 7; i++) {
                 if (i != 4) {
-                    stat_combatant_apply_delta(member, i, -5);
+                    stat_combatant_apply_condition(member, i, -5);
                 }
             }
             stat_combatant_modify(member, 0x10, (long)((short)heal_amt << 8), 100);

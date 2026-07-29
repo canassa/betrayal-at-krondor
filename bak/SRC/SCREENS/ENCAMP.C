@@ -146,11 +146,11 @@ void far encamp_run(void) {
                         time_in_period += 0x5740;
                     }
                     if ((long)prevTime / 0x708 != (long)time_in_period / 0x708) {
-                        gstate_advance_half_hours(1, 0x50, 100);
+                        gstate_advance_hours(1, 0x50, 100);
                         if (sickCurePending &&
                             g_gameState.game_time / 0x708 - (long)startGameTime / 0x708 >= 0xd) {
                             for (i = 0; i < g_gameState.partySize; i++) {
-                                stat_combatant_apply_delta(
+                                stat_combatant_apply_condition(
                                     &g_gameState.characters[g_gameState.activeParty[i]], 0,
                                     -100);
                             }

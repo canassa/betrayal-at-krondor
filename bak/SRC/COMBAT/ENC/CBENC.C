@@ -806,12 +806,12 @@ void far combatenc_actor_enter_defense(Combatant *actor) {
         healAmt = 1;
     }
     if (!actor->charSlot ||
-        ((!*(char *)((int)g_gameState.aConditionTickAdvance + 5 + actor->charSlot * 7) &&
-          !*(char *)((int)g_gameState.aConditionTickAdvance + 6 + actor->charSlot * 7)) &&
-         (!*(char *)((int)g_gameState.aConditionTickAdvance + 7 + actor->charSlot * 7) &&
-          ((!*(char *)((int)g_gameState.aConditionTickAdvance + 8 + actor->charSlot * 7) &&
-            !*(char *)((int)g_gameState.aConditionTickAdvance + 10 + actor->charSlot * 7)) &&
-           !*(char *)((int)g_gameState.aConditionTickAdvance + 0xb + actor->charSlot * 7))))) {
+        ((!*(char *)((int)g_gameState.aSkillTrainRate + 5 + actor->charSlot * 7) &&
+          !*(char *)((int)g_gameState.aSkillTrainRate + 6 + actor->charSlot * 7)) &&
+         (!*(char *)((int)g_gameState.aSkillTrainRate + 7 + actor->charSlot * 7) &&
+          ((!*(char *)((int)g_gameState.aSkillTrainRate + 8 + actor->charSlot * 7) &&
+            !*(char *)((int)g_gameState.aSkillTrainRate + 10 + actor->charSlot * 7)) &&
+           !*(char *)((int)g_gameState.aSkillTrainRate + 0xb + actor->charSlot * 7))))) {
         stat_combatant_modify(actor, 0x10, (long)(int)(healAmt << 8), 0x50);
     }
     g_acting_actor_speed = 0;

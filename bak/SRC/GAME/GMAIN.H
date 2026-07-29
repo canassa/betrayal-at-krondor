@@ -75,7 +75,7 @@ typedef struct GameState {
     struct Actor far *ground_pile;
     unsigned char bPartyDirtyFlags;
     unsigned int dwPopup_retry_state;
-    unsigned short aConditionTickAdvance[CHARACTER_POOL_SIZE];
+    unsigned short aSkillTrainRate[CHARACTER_POOL_SIZE];
     unsigned char abActorStatusRanks[CHARACTER_POOL_SIZE][7];
     ActorStatModTable aActorStatModifiers;
     short nEvtArgActor0;
