@@ -20,8 +20,22 @@ TempWriteRegion g_pendingTempWriteRegion = TWR_NONE;
 char g_chapterDefaultSpeaker[] = {CHR_LOCKLEAR, CHR_JAMES, CHR_JAMES, CHR_GORATH, CHR_JAMES,
                                   CHR_OWYN,     CHR_JAMES, CHR_OWYN,  CHR_PUG};
 ResFile *g_tempGamFP = NULL;
-char g_fatigueDrainPerChar[CHARACTER_POOL_SIZE] = {0xfe, 0xff, 0xfe, 0xfe, 0xfe, 0xfd};
-char g_restRegenPerChar[CHARACTER_POOL_SIZE] = {0x01, 0x01, 0x01, 0x01, 0x01, 0x01};
+char g_fatigueDrainPerChar[CHARACTER_POOL_SIZE] = {
+    -2, // Locklear
+    -1, // Gorath
+    -2, // Owyn
+    -2, // Pug
+    -2, // James
+    -3  // Patrus
+};
+char g_restRegenPerChar[CHARACTER_POOL_SIZE] = {
+    1, // Locklear
+    1, // Gorath
+    1, // Owyn
+    1, // Pug
+    1, // James
+    1  // Patrus
+};
 
 unsigned short far gstate_event_read(unsigned short id) {
 
