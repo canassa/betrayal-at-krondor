@@ -426,7 +426,7 @@ void modalscreen_req_inv_run(int kind_or_id, int tax, int qty_mult, int char_slo
 
         if (action == 2 || action == 3 || action == 4) {
             memberSlot = action - 2 + 1;
-            if (memberSlot <= g_gameState.party_count) {
+            if (memberSlot <= g_gameState.partySize) {
                 if (menupage_state_0e7c() == 2 || key_is_down(0x2a) != 0 ||
                     key_is_down(0x36) != 0) {
                     audio_play(0x53);
@@ -561,7 +561,7 @@ void modalscreen_inventory_request(unsigned int category_mask, int discount_pct)
         {
             if (action == 2 || action == 3 || action == 4) {
                 int di = action - 2 + 1;
-                if (g_gameState.party_count >= di) {
+                if (g_gameState.partySize >= di) {
                     if (menupage_state_0e7c() == 2 || key_is_down(0x2a) != 0 ||
                         key_is_down(0x36) != 0) {
                         audio_play(0x53);
@@ -789,7 +789,7 @@ void modalscreen_rest_until_time(Actor far *pActor) {
                 }
                 gstate_advance_half_hours(1, 100, 0x85);
                 if (g_gameState.game_time - saved_time >= 0x5b68) {
-                    for (i = 0; i < (unsigned)(int)g_gameState.party_count; i++) {
+                    for (i = 0; i < (unsigned)(int)g_gameState.partySize; i++) {
                         stat_combatant_apply_delta(gstate_party_member_record(i), 0, -100);
                     }
                 }
@@ -799,7 +799,7 @@ void modalscreen_rest_until_time(Actor far *pActor) {
             g_gameState.nParty_gold -= (int)(sub->event_state.bRest_gold_cost * 10);
             i = 0;
             done = 1;
-            for (; i < (unsigned)(int)g_gameState.party_count; i++) {
+            for (; i < (unsigned)(int)g_gameState.partySize; i++) {
                 if (stat_actor_get(gstate_party_member_record(i), 0x10, 0) !=
                     stat_actor_get(gstate_party_member_record(i), 0x10, 1)) {
                     done = 0;

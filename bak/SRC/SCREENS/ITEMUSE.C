@@ -596,7 +596,7 @@ void far itemuse_party_tick_temporary(void) {
     Actor far *actor;
     ItemSlot far *item;
 
-    for (slot = 0; slot < g_gameState.party_count; slot++) {
+    for (slot = 0; slot < g_gameState.partySize; slot++) {
         actor = gstate_party_member_record(slot)->actor_record;
         for (i = 0, item = ACTOR_ITEMS(actor); i < actor->itemCount; i++, item++) {
             if (item->item_id == 'T' && (item->flags & 1)) {

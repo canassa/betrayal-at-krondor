@@ -106,14 +106,14 @@ int itemtbl_inv_count_by_kind(Actor far *inv, unsigned int kind) {
     return total;
 }
 
-int itemtbl_party_count_by_kind(unsigned int kind) {
+int itemtbl_partySize_by_kind(unsigned int kind) {
     int n;
     int slot;
     int total;
 
     total = 0;
     g_gameState.nEvtArgActor0 = g_gameState.party_roster[0];
-    for (slot = 0; slot < g_gameState.party_count; slot = slot + 1) {
+    for (slot = 0; slot < g_gameState.partySize; slot = slot + 1) {
         if (0 <
             (n = itemtbl_inv_count_by_kind(gstate_party_member_record(slot)->actor_record, kind))) {
             g_gameState.nEvtArgActor0 = g_gameState.party_roster[slot];
@@ -180,7 +180,7 @@ int itemtbl_pty_consum_one_kind(unsigned int kind) {
     int slot;
 
     g_gameState.nEvtArgActor0 = g_gameState.party_roster[0];
-    for (slot = 0; slot < g_gameState.party_count; slot++) {
+    for (slot = 0; slot < g_gameState.partySize; slot++) {
         if (itemtbl_inv_consume_one_by_kind(gstate_party_member_record(slot)->actor_record, kind) !=
             0) {
             g_gameState.nEvtArgActor0 = g_gameState.party_roster[slot];

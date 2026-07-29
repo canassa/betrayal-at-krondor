@@ -677,7 +677,7 @@ int far invui_handle_item_drag(MenuPage *page, Actor far *actor, int selected_sl
                 combat_arena_dist_actors_by_id(selected_slot, target_slot) > 1) {
                 target_slot = 0;
             }
-            if (target_slot >= 0 && target_slot <= g_gameState.party_count) {
+            if (target_slot >= 0 && target_slot <= g_gameState.partySize) {
                 if (target_slot > 0) {
                     g_gameState.nEvtArgActor1 = g_gameState.party_roster[target_slot - 1];
                     if (selected_slot == 0)
@@ -727,7 +727,7 @@ int far invui_handle_item_drag(MenuPage *page, Actor far *actor, int selected_sl
     menupage_run(page, &consumed);
 
     if (dragging && (selected_slot == 0 || target_slot != selected_slot) && target_slot >= 1 &&
-        target_slot <= g_gameState.party_count) {
+        target_slot <= g_gameState.partySize) {
         ImageRecord *spr;
         int xfer_result;
         spr = invui_item_sprite_select(item_ptr);

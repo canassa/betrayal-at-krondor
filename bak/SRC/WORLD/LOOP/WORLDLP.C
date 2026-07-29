@@ -356,7 +356,7 @@ short far world3d_main_loop(void) {
             case 3:
             case 4: {
                 unsigned int chap_sub = action_id - 2;
-                if (g_gameState.party_count > (short)chap_sub) {
+                if (g_gameState.partySize > (short)chap_sub) {
                     if (menupage_state_0e7c() == 2 || key_is_down(0x2a) != 0 ||
                         key_is_down(0x36) != 0) {
 
@@ -481,7 +481,7 @@ void far worldloop_pty_stat7_flag_cd(void) {
     if (g_pReqMainPage != (MenuPage *)0x0) {
         i = 0;
         do {
-            if (i < g_gameState.party_count) {
+            if (i < g_gameState.partySize) {
                 if (stat_actor_get(&g_gameState.party_members[g_gameState.party_roster[i]], 7, 1) !=
                     0) {
                     found = 1;

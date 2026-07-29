@@ -8,6 +8,7 @@
 
 #include "structs.h"
 #include "SRC/IO/RESOURCE.H"
+#include "SRC/GAME/GMAIN.H"
 
 extern unsigned short g_wLastTempWriteRecordKind;
 extern char g_abChapterEventSlot[9];

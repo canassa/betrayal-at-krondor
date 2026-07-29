@@ -34,7 +34,7 @@ void far worldcross_dungeon_descent_anim(void) {
     if (g_game_mode == 2) {
         worldmove_cross_get_probe_result(&probe_kind, &probe_coord);
         if (probe_kind == 0xf) {
-            for (i = 0; i < (int)g_gameState.party_count; i++) {
+            for (i = 0; i < (int)g_gameState.partySize; i++) {
                 stat_combatant_apply_delta(
                     &g_gameState.party_members[(int)g_gameState.party_roster[i]], 6, 100);
             }
@@ -103,7 +103,7 @@ void far worldcross_hotspot_use_rope(WorldHotspot *pHotspot) {
     dialog_viewport_clip_point(pHotspot->rect.x + pHotspot->rect.width / 2,
                                pHotspot->rect.y + pHotspot->rect.height / 2);
     if (menupage_state_0e7c() == 1) {
-        if (itemtbl_party_count_by_kind(0x52) != 0) {
+        if (itemtbl_partySize_by_kind(0x52) != 0) {
 
             if ((pHotspot->pEntity->orientation.yaw == 0) ||
                 (pHotspot->pEntity->orientation.yaw == R3D_DEG(-180))) {
@@ -260,7 +260,7 @@ void far worldcross_hotspot_use_rope(WorldHotspot *pHotspot) {
             czone_resync_on_world_move();
             screen_cursor_restore_shape();
             itemtbl_pty_consum_one_kind(0x52);
-            if (itemtbl_party_count_by_kind(0x52) == 0) {
+            if (itemtbl_partySize_by_kind(0x52) == 0) {
                 dialog_play_record(0x114, 1);
             }
         } else {

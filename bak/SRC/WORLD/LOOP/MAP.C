@@ -406,7 +406,7 @@ void far map_main_loop(void) {
             case 3:
             case 4: {
                 int member_idx = action_id - 2;
-                if (member_idx < g_gameState.party_count) {
+                if (member_idx < g_gameState.partySize) {
                     if ((menupage_state_0e7c() == 2) || (key_is_down(0x2a) != 0) ||
                         (key_is_down(0x36) != 0)) {
                         charscreen_info_loop(gstate_party_member_record(member_idx));

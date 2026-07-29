@@ -946,7 +946,7 @@ void far wcursor_click_door_or_secret(WorldHotspot *pHotspot) {
                                        pHotspot->rect.y + pHotspot->rect.height / 2);
             if (menupage_state_0e7c() == 1) {
                 if (dialog_play_record(pSub02->interact_msg.dwMessage_id, 1) == 0) {
-                    if (itemtbl_party_count_by_kind(0x53) != 0) {
+                    if (itemtbl_partySize_by_kind(0x53) != 0) {
                         if (pSub08 != 0 && pSub08->hotspot_action.bHas_hotspot != 0) {
                             x = pSub08->hotspot_action.bHotspot_x;
                             y = pSub08->hotspot_action.bHotspot_y;

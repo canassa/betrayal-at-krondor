@@ -30,7 +30,7 @@ world_step_tick	dw	?
 lInsetCameraPosZ	dd	?
 pParty_names	db	60 dup(?)
 party_members	db	570 dup(?)
-party_count	db	?
+partySize	db	?
 party_roster	db	3 dup(?)
 shared_inventory	db	4 dup(?)
 ground_pile	db	4 dup(?)

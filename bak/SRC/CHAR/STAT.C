@@ -318,7 +318,7 @@ unsigned int far stat_party_find_extreme(int stat_id, int mode, short *result_ou
     if (stat_id == 0xf) {
         i = 0;
         extreme = 30000;
-        for (; i < g_gameState.party_count; i++) {
+        for (; i < g_gameState.partySize; i++) {
             member_idx = g_gameState.party_roster[i];
             cur_val = stat_actor_get(&g_gameState.party_members[member_idx], stat_id, mode);
             if ((int)cur_val < (int)extreme) {
@@ -328,7 +328,7 @@ unsigned int far stat_party_find_extreme(int stat_id, int mode, short *result_ou
         }
     } else {
         i = extreme = 0;
-        for (; i < g_gameState.party_count; i++) {
+        for (; i < g_gameState.partySize; i++) {
             member_idx = g_gameState.party_roster[i];
             cur_val = stat_actor_get(&g_gameState.party_members[member_idx], stat_id, mode);
             if ((int)cur_val > (int)extreme) {
@@ -346,7 +346,7 @@ unsigned int far stat_party_find_extreme(int stat_id, int mode, short *result_ou
 void far stat_party_broadcast_status_op(int stat_idx, long delta, int mode) {
     int i;
 
-    for (i = 0; i < g_gameState.party_count; i++) {
+    for (i = 0; i < g_gameState.partySize; i++) {
         stat_combatant_modify(&g_gameState.party_members[g_gameState.party_roster[i]], stat_idx,
                               delta, mode);
     }
@@ -380,7 +380,7 @@ unsigned int stat_combatant_apply_delta(CombatActor *actor, int stat_idx, int am
         }
         if (stat_idx != 6)
             return;
-        for (stat_idx = 0, g_gameState.bCombatExitRequest = 1; stat_idx < g_gameState.party_count;
+        for (stat_idx = 0, g_gameState.bCombatExitRequest = 1; stat_idx < g_gameState.partySize;
              stat_idx++) {
             if (!(signed char)
                      g_gameState.abActorStatusRanks[g_gameState.party_roster[stat_idx]][6]) {
@@ -456,7 +456,7 @@ int far stat_party_all_above_pct(int percent) {
     int i;
 
     i = 0;
-    while (i < g_gameState.party_count) {
+    while (i < g_gameState.partySize) {
         memberIdx = g_gameState.party_roster[i];
         current = stat_actor_get(&g_gameState.party_members[memberIdx], 0x10, 3);
         max_val = stat_actor_get(&g_gameState.party_members[memberIdx], 0x10, 1);
@@ -491,7 +491,7 @@ void far stat_combatant_heal(CombatActor *combatant, int amount_pct) {
 void far stat_party_heal_all(int amount) {
     int i;
 
-    for (i = 0; i < g_gameState.party_count; i++) {
+    for (i = 0; i < g_gameState.partySize; i++) {
         stat_combatant_heal(&g_gameState.party_members[g_gameState.party_roster[i]], amount);
     }
 }

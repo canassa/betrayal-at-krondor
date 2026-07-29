@@ -332,7 +332,7 @@ void charscreen_info_loop(CombatActor *actor) {
                         dialog_play_record(0x69L, 0);
                     } else {
                         askabout_free_paged_image_table();
-                        if (g_gameState.party_count <= ++slot) {
+                        if (g_gameState.partySize <= ++slot) {
                             slot = 0;
                         }
                     }
@@ -340,7 +340,7 @@ void charscreen_info_loop(CombatActor *actor) {
                     if (((key == 2) || (key == 3)) || (key == 4)) {
                         tmp = key + 0xfffe;
                         askabout_free_paged_image_table();
-                        if ((int)tmp < (int)g_gameState.party_count)
+                        if ((int)tmp < (int)g_gameState.partySize)
                             slot = tmp;
                         redrawFlag = 0xffff;
                     } else {
@@ -434,23 +434,23 @@ void charscreen_temple_heal_menu(int actor_filter, int mode) {
     redraw_flag = 0xffff;
     saved_blend_mode = g_nPalBlendMode;
     saved_pal = palette_set((unsigned char far *)0);
-    for (slot = 0; slot < g_gameState.party_count; slot++) {
+    for (slot = 0; slot < g_gameState.partySize; slot++) {
         if (charscreen_temple_heal_price(gstate_party_member_record(slot), actor_filter) != 0)
             break;
     }
-    if (g_gameState.party_count != slot)
+    if (g_gameState.partySize != slot)
         goto LAB_main;
-    for (slot = 0; slot < g_gameState.party_count; slot++) {
+    for (slot = 0; slot < g_gameState.partySize; slot++) {
         if (stat_actor_get(gstate_party_member_record(slot), 0x10, 0) !=
             stat_actor_get(gstate_party_member_record(slot), 0x10, 1))
             break;
     }
     if (mode == 4) {
-        if (g_gameState.party_count != slot)
+        if (g_gameState.partySize != slot)
             goto LAB_main;
         dialog_play_record(0x13d66b, 0);
     } else {
-        dialog_play_record(g_gameState.party_count == slot ? 0x13d66b : 0x13d673, 0);
+        dialog_play_record(g_gameState.partySize == slot ? 0x13d66b : 0x13d673, 0);
     }
     return;
 LAB_main:
@@ -505,7 +505,7 @@ LAB_main:
         }
         if ((key == 2 || key == 3 || key == 4) && g_wInCombatMode == 0) {
             dst_slot = (int)key - 2;
-            if (dst_slot < g_gameState.party_count)
+            if (dst_slot < g_gameState.partySize)
                 slot = dst_slot;
             redraw_flag = 0xffff;
         }
@@ -535,11 +535,11 @@ LAB_main:
         if ((key == 0x31 || key == 0x39) && g_wInCombatMode == 0) {
             redraw_flag = 0xffff;
             do {
-                if (g_gameState.party_count <= ++slot)
+                if (g_gameState.partySize <= ++slot)
                     break;
             } while (charscreen_temple_heal_price(gstate_party_member_record(slot), actor_filter) ==
                      0);
-            if (g_gameState.party_count == slot)
+            if (g_gameState.partySize == slot)
                 break;
         }
     } while (key != 1);

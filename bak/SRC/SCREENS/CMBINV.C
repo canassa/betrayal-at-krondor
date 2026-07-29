@@ -262,13 +262,13 @@ int cmbinv_inventory_screen_run(Actor far *actor, int idx, int flag) {
         if (needRedraw != 0) {
             if (memberIdx != 0) {
                 g_gameState.nEvtArgActor0 =
-                    (short)(signed char)((char *)&g_gameState.party_count)[memberIdx];
+                    (short)(signed char)((char *)&g_gameState.partySize)[memberIdx];
                 stat_actor_recalc_equip_bonuses(
                     &g_gameState.party_members[g_gameState.nEvtArgActor0]);
             } else {
 
                 g_gameState.nEvtArgActor0 =
-                    (short)(signed char)g_gameState.party_roster[RND(g_gameState.party_count)];
+                    (short)(signed char)g_gameState.party_roster[RND(g_gameState.partySize)];
             }
             cmbinv_combat_encounter_begin(g_pInventoryMenuPage, actor, page * 6);
             invui_render_present_sync(g_pInventoryMenuPage, actor, memberIdx, selSlot);
@@ -331,7 +331,7 @@ int cmbinv_inventory_screen_run(Actor far *actor, int idx, int flag) {
             if (((action == 2) || (action == 3) || (action == 4)) && !g_bInventoryShopMode) {
                 int target = (int)(action - 2) + 1;
                 selSlot = -1;
-                if (target <= g_gameState.party_count) {
+                if (target <= g_gameState.partySize) {
                     if ((menupage_state_0e7c() == 2) || (key_is_down(0x2a) != 0) ||
                         (key_is_down(0x36) != 0)) {
 
@@ -410,7 +410,7 @@ int cmbinv_inventory_screen_run(Actor far *actor, int idx, int flag) {
                     int target = (int)(action - 2) + 1;
                     selSlot = -1;
                     needRedraw = 1;
-                    if (target <= g_gameState.party_count) {
+                    if (target <= g_gameState.partySize) {
                         if ((menupage_state_0e7c() == 2) || (key_is_down(0x2a) != 0) ||
                             (key_is_down(0x36) != 0)) {
                             charscreen_info_loop(gstate_party_member_record(target - 1));
@@ -833,7 +833,7 @@ int far cmbinv_pty_distribute_item_stack(Actor far *src, ItemSlot far *item) {
     remaining = (unsigned int)item->condition;
     itemCopy = *item;
     i = recipientCount = 0;
-    for (; i < g_gameState.party_count; i++) {
+    for (; i < g_gameState.partySize; i++) {
         if (cmbinv_has_space_for_item(gstate_party_member_record(i)->actor_record, item))
             recipientCount++;
     }
@@ -844,7 +844,7 @@ int far cmbinv_pty_distribute_item_stack(Actor far *src, ItemSlot far *item) {
         cmbinv_actor_inv_remove_item(src, item);
     }
     i = assigned = 0;
-    for (; i < g_gameState.party_count; i++) {
+    for (; i < g_gameState.partySize; i++) {
         recipient = gstate_party_member_record(i)->actor_record;
         if (cmbinv_has_space_for_item(recipient, (ItemSlot far *)&itemCopy)) {
             int portion;
@@ -1020,7 +1020,7 @@ int far cmbinv_actor_acquire_item(Actor far *actor, ItemSlot far *item) {
             gstate_member_consume_rations(partySlot, 1);
         return 1;
     }
-    for (i = 0; i < g_gameState.party_count; i++) {
+    for (i = 0; i < g_gameState.partySize; i++) {
         actor = g_gameState.party_members[(signed char)g_gameState.party_roster[i]].actor_record;
         if (cmbinv_has_space_for_item(actor, item)) {
             ACTOR_ITEM(actor, actor->itemCount++) = *item;

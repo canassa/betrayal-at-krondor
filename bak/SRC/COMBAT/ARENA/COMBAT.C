@@ -1907,9 +1907,9 @@ int combat_arena_dist_actors_by_id(int actor_id_a, int actor_id_b) {
 
     actor_a_ptr = 0;
     actor_b_ptr = 0;
-    actor_id_b = (&g_gameState.party_count)[actor_id_b] + 1;
+    actor_id_b = (&g_gameState.partySize)[actor_id_b] + 1;
     if (actor_id_a != 0) {
-        actor_id_a = (&g_gameState.party_count)[actor_id_a] + 1;
+        actor_id_a = (&g_gameState.partySize)[actor_id_a] + 1;
     } else {
         actor_id_a = -1;
     }

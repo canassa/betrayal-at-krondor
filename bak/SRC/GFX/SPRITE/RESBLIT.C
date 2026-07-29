@@ -219,7 +219,7 @@ void resblit_hud_draw_party_icons_row(char *filename) {
             dst_y = 0x94;
         }
         if (dst_y != 0) {
-            for (i = 0; i < g_gameState.party_count; i++) {
+            for (i = 0; i < g_gameState.partySize; i++) {
                 resblit_sprite(g_pHeadsBmxAssetTable[g_gameState.party_roster[i]],
                                i * PORTRAIT_PANEL_STRIDE + PORTRAIT_ROW_X0, dst_y);
             }

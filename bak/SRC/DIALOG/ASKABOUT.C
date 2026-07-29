@@ -193,10 +193,10 @@ unsigned short far askabout_dispatch_topic(unsigned short topic_id) {
     avail = gstate_event_read(topic_id);
     switch (topic_id) {
     case 0x000b:
-        avail = avail && itemtbl_party_count_by_kind(0x3c) == 0;
+        avail = avail && itemtbl_partySize_by_kind(0x3c) == 0;
         break;
     case 0x0009:
-        avail = avail && itemtbl_party_count_by_kind(0x65) == 0;
+        avail = avail && itemtbl_partySize_by_kind(0x65) == 0;
         break;
     case 0x002c:
         avail = avail && gstate_event_read(0x1f6c) != 0;
@@ -228,11 +228,11 @@ unsigned short far askabout_dispatch_topic(unsigned short topic_id) {
         break;
     case 0x004c:
     case 0x0094:
-        avail = avail && itemtbl_party_count_by_kind(0x48) == 0;
+        avail = avail && itemtbl_partySize_by_kind(0x48) == 0;
         break;
     case 0x00a3:
         avail = gstate_event_read(0x8e) != 0 && gstate_event_read(0xaa) != 0 &&
-                itemtbl_party_count_by_kind(0x7c) != 0;
+                itemtbl_partySize_by_kind(0x7c) != 0;
         break;
     }
 
@@ -433,7 +433,7 @@ static void far askabout_build_party_select_menu(DDXRecord far *record) {
     page->rect.width = nWidth;
     page->rect.height = nHeight;
     page->pEntries = (MenuEntry *)(g_pKeywordMenuScratch + 1);
-    page->wEntry_count = (int)g_gameState.party_count + 1;
+    page->wEntry_count = (int)g_gameState.partySize + 1;
     memset(src, 0, page->wEntry_count * 0x21);
     i = max_width = 0;
     for (; i < (int)page->wEntry_count; i++) {

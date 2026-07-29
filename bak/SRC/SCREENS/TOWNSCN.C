@@ -731,7 +731,7 @@ void far townscene_cheat_menu_screen(void) {
             stat_party_heal_all(100);
             break;
         case 0x86:
-            for (i = 0; g_gameState.party_count > i; i++) {
+            for (i = 0; g_gameState.partySize > i; i++) {
                 gstate_party_member_record(i)->pSpellsKnown[0] = 0xffff;
                 gstate_party_member_record(i)->pSpellsKnown[1] = 0xffff;
                 gstate_party_member_record(i)->pSpellsKnown[2] = 0xffff;

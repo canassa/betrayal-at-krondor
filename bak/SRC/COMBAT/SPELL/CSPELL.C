@@ -2182,7 +2182,7 @@ int cspell_cast_menu_loop(CombatActor *caster, int *out_result, int *preferred_c
         }
         prevSchool = -1;
         for (i = 0; i < 3; i++) {
-            if (i < g_gameState.party_count) {
+            if (i < g_gameState.partySize) {
                 can_cast[i] = stat_actor_get(
                     &g_gameState.party_members[(char)g_gameState.party_roster[i]], 7, 1);
                 if (can_cast[i] != 0 && casterSlot == -1) {

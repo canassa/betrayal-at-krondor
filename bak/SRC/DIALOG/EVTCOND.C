@@ -27,7 +27,7 @@ void evtcond_pty_inv_repair_cnt(int *count_out, int *repair_out, int do_repair) 
 
     loaded = itemtbl_load();
     *count_out = *repair_out = 0;
-    for (member = 0; member < g_gameState.party_count; member++) {
+    for (member = 0; member < g_gameState.partySize; member++) {
         actor = gstate_party_member_record(member)->actor_record;
         i = 0;
         slot = ACTOR_ITEMS(actor);
@@ -64,7 +64,7 @@ int evtcond_range_d_read_handler(unsigned int cond) {
         /* 0x38c8 arithmetic bias mapping the event-condition id
            into the item-condition value space (cond compared to slot->condition) */
         cond += 0x38c8;
-        for (i = 0; i < (int)g_gameState.party_count; i++) {
+        for (i = 0; i < (int)g_gameState.partySize; i++) {
             actor = g_gameState.party_members[g_gameState.party_roster[i]].actor_record;
             j = 0;
             slot = ACTOR_ITEMS(actor);
@@ -79,13 +79,13 @@ int evtcond_range_d_read_handler(unsigned int cond) {
     }
     switch (cond) {
     case 0x9c42: /* idx1 */
-        for (i = 0; i < (int)g_gameState.party_count; i++) {
+        for (i = 0; i < (int)g_gameState.partySize; i++) {
             if (g_gameState.abActorStatusRanks[g_gameState.party_roster[i]][1] != 0)
                 return 1;
         }
         goto L_def0;
     case 0x9c41: /* idx0 */
-        for (i = 0; i < (int)g_gameState.party_count; i++) {
+        for (i = 0; i < (int)g_gameState.partySize; i++) {
             if (!(char)g_gameState.abActorStatusRanks[g_gameState.party_roster[i]][5])
                 goto L_def0;
         }
@@ -125,7 +125,7 @@ int evtcond_range_d_read_handler(unsigned int cond) {
         return i != 0 && j != 0;
     }
     case 0x9c49: /* idx8 */
-        for (i = 0; i < (int)g_gameState.party_count; i++) {
+        for (i = 0; i < (int)g_gameState.partySize; i++) {
             j = 0;
             do {
                 if (j != 4 && g_gameState.abActorStatusRanks[g_gameState.party_roster[i]][j] != 0)
@@ -137,14 +137,14 @@ int evtcond_range_d_read_handler(unsigned int cond) {
     case 0x9c4a: /* idx9 */
         if (evtcond_range_d_read_handler(0x9c49) != 0)
             goto L_match;
-        for (i = 0; i < (int)g_gameState.party_count; i++) {
+        for (i = 0; i < (int)g_gameState.partySize; i++) {
             if (stat_actor_get(gstate_party_member_record(i), 0x10, 0) !=
                 stat_actor_get(gstate_party_member_record(i), 0x10, 1))
                 goto L_match;
         }
         goto L_def0;
     case 0x9c4b: /* idx10 */
-        for (i = 0; i < (int)g_gameState.party_count; i++) {
+        for (i = 0; i < (int)g_gameState.partySize; i++) {
             if (itemtbl_inv_count_by_kind(gstate_party_member_record(i)->actor_record, 0x59) == 0)
                 goto L_def0;
         }
@@ -244,7 +244,7 @@ void evtcond_dialog_action_dispatch(DdxOp far *action_record) {
     case 9: {
         int loaded = itemtbl_load();
         int slot;
-        for (slot = 0; slot < g_gameState.party_count; slot++) {
+        for (slot = 0; slot < g_gameState.partySize; slot++) {
             Actor far *actor = gstate_party_member_record(slot)->actor_record;
             int i = 0;
             ItemSlot far *islot = ACTOR_ITEMS(actor);
@@ -333,7 +333,7 @@ void evtcond_pty_dirty_flags_process(void) {
         return;
     }
     if ((g_gameState.bPartyDirtyFlags & 1) != 0) {
-        for (member_idx = 0; member_idx < (int)g_gameState.party_count; member_idx++) {
+        for (member_idx = 0; member_idx < (int)g_gameState.partySize; member_idx++) {
             for (slot_idx = 2; slot_idx < 0x11; slot_idx++) {
                 event_addr = g_gameState.party_roster[member_idx] * 0x11 + slot_idx;
                 if (gstate_event_read(SKILL_IMPROVED(event_addr)) != 0) {
@@ -364,7 +364,7 @@ void evtcond_pty_dirty_flags_process(void) {
         do {
             slot_idx = g_gameState.nEvtArgCount = 0;
             g_gameState.nEvtArgActor0 = g_gameState.nEvtArgActor1 = -1;
-            for (; slot_idx < g_gameState.party_count; slot_idx++) {
+            for (; slot_idx < g_gameState.partySize; slot_idx++) {
                 event_addr = CONDITION(g_gameState.party_roster[slot_idx] * 7 + member_idx);
                 if (gstate_event_read(event_addr) != 0) {
                     gstate_event_write(event_addr, 0);

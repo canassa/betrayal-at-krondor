@@ -149,7 +149,7 @@ void far encamp_run(void) {
                         gstate_advance_half_hours(1, 0x50, 100);
                         if (sickCurePending &&
                             g_gameState.game_time / 0x708 - (long)startGameTime / 0x708 >= 0xd) {
-                            for (i = 0; i < g_gameState.party_count; i++) {
+                            for (i = 0; i < g_gameState.partySize; i++) {
                                 stat_combatant_apply_delta(
                                     &g_gameState.party_members[g_gameState.party_roster[i]], 0,
                                     -100);
@@ -533,7 +533,7 @@ LAB_body:
     } while (iVar1 < 2);
     p = p + 1;
 LAB_check:
-    if (g_gameState.party_count > p)
+    if (g_gameState.partySize > p)
         goto LAB_body;
     return;
 }

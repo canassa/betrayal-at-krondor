@@ -16,7 +16,7 @@ extern long *itemtbl_count(void);
 extern long itemtbl_compute_value(ItemSlot far *slot);
 extern int itemtbl_find_by_full_record(ItemRecord far *record);
 extern int itemtbl_inv_count_by_kind(Actor far *inv, unsigned int kind);
-extern int itemtbl_party_count_by_kind(unsigned int kind);
+extern int itemtbl_partySize_by_kind(unsigned int kind);
 extern int itemtbl_inv_consume_one_by_kind(Actor far *inv, unsigned int kind);
 extern int itemtbl_pty_consum_one_kind(unsigned int kind);
 

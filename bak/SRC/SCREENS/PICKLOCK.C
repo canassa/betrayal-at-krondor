@@ -72,7 +72,7 @@ int far picklock_screen_run(int score, int mode, Actor far *record) {
         g_nPicklockDiffTier = (score > 0x64) ? 4 : (score > 0x50) ? 3 : (score > 0x32) ? 2 : 1;
         workActor.bResidence = RES_PICKLOCK_BUFFER;
         *(ActorWorkBuf far *)&workActor = *(ActorWorkBuf far *)g_gameState.shared_inventory;
-        if ((pickCount = itemtbl_party_count_by_kind(0x50)) > 0) {
+        if ((pickCount = itemtbl_partySize_by_kind(0x50)) > 0) {
             ItemSlot far *pickSlot = (ItemSlot far *)&((ItemSlot *)items)[workActor.itemCount++];
             pickSlot->item_id = 0x50;
             pickSlot->flags = 0;
@@ -189,7 +189,7 @@ void far picklock_inv_info_query_disp(void) {
     }
     if (gstate_event_read(LOCK_PICKED_WITH(matchedKind)) != 0) {
         g_gameState.nEvtArgItemId = matchedKind + 0x3c;
-        g_gameState.nEvtArgCount = itemtbl_party_count_by_kind(g_gameState.nEvtArgItemId);
+        g_gameState.nEvtArgCount = itemtbl_partySize_by_kind(g_gameState.nEvtArgItemId);
         dialog_play_record(0x1b776a, 0);
         return;
     }

@@ -67,7 +67,7 @@ void far combat_actor_init_pool(void) {
 
     g_combat_actors_A = (CombatActor *)galloc_safe_zcalloc(sizeof(CombatActor) * MAX_COMBAT_ACTORS);
     g_combat_count_A = 0;
-    for (i = 0; i < g_gameState.party_count; i++) {
+    for (i = 0; i < g_gameState.partySize; i++) {
         if (g_gameState.party_roster[i] > (char)-1) {
             g_combat_actors_A[i] = g_gameState.party_members[g_gameState.party_roster[i]];
             g_combat_count_A++;
@@ -127,7 +127,7 @@ void far combat_actor_pool_teardown(void) {
 
     galloc_zfree(g_combat_actors_A);
 
-    for (i = 0; i < g_gameState.party_count; i++) {
+    for (i = 0; i < g_gameState.partySize; i++) {
         actor_rec = g_gameState.party_members[g_gameState.party_roster[i]].actor_record;
 
         stat_actor_clear_mods_mask(&g_gameState.party_members[g_gameState.party_roster[i]], 0x100);

@@ -403,10 +403,10 @@ static void far dialog_assign_rand_cmbt_name(int slot_index, int param_2, int pa
     int i;
 
     retry_ctr = 500;
-    if (g_gameState.party_count == 0)
+    if (g_gameState.partySize == 0)
         return;
     do {
-        candidate = g_gameState.party_roster[RND(g_gameState.party_count)];
+        candidate = g_gameState.party_roster[RND(g_gameState.partySize)];
         for (i = 0; i < slot_index; i++) {
             if (g_speaker_kinds[i] == candidate)
                 candidate = -1;
@@ -792,7 +792,7 @@ void far dialog_combatant_name_table_init(void) {
     dialog_cmbt_name_assign_kind(0, 0x1f, 0, 0);
 #ifdef V102CD
     found = 0;
-    for (i = found; i < g_gameState.party_count; i++) {
+    for (i = found; i < g_gameState.partySize; i++) {
         if (g_gameState.party_roster[i] == g_gameState.nEvtArgActor0)
             found = 1;
     }
@@ -1016,7 +1016,7 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                                     camera_save.base.orientation.yaw ^ 0x8400;
                                 j = 0;
                                 m = 0;
-                                for (; j < g_gameState.party_count; j = j + 1) {
+                                for (; j < g_gameState.partySize; j = j + 1) {
                                     if ((int)g_gameState.party_roster[j] ==
                                         record->wSpeaker_id - 1) {
                                         m = j;
@@ -1116,12 +1116,12 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                                     g_gameState.nParty_gold -= (long)(unsigned int)op->nA3;
                                 }
                             } else {
-                                for (i = 0; i < g_gameState.party_count; i = i + 1) {
+                                for (i = 0; i < g_gameState.partySize; i = i + 1) {
                                     if (cmbinv_actor_acquire_item(
                                             gstate_party_member_record(i)->actor_record,
                                             (ItemSlot far *)&slot) != 0) {
                                         g_gameState.nParty_gold -=
-                                            (unsigned int)op->nA3 / (unsigned int)(int)g_gameState.party_count;
+                                            (unsigned int)op->nA3 / (unsigned int)(int)g_gameState.partySize;
                                     }
                                 }
                             }
@@ -1143,10 +1143,10 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                             Actor far *pActor;
                             int slotIdx;
                             tblLoadedHere = itemtbl_load();
-                            for (i = 0; i <= g_gameState.party_count; i = i + 1) {
+                            for (i = 0; i <= g_gameState.partySize; i = i + 1) {
 
                                 pActor =
-                                    (g_gameState.party_count == i)
+                                    (g_gameState.partySize == i)
                                         ? g_gameState.shared_inventory
                                         : g_gameState.party_members[g_gameState.party_roster[i]]
                                               .actor_record;
@@ -1212,7 +1212,7 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                         }
                     } break;
                     case 17:
-                        g_gameState.party_count = (char)op->nA1;
+                        g_gameState.partySize = (char)op->nA1;
                         g_gameState.party_roster[0] = (char)op->nA2;
                         g_gameState.party_roster[1] = (char)op->nA3;
                         g_gameState.party_roster[2] = (char)op->nA4;
@@ -1269,7 +1269,7 @@ int far dialog_play_record(unsigned long record_key, int modal_flag) {
                                 op->nA2, amt);
                         } else {
                             i = 0;
-                            while (i < g_gameState.party_count) {
+                            while (i < g_gameState.partySize) {
                                 stat_combatant_apply_delta(
                                     &g_gameState.party_members[g_gameState.party_roster[i]],
                                     op->nA2, amt);

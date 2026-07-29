@@ -28,7 +28,7 @@ unsigned short far gstate_event_read(unsigned short id) {
         return (g_gameState.event_bitmap_lo[id >> 3] & (1 << (id & 7))) ? 1 : 0;
     }
     if (id >= 0xc350 && id < 0xc3da) {
-        return itemtbl_party_count_by_kind(id + 0x3cb0);
+        return itemtbl_partySize_by_kind(id + 0x3cb0);
     }
     if (id >= 0xcb20 && id < 0xcb27) {
         unsigned int w = id + 0x34df;
@@ -241,7 +241,7 @@ static int far gstate_consume_rations_tick(int ctx) {
 
     table_loaded = itemtbl_load();
     i = event_total = 0;
-    for (; i < g_gameState.party_count; i = i + 1) {
+    for (; i < g_gameState.partySize; i = i + 1) {
         event_total += gstate_member_consume_rations(g_gameState.party_roster[i], ctx);
     }
     if (table_loaded != 0) {
@@ -289,7 +289,7 @@ static int gstate_30min_tick(int arg0, int arg1, int arg2) {
     if ((((arg0 == 0) || (arg1 == 0)) || (elapsed < 0x7788)) || (elapsed >= 0x7e90)) {
         if ((arg1 == 0) || (elapsed < 0x7e90))
             goto party_regen;
-        for (slot = 0; slot < g_gameState.party_count; slot = slot + 1) {
+        for (slot = 0; slot < g_gameState.partySize; slot = slot + 1) {
             actor = g_gameState.party_roster[slot];
             if (stat_combatant_modify(&g_gameState.party_members[actor], 0x10,
                                       (long)((int)g_abSleepStatDelta[actor] << 8), 100) == 0) {
@@ -301,7 +301,7 @@ static int gstate_30min_tick(int arg0, int arg1, int arg2) {
     }
     dialog_play_record(0x40, eventFired = 1);
 party_regen:
-    for (slot = 0; slot < g_gameState.party_count; slot = slot + 1) {
+    for (slot = 0; slot < g_gameState.partySize; slot = slot + 1) {
         actor = g_gameState.party_roster[slot];
         if (arg2 != 0) {
             stat_combatant_apply_delta(&g_gameState.party_members[actor], 0, -3);
@@ -360,7 +360,7 @@ int far gstate_advance_time(long seconds, int flags, int recompute_party, int a,
     g_gameState.game_time += seconds;
     if (g_gameState.game_time / 0xa8c0 != (long)old_hd) {
         if (old_hd % 0x1e == 0) {
-            for (i = 0; i < g_gameState.party_count; i = i + 1) {
+            for (i = 0; i < g_gameState.partySize; i = i + 1) {
                 member = &g_gameState.party_members[g_gameState.party_roster[i]];
                 member->stats[0].max = member->stats[0].max + (member->stats[0].max < 0xfa);
                 member->stats[1].max = member->stats[1].max + (member->stats[1].max < 0xfa);
@@ -373,7 +373,7 @@ int far gstate_advance_time(long seconds, int flags, int recompute_party, int a,
         if (recompute_party != 0) {
             eventTotal += gstate_consume_rations_tick(flags);
         }
-        for (i = 0; i < g_gameState.party_count; i = i + 1) {
+        for (i = 0; i < g_gameState.partySize; i = i + 1) {
             actor = g_gameState.party_roster[i];
             rank = (char)g_gameState.abActorStatusRanks[actor][6];
             n = (rank + -100) / 10 + -1;
@@ -405,7 +405,7 @@ int far gstate_advance_half_hours(int half_hours, int pad, int flags) {
 int gstate_is_party_member(int actor_id) {
     int i;
 
-    for (i = 0; g_gameState.party_count > i; i++) {
+    for (i = 0; g_gameState.partySize > i; i++) {
         if (g_gameState.party_roster[i] == actor_id) {
             return 1;
         }
@@ -418,7 +418,7 @@ int gstate_actor_is_caster(CombatActor *actor) {
 }
 
 CombatActor *gstate_party_member_record(int slot) {
-    if (slot >= 0 && slot < g_gameState.party_count) {
+    if (slot >= 0 && slot < g_gameState.partySize) {
         return &g_gameState.party_members[g_gameState.party_roster[slot]];
     }
     return 0;
@@ -430,7 +430,7 @@ int gstate_find_party_slot(CombatActor *actor) {
 
     i = 0;
     result_slot = -1;
-    for (; i < g_gameState.party_count; i = i + 1) {
+    for (; i < g_gameState.partySize; i = i + 1) {
         if (g_gameState.party_members[g_gameState.party_roster[i]].cParty_slot ==
             actor->cParty_slot) {
             result_slot = i;
