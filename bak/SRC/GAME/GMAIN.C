@@ -27,7 +27,7 @@
 #include "SRC/GAME/BOOT.H"
 #include "SRC/GAME/SAVEGAME.H"
 #include "SRC/GAME/GSTATE.H"
-#include "SRC/GAME/CFGPARSE.H"
+#include "SRC/SYS/CFGPARSE.H"
 #include "SRC/UI/UIWIDGET.H"
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SCREENS/BOOKVIEW.H"

@@ -14,7 +14,7 @@
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SCREENS/ITEMTBL.H"
 #include "SRC/COMBAT/SPELL/SPELLFX.H"
-#include "SRC/GAME/CFGPARSE.H"
+#include "SRC/SYS/CFGPARSE.H"
 
 TempWriteRegion g_pendingTempWriteRegion = TWR_NONE;
 char g_chapterDefaultSpeaker[] = {CHR_LOCKLEAR, CHR_JAMES, CHR_JAMES, CHR_GORATH, CHR_JAMES,

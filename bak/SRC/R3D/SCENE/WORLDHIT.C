@@ -47,7 +47,7 @@
 #include "defines.h"
 #ifdef V102CD
 #include "SRC/GFX/SPRITE/SPRTHNKS.H"
-#include "SRC/GAME/CFGPARSE.H"
+#include "SRC/SYS/CFGPARSE.H"
 #endif
 
 unsigned short g_wSkyColorR = 0x00d7;

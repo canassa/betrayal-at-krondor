@@ -14,7 +14,7 @@
 #include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/DOSMEM.H"
 #ifdef V102CD
-#include "SRC/GAME/CFGPARSE.H"
+#include "SRC/SYS/CFGPARSE.H"
 #endif
 
 bool16 g_resError;

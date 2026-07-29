@@ -57,7 +57,7 @@ char g_szVmcodeOvl[11] = "vmcode.ovl";
 
 #ifdef V102CD
 #include "SRC/AUDIO/CDAUDIO.H"
-#include "SRC/GAME/CFGPARSE.H"
+#include "SRC/SYS/CFGPARSE.H"
 #endif
 
 void boot_start_dat_load(void) {

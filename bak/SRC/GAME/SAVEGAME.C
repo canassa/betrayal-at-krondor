@@ -18,7 +18,7 @@
 #include "SRC/WORLD/ACTOR/ACTSPAWN.H"
 #include "SRC/WORLD/ZONE/ZONE.H"
 #include "SRC/WORLD/ENC/HOTSPOT.H"
-#include "SRC/GAME/CFGPARSE.H"
+#include "SRC/SYS/CFGPARSE.H"
 
 int far savegame_write(char *filename) {
     int dest_fd;

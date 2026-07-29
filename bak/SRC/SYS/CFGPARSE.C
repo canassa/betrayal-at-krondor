@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "SRC/GAME/CFGPARSE.H"
+#include "SRC/SYS/CFGPARSE.H"
 #include "SRC/AUDIO/RES/AUDRESIN.H"
 
 
