@@ -170,13 +170,42 @@ Headers with no `.C` are declaration headers for an assembly module; they mostly
 
 | Module | Files | Lines | Status |
 |---|---|---:|:--:|
-| `BOOT` | .C + .H | 318 | ⬜ |
-| `CFGPARSE` | .C + .H | 254 | ✅ |
+| `MAINDATA` | .C + .H | 30 | 🚧 |
+
+### `bak/SRC/GAME/ACTOR`
+
+| Module | Files | Lines | Status |
+|---|---|---:|:--:|
+| `ACTOR` | .H | 215 | 🚧 |
+| `ACTORREC` | .C + .H | 118 | ✅ |
+| `ACTSPAWN` | .C + .H | 358 | ⬜ |
+| `ITEMTBL` | .C + .H | 214 | ⬜ |
+
+### `bak/SRC/GAME/ENC`
+
+| Module | Files | Lines | Status |
+|---|---|---:|:--:|
+| `HOTSPOT` | .C + .H | 1241 | ⬜ |
+| `RGNENC` | .C + .H | 926 | ⬜ |
+| `WORLDDOR` | .C + .H | 106 | ⬜ |
+
+### `bak/SRC/GAME/STATE`
+
+| Module | Files | Lines | Status |
+|---|---|---:|:--:|
 | `GMAIN` | .C + .H | 796 | ⬜ |
 | `GSTATE` | .C + .H | 547 | 🚧 |
-| `MAINDATA` | .C + .H | 30 | 🚧 |
 | `SAVEGAME` | .C + .H | 257 | ⬜ |
 | `TIMERPL` | .C + .H | 98 | ⬜ |
+
+### `bak/SRC/GAME/WORLD`
+
+| Module | Files | Lines | Status |
+|---|---|---:|:--:|
+| `MAP` | .C + .H | 586 | ⬜ |
+| `WORLDCRS` | .C + .H | 281 | ⬜ |
+| `WORLDLP` | .C + .H | 519 | ⬜ |
+| `WORLDMOV` | .C + .H | 843 | ⬜ |
 
 ### `bak/SRC/GEN`
 
@@ -260,6 +289,7 @@ Headers with no `.C` are declaration headers for an assembly module; they mostly
 | `KEYBOARD` | .H | 25 | ⬜ |
 | `MOUSE` | .H | 33 | ⬜ |
 | `TIMER` | .H | 21 | ⬜ |
+| `WCURSOR` | .C + .H | 1436 | ⬜ |
 
 ### `bak/SRC/IO`
 
@@ -301,8 +331,11 @@ Headers with no `.C` are declaration headers for an assembly module; they mostly
 
 | Module | Files | Lines | Status |
 |---|---|---:|:--:|
+| `CZONE` | .C + .H | 340 | ⬜ |
+| `PROXIM` | .C + .H | 256 | ⬜ |
 | `WORLDFRM` | .C + .H | 535 | ⬜ |
 | `WORLDHIT` | .C + .H | 863 | ⬜ |
+| `ZONE` | .C + .H | 394 | ⬜ |
 
 ### `bak/SRC/R3D/SKY`
 
@@ -345,9 +378,9 @@ Headers with no `.C` are declaration headers for an assembly module; they mostly
 | `FMAP` | .C + .H | 398 | ⬜ |
 | `INVENTOR` | .C + .H | 855 | ⬜ |
 | `INVINSP` | .C + .H | 445 | ⬜ |
-| `ITEMTBL` | .C + .H | 214 | ⬜ |
 | `ITEMUSE` | .C + .H | 686 | ⬜ |
 | `MAINMENU` | .C + .H | 1884 | ⬜ |
+| `MODALSCR` | .C + .H | 838 | ⬜ |
 | `PICKLOCK` | .C + .H | 226 | ⬜ |
 | `SHOP` | .C + .H | 262 | ⬜ |
 | `TOWNSCN` | .C + .H | 840 | ⬜ |
@@ -397,6 +430,8 @@ Headers with no `.C` are declaration headers for an assembly module; they mostly
 | Module | Files | Lines | Status |
 |---|---|---:|:--:|
 | `BIOSCHK` | .C + .H | 33 | ⬜ |
+| `BOOT` | .C + .H | 318 | ⬜ |
+| `CFGPARSE` | .C + .H | 254 | ✅ |
 | `DOSMEM` | .C + .H | 144 | ✅ |
 | `EMS` | .C + .H | 199 | ⬜ |
 | `EMSDET` | .C + .H | 63 | ⬜ |
@@ -419,57 +454,12 @@ Headers with no `.C` are declaration headers for an assembly module; they mostly
 | `LISTWDG` | .C + .H | 439 | ⬜ |
 | `MENULBL` | .C + .H | 72 | ⬜ |
 | `MENUPAGE` | .C + .H | 590 | ⬜ |
-| `MODALSCR` | .C + .H | 838 | ⬜ |
 | `NAMEDTBL` | .C + .H | 104 | ⬜ |
 | `SCROLL` | .C + .H | 406 | ⬜ |
 | `SHOWMSG` | .C + .H | 15 | ⬜ |
 | `TEXTWRAP` | .C + .H | 161 | ⬜ |
 | `UIWIDGET` | .C + .H | 266 | ⬜ |
 | `WIDGET` | .C + .H | 563 | ⬜ |
-
-### `bak/SRC/WORLD/ACTOR`
-
-| Module | Files | Lines | Status |
-|---|---|---:|:--:|
-| `ACTOR` | .H | 215 | 🚧 |
-| `ACTORREC` | .C + .H | 118 | ✅ |
-| `ACTSPAWN` | .C + .H | 358 | ⬜ |
-
-### `bak/SRC/WORLD/CURSOR`
-
-| Module | Files | Lines | Status |
-|---|---|---:|:--:|
-| `WCURSOR` | .C + .H | 1436 | ⬜ |
-| `WORLDDOR` | .C + .H | 106 | ⬜ |
-
-### `bak/SRC/WORLD/ENC`
-
-| Module | Files | Lines | Status |
-|---|---|---:|:--:|
-| `HOTSPOT` | .C + .H | 1241 | ⬜ |
-| `RGNENC` | .C + .H | 926 | ⬜ |
-
-### `bak/SRC/WORLD/LOOP`
-
-| Module | Files | Lines | Status |
-|---|---|---:|:--:|
-| `MAP` | .C + .H | 586 | ⬜ |
-| `WORLDLP` | .C + .H | 519 | ⬜ |
-
-### `bak/SRC/WORLD/MOVE`
-
-| Module | Files | Lines | Status |
-|---|---|---:|:--:|
-| `WORLDCRS` | .C + .H | 281 | ⬜ |
-| `WORLDMOV` | .C + .H | 843 | ⬜ |
-
-### `bak/SRC/WORLD/ZONE`
-
-| Module | Files | Lines | Status |
-|---|---|---:|:--:|
-| `CZONE` | .C + .H | 340 | ⬜ |
-| `PROXIM` | .C + .H | 256 | ⬜ |
-| `ZONE` | .C + .H | 394 | ⬜ |
 
 ---
 
