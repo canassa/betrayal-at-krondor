@@ -23,7 +23,6 @@ GEN_OBJS = OUT\GFXCTX.OBJ OUT\RNDVTBL.OBJ OUT\VIDVTBL.OBJ
 !include SRC\STREAM\STREAM.MAK
 !include SRC\SYS\SYS.MAK
 !include SRC\UI\UI.MAK
-!include SRC\WORLD\WORLD.MAK
 
 # driver-chunk build rules (VMCODE/SX .EXE inputs) + the PACKOVL tool that
 # packs them into the two .OVL archives ($(VMEXE)/$(SXEXE) come from DRIVERS.MAK)
