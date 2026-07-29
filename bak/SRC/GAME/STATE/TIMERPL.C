@@ -1,4 +1,4 @@
-#include "SRC/GAME/STATE/GMAIN.H"
+#include "SRC/GAME/GMAIN.H"
 #include "structs.h"
 #include "SRC/GAME/STATE/TIMERPL.H"
 #include "SRC/GFX/PALETTE/PALETTE.H"

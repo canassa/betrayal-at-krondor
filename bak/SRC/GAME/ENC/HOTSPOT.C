@@ -1,4 +1,4 @@
-#include "SRC/GAME/STATE/GMAIN.H"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "structs.h"
 #include "SRC/GAME/ENC/HOTSPOT.H"

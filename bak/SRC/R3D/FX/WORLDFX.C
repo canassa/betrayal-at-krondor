@@ -1,5 +1,5 @@
 #include <dos.h>
-#include "SRC/GAME/STATE/GMAIN.H"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/COMBAT/SPELL/CSPELL.H"
 #include "SRC/R3D/SPRITE/WORLDRND.H"

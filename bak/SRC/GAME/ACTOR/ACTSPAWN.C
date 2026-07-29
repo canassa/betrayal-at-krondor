@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "SRC/GAME/STATE/GMAIN.H"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/R3D/SCENE/CZONE.H"

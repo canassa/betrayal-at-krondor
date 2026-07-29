@@ -4,7 +4,7 @@
 #include "SRC/COMBAT/SPELL/CSPELL.H"
 #include "SRC/SYS/SYSLOWIO.H"
 #include "structs.h"
-#include "SRC/GAME/STATE/GMAIN.H"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/IO/RESOURCE.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/AUDIO/RES/AUDRESIN.H"

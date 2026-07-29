@@ -1,5 +1,5 @@
 #include <mem.h>
-#include "SRC/GAME/STATE/GMAIN.H"
+#include "SRC/GAME/GMAIN.H"
 #include "structs.h"
 #include "SRC/GAME/ACTOR/ACTOR.H"
 #include "SRC/GAME/ACTOR/ITEMTBL.H"

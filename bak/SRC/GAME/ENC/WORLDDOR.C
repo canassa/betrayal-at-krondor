@@ -1,4 +1,4 @@
-#include "SRC/GAME/STATE/GMAIN.H"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/R3D/ACTOR/ACTOROVL.H"
 #include "structs.h"
 #include "SRC/GAME/ENC/WORLDDOR.H"

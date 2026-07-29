@@ -1,7 +1,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include "SRC/GAME/STATE/GMAIN.H"
+#include "SRC/GAME/GMAIN.H"
 #include "structs.h"
 #include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/SYS/RAND.H"

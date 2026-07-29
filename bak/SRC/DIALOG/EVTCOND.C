@@ -1,6 +1,6 @@
 #include <dos.h>
 #include <stdlib.h>
-#include "SRC/GAME/STATE/GMAIN.H"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/GAME/WORLD/WORLDLP.H"
 #include "structs.h"
 

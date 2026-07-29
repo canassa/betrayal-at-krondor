@@ -170,6 +170,7 @@ Headers with no `.C` are declaration headers for an assembly module; they mostly
 
 | Module | Files | Lines | Status |
 |---|---|---:|:--:|
+| `GMAIN` | .C + .H | 796 | ⬜ |
 | `MAINDATA` | .C + .H | 30 | 🚧 |
 
 ### `bak/SRC/GAME/ACTOR`
@@ -193,7 +194,6 @@ Headers with no `.C` are declaration headers for an assembly module; they mostly
 
 | Module | Files | Lines | Status |
 |---|---|---:|:--:|
-| `GMAIN` | .C + .H | 796 | ⬜ |
 | `GSTATE` | .C + .H | 547 | 🚧 |
 | `SAVEGAME` | .C + .H | 257 | ⬜ |
 | `TIMERPL` | .C + .H | 98 | ⬜ |

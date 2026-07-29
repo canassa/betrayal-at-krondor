@@ -1,7 +1,7 @@
 #include <dos.h>
 
 #include "structs.h"
-#include "SRC/GAME/STATE/GMAIN.H"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/SYS/BOOT.H"
 #include "SRC/R3D/SCENE/ZONE.H"

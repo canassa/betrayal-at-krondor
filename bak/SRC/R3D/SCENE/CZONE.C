@@ -1,4 +1,4 @@
-#include "SRC/GAME/STATE/GMAIN.H"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/SCREENS/MAINMENU.H"
 #include "structs.h"
 #include "SRC/R3D/SCENE/CZONE.H"

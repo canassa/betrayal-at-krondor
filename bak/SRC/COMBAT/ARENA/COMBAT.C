@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "gtypes.h"
-#include "SRC/GAME/STATE/GMAIN.H"
+#include "SRC/GAME/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/R3D/SKY/SKYREND.H"
