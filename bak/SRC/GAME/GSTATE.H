@@ -53,7 +53,18 @@ extern char g_chapterDefaultSpeaker[];
 extern ResFile *g_tempGamFP;
 
 
+/**
+ * @brief Per-character fatigue drain — points removed from the combined
+ * Health/Stamina reserve each hour the party travels overtired. Indexed by
+ * @ref CharacterId. See @ref mech_fatigue.
+ */
 extern char g_abSleepStatDelta[6];
+
+/**
+ * @brief Per-character recovery rate — points restored to the combined
+ * Health/Stamina reserve on each hour of rest. Indexed by @ref CharacterId.
+ * See @ref mech_fatigue.
+ */
 extern char g_abRegenPerChar[6];
 
 extern unsigned short gstate_event_read(unsigned short event_idx);

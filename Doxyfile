@@ -35,7 +35,7 @@ HIDE_UNDOC_CLASSES     = NO
 # The C source + the repo README as the landing page. The hand-written docs/*.md
 # use @-prefixed tokens (@offset, ...) that collide with Doxygen commands, so they
 # are kept out to keep the warning log about code refs only.
-INPUT                  = README.md bak/INCLUDE bak/SRC
+INPUT                  = README.md docs/GAME_MECHANICS.md bak/INCLUDE bak/SRC
 FILE_PATTERNS          = *.c *.C *.h *.H *.md
 RECURSIVE              = YES
 USE_MDFILE_AS_MAINPAGE = README.md
