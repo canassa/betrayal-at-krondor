@@ -9,7 +9,7 @@
 #include "SRC/WORLD/ENC/RGNENC.H"
 #include "SRC/R3D/ACTOR/ACTOROVL.H"
 #include "structs.h"
-#include "SRC/WORLD/CURSOR/WCURSOR.H"
+#include "SRC/INPUT/WCURSOR.H"
 #include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"

@@ -16,7 +16,7 @@ unsigned short g_wTextWrapLinesRemaining = 0x0000;
 #include "SRC/IO/RESOURCE.H"
 #include "SRC/IO/IOCHUNK.H"
 #include "SRC/STREAM/CODEC/STREAM.H"
-#include "SRC/GAME/BOOT.H"
+#include "SRC/SYS/BOOT.H"
 #include "SRC/GFX/DRIVER/VTHUNKS.H"
 #include "SRC/GFX/SPRITE/BLITCHNK.H"
 #include "SRC/STREAM/RESLOAD/IMGLOAD.H"

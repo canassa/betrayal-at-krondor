@@ -3,7 +3,7 @@
 #include "SRC/SYS/PANIC.H"
 #include "SRC/SYS/HWSHUT.H"
 #include "SRC/GFX/DRIVER/VIDDET.H"
-#include "SRC/GAME/BOOT.H"
+#include "SRC/SYS/BOOT.H"
 
 int panic_fatal_error_exit(char far *module, int line, char *msg) {
     video_shutdown();

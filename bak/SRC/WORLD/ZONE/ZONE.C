@@ -25,7 +25,7 @@
 #include "SRC/WORLD/MOVE/WORLDMOV.H"
 #include "SRC/WORLD/ZONE/CZONE.H"
 #include "SRC/WORLD/ENC/RGNENC.H"
-#include "SRC/WORLD/CURSOR/WCURSOR.H"
+#include "SRC/INPUT/WCURSOR.H"
 #include "SRC/R3D/ACTOR/ACTOROVL.H"
 #include "gfx169d.h"
 

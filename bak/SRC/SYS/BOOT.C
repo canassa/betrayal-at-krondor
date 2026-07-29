@@ -8,7 +8,7 @@
 #include "SRC/STREAM/CODEC/CODEC.H"
 #include "structs.h"
 
-#include "SRC/GAME/BOOT.H"
+#include "SRC/SYS/BOOT.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/IO/RESOURCE.H"
 #include "SRC/SYS/SYSLOWIO.H"

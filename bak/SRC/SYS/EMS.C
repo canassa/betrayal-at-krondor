@@ -4,7 +4,7 @@
 #include "SRC/SYS/EMS.H"
 #include "SRC/SYS/FARTHUNK.H"
 #include "SRC/SYS/EMSDET.H"
-#include "SRC/GAME/BOOT.H"
+#include "SRC/SYS/BOOT.H"
 
 unsigned short g_free_memory_kb;
 unsigned short g_wEmsFreeListHead;

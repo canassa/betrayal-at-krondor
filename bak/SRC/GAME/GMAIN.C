@@ -24,7 +24,7 @@
 #include "SRC/GFX/PALETTE/PALETTE.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
 #include "SRC/SCREENS/CREDITS.H"
-#include "SRC/GAME/BOOT.H"
+#include "SRC/SYS/BOOT.H"
 #include "SRC/GAME/SAVEGAME.H"
 #include "SRC/GAME/GSTATE.H"
 #include "SRC/SYS/CFGPARSE.H"
