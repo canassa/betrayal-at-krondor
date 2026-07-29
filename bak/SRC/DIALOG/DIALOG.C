@@ -18,7 +18,7 @@
 #include "SRC/SCRIPT/ADSCRIPT.H"
 #include "SRC/CHAR/CHARSCRN.H"
 #include "structs.h"
-#include "SRC/WORLD/ACTOR/ACTOR.H"
+#include "SRC/GAME/ACTOR/ACTOR.H"
 #include "vgablit.h"
 #include "statname.h"
 

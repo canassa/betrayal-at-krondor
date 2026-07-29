@@ -13,7 +13,7 @@
 #include "SRC/SCREENS/CMBINV.H"
 #include "SRC/SCREENS/ITEMTBL.H"
 #include "SRC/SCREENS/ITEMUSE.H"
-#include "SRC/WORLD/ACTOR/ACTSPAWN.H"
+#include "SRC/GAME/ACTOR/ACTSPAWN.H"
 #include "SRC/WORLD/ENC/RGNENC.H"
 #include "defines.h"
 

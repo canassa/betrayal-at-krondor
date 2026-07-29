@@ -7,7 +7,7 @@
 #include "SRC/INPUT/TIMER.H"
 #include "SRC/COMBAT/AI/CBTAITRN.H"
 #include "structs.h"
-#include "SRC/WORLD/ACTOR/ACTOR.H"
+#include "SRC/GAME/ACTOR/ACTOR.H"
 #include "SRC/COMBAT/SPELL/CSPELL.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/IO/RESOURCE.H"

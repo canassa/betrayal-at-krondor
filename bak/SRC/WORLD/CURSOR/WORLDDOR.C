@@ -4,8 +4,8 @@
 #include "SRC/WORLD/CURSOR/WORLDDOR.H"
 #include "SRC/R3D/ACTOR/ACTRENDR.H"
 #include "SRC/GAME/STATE/GSTATE.H"
-#include "SRC/WORLD/ACTOR/ACTSPAWN.H"
-#include "SRC/WORLD/ACTOR/ACTORREC.H"
+#include "SRC/GAME/ACTOR/ACTSPAWN.H"
+#include "SRC/GAME/ACTOR/ACTORREC.H"
 
 void far worlddoor_pref_slots_clear_all(void) {
     unsigned int i;

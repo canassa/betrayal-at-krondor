@@ -8,7 +8,7 @@
 #include "SRC/SCREENS/MAINMENU.H"
 #include "SRC/R3D/SKY/SKYREND.H"
 #include "structs.h"
-#include "SRC/WORLD/ACTOR/ACTOR.H"
+#include "SRC/GAME/ACTOR/ACTOR.H"
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/IO/RESOURCE.H"

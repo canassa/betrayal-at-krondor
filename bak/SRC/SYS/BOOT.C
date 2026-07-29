@@ -40,7 +40,7 @@
 #include "SRC/SYS/MDACON.H"
 #include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/CHAR/CHARSCRN.H"
-#include "SRC/WORLD/ACTOR/ACTSPAWN.H"
+#include "SRC/GAME/ACTOR/ACTSPAWN.H"
 #include "SRC/SCREENS/MAINMENU.H"
 
 unsigned short g_wTimerTickRegistrySlot;

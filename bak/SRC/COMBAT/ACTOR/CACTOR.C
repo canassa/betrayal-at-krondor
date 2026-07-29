@@ -1,7 +1,7 @@
 #include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/R3D/SCENE/ZONE.H"
-#include "SRC/WORLD/ACTOR/ACTOR.H"
+#include "SRC/GAME/ACTOR/ACTOR.H"
 #include "SRC/COMBAT/ACTOR/CACTOR.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/IO/RESOURCE.H"

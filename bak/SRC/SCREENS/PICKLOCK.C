@@ -4,7 +4,7 @@
 #include "SRC/WORLD/LOOP/WORLDLP.H"
 #include "SRC/INPUT/TIMER.H"
 #include "structs.h"
-#include "SRC/WORLD/ACTOR/ACTOR.H"
+#include "SRC/GAME/ACTOR/ACTOR.H"
 #include "SRC/SCREENS/PICKLOCK.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"

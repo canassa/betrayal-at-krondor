@@ -1,7 +1,7 @@
 #include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "structs.h"
-#include "SRC/WORLD/ACTOR/ACTOR.H"
+#include "SRC/GAME/ACTOR/ACTOR.H"
 
 #include "SRC/CHAR/STAT.H"
 #include "SRC/GAME/STATE/GSTATE.H"

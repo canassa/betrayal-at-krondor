@@ -6,14 +6,14 @@
 #include "structs.h"
 #include "SRC/SYS/RAND.H"
 
-#include "SRC/WORLD/ACTOR/ACTSPAWN.H"
+#include "SRC/GAME/ACTOR/ACTSPAWN.H"
 #include "SRC/IO/RESOURCE.H"
 #include "SRC/IO/IOCHUNK.H"
 #include "SRC/R3D/CORE/DISTDIR.H"
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/R3D/TBLSTORE/SHAPETBL.H"
 #include "SRC/GAME/STATE/GSTATE.H"
-#include "SRC/WORLD/ACTOR/ACTORREC.H"
+#include "SRC/GAME/ACTOR/ACTORREC.H"
 #include "SRC/WORLD/ENC/RGNENC.H"
 
 /**

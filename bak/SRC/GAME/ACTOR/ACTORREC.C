@@ -4,7 +4,7 @@
  *        the accessors for the variable-length @ref Actor record.
  */
 #include "structs.h"
-#include "SRC/WORLD/ACTOR/ACTORREC.H"
+#include "SRC/GAME/ACTOR/ACTORREC.H"
 
 ActorSubrecord far *actorrec_get_subrecord(Actor far *actor, int which_subrecord) {
     unsigned char mask;

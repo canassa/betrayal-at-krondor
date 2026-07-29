@@ -8,7 +8,7 @@
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SCREENS/CMBINV.H"
 #include "SRC/SCREENS/ITEMTBL.H"
-#include "SRC/WORLD/ACTOR/ACTORREC.H"
+#include "SRC/GAME/ACTOR/ACTORREC.H"
 
 
 static int shop_rand_max_of_3(unsigned int modulus) {

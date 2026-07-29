@@ -2,7 +2,7 @@
 #define BAK_ACTSPAWN_H
 
 #include "structs.h"
-#include "SRC/WORLD/ACTOR/ACTOR.H"
+#include "SRC/GAME/ACTOR/ACTOR.H"
 
 extern Actor far *actorspawn_enc_location(int kind, long world_x, long world_y);
 extern Actor far *actorspawn_objfixed(int kind, long world_x, long world_y);

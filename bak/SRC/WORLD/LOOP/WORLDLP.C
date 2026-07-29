@@ -4,7 +4,7 @@
 #include "SRC/R3D/SCENE/CZONE.H"
 #include "SRC/INPUT/TIMER.H"
 #include "structs.h"
-#include "SRC/WORLD/ACTOR/ACTOR.H"
+#include "SRC/GAME/ACTOR/ACTOR.H"
 #include "SRC/WORLD/LOOP/WORLDLP.H"
 #include "SRC/GFX/PALETTE/PALCYC.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"

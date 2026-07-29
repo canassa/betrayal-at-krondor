@@ -2,7 +2,7 @@
 #define BAK_CMBINV_H
 
 #include "structs.h"
-#include "SRC/WORLD/ACTOR/ACTOR.H"
+#include "SRC/GAME/ACTOR/ACTOR.H"
 
 extern unsigned short g_inventory_screen_mode;
 extern unsigned char g_bIsRestEncounter;

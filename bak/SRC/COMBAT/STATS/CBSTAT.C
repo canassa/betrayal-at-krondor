@@ -1,7 +1,7 @@
 #include <dos.h>
 #include <stdlib.h>
 #include "structs.h"
-#include "SRC/WORLD/ACTOR/ACTOR.H"
+#include "SRC/GAME/ACTOR/ACTOR.H"
 #include "SRC/COMBAT/STATS/CBSTAT.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/IO/RESOURCE.H"

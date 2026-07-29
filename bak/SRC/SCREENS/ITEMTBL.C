@@ -1,7 +1,7 @@
 #include <mem.h>
 #include "SRC/GAME/STATE/GMAIN.H"
 #include "structs.h"
-#include "SRC/WORLD/ACTOR/ACTOR.H"
+#include "SRC/GAME/ACTOR/ACTOR.H"
 #include "SRC/SCREENS/ITEMTBL.H"
 #include "SRC/IO/RESOURCE.H"
 #include "SRC/IO/IOCHUNK.H"

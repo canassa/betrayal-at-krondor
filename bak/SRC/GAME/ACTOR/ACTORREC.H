@@ -7,7 +7,7 @@
 #define BAK_ACTORREC_H
 
 #include "structs.h"
-#include "SRC/WORLD/ACTOR/ACTOR.H"
+#include "SRC/GAME/ACTOR/ACTOR.H"
 
 /**
  * @brief Locate an actor's optional subrecord of a given kind.

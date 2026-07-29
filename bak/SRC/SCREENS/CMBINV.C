@@ -27,9 +27,9 @@
 #include "SRC/CHAR/CHARSCRN.H"
 #include "SRC/SCREENS/ITEMUSE.H"
 #include "SRC/SCREENS/INVINSP.H"
-#include "SRC/WORLD/ACTOR/ACTSPAWN.H"
+#include "SRC/GAME/ACTOR/ACTSPAWN.H"
 #include "SRC/SCREENS/SHOP.H"
-#include "SRC/WORLD/ACTOR/ACTORREC.H"
+#include "SRC/GAME/ACTOR/ACTORREC.H"
 #include "SRC/SCREENS/PICKLOCK.H"
 #include "defines.h"
 
