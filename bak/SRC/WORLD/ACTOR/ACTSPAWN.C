@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/R3D/SCENE/CZONE.H"
@@ -12,7 +12,7 @@
 #include "SRC/R3D/CORE/DISTDIR.H"
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/R3D/TBLSTORE/SHAPETBL.H"
-#include "SRC/GAME/GSTATE.H"
+#include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/WORLD/ACTOR/ACTORREC.H"
 #include "SRC/WORLD/ENC/RGNENC.H"
 

@@ -3,7 +3,7 @@
 
 #include "gtypes.h"
 #include "structs.h"
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 
 #include "SRC/SCRIPT/ADSCRIPT.H"

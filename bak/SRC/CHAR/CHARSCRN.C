@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/GAME/MAINDATA.H"
@@ -19,7 +19,7 @@
 #include "SRC/UI/WIDGET.H"
 #include "SRC/UI/MENUPAGE.H"
 #include "SRC/GFX/PALETTE/PALETTE.H"
-#include "SRC/GAME/GSTATE.H"
+#include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/CHAR/STAT.H"
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/DIALOG/ASKABOUT.H"

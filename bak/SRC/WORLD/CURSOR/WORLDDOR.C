@@ -1,9 +1,9 @@
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/R3D/ACTOR/ACTOROVL.H"
 #include "structs.h"
 #include "SRC/WORLD/CURSOR/WORLDDOR.H"
 #include "SRC/R3D/ACTOR/ACTRENDR.H"
-#include "SRC/GAME/GSTATE.H"
+#include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/WORLD/ACTOR/ACTSPAWN.H"
 #include "SRC/WORLD/ACTOR/ACTORREC.H"
 

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "gtypes.h"
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/SCREENS/MAINMENU.H"
@@ -50,9 +50,9 @@ unsigned char far g_abStatNames[16][15] = {
 #include "SRC/GFX/PALETTE/PALETTE.H"
 #include "SRC/SYS/EMSIMG.H"
 #include "SRC/DIALOG/EVTCOND.H"
-#include "SRC/GAME/GSTATE.H"
+#include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/CHAR/STAT.H"
-#include "SRC/GAME/TIMERPL.H"
+#include "SRC/GAME/STATE/TIMERPL.H"
 #include "SRC/DIALOG/ASKABOUT.H"
 #include "SRC/UI/TEXTWRAP.H"
 #include "SRC/SCREENS/TOWNSCN.H"

@@ -8,7 +8,7 @@
 
 #include "structs.h"
 #include "SRC/IO/RESOURCE.H"
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 
 
 /**

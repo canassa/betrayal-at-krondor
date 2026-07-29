@@ -17,7 +17,7 @@
 #include "SRC/GFX/SCREEN/SCREEN.H"
 #include "SRC/R3D/TBLSTORE/SHAPETBL.H"
 #include "SRC/SYS/MDACON.H"
-#include "SRC/GAME/GSTATE.H"
+#include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/R3D/VIS/VISLIST.H"
 #include "SRC/R3D/VIS/PROXSCAN.H"
 #include "SRC/R3D/SKY/SKYREND.H"

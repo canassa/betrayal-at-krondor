@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/WORLD/LOOP/MAP.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
@@ -21,7 +21,7 @@
 #include "SRC/UI/MENUPAGE.H"
 #include "SRC/GFX/PALETTE/PALETTE.H"
 #include "SRC/AUDIO/CHAN/AUDSETIN.H"
-#include "SRC/GAME/GSTATE.H"
+#include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/CHAR/STAT.H"
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/UI/MODALSCR.H"

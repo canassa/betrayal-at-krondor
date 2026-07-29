@@ -5,7 +5,7 @@
 #include <dir.h>
 #include <io.h>
 
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/GAME/MAINDATA.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
@@ -27,8 +27,8 @@
 #include "SRC/GFX/SCREEN/SCREEN.H"
 #include "SRC/UI/MENUPAGE.H"
 #include "SRC/GFX/PALETTE/PALETTE.H"
-#include "SRC/GAME/SAVEGAME.H"
-#include "SRC/GAME/GSTATE.H"
+#include "SRC/GAME/STATE/SAVEGAME.H"
+#include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/R3D/VIS/PROXSCAN.H"
 #include "SRC/UI/UIWIDGET.H"
 #include "SRC/UI/DLGWIDG.H"

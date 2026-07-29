@@ -1,6 +1,6 @@
 #include <dos.h>
 #include <mem.h>
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
@@ -14,7 +14,7 @@
 #include "SRC/GFX/RASTER/PRESENT.H"
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/GFX/SCREEN/SCREEN.H"
-#include "SRC/GAME/TIMERPL.H"
+#include "SRC/GAME/STATE/TIMERPL.H"
 #include "SRC/SCREENS/ITEMUSE.H"
 
 char g_abPaletteBlendLut[127];

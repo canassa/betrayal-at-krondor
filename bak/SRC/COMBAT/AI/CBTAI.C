@@ -1,4 +1,4 @@
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "structs.h"
 #include "SRC/COMBAT/AI/CBTAI.H"
 #include "SRC/SYS/RAND.H"

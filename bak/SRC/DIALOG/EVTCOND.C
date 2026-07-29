@@ -1,14 +1,14 @@
 #include <dos.h>
 #include <stdlib.h>
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/WORLD/LOOP/WORLDLP.H"
 #include "structs.h"
 
 #include "SRC/DIALOG/EVTCOND.H"
 #include "SRC/SYS/RAND.H"
-#include "SRC/GAME/GSTATE.H"
+#include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/CHAR/STAT.H"
-#include "SRC/GAME/TIMERPL.H"
+#include "SRC/GAME/STATE/TIMERPL.H"
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SCREENS/CMBINV.H"
 #include "SRC/SCREENS/ITEMTBL.H"

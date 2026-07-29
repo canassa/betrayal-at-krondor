@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/INPUT/TIMER.H"
@@ -19,7 +19,7 @@
 #include "SRC/UI/MENUPAGE.H"
 #include "SRC/GFX/PALETTE/PALETTE.H"
 #include "SRC/DIALOG/EVTCOND.H"
-#include "SRC/GAME/GSTATE.H"
+#include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/UI/UIWIDGET.H"
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SCREENS/TOWNSCN.H"

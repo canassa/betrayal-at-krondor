@@ -1,8 +1,8 @@
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "structs.h"
-#include "SRC/GAME/TIMERPL.H"
+#include "SRC/GAME/STATE/TIMERPL.H"
 #include "SRC/GFX/PALETTE/PALETTE.H"
-#include "SRC/GAME/GSTATE.H"
+#include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/COMBAT/SPELL/SPELLFX.H"
 
 TimerEventEntry *far timerpool_upsert(unsigned short kind, unsigned short sub_id, unsigned short mode, long value) {

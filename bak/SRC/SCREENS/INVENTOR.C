@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include "gfx169d.h"
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/SYS/SYSLOWIO.H"
 #include "SRC/INPUT/TIMER.H"
@@ -23,7 +23,7 @@
 #include "SRC/UI/MENUPAGE.H"
 #include "SRC/R3D/TBLSTORE/SHAPETBL.H"
 #include "SRC/SYS/EMSIMG.H"
-#include "SRC/GAME/GSTATE.H"
+#include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SCREENS/CMBINV.H"
 #include "SRC/SCREENS/ITEMTBL.H"

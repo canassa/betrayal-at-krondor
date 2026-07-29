@@ -7,7 +7,7 @@
 #include "SRC/GFX/RASTER/PRESENT.H"
 #include "SRC/GFX/DRIVER/VTHUNKS.H"
 #include "SRC/GFX/DRIVER/VIDINIT.H"
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/R3D/CORE/R3D.H"
 #include "SRC/GFX/SCREEN/SCREEN.H"
 #include "SRC/SYS/EMSIMG.H"

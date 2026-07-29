@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/GAME/MAINDATA.H"
@@ -38,7 +38,7 @@
 #include "SRC/AUDIO/SND/SFXTERM.H"
 #include "SRC/SYS/EMS.H"
 #include "SRC/SYS/MDACON.H"
-#include "SRC/GAME/GSTATE.H"
+#include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/CHAR/CHARSCRN.H"
 #include "SRC/WORLD/ACTOR/ACTSPAWN.H"
 #include "SRC/SCREENS/MAINMENU.H"

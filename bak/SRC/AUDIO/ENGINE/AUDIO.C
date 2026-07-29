@@ -1,4 +1,4 @@
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/GAME/MAINDATA.H"
 #include "SRC/R3D/SCENE/WORLDHIT.H"
@@ -17,7 +17,7 @@
 #include "SRC/AUDIO/ENGINE/AUDSTART.H"
 #include "SRC/AUDIO/ENGINE/AUDDRVST.H"
 #include "SRC/AUDIO/CHAN/AUDCHFID.H"
-#include "SRC/GAME/GSTATE.H"
+#include "SRC/GAME/STATE/GSTATE.H"
 #ifdef V102CD
 #include "SRC/IO/RESOURCE.H"
 #include "SRC/AUDIO/CDAUDIO.H"

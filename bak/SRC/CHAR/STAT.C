@@ -1,10 +1,10 @@
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 
 #include "SRC/CHAR/STAT.H"
-#include "SRC/GAME/GSTATE.H"
+#include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/SCREENS/ITEMTBL.H"
 
 unsigned char g_abStatMin[17] = {0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,

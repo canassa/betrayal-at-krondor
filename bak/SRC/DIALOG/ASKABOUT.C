@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "SRC/GEN/GFXCTX.H"
 #include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/COMBAT/GRID/CMBTGRID.H"
@@ -23,7 +23,7 @@
 #include "SRC/SYS/EMSIMG.H"
 #include "SRC/GFX/SPRITE/BLITAA.H"
 #include "SRC/DIALOG/EVTCOND.H"
-#include "SRC/GAME/GSTATE.H"
+#include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SCREENS/ITEMTBL.H"
 

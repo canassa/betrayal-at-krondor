@@ -1,5 +1,5 @@
 #include <mem.h>
-#include "SRC/GAME/GMAIN.H"
+#include "SRC/GAME/STATE/GMAIN.H"
 #include "structs.h"
 #include "SRC/WORLD/ACTOR/ACTOR.H"
 #include "SRC/SCREENS/ITEMTBL.H"
@@ -7,7 +7,7 @@
 #include "SRC/IO/IOCHUNK.H"
 #include "SRC/SYS/FARTHUNK.H"
 #include "SRC/SYS/DOSMEM.H"
-#include "SRC/GAME/GSTATE.H"
+#include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/SCREENS/CMBINV.H"
 #include "defines.h"
 
