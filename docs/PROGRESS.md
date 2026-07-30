@@ -18,6 +18,9 @@ is a project.
 Headers with no `.C` are declaration headers for an assembly module; they mostly need a
 `@file` block and documented prototypes, which makes them good first contributions.
 
+Empty anchor TUs (the `E_*`/`D_*` link-slot placeholders, most of them comment-only
+`.C` files) are not cleanup targets and are omitted from the tables.
+
 
 ### `bak/SRC/AUDIO`
 
