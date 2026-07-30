@@ -50,23 +50,6 @@
 #include "SRC/SYS/CFGPARSE.H"
 #endif
 
-extern char g_versionBannerText[];
-
-short g_nPolygonTextureMode = 1;
-unsigned short g_nWorldRenderJitter = 0x0000;
-char *g_versionBanner = g_versionBannerText;
-unsigned char _dgroup_gap_3e8[4] = {0, 0, 0, 0};
-SoundDriverId g_sound_driver = SNDDRV_NONE;
-ResFile *g_pSfxArchiveStream = {0};
-unsigned int _ovrbuffer = 0x0d48;
-unsigned char far *g_pMainScratchBuf = {0};
-#ifdef V102CD
-char g_versionBannerText[] = "Version 1.02 CD";
-#else
-char g_versionBannerText[] = "Version 1.00";
-unsigned char _dgroup_pad_403 = 0;
-#endif
-
 unsigned short g_wSkyColorR = 0x00d7;
 unsigned short g_wSkyColorG = 0x00e4;
 unsigned short g_wSkyColorB = 0x00a8;
