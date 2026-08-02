@@ -30,7 +30,7 @@ unsigned char far g_abStatNames[16][15] = {
 #include "SRC/DIALOG/DIALOG.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/IO/RESOURCE.H"
-#include "SRC/IO/IOCHUNK.H"
+#include "SRC/IO/RESFAR.H"
 #include "SRC/GFX/RASTER/VGABLIT.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/GEN/RNDVTBL.H"
@@ -144,9 +144,9 @@ PDdxRecord dialog_load_record_by_key(unsigned long record_key, int use_offset) {
         alloc_size = sub_size + header.wBody_len + 9;
         record = (DDXRecord far *)alloc_far((long)alloc_size, 0);
         *record = header;
-        res_fread_chunked((unsigned char far *)record + 9, 1, (long)sub_size, file);
+        res_fread_far((unsigned char far *)record + 9, 1, (long)sub_size, file);
         body_ptr = (unsigned char far *)record + sub_size + 9;
-        res_fread_chunked(body_ptr, 1, (unsigned long)header.wBody_len, file);
+        res_fread_far(body_ptr, 1, (unsigned long)header.wBody_len, file);
     }
     res_fclose(file);
     return record;

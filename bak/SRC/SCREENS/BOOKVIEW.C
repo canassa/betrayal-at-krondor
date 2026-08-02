@@ -14,7 +14,7 @@ unsigned short g_wTextWrapLinesRemaining = 0x0000;
 #include "SRC/STREAM/RESLOAD/FONTLOAD.H"
 #include "SRC/SYS/EMS.H"
 #include "SRC/IO/RESOURCE.H"
-#include "SRC/IO/IOCHUNK.H"
+#include "SRC/IO/RESFAR.H"
 #include "SRC/STREAM/CODEC/STREAM.H"
 #include "SRC/SYS/BOOT.H"
 #include "SRC/GFX/DRIVER/VTHUNKS.H"
@@ -118,7 +118,7 @@ static PageDirectory far *bookview_load_page_directory(char *filename) {
     }
     res_fread(&size, 1, 4, file);
     dir = (PageDirectory far *)alloc_far(size, 0L);
-    res_fread_chunked((unsigned char huge *)dir, 1L, (long)size, file);
+    res_fread_far(dir, 1L, (long)size, file);
     res_fclose(file);
     for (i = 0; i < dir->nCount; i++) {
         dir->pPages[i] = (BookPage far *)((char huge *)dir + (unsigned long)dir->pPages[i]);

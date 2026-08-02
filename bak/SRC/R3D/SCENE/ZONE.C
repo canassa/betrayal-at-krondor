@@ -4,7 +4,7 @@
 #include "structs.h"
 #include "SRC/R3D/SCENE/ZONE.H"
 #include "SRC/IO/RESOURCE.H"
-#include "SRC/IO/IOCHUNK.H"
+#include "SRC/IO/RESFAR.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/GFX/SPRITE/RESBLIT.H"
@@ -120,7 +120,7 @@ void far zone_load(void) {
     g_world_camera->base.orientation.yaw = g_gameState.wZoneDefaultCameraHeading;
     sprintf(g_szZoneMapFilename, "Z%02u.RMP", (unsigned int)g_gameState.nZoneId);
     file = res_fopen(g_szZoneMapFilename, "rb");
-    res_fread_chunked(g_abFogRemapTable, 0x100, (long)(int)g_nFogRemapTableCount, file);
+    res_fread_far(g_abFogRemapTable, 0x100, (long)(int)g_nFogRemapTableCount, file);
     res_fclose(file);
     combat_arena_load_remap_pals();
     sprintf(g_szZoneMapFilename, "Z%02u.PAL", (unsigned int)g_gameState.nZoneId);

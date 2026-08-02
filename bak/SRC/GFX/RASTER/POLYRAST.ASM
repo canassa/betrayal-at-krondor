@@ -150,7 +150,7 @@ L_zero:
 
 ; 0x05c .. 0xa5c (2560 B): SPRITE FOG REMAP TABLE (zero-init at load).
 ; Filled at runtime by zone_load (0x7507b), which reads Z%02u.RMP into this
-; block via res_fread_chunked(g_abFogRemapTable, 0x100, g_nFogRemapTableCount,..)
+; block via res_fread_far(g_abFogRemapTable, 0x100, g_nFogRemapTableCount,..)
 ; -- up to 10 banks of 256 bytes (count = g_nFogRemapTableCount).  Each bank is
 ; an XLAT remap table for one fog/distance bucket; the rasterizer inner loops
 ; XLAT cs:[bx] through it when g_polyRasterState.nRemapTableOff selects a bank in

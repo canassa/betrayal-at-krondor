@@ -4,7 +4,7 @@
 #include "SRC/GAME/ACTOR/ACTOR.H"
 #include "SRC/GAME/ACTOR/ITEMTBL.H"
 #include "SRC/IO/RESOURCE.H"
-#include "SRC/IO/IOCHUNK.H"
+#include "SRC/IO/RESFAR.H"
 #include "SRC/SYS/FARTHUNK.H"
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/GAME/STATE/GSTATE.H"
@@ -55,7 +55,7 @@ int itemtbl_load(void) {
         size = 0x2b7a;
         fp = res_fopen("OBJINFO.DAT", "rb");
         g_pItemDefTable = (ItemRecord far *)alloc_far((long)size, 0);
-        res_fread_chunked((unsigned char far *)g_pItemDefTable, 1, (long)size, fp);
+        res_fread_far(g_pItemDefTable, 1, (long)size, fp);
         res_fclose(fp);
         g_pItemPriceTable = (unsigned long *)my_malloc(0x228);
         return 1;

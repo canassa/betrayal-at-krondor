@@ -2,7 +2,7 @@
 #include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/AUDIO/RES/AUDLOAD.H"
 #include "SRC/IO/RESOURCE.H"
-#include "SRC/IO/IOCHUNK.H"
+#include "SRC/IO/RESFAR.H"
 #include "SRC/AUDIO/RES/POOL.H"
 #include "SRC/STREAM/RESLOAD/RELBUF.H"
 #include "SRC/AUDIO/RES/AUDRES.H"
@@ -34,7 +34,7 @@ int music_chunk_load_and_link(ResFile *file, char mode) {
 
     if (mode == 'c') {
         if ((node->pData = pool_acquire_buffer(size, allocTag)) == 0 ||
-            res_fread_chunked(node->pData, size, 1, file) != 1) {
+            res_fread_far(node->pData, size, 1, file) != 1) {
             release_buffer(node, 3);
             return 0;
         }

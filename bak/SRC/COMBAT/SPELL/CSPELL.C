@@ -11,7 +11,7 @@
 #include "SRC/COMBAT/SPELL/CSPELL.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/IO/RESOURCE.H"
-#include "SRC/IO/IOCHUNK.H"
+#include "SRC/IO/RESFAR.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/GFX/FONT/FONT.H"
@@ -104,7 +104,7 @@ void cspell_subsystem_load(void) {
     res_fread(g_pSpellDocRows, 4, docCount, f);
     res_fread(&blobLen, 2, 1, f);
     g_pSpellDocBlob = alloc_far((long)(int)blobLen, 0);
-    res_fread_chunked(g_pSpellDocBlob, 1, (long)(int)blobLen, f);
+    res_fread_far(g_pSpellDocBlob, 1, (long)(int)blobLen, f);
     res_fclose(f);
     i = 0;
     if (i < docCount) {

@@ -8,7 +8,7 @@
 
 #include "SRC/GAME/ACTOR/ACTSPAWN.H"
 #include "SRC/IO/RESOURCE.H"
-#include "SRC/IO/IOCHUNK.H"
+#include "SRC/IO/RESFAR.H"
 #include "SRC/R3D/CORE/DISTDIR.H"
 #include "SRC/SYS/DOSMEM.H"
 #include "SRC/R3D/TBLSTORE/SHAPETBL.H"
@@ -132,7 +132,7 @@ Actor far *actorspawn_objfixed(int kind, long world_x, long world_y) {
                 g_gameState.nChapter <= chap_max) {
                 spawned = actor_alloc_from_template((Actor far *)&tmpl, ipass == 0);
                 *(long far *)spawned->temp_file_off = offset;
-                res_fread_chunked((unsigned char huge *)((char far *)spawned + sizeof(Actor)), 1,
+                res_fread_far((char far *)spawned + sizeof(Actor), 1,
                                   actorrec_payload_size((Actor far *)&tmpl), file);
             } else {
                 res_fseek(file, actorrec_payload_size((Actor far *)&tmpl), SEEK_CUR);
@@ -214,7 +214,7 @@ Actor far *actorspawn_enc_location(int kind, long world_x, long world_y) {
             res_fread(&actor_hdr.kind, 0x10, 1, g_tempGamFP);
             if (actor_hdr.flags & 0x80) {
                 tmp_clone = actor_alloc_from_template(&actor_hdr, FALSE);
-                res_fread_chunked((unsigned char far *)((char far *)tmp_clone + sizeof(Actor)), 1L,
+                res_fread_far((char far *)tmp_clone + sizeof(Actor), 1L,
                                   actorrec_payload_size(&actor_hdr), g_tempGamFP);
                 p_touch = (ActorSubrec10_LastTouch far *)actorrec_get_subrecord(tmp_clone,
                                                                                 SUBREC_LAST_TOUCH);

@@ -6,7 +6,7 @@
 #include "SRC/GAME/STATE/GSTATE.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/IO/RESOURCE.H"
-#include "SRC/IO/IOCHUNK.H"
+#include "SRC/IO/RESFAR.H"
 #include "SRC/GFX/PALETTE/PALETTE.H"
 #include "SRC/DIALOG/EVTCOND.H"
 #include "SRC/CHAR/STAT.H"
@@ -187,7 +187,7 @@ void gstate_temp_file_close(void) {
     return;
 }
 
-int gstate_temp_file_read_at(void far *dst_far, unsigned long offset, unsigned int bytes) {
+int gstate_temp_file_read_at(void far *dst_far, long offset, unsigned int bytes) {
     if (res_fseek(g_tempGamFP, offset, SEEK_SET) != 0) {
         res_fseek(g_tempGamFP, 0, SEEK_SET);
         if (res_fseek(g_tempGamFP, offset, SEEK_SET) != 0) {
@@ -195,7 +195,7 @@ int gstate_temp_file_read_at(void far *dst_far, unsigned long offset, unsigned i
     }
     if ((unsigned long)res_ftell(g_tempGamFP) == offset) {
     }
-    res_fread_chunked(dst_far, 1, (long)bytes, g_tempGamFP);
+    res_fread_far(dst_far, 1, (long)bytes, g_tempGamFP);
     return 1;
 }
 
@@ -246,7 +246,7 @@ int gstate_temp_file_write_at(unsigned char far *src_far, unsigned long offset, 
     }
     if (res_ftell(g_tempGamFP) == (long)offset)
         ;
-    res_fwrite_chunked(src_far, 1, (unsigned long)bytes, g_tempGamFP);
+    res_fwrite_far(src_far, 1, (long)bytes, g_tempGamFP);
     return 1;
 }
 

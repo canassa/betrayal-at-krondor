@@ -12,7 +12,7 @@
 #include "SRC/COMBAT/ARENA/COMBAT.H"
 #include "SRC/SYS/RAND.H"
 #include "SRC/IO/RESOURCE.H"
-#include "SRC/IO/IOCHUNK.H"
+#include "SRC/IO/RESFAR.H"
 #include "SRC/SYS/MEM.H"
 #include "SRC/AUDIO/ENGINE/AUDIO.H"
 #include "SRC/GFX/FONT/FONT.H"
@@ -175,16 +175,16 @@ void far combat_arena_load_remap_pals(void) {
     ResFile *fp;
 
     fp = res_fopen("red.rmp", "rb");
-    res_fread_chunked(g_abCursorPaletteLut + 0x100, (long)0x100, (long)1, fp);
+    res_fread_far(g_abCursorPaletteLut + 0x100, (long)0x100, (long)1, fp);
     res_fclose(fp);
     fp = res_fopen("green.rmp", "rb");
-    res_fread_chunked(g_abCursorPaletteLut + 0x200, (long)0x100, (long)1, fp);
+    res_fread_far(g_abCursorPaletteLut + 0x200, (long)0x100, (long)1, fp);
     res_fclose(fp);
     fp = res_fopen("white.rmp", "rb");
-    res_fread_chunked(g_abCursorPaletteLut + 0x300, (long)0x100, (long)1, fp);
+    res_fread_far(g_abCursorPaletteLut + 0x300, (long)0x100, (long)1, fp);
     res_fclose(fp);
     fp = res_fopen("blue.rmp", "rb");
-    res_fread_chunked(g_abCursorPaletteLut + 0x400, (long)0x100, (long)1, fp);
+    res_fread_far(g_abCursorPaletteLut + 0x400, (long)0x100, (long)1, fp);
     res_fclose(fp);
 }
 

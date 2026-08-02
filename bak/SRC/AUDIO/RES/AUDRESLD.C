@@ -2,7 +2,7 @@
 #include "SRC/AUDIO/RES/AUDRESIN.H"
 #include "SRC/AUDIO/RES/AUDRESLD.H"
 #include "SRC/IO/RESOURCE.H"
-#include "SRC/IO/IOCHUNK.H"
+#include "SRC/IO/RESFAR.H"
 #include "SRC/AUDIO/RES/POOL.H"
 #include "SRC/STREAM/RESLOAD/RELBUF.H"
 #include "SRC/STREAM/RESLOAD/IFFREAD.H"
@@ -38,7 +38,7 @@ ResFile *audio_resource_load_chunk(FileRef *file, int chunk_id) {
         if ((g_pMusicChunkBuf =
                  (MusicChunkHeader far *)pool_acquire_buffer((unsigned long)(buf_size + 4), 10)) == 0)
             goto cleanup;
-        if (res_fread_chunked((unsigned char huge *)&g_pMusicChunkBuf->nMagic, buf_size, 1,
+        if (res_fread_far(&g_pMusicChunkBuf->nMagic, buf_size, 1,
                               g_music_archive) != 1)
             goto cleanup;
         if (g_pMusicChunkBuf->nMagic != 2)
