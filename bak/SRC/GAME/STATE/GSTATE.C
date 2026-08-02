@@ -302,9 +302,9 @@ static int gstate_hourly_tick(int arg0, int arg1, int arg2) {
     eventFired = 0;
     allConscious = 1;
     elapsed = g_gameState.game_time - g_gameState.dwLastActionTimeSnapshot;
-    if ((((arg0 == 0) || (arg1 == 0)) || (elapsed < 0x7788)) || (elapsed >= 0x7e90)) {
-        if ((arg1 == 0) || (elapsed < 0x7e90))
-            goto party_regen;
+    if ((((arg0 != 0) && (arg1 != 0)) && (elapsed >= 0x7788)) && (elapsed < 0x7e90)) {
+        dialog_play_record(0x40, eventFired = 1);
+    } else if ((arg1 != 0) && (elapsed >= 0x7e90)) {
         for (slot = 0; slot < g_gameState.partySize; slot = slot + 1) {
             actor = g_gameState.activeParty[slot];
             if (stat_combatant_modify(&g_gameState.characters[actor], 0x10,
@@ -312,11 +312,9 @@ static int gstate_hourly_tick(int arg0, int arg1, int arg2) {
                 allConscious = 0;
             }
         }
-        if ((!allConscious) || (arg0 == 0))
-            goto party_regen;
+        if (allConscious && (arg0 != 0))
+            dialog_play_record(0x40, eventFired = 1);
     }
-    dialog_play_record(0x40, eventFired = 1);
-party_regen:
     for (slot = 0; slot < g_gameState.partySize; slot = slot + 1) {
         actor = g_gameState.activeParty[slot];
         if (arg2 != 0) {
