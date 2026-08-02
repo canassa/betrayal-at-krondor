@@ -227,7 +227,7 @@ void far savegame_chapter_start_dispatch(int chapter) {
 
     case 7:
     case 8:
-        gstate_temp_file_read_at((unsigned char *)&g_gameState.nParty_gold,
+        gstate_temp_file_read_at(&g_gameState.nParty_gold,
                                  (unsigned long)(unsigned int)((chapter - 2) * 4 + 0x12f7), 4);
         break;
     }

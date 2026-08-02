@@ -85,7 +85,7 @@ extern int gstate_event_write(unsigned int event_id, unsigned int value);
 #define KEYWORD_ASKED(idx) ((idx) + 7500)
 extern int gstate_temp_file_open(void);
 extern void gstate_temp_file_close(void);
-extern int gstate_temp_file_read_at(unsigned char far *dst_far, unsigned long offset, unsigned int bytes);
+extern int gstate_temp_file_read_at(void far *dst_far, unsigned long offset, unsigned int bytes);
 extern int gstate_temp_file_write_at(unsigned char far *src_far, unsigned long offset, unsigned int bytes);
 
 /* TEMP.GAM layout: GameState at 0, then EncounterTable, then the keyed

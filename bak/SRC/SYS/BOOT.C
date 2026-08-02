@@ -124,7 +124,7 @@ void boot_sfx_resources_release(void) {
 void far boot_party_state_load_from_temp(void) {
     int i;
 
-    gstate_temp_file_read_at((unsigned char far *)&g_gameState, 0L, 0xad7);
+    gstate_temp_file_read_at(&g_gameState, 0L, 0xad7);
     for (i = 0; i < CHARACTER_POOL_SIZE; i++) {
         g_gameState.characters[i].name = g_gameState.characterNames[i];
         g_gameState.characters[i].actor_record = actorspawn_objfixed(0, i + 1, 0L);

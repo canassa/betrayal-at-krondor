@@ -50,7 +50,7 @@ long far actorspawn_location_lookup(int location_id) {
     }
     for (i = 0; i < 20; i++) {
 
-        gstate_temp_file_read_at((unsigned char far *)&rec, (unsigned)GAM_OBJFIXED_LOCATION(i), 0x16);
+        gstate_temp_file_read_at(&rec, (unsigned)GAM_OBJFIXED_LOCATION(i), 0x16);
         if (location_id == rec.location_id) {
             g_gameState.objfixed_location_cache = rec;
             return rec.temp_gam_offset;

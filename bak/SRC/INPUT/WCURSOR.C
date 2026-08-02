@@ -1346,7 +1346,7 @@ void far wcursor_encounter_hint(WorldHotspot *pHotspot, int nSlot) {
             goto lbl_dispatch;
         if (!hotspotevt_trap_gates_pass(nSlot / 7))
             return;
-        gstate_temp_file_read_at((unsigned char far *)&last_time, GAM_ENC_VISITED_TIME(record_id), 4);
+        gstate_temp_file_read_at(&last_time, GAM_ENC_VISITED_TIME(record_id), 4);
         if ((last_time == 0) || ((g_gameState.game_time - last_time) / 0xa8c0 >= 1)) {
             g_pendingTempWriteRegion = TWR_ENCOUNTER_STATE;
             gstate_temp_file_write_at((unsigned char far *)&g_gameState.game_time,

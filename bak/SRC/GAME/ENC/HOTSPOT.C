@@ -510,8 +510,7 @@ void far hotspotevt_type1_encounter_run(ZoneHotspot *pHotspot, int *out_moved) {
             return;
         }
     }
-    gstate_temp_file_read_at((unsigned char far *)&visitedTime, GAM_ENC_VISITED_TIME(*(unsigned long *)(buf + 2)),
-                             4);
+    gstate_temp_file_read_at(&visitedTime, GAM_ENC_VISITED_TIME(*(unsigned long *)(buf + 2)), 4);
     if ((g_gameState.game_time - visitedTime) / 0x1e <= 0x1e) {
         if (RND(100) <= stat_party_find_extreme(0xf, 0, (short *)0x0)) {
             stat_party_broadcast_status_op(0xf, 1, 3);
@@ -761,8 +760,7 @@ void far hotspotevt_trap_main_fire(ZoneHotspot *pHotspot, unsigned short *pOut_s
         return;
     }
 
-    gstate_temp_file_read_at((unsigned char far *)&visitedTime, GAM_ENC_VISITED_TIME(trapRec.dwCombat_index),
-                             4);
+    gstate_temp_file_read_at(&visitedTime, GAM_ENC_VISITED_TIME(trapRec.dwCombat_index), 4);
 
     if ((g_gameState.game_time - visitedTime) / 0x1e <= 0x1e) {
         if (RND(100) <= stat_party_find_extreme(0xf, 0, (short *)0)) {

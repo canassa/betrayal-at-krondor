@@ -187,7 +187,7 @@ void gstate_temp_file_close(void) {
     return;
 }
 
-int gstate_temp_file_read_at(unsigned char far *dst_far, unsigned long offset, unsigned int bytes) {
+int gstate_temp_file_read_at(void far *dst_far, unsigned long offset, unsigned int bytes) {
     if (res_fseek(g_tempGamFP, offset, SEEK_SET) != 0) {
         res_fseek(g_tempGamFP, 0, SEEK_SET);
         if (res_fseek(g_tempGamFP, offset, SEEK_SET) != 0) {

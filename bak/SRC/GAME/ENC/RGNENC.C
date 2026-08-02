@@ -180,8 +180,7 @@ void far rgnenc_load_encounter_actors(void) {
     czone_get_party_tile_xy(&bZoneY, &bZoneX);
     nOriginX = (long)(int)(unsigned int)bZoneY * 64000;
     nOriginY = (long)(int)(unsigned int)bZoneX * 64000;
-    gstate_temp_file_read_at((unsigned char far *)g_pEncounterObjectState,
-                             (unsigned long)(unsigned)GAM_ENC_OBJ_STATE(nEncIdx), 0x1a4);
+    gstate_temp_file_read_at(g_pEncounterObjectState, (unsigned long)(unsigned)GAM_ENC_OBJ_STATE(nEncIdx), 0x1a4);
     if ((g_pEncounterObjectState->wKind_state & 0xff08) >> 8 == 0) {
         g_pEncounterObjectState->wKind_state = 0x100;
         while (pEvt != (ZoneHotspot *)0) {
@@ -193,12 +192,11 @@ void far rgnenc_load_encounter_actors(void) {
                     hotspotevt_bak_load_indexed_rec(7, &type7_rec, pEvt->dwDef_record_offset);
                     nRecordId = type7_rec.recId;
                 }
-                gstate_temp_file_read_at((unsigned char far *)aActorSlots, GAM_ENC_ROSTER(nRecordId), 0xe);
+                gstate_temp_file_read_at(aActorSlots, GAM_ENC_ROSTER(nRecordId), 0xe);
                 j = 0;
                 while (j < 7) {
                     if (aActorSlots[j] != -1) {
-                        gstate_temp_file_read_at(
-                            (unsigned char far *)&inner, GAM_COMBAT_ACTOR_INNER((long)aActorSlots[j]), 0x16);
+                        gstate_temp_file_read_at(&inner, GAM_COMBAT_ACTOR_INNER((long)aActorSlots[j]), 0x16);
                         /* The flags byte is read through (int)(signed char)
                            so the compiler sign-extends it (MOV AL;CWDE) and TESTs
                            the word, rather than folding to a byte-ptr TEST. The
@@ -423,8 +421,7 @@ int far rgnenc_persist_actor_placed(long record_id, int slot_index,
         if (g_anEncounterRecordIds[nRecordIdx] == record_id) {
             nFileIdx = (unsigned int)g_bCombatTempZoneRefPair * 0x23 + nRecordIdx * 7 + slot_index;
             if (g_game_mode == 2)
-                gstate_temp_file_read_at((unsigned char far *)&record,
-                                         (unsigned long)(unsigned)GAM_ENC_OBJ_STATE(nFileIdx), 0xc);
+                gstate_temp_file_read_at(&record, (unsigned long)(unsigned)GAM_ENC_OBJ_STATE(nFileIdx), 0xc);
             else
                 record.pose = src_partial->pose;
             record.wKind_state = 0x400;
@@ -501,13 +498,12 @@ void far rgnenc_mark_defended(unsigned long filter_encounter_id) {
                 g_pEncounterObjectState[base + j].wKind_state = 0x400;
         }
 
-        gstate_temp_file_read_at((unsigned char far *)actor_ids, GAM_ENC_ROSTER(enc_id), 0xe);
+        gstate_temp_file_read_at(actor_ids, GAM_ENC_ROSTER(enc_id), 0xe);
 
         for (j = 0; j < 7; j++) {
             if (actor_ids[j] == -1)
                 continue;
-            gstate_temp_file_read_at((unsigned char far *)&inner, GAM_COMBAT_ACTOR_INNER((long)actor_ids[j]),
-                                     0x16);
+            gstate_temp_file_read_at(&inner, GAM_COMBAT_ACTOR_INNER((long)actor_ids[j]), 0x16);
             /* The flags byte is read through (int)(signed char)
                so the compiler sign-extends it (MOV AL;CWDE) and TESTs
                the word, rather than folding to a byte-ptr TEST. The

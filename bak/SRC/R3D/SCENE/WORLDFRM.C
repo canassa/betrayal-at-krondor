@@ -31,7 +31,7 @@ EncounterTable *g_pEncounterTable = {0};
 
 void far worldframe_encounter_table_load(void) {
     g_pEncounterTable = galloc_safe_zcalloc(0x668);
-    gstate_temp_file_read_at((unsigned char far *)g_pEncounterTable, GAM_ENCOUNTER_TABLE, 0x668);
+    gstate_temp_file_read_at(g_pEncounterTable, GAM_ENCOUNTER_TABLE, 0x668);
 }
 
 void far worldframe_encounter_table_apply(void) {
