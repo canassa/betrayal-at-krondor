@@ -4,6 +4,32 @@ A specification of *Betrayal at Krondor*'s gameplay systems, described in game
 terms and precise enough to reimplement from. Only the **rest and fatigue**
 system is documented so far; the other systems have not yet been investigated.
 
+## Gambling                                                   {#mech_gambling}
+
+A gambling action draws two random values using record-specific upper bounds.
+The first value is the party's roll and the second is the gambler's roll.
+
+| Comparison | Outcome value | Settlement |
+|---|---:|---|
+| Party roll is greater | 0 | The party receives the record's percentage of the wager. |
+| Party roll is lower | 1 | The party loses the full wager. |
+| Rolls are equal | unchanged | No gold changes hands. |
+
+The original binaries contain a control-flow defect in the equality case. The
+final branch assigns outcome value `2`, but its comparison repeats the lower-than
+test. The branch is therefore unreachable, and an equal roll leaves the previous
+outcome value in place.
+
+Dialogue choices can select their next record by testing inclusive ranges
+against this outcome value. A tie can therefore follow the previous WIN or
+LOSS branch, or another matching range, even though its settlement remains a
+tie. This is original shipped behaviour and is preserved for byte identity.
+
+Gambling also updates a counter shared with barding. A loss adds the wager to
+the counter. A win subtracts the payout without going below zero. A tie leaves
+it unchanged. The town scene stores at most 250 units of this counter for later
+barding resolution.
+
 ## Sleep & Fatigue                                              {#mech_fatigue}
 
 Party members tire as they travel. What counts is the time **since the party

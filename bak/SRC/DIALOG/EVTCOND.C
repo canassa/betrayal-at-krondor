@@ -235,6 +235,10 @@ void evtcond_dialog_action_dispatch(DdxOp far *action_record) {
                 g_gameState.dwPopup_retry_state + (g_gameState.dwPopup_retry_state < 0xea60
                                                        ? (unsigned)g_gameState.lEvtArgGoldCost
                                                        : 0);
+        /*
+         * The shipped control flow repeats the less-than comparison here.
+         * On equal rolls, nEvtArgCount therefore retains its previous value.
+         */
         } else if (g_gameState.lEvtArgValue < g_gameState.lEvtArgAuxValue) {
 
             g_gameState.nEvtArgCount = 2;
